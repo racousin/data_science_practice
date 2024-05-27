@@ -12,10 +12,15 @@ jobs:
       with:
         fetch-depth: 0  # Fetches all history for branches and tags
 
+    - name: Fetch base and head branches
+      run: |
+        git fetch origin ${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}
+        git fetch origin ${{ github.head_ref }}:refs/remotes/origin/${{ github.head_ref }}
+
     - name: Check folder permissions
       run: |
         # Get list of changed files compared to the base branch
-        FILES_CHANGED=$(git diff --name-only ${{ github.base_ref }}...${{ github.head_ref }})
+        FILES_CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...origin/${{ github.head_ref }})
 
         # Extract GitHub username from actor
         USER="${{ github.actor }}"
