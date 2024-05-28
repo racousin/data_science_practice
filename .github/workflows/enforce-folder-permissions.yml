@@ -37,9 +37,9 @@ jobs:
           fi
         done
 
-        # Determine the unique TP numbers that have changes
+        # Determine the unique tp numbers that have changes
         echo "Determining changed TPs..."
-        CHANGED_TPS=$(echo "$FILES_CHANGED" | grep "^${USER}/TP" | sed -E 's|.*/TP([0-9]+)/.*|\1|' | sort | uniq)
+        CHANGED_TPS=$(echo "$FILES_CHANGED" | grep "^${USER}/tp" | sed -E 's|.*/tp([0-9]+)/.*|\1|' | sort | uniq)
         echo "changed_tps=$CHANGED_TPS" >> $GITHUB_ENV
 
     - name: Run Tests
@@ -51,7 +51,7 @@ jobs:
         # Convert the space-separated list to an array
         IFS=' ' read -r -a TPS_ARRAY <<< "$CHANGED_TPS"
 
-        # Run tests for each changed TP
-        for TP in "${TPS_ARRAY[@]}"; do
-          ./tests/run_tests.sh "$USER" "tp$TP"
+        # Run tests for each changed tp
+        for tp in "${TPS_ARRAY[@]}"; do
+          ./tests/run_tests.sh "$USER" "tp$tp"
         done
