@@ -33,3 +33,38 @@ jobs:
           fi
         done
 
+  evaluate-tp:
+    runs-on: ubuntu-latest
+    needs: enforce-permissions
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Determine Changed TPs
+      id: changes
+      run: |
+        # Extract GitHub username from actor
+        USER="${{ github.actor }}"
+
+        # Get list of changed files compared to the base branch
+        FILES_CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...origin/${{ github.head_ref }})
+
+        # Determine the unique tp numbers that have changes
+        CHANGED_TPS=$(echo "$FILES_CHANGED" | grep "^${USER}/tp" | sed -E 's|.*/tp([0-9]+)/.*|\1|' | sort | uniq)
+
+        # Output the list of changed TPs
+        echo "changed_tps=$CHANGED_TPS" >> $GITHUB_ENV
+
+    - name: Run Tests
+      run: |
+        # Source the changed TPs from the environment
+        CHANGED_TPS=${{ env.changed_tps }}
+        USER="${{ github.actor }}"
+
+        # Convert the space-separated list to an array
+        IFS=' ' read -r -a TPS_ARRAY <<< "$CHANGED_TPS"
+
+        # Run tests for each changed tp
+        for tp in "${TPS_ARRAY[@]}"; do
+          .tests/run_tests.sh "$USER" "tp$tp"
+        done
