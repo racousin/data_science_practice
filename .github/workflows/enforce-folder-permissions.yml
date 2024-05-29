@@ -52,7 +52,7 @@ jobs:
 
         # Get list of changed files compared to the base branch
         FILES_CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...origin/${{ github.head_ref }})
-
+        echo "FILES_CHANGED: $FILES_CHANGED"
         # Check if changes are only within user's folder
         echo "Checking folder permissions..."
         for FILE in $FILES_CHANGED; do
@@ -65,6 +65,7 @@ jobs:
         # Determine the unique tp numbers that have changes
         echo "Determining changed TPs..."
         CHANGED_TPS=$(echo "$FILES_CHANGED" | grep "^${USER}/tp" | sed -E 's|.*/tp([0-9]+)/.*|\1|' | sort | uniq)
+        echo "CHANGED_TPS: $CHANGED_TPS"
         echo "changed_tps=$CHANGED_TPS" >> $GITHUB_ENV
 
     - name: Run Tests
