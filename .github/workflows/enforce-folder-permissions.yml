@@ -30,6 +30,8 @@ on:
 #       - name: Run tests
 #         run: pytest
 
+#TODO add as well a security to not run the action if change workflow
+
 jobs:
   enforce-and-evaluate:
     runs-on: ubuntu-latest
@@ -63,6 +65,9 @@ jobs:
         CHANGED_TPS=$(echo "$FILES_CHANGED" | grep "^${USER}/tp" | sed -E 's|.*/tp([0-9]+)/.*|\1|' | tr '\n' ' ' | xargs)
         echo "CHANGED_TPS: $CHANGED_TPS"
         echo "changed_tps=$CHANGED_TPS" >> $GITHUB_ENV
+
+    - name: Set Script Permissions
+      run: chmod +x ./tests/run_tests.sh ./tests/*/run_tests.sh
 
     - name: Run Tests
       run: |
