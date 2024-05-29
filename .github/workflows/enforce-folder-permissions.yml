@@ -47,14 +47,10 @@ jobs:
     - name: Check folder permissions and determine changed TPs
       id: check-and-determine
       run: |
-        # Extract GitHub username from actor
         USER="${{ github.actor }}"
-
-        # Get list of changed files compared to the base branch
         FILES_CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...origin/${{ github.head_ref }})
         echo "FILES_CHANGED: $FILES_CHANGED"
-        
-        # Check if changes are only within user's folder
+
         echo "Checking folder permissions..."
         for FILE in $FILES_CHANGED; do
           if [[ "$FILE" != "$USER/"* && "$FILE" != "common/"* ]]; then
@@ -63,15 +59,14 @@ jobs:
           fi
         done
 
-        # Determine the unique tp numbers that have changes
         echo "Determining changed TPs..."
-        CHANGED_TPS=$(echo "$FILES_CHANGED" | grep "^${USER}/tp" | sed -E 's|.*/tp([0-9]+)/.*|\1|' | tr '\n' ' ' | sort -u)
+        CHANGED_TPS=$(echo "$FILES_CHANGED" | grep "^${USER}/tp" | sed -E 's|.*/tp([0-9]+)/.*|\1|' | tr '\n' ' ' | xargs)
         echo "CHANGED_TPS: $CHANGED_TPS"
         echo "changed_tps=$CHANGED_TPS" >> $GITHUB_ENV
 
     - name: Run Tests
       run: |
-        CHANGED_TPS=${{ env.changed_tps }}
+        CHANGED_TPS="${{ env.changed_tps }}"
         USER="${{ github.actor }}"
         IFS=' ' read -r -a TPS_ARRAY <<< "$CHANGED_TPS"
         for tp in "${TPS_ARRAY[@]}"; do
