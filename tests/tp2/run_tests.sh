@@ -3,8 +3,8 @@
 # This script runs tests for tp2 and expects a username as a parameter
 # Usage: ./run_tests.sh <username>
 
-if [ "$#" -ne 1 ]; then
-  echo "Usage: $0 <username>"
+if [ "$#" -ne 4 ]; then
+  echo "Usage: $0 <username> <aws-access-key-id> <aws-secret-access-key> <aws-region>"
   exit 1
 fi
 
