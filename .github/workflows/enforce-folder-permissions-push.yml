@@ -12,7 +12,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
       with:
-        fetch-depth: 0  # Fetches all history for branches and tags
+        fetch-depth: 2  # Fetches all history for branches and tags
 
     - name: Setup AWS CLI
       uses: aws-actions/configure-aws-credentials@v1
@@ -54,17 +54,15 @@ jobs:
     - name: Set Script Permissions
       run: chmod +x ./tests/run_tests.sh ./tests/*/run_tests.sh ./tests/run_tests_and_update_results.sh
     - name: Check folder permissions and determine changed TPs
-      id: check-and-determine
       run: |
         USER="${{ github.actor }}"
-        git fetch origin ${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}
-        git fetch origin ${{ github.head_ref }}:refs/remotes/origin/${{ github.head_ref }}
-        FILES_CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...origin/${{ github.head_ref }})
+        # Compare the current HEAD against the previous commit
+        FILES_CHANGED=$(git diff --name-only HEAD^ HEAD)
         echo "FILES_CHANGED: $FILES_CHANGED"
-
         CHANGED_TPS=$(echo "$FILES_CHANGED" | grep "^${USER}/tp" | sed -E 's|.*/tp([0-9]+)/.*|\1|' | tr '\n' ' ' | xargs)
         echo "CHANGED_TPS: $CHANGED_TPS"
         echo "changed_tps=$CHANGED_TPS" >> $GITHUB_ENV
+
     - name: Run Tests and Update Results
       run: |
         USER="${{ github.actor }}"
