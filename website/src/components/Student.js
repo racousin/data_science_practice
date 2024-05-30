@@ -1,31 +1,52 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { Container, ListGroup, Badge } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCheckCircle,
+  faTimesCircle,
+} from "@fortawesome/free-solid-svg-icons";
 
-const Student = () => {
+const StudentPage = () => {
   const { studentId } = useParams();
-  const [studentDetails, setStudentDetails] = useState({ tp: [] });
+  const [tpsResults, setTpsResults] = useState({});
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetch(`/students/${studentId}.json`)
-      .then((response) => response.json())
-      .then((data) => setStudentDetails(data))
-      .catch((error) =>
-        console.error("Error fetching student details:", error)
-      );
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to load the data");
+        }
+        return response.json();
+      })
+      .then((data) => setTpsResults(data))
+      .catch((error) => {
+        console.error("Error fetching TP results:", error);
+        setError("Failed to fetch TP results.");
+      });
   }, [studentId]);
 
+  const getResultIcon = (result) => {
+    if (result.endsWith("success")) {
+      return <FontAwesomeIcon icon={faCheckCircle} color="green" />;
+    }
+    return <FontAwesomeIcon icon={faTimesCircle} color="red" />;
+  };
+
   return (
-    <div>
-      <h1>Student Details: {studentDetails.name}</h1>
-      <ul>
-        {studentDetails.tp.map((item, index) => (
-          <li key={index}>
-            {item.name}: {item.mark}
-          </li>
+    <Container>
+      <h1>TP Results for {studentId}</h1>
+      {error && <Badge bg="danger">{error}</Badge>}
+      <ListGroup>
+        {Object.entries(tpsResults).map(([tp, result]) => (
+          <ListGroup.Item key={tp}>
+            {tp.toUpperCase()}: {getResultIcon(result)}
+          </ListGroup.Item>
         ))}
-      </ul>
-    </div>
+      </ListGroup>
+    </Container>
   );
 };
 
-export default Student;
+export default StudentPage;
