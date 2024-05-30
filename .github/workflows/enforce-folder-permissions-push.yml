@@ -53,9 +53,24 @@ jobs:
 
     - name: Set Script Permissions
       run: chmod +x ./tests/run_tests.sh ./tests/*/run_tests.sh ./tests/run_tests_and_update_results.sh
+    - name: Check folder permissions and determine changed TPs
+      id: check-and-determine
+      run: |
+        USER="${{ github.actor }}"
+        git fetch origin ${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}
+        git fetch origin ${{ github.head_ref }}:refs/remotes/origin/${{ github.head_ref }}
+        FILES_CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...origin/${{ github.head_ref }})
+        echo "FILES_CHANGED: $FILES_CHANGED"
 
+        CHANGED_TPS=$(echo "$FILES_CHANGED" | grep "^${USER}/tp" | sed -E 's|.*/tp([0-9]+)/.*|\1|' | tr '\n' ' ' | xargs)
+        echo "CHANGED_TPS: $CHANGED_TPS"
+        echo "changed_tps=$CHANGED_TPS" >> $GITHUB_ENV
     - name: Run Tests and Update Results
       run: |
         USER="${{ github.actor }}"
-        ./tests/run_tests_and_update_results.sh "$USER" "${{ secrets.AWS_ACCESS_KEY_ID }}" "${{ secrets.AWS_SECRET_ACCESS_KEY }}" "${{ secrets.AWS_DEFAULT_REGION }}"
-
+        CHANGED_TPS="${{ env.changed_tps }}"
+        if [[ -z "$CHANGED_TPS" ]]; then
+          echo "No TPs changed. Skipping tests."
+        else
+          ./tests/run_tests_and_update_results.sh "$USER" "${{ secrets.AWS_ACCESS_KEY_ID }}" "${{ secrets.AWS_SECRET_ACCESS_KEY }}" "${{ secrets.AWS_DEFAULT_REGION }}" "$CHANGED_TPS"
+        fi
