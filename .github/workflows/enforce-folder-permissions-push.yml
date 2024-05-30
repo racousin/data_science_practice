@@ -59,7 +59,7 @@ jobs:
         # Compare the current HEAD against the previous commit
         FILES_CHANGED=$(git diff --name-only HEAD^ HEAD)
         echo "FILES_CHANGED: $FILES_CHANGED"
-        CHANGED_TPS=$(echo "$FILES_CHANGED" | grep "^${USER}/tp" | sed -E 's|.*/tp([0-9]+)/.*|\1|' | tr '\n' ' ' | xargs)
+        CHANGED_TPS=$(echo "$FILES_CHANGED" | grep "^${USER}/tp" | sed -E 's|^'"$USER"'/tp([0-9]+)/.*|\1|' | sort -u | tr '\n' ' ')
         echo "CHANGED_TPS: $CHANGED_TPS"
         echo "changed_tps=$CHANGED_TPS" >> $GITHUB_ENV
 
