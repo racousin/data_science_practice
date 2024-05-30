@@ -1,0 +1,43 @@
+name: Enforce and Evaluate
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  check-and-update:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0  # Fetches all history for branches and tags
+
+    - name: Setup AWS CLI
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+
+    - name: Check and Add User to Students List
+      run: |
+        USER="${{ github.actor }}"
+        aws s3 cp s3://www.raphaelcousin.com/students/config/students.json students.json
+        if grep -q "$USER" students.json; then
+          echo "$USER is already in the list."
+        else
+          jq '. |= . + ["'"$USER"'"]' students.json > updated_students.json
+          mv updated_students.json students.json
+          aws s3 cp students.json s3://www.raphaelcousin.com/students/config/students.json
+        fi
+
+    - name: Set Script Permissions
+      run: chmod +x ./tests/run_tests.sh ./tests/*/run_tests.sh
+
+    - name: Run Tests and Update Results
+      run: |
+        USER="${{ github.actor }}"
+        ./run_tests_and_update_results.sh "$USER" "${{ secrets.AWS_ACCESS_KEY_ID }}" "${{ secrets.AWS_SECRET_ACCESS_KEY }}" "${{ secrets.AWS_DEFAULT_REGION }}"
+
