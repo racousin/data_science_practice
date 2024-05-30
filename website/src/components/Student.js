@@ -7,7 +7,7 @@ import {
   faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
-const StudentPage = () => {
+const Student = () => {
   const { studentId } = useParams();
   const [tpsResults, setTpsResults] = useState({});
   const [error, setError] = useState("");
@@ -49,4 +49,4 @@ const StudentPage = () => {
   );
 };
 
-export default StudentPage;
+export default Student;

@@ -19,7 +19,6 @@ const StudentsList = () => {
         console.error("Error fetching student list:", error);
         setError("Failed to fetch student data.");
       });
-    console.log(students);
   }, []);
 
   return (
@@ -29,12 +28,12 @@ const StudentsList = () => {
       <ListGroup>
         {students.map((student) => (
           <ListGroup.Item
-            key={student.id}
+            key={student}
             action
             as={Link}
-            to={`/student/${student.id}`}
+            to={`/student/${student}`}
           >
-            {student.id}
+            {student}
           </ListGroup.Item>
         ))}
       </ListGroup>
