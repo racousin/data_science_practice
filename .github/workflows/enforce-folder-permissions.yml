@@ -62,6 +62,7 @@ jobs:
         done
 
         echo "Determining changed TPs..."
+        echo "$FILES_CHANGED" | grep "^${USER}/tp" | sed -E 's|.*/tp([0-9]+)/.*|\1|' | tr '\n' ' ' | xargs
         CHANGED_TPS=$(echo "$FILES_CHANGED" | grep "^${USER}/tp" | sed -E 's|.*/tp([0-9]+)/.*|\1|' | tr '\n' ' ' | xargs)
         echo "CHANGED_TPS: $CHANGED_TPS"
         echo "changed_tps=$CHANGED_TPS" >> $GITHUB_ENV
