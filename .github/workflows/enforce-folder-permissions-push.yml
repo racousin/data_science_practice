@@ -39,5 +39,5 @@ jobs:
     - name: Run Tests and Update Results
       run: |
         USER="${{ github.actor }}"
-        ./run_tests_and_update_results.sh "$USER" "${{ secrets.AWS_ACCESS_KEY_ID }}" "${{ secrets.AWS_SECRET_ACCESS_KEY }}" "${{ secrets.AWS_DEFAULT_REGION }}"
+        ./tests/run_tests_and_update_results.sh "$USER" "${{ secrets.AWS_ACCESS_KEY_ID }}" "${{ secrets.AWS_SECRET_ACCESS_KEY }}" "${{ secrets.AWS_DEFAULT_REGION }}"
 
