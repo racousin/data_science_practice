@@ -11,4 +11,5 @@ def multiply(a, b):
 if __name__ == "__main__":
     # Example usage
     print(multiply(4, 5))
+    print(multiply(4, 5))
     print(multiply("a", 3))
