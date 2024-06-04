@@ -2,33 +2,28 @@ import React from "react";
 import { Container, Row, Col, Nav } from "react-bootstrap";
 import { Routes, Route, Link } from "react-router-dom";
 import ExerciseEvaluation from "pages/ExerciseEvaluation";
-import Exercise1 from "pages/module2/exercise/Exercise1";
-import Exercise2 from "pages/module2/exercise/Exercise2";
+import Exercise1 from "pages/module3/exercise/Exercise1";
+import Exercise2 from "pages/module3/exercise/Exercise2";
 // Import other exercises as needed
 
 const ExerciseDataScienceOverview = () => {
   return (
     <Container>
-      <h1 className="my-4">
-        Module 2: Python Environment and Package Exercises
-      </h1>
-      <p>
-        In this module, students will practice setting up a Python environment
-        and installing packages using pip.
-      </p>
+      <h1 className="my-4">Module 3</h1>
+      <p>TODO</p>
       <Row>
         <Col md={3}>
           <Nav variant="pills" className="flex-column">
-            <Nav.Link as={Link} to="/module2/course">
+            <Nav.Link as={Link} to="/module3/course">
               Course
             </Nav.Link>
             <Nav.Link as={Link} to="/exercise-evaluation">
               Exercise Evaluation
             </Nav.Link>
-            <Nav.Link as={Link} to="/module2/exercise/exercise1">
+            <Nav.Link as={Link} to="/module3/exercise/exercise1">
               Exercise 1
             </Nav.Link>
-            <Nav.Link as={Link} to="/module2/exercise/exercise2">
+            <Nav.Link as={Link} to="/module3/exercise/exercise2">
               Exercise 2
             </Nav.Link>
             {/* Add links to other exercises as needed */}

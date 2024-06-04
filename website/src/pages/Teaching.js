@@ -21,6 +21,12 @@ const Teaching = () => {
       linkCourse: "/module3/course",
       linkExercise: "/module3/exercise",
     },
+    {
+      id: 4,
+      title: "Module 4: Get Data",
+      linkCourse: "/module4/course",
+      linkExercise: "/module4/exercise",
+    },
 
     // Add more modules as needed
   ];

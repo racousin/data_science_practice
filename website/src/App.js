@@ -13,6 +13,9 @@ import ExercisePython from "pages/module2/ExercisePython";
 import CourseDataScienceOverview from "pages/module3/CourseDataScienceOverview";
 import ExerciseDataScienceOverview from "pages/module3/ExerciseDataScienceOverview";
 
+import CourseGetData from "pages/module4/CourseGetData";
+import ExerciseGetData from "pages/module4/ExerciseGetData";
+
 function App() {
   return (
     <BrowserRouter>
@@ -56,6 +59,8 @@ function App() {
             path="module3/exercise/*"
             element={<ExerciseDataScienceOverview />}
           />
+          <Route path="module4/course/*" element={<CourseGetData />} />
+          <Route path="module4/exercise/*" element={<ExerciseGetData />} />
           <Route path="exercise-evaluation" element={<ExerciseEvaluation />} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
