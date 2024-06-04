@@ -8,6 +8,10 @@ import Teaching from "./pages/Teaching";
 import CourseGit from "pages/module1/CourseGit";
 import ExerciseEvaluation from "pages/ExerciseEvaluation";
 import ExerciseGit from "pages/module1/ExerciseGit";
+import CoursePython from "pages/module2/CoursePython";
+import ExercisePython from "pages/module2/ExercisePython";
+import CourseDataScienceOverview from "pages/module3/CourseDataScienceOverview";
+import ExerciseDataScienceOverview from "pages/module3/ExerciseDataScienceOverview";
 
 function App() {
   return (
@@ -42,6 +46,16 @@ function App() {
           <Route path="teaching" element={<Teaching />} />
           <Route path="module1/course/*" element={<CourseGit />} />
           <Route path="module1/exercise/*" element={<ExerciseGit />} />
+          <Route path="module2/course/*" element={<CoursePython />} />
+          <Route path="module2/exercise/*" element={<ExercisePython />} />
+          <Route
+            path="module3/course/*"
+            element={<CourseDataScienceOverview />}
+          />
+          <Route
+            path="module3/exercise/*"
+            element={<ExerciseDataScienceOverview />}
+          />
           <Route path="exercise-evaluation" element={<ExerciseEvaluation />} />
 
           <Route path="*" element={<Navigate to="/" replace />} />

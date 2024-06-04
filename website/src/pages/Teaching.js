@@ -11,10 +11,17 @@ const Teaching = () => {
     },
     {
       id: 2,
-      title: "Module 2: Data Wrangling and Visualization",
-      linkCourse: "/module1/course",
-      linkExercise: "/module1/exercise",
+      title: "Module 2: Python environment and package",
+      linkCourse: "/module2/course",
+      linkExercise: "/module2/exercise",
     },
+    {
+      id: 3,
+      title: "Module 3: Data Science Overview",
+      linkCourse: "/module3/course",
+      linkExercise: "/module3/exercise",
+    },
+
     // Add more modules as needed
   ];
 

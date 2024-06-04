@@ -12,6 +12,7 @@
     "react-bootstrap": "^2.10.2",
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18.3.1",
+    "react-jupyter": "^0.1.0",
     "react-router-dom": "^6.23.1",
     "react-scripts": "5.0.1",
     "react-syntax-highlighter": "^15.5.0",
