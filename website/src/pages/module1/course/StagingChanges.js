@@ -14,7 +14,7 @@ const StagingChanges = () => {
   ];
 
   return (
-    <Container>
+    <Container fluid>
       <h2>Staging changes</h2>
       <p>To stage changes in a Git repository, follow these steps:</p>
       <Row>

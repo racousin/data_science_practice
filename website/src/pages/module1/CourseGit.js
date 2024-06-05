@@ -1,127 +1,113 @@
-import React from "react";
-import { Container, Row, Col, Nav } from "react-bootstrap";
-import { Routes, Route, Link } from "react-router-dom";
-import Introduction from "pages/module1/course/Introduction";
-import InstallingGit from "pages/module1/course/InstallingGit";
-import CreatingRepository from "pages/module1/course/CreatingRepository";
-import MakingChangesToFiles from "pages/module1/course/MakingChangesToFiles";
-import StagingChanges from "pages/module1/course/StagingChanges";
-import CommittingChanges from "pages/module1/course/CommittingChanges";
-import ViewingTheCommitHistory from "pages/module1/course/ViewingTheCommitHistory";
-import UndoingChanges from "pages/module1/course/UndoingChanges";
-import WorkingWithBranches from "pages/module1/course/WorkingWithBranches";
-import MergingBranches from "pages/module1/course/MergingBranches";
-import ResolvingMergeConflicts from "pages/module1/course/ResolvingMergeConflicts";
-import WorkingWithRemoteRepositories from "pages/module1/course/WorkingWithRemoteRepositories";
-import CollaboratingWithOthersUsingGitHub from "pages/module1/course/CollaboratingWithOthersUsingGitHub";
-import BestPracticesForUsingGit from "pages/module1/course/BestPracticesForUsingGit";
+import React, { lazy } from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import NavigationMenu from "components/NavigationMenu";
+import DynamicRoutes from "components/DynamicRoutes";
+import ModuleNavigation from "components/ModuleNavigation";
 
 const CourseGit = () => {
+  const courseLinks = [
+    {
+      to: "/introduction",
+      label: "Introduction",
+      component: lazy(() => import("pages/module1/course/Introduction")),
+    },
+    {
+      to: "/installing-git",
+      label: "Installing Git",
+      component: lazy(() => import("pages/module1/course/InstallingGit")),
+    },
+    {
+      to: "/creating-repository",
+      label: "Creating a Git repository",
+      component: lazy(() => import("pages/module1/course/CreatingRepository")),
+    },
+    {
+      to: "/making-changes-to-files",
+      label: "Making changes to files",
+      component: lazy(() =>
+        import("pages/module1/course/MakingChangesToFiles")
+      ),
+    },
+    {
+      to: "/staging-changes",
+      label: "Staging changes",
+      component: lazy(() => import("pages/module1/course/StagingChanges")),
+    },
+    {
+      to: "/committing-changes",
+      label: "Committing changes",
+      component: lazy(() => import("pages/module1/course/CommittingChanges")),
+    },
+    {
+      to: "/viewing-the-commit-history",
+      label: "Viewing the commit history",
+      component: lazy(() =>
+        import("pages/module1/course/ViewingTheCommitHistory")
+      ),
+    },
+    {
+      to: "/undoing-changes",
+      label: "Undoing changes",
+      component: lazy(() => import("pages/module1/course/UndoingChanges")),
+    },
+    {
+      to: "/working-with-branches",
+      label: "Working with branches",
+      component: lazy(() => import("pages/module1/course/WorkingWithBranches")),
+    },
+    {
+      to: "/merging-branches",
+      label: "Merging branches",
+      component: lazy(() => import("pages/module1/course/MergingBranches")),
+    },
+    {
+      to: "/resolving-merge-conflicts",
+      label: "Resolving merge conflicts",
+      component: lazy(() =>
+        import("pages/module1/course/ResolvingMergeConflicts")
+      ),
+    },
+    {
+      to: "/working-with-remote-repositories",
+      label: "Working with remote repositories",
+      component: lazy(() =>
+        import("pages/module1/course/WorkingWithRemoteRepositories")
+      ),
+    },
+    {
+      to: "/collaborating-with-others-using-github",
+      label: "Collaborating with others using GitHub",
+      component: lazy(() =>
+        import("pages/module1/course/CollaboratingWithOthersUsingGitHub")
+      ),
+    },
+    {
+      to: "/best-practices-for-using-git",
+      label: "Best practices for using Git",
+      component: lazy(() =>
+        import("pages/module1/course/BestPracticesForUsingGit")
+      ),
+    },
+  ];
+
   return (
-    <Container>
-      <h1 className="my-4">Module 1: Git</h1>
-      <p>
-        In this module, students will learn how to use Git for version control
-        and GitHub for collaboration.
-      </p>
+    <Container fluid>
+      <Row>
+        <ModuleNavigation module={1} isCourse={true} title="Module 1: Git" />
+      </Row>
+      <Row>
+        <p>
+          In this module, students will learn how to use Git for version control
+          and GitHub for collaboration.
+        </p>
+      </Row>
+
       <Row>
         <Col md={3}>
-          <Nav variant="pills" className="flex-column">
-            <Nav.Link as={Link} to="/module1/course/introduction">
-              Introduction
-            </Nav.Link>
-            <Nav.Link as={Link} to="/module1/course/installing-git">
-              Installing Git
-            </Nav.Link>
-            <Nav.Link as={Link} to="/module1/course/creating-repository">
-              Creating a Git repository
-            </Nav.Link>
-            <Nav.Link as={Link} to="/module1/course/making-changes-to-files">
-              Making changes to files
-            </Nav.Link>
-            <Nav.Link as={Link} to="/module1/course/staging-changes">
-              Staging changes
-            </Nav.Link>
-            <Nav.Link as={Link} to="/module1/course/committing-changes">
-              Committing changes
-            </Nav.Link>
-            <Nav.Link as={Link} to="/module1/course/viewing-the-commit-history">
-              Viewing the commit history
-            </Nav.Link>
-            <Nav.Link as={Link} to="/module1/course/undoing-changes">
-              Undoing changes
-            </Nav.Link>
-            <Nav.Link as={Link} to="/module1/course/working-with-branches">
-              Working with branches
-            </Nav.Link>
-            <Nav.Link as={Link} to="/module1/course/merging-branches">
-              Merging branches
-            </Nav.Link>
-            <Nav.Link as={Link} to="/module1/course/resolving-merge-conflicts">
-              Resolving merge conflicts
-            </Nav.Link>
-            <Nav.Link
-              as={Link}
-              to="/module1/course/working-with-remote-repositories"
-            >
-              Working with remote repositories
-            </Nav.Link>
-            <Nav.Link
-              as={Link}
-              to="/module1/course/collaborating-with-others-using-github"
-            >
-              Collaborating with others using GitHub
-            </Nav.Link>
-            <Nav.Link
-              as={Link}
-              to="/module1/course/best-practices-for-using-git"
-            >
-              Best practices for using Git
-            </Nav.Link>
-          </Nav>
+          <NavigationMenu links={courseLinks} prefix={"/module1/course"} />
         </Col>
         <Col md={9}>
-          <Routes>
-            {" "}
-            <Route path="introduction" element={<Introduction />} />
-            <Route path="installing-git" element={<InstallingGit />} />
-            <Route
-              path="creating-repository"
-              element={<CreatingRepository />}
-            />
-            <Route
-              path="making-changes-to-files"
-              element={<MakingChangesToFiles />}
-            />
-            <Route path="staging-changes" element={<StagingChanges />} />
-            <Route path="committing-changes" element={<CommittingChanges />} />
-            <Route
-              path="viewing-the-commit-history"
-              element={<ViewingTheCommitHistory />}
-            />
-            <Route path="undoing-changes" element={<UndoingChanges />} />
-            <Route
-              path="working-with-branches"
-              element={<WorkingWithBranches />}
-            />
-            <Route path="merging-branches" element={<MergingBranches />} />
-            <Route
-              path="resolving-merge-conflicts"
-              element={<ResolvingMergeConflicts />}
-            />
-            <Route
-              path="working-with-remote-repositories"
-              element={<WorkingWithRemoteRepositories />}
-            />
-            <Route
-              path="collaborating-with-others-using-github"
-              element={<CollaboratingWithOthersUsingGitHub />}
-            />
-            <Route
-              path="best-practices-for-using-git"
-              element={<BestPracticesForUsingGit />}
-            />
-          </Routes>
+          <DynamicRoutes routes={courseLinks} />
         </Col>
       </Row>
     </Container>

@@ -1,47 +1,45 @@
-import React from "react";
-import { Container, Row, Col, Nav } from "react-bootstrap";
-import { Routes, Route, Link } from "react-router-dom";
-import ExerciseEvaluation from "pages/ExerciseEvaluation";
-import Exercise1 from "pages/module1/exercise/Exercise1";
-import Exercise2 from "pages/module1/exercise/Exercise2";
-// Import other exercises as needed
+import React, { lazy } from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import NavigationMenu from "components/NavigationMenu";
+import DynamicRoutes from "components/DynamicRoutes";
+import ModuleNavigation from "components/ModuleNavigation";
 
 const ExerciseGit = () => {
+  const exerciseLinks = [
+    {
+      to: "/exercise1",
+      label: "Exercise 1",
+      component: lazy(() => import("pages/module1/exercise/Exercise1")),
+    },
+    {
+      to: "/exercise2",
+      label: "Exercise 2",
+      component: lazy(() => import("pages/module1/exercise/Exercise2")),
+    },
+    // Add links to other exercises as needed
+  ];
+
   return (
-    <Container>
-      <h1 className="my-4">Module 1: Git Exercises</h1>
-      <p>
-        In this module, students will practice using Git for version control and
-        GitHub for collaboration.
-      </p>
+    <Container fluid>
+      <Row>
+        <ModuleNavigation
+          module={1}
+          isCourse={false}
+          title="Module 1: Git Exercises"
+        />
+      </Row>
+      <Row>
+        <p>
+          In this module, students will practice using Git for version control
+          and GitHub for collaboration.
+        </p>
+      </Row>
       <Row>
         <Col md={3}>
-          <Nav variant="pills" className="flex-column">
-            <Nav.Link as={Link} to="/module1/course">
-              Course
-            </Nav.Link>
-            <Nav.Link as={Link} to="/exercise-evaluation">
-              Exercise Evaluation
-            </Nav.Link>
-            <Nav.Link as={Link} to="/module1/exercise/exercise1">
-              Exercise 1
-            </Nav.Link>
-            <Nav.Link as={Link} to="/module1/exercise/exercise2">
-              Exercise 2
-            </Nav.Link>
-            {/* Add links to other exercises as needed */}
-          </Nav>
+          <NavigationMenu links={exerciseLinks} prefix={"/module1/exercise"} />
         </Col>
         <Col md={9}>
-          <Routes>
-            <Route
-              path="/exercise-evaluation"
-              element={<ExerciseEvaluation />}
-            />
-            <Route path="/exercise1" element={<Exercise1 />} />
-            <Route path="/exercise2" element={<Exercise2 />} />
-            {/* Add routes for other exercises as needed */}
-          </Routes>
+          <DynamicRoutes routes={exerciseLinks} />
         </Col>
       </Row>
     </Container>

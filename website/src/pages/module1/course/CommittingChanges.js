@@ -12,7 +12,7 @@ const CommittingChanges = () => {
   ];
 
   return (
-    <Container>
+    <Container fluid>
       <h2>Committing changes</h2>
       <p>To commit changes in a Git repository, follow these steps:</p>
       <Row>

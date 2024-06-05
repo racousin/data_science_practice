@@ -4,17 +4,27 @@ import NavigationMenu from "components/NavigationMenu";
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleNavigation from "components/ModuleNavigation";
 
-const ExercisePython = () => {
+const ExerciseGetData = () => {
   const exerciseLinks = [
+    {
+      to: "/course",
+      label: "Course",
+      component: lazy(() => import("pages/module4/CourseGetData")),
+    },
+    {
+      to: "/exercise-evaluation",
+      label: "Exercise Evaluation",
+      component: lazy(() => import("pages/ExerciseEvaluation")),
+    },
     {
       to: "/exercise1",
       label: "Exercise 1",
-      component: lazy(() => import("pages/module2/exercise/Exercise1")),
+      component: lazy(() => import("pages/module4/exercise/Exercise1")),
     },
     {
       to: "/exercise2",
       label: "Exercise 2",
-      component: lazy(() => import("pages/module2/exercise/Exercise2")),
+      component: lazy(() => import("pages/module4/exercise/Exercise2")),
     },
     // Add links to other exercises as needed
   ];
@@ -23,21 +33,21 @@ const ExercisePython = () => {
     <Container fluid>
       <Row>
         <ModuleNavigation
-          module={2}
+          module={4}
           isCourse={false}
-          title="Module 2: Python Environment and Package Exercises"
+          title="Module 4: Getting Data Exercises"
         />
       </Row>
       <Row>
         <p>
-          In this module, students will practice setting up a Python environment
-          and installing packages using pip.
+          In this module, you will practice retrieving data from different
+          sources using Python.
         </p>
       </Row>
 
       <Row>
         <Col md={3}>
-          <NavigationMenu links={exerciseLinks} prefix={"/module2/exercise"} />
+          <NavigationMenu links={exerciseLinks} prefix={"/module4/exercise"} />
         </Col>
         <Col md={9}>
           <DynamicRoutes routes={exerciseLinks} />
@@ -47,4 +57,4 @@ const ExercisePython = () => {
   );
 };
 
-export default ExercisePython;
+export default ExerciseGetData;

@@ -4,7 +4,7 @@ import CodeBlock from "components/CodeBlock";
 
 const InstallPython = () => {
   return (
-    <Container>
+    <Container fluid>
       <h1 className="my-4">Installing Python</h1>
       <p>
         In this section, you will learn how to install Python on your computer.

@@ -1,67 +1,72 @@
-import React from "react";
-import { Container, Row, Col, Nav } from "react-bootstrap";
-import { Routes, Route, Link } from "react-router-dom";
-import Introduction from "pages/module2/course/Introduction";
-import SettingUpPythonEnvironment from "pages/module2/course/SettingUpPythonEnvironment";
-import InstallingPackages from "pages/module2/course/InstallingPackages";
-import BuildingPackages from "pages/module2/course/BuildingPackages";
-import InstallPython from "pages/module2/course/InstallPython";
-import NotebookAndColab from "./course/NotebookAndColab";
-import BestPractices from "./course/BestPractices";
+import React, { lazy } from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import NavigationMenu from "components/NavigationMenu";
+import DynamicRoutes from "components/DynamicRoutes";
+import ModuleNavigation from "components/ModuleNavigation";
 
 const CoursePython = () => {
+  const courseLinks = [
+    {
+      to: "/introduction",
+      label: "Introduction",
+      component: lazy(() => import("pages/module2/course/Introduction")),
+    },
+    {
+      to: "/install-python",
+      label: "Install Python",
+      component: lazy(() => import("pages/module2/course/InstallPython")),
+    },
+    {
+      to: "/setting-up-python-environment",
+      label: "Setting Up Python Environment",
+      component: lazy(() =>
+        import("pages/module2/course/SettingUpPythonEnvironment")
+      ),
+    },
+    {
+      to: "/installing-packages",
+      label: "Installing Packages",
+      component: lazy(() => import("pages/module2/course/InstallingPackages")),
+    },
+    {
+      to: "/building-packages",
+      label: "Building Packages",
+      component: lazy(() => import("pages/module2/course/BuildingPackages")),
+    },
+    {
+      to: "/notebook-and-colab",
+      label: "Notebook And Colab",
+      component: lazy(() => import("pages/module2/course/NotebookAndColab")),
+    },
+    {
+      to: "/best-practices",
+      label: "Best Practices",
+      component: lazy(() => import("pages/module2/course/BestPractices")),
+    },
+  ];
+
   return (
-    <Container>
-      <h1 className="my-4">Module 2: Python Environment and Package</h1>
-      <p>
-        In this module, students will learn how to set up a Python environment
-        and install packages using pip.
-      </p>
+    <Container fluid>
+      <Row>
+        <ModuleNavigation
+          module={2}
+          isCourse={true}
+          title="Module 2: Python Environment and Package"
+        />
+      </Row>
+      <Row>
+        <p>
+          In this module, students will learn how to set up a Python environment
+          and install packages using pip.
+        </p>
+      </Row>
+
       <Row>
         <Col md={3}>
-          <Nav variant="pills" className="flex-column">
-            <Nav.Link as={Link} to="/module2/course/introduction">
-              Introduction
-            </Nav.Link>
-            <Nav.Link as={Link} to="/module2/course/install-python">
-              Install Python
-            </Nav.Link>
-            <Nav.Link
-              as={Link}
-              to="/module2/course/setting-up-python-environment"
-            >
-              Setting Up Python Environment
-            </Nav.Link>
-            <Nav.Link as={Link} to="/module2/course/installing-packages">
-              Installing Packages
-            </Nav.Link>
-            <Nav.Link as={Link} to="/module2/course/building-packages">
-              Building Packages
-            </Nav.Link>
-            <Nav.Link as={Link} to="/module2/course/notebook-and-colab">
-              Notebook And Colab
-            </Nav.Link>
-            <Nav.Link as={Link} to="/module2/course/best-practices">
-              Best Practices
-            </Nav.Link>
-          </Nav>
+          <NavigationMenu links={courseLinks} prefix={"/module2/course"} />
         </Col>
         <Col md={9}>
-          <Routes>
-            <Route path="introduction" element={<Introduction />} />
-            <Route path="install-python" element={<InstallPython />} />
-            <Route
-              path="setting-up-python-environment"
-              element={<SettingUpPythonEnvironment />}
-            />
-            <Route
-              path="installing-packages"
-              element={<InstallingPackages />}
-            />
-            <Route path="building-packages" element={<BuildingPackages />} />
-            <Route path="notebook-and-colab" element={<NotebookAndColab />} />
-            <Route path="best-practices" element={<BestPractices />} />
-          </Routes>
+          <DynamicRoutes routes={courseLinks} />
         </Col>
       </Row>
     </Container>

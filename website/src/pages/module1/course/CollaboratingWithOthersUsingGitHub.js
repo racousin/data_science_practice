@@ -14,7 +14,7 @@ const CollaboratingWithOthersUsingGitHub = () => {
   ];
 
   return (
-    <Container>
+    <Container fluid>
       <h2>Collaborating with others using GitHub</h2>
       <p>
         To collaborate with others using GitHub, you can use various GitHub

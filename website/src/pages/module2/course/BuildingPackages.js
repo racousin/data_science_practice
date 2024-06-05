@@ -4,7 +4,7 @@ import CodeBlock from "components/CodeBlock";
 
 const BuildingPackages = () => {
   return (
-    <Container>
+    <Container fluid>
       <h1 className="my-4">Building Packages</h1>
       <p>
         In this section, you will learn how to build and distribute your own

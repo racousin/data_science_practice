@@ -1,55 +1,62 @@
-import React from "react";
-import { Container, Row, Col, Nav } from "react-bootstrap";
-import { Routes, Route, Link } from "react-router-dom";
-import JobsAndEvolution from "./course/JobsAndEvolution";
-import BusinessIssues from "./course/BusinessIssues";
-import DataTypes from "./course/DataTypes";
-import ExploratoryDataAnalysis from "./course/ExploratoryDataAnalysis";
-import MachineLearningPipeline from "./course/MachineLearningPipeline";
+import React, { lazy } from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import NavigationMenu from "components/NavigationMenu";
+import DynamicRoutes from "components/DynamicRoutes";
+import ModuleNavigation from "components/ModuleNavigation";
 
 const CourseDataScienceOverview = () => {
+  const courseLinks = [
+    {
+      to: "/jobs-and-evolution",
+      label: "Jobs and Evolution",
+      component: lazy(() => import("pages/module3/course/JobsAndEvolution")),
+    },
+    {
+      to: "/business-issues",
+      label: "Business Issues",
+      component: lazy(() => import("pages/module3/course/BusinessIssues")),
+    },
+    {
+      to: "/data-types",
+      label: "Data Types",
+      component: lazy(() => import("pages/module3/course/DataTypes")),
+    },
+    {
+      to: "/exploratory-data-analysis",
+      label: "Exploratory Data Analysis",
+      component: lazy(() =>
+        import("pages/module3/course/ExploratoryDataAnalysis")
+      ),
+    },
+    {
+      to: "/machine-learning-pipeline",
+      label: "Machine Learning Pipeline",
+      component: lazy(() =>
+        import("pages/module3/course/MachineLearningPipeline")
+      ),
+    },
+  ];
+  const title = `Module 3: Data Science Overview`;
+
   return (
-    <Container>
-      <h1 className="my-4">Module 3: Data Science Overview</h1>
-      <p>
-        In this module, you will learn about the jobs and evolution of data
-        science, the business issues it can answer, the types of data used in
-        data science, exploratory data analysis, and machine learning pipelines.
-      </p>
+    <Container fluid>
+      <Row>
+        <ModuleNavigation module={3} isCourse={true} title={title} />
+      </Row>
+      <Row>
+        <p>
+          In this module, you will learn about the jobs and evolution of data
+          science, the business issues it can answer, the types of data used in
+          data science, exploratory data analysis, and machine learning
+          pipelines.
+        </p>
+      </Row>
       <Row>
         <Col md={3}>
-          <Nav variant="pills" className="flex-column">
-            <Nav.Link as={Link} to="/module3/course/jobs-and-evolution">
-              Jobs and Evolution
-            </Nav.Link>
-            <Nav.Link as={Link} to="/module3/course/business-issues">
-              Business Issues
-            </Nav.Link>
-            <Nav.Link as={Link} to="/module3/course/data-types">
-              Data Types
-            </Nav.Link>
-            <Nav.Link as={Link} to="/module3/course/exploratory-data-analysis">
-              Exploratory Data Analysis
-            </Nav.Link>
-            <Nav.Link as={Link} to="/module3/course/machine-learning-pipeline">
-              Machine Learning Pipeline
-            </Nav.Link>
-          </Nav>
+          <NavigationMenu links={courseLinks} prefix={"/module3/course"} />
         </Col>
         <Col md={9}>
-          <Routes>
-            <Route path="jobs-and-evolution" element={<JobsAndEvolution />} />
-            <Route path="business-issues" element={<BusinessIssues />} />
-            <Route path="data-types" element={<DataTypes />} />
-            <Route
-              path="exploratory-data-analysis"
-              element={<ExploratoryDataAnalysis />}
-            />
-            <Route
-              path="machine-learning-pipeline"
-              element={<MachineLearningPipeline />}
-            />
-          </Routes>
+          <DynamicRoutes routes={courseLinks} />
         </Col>
       </Row>
     </Container>

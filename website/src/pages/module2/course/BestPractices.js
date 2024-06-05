@@ -3,7 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 
 const BestPractices = () => {
   return (
-    <Container>
+    <Container fluid>
       <h1 className="my-4">Best Practices</h1>
       <p>
         In this section, you will learn some best practices for using Python for

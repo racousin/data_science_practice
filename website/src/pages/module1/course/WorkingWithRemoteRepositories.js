@@ -15,7 +15,7 @@ const WorkingWithRemoteRepositories = () => {
   ];
 
   return (
-    <Container>
+    <Container fluid>
       <h2>Working with remote repositories</h2>
       <p>
         To work with remote repositories in a Git repository, you can use

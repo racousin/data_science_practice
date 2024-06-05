@@ -4,7 +4,7 @@ import CodeBlock from "components/CodeBlock";
 
 const NotebookAndColab = () => {
   return (
-    <Container>
+    <Container fluid>
       <h1 className="my-4">Notebooks and Colab</h1>
       <p>
         In this section, you will learn how to use Jupyter Notebooks and Google

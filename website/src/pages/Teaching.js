@@ -27,8 +27,6 @@ const Teaching = () => {
       linkCourse: "/module4/course",
       linkExercise: "/module4/exercise",
     },
-
-    // Add more modules as needed
   ];
 
   return (
@@ -42,15 +40,25 @@ const Teaching = () => {
       <Row>
         {modules.map((module) => (
           <Col key={module.id} md={4} className="mb-4">
-            <Card>
+            <Card className="h-100">
               <Card.Body>
                 <Card.Title>{module.title}</Card.Title>
-                <Button variant="primary" href={module.linkCourse}>
-                  Go to Course
-                </Button>
-                <Button variant="primary" href={module.linkExercise}>
-                  Go to Exercise
-                </Button>
+                <div>
+                  <Button
+                    variant="outline-primary"
+                    href={module.linkCourse}
+                    className="button"
+                  >
+                    Go to Course
+                  </Button>
+                  <Button
+                    variant="outline-secondary"
+                    href={module.linkExercise}
+                    className="button"
+                  >
+                    Go to Exercise
+                  </Button>
+                </div>
               </Card.Body>
             </Card>
           </Col>

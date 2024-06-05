@@ -1,38 +1,96 @@
-.App {
-  text-align: center;
+/* General Body Styling */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Header and Titles */
+h1 {
+  color: #0056b3;
+  font-size: 24px;  /* Ensuring consistent font size across all headers */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Navigation Button Styling */
+.button, .button-outline {
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.button {
+  background-color: #007bff;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.button:hover, .button-outline:hover {
+  background-color: #0056b3;
+  color: #ffffff;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.button-outline {
+  background-color: transparent;
+  border-color: #007bff;
+  color: #007bff;
+}
+
+/* Link Styling for the Side Menu */
+.nav-link, .nav-link.active {
+  padding: 10px 15px;
+  margin: 5px 0;
+  border-radius: 0;  /* Flat design for modern look */
+  transition: background-color 0.3s;
+}
+
+.nav-link {
+  color: #007bff;
+}
+
+.nav-link:hover, .nav-link.active {
+  background-color: #e7f1ff;
+  color: #0056b3;
+}
+
+.nav-link.active {
+  font-weight: bold;
+  background-color: #007bff; 
+  color: white;
+  border-left: 4px solid #0056b3;
+  margin-left: -4px;
+}
+
+.card {
+  border: 1px solid #e3e3e3; /* Lighter border for a softer look */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  transition: box-shadow 0.3s ease-in-out; /* Smooth transition for hover effect */
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increased shadow on hover for a 'lifted' effect */
+}
+
+/* Navigation Header Styling */
+.navigation-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e7e9eb;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Module Title and Navigation Buttons Styling */
+.module-title {
+  font-size: 1.5rem;
+  color: #0056b3;
+}
+
+.nav-button {
+  margin: 0 10px;
 }

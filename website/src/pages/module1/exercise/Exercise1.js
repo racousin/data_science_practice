@@ -4,7 +4,7 @@ import CodeBlock from "components/CodeBlock";
 
 const Exercise1 = () => {
   return (
-    <Container>
+    <Container fluid>
       <h1 className="my-4">Exercise 1: Creating a File</h1>
       <p>
         In this exercise, you will create a file named "user" with your username

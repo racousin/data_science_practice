@@ -13,7 +13,7 @@ const UndoingChanges = () => {
   ];
 
   return (
-    <Container>
+    <Container fluid>
       <h2>Undoing changes</h2>
       <p>
         To undo changes in a Git repository, you can use various Git commands,

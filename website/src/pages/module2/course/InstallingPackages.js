@@ -4,7 +4,7 @@ import CodeBlock from "components/CodeBlock";
 
 const InstallingPackages = () => {
   return (
-    <Container>
+    <Container fluid>
       <h1 className="my-4">Installing Packages</h1>
       <p>In this section, you will learn how to install packages using pip.</p>
       <Row>

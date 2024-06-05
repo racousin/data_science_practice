@@ -17,7 +17,7 @@ const ViewingTheCommitHistory = () => {
   ];
 
   return (
-    <Container>
+    <Container fluid>
       <h2>Viewing the commit history</h2>
       <p>
         To view the commit history in a Git repository, you can use the `git

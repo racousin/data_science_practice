@@ -13,7 +13,7 @@ const MakingChangesToFiles = () => {
   ];
 
   return (
-    <Container>
+    <Container fluid>
       <h2>Making changes to files</h2>
       <p>To make changes to files in a Git repository, follow these steps:</p>
       <Row>

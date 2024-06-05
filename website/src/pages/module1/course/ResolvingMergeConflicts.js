@@ -13,7 +13,7 @@ const ResolvingMergeConflicts = () => {
   ];
 
   return (
-    <Container>
+    <Container fluid>
       <h2>Resolving merge conflicts</h2>
       <p>
         To resolve merge conflicts in a Git repository, you can use a text

@@ -4,7 +4,7 @@ import CodeBlock from "components/CodeBlock";
 
 const BestPracticesForUsingGit = () => {
   return (
-    <Container>
+    <Container fluid>
       <h2>Best practices for using Git</h2>
       <p>
         To use Git effectively, it's important to follow best practices such as:

@@ -4,7 +4,7 @@ import CodeBlock from "components/CodeBlock";
 
 const Exercise2 = () => {
   return (
-    <Container>
+    <Container fluid>
       <h1 className="my-4">Exercise 2: Making Changes to a File</h1>
       <p>
         In this exercise, you will make changes to the "user" file created in

@@ -4,7 +4,7 @@ import CodeBlock from "components/CodeBlock";
 
 const Exercise2 = () => {
   return (
-    <Container>
+    <Container fluid>
       <h1 className="my-4">Exercise 2: Setting Up a Python Package</h1>
       <p>
         In this exercise, you will structure your project as a simple Python

@@ -3,7 +3,7 @@ import { Container } from "react-bootstrap";
 
 const Introduction = () => {
   return (
-    <Container>
+    <Container fluid>
       <h2>Introduction</h2>
       <p>
         Welcome to the Git course! In this course, you will learn how to use Git

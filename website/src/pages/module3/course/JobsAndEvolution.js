@@ -3,7 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 
 const JobsAndEvolution = () => {
   return (
-    <Container>
+    <Container fluid>
       <h1 className="my-4">Jobs and Evolution</h1>
       <p>
         In this section, you will learn about the jobs and evolution of data

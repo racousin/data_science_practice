@@ -4,7 +4,7 @@ import CodeBlock from "components/CodeBlock";
 
 const SettingUpPythonEnvironment = () => {
   return (
-    <Container>
+    <Container fluid>
       <h1 className="my-4">Setting Up Python Environment</h1>
       <p>
         In this section, you will learn how to set up a Python environment using

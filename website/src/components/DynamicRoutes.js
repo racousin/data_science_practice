@@ -1,0 +1,14 @@
+import React, { Suspense, lazy } from "react";
+import { Routes, Route } from "react-router-dom";
+
+const DynamicRoutes = ({ routes }) => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <Routes>
+      {routes.map(({ to, component: Component }) => (
+        <Route key={to} path={to} element={<Component />} />
+      ))}
+    </Routes>
+  </Suspense>
+);
+
+export default DynamicRoutes;

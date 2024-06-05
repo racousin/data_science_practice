@@ -6,7 +6,7 @@ const ExploratoryDataAnalysis = () => {
   const iframeSrc = process.env.PUBLIC_URL + "/data_exploration.html";
 
   return (
-    <Container>
+    <Container fluid>
       <h1 className="my-4">Exploratory Data Analysis</h1>
       <p>
         In this section, you will learn about exploratory data analysis and how

@@ -12,7 +12,7 @@ const MergingBranches = () => {
   ];
 
   return (
-    <Container>
+    <Container fluid>
       <h2>Merging branches</h2>
       <p>
         To merge branches in a Git repository, you can use the `git merge`

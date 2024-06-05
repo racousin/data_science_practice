@@ -3,7 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 
 const DataTypes = () => {
   return (
-    <Container>
+    <Container fluid>
       <h1 className="my-4">Data Types</h1>
       <p>
         In this section, you will learn about the different types of data used

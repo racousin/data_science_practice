@@ -12,7 +12,7 @@ const InstallingGit = () => {
   };
 
   return (
-    <Container>
+    <Container fluid>
       <h2>Installing Git</h2>
       <p>
         To install Git on your computer, you can use a package manager or

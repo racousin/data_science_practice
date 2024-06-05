@@ -8,7 +8,7 @@ const CreatingRepository = () => {
   const commands = ["git init", "git add .", "git commit -m 'Initial commit'"];
 
   return (
-    <Container>
+    <Container fluid>
       <h2>Creating a Git repository</h2>
       <p>
         To create a new Git repository, navigate to the directory where you want

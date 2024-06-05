@@ -3,7 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 
 const BusinessIssues = () => {
   return (
-    <Container>
+    <Container fluid>
       <h1 className="my-4">Business Issues</h1>
       <p>
         In this section, you will learn about the business issues that data

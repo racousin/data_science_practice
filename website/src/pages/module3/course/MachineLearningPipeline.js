@@ -4,7 +4,7 @@ import CodeBlock from "components/CodeBlock";
 
 const MachineLearningPipeline = () => {
   return (
-    <Container>
+    <Container fluid>
       <h1 className="my-4">Machine Learning Pipeline</h1>
       <p>
         In this section, you will learn about machine learning pipelines and how

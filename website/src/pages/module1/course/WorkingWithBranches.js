@@ -14,7 +14,7 @@ const WorkingWithBranches = () => {
   ];
 
   return (
-    <Container>
+    <Container fluid>
       <h2>Working with branches</h2>
       <p>
         To work with branches in a Git repository, you can use various Git
