@@ -15,7 +15,6 @@ import ExerciseDataScienceOverview from "pages/module3/ExerciseDataScienceOvervi
 
 import CourseGetData from "pages/module4/CourseGetData";
 import ExerciseGetData from "pages/module4/ExerciseGetData";
-
 import "App.css";
 
 function App() {
