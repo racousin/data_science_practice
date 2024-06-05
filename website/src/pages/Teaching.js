@@ -27,6 +27,42 @@ const Teaching = () => {
       linkCourse: "/module4/course",
       linkExercise: "/module4/exercise",
     },
+    {
+      id: 5,
+      title: "Module 5: Feature Engineering",
+      linkCourse: "/module5/course",
+      linkExercise: "/module5/exercise",
+    },
+    {
+      id: 6,
+      title: "Module 6: Model Building And Evaluation",
+      linkCourse: "/module6/course",
+      linkExercise: "/module6/exercise",
+    },
+    {
+      id: 7,
+      title: "Module 7: AdvancedTabularModels",
+      linkCourse: "/module7/course",
+      linkExercise: "/module7/exercise",
+    },
+    {
+      id: 8,
+      title: "Module 8: Deep Learning Fundamentals",
+      linkCourse: "/module8/course",
+      linkExercise: "/module8/exercise",
+    },
+    {
+      id: 9,
+      title: "Module 9: Docker",
+      linkCourse: "/module9/course",
+      linkExercise: "/module9/exercise",
+    },
+    {
+      id: 10,
+      title: "Module 10: Cloud Integration",
+      linkCourse: "/module10/course",
+      linkExercise: "/module10/exercise",
+    },
   ];
 
   return (

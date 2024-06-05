@@ -44,7 +44,7 @@ const ModuleNavigation = ({ module, isCourse, title = "" }) => {
           </>
         )}
 
-        {module < 4 && (
+        {module < 10 && (
           <Button
             variant="outline-success"
             className="nav-button button-outline"

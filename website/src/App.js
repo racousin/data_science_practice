@@ -12,9 +12,18 @@ import CoursePython from "pages/module2/CoursePython";
 import ExercisePython from "pages/module2/ExercisePython";
 import CourseDataScienceOverview from "pages/module3/CourseDataScienceOverview";
 import ExerciseDataScienceOverview from "pages/module3/ExerciseDataScienceOverview";
-
+import CourseFeatureEngineering from "pages/module5/CourseFeatureEngineering";
+import ExerciseFeatureEngineering from "pages/module5/ExerciseFeatureEngineering";
 import CourseGetData from "pages/module4/CourseGetData";
 import ExerciseGetData from "pages/module4/ExerciseGetData";
+import CourseModelBuildingEvaluation from "pages/module6/CourseModelBuildingEvaluation";
+import ExerciseModelBuildingEvaluation from "pages/module6/ExerciseModelBuildingEvaluation";
+import CourseAdvancedTabularModels from "pages/module7/CourseAdvancedTabularModels";
+import ExerciseAdvancedTabularModels from "pages/module7/ExerciseAdvancedTabularModels";
+import CourseDeepLearningFundamentals from "pages/module8/CourseDeepLearningFundamentals";
+import ExerciseDeepLearningFundamentals from "pages/module8/ExerciseDeepLearningFundamentals";
+import CourseDocker from "pages/module9/CourseDocker";
+import ExerciseDocker from "pages/module9/ExerciseDocker";
 import "App.css";
 
 function App() {
@@ -62,6 +71,41 @@ function App() {
           />
           <Route path="module4/course/*" element={<CourseGetData />} />
           <Route path="module4/exercise/*" element={<ExerciseGetData />} />
+          <Route
+            path="module5/course/*"
+            element={<CourseFeatureEngineering />}
+          />
+          <Route
+            path="module5/exercise/*"
+            element={<ExerciseFeatureEngineering />}
+          />
+          <Route
+            path="module6/course/*"
+            element={<CourseModelBuildingEvaluation />}
+          />
+          <Route
+            path="module6/exercise/*"
+            element={<ExerciseModelBuildingEvaluation />}
+          />
+          <Route
+            path="module7/course/*"
+            element={<CourseAdvancedTabularModels />}
+          />
+          <Route
+            path="module7/exercise/*"
+            element={<ExerciseAdvancedTabularModels />}
+          />
+          <Route
+            path="module8/course/*"
+            element={<CourseDeepLearningFundamentals />}
+          />
+          <Route
+            path="module8/exercise/*"
+            element={<ExerciseDeepLearningFundamentals />}
+          />
+          <Route path="module9/course/*" element={<CourseDocker />} />
+          <Route path="module9/exercise/*" element={<ExerciseDocker />} />
+
           <Route path="exercise-evaluation" element={<ExerciseEvaluation />} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
