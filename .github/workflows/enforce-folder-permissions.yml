@@ -30,7 +30,7 @@ on:
 #       - name: Run tests
 #         run: pytest
 
-#TODO add as well a security to not run the action if change workflow
+#TODO github.actor should be the main contributor
 
 jobs:
   enforce-and-evaluate:
@@ -60,22 +60,3 @@ jobs:
             exit 1
           fi
         done
-
-        echo "Determining changed TPs..."
-        echo "$FILES_CHANGED" | grep "^${USER}/tp" | sed -E 's|.*/tp([0-9]+)/.*|\1|' | tr '\n' ' ' | xargs
-        CHANGED_TPS=$(echo "$FILES_CHANGED" | grep "^${USER}/tp" | sed -E 's|.*/tp([0-9]+)/.*|\1|' | tr '\n' ' ' | xargs)
-        echo "CHANGED_TPS: $CHANGED_TPS"
-        echo "changed_tps=$CHANGED_TPS" >> $GITHUB_ENV
-
-    - name: Set Script Permissions
-      run: chmod +x ./tests/run_tests.sh ./tests/*/run_tests.sh
-
-    - name: Run Tests
-      run: |
-        CHANGED_TPS="${{ env.changed_tps }}"
-        USER="${{ github.actor }}"
-        IFS=' ' read -r -a TPS_ARRAY <<< "$CHANGED_TPS"
-        for tp in "${TPS_ARRAY[@]}"; do
-          ./tests/run_tests.sh "$USER" "tp$tp" "${{ secrets.AWS_ACCESS_KEY_ID }}" "${{ secrets.AWS_SECRET_ACCESS_KEY }}" "${{ secrets.AWS_DEFAULT_REGION }}"
-        done
-

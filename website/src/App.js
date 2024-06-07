@@ -24,7 +24,20 @@ import CourseDeepLearningFundamentals from "pages/module8/CourseDeepLearningFund
 import ExerciseDeepLearningFundamentals from "pages/module8/ExerciseDeepLearningFundamentals";
 import CourseDocker from "pages/module9/CourseDocker";
 import ExerciseDocker from "pages/module9/ExerciseDocker";
+import CourseCloudIntegration from "pages/module10/CourseCloudIntegration";
+import ExerciseCloudIntegration from "pages/module10/ExerciseCloudIntegration";
+import CourseTextProcessing from "pages/module12/CourseTextProcessing";
+import ExerciseTextProcessing from "pages/module12/ExerciseTextProcessing";
+import CourseRecommendationSystems from "pages/module13/CourseRecommendationSystems";
+import ExerciseRecommendationSystems from "pages/module13/ExerciseRecommendationSystems";
+import CourseGenerativeModels from "pages/module14/CourseGenerativeModels";
+import ExerciseGenerativeModels from "pages/module14/ExerciseGenerativeModels";
+import CourseReinforcementLearning from "pages/module15/CourseReinforcementLearning";
+import ExerciseReinforcementLearning from "pages/module15/ExerciseReinforcementLearning";
+
 import "App.css";
+import CourseImageProcessing from "pages/module11/CourseImageProcessing";
+import ExerciseImageProcessing from "pages/module11/ExerciseImageProcessing";
 
 function App() {
   return (
@@ -106,6 +119,48 @@ function App() {
           <Route path="module9/course/*" element={<CourseDocker />} />
           <Route path="module9/exercise/*" element={<ExerciseDocker />} />
 
+          <Route
+            path="module10/course/*"
+            element={<CourseCloudIntegration />}
+          />
+          <Route
+            path="module10/exercise/*"
+            element={<ExerciseCloudIntegration />}
+          />
+          <Route path="module11/course/*" element={<CourseImageProcessing />} />
+          <Route
+            path="module11/exercise/*"
+            element={<ExerciseImageProcessing />}
+          />
+          <Route path="module12/course/*" element={<CourseTextProcessing />} />
+          <Route
+            path="module12/exercise/*"
+            element={<ExerciseTextProcessing />}
+          />
+          <Route
+            path="module13/course/*"
+            element={<CourseRecommendationSystems />}
+          />
+          <Route
+            path="module13/exercise/*"
+            element={<ExerciseRecommendationSystems />}
+          />
+          <Route
+            path="module14/course/*"
+            element={<CourseGenerativeModels />}
+          />
+          <Route
+            path="module14/exercise/*"
+            element={<ExerciseGenerativeModels />}
+          />
+          <Route
+            path="module15/course/*"
+            element={<CourseReinforcementLearning />}
+          />
+          <Route
+            path="module15/exercise/*"
+            element={<ExerciseReinforcementLearning />}
+          />
           <Route path="exercise-evaluation" element={<ExerciseEvaluation />} />
 
           <Route path="*" element={<Navigate to="/" replace />} />

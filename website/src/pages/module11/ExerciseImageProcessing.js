@@ -4,7 +4,7 @@ import NavigationMenu from "components/NavigationMenu";
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleNavigation from "components/ModuleNavigation";
 
-const ExerciseCloudIntegration = () => {
+const ExerciseImageProcessing = () => {
   const exerciseLinks = [
     {
       to: "/exercise1",
@@ -47,4 +47,4 @@ const ExerciseCloudIntegration = () => {
   );
 };
 
-export default ExerciseCloudIntegration;
+export default ExerciseImageProcessing;

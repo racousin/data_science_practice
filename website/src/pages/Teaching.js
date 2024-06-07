@@ -63,6 +63,36 @@ const Teaching = () => {
       linkCourse: "/module10/course",
       linkExercise: "/module10/exercise",
     },
+    {
+      id: 11,
+      title: "Module 11: Image processing",
+      linkCourse: "/module11/course",
+      linkExercise: "/module11/exercise",
+    },
+    {
+      id: 12,
+      title: "Module 12: Text Processing",
+      linkCourse: "/module12/course",
+      linkExercise: "/module12/exercise",
+    },
+    {
+      id: 13,
+      title: "Module 13: Recommendation Systems",
+      linkCourse: "/module13/course",
+      linkExercise: "/module13/exercise",
+    },
+    {
+      id: 14,
+      title: "Module 14: Generative Models",
+      linkCourse: "/module14/course",
+      linkExercise: "/module14/exercise",
+    },
+    {
+      id: 15,
+      title: "Module 15: Reinforcement Learning",
+      linkCourse: "/module15/course",
+      linkExercise: "/module15/exercise",
+    },
   ];
 
   return (
