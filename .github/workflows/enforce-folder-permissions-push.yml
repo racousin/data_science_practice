@@ -18,13 +18,18 @@ jobs:
     - name: Setup AWS CLI
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Ensure these are environment-specific secrets
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
 
     - name: Check and Add User to Students List
       run: |
         USER="${{ github.actor }}"
+        # Configure AWS CLI (again explicitly for safety if needed)
+        aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws configure set default.region ${{ secrets.AWS_DEFAULT_REGION }}
+
         # Download the current student list
         aws s3 cp s3://www.raphaelcousin.com/students/config/students.json students.json
 
@@ -50,7 +55,6 @@ jobs:
           # Release lock
           echo "Releasing lock..."
           aws s3 rm s3://www.raphaelcousin.com/students/config/lock.txt
-        fi
 
     - name: Set Script Permissions
       run: chmod +x ./tests/run_tests.sh ./tests/*/run_tests.sh ./tests/run_tests_and_update_results.sh
