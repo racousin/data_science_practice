@@ -32,8 +32,8 @@ jobs:
 
         # Download the current student list
         aws s3 cp s3://www.raphaelcousin.com/students/config/students.json students.json
+        set -x  # Enable debugging to see each command printed before it is executed
 
-        # Check if user is already in the list
         if grep -q "$USER" students.json; then
           echo "$USER is already in the list."
         else
@@ -41,20 +41,19 @@ jobs:
           LOCK_EXISTS=$(aws s3 ls s3://www.raphaelcousin.com/students/config/lock.txt && echo "exists" || echo "not exists")
           while [ "$LOCK_EXISTS" = "exists" ]; do
             echo "Waiting for lock to release..."
-            sleep 10
+            sleep 2
             LOCK_EXISTS=$(aws s3 ls s3://www.raphaelcousin.com/students/config/lock.txt && echo "exists" || echo "not exists")
           done
           echo "Creating lock..."
           echo "Lock" | aws s3 cp - s3://www.raphaelcousin.com/students/config/lock.txt
 
-          # Update the student list
           jq '. |= . + ["'"$USER"'"]' students.json > updated_students.json
           mv updated_students.json students.json
           aws s3 cp students.json s3://www.raphaelcousin.com/students/config/students.json
 
-          # Release lock
           echo "Releasing lock..."
           aws s3 rm s3://www.raphaelcousin.com/students/config/lock.txt
+        fi
 
     - name: Set Script Permissions
       run: chmod +x ./tests/run_tests.sh ./tests/*/run_tests.sh ./tests/run_tests_and_update_results.sh
