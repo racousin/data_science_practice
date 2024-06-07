@@ -15,6 +15,10 @@ jobs:
       with:
         fetch-depth: 2  # Fetches all history for branches and tags
 
+    - name: Identify Commit Author
+      run: echo "AUTHOR=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
+
+
     - name: Setup AWS CLI
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -24,7 +28,7 @@ jobs:
 
     - name: Check and Add User to Students List
       run: |
-        USER="${{ github.actor }}"
+        USER=$AUTHOR # "${{ github.actor }}"
         # Configure AWS CLI (again explicitly for safety if needed)
         aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
