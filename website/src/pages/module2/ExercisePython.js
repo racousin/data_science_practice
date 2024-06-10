@@ -1,8 +1,7 @@
 import React, { lazy } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import NavigationMenu from "components/NavigationMenu";
 import DynamicRoutes from "components/DynamicRoutes";
-import ModuleNavigation from "components/ModuleNavigation";
+import ModuleFrame from "components/ModuleFrame";
 
 const ExercisePython = () => {
   const exerciseLinks = [
@@ -20,30 +19,29 @@ const ExercisePython = () => {
   ];
 
   return (
-    <Container fluid>
-      <Row>
-        <ModuleNavigation
-          module={2}
-          isCourse={false}
-          title="Module 2: Python Environment and Package Exercises"
-        />
-      </Row>
+    <ModuleFrame
+      module={2}
+      isCourse={false}
+      title="Module 2: Python Environment and Package Exercises"
+      courseLinks={exerciseLinks}
+    >
       <Row>
         <p>
           In this module, students will practice setting up a Python environment
           and installing packages using pip.
         </p>
       </Row>
-
       <Row>
-        <Col md={3}>
-          <NavigationMenu links={exerciseLinks} prefix={"/module2/exercise"} />
+        <Col>
+          <p>Last Updated: {"2024-06-07"}</p>
         </Col>
-        <Col md={9}>
+      </Row>
+      <Row>
+        <Col md={11}>
           <DynamicRoutes routes={exerciseLinks} />
         </Col>
       </Row>
-    </Container>
+    </ModuleFrame>
   );
 };
 

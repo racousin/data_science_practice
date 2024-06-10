@@ -1,8 +1,7 @@
 import React, { lazy } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import NavigationMenu from "components/NavigationMenu";
 import DynamicRoutes from "components/DynamicRoutes";
-import ModuleNavigation from "components/ModuleNavigation";
+import ModuleFrame from "components/ModuleFrame";
 
 const CourseAdvancedTabularModels = () => {
   const courseLinks = [
@@ -45,14 +44,12 @@ const CourseAdvancedTabularModels = () => {
   ];
 
   return (
-    <Container fluid>
-      <Row>
-        <ModuleNavigation
-          module={7}
-          isCourse={true}
-          title="Module 7: Advanced Tabular Models"
-        />
-      </Row>
+    <ModuleFrame
+      module={7}
+      isCourse={true}
+      title="Module 7: Advanced Tabular Models"
+      courseLinks={courseLinks}
+    >
       <Row>
         <p>
           In this module, you will learn about advanced modeling techniques that
@@ -60,14 +57,16 @@ const CourseAdvancedTabularModels = () => {
         </p>
       </Row>
       <Row>
-        <Col md={3}>
-          <NavigationMenu links={courseLinks} prefix={"/module7/course"} />
+        <Col>
+          <p>Last Updated: {"2024-06-07"}</p>
         </Col>
-        <Col md={9}>
+      </Row>
+      <Row>
+        <Col md={11}>
           <DynamicRoutes routes={courseLinks} />
         </Col>
       </Row>
-    </Container>
+    </ModuleFrame>
   );
 };
 

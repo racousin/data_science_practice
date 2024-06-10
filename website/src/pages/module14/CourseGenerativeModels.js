@@ -1,8 +1,7 @@
 import React, { lazy } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import NavigationMenu from "components/NavigationMenu";
 import DynamicRoutes from "components/DynamicRoutes";
-import ModuleNavigation from "components/ModuleNavigation";
+import ModuleFrame from "components/ModuleFrame";
 
 const CourseGenerativeModels = () => {
   const courseLinks = [
@@ -49,14 +48,12 @@ const CourseGenerativeModels = () => {
   ];
 
   return (
-    <Container fluid>
-      <Row>
-        <ModuleNavigation
-          module={14}
-          isCourse={true}
-          title="Module 14: Generative Models"
-        />
-      </Row>
+    <ModuleFrame
+      module={14}
+      isCourse={true}
+      title="Module 14: Generative Models"
+      courseLinks={courseLinks}
+    >
       <Row>
         <p>
           In this module, you will learn about generative models and their
@@ -64,14 +61,16 @@ const CourseGenerativeModels = () => {
         </p>
       </Row>
       <Row>
-        <Col md={3}>
-          <NavigationMenu links={courseLinks} prefix={"/module14/course"} />
+        <Col>
+          <p>Last Updated: {"2024-06-07"}</p>
         </Col>
-        <Col md={9}>
+      </Row>
+      <Row>
+        <Col md={11}>
           <DynamicRoutes routes={courseLinks} />
         </Col>
       </Row>
-    </Container>
+    </ModuleFrame>
   );
 };
 

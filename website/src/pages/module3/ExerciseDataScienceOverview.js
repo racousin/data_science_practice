@@ -1,8 +1,7 @@
 import React, { lazy } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import NavigationMenu from "components/NavigationMenu";
 import DynamicRoutes from "components/DynamicRoutes";
-import ModuleNavigation from "components/ModuleNavigation";
+import ModuleFrame from "components/ModuleFrame";
 
 const ExerciseDataScienceOverview = () => {
   const exerciseLinks = [
@@ -30,23 +29,21 @@ const ExerciseDataScienceOverview = () => {
   ];
 
   return (
-    <Container fluid>
-      <Row>
-        <ModuleNavigation module={3} isCourse={false} title="Module 3" />
-      </Row>
+    <ModuleFrame
+      module={3}
+      isCourse={false}
+      title="Module 3"
+      courseLinks={exerciseLinks}
+    >
       <Row>
         <p>TODO</p>
       </Row>
-
       <Row>
-        <Col md={3}>
-          <NavigationMenu links={exerciseLinks} prefix={"/module3/exercise"} />
-        </Col>
-        <Col md={9}>
+        <Col md={11}>
           <DynamicRoutes routes={exerciseLinks} />
         </Col>
       </Row>
-    </Container>
+    </ModuleFrame>
   );
 };
 

@@ -1,8 +1,7 @@
 import React, { lazy } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import NavigationMenu from "components/NavigationMenu";
 import DynamicRoutes from "components/DynamicRoutes";
-import ModuleNavigation from "components/ModuleNavigation";
+import ModuleFrame from "components/ModuleFrame";
 
 const CourseDataScienceOverview = () => {
   const courseLinks = [
@@ -39,10 +38,12 @@ const CourseDataScienceOverview = () => {
   const title = `Module 3: Data Science Overview`;
 
   return (
-    <Container fluid>
-      <Row>
-        <ModuleNavigation module={3} isCourse={true} title={title} />
-      </Row>
+    <ModuleFrame
+      module={3}
+      isCourse={true}
+      title={title}
+      courseLinks={courseLinks}
+    >
       <Row>
         <p>
           In this module, you will learn about the jobs and evolution of data
@@ -52,14 +53,16 @@ const CourseDataScienceOverview = () => {
         </p>
       </Row>
       <Row>
-        <Col md={3}>
-          <NavigationMenu links={courseLinks} prefix={"/module3/course"} />
+        <Col>
+          <p>Last Updated: {"2024-06-07"}</p>
         </Col>
-        <Col md={9}>
+      </Row>
+      <Row>
+        <Col md={11}>
           <DynamicRoutes routes={courseLinks} />
         </Col>
       </Row>
-    </Container>
+    </ModuleFrame>
   );
 };
 

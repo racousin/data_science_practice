@@ -1,8 +1,7 @@
 import React, { lazy } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import NavigationMenu from "components/NavigationMenu";
 import DynamicRoutes from "components/DynamicRoutes";
-import ModuleNavigation from "components/ModuleNavigation";
+import ModuleFrame from "components/ModuleFrame";
 
 const ExerciseGit = () => {
   const exerciseLinks = [
@@ -16,33 +15,31 @@ const ExerciseGit = () => {
       label: "Exercise 2",
       component: lazy(() => import("pages/module1/exercise/Exercise2")),
     },
-    // Add links to other exercises as needed
   ];
 
   return (
-    <Container fluid>
-      <Row>
-        <ModuleNavigation
-          module={1}
-          isCourse={false}
-          title="Module 1: Git Exercises"
-        />
-      </Row>
+    <ModuleFrame
+      module={1}
+      isCourse={false}
+      title="Module 1: Git Exercises"
+      courseLinks={exerciseLinks}
+    >
       <Row>
         <p>
-          In this module, students will practice using Git for version control
-          and GitHub for collaboration.
+          Practice using Git for version control and GitHub for collaboration.
         </p>
       </Row>
       <Row>
-        <Col md={3}>
-          <NavigationMenu links={exerciseLinks} prefix={"/module1/exercise"} />
+        <Col>
+          <p>Last Updated: {"2024-06-07"}</p>
         </Col>
-        <Col md={9}>
+      </Row>
+      <Row>
+        <Col md={11}>
           <DynamicRoutes routes={exerciseLinks} />
         </Col>
       </Row>
-    </Container>
+    </ModuleFrame>
   );
 };
 

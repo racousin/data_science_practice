@@ -12,7 +12,95 @@ const NotebookAndColab = () => {
       </p>
       <Row>
         <Col>
-          <h2>Jupyter Notebooks</h2>
+          <h2 id="jupyter-notebooks">Jupyter Notebooks</h2>
+          <p>
+            Jupyter Notebooks are a popular tool for interactive data analysis
+            and visualization. They allow you to create and share documents that
+            contain live code, equations, visualizations, and narrative text.
+          </p>
+          <h3>Installing Jupyter Notebooks</h3>
+          <p>To install Jupyter Notebooks, run the following command:</p>
+          <CodeBlock code={`pip install notebook`} />
+          <h3>Running Jupyter Notebooks</h3>
+          <p>To start a Jupyter Notebook server, run the following command:</p>
+          <CodeBlock code={`jupyter notebook`} />
+          <p>
+            Jupyter Notebooks are a popular tool for interactive data analysis
+            and visualization. They allow you to create and share documents that
+            contain live code, equations, visualizations, and narrative text.
+          </p>
+          <h3>Installing Jupyter Notebooks</h3>
+          <p>To install Jupyter Notebooks, run the following command:</p>
+          <CodeBlock code={`pip install notebook`} />
+          <h3>Running Jupyter Notebooks</h3>
+          <p>To start a Jupyter Notebook server, run the following command:</p>
+          <CodeBlock code={`jupyter notebook`} />
+          <p>
+            Jupyter Notebooks are a popular tool for interactive data analysis
+            and visualization. They allow you to create and share documents that
+            contain live code, equations, visualizations, and narrative text.
+          </p>
+          <h3>Installing Jupyter Notebooks</h3>
+          <p>To install Jupyter Notebooks, run the following command:</p>
+          <CodeBlock code={`pip install notebook`} />
+          <h3>Running Jupyter Notebooks</h3>
+          <p>To start a Jupyter Notebook server, run the following command:</p>
+          <CodeBlock code={`jupyter notebook`} />
+          <p>
+            Jupyter Notebooks are a popular tool for interactive data analysis
+            and visualization. They allow you to create and share documents that
+            contain live code, equations, visualizations, and narrative text.
+          </p>
+          <h3>Installing Jupyter Notebooks</h3>
+          <p>To install Jupyter Notebooks, run the following command:</p>
+          <CodeBlock code={`pip install notebook`} />
+          <h3>Running Jupyter Notebooks</h3>
+          <p>To start a Jupyter Notebook server, run the following command:</p>
+          <CodeBlock code={`jupyter notebook`} />
+          <p>
+            Jupyter Notebooks are a popular tool for interactive data analysis
+            and visualization. They allow you to create and share documents that
+            contain live code, equations, visualizations, and narrative text.
+          </p>
+          <h3>Installing Jupyter Notebooks</h3>
+          <p>To install Jupyter Notebooks, run the following command:</p>
+          <CodeBlock code={`pip install notebook`} />
+          <h3>Running Jupyter Notebooks</h3>
+          <p>To start a Jupyter Notebook server, run the following command:</p>
+          <CodeBlock code={`jupyter notebook`} />
+          <p>
+            Jupyter Notebooks are a popular tool for interactive data analysis
+            and visualization. They allow you to create and share documents that
+            contain live code, equations, visualizations, and narrative text.
+          </p>
+          <h3>Installing Jupyter Notebooks</h3>
+          <p>To install Jupyter Notebooks, run the following command:</p>
+          <CodeBlock code={`pip install notebook`} />
+          <h3>Running Jupyter Notebooks</h3>
+          <p>To start a Jupyter Notebook server, run the following command:</p>
+          <CodeBlock code={`jupyter notebook`} />
+          <p>
+            Jupyter Notebooks are a popular tool for interactive data analysis
+            and visualization. They allow you to create and share documents that
+            contain live code, equations, visualizations, and narrative text.
+          </p>
+          <h3>Installing Jupyter Notebooks</h3>
+          <p>To install Jupyter Notebooks, run the following command:</p>
+          <CodeBlock code={`pip install notebook`} />
+          <h3>Running Jupyter Notebooks</h3>
+          <p>To start a Jupyter Notebook server, run the following command:</p>
+          <CodeBlock code={`jupyter notebook`} />
+          <p>
+            Jupyter Notebooks are a popular tool for interactive data analysis
+            and visualization. They allow you to create and share documents that
+            contain live code, equations, visualizations, and narrative text.
+          </p>
+          <h3>Installing Jupyter Notebooks</h3>
+          <p>To install Jupyter Notebooks, run the following command:</p>
+          <CodeBlock code={`pip install notebook`} />
+          <h3>Running Jupyter Notebooks</h3>
+          <p>To start a Jupyter Notebook server, run the following command:</p>
+          <CodeBlock code={`jupyter notebook`} />
           <p>
             Jupyter Notebooks are a popular tool for interactive data analysis
             and visualization. They allow you to create and share documents that
@@ -28,7 +116,7 @@ const NotebookAndColab = () => {
       </Row>
       <Row className="mt-4">
         <Col>
-          <h2>Google Colab</h2>
+          <h2 id="google-colab">Google Colab</h2>
           <p>
             Google Colab is a free Jupyter Notebook environment that runs in the
             cloud. It allows you to write and execute Python code, and it

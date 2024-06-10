@@ -104,6 +104,24 @@ const Teaching = () => {
         deployment.
       </p>
       <Row>
+        <Col key={0} md={4} className="mb-4">
+          <Card className="h-100">
+            <Card.Body>
+              <Card.Title>
+                {"Module 0: Prerequisites and Methodology"}
+              </Card.Title>
+              <div>
+                <Button
+                  variant="outline-primary"
+                  href={"/module0/course"}
+                  className="button"
+                >
+                  Getting started
+                </Button>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
         {modules.map((module) => (
           <Col key={module.id} md={4} className="mb-4">
             <Card className="h-100">

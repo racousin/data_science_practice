@@ -1,8 +1,7 @@
 import React, { lazy } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import NavigationMenu from "components/NavigationMenu";
 import DynamicRoutes from "components/DynamicRoutes";
-import ModuleNavigation from "components/ModuleNavigation";
+import ModuleFrame from "components/ModuleFrame";
 
 const ExerciseGetData = () => {
   const exerciseLinks = [
@@ -30,30 +29,29 @@ const ExerciseGetData = () => {
   ];
 
   return (
-    <Container fluid>
-      <Row>
-        <ModuleNavigation
-          module={4}
-          isCourse={false}
-          title="Module 4: Getting Data Exercises"
-        />
-      </Row>
+    <ModuleFrame
+      module={4}
+      isCourse={false}
+      title="Module 4: Getting Data Exercises"
+      courseLinks={exerciseLinks}
+    >
       <Row>
         <p>
           In this module, you will practice retrieving data from different
           sources using Python.
         </p>
       </Row>
-
       <Row>
-        <Col md={3}>
-          <NavigationMenu links={exerciseLinks} prefix={"/module4/exercise"} />
+        <Col>
+          <p>Last Updated: {"2024-06-07"}</p>
         </Col>
-        <Col md={9}>
+      </Row>
+      <Row>
+        <Col md={11}>
           <DynamicRoutes routes={exerciseLinks} />
         </Col>
       </Row>
-    </Container>
+    </ModuleFrame>
   );
 };
 

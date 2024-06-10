@@ -5,22 +5,24 @@ body {
   background-color: #f4f4f4;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
-/* Header and Titles */
+/* Header and Titles Styling */
 h1 {
   color: #0056b3;
-  font-size: 24px;  /* Ensuring consistent font size across all headers */
+  font-size: 28px;  /* Slightly larger for better visibility */
+  font-weight: 600; /* Making the font a bit bolder for emphasis */
 }
 
-/* Navigation Button Styling */
+/* Button Styling */
 .button, .button-outline {
   border: none;
-  padding: 10px 20px;
-  margin: 5px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  transition: background-color 0.3s, color 0.3s;
+  padding: 12px 24px;
+  margin: 8px;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
 .button {
@@ -35,20 +37,25 @@ h1 {
 
 .button-outline {
   background-color: transparent;
-  border-color: #007bff;
+  border: 2px solid #007bff;
   color: #007bff;
 }
 
-/* Link Styling for the Side Menu */
+/* Navigation Link Styling */
 .nav-link, .nav-link.active {
-  padding: 10px 15px;
-  margin: 5px 0;
-  border-radius: 0;  /* Flat design for modern look */
-  transition: background-color 0.3s;
+  padding: 12px 18px;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .nav-link {
   color: #007bff;
+  font-size: 16px; /* Slightly larger font size for readability */
+}
+
+.nav-link.small {
+  padding-left: 30px;
+  font-size: 14px; /* Smaller font for sub-items */
+  color: #6c757d; /* Muted color for hierarchy */
 }
 
 .nav-link:hover, .nav-link.active {
@@ -58,39 +65,55 @@ h1 {
 
 .nav-link.active {
   font-weight: bold;
-  background-color: #007bff; 
+  background-color: #007bff;
   color: white;
   border-left: 4px solid #0056b3;
   margin-left: -4px;
 }
 
+/* Card Styling */
 .card {
-  border: 1px solid #e3e3e3; /* Lighter border for a softer look */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  transition: box-shadow 0.3s ease-in-out; /* Smooth transition for hover effect */
+  border: none; /* Removing border for a cleaner look */
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 
 .card:hover {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increased shadow on hover for a 'lifted' effect */
-}
-
-/* Navigation Header Styling */
-.navigation-header {
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #e7e9eb;
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
 }
 
 /* Module Title and Navigation Buttons Styling */
 .module-title {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   color: #0056b3;
 }
 
 .nav-button {
-  margin: 0 10px;
+  margin: 0 15px;
 }
+
+/* Navigation Header Styling */
+.navigation-header {
+  position: sticky;
+  background-color: #fff;
+  border-bottom: 1px solid #e7e9eb;
+  padding: 20px;
+  z-index: 1030;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+/* Sidebar Styling */
+.flex-column {
+  position: sticky;
+  top: 142px;
+  height: calc(100vh - 142px);
+  overflow-y: auto;
+}
+/* 
+.module-content {
+  padding-top: 366px;
+} */

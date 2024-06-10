@@ -35,14 +35,24 @@ import ExerciseGenerativeModels from "pages/module14/ExerciseGenerativeModels";
 import CourseReinforcementLearning from "pages/module15/CourseReinforcementLearning";
 import ExerciseReinforcementLearning from "pages/module15/ExerciseReinforcementLearning";
 
+import PrerequistAandMethodologie from "pages/module0/PrerequistAandMethodologie";
+
 import "App.css";
 import CourseImageProcessing from "pages/module11/CourseImageProcessing";
 import ExerciseImageProcessing from "pages/module11/ExerciseImageProcessing";
 
+// TODO add a user counter somwhere
+
 function App() {
   return (
     <BrowserRouter>
-      <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
+      <Navbar
+        bg="dark"
+        variant="dark"
+        expand="lg"
+        sticky="top"
+        className="navbar"
+      >
         <Container>
           <Navbar.Brand as={Link} to="/">
             Teaching Portal
@@ -64,12 +74,17 @@ function App() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <Container className="mt-3">
+      <Container fluid className="mt-3">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="students" element={<StudentsList />} />
           <Route path="student/:studentId" element={<Student />} />
           <Route path="teaching" element={<Teaching />} />
+
+          <Route
+            path="module0/course"
+            element={<PrerequistAandMethodologie />}
+          />
           <Route path="module1/course/*" element={<CourseGit />} />
           <Route path="module1/exercise/*" element={<ExerciseGit />} />
           <Route path="module2/course/*" element={<CoursePython />} />

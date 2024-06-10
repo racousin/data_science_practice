@@ -1,27 +1,80 @@
 import React from "react";
-import { Container } from "react-bootstrap";
+import { Container, Row, Col, Image } from "react-bootstrap";
 
 const Introduction = () => {
   return (
     <Container fluid>
       <h2>Introduction</h2>
-      <p>
-        Welcome to the Git course! In this course, you will learn how to use Git
-        for version control and GitHub for collaboration.
-      </p>
-      <p>
-        Git is a distributed version control system that allows you to track
-        changes to files and collaborate with others on projects. GitHub is a
-        web-based platform that provides hosting for Git repositories and
-        additional collaboration features.
-      </p>
-      <p>
-        By the end of this course, you will be able to use Git to create and
-        manage your own repositories, make changes to files, stage and commit
-        changes, view the commit history, undo changes, work with branches,
-        merge branches, resolve merge conflicts, and collaborate with others
-        using GitHub.
-      </p>
+      <Row>
+        <Col md={8}>
+          <p>
+            Git is a distributed version control system widely used to
+            coordinate work among programmers. It tracks changes in source code
+            during software development, allowing for efficient collaboration
+            and historical referencing.
+          </p>
+          <p>
+            Developed by Linus Torvalds in 2005 for Linux kernel development,
+            Git has since become essential for managing projects ranging from
+            small teams to large enterprises. It supports non-linear development
+            through its robust branching and merging capabilities, enabling
+            multiple parallel workflows.
+          </p>
+          <h4>Why Use Version Control?</h4>
+          <p>
+            Version control systems are fundamental in software development for
+            maintaining a clear history of code changes, facilitating
+            collaborative adjustments, and ensuring that earlier versions of
+            work can be retrieved. This is crucial in complex projects where
+            tracking the contributions of each team member is necessary for
+            effective progression.
+          </p>
+          <h4>The Role of Git in Modern Development</h4>
+          <p>
+            Git's impact extends beyond just tracking changes. It integrates
+            with various services to enhance project management capabilities.
+            Here are a few key platforms:
+          </p>
+          <ul>
+            <li>
+              <a href="https://github.com">GitHub</a>
+            </li>
+            <li>
+              <a href="https://gitlab.com">GitLab</a>
+            </li>
+            <li>
+              <a href="https://bitbucket.org">Bitbucket</a>
+            </li>
+            <li>
+              <a href="https://aws.amazon.com/codecommit/">AWS CodeCommit</a>
+            </li>
+            <li>
+              <a href="https://cloud.google.com/source-repositories">
+                Google Cloud Source Repositories
+              </a>
+            </li>
+            <li>
+              <a href="https://azure.microsoft.com/en-us/services/devops/repos/">
+                Azure Repos
+              </a>
+            </li>
+          </ul>
+          <p>
+            These platforms leverage Git’s foundational capabilities to
+            facilitate more dynamic and collaborative environments.
+          </p>
+        </Col>
+      </Row>
+      <Row>
+        <Col md={10}>
+          <Image
+            src="/assets/git-diagram.png"
+            alt="Git Workflow Diagram"
+            fluid
+          />
+          <p className="text-center">Fig.1 - Git Workflow Diagram</p>
+        </Col>
+      </Row>
     </Container>
   );
 };

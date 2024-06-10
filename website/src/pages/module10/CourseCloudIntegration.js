@@ -1,8 +1,7 @@
 import React, { lazy } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import NavigationMenu from "components/NavigationMenu";
 import DynamicRoutes from "components/DynamicRoutes";
-import ModuleNavigation from "components/ModuleNavigation";
+import ModuleFrame from "components/ModuleFrame";
 
 const CourseCloudIntegration = () => {
   const courseLinks = [
@@ -52,14 +51,12 @@ const CourseCloudIntegration = () => {
   ];
 
   return (
-    <Container fluid>
-      <Row>
-        <ModuleNavigation
-          module={10}
-          isCourse={true}
-          title="Module 10: Cloud Integration (with GCP)"
-        />
-      </Row>
+    <ModuleFrame
+      module={10}
+      isCourse={true}
+      title="Module 10: Cloud Integration (with GCP)"
+      courseLinks={courseLinks}
+    >
       <Row>
         <p>
           In this module, you will learn about integrating your applications
@@ -67,14 +64,16 @@ const CourseCloudIntegration = () => {
         </p>
       </Row>
       <Row>
-        <Col md={3}>
-          <NavigationMenu links={courseLinks} prefix={"/module10/course"} />
+        <Col>
+          <p>Last Updated: {"2024-06-07"}</p>
         </Col>
-        <Col md={9}>
+      </Row>
+      <Row>
+        <Col md={11}>
           <DynamicRoutes routes={courseLinks} />
         </Col>
       </Row>
-    </Container>
+    </ModuleFrame>
   );
 };
 

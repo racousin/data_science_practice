@@ -1,8 +1,7 @@
 import React, { lazy } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import NavigationMenu from "components/NavigationMenu";
 import DynamicRoutes from "components/DynamicRoutes";
-import ModuleNavigation from "components/ModuleNavigation";
+import ModuleFrame from "components/ModuleFrame";
 
 const CourseImageProcessing = () => {
   const courseLinks = [
@@ -54,14 +53,12 @@ const CourseImageProcessing = () => {
   ];
 
   return (
-    <Container fluid>
-      <Row>
-        <ModuleNavigation
-          module={11}
-          isCourse={true}
-          title="Module 11: Image Processing"
-        />
-      </Row>
+    <ModuleFrame
+      module={11}
+      isCourse={true}
+      title="Module 11: Image Processing"
+      courseLinks={courseLinks}
+    >
       <Row>
         <p>
           In this module, you will learn about image processing techniques and
@@ -69,14 +66,16 @@ const CourseImageProcessing = () => {
         </p>
       </Row>
       <Row>
-        <Col md={3}>
-          <NavigationMenu links={courseLinks} prefix={"/module11/course"} />
+        <Col>
+          <p>Last Updated: {"2024-06-07"}</p>
         </Col>
-        <Col md={9}>
+      </Row>
+      <Row>
+        <Col md={11}>
           <DynamicRoutes routes={courseLinks} />
         </Col>
       </Row>
-    </Container>
+    </ModuleFrame>
   );
 };
 
