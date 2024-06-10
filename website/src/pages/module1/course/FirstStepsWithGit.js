@@ -343,10 +343,10 @@ const FirstStepsWithGit = () => {
           </p>
           <CodeBlock code="git checkout <commit_hash>" />
           <p>
-            This command will go back in the past. You can then return to{" "}
+            This command will go back in the past. You can then return to main
             <code>HEAD</code> commit using
           </p>
-          <CodeBlock code="git checkout <commit_hash>" />
+          <CodeBlock code="git checkout main" />
         </Col>
       </Row>
     </Container>
