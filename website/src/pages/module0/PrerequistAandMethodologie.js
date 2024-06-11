@@ -38,7 +38,7 @@ const PrerequisiteAndMethodology = () => {
               <strong>Create a GitHub Account:</strong> If you do not have a
               GitHub account, you will need to create one. Follow the
               instructions on{" "}
-              <Link to="module1/course/create-github-account">
+              <Link to="module1/course/configure-and-access-github">
                 Creating a GitHub Account
               </Link>
               .

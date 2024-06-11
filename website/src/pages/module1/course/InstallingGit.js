@@ -29,7 +29,7 @@ const InstallingGit = () => {
       </p>
       <Row>
         <Col>
-          <h3>Mac</h3>
+          <h3 id="mac">Mac</h3>
           <p>
             If you have{" "}
             <a
@@ -58,7 +58,7 @@ const InstallingGit = () => {
       </Row>
       <Row className="mt-4">
         <Col>
-          <h3>Windows</h3>
+          <h3 id="windows">Windows</h3>
           <p>
             For Windows users,{" "}
             <a
@@ -97,7 +97,7 @@ const InstallingGit = () => {
       </Row>
       <Row className="mt-4">
         <Col>
-          <h3>Linux</h3>
+          <h3 id="linux">Linux</h3>
           <p>
             If you are using a Debian-based Linux distribution, such as Ubuntu,
             you can install Git using the following command in your terminal:

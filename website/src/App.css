@@ -1,6 +1,9 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
 /* General Body Styling */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
   background-color: #f4f4f4;
   margin: 0;
@@ -11,8 +14,40 @@ body {
 /* Header and Titles Styling */
 h1 {
   color: #0056b3;
-  font-size: 28px;  /* Slightly larger for better visibility */
-  font-weight: 600; /* Making the font a bit bolder for emphasis */
+  font-size: 36px;  
+  font-weight: 700; 
+  margin-bottom: 20px;
+}
+
+h2 {
+  color: #007acc;
+  font-size: 30px;
+  font-weight: 600; 
+  margin-bottom: 18px;
+  margin-top: 30px;
+}
+
+h3 {
+  color: #0094ff;
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 15px;
+  margin-top: 25px;
+}
+
+h4 {
+  color: #00b4ff;
+  font-size: 20px;  /* Smaller than h3 */
+  font-weight: 500; /* Medium weight */
+  margin-bottom: 12px;
+  margin-top: 20px;
+}
+
+
+p, li {
+  font-size: 16px;  
+  line-height: 1.6; 
+  margin-bottom: 10px;
 }
 
 /* Button Styling */
@@ -113,7 +148,29 @@ h1 {
   height: calc(100vh - 142px);
   overflow-y: auto;
 }
-/* 
-.module-content {
-  padding-top: 366px;
-} */
+
+div.mytab .nav-pills .nav-item .nav-link {
+  color: #495057; /* More specific targeting */
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  margin-right: 0.5rem;
+  padding: 0.75rem 1rem;
+}
+
+div.mytab .nav-pills .nav-item .nav-link.active {
+  color: white;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+div.mytab .nav-pills {
+  margin-bottom: -1px;
+}
+
+div.mytab .tab-content {
+  border: 1px solid #dee2e6;
+  border-top: none;
+  padding: 1rem;
+  background-color: white;
+}

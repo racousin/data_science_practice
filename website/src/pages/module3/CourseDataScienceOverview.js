@@ -6,32 +6,28 @@ import ModuleFrame from "components/ModuleFrame";
 const CourseDataScienceOverview = () => {
   const courseLinks = [
     {
-      to: "/jobs-and-evolution",
-      label: "Jobs and Evolution",
-      component: lazy(() => import("pages/module3/course/JobsAndEvolution")),
-    },
-    {
-      to: "/business-issues",
-      label: "Business Issues",
-      component: lazy(() => import("pages/module3/course/BusinessIssues")),
-    },
-    {
-      to: "/data-types",
-      label: "Data Types",
-      component: lazy(() => import("pages/module3/course/DataTypes")),
-    },
-    {
-      to: "/exploratory-data-analysis",
-      label: "Exploratory Data Analysis",
-      component: lazy(() =>
-        import("pages/module3/course/ExploratoryDataAnalysis")
-      ),
+      to: "/Introduction",
+      label: "Introduction",
+      component: lazy(() => import("pages/module3/course/Introduction")),
+      subLinks: [
+        { id: "data", label: "The Data" },
+        { id: "applications", label: "The Applications" },
+        { id: "roles", label: "Roles in Data Science" },
+        { id: "tools", label: "The Data Science Tools" },
+      ],
     },
     {
       to: "/machine-learning-pipeline",
       label: "Machine Learning Pipeline",
       component: lazy(() =>
         import("pages/module3/course/MachineLearningPipeline")
+      ),
+    },
+    {
+      to: "/exploratory-data-analysis",
+      label: "Exploratory Data Analysis",
+      component: lazy(() =>
+        import("pages/module3/course/ExploratoryDataAnalysis")
       ),
     },
   ];

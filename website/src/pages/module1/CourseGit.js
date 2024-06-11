@@ -14,6 +14,11 @@ const CourseGit = () => {
       to: "/installing-git",
       label: "Installing Git",
       component: lazy(() => import("pages/module1/course/InstallingGit")),
+      subLinks: [
+        { id: "mac", label: "Mac" },
+        { id: "windows", label: "Windows" },
+        { id: "linux", label: "Linux" },
+      ],
     },
     {
       to: "/first-steps-with-git",
@@ -72,10 +77,14 @@ const CourseGit = () => {
           id: "fetch-changes",
           label: "Fetch Changes",
         },
-        // {
-        //   id: "pull-changes",
-        //   label: "Pull Changes",
-        // },
+        {
+          id: "merge-fetched-changes",
+          label: "Merge Fetched Changes",
+        },
+        {
+          id: "pull-changes",
+          label: "Pull Changes",
+        },
         {
           id: "push-changes",
           label: "Push Changes",
@@ -95,14 +104,13 @@ const CourseGit = () => {
         { id: "working-with-branches", label: "Working with Branches" },
         { id: "merging-branches", label: "Merging Branches" },
         { id: "resolving-merge-conflicts", label: "Resolving Merge Conflicts" },
+        { id: "example-case", label: "Example: Adding a Feature" },
       ],
     },
     {
       to: "/collaborating",
       label: "Collaborating",
-      component: lazy(() =>
-        import("pages/module1/course/ResolvingMergeConflicts")
-      ),
+      component: lazy(() => import("pages/module1/course/Collaborating")),
       subLinks: [
         {
           id: "collaborating-with-others-using-github",
@@ -112,13 +120,43 @@ const CourseGit = () => {
         { id: "peer-reviews", label: "Peer Reviews" },
       ],
     },
-    // {
-    //   to: "/best-practices-and-resources",
-    //   label: "Best Practices and Resources",
-    //   component: lazy(() =>
-    //     import("pages/module1/course/BestPracticesAndResources")
-    //   ),
-    // },
+    {
+      to: "/best-practices-and-resources",
+      label: "Best Practices and Resources",
+      component: lazy(() =>
+        import("pages/module1/course/BestPracticesAndResources")
+      ),
+      subLinks: [
+        {
+          id: "good-practices",
+          label: "Good Practices",
+        },
+        {
+          id: "merge-vs-rebase",
+          label: "Merge versus Rebase",
+        },
+        {
+          id: "merge-vs-rebase",
+          label: "Merge versus Rebase",
+        },
+        {
+          id: "git-tagging",
+          label: "Git tag",
+        },
+        {
+          id: "using-git-stash",
+          label: "Git stash",
+        },
+        {
+          id: "ci-cd-github-actions",
+          label: "CI/CD and GitHub Actions",
+        },
+        {
+          id: "resources",
+          label: "Resources",
+        },
+      ],
+    },
   ];
 
   return (

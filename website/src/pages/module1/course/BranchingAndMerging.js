@@ -103,6 +103,64 @@ const BranchingAndMerging = () => {
           />
         </Col>
       </Row>
+      {/* Concrete Example of Branching and Merging */}
+      <Row className="mt-4">
+        <Col>
+          <h3 id="example-case">
+            Concrete Example: Adding a Feature via Branch
+          </h3>
+          <p>
+            Imagine you are working on a project and need to add a new feature
+            without disrupting the main development line. Here’s how you can
+            handle it with Git branching and merging:
+          </p>
+          <ol>
+            <li>
+              <strong>Create a Feature Branch:</strong> Suppose you want to add
+              a new login feature. You would start by creating a new branch
+              dedicated to this feature.
+              <CodeBlock code={`git branch login-feature`} />
+            </li>
+            <li>
+              <strong>Switch to the Feature Branch:</strong> Move to the
+              'login-feature' branch to work on this feature.
+              <CodeBlock code={`git checkout login-feature`} />
+            </li>
+            <li>
+              <strong>Develop the Feature:</strong> Make all necessary changes
+              for the new feature. For example, create new files or modify
+              existing ones, test the feature, etc.
+              <CodeBlock
+                code={`git add .\ngit commit -m "Add login feature"`}
+              />
+            </li>
+            <li>
+              <strong>Switch Back to Main Branch:</strong> Once the feature
+              development is complete and tested, switch back to the main branch
+              to prepare for merging.
+              <CodeBlock code={`git checkout main`} />
+            </li>
+            <li>
+              <strong>Merge the Feature Branch:</strong> Merge the changes from
+              'login-feature' into 'main'. Assuming no conflicts, this merge
+              will integrate the new feature into the main project.
+              <CodeBlock code={`git merge login-feature`} />
+            </li>
+            <li>
+              <strong>Delete the Feature Branch:</strong> After the feature has
+              been successfully merged, you can delete the branch to keep the
+              repository clean.
+              <CodeBlock code={`git branch -d login-feature`} />
+            </li>
+          </ol>
+          <p>
+            This workflow keeps the main line stable while allowing development
+            of new features in parallel. It also ensures that any ongoing work
+            is not affected by the new changes until they are fully ready to be
+            integrated.
+          </p>
+        </Col>
+      </Row>
     </Container>
   );
 };
