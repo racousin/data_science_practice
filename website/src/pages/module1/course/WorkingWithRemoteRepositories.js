@@ -5,87 +5,14 @@ import CodeBlock from "components/CodeBlock";
 const WorkingWithRemoteRepositories = () => {
   return (
     <Container fluid>
-      <h2>Working with Remote Repositories</h2>
-
-      {/* Creating a GitHub Account */}
-      <Row>
-        <Col md={12}>
-          <h3 id="create-github-account">Create a GitHub Account</h3>
-          <p>
-            GitHub is a platform for hosting and collaborating on software
-            development projects using Git. Creating a GitHub account is the
-            first step towards managing your projects online, contributing to
-            other projects, and collaborating with other developers.
-          </p>
-          <ol>
-            <li>
-              Visit the GitHub homepage:{" "}
-              <a
-                href="https://www.github.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                www.github.com
-              </a>
-              .
-            </li>
-            <li>
-              Click on the “Sign up” button in the upper-right corner of the
-              homepage.
-            </li>
-            <li>Follow the steps to create an account.</li>
-          </ol>
-        </Col>
-      </Row>
-
-      {/* Configure and Access GitHub */}
-      <Row>
-        <Col md={12}>
-          <h3 id="configure-and-access-github">Configure and Access GitHub</h3>
-          <p>
-            Now that you have a GitHub account and Git installed, it’s time to
-            configure your Git setup to securely connect and interact with
-            GitHub.
-          </p>
-          <h4>Configure Git with Your Information</h4>
-          <CodeBlock code={`git config --global user.name "Your Username"`} />
-          <CodeBlock
-            code={`git config --global user.email "your_email@example.com"`}
-          />
-
-          <h4>Generating a New SSH Key</h4>
-          <CodeBlock
-            code={`ssh-keygen -t rsa -b 4096 -C "your_email@example.com"`}
-          />
-          <CodeBlock code={`eval $(ssh-agent -s)`} />
-          <CodeBlock code={`ssh-add ~/.ssh/id_rsa`} />
-
-          <h4>Add Your SSH Public Key to GitHub</h4>
-          <ol>
-            <li>Go to your GitHub account settings.</li>
-            <li>Navigate to "SSH and GPG keys" under "Access."</li>
-            <li>Click on "New SSH key," paste your public key, and save it.</li>
-          </ol>
-
-          <h4>Test Your SSH Connection</h4>
-          <CodeBlock code={`ssh -T git@github.com`} />
-          <p>
-            If the connection is successful, you'll see a message confirming you
-            are authenticated.
-          </p>
-        </Col>
-      </Row>
-
-      {/* Managing Remote Repositories */}
       <Row>
         <Col>
-          <h3 id="managing-remote-repositories">
-            Managing Remote Repositories
-          </h3>
           {/* Introduction to Remote Repositories */}
           <Row>
             <Col>
-              <h3>Why Remote Repositories are Useful</h3>
+              <h3 id="why-remote-repositories">
+                Why Remote Repositories are Useful
+              </h3>
               <p>
                 Remote repositories on platforms like GitHub allow developers to
                 store versions of their projects online, facilitating
@@ -100,7 +27,9 @@ const WorkingWithRemoteRepositories = () => {
           {/* Creating a Repository on GitHub */}
           <Row>
             <Col>
-              <h3>Creating a Repository on GitHub</h3>
+              <h3 id="creating-repository-github">
+                Creating a Repository on GitHub
+              </h3>
               <p>
                 Creating a repository on GitHub is the first step toward remote
                 project management. Here's how to set one up:
@@ -124,7 +53,9 @@ const WorkingWithRemoteRepositories = () => {
           {/* Adding and Cloning Remote Repositories */}
           <Row>
             <Col>
-              <h4>Connecting to a Remote Repository</h4>
+              <h3 id="connecting-remote-repository">
+                Connecting to a Remote Repository
+              </h3>
               <p>
                 Once your remote repository is set up, you can connect it to
                 your local repository to push changes. Here are the steps for
@@ -175,7 +106,7 @@ const WorkingWithRemoteRepositories = () => {
           </Row>
           <Row>
             <Col>
-              <h4>View Remote Repositories</h4>
+              <h3 id="view-remote-repositories">View Remote Repositories</h3>
               <p>
                 The <code>git remote -v</code> command is used to view all the
                 remote repositories that your current repository knows about.
@@ -202,7 +133,7 @@ const WorkingWithRemoteRepositories = () => {
           </Row>
           <Row>
             <Col>
-              <h4>Fetch Changes from a Remote Repository</h4>
+              <h3 id="fetch-changes">Fetch Changes from a Remote Repository</h3>
               <p>
                 The <code>git fetch origin</code> command is used to fetch
                 branches, tags, and other data from a remote repository
@@ -234,9 +165,9 @@ const WorkingWithRemoteRepositories = () => {
               </p>
             </Col>
           </Row>
-          <Row>
+          {/* <Row>
             <Col>
-              <h4>Pull Changes from a Remote Repository</h4>
+              <h3 id="pull-changes">Pull Changes from a Remote Repository</h3>
               <p>
                 The <code>git pull origin main</code> command combines two
                 distinct operations performed by Git:
@@ -264,10 +195,10 @@ const WorkingWithRemoteRepositories = () => {
                 version of the project, reducing conflicts and inconsistencies.
               </p>
             </Col>
-          </Row>
+          </Row> */}
           <Row>
             <Col>
-              <h4>Push Changes to a Remote Repository</h4>
+              <h3 id="push-changes">Push Changes to a Remote Repository</h3>
               <p>
                 The <code>git push origin main</code> command sends the commits
                 made on your local branch 'main' to the remote repository named
@@ -298,6 +229,54 @@ const WorkingWithRemoteRepositories = () => {
                 synchronized and collaborative development process, ensuring
                 that all contributions are integrated and tracked in the remote
                 repository.
+              </p>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col>
+              <h3 id="example-case">Example case with Remote Repositories</h3>
+              <p>
+                Here's a practical example of working with a remote repository:
+              </p>
+              <ol>
+                <li>
+                  <strong>Create and Clone Repository:</strong> Follow the steps
+                  above to create a repository on GitHub and clone it.
+                </li>
+                <li>
+                  <strong>Add a File:</strong> Create a new file 'example.txt',
+                  add some content to it, and save it in your project directory.
+                </li>
+                <li>
+                  <strong>Stage the File:</strong> Run{" "}
+                  <code>git add example.txt</code> to stage the file.
+                </li>
+                <li>
+                  <strong>Commit the Change:</strong> Commit the staged file
+                  with <code>git commit -m "Add example.txt"</code>.
+                </li>
+                <li>
+                  <strong>Push the Commit:</strong> Push your commit to GitHub
+                  with <code>git push origin main</code>.
+                </li>
+                <li>
+                  <strong>Verify on GitHub:</strong> Check your GitHub
+                  repository online to see the 'example.txt' file.
+                </li>
+                <li>
+                  <strong>Make Changes on GitHub:</strong> Edit 'example.txt' on
+                  GitHub and commit the changes online.
+                </li>
+                <li>
+                  <strong>Fetch Changes:</strong> Fetch the changes back to your
+                  local repository with <code>git fetch origin</code>.
+                </li>
+              </ol>
+              <p>
+                This workflow covers creating, modifying, and syncing changes
+                between local and remote repositories, demonstrating the
+                collaborative possibilities of Git and GitHub.
               </p>
             </Col>
           </Row>

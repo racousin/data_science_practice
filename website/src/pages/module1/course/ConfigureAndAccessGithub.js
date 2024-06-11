@@ -14,23 +14,51 @@ const ConfigureAndAccessGithub = () => {
 
   return (
     <Container fluid>
-      <h2>Configure and Access GitHub</h2>
+      <h3 id="create-github-account">Create a GitHub Account</h3>
+      <p>
+        GitHub is a platform for hosting and collaborating on software
+        development projects using Git. Creating a GitHub account is the first
+        step towards managing your projects online, contributing to other
+        projects, and collaborating with other developers.
+      </p>
       <Row>
         <Col md={12}>
+          <ol>
+            <li>
+              Visit the GitHub homepage:{" "}
+              <a
+                href="https://www.github.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                www.github.com
+              </a>
+              .
+            </li>
+            <li>
+              Click on the “Sign up” button in the upper-right corner of the
+              homepage.
+            </li>
+            <li>Follow the steps!</li>
+          </ol>
+        </Col>
+      </Row>
+      <Row>
+        <Col md={12}>
+          <h3 id="configure-git">Configure Git with Your Information</h3>
           <p>
             Now that you have a GitHub account and Git installed, it’s time to
             configure your Git setup to securely connect and interact with
             GitHub.
           </p>
-          <h3>Configure Git with Your Information</h3>
           <p>
             Start by setting your GitHub username and email address in Git,
             which will be used to identify the commits you make:
           </p>
           <CodeBlock code={commands.configUser} language="bash" />
           <CodeBlock code={commands.configEmail} language="bash" />
-
-          <h3>Generating a New SSH Key</h3>
+          <h3 id="connect-to-github-with-ssh">Connect to GitHub with SSH</h3>
+          <h4>Generating a New SSH Key</h4>
           <p>
             Securely connect to GitHub with SSH by generating a new SSH key:
           </p>
@@ -54,7 +82,7 @@ const ConfigureAndAccessGithub = () => {
             .
           </p>
 
-          <h3>Add Your SSH Public Key to GitHub</h3>
+          <h4>Add Your SSH Public Key to GitHub</h4>
           <p>
             To enable secure SSH access to your GitHub account, you need to add
             your SSH public key to your GitHub settings:
@@ -67,10 +95,10 @@ const ConfigureAndAccessGithub = () => {
           </ol>
           <p>
             This step is essential for authenticating your future SSH sessions
-            with GitHub without using a username and password.
+            with GitHub.
           </p>
 
-          <h3>Test Your SSH Connection</h3>
+          <h4>Test Your SSH Connection</h4>
           <p>Verify that SSH is properly set up by connecting to GitHub:</p>
           <CodeBlock code={commands.testConnection} language="bash" />
           <p>

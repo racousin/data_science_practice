@@ -28,46 +28,90 @@ const CourseGit = () => {
       ],
     },
     {
+      to: "/configure-and-access-github",
+      label: "Configure And Access Github",
+      component: lazy(() =>
+        import("pages/module1/course/ConfigureAndAccessGithub")
+      ),
+      subLinks: [
+        { id: "create-github-account", label: "Create GitHub Account" },
+        {
+          id: "configure-git",
+          label: "Configure Git",
+        },
+        {
+          id: "connect-to-github-with-ssh",
+          label: "Connect to GitHub with SSH",
+        },
+      ],
+    },
+    {
       to: "/working-with-remote-repositories",
       label: "Working with Remote Repositories",
       component: lazy(() =>
         import("pages/module1/course/WorkingWithRemoteRepositories")
       ),
       subLinks: [
-        { id: "create-github-account", label: "Create GitHub Account" },
         {
-          id: "configure-and-access-github",
-          label: "Configure and Access GitHub",
+          id: "why-remote-repositories",
+          label: "Why Remote Repositories?",
         },
         {
-          id: "managing-remote-repositories",
-          label: "Managing Remote Repositories",
+          id: "creating-repository-github",
+          label: "Creating a Repository on GitHub",
+        },
+        {
+          id: "connecting-remote-repository",
+          label: "Connecting to a Remote Repository",
+        },
+        {
+          id: "view-remote-repositories",
+          label: "View Remote Repositories",
+        },
+        {
+          id: "fetch-changes",
+          label: "Fetch Changes",
+        },
+        // {
+        //   id: "pull-changes",
+        //   label: "Pull Changes",
+        // },
+        {
+          id: "push-changes",
+          label: "Push Changes",
+        },
+        {
+          id: "example-case",
+          label: "Example Case",
         },
       ],
     },
-    // {
-    //   to: "/branching-and-merging",
-    //   label: "Branching and Merging",
-    //   component: lazy(() => import("pages/module1/course/BranchingAndMerging")),
-    //   subLinks: [
-    //     { id: "working-with-branches", label: "Working with Branches" },
-    //     { id: "merging-branches", label: "Merging Branches" },
-    //     { id: "resolving-merge-conflicts", label: "Resolving Merge Conflicts" },
-    //   ],
-    // },
-    // {
-    //   to: "/collaborating",
-    //   label: "Collaborating",
-    //   component: lazy(() => import("pages/module1/course/Collaborating")),
-    //   subLinks: [
-    //     {
-    //       id: "collaborating-with-others-using-github",
-    //       label: "Using GitHub for Collaboration",
-    //     },
-    //     { id: "git-workflows", label: "Git Workflows" },
-    //     { id: "peer-reviews", label: "Peer Reviews" },
-    //   ],
-    // },
+
+    {
+      to: "/branching-and-merging",
+      label: "Branching and Merging",
+      component: lazy(() => import("pages/module1/course/BranchingAndMerging")),
+      subLinks: [
+        { id: "working-with-branches", label: "Working with Branches" },
+        { id: "merging-branches", label: "Merging Branches" },
+        { id: "resolving-merge-conflicts", label: "Resolving Merge Conflicts" },
+      ],
+    },
+    {
+      to: "/collaborating",
+      label: "Collaborating",
+      component: lazy(() =>
+        import("pages/module1/course/ResolvingMergeConflicts")
+      ),
+      subLinks: [
+        {
+          id: "collaborating-with-others-using-github",
+          label: "Using GitHub for Collaboration",
+        },
+        { id: "git-workflows", label: "Git Workflows" },
+        { id: "peer-reviews", label: "Peer Reviews" },
+      ],
+    },
     // {
     //   to: "/best-practices-and-resources",
     //   label: "Best Practices and Resources",
