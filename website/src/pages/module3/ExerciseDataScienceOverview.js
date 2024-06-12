@@ -6,16 +6,6 @@ import ModuleFrame from "components/ModuleFrame";
 const ExerciseDataScienceOverview = () => {
   const exerciseLinks = [
     {
-      to: "/course",
-      label: "Course",
-      component: lazy(() => import("pages/module3/CourseDataScienceOverview")),
-    },
-    {
-      to: "/exercise-evaluation",
-      label: "Exercise Evaluation",
-      component: lazy(() => import("pages/ExerciseEvaluation")),
-    },
-    {
       to: "/exercise1",
       label: "Exercise 1",
       component: lazy(() => import("pages/module3/exercise/Exercise1")),

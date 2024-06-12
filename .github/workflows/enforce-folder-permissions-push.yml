@@ -61,23 +61,23 @@ jobs:
 
     - name: Set Script Permissions
       run: chmod +x ./tests/run_tests.sh ./tests/*/run_tests.sh ./tests/run_tests_and_update_results.sh
-    - name: Check folder permissions and determine changed TPs
+    - name: Check folder permissions and determine changed modules
       run: |
         USER="${{ github.actor }}"
         # Compare the current HEAD against the previous commit
         FILES_CHANGED=$(git diff --name-only HEAD^ HEAD)
         echo "FILES_CHANGED: $FILES_CHANGED"
-        echo "$FILES_CHANGED" | grep "^${USER}/tp" | sed -E 's|.*/tp([0-9]+)/.*|\1|' | tr '\n' ' ' | xargs
-        CHANGED_TPS=$(echo "$FILES_CHANGED" | grep "^${USER}/tp" | sed -E 's|.*/tp([0-9]+)/.*|\1|' | tr '\n' ' ' | xargs)
-        echo "CHANGED_TPS: $CHANGED_TPS"
-        echo "changed_tps=$CHANGED_TPS" >> $GITHUB_ENV
+        echo "$FILES_CHANGED" | grep "^${USER}/module" | sed -E 's|.*/module([0-9]+)/.*|\1|' | tr '\n' ' ' | xargs
+        CHANGED_MODULES=$(echo "$FILES_CHANGED" | grep "^${USER}/module" | sed -E 's|.*/module([0-9]+)/.*|\1|' | tr '\n' ' ' | xargs)
+        echo "CHANGED_MODULES: $CHANGED_MODULES"
+        echo "changed_modules=$CHANGED_MODULES" >> $GITHUB_ENV
 
     - name: Run Tests and Update Results
       run: |
         USER="${{ github.actor }}"
-        CHANGED_TPS="${{ env.changed_tps }}"
-        if [[ -z "$CHANGED_TPS" ]]; then
-          echo "No TPs changed. Skipping tests."
+        CHANGED_MODULES="${{ env.changed_modules }}"
+        if [[ -z "$CHANGED_MODULES" ]]; then
+          echo "No MODULEs changed. Skipping tests."
         else
-          ./tests/run_tests_and_update_results.sh "$USER" "${{ secrets.AWS_ACCESS_KEY_ID }}" "${{ secrets.AWS_SECRET_ACCESS_KEY }}" "${{ secrets.AWS_DEFAULT_REGION }}" "$CHANGED_TPS"
+          ./tests/run_tests_and_update_results.sh "$USER" "${{ secrets.AWS_ACCESS_KEY_ID }}" "${{ secrets.AWS_SECRET_ACCESS_KEY }}" "${{ secrets.AWS_DEFAULT_REGION }}" "$CHANGED_MODULES"
         fi

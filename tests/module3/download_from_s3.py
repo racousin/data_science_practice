@@ -18,9 +18,6 @@ def download_file_from_s3(
     )
     s3 = session.client("s3")
     s3.download_file(bucket_name, s3_object_key, local_file_name)
-    print(os.environ.get("AWS_ACCESS_KEY_ID"))
-    print(os.environ.get("AWS_SECRET_ACCESS_KEY"))
-    print(os.environ.get("AWS_DEFAULT_REGION"))
 
 
 if __name__ == "__main__":
@@ -29,7 +26,7 @@ if __name__ == "__main__":
     region_name = sys.argv[3]
 
     bucket_name = "awss3datasciencepractice"
-    s3_object_key = "tp3/y_test.csv"
+    s3_object_key = "module3/y_test.csv"
     local_file_name = "y_test.csv"
 
     download_file_from_s3(

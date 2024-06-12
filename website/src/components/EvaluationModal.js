@@ -74,7 +74,7 @@ const EvaluationModal = () => {
                 <h2>3. Submit your exercises</h2>
                 <p>
                   To submit your exercises, you need to push your solutions to
-                  the <code>$username/tp$number/$exercises_files</code>{" "}
+                  the <code>$username/module$number/$exercises_files</code>{" "}
                   directory in a specific branch.
                 </p>
                 <p>

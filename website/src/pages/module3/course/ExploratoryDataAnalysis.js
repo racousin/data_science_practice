@@ -6,7 +6,7 @@ const ExploratoryDataAnalysis = () => {
   const iframeSrc = process.env.PUBLIC_URL + "/data_exploration.html";
 
   // TODO add notebook install
-
+  console.log(process.env.PUBLIC_URL);
   return (
     <Container fluid>
       <h1 className="my-4">Exploratory Data Analysis</h1>

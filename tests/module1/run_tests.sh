@@ -9,12 +9,12 @@ if [ "$#" -ne 4 ]; then
 fi
 
 USERNAME=$1
-TP_NUMBER="1"  # Since this script is specifically for TP1, we can hardcode the tp number.
+MODULE_NUMBER="1"  # Since this script is specifically for TP1, we can hardcode the module number.
 
 echo "Starting tests for TP1 for user $USERNAME..."
 
 # Define the expected file path based on the parameters
-FILE_PATH="${USERNAME}/tp${TP_NUMBER}/user"
+FILE_PATH="${USERNAME}/module${MODULE_NUMBER}/user"
 
 # Check if the file exists
 if [ ! -f "$FILE_PATH" ]; then
@@ -32,4 +32,4 @@ if [[ ! "$FILE_CONTENT" =~ ^${USERNAME},[a-zA-Z]+,[a-zA-Z]+$ ]]; then
   exit 1
 fi
 
-echo "tp${TP_NUMBER} tests passed successfully for ${USERNAME}."
+echo "module${MODULE_NUMBER} tests passed successfully for ${USERNAME}."

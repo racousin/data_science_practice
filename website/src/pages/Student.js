@@ -9,7 +9,7 @@ import {
 
 const Student = () => {
   const { studentId } = useParams();
-  const [tpsResults, setTpsResults] = useState({});
+  const [modulesResults, setmodulesResults] = useState({});
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -20,10 +20,10 @@ const Student = () => {
         }
         return response.json();
       })
-      .then((data) => setTpsResults(data))
+      .then((data) => setmodulesResults(data))
       .catch((error) => {
-        console.error("Error fetching TP results:", error);
-        setError("Failed to fetch TP results.");
+        console.error("Error fetching MODULE results:", error);
+        setError("Failed to fetch MODULE results.");
       });
   }, [studentId]);
 
@@ -36,12 +36,12 @@ const Student = () => {
 
   return (
     <Container>
-      <h1>TP Results for {studentId}</h1>
+      <h1>MODULE Results for {studentId}</h1>
       {error && <Badge bg="danger">{error}</Badge>}
       <ListGroup>
-        {Object.entries(tpsResults).map(([tp, result]) => (
-          <ListGroup.Item key={tp}>
-            {tp.toUpperCase()}: {getResultIcon(result)}
+        {Object.entries(modulesResults).map(([module, result]) => (
+          <ListGroup.Item key={module}>
+            {module.toUpperCase()}: {getResultIcon(result)}
           </ListGroup.Item>
         ))}
       </ListGroup>

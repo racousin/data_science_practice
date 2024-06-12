@@ -46,7 +46,7 @@ jobs:
         git fetch origin ${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}
         git fetch origin ${{ github.head_ref }}:refs/remotes/origin/${{ github.head_ref }}
 
-    - name: Check folder permissions and determine changed TPs
+    - name: Check folder permissions and determine changed MODULES
       id: check-and-determine
       run: |
         USER="${{ github.actor }}"
