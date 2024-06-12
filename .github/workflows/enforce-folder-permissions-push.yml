@@ -26,58 +26,59 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
 
-    - name: Check and Add User to Students List
-      run: |
-        USER=$AUTHOR # "${{ github.actor }}"
-        # Configure AWS CLI (again explicitly for safety if needed)
-        aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws configure set default.region ${{ secrets.AWS_DEFAULT_REGION }}
+- name: Check and Add User to Students List
+  run: |
+    USER=$AUTHOR # "${{ github.actor }}"
+    # Configure AWS CLI (again explicitly for safety if needed)
+    aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+    aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    aws configure set default.region ${{ secrets.AWS_DEFAULT_REGION }}
 
-        # Download the current student list
-        aws s3 cp s3://www.raphaelcousin.com/students/config/students.json students.json
-        set -x  # Enable debugging to see each command printed before it is executed
+    # Download the current student list
+    aws s3 cp s3://www.raphaelcousin.com/repositories/$GITHUB_REPOSITORY_NAME/students/config/students.json students.json
+    set -x  # Enable debugging to see each command printed before it is executed
 
-        if grep -q "$USER" students.json; then
-          echo "$USER is already in the list."
-        else
-          echo "$USER needs to be added to the list. Acquiring lock..."
-          LOCK_EXISTS=$(aws s3 ls s3://www.raphaelcousin.com/students/config/lock.txt && echo "exists" || echo "not exists")
-          while [ "$LOCK_EXISTS" = "exists" ]; do
-            echo "Waiting for lock to release..."
-            sleep 2
-            LOCK_EXISTS=$(aws s3 ls s3://www.raphaelcousin.com/students/config/lock.txt && echo "exists" || echo "not exists")
-          done
-          echo "Creating lock..."
-          echo "Lock" | aws s3 cp - s3://www.raphaelcousin.com/students/config/lock.txt
+    if jq -e 'has("'"$USER"'")' students.json; then
+      echo "$USER is already in the list."
+    else
+      echo "$USER needs to be added to the list. Acquiring lock..."
+      LOCK_EXISTS=$(aws s3 ls s3://www.raphaelcousin.com/repositories/$GITHUB_REPOSITORY_NAME/students/config/lock.txt && echo "exists" || echo "not exists")
+      while [ "$LOCK_EXISTS" = "exists" ]; do
+        echo "Waiting for lock to release..."
+        sleep 2
+        LOCK_EXISTS=$(aws s3 ls s3://www.raphaelcousin.com/repositories/$GITHUB_REPOSITORY_NAME/students/config/lock.txt && echo "exists" || echo "not exists")
+      done
+      echo "Creating lock..."
+      echo "Lock" | aws s3 cp - s3://www.raphaelcousin.com/repositories/$GITHUB_REPOSITORY_NAME/students/config/lock.txt
 
-          jq '. |= . + ["'"$USER"'"]' students.json > updated_students.json
-          mv updated_students.json students.json
-          aws s3 cp students.json s3://www.raphaelcousin.com/students/config/students.json
+      jq '."'"$USER"'" = {"progress_percentage": 0}' students.json > updated_students.json
+      mv updated_students.json students.json
+      aws s3 cp students.json s3://www.raphaelcousin.com/repositories/$GITHUB_REPOSITORY_NAME/students/config/students.json
 
-          echo "Releasing lock..."
-          aws s3 rm s3://www.raphaelcousin.com/students/config/lock.txt
-        fi
+      echo "Releasing lock..."
+      aws s3 rm s3://www.raphaelcousin.com/repositories/$GITHUB_REPOSITORY_NAME/students/config/lock.txt
+    fi
 
-    - name: Set Script Permissions
-      run: chmod +x ./tests/run_tests.sh ./tests/*/run_tests.sh ./tests/run_tests_and_update_results.sh
-    - name: Check folder permissions and determine changed modules
-      run: |
-        USER="${{ github.actor }}"
-        # Compare the current HEAD against the previous commit
-        FILES_CHANGED=$(git diff --name-only HEAD^ HEAD)
-        echo "FILES_CHANGED: $FILES_CHANGED"
-        echo "$FILES_CHANGED" | grep "^${USER}/module" | sed -E 's|.*/module([0-9]+)/.*|\1|' | tr '\n' ' ' | xargs
-        CHANGED_MODULES=$(echo "$FILES_CHANGED" | grep "^${USER}/module" | sed -E 's|.*/module([0-9]+)/.*|\1|' | tr '\n' ' ' | xargs)
-        echo "CHANGED_MODULES: $CHANGED_MODULES"
-        echo "changed_modules=$CHANGED_MODULES" >> $GITHUB_ENV
+- name: Set Script Permissions
+  run: chmod +x ./tests/run_tests.sh ./tests/*/run_tests.sh ./tests/run_tests_and_update_results.sh
 
-    - name: Run Tests and Update Results
-      run: |
-        USER="${{ github.actor }}"
-        CHANGED_MODULES="${{ env.changed_modules }}"
-        if [[ -z "$CHANGED_MODULES" ]]; then
-          echo "No MODULEs changed. Skipping tests."
-        else
-          ./tests/run_tests_and_update_results.sh "$USER" "${{ secrets.AWS_ACCESS_KEY_ID }}" "${{ secrets.AWS_SECRET_ACCESS_KEY }}" "${{ secrets.AWS_DEFAULT_REGION }}" "$CHANGED_MODULES"
-        fi
+- name: Check folder permissions and determine changed modules
+  run: |
+    USER="${{ github.actor }}"
+    # Compare the current HEAD against the previous commit
+    FILES_CHANGED=$(git diff --name-only HEAD^ HEAD)
+    echo "FILES_CHANGED: $FILES_CHANGED"
+    echo "$FILES_CHANGED" | grep "^${USER}/module" | sed -E 's|.*/module([0-9]+)/.*|\1|' | tr '\n' ' ' | xargs
+    CHANGED_MODULES=$(echo "$FILES_CHANGED" | grep "^${USER}/module" | sed -E 's|.*/module([0-9]+)/.*|\1|' | tr '\n' ' ' | xargs)
+    echo "CHANGED_MODULES: $CHANGED_MODULES"
+    echo "changed_modules=$CHANGED_MODULES" >> $GITHUB_ENV
+
+- name: Run Tests and Update Results
+  run: |
+    USER="${{ github.actor }}"
+    CHANGED_MODULES="${{ env.changed_modules }}"
+    if [[ -z "$CHANGED_MODULES" ]]; then
+      echo "No MODULEs changed. Skipping tests."
+    else
+      ./tests/run_tests_and_update_results.sh "$USER" "${{ secrets.AWS_ACCESS_KEY_ID }}" "${{ secrets.AWS_SECRET_ACCESS_KEY }}" "${{ secrets.AWS_DEFAULT_REGION }}" "$CHANGED_MODULES" $GITHUB_REPOSITORY_NAME
+    fi
