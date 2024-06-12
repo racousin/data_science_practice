@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import Home from "./pages/Home";
+import RepositoriesList from "pages/RepositoriesList";
 import StudentsList from "./pages/StudentsList";
 import Student from "./pages/Student";
 import Teaching from "./pages/Teaching";
@@ -67,8 +68,8 @@ function App() {
                 Teaching
               </Nav.Link>
 
-              <Nav.Link as={Link} to="/students">
-                Student
+              <Nav.Link as={Link} to="/repositories">
+                Sessions Results
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>
@@ -77,8 +78,12 @@ function App() {
       <Container fluid className="mt-3">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="students" element={<StudentsList />} />
-          <Route path="student/:studentId" element={<Student />} />
+          <Route path="repositories" element={<RepositoriesList />} />
+          <Route path="students/:repositoryId" element={<StudentsList />} />
+          <Route
+            path="student/:repositoryId/:studentId"
+            element={<Student />}
+          />
           <Route path="teaching" element={<Teaching />} />
 
           <Route

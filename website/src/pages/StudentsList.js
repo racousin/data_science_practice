@@ -1,13 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { ListGroup, Container, Alert } from "react-bootstrap";
+import React, { useState, useEffect, useMemo } from "react";
+import { Link, useParams } from "react-router-dom";
+import { Table, Container, Alert, Form, Button } from "react-bootstrap";
+import "styles/StudentsList.css"; // Ensure to create this CSS for additional styling
+import BackButton from "components/BackButton";
 
 const StudentsList = () => {
+  const { repositoryId } = useParams();
   const [students, setStudents] = useState([]);
   const [error, setError] = useState("");
+  const [filter, setFilter] = useState("");
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
 
   useEffect(() => {
-    fetch("/students/config/students.json")
+    fetch(`/repositories/${repositoryId}/students/config/students.json`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -19,24 +24,76 @@ const StudentsList = () => {
         console.error("Error fetching student list:", error);
         setError("Failed to fetch student data.");
       });
-  }, []);
+  }, [repositoryId]);
+
+  const sortedStudents = useMemo(() => {
+    let sortableItems = [...students];
+    if (sortConfig !== null) {
+      sortableItems.sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? -1 : 1;
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortableItems;
+  }, [students, sortConfig]);
+
+  const filteredStudents = useMemo(() => {
+    return sortedStudents.filter((student) =>
+      student.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  }, [sortedStudents, filter]);
+
+  const requestSort = (key) => {
+    let direction = "ascending";
+    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+  };
 
   return (
-    <Container>
-      <h1>Student List</h1>
+    <Container className="students-list-container">
+      <BackButton />
+      <h1 className="mb-4">Student List for {repositoryId}</h1>
       {error && <Alert variant="danger">{error}</Alert>}
-      <ListGroup>
-        {students.map((student) => (
-          <ListGroup.Item
-            key={student}
-            action
-            as={Link}
-            to={`/student/${student}`}
-          >
-            {student}
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
+      <Form className="d-flex mb-3">
+        <Form.Control
+          type="text"
+          placeholder="Filter by name..."
+          onChange={(e) => setFilter(e.target.value)}
+          value={filter}
+        />
+      </Form>
+      <Table striped bordered hover responsive>
+        <thead>
+          <tr>
+            <th onClick={() => requestSort("name")}>Name</th>
+            <th onClick={() => requestSort("progress_percentage")}>Progress</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredStudents.map((student, index) => (
+            <tr key={index}>
+              <td>{student.name}</td>
+              <td>{(student.progress_percentage * 100).toFixed(2)}%</td>
+              <td>
+                <Link
+                  to={`/student/${repositoryId}/${student.name}`}
+                  className="btn btn-primary"
+                >
+                  View Details
+                </Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </Container>
   );
 };

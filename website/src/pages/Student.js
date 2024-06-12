@@ -1,50 +1,128 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Container, ListGroup, Badge } from "react-bootstrap";
+import {
+  Container,
+  Accordion,
+  Card,
+  Badge,
+  ListGroup,
+  Row,
+  Col,
+} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
   faTimesCircle,
+  faChevronDown,
+  faChevronUp,
 } from "@fortawesome/free-solid-svg-icons";
+import ArrayProgress from "components/ArrayProgress";
+
+import OverallProgress from "components/OverallProgress";
 
 const Student = () => {
-  const { studentId } = useParams();
-  const [modulesResults, setmodulesResults] = useState({});
+  const { repositoryId, studentId } = useParams();
+  const [modulesResults, setModulesResults] = useState({});
   const [error, setError] = useState("");
+  const [activeKey, setActiveKey] = useState(null);
+  const [overviewProgress, setOverviewProgress] = useState(0);
 
   useEffect(() => {
-    fetch(`/students/${studentId}.json`)
+    fetch(`/repositories/${repositoryId}/students/${studentId}.json`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to load the data");
         }
         return response.json();
       })
-      .then((data) => setmodulesResults(data))
+      .then((data) => {
+        setModulesResults(data);
+        calculateOverallProgress(data);
+      })
       .catch((error) => {
-        console.error("Error fetching MODULE results:", error);
-        setError("Failed to fetch MODULE results.");
+        console.error("Error fetching module results:", error);
+        setError("Failed to fetch module results.");
       });
-  }, [studentId]);
+  }, [repositoryId, studentId]);
 
-  const getResultIcon = (result) => {
-    if (result.endsWith("success")) {
-      return <FontAwesomeIcon icon={faCheckCircle} color="green" />;
-    }
-    return <FontAwesomeIcon icon={faTimesCircle} color="red" />;
+  const handleToggle = (moduleName) => {
+    setActiveKey(activeKey === moduleName ? null : moduleName);
+  };
+
+  const getResultIcon = (isPassed) => {
+    return isPassed ? (
+      <FontAwesomeIcon icon={faCheckCircle} color="green" />
+    ) : (
+      <FontAwesomeIcon icon={faTimesCircle} color="red" />
+    );
+  };
+
+  const calculateOverallProgress = (modules) => {
+    // Aggregate all exercises across all modules
+    const allExercises = Object.values(modules).reduce((acc, exercises) => {
+      return acc.concat(Object.values(exercises));
+    }, []);
+
+    // Count all exercises that have passed
+    const passedExercises = allExercises.filter(
+      (ex) => ex.is_passed_test
+    ).length;
+    const totalExercises = allExercises.length;
+
+    // Calculate the overall progress as a percentage
+    const overallProgress =
+      totalExercises > 0
+        ? ((passedExercises / totalExercises) * 100).toFixed(2)
+        : "0.00";
+    setOverviewProgress(overallProgress);
   };
 
   return (
     <Container>
-      <h1>MODULE Results for {studentId}</h1>
+      <h1>Module Results for {studentId}</h1>
+      <OverallProgress progress={overviewProgress} />
       {error && <Badge bg="danger">{error}</Badge>}
-      <ListGroup>
-        {Object.entries(modulesResults).map(([module, result]) => (
-          <ListGroup.Item key={module}>
-            {module.toUpperCase()}: {getResultIcon(result)}
-          </ListGroup.Item>
+      <Accordion activeKey={activeKey}>
+        {Object.entries(modulesResults).map(([moduleName, exercises], idx) => (
+          <Card key={moduleName}>
+            <Accordion.Item eventKey={moduleName}>
+              <Accordion.Header onClick={() => handleToggle(moduleName)}>
+                <Row className="align-items-center">
+                  <Col md={8}>{moduleName.toUpperCase()} - Progress:</Col>
+                  <Col md={4}>
+                    <ArrayProgress
+                      total={Object.values(exercises).length}
+                      passed={
+                        Object.values(exercises).filter(
+                          (ex) => ex.is_passed_test
+                        ).length
+                      }
+                    />
+                  </Col>
+                </Row>
+                <FontAwesomeIcon
+                  icon={activeKey === moduleName ? faChevronUp : faChevronDown}
+                  className="ml-auto"
+                />
+              </Accordion.Header>
+              <Accordion.Body>
+                <ListGroup variant="flush">
+                  {Object.entries(exercises).map(
+                    ([exerciseName, exerciseDetails], index) => (
+                      <ListGroup.Item key={index}>
+                        {exerciseName}:{" "}
+                        {getResultIcon(exerciseDetails.is_passed_test)}
+                        <div>Score: {exerciseDetails.score}</div>
+                        <div>Logs: {exerciseDetails.logs}</div>
+                      </ListGroup.Item>
+                    )
+                  )}
+                </ListGroup>
+              </Accordion.Body>
+            </Accordion.Item>
+          </Card>
         ))}
-      </ListGroup>
+      </Accordion>
     </Container>
   );
 };
