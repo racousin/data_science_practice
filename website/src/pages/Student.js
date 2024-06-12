@@ -17,7 +17,7 @@ import {
   faChevronUp,
 } from "@fortawesome/free-solid-svg-icons";
 import ArrayProgress from "components/ArrayProgress";
-
+import BackButton from "components/BackButton";
 import OverallProgress from "components/OverallProgress";
 
 const Student = () => {
@@ -79,49 +79,57 @@ const Student = () => {
 
   return (
     <Container>
+      <BackButton />
       <h1>Module Results for {studentId}</h1>
       <OverallProgress progress={overviewProgress} />
       {error && <Badge bg="danger">{error}</Badge>}
       <Accordion activeKey={activeKey}>
-        {Object.entries(modulesResults).map(([moduleName, exercises], idx) => (
-          <Card key={moduleName}>
-            <Accordion.Item eventKey={moduleName}>
-              <Accordion.Header onClick={() => handleToggle(moduleName)}>
-                <Row className="align-items-center">
-                  <Col md={8}>{moduleName.toUpperCase()} - Progress:</Col>
-                  <Col md={4}>
-                    <ArrayProgress
-                      total={Object.values(exercises).length}
-                      passed={
-                        Object.values(exercises).filter(
-                          (ex) => ex.is_passed_test
-                        ).length
-                      }
-                    />
-                  </Col>
-                </Row>
-                <FontAwesomeIcon
-                  icon={activeKey === moduleName ? faChevronUp : faChevronDown}
-                  className="ml-auto"
-                />
-              </Accordion.Header>
-              <Accordion.Body>
-                <ListGroup variant="flush">
-                  {Object.entries(exercises).map(
-                    ([exerciseName, exerciseDetails], index) => (
-                      <ListGroup.Item key={index}>
-                        {exerciseName}:{" "}
-                        {getResultIcon(exerciseDetails.is_passed_test)}
-                        <div>Score: {exerciseDetails.score}</div>
-                        <div>Logs: {exerciseDetails.logs}</div>
-                      </ListGroup.Item>
-                    )
-                  )}
-                </ListGroup>
-              </Accordion.Body>
-            </Accordion.Item>
-          </Card>
-        ))}
+        {Object.entries(modulesResults).map(([moduleName, exercises], idx) => {
+          const totalExercises = Object.values(exercises).length;
+          const passedExercises = Object.values(exercises).filter(
+            (ex) => ex.is_passed_test
+          ).length;
+          const progressPercent =
+            totalExercises > 0 ? (passedExercises / totalExercises) * 100 : 0;
+
+          return (
+            <Card key={moduleName}>
+              <Accordion.Item eventKey={moduleName}>
+                <Accordion.Header onClick={() => handleToggle(moduleName)}>
+                  <Row className="align-items-center">
+                    <Col md={8}>
+                      {moduleName.toUpperCase()} - Progress: {passedExercises}/
+                      {totalExercises}
+                    </Col>
+                    <Col md={4}>
+                      <ArrayProgress progressPercent={progressPercent} />
+                    </Col>
+                  </Row>
+                  <FontAwesomeIcon
+                    icon={
+                      activeKey === moduleName ? faChevronUp : faChevronDown
+                    }
+                    className="ml-auto"
+                  />
+                </Accordion.Header>
+                <Accordion.Body>
+                  <ListGroup variant="flush">
+                    {Object.entries(exercises).map(
+                      ([exerciseName, exerciseDetails], index) => (
+                        <ListGroup.Item key={index}>
+                          {exerciseName}:{" "}
+                          {getResultIcon(exerciseDetails.is_passed_test)}
+                          <div>Score: {exerciseDetails.score}</div>
+                          <div>Logs: {exerciseDetails.logs}</div>
+                        </ListGroup.Item>
+                      )
+                    )}
+                  </ListGroup>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Card>
+          );
+        })}
       </Accordion>
     </Container>
   );

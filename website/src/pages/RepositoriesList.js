@@ -15,7 +15,13 @@ const RepositoriesList = () => {
         }
         return response.json();
       })
-      .then((data) => setRepositories(data))
+      .then((data) => {
+        const formattedData = Object.entries(data).map(([name, details]) => ({
+          name,
+          ...details,
+        }));
+        setRepositories(formattedData);
+      })
       .catch((error) => {
         console.error("Error fetching repository list:", error);
         setError("Failed to fetch repository data.");

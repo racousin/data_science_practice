@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { Table, Container, Alert, Form, Button } from "react-bootstrap";
 import "styles/StudentsList.css"; // Ensure to create this CSS for additional styling
 import BackButton from "components/BackButton";
+import ArrayProgress from "components/ArrayProgress";
 
 const StudentsList = () => {
   const { repositoryId } = useParams();
@@ -19,7 +20,13 @@ const StudentsList = () => {
         }
         return response.json();
       })
-      .then((data) => setStudents(data))
+      .then((data) => {
+        const formattedData = Object.entries(data).map(([name, details]) => ({
+          name,
+          ...details,
+        }));
+        setStudents(formattedData);
+      })
       .catch((error) => {
         console.error("Error fetching student list:", error);
         setError("Failed to fetch student data.");
@@ -81,7 +88,11 @@ const StudentsList = () => {
           {filteredStudents.map((student, index) => (
             <tr key={index}>
               <td>{student.name}</td>
-              <td>{(student.progress_percentage * 100).toFixed(2)}%</td>
+              <td>
+                <ArrayProgress
+                  progressPercent={student.progress_percentage * 100}
+                />
+              </td>
               <td>
                 <Link
                   to={`/student/${repositoryId}/${student.name}`}
