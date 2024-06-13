@@ -1,7 +1,7 @@
 ### Content of `multiplication_a_b.py`:
 
 
-def multiply(a, b):
+def multiply(a, b):sasas
     try:
         return float(a * b)
     except Exception:

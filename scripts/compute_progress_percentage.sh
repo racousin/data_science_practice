@@ -1,5 +1,5 @@
 #!/bin/bash
-# Computes the progress percentage based on passed exercises
+# Computes the progress percentage based on passed exercises and updates the central configuration
 
 USER=$1
 GITHUB_REPOSITORY_NAME=$2
@@ -12,7 +12,7 @@ aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
 aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
 aws configure set default.region $AWS_DEFAULT_REGION
 
-# Download the student's JSON file
+# Download the individual student's JSON file
 aws s3 cp s3://www.raphaelcousin.com/repositories/$GITHUB_REPOSITORY_NAME/students/"$USER".json "$USER".json
 
 # Calculate the progress percentage
@@ -25,8 +25,23 @@ else
   PROGRESS=$(echo "scale=2; $PASSED_EXERCISES * 100 / $TOTAL_EXERCISES" | bc)
 fi
 
-# Update the progress in the JSON file
-jq --argjson progress "$PROGRESS" '.progress_percentage = $progress' "$USER".json > temp.json && mv temp.json "$USER".json
+# Acquire lock for the central configuration file
+LOCK_FILE=s3://www.raphaelcousin.com/repositories/$GITHUB_REPOSITORY_NAME/students/config/lock.txt
+while aws s3 ls "$LOCK_FILE" > /dev/null 2>&1; do
+  echo "Waiting for lock to release..."
+  sleep 1
+done
+echo "Acquiring lock..."
+echo "Lock" | aws s3 cp - "$LOCK_FILE"
 
-# Upload the updated JSON file to S3
-aws s3 cp "$USER".json s3://www.raphaelcousin.com/repositories/$GITHUB_REPOSITORY_NAME/students/"$USER".json
+# Update the central configuration
+aws s3 cp s3://www.raphaelcousin.com/repositories/$GITHUB_REPOSITORY_NAME/students/config/students.json students.json
+jq --arg user "$USER" --argjson progress "$PROGRESS" '(.[$user].progress_percentage) = $progress' students.json > updated_students.json
+mv updated_students.json students.json
+aws s3 cp students.json s3://www.raphaelcousin.com/repositories/$GITHUB_REPOSITORY_NAME/students/config/students.json
+
+# Release the lock
+aws s3 rm "$LOCK_FILE"
+
+# Clean up local files
+rm "$USER".json students.json
