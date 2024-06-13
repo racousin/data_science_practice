@@ -10,12 +10,6 @@ const ExercisePython = () => {
       label: "Exercise 1",
       component: lazy(() => import("pages/module2/exercise/Exercise1")),
     },
-    {
-      to: "/exercise2",
-      label: "Exercise 2",
-      component: lazy(() => import("pages/module2/exercise/Exercise2")),
-    },
-    // Add links to other exercises as needed
   ];
 
   return (

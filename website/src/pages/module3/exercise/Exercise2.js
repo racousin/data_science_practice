@@ -1,71 +1,92 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import CodeBlock from "components/CodeBlock";
 
 const Exercise2 = () => {
   return (
     <Container fluid>
-      <h1 className="my-4">
-        Exercise 2: Building a Machine Learning Baseline Pipeline
-      </h1>
+      <h1 className="my-4">Exercise 2: Generating Predictions</h1>
       <p>
-        In this exercise, you will develop a simple machine learning pipeline
-        using scikit-learn to model the data explored in Exercise 1.
+        In this exercise, you will generate predictions for a dataset and save
+        them to a CSV file. Your predictions will be evaluated using the Mean
+        Absolute Error (MAE) metric, and the error threshold will be 12000.
       </p>
       <Row>
         <Col>
-          <h2>Requirements</h2>
-          <h3>Feature Selection and Preprocessing</h3>
-          <ul>
+          <h2>Instructions</h2>
+          <ol>
             <li>
-              Select features to be used for modeling based on the EDA findings.
-            </li>
-            <li>Apply appropriate preprocessing steps (scaling, encoding).</li>
-          </ul>
-          <h3>Model Selection</h3>
-          <ul>
-            <li>
-              Choose a simple model as a baseline (e.g., Logistic Regression,
-              Decision Tree, or Linear Regression).
+              Load your dataset (you can use any dataset you have or generate a
+              simple one for this exercise).
             </li>
             <li>
-              Explain why this model is chosen based on the characteristics of
-              the data.
-            </li>
-          </ul>
-          <h3>Model Training and Evaluation</h3>
-          <ul>
-            <li>Split the data into training and test sets.</li>
-            <li>Train the model on the training data.</li>
-            <li>
-              Evaluate the model on the test data using appropriate metrics
-              (accuracy, RMSE, etc.).
+              Generate predictions for your dataset. Ensure your predictions are
+              reasonable and formatted correctly.
             </li>
             <li>
-              Display the confusion matrix or regression plots, depending on the
-              type of problem.
+              Create a CSV file named <code>predictions.csv</code> with two
+              columns:
+              <ul>
+                <li>
+                  <code>id</code>: The identifier for each prediction.
+                </li>
+                <li>
+                  <code>SalePrice</code>: The predicted values.
+                </li>
+              </ul>
             </li>
-          </ul>
-          <h3>Baseline Results</h3>
-          <ul>
-            <li>Discuss the baseline model’s performance.</li>
+            <CodeBlock
+              code={`id,SalePrice\n1,200000\n2,250000\n3,300000\n...`}
+            />
             <li>
-              Suggest potential improvements or next steps for enhancing the
-              model.
-            </li>
-          </ul>
-          <h3>Deliverables</h3>
-          <ul>
-            <li>
-              Jupyter Notebook for Exercise 1: This should include all codes,
-              plots, and analyses along with descriptive text explaining each
-              step.
+              Save the <code>predictions.csv</code> file in the{" "}
+              <code>module3</code> directory under your username folder.
             </li>
             <li>
-              Jupyter Notebook for Exercise 2: This should detail the process of
-              setting up the machine learning pipeline, including code and
-              commentary on each decision made in the process.
+              Ensure your predictions file is in the correct format and contains
+              the required columns.
             </li>
-          </ul>
+          </ol>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <h2>Example Code</h2>
+          <p>
+            Here's a simple example to help you get started with generating
+            predictions:
+          </p>
+          <CodeBlock
+            code={`import pandas as pd
+
+# Example dataset
+data = {
+    'id': [1, 2, 3],
+    'feature1': [10, 20, 30],
+    'feature2': [15, 25, 35]
+}
+df = pd.DataFrame(data)
+
+# Generate predictions (this is just a simple example, replace with your model's predictions)
+df['SalePrice'] = df['feature1'] * 10000
+
+# Select required columns
+predictions = df[['id', 'SalePrice']]
+
+# Save to CSV
+predictions.to_csv('module3/predictions.csv', index=False)
+`}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <h2>Evaluation</h2>
+          <p>
+            Your predictions will be evaluated using the Mean Absolute Error
+            (MAE) metric. The error threshold for this exercise is 12000. Ensure
+            your predictions are accurate enough to meet this threshold.
+          </p>
         </Col>
       </Row>
     </Container>

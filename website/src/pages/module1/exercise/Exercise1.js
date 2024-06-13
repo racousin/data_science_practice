@@ -5,42 +5,49 @@ import CodeBlock from "components/CodeBlock";
 const Exercise1 = () => {
   return (
     <Container fluid>
-      <h1 className="my-4">Exercise 1: Creating a File</h1>
+      <h1 className="my-4">Exercise 1: Creating and Formatting a File</h1>
       <p>
-        In this exercise, you will create a file named "user" with your username
-        inside on three lines.
+        In this exercise, you are tasked with creating a file named{" "}
+        <code>user</code>
+        within the <code>module1</code> directory under your username folder.
+        This file should contain your username, first name, and surname,
+        separated by commas.
       </p>
       <Row>
-        <Col>
+        <Col md={6}>
           <h2>Instructions</h2>
           <ol>
-            <li>Create a new file named "user" in your current directory.</li>
-            <li>Open the file in a text editor.</li>
-            <li>On the first line, write your username.</li>
-            <li>Save the file.</li>
+            <li>
+              Create a new file named <code>user</code> in the directory{" "}
+              <code>module1</code> under your username folder.
+            </li>
+            <li>Open the file in a text editor of your choice.</li>
+            <li>
+              Enter your username, first name, and surname in the file,
+              formatted as <code>username,firstname,surname</code>.
+            </li>
+            <li>
+              Ensure that the content is on a single line with no additional
+              text or characters.
+            </li>
+            <li>Save and close the file.</li>
           </ol>
+          <p>
+            Ensure the file is saved with the correct content to pass automated
+            checks.
+          </p>
         </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
-          <h2>Example Solution</h2>
+        <Col md={6}>
+          <h2>Example</h2>
           <CodeBlock
-            code={`# Open a new file named "user" in a text editor
-$ touch user
-
-# Open the file in a text editor
-$ nano user
-
-# Write your username on the first line
-myusername
-
-# Save the file and exit the text editor
-# (Ctrl+X, then Y, then Enter)
-
-# Verify that the file contains your username
-$ cat user
-myusername`}
+            code={`// Directory Path: ./your_username/module1/user
+// Content of 'user' file:
+your_username,your_firstname,your_surname`}
           />
+          <p>
+            This block shows how your file should look when opened with a text
+            editor.
+          </p>
         </Col>
       </Row>
     </Container>

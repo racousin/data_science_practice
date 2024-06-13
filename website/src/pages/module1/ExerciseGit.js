@@ -10,11 +10,6 @@ const ExerciseGit = () => {
       label: "Exercise 1",
       component: lazy(() => import("pages/module1/exercise/Exercise1")),
     },
-    {
-      to: "/exercise2",
-      label: "Exercise 2",
-      component: lazy(() => import("pages/module1/exercise/Exercise2")),
-    },
   ];
 
   return (
