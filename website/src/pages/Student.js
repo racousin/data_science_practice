@@ -19,6 +19,7 @@ import {
 import ArrayProgress from "components/ArrayProgress";
 import BackButton from "components/BackButton";
 import OverallProgress from "components/OverallProgress";
+import { format, parseISO } from "date-fns";
 
 const Student = () => {
   const { repositoryId, studentId } = useParams();
@@ -26,7 +27,20 @@ const Student = () => {
   const [error, setError] = useState("");
   const [activeKey, setActiveKey] = useState(null);
   const [overviewProgress, setOverviewProgress] = useState(0);
-
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date
+      .toLocaleString("en-US", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false, // Use 24-hour time
+      })
+      .replace(",", ""); // Remove the comma after the date
+  };
   useEffect(() => {
     fetch(`/repositories/${repositoryId}/students/${studentId}.json`)
       .then((response) => {
@@ -120,7 +134,22 @@ const Student = () => {
                           {exerciseName}:{" "}
                           {getResultIcon(exerciseDetails.is_passed_test)}
                           <div>Score: {exerciseDetails.score}</div>
-                          <div>Logs: {exerciseDetails.logs}</div>
+                          <div>
+                            Logs:{" "}
+                            {exerciseDetails.logs ? (
+                              <pre style={{ whiteSpace: "pre-wrap" }}>
+                                {exerciseDetails.logs}
+                              </pre>
+                            ) : (
+                              "No logs available"
+                            )}
+                          </div>
+                          <div>
+                            Updated Time:{" "}
+                            {exerciseDetails.updated_time_utc
+                              ? formatDate(exerciseDetails.updated_time_utc)
+                              : "Not updated"}
+                          </div>
                         </ListGroup.Item>
                       )
                     )}

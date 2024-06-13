@@ -22,7 +22,7 @@ PASSED_EXERCISES=$(jq '.[] | .[] | select(.is_passed_test == true) | .is_passed_
 if [ "$TOTAL_EXERCISES" -eq 0 ]; then
   PROGRESS=0
 else
-  PROGRESS=$(echo "scale=2; $PASSED_EXERCISES * 100 / $TOTAL_EXERCISES" | bc)
+  PROGRESS=$(echo "scale=2; $PASSED_EXERCISES / $TOTAL_EXERCISES" | bc)
 fi
 
 # Acquire lock for the central configuration file
