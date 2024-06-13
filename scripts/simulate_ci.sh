@@ -1,5 +1,7 @@
 #!/bin/bash
 
+FETCH_ALL_MODULES=true
+
 # Simulate "Identify Commit Author"
 AUTHOR=$(git log -1 --pretty=format:'%an')
 export AUTHOR
@@ -14,7 +16,7 @@ chmod +x ./scripts/* ./tests/*/run_tests.sh ./tests/run_tests_and_update_results
 ./scripts/check-and-add-user.sh $AUTHOR $GITHUB_REPOSITORY_NAME $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY $AWS_DEFAULT_REGION
 
 # Simulate "Determine Changed Modules"
-export CHANGED_MODULES=$(./scripts/check-changed-modules.sh $AUTHOR)
+export CHANGED_MODULES=$(./scripts/check-changed-modules.sh $AUTHOR $FETCH_ALL_MODULES)
 
 # Simulate "Run Tests and Update Results"
 if [[ -z "$CHANGED_MODULES" ]]; then
