@@ -35,9 +35,9 @@ jobs:
         echo "AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}"
         echo "AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}"
         echo "AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}"
-        echo "GITHUB_REPOSITORY_NAME: $GITHUB_REPOSITORY_NAME"
+        echo "GITHUB_REPOSITORY_NAME: ${{ github.repository }}"
         echo "AUTHOR" : ${{ env.AUTHOR }} 
-        run: ./scripts/check-and-add-user.sh ${{ env.AUTHOR }} $GITHUB_REPOSITORY_NAME ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_DEFAULT_REGION }}
+        run: ./scripts/check-and-add-user.sh ${{ env.AUTHOR }} ${{ github.repository }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_DEFAULT_REGION }}
 
     - name: Determine Changed Modules
       run: ./scripts/check-changed-modules.sh ${{ env.AUTHOR }}
@@ -49,8 +49,8 @@ jobs:
         if [[ -z "${{ env.CHANGED_MODULES }}" ]]; then
           echo "No MODULEs changed. Skipping tests."
         else
-          ./tests/run_tests_and_update_results.sh ${{ env.AUTHOR }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_DEFAULT_REGION }} "${{ env.CHANGED_MODULES }}" $GITHUB_REPOSITORY_NAME
-          ./scripts/compute_progress_percentage.sh ${{ env.AUTHOR }} $GITHUB_REPOSITORY_NAME ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_DEFAULT_REGION }}
+          ./tests/run_tests_and_update_results.sh ${{ env.AUTHOR }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_DEFAULT_REGION }} "${{ env.CHANGED_MODULES }}" ${{ github.repository }}
+          ./scripts/compute_progress_percentage.sh ${{ env.AUTHOR }} ${{ github.repository }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_DEFAULT_REGION }}
         fi
       env:
         GITHUB_ENV: ${{ github.workspace }}/.github/workflows/env
