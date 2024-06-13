@@ -6,6 +6,8 @@ racousin/
 # C extensions
 *.so
 tmp
+tests/students.json
+students.json
 
 # Distribution / packaging
 .Python

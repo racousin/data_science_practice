@@ -1,0 +1,189 @@
+{
+
+    "module1": {
+        
+        "exercice1": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        }
+        
+    },
+
+    "module2": {
+        
+        "exercice1": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        },
+        
+        "exercice2": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        }
+        
+    },
+
+    "module3": {
+        
+        "exercice1": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        },
+        
+        "exercice2": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        }
+        
+    },
+
+    "module4": {
+        
+        "exercice1": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        },
+        
+        "exercice2": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        }
+        
+    },
+
+    "module5": {
+        
+        "exercice1": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        },
+        
+        "exercice2": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        }
+        
+    },
+
+    "module6": {
+        
+        "exercice1": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        },
+        
+        "exercice2": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        }
+        
+    },
+
+    "module7": {
+        
+        "exercice1": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        },
+        
+        "exercice2": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        }
+        
+    },
+
+    "module8": {
+        
+        "exercice1": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        },
+        
+        "exercice2": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        }
+        
+    },
+
+    "module9": {
+        
+        "exercice1": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        },
+        
+        "exercice2": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        }
+        
+    },
+
+    "module10": {
+        
+        "exercice1": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        },
+        
+        "exercice2": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        }
+        
+    },
+
+    "module11": {
+        
+        "exercice1": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        },
+        
+        "exercice2": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        }
+        
+    },
+
+    "module12": {
+        
+        "exercice1": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        },
+        
+        "exercice2": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        }
+        
+    }
+
+}

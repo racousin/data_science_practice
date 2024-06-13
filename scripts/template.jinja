@@ -1,0 +1,13 @@
+{
+{% for module in modules %}
+    "module{{ loop.index }}": {
+        {% for exercise in range(module) %}
+        "exercice{{ loop.index }}": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet"
+        }{{ "," if not loop.last else "" }}
+        {% endfor %}
+    }{{ "," if not loop.last else "" }}
+{% endfor %}
+}
