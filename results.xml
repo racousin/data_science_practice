@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="0.120" timestamp="2024-06-13T15:38:02.611769" hostname="raphael-XPS-13-9370"><testcase classname="" name="tests.module2.test_exercise1" time="0.000"><error message="collection failure">venv/lib/python3.10/site-packages/_pytest/python.py:492: in importtestmodule
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="0.121" timestamp="2024-06-13T16:15:52.728837" hostname="raphael-XPS-13-9370"><testcase classname="" name="tests.module2.test_exercise1" time="0.000"><error message="collection failure">venv/lib/python3.10/site-packages/_pytest/python.py:492: in importtestmodule
     mod = import_path(
 venv/lib/python3.10/site-packages/_pytest/pathlib.py:591: in import_path
     importlib.import_module(module_name)

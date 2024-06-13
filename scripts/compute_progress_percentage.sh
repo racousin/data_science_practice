@@ -44,4 +44,4 @@ aws s3 cp students.json s3://www.raphaelcousin.com/repositories/$GITHUB_REPOSITO
 aws s3 rm "$LOCK_FILE"
 
 # Clean up local files
-rm "$USER".json students.json
+# rm "$USER".json students.json

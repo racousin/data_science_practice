@@ -54,4 +54,4 @@ python tests/aggregate_results.py $RESULTS_DIR $FINAL_JSON $S3_BUCKET $S3_KEY $A
 deactivate
 # rm -rf venv
 Cleanup local results
-# rm -rf $RESULTS_DIR
+rm -rf $RESULTS_DIR
