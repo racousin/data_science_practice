@@ -30,13 +30,14 @@ jobs:
       run: chmod +x ./scripts/* ./tests/*/exercise*.sh ./tests/run_tests_and_update_results.sh
 
     - name: Check and Add User to Students List
+      run: |
         echo "Environment Variables:"
         echo "AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}"
         echo "AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}"
         echo "AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}"
         echo "GITHUB_REPOSITORY_NAME: $GITHUB_REPOSITORY_NAME"
         echo "AUTHOR" : ${{ env.AUTHOR }} 
-      run: ./scripts/check-and-add-user.sh ${{ env.AUTHOR }} $GITHUB_REPOSITORY_NAME ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_DEFAULT_REGION }}
+        run: ./scripts/check-and-add-user.sh ${{ env.AUTHOR }} $GITHUB_REPOSITORY_NAME ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_DEFAULT_REGION }}
 
     - name: Determine Changed Modules
       run: ./scripts/check-changed-modules.sh ${{ env.AUTHOR }}
