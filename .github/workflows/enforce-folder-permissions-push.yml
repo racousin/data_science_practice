@@ -16,8 +16,10 @@ jobs:
       with:
         fetch-depth: 2
 
-    - name: Identify Commit Author
-      run: echo "AUTHOR=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
+    - name: Set Environment Variables
+      run: |
+        echo "AUTHOR=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
+        echo "GITHUB_REPOSITORY_NAME=$(echo ${{ github.repository }} | cut -d '/' -f1)" >> $GITHUB_ENV
 
     - name: Setup AWS CLI
       uses: aws-actions/configure-aws-credentials@v1
@@ -30,14 +32,7 @@ jobs:
       run: chmod +x ./scripts/* ./tests/*/exercise*.sh ./tests/run_tests_and_update_results.sh
 
     - name: Check and Add User to Students List
-      run: |
-        echo "Environment Variables:"
-        echo "AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}"
-        echo "AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-        echo "AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}"
-        echo "GITHUB_REPOSITORY_NAME: ${{ github.repository }}"
-        echo "AUTHOR" : ${{ env.AUTHOR }} 
-        run: ./scripts/check-and-add-user.sh ${{ env.AUTHOR }} ${{ github.repository }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_DEFAULT_REGION }}
+      run: ./scripts/check-and-add-user.sh ${{ env.AUTHOR }} ${{ env.GITHUB_REPOSITORY_NAME }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_DEFAULT_REGION }}
 
     - name: Determine Changed Modules
       run: ./scripts/check-changed-modules.sh ${{ env.AUTHOR }}
@@ -49,8 +44,8 @@ jobs:
         if [[ -z "${{ env.CHANGED_MODULES }}" ]]; then
           echo "No MODULEs changed. Skipping tests."
         else
-          ./tests/run_tests_and_update_results.sh ${{ env.AUTHOR }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_DEFAULT_REGION }} "${{ env.CHANGED_MODULES }}" ${{ github.repository }}
-          ./scripts/compute_progress_percentage.sh ${{ env.AUTHOR }} ${{ github.repository }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_DEFAULT_REGION }}
+          ./tests/run_tests_and_update_results.sh ${{ env.AUTHOR }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_DEFAULT_REGION }} "${{ env.CHANGED_MODULES }}" ${{ env.GITHUB_REPOSITORY_NAME }}
+          ./scripts/compute_progress_percentage.sh ${{ env.AUTHOR }} ${{ env.GITHUB_REPOSITORY_NAME }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_DEFAULT_REGION }}
         fi
       env:
         GITHUB_ENV: ${{ github.workspace }}/.github/workflows/env
