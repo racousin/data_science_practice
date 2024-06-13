@@ -19,7 +19,7 @@ jobs:
     - name: Set Environment Variables
       run: |
         echo "AUTHOR=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
-        echo "GITHUB_REPOSITORY_NAME=$(echo ${{ github.repository }} | cut -d '/' -f1)" >> $GITHUB_ENV
+        echo "GITHUB_REPOSITORY_NAME=$(echo ${{ github.repository }} | cut -d '/' -f2)" >> $GITHUB_ENV
 
     - name: Setup AWS CLI
       uses: aws-actions/configure-aws-credentials@v1
