@@ -3,17 +3,16 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ModuleNavigation from "components/ModuleNavigation";
 import CodeBlock from "components/CodeBlock";
+import ModuleFrame from "components/ModuleFrame";
 
 const PrerequisiteAndMethodology = () => {
   return (
-    <Container fluid>
-      <Row>
-        <ModuleNavigation
-          module={0}
-          isCourse={null}
-          title="Module 0: Prerequisites and Methodology"
-        />
-      </Row>
+    <ModuleFrame
+      module={0}
+      isCourse={null}
+      title="Module 0: Prerequisites and Methodology"
+      courseLinks={[]}
+    >
       <Row>
         <p>
           Welcome to the introductory module of the course. This section will
@@ -27,7 +26,7 @@ const PrerequisiteAndMethodology = () => {
         </Col>
       </Row>
       <Row>
-        <Col>
+        <Col md={11}>
           <h2>Setting Up Your Environment</h2>
           <p>
             To participate in the course exercises and submit your work, you
@@ -39,9 +38,13 @@ const PrerequisiteAndMethodology = () => {
               <strong>Create a GitHub Account:</strong> If you do not have a
               GitHub account, you will need to create one. Follow the
               instructions on{" "}
-              <Link to="module1/course/configure-and-access-github">
+              <a
+                href="/module1/course/configure-and-access-github"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Creating a GitHub Account
-              </Link>
+              </a>
               .
             </li>
             <li>
@@ -54,64 +57,62 @@ const PrerequisiteAndMethodology = () => {
               "2024_github_account_registration:$name:$surname:$username",
               replacing $name, $surname, and $username with your actual details.
               You will receive an invitation to join the{" "}
-              <Link to="https://github.com/racousin/data_science_practice">
+              <a
+                href="https://github.com/racousin/data_science_practice"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <i>data_science_practice</i>
-              </Link>{" "}
+              </a>
               repository which contains the materials and exercises relevant to
               this course.
             </li>
             <li>
               <strong>Access Course Materials:</strong> After receiving the
               invitation, accept it to access and you can start with the
-              <Link to="module1/course/">Module 1: Git</Link>
+              <Link to="/module1/course/">Module 1: Git</Link>
             </li>
           </ol>
         </Col>
       </Row>
       <Row>
-        <Col>
+        <Col md={11}>
           <h2>Methodology and Submitting Exercises</h2>
           <p>
-            Each module in this course consists of lectures and hands-on
-            exercises. Here’s how you will interact with the course content and
-            submit your exercises:
+            Each module in this course is divided into a learning section and an
+            exercise section.
           </p>
+          <p>The objectives of submitting exercises are:</p>
           <ul>
             <li>
-              <strong>Module Structure:</strong> Each module will have a
-              theoretical component accessible and practical exercises that you
-              need to complete.
+              <strong>Mastering Git and GitHub:</strong> Essential tools in the
+              data science industry and in research.
             </li>
             <li>
-              <strong>Submitting Exercises:</strong> For each module, you will
-              create a new branch in the repository, add your solutions to your
-              username folder under the respective module (e.g.,
-              usernameFolder/module1/yourfiles), and submit a pull request.
+              <strong>Understanding the Review Process:</strong> Critical for
+              software development and fostering collaborative skills.
             </li>
             <li>
-              <strong>Review Process:</strong> Your submission will be reviewed
-              by a collaborator who will provide feedback or approve the merge
-              into the main branch. The admin will also validate the PR before
-              merging. This process ensures that your work meets the required
-              standards and does not interfere with the core repository
-              structure.
-            </li>
-            <li>
-              <strong>CI/CD Validation:</strong> Upon merging to main, CI/CD
-              processes will run tests to validate your exercises. Successful
-              completion will update your status on the course's official
+              <strong>Tracking Your Progress:</strong> After merging your
+              changes to the main branch, CI/CD processes will validate your
+              exercises. Successfully passing these tests will reflect on your
               student results page.
             </li>
           </ul>
           <p>
-            To see your progress and results, visit the{" "}
-            <a href="https://www.raphaelcousin.com/students">
-              student results page
+            To view your progress and results, visit the{" "}
+            <a
+              href="https://www.raphaelcousin.com/repositories"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Student Results Page
             </a>{" "}
             on the course website.
           </p>
         </Col>
       </Row>
+
       <Row>
         <h2>Example Exercise Submission Steps</h2>
         <ol>
@@ -188,7 +189,7 @@ const PrerequisiteAndMethodology = () => {
           </li>
         </ol>
       </Row>
-    </Container>
+    </ModuleFrame>
   );
 };
 

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Button, Modal, Container, Row, Col } from "react-bootstrap";
+import { Button, Modal, Container, Row, Col, Alert } from "react-bootstrap";
+import CodeBlock from "components/CodeBlock"; // Ensure you have a component to render code blocks
 
-const EvaluationModal = () => {
+const EvaluationModal = ({ module }) => {
   const [show, setShow] = useState(false);
 
   const handleOpen = () => setShow(true); // Open modal on click
@@ -11,12 +12,12 @@ const EvaluationModal = () => {
     <>
       <Button
         variant="outline-secondary"
-        onClick={handleOpen} // Change to onClick for better usability
+        onClick={handleOpen}
         className="nav-button button-outline"
         aria-expanded={show}
         aria-controls="evaluation-modal"
       >
-        Evaluation Instructions
+        Submit your exercises
       </Button>
 
       <Modal
@@ -28,67 +29,107 @@ const EvaluationModal = () => {
         aria-labelledby="modal-title"
       >
         <Modal.Header closeButton>
-          <Modal.Title id="modal-title">Evaluation Instructions</Modal.Title>
+          <Modal.Title id="modal-title">
+            Exercise Submission Guidelines
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Container>
-            <h1 className="my-4">Exercise Evaluation</h1>
-            <p>
-              To be evaluated for the exercises in this course, you need to
-              follow the following steps:
-            </p>
             <Row>
               <Col>
-                <h2>1. Create a GitHub account</h2>
-                <p>
-                  If you don't already have a GitHub account, you need to create
-                  one. You can sign up for a free account on the GitHub website.
-                </p>
-              </Col>
-            </Row>
-            <Row className="mt-4">
-              <Col>
-                <h2>2. Send an email to raphaelcousin.education@gmail.com</h2>
-                <p>
-                  Send an email to raphaelcousin.education@gmail.com with the
-                  subject
-                  "2024_github_account_name:$name_surname:$surname_username:$username",
-                  replacing $name, $surname, and $username with your actual
-                  name, surname, and GitHub username.
-                </p>
-                <p>
-                  After sending the email, you will receive an invitation to the{" "}
+                <h2 className="my-3">Prerequisites</h2>
+                <Alert variant="primary">
+                  Make sure to complete the initial setup exercises in{" "}
                   <a
-                    href="https://github.com/racousin/data_science_practice"
+                    href="/module0/course"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    data_science_practice
+                    Module 0
                   </a>{" "}
-                  repository on GitHub.
-                </p>
+                  before proceeding.
+                </Alert>
               </Col>
             </Row>
-            <Row className="mt-4">
+            <h2 className="my-4">Steps to Submit Your Exercise</h2>
+            <Row>
               <Col>
-                <h2>3. Submit your exercises</h2>
+                <h3>Initial Setup</h3>
+                <p>Navigate to your project directory:</p>
+                <CodeBlock code={`cd your_project_directory`} />
                 <p>
-                  To submit your exercises, you need to push your solutions to
-                  the <code>$username/module$number/$exercises_files</code>{" "}
-                  directory in a specific branch.
+                  Ensure you are on the main branch and your repository is up to
+                  date:
                 </p>
+                <CodeBlock code={`git checkout main\n git pull origin main`} />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <h3>Prepare Your Work</h3>
+                <p>Create and switch to a new branch for your exercise:</p>
+                <CodeBlock
+                  code={`git checkout -b exercise_branch/$username/module${module}`}
+                />
                 <p>
-                  The workflow to the main branch will run tests to validate
-                  your answers. You can then find your score on the Student page
-                  of{" "}
+                  Create a directory for your module (if it doesn't already
+                  exist):
+                </p>
+                <CodeBlock code={`mkdir -p $username/module${module}`} />
+                <p>Perform your work in this directory.</p>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <h3>Submit Your Exercise</h3>
+                <p>Stage your changes for commit:</p>
+                <CodeBlock
+                  code={`git add $username/module${module}/your_files`}
+                />
+                <p>Commit your changes:</p>
+                <CodeBlock code={`git commit -m 'Update exercise files'`} />
+                <p>Push your branch to the repository:</p>
+                <CodeBlock
+                  code={`git push origin exercise_branch/$username/module${module}`}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <h3>Create a Pull Request</h3>
+                <p>After pushing your work to your remote branch:</p>
+                <ul>
+                  <li>
+                    Visit{" "}
+                    <a
+                      href="https://github.com/racousin/data_science_practice/pulls"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      GitHub Pull Requests
+                    </a>
+                    .
+                  </li>
+                  <li>
+                    Create a new pull request from your exercise branch to the
+                    main branch.
+                  </li>
+                  <li>
+                    Request a review and make necessary changes based on
+                    feedback.
+                  </li>
+                  <li>Merge the pull request once approved.</li>
+                </ul>
+                <p>
+                  After merging, you can consult your results in the{" "}
                   <a
-                    href="https://www.raphaelcousin.com"
+                    href="/repositories"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    www.raphaelcousin.com
-                  </a>{" "}
-                  under your username.
+                    repository results page
+                  </a>
+                  .
                 </p>
               </Col>
             </Row>

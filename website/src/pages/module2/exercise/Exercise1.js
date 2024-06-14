@@ -16,40 +16,19 @@ const Exercise1 = () => {
         <Col>
           <h2>Instructions</h2>
           <ol>
-            <li>
-              Create a new directory called <code>mysupertools</code>:
-            </li>
-            <CodeBlock code={`mkdir mysupertools`} />
-            <li>
-              Navigate to the <code>mysupertools</code> directory:
-            </li>
-            <CodeBlock code={`cd mysupertools`} />
-            <li>
-              Create a new directory inside <code>mysupertools</code> called{" "}
-              <code>tool</code>:
-            </li>
-            <CodeBlock code={`mkdir tool`} />
-            <li>
-              Create a Python file inside the <code>tool</code> directory called{" "}
-              <code>multiplication_a_b.py</code>:
-            </li>
-            <CodeBlock code={`touch tool/multiplication_a_b.py`} />
-            <li>
-              Edit the <code>multiplication_a_b.py</code> file to add the
-              following function:
-            </li>
+            <li>Your final directory structure should look like this:</li>
             <CodeBlock
-              code={`def multiply(a, b):
-    if isinstance(a, (int, float)) and isinstance(b, (int, float)):
-        return a * b
-    else:
-        return "error"
-`}
+              code={`mysupertools/\n├── setup.py\n└── mysupertools/\n    ├── __init__.py\n    └── tool/\n        ├── __init__.py\n        └── multiplication_a_b.py`}
             />
             <li>
+              The <code>multiplication_a_b.py</code> file contains a function{" "}
+              <code>multiply(a, b)</code> that return <i>a x b</i> results if
+              doable or "error".
+            </li>
+            <li>
               Create a <code>setup.py</code> file in the{" "}
-              <code>mysupertools</code> directory with the following content to
-              make it a package:
+              <code>mysupertools</code> directory with the necessary content to
+              make it a package
             </li>
             <CodeBlock
               code={`from setuptools import setup, find_packages
@@ -58,26 +37,16 @@ setup(
     name='mysupertools',
     version='0.1',
     packages=find_packages(),
+    ...
 )
 `}
+              language={"python"}
             />
             <li>
-              Create a <code>__init__.py</code> file inside both the{" "}
+              Don't forget the<code>__init__.py</code> files inside both the{" "}
               <code>mysupertools</code> and <code>tool</code> directories to
               make them Python packages:
             </li>
-            <CodeBlock code={`touch __init__.py`} />
-            <CodeBlock code={`touch tool/__init__.py`} />
-            <li>Your final directory structure should look like this:</li>
-            <CodeBlock
-              code={`mysupertools/
-├── __init__.py
-├── setup.py
-└── tool/
-    ├── __init__.py
-    └── multiplication_a_b.py`}
-            />
-            <li>Commit and push your changes to your GitHub repository.</li>
           </ol>
         </Col>
       </Row>
@@ -85,23 +54,32 @@ setup(
         <Col>
           <h2>Testing Your Code</h2>
           <p>
-            To test your code, you can use the following test script that will
-            be run automatically by the CI/CD system to validate your solution:
+            To ensure your package is working correctly, follow these steps to
+            test your code:
           </p>
-          <CodeBlock
-            code={`# mysupertools/tests/test_multiplication.py
-
-from mysupertools.tool.multiplication_a_b import multiply
-
-def test_multiply_numbers():
-    assert multiply(4, 5) == 20
-    assert multiply(-1, 5) == -5
-
-def test_multiply_errors():
-    assert multiply("a", 5) == "error"
-    assert multiply(None, 5) == "error"
-`}
-          />
+          <ol>
+            <li>
+              First, install your package. Ideally, do this in a new virtual
+              environment:
+            </li>
+            <CodeBlock code={`pip install $username/module2/mysupertools`} />
+            <li>Next, open a Python session and import your function:</li>
+            <CodeBlock code={`python`} />
+            <CodeBlock
+              code={`from mysupertools.tool.multiplication_a_b import multiply
+                `}
+              language={"python"}
+            />
+            <li>Finally, test the functionality of your function:</li>
+            <CodeBlock
+              code={`assert multiply(4, 5) == 20`}
+              language={"python"}
+            />
+            <CodeBlock
+              code={`assert multiply("a", 5) == "error"`}
+              language={"python"}
+            />
+          </ol>
         </Col>
       </Row>
     </Container>

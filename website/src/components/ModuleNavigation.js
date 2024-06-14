@@ -63,7 +63,7 @@ const ModuleNavigation = ({ module, isCourse, title = "" }) => {
               >
                 Courses
               </Button>
-              <EvaluationModal />
+              <EvaluationModal module={module} />
             </>
           ))}
 

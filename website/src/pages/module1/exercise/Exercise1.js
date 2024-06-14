@@ -39,11 +39,13 @@ const Exercise1 = () => {
         </Col>
         <Col md={6}>
           <h2>Example</h2>
-          <CodeBlock
-            code={`// Directory Path: ./your_username/module1/user
-// Content of 'user' file:
-your_username,your_firstname,your_surname`}
-          />
+          <p>
+            <code>Directory Path: ./your_username/module1/user</code>
+            <br />
+            <code>Content of 'user' file:</code>
+          </p>
+
+          <CodeBlock code={`your_username,your_firstname,your_surname`} />
           <p>
             This block shows how your file should look when opened with a text
             editor.

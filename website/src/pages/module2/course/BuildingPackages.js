@@ -26,7 +26,10 @@ mypackage/
 ├── mypackage/
 │   ├── __init__.py
 │   ├── module1.py
-│   └── module2.py
+│   ├── module2.py
+│   ├── tools/
+│       ├── __init__.py
+│       └── tools1.py
 ├── setup.py
 └── README.md
       `}
@@ -95,6 +98,7 @@ setup(
     url='https://github.com/yourusername/mypackage',
     packages=['mypackage'],
 )`}
+            language={"python"}
           />
           <p>In this setup script:</p>
           <ul>
@@ -156,11 +160,13 @@ setup(
           <CodeBlock
             code={`def hello():
     print("Hello from module1!")`}
+            language={"python"}
           />
           <p>And `module2.py` might contain:</p>
           <CodeBlock
             code={`def goodbye():
     print("Goodbye from module2!")`}
+            language={"python"}
           />
         </Col>
       </Row>
@@ -193,6 +199,7 @@ import mypackage.module2 as mod2
 
 mod1.hello()
 mod2.goodbye()`}
+            language={"python"}
           />
         </Col>
       </Row>

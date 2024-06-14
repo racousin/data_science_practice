@@ -7,7 +7,6 @@ import StudentsList from "./pages/StudentsList";
 import Student from "./pages/Student";
 import Teaching from "./pages/Teaching";
 import CourseGit from "pages/module1/CourseGit";
-import ExerciseEvaluation from "pages/ExerciseEvaluation";
 import ExerciseGit from "pages/module1/ExerciseGit";
 import CoursePython from "pages/module2/CoursePython";
 import ExercisePython from "pages/module2/ExercisePython";
@@ -181,7 +180,6 @@ function App() {
             path="module15/exercise/*"
             element={<ExerciseReinforcementLearning />}
           />
-          <Route path="exercise-evaluation" element={<ExerciseEvaluation />} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

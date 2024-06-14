@@ -68,6 +68,7 @@ const BestPracticesAndResources = () => {
           <CodeBlock
             code={`def test_addition():
     assert 1 + 1 == 2`}
+            language={"python"}
           />
           <p>Run the tests:</p>
           <CodeBlock code={`pytest`} />
@@ -87,6 +88,7 @@ class TestMath(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()`}
+            language={"python"}
           />
         </Col>
       </Row>

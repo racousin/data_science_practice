@@ -4,7 +4,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Button } from "react-bootstrap";
 
-const CodeBlock = ({ code }) => {
+const CodeBlock = ({ code, language = "bash" }) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -23,7 +23,7 @@ const CodeBlock = ({ code }) => {
           {copied ? "Copied!" : "Copy"}
         </Button>
       </CopyToClipboard>
-      <SyntaxHighlighter language="bash" style={a11yDark}>
+      <SyntaxHighlighter language={language} style={a11yDark}>
         {code}
       </SyntaxHighlighter>
     </div>
