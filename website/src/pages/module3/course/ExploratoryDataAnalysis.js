@@ -1,12 +1,17 @@
 import React from "react";
 import { Container } from "react-bootstrap";
+import DataInteractionPanel from "components/DataInteractionPanel";
 
 const ExploratoryDataAnalysis = () => {
-  // Make sure the path here is correctly pointing to the public directory
-  const iframeSrc = process.env.PUBLIC_URL + "/data_exploration.html";
+  const trainDataUrl =
+    process.env.PUBLIC_URL + "/modules/module3/course/train.csv";
+  const testDataUrl =
+    process.env.PUBLIC_URL + "/modules/module3/course/test.csv";
+  const notebookUrl =
+    process.env.PUBLIC_URL + "/modules/module3/course/data_exploration.ipynb";
+  const notebookHtmlUrl =
+    process.env.PUBLIC_URL + "/modules/module3/course/data_exploration.html";
 
-  // TODO add notebook install
-  console.log(process.env.PUBLIC_URL);
   return (
     <Container fluid>
       <h1 className="my-4">Exploratory Data Analysis</h1>
@@ -14,10 +19,12 @@ const ExploratoryDataAnalysis = () => {
         In this section, you will learn about exploratory data analysis and how
         to perform it using Python and Jupyter Notebooks.
       </p>
-      <iframe
-        src={iframeSrc}
-        style={{ width: "100%", height: "800px", border: "none" }}
-      ></iframe>
+      <DataInteractionPanel
+        trainDataUrl={trainDataUrl}
+        testDataUrl={testDataUrl}
+        notebookUrl={notebookUrl}
+        notebookHtmlUrl={notebookHtmlUrl}
+      />
     </Container>
   );
 };

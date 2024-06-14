@@ -22,6 +22,24 @@ const CourseDataScienceOverview = () => {
       component: lazy(() =>
         import("pages/module3/course/MachineLearningPipeline")
       ),
+      subLinks: [
+        { id: "data-collection", label: "Data Collection" },
+        { id: "data-cleaning", label: "Data Cleaning and Preparation" },
+        { id: "feature-engineering", label: "Feature Engineering" },
+        { id: "model-building", label: "Model Building" },
+        { id: "evaluation", label: "Evaluation" },
+        { id: "deployment", label: "Deployment" },
+        { id: "monitoring", label: "Monitoring and Maintenance" },
+      ],
+    },
+    {
+      to: "/note-bookand-colab",
+      label: "Notebook And Colab",
+      component: lazy(() => import("pages/module3/course/NotebookAndColab")),
+      subLinks: [
+        { id: "jupyter-notebooks", label: "Jupyter Notebooks" },
+        { id: "google-colab", label: "Google Colab" },
+      ],
     },
     {
       to: "/exploratory-data-analysis",
@@ -29,6 +47,35 @@ const CourseDataScienceOverview = () => {
       component: lazy(() =>
         import("pages/module3/course/ExploratoryDataAnalysis")
       ),
+      subLinks: [
+        { id: "jupyter-notebooks", label: "Jupyter Notebooks" },
+        { id: "google-colab", label: "Google Colab" },
+      ],
+    },
+    {
+      to: "/best-practices-and-resources",
+      label: "Best Practices And Resources",
+      component: lazy(() =>
+        import("pages/module3/course/BestPracticesAndRessources.js")
+      ),
+      subLinks: [
+        {
+          id: "installing-packages-in-colab",
+          label: "Installing Packages in Colab",
+        },
+        {
+          id: "using-gpu-in-colab",
+          label: "Using GPU and Other Resources in Colab",
+        },
+        {
+          id: "bi-tools",
+          label: "BI Tools",
+        },
+        {
+          id: "resources",
+          label: "Useful Links and Resources",
+        },
+      ],
     },
   ];
   const title = `Module 3: Data Science Overview`;
