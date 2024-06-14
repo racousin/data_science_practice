@@ -2,6 +2,7 @@ import React, { lazy } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
+import { useLocation } from "react-router-dom";
 
 const ExerciseGenerativeModels = () => {
   const exerciseLinks = [
@@ -18,6 +19,8 @@ const ExerciseGenerativeModels = () => {
     // Add links to other exercises as needed
   ];
 
+  const location = useLocation();
+  const module = 14;
   return (
     <ModuleFrame
       module={14}
@@ -25,17 +28,21 @@ const ExerciseGenerativeModels = () => {
       title="Module 14: Exercise Generative Models"
       courseLinks={exerciseLinks}
     >
-      <Row>
-        <p>
-          In this module, you will practice building and applying generative
-          models in AI.
-        </p>
-      </Row>
-      <Row>
-        <Col>
-          <p>Last Updated: {"2024-06-07"}</p>
-        </Col>
-      </Row>
+      {location.pathname === `/module${module}/exercise` && (
+        <>
+          <Row>
+            <p>
+              In this module, you will practice building and applying generative
+              models in AI.
+            </p>
+          </Row>
+          <Row>
+            <Col>
+              <p>Last Updated: {"2024-06-07"}</p>
+            </Col>
+          </Row>
+        </>
+      )}
       <Row>
         <Col md={11}>
           <DynamicRoutes routes={exerciseLinks} />

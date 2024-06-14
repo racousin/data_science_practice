@@ -2,6 +2,7 @@ import React, { lazy } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
+import { useLocation } from "react-router-dom";
 
 const CourseReinforcementLearning = () => {
   const courseLinks = [
@@ -50,6 +51,8 @@ const CourseReinforcementLearning = () => {
     },
   ];
 
+  const location = useLocation();
+  const module = 15;
   return (
     <ModuleFrame
       module={15}
@@ -57,17 +60,21 @@ const CourseReinforcementLearning = () => {
       title="Module 15: Reinforcement Learning"
       courseLinks={courseLinks}
     >
-      <Row>
-        <p>
-          In this module, you will learn about reinforcement learning and its
-          applications in AI.
-        </p>
-      </Row>
-      <Row>
-        <Col>
-          <p>Last Updated: {"2024-06-07"}</p>
-        </Col>
-      </Row>
+      {location.pathname === `/module${module}/course` && (
+        <>
+          <Row>
+            <p>
+              In this module, you will learn about reinforcement learning and
+              its applications in AI.
+            </p>
+          </Row>
+          <Row>
+            <Col>
+              <p>Last Updated: {"2024-06-07"}</p>
+            </Col>
+          </Row>
+        </>
+      )}
       <Row>
         <Col md={11}>
           <DynamicRoutes routes={courseLinks} />

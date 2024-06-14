@@ -25,6 +25,7 @@ const PrerequisiteAndMethodology = () => {
           <p>Last Updated: {"2024-06-07"}</p>
         </Col>
       </Row>
+
       <Row>
         <Col md={11}>
           <h2>Setting Up Your Environment</h2>
@@ -75,6 +76,7 @@ const PrerequisiteAndMethodology = () => {
           </ol>
         </Col>
       </Row>
+
       <Row>
         <Col md={11}>
           <h2>Methodology and Submitting Exercises</h2>

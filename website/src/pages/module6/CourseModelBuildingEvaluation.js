@@ -2,6 +2,7 @@ import React, { lazy } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
+import { useLocation } from "react-router-dom";
 
 const CourseModelBuildingEvaluation = () => {
   const courseLinks = [
@@ -50,6 +51,8 @@ const CourseModelBuildingEvaluation = () => {
     },
   ];
 
+  const location = useLocation();
+  const module = 6;
   return (
     <ModuleFrame
       module={6}
@@ -57,17 +60,21 @@ const CourseModelBuildingEvaluation = () => {
       title="Module 6: Model Building and Evaluation"
       courseLinks={courseLinks}
     >
-      <Row>
-        <p>
-          In this module, you will learn about the process of building and
-          evaluating machine learning models.
-        </p>
-      </Row>
-      <Row>
-        <Col>
-          <p>Last Updated: {"2024-06-07"}</p>
-        </Col>
-      </Row>
+      {location.pathname === `/module${module}/course` && (
+        <>
+          <Row>
+            <p>
+              In this module, you will learn about the process of building and
+              evaluating machine learning models.
+            </p>
+          </Row>
+          <Row>
+            <Col>
+              <p>Last Updated: {"2024-06-07"}</p>
+            </Col>
+          </Row>
+        </>
+      )}
       <Row>
         <Col md={11}>
           <DynamicRoutes routes={courseLinks} />

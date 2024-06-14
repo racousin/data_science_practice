@@ -2,7 +2,21 @@ import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import CodeBlock from "components/CodeBlock";
 
+import DataInteractionPanel from "components/DataInteractionPanel";
+
 const Exercise2 = () => {
+  const trainDataUrl =
+    process.env.PUBLIC_URL + "/modules/module3/exercise/train.csv";
+  const testDataUrl =
+    process.env.PUBLIC_URL + "/modules/module3/exercise/test.csv";
+  const notebookUrl =
+    process.env.PUBLIC_URL +
+    "/modules/module3/exercise/module3_exercise2.ipynb";
+  const notebookHtmlUrl =
+    process.env.PUBLIC_URL + "/modules/module3/exercise/module3_exercise2.html";
+  const notebookColabUrl =
+    process.env.PUBLIC_URL +
+    "website/public/modules/module3/exercise/module3_exercise2.ipynb";
   return (
     <Container fluid>
       <h1 className="my-4">Exercise 2: Generating Predictions</h1>
@@ -88,6 +102,17 @@ predictions.to_csv('module3/predictions.csv', index=False)
             your predictions are accurate enough to meet this threshold.
           </p>
         </Col>
+      </Row>
+
+      <Row>
+        <h1 className="my-4">Starting Notebook and access to the data</h1>
+        <DataInteractionPanel
+          trainDataUrl={trainDataUrl}
+          testDataUrl={testDataUrl}
+          notebookUrl={notebookUrl}
+          notebookHtmlUrl={notebookHtmlUrl}
+          notebookColabUrl={notebookColabUrl}
+        />
       </Row>
     </Container>
   );

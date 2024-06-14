@@ -2,6 +2,7 @@ import React, { lazy } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
+import { useLocation } from "react-router-dom";
 
 const CourseGit = () => {
   const courseLinks = [
@@ -159,6 +160,8 @@ const CourseGit = () => {
     },
   ];
 
+  const location = useLocation();
+  const module = 1;
   return (
     <ModuleFrame
       module={1}
@@ -166,16 +169,21 @@ const CourseGit = () => {
       title="Module 1: Git"
       courseLinks={courseLinks}
     >
-      <Row>
-        <p>
-          Learn how to use Git for version control and GitHub for collaboration.
-        </p>
-      </Row>
-      <Row>
-        <Col>
-          <p>Last Updated: {"2024-06-07"}</p>
-        </Col>
-      </Row>
+      {location.pathname === `/module${module}/course` && (
+        <>
+          <Row>
+            <p>
+              Learn how to use Git for version control and GitHub for
+              collaboration.
+            </p>
+          </Row>
+          <Row>
+            <Col>
+              <p>Last Updated: {"2024-06-07"}</p>
+            </Col>
+          </Row>
+        </>
+      )}
       <Row>
         <Col md={11}>
           <DynamicRoutes routes={courseLinks} />

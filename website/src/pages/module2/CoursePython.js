@@ -2,6 +2,7 @@ import React, { lazy } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
+import { useLocation } from "react-router-dom";
 
 const CoursePython = () => {
   const courseLinks = [
@@ -117,6 +118,8 @@ const CoursePython = () => {
       ],
     },
   ];
+  const location = useLocation();
+  const module = 2;
   return (
     <ModuleFrame
       module={2}
@@ -124,17 +127,21 @@ const CoursePython = () => {
       title="Module 2: Python Environment and Package"
       courseLinks={courseLinks}
     >
-      <Row>
-        <p>
-          In this module, students will learn how to set up a Python environment
-          and install packages using pip.
-        </p>
-      </Row>
-      <Row>
-        <Col>
-          <p>Last Updated: {"2024-06-07"}</p>
-        </Col>
-      </Row>
+      {location.pathname === `/module${module}/course` && (
+        <>
+          <Row>
+            <p>
+              In this module, students will learn how to set up a Python
+              environment and install packages using pip.
+            </p>
+          </Row>
+          <Row>
+            <Col>
+              <p>Last Updated: {"2024-06-07"}</p>
+            </Col>
+          </Row>
+        </>
+      )}
       <Row>
         <Col md={11}>
           <DynamicRoutes routes={courseLinks} />

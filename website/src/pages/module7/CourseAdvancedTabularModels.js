@@ -2,6 +2,7 @@ import React, { lazy } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
+import { useLocation } from "react-router-dom";
 
 const CourseAdvancedTabularModels = () => {
   const courseLinks = [
@@ -43,6 +44,8 @@ const CourseAdvancedTabularModels = () => {
     },
   ];
 
+  const location = useLocation();
+  const module = 7;
   return (
     <ModuleFrame
       module={7}
@@ -50,17 +53,21 @@ const CourseAdvancedTabularModels = () => {
       title="Module 7: Advanced Tabular Models"
       courseLinks={courseLinks}
     >
-      <Row>
-        <p>
-          In this module, you will learn about advanced modeling techniques that
-          are particularly effective for tabular data.
-        </p>
-      </Row>
-      <Row>
-        <Col>
-          <p>Last Updated: {"2024-06-07"}</p>
-        </Col>
-      </Row>
+      {location.pathname === `/module${module}/course` && (
+        <>
+          <Row>
+            <p>
+              In this module, you will learn about advanced modeling techniques
+              that are particularly effective for tabular data.
+            </p>
+          </Row>
+          <Row>
+            <Col>
+              <p>Last Updated: {"2024-06-07"}</p>
+            </Col>
+          </Row>
+        </>
+      )}
       <Row>
         <Col md={11}>
           <DynamicRoutes routes={courseLinks} />

@@ -2,6 +2,7 @@ import React, { lazy } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
+import { useLocation } from "react-router-dom";
 
 const CourseFeatureEngineering = () => {
   const courseLinks = [
@@ -37,6 +38,8 @@ const CourseFeatureEngineering = () => {
     },
   ];
 
+  const location = useLocation();
+  const module = 5;
   return (
     <ModuleFrame
       module={5}
@@ -44,18 +47,22 @@ const CourseFeatureEngineering = () => {
       title="Module 5: Feature Engineering"
       courseLinks={courseLinks}
     >
-      <Row>
-        <p>
-          In this module, you will learn about the process of feature
-          engineering, which is crucial for improving the performance of machine
-          learning models.
-        </p>
-      </Row>
-      <Row>
-        <Col>
-          <p>Last Updated: {"2024-06-07"}</p>
-        </Col>
-      </Row>
+      {location.pathname === `/module${module}/course` && (
+        <>
+          <Row>
+            <p>
+              In this module, you will learn about the process of feature
+              engineering, which is crucial for improving the performance of
+              machine learning models.
+            </p>
+          </Row>
+          <Row>
+            <Col>
+              <p>Last Updated: {"2024-06-07"}</p>
+            </Col>
+          </Row>
+        </>
+      )}
       <Row>
         <Col md={11}>
           <DynamicRoutes routes={courseLinks} />

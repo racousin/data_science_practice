@@ -2,6 +2,7 @@ import React, { lazy } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
+import { useLocation } from "react-router-dom";
 
 const ExerciseTextProcessing = () => {
   const exerciseLinks = [
@@ -18,6 +19,8 @@ const ExerciseTextProcessing = () => {
     // Add links to other exercises as needed
   ];
 
+  const location = useLocation();
+  const module = 12;
   return (
     <ModuleFrame
       module={12}
@@ -25,17 +28,21 @@ const ExerciseTextProcessing = () => {
       title="Module 12: Exercise Text Processing"
       courseLinks={exerciseLinks}
     >
-      <Row>
-        <p>
-          In this module, you will practice text processing techniques and
-          applications in data science.
-        </p>
-      </Row>
-      <Row>
-        <Col>
-          <p>Last Updated: {"2024-06-07"}</p>
-        </Col>
-      </Row>
+      {location.pathname === `/module${module}/exercise` && (
+        <>
+          <Row>
+            <p>
+              In this module, you will practice text processing techniques and
+              applications in data science.
+            </p>
+          </Row>
+          <Row>
+            <Col>
+              <p>Last Updated: {"2024-06-07"}</p>
+            </Col>
+          </Row>
+        </>
+      )}
       <Row>
         <Col md={11}>
           <DynamicRoutes routes={exerciseLinks} />

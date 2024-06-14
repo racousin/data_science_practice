@@ -2,6 +2,7 @@ import React, { lazy } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
+import { useLocation } from "react-router-dom";
 
 const CourseGetData = () => {
   const courseLinks = [
@@ -22,6 +23,8 @@ const CourseGetData = () => {
     },
   ];
 
+  const location = useLocation();
+  const module = 4;
   return (
     <ModuleFrame
       module={4}
@@ -29,17 +32,21 @@ const CourseGetData = () => {
       title="Module 4: Getting Data"
       courseLinks={courseLinks}
     >
-      <Row>
-        <p>
-          In this module, you will learn about the different sources of data and
-          how to retrieve data from them using Python.
-        </p>
-      </Row>
-      <Row>
-        <Col>
-          <p>Last Updated: {"2024-06-07"}</p>
-        </Col>
-      </Row>
+      {location.pathname === `/module${module}/course` && (
+        <>
+          <Row>
+            <p>
+              In this module, you will learn about the different sources of data
+              and how to retrieve data from them using Python.
+            </p>
+          </Row>
+          <Row>
+            <Col>
+              <p>Last Updated: {"2024-06-07"}</p>
+            </Col>
+          </Row>
+        </>
+      )}
       <Row>
         <Col md={11}>
           <DynamicRoutes routes={courseLinks} />

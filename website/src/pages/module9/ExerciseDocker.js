@@ -2,6 +2,7 @@ import React, { lazy } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
+import { useLocation } from "react-router-dom";
 
 const ExerciseDocker = () => {
   const exerciseLinks = [
@@ -18,6 +19,8 @@ const ExerciseDocker = () => {
     // Add links to other exercises as needed
   ];
 
+  const location = useLocation();
+  const module = 9;
   return (
     <ModuleFrame
       module={9}
@@ -25,17 +28,21 @@ const ExerciseDocker = () => {
       title="Module 9: Exercise Docker"
       courseLinks={exerciseLinks}
     >
-      <Row>
-        <p>
-          In this module, you will practice building, shipping, and running
-          applications in containers using Docker.
-        </p>
-      </Row>
-      <Row>
-        <Col>
-          <p>Last Updated: {"2024-06-07"}</p>
-        </Col>
-      </Row>
+      {location.pathname === `/module${module}/exercise` && (
+        <>
+          <Row>
+            <p>
+              In this module, you will practice building, shipping, and running
+              applications in containers using Docker.
+            </p>
+          </Row>
+          <Row>
+            <Col>
+              <p>Last Updated: {"2024-06-07"}</p>
+            </Col>
+          </Row>
+        </>
+      )}
       <Row>
         <Col md={11}>
           <DynamicRoutes routes={exerciseLinks} />

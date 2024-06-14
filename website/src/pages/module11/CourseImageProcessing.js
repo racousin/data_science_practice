@@ -2,6 +2,7 @@ import React, { lazy } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
+import { useLocation } from "react-router-dom";
 
 const CourseImageProcessing = () => {
   const courseLinks = [
@@ -52,6 +53,8 @@ const CourseImageProcessing = () => {
     },
   ];
 
+  const location = useLocation();
+  const module = 11;
   return (
     <ModuleFrame
       module={11}
@@ -59,17 +62,21 @@ const CourseImageProcessing = () => {
       title="Module 11: Image Processing"
       courseLinks={courseLinks}
     >
-      <Row>
-        <p>
-          In this module, you will learn about image processing techniques and
-          applications.
-        </p>
-      </Row>
-      <Row>
-        <Col>
-          <p>Last Updated: {"2024-06-07"}</p>
-        </Col>
-      </Row>
+      {location.pathname === `/module${module}/course` && (
+        <>
+          <Row>
+            <p>
+              In this module, you will learn about image processing techniques
+              and applications.
+            </p>
+          </Row>
+          <Row>
+            <Col>
+              <p>Last Updated: {"2024-06-07"}</p>
+            </Col>
+          </Row>
+        </>
+      )}
       <Row>
         <Col md={11}>
           <DynamicRoutes routes={courseLinks} />

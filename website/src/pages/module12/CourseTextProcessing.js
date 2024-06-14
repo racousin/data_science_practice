@@ -2,6 +2,7 @@ import React, { lazy } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
+import { useLocation } from "react-router-dom";
 
 const CourseTextProcessing = () => {
   const courseLinks = [
@@ -46,6 +47,8 @@ const CourseTextProcessing = () => {
     },
   ];
 
+  const location = useLocation();
+  const module = 12;
   return (
     <ModuleFrame
       module={12}
@@ -53,17 +56,21 @@ const CourseTextProcessing = () => {
       title="Module 12: Text Processing"
       courseLinks={courseLinks}
     >
-      <Row>
-        <p>
-          In this module, you will learn about text processing techniques and
-          applications in data science.
-        </p>
-      </Row>
-      <Row>
-        <Col>
-          <p>Last Updated: {"2024-06-07"}</p>
-        </Col>
-      </Row>
+      {location.pathname === `/module${module}/course` && (
+        <>
+          <Row>
+            <p>
+              In this module, you will learn about text processing techniques
+              and applications in data science.
+            </p>
+          </Row>
+          <Row>
+            <Col>
+              <p>Last Updated: {"2024-06-07"}</p>
+            </Col>
+          </Row>
+        </>
+      )}
       <Row>
         <Col md={11}>
           <DynamicRoutes routes={courseLinks} />

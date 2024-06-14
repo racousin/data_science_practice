@@ -2,6 +2,7 @@ import React, { lazy } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
+import { useLocation } from "react-router-dom";
 
 const CourseDataScienceOverview = () => {
   const courseLinks = [
@@ -79,7 +80,8 @@ const CourseDataScienceOverview = () => {
     },
   ];
   const title = `Module 3: Data Science Overview`;
-
+  const location = useLocation();
+  const module = 3;
   return (
     <ModuleFrame
       module={3}
@@ -87,19 +89,23 @@ const CourseDataScienceOverview = () => {
       title={title}
       courseLinks={courseLinks}
     >
-      <Row>
-        <p>
-          In this module, you will learn about the jobs and evolution of data
-          science, the business issues it can answer, the types of data used in
-          data science, exploratory data analysis, and machine learning
-          pipelines.
-        </p>
-      </Row>
-      <Row>
-        <Col>
-          <p>Last Updated: {"2024-06-07"}</p>
-        </Col>
-      </Row>
+      {location.pathname === `/module${module}/course` && (
+        <>
+          <Row>
+            <p>
+              In this module, you will learn about the jobs and evolution of
+              data science, the business issues it can answer, the types of data
+              used in data science, exploratory data analysis, and machine
+              learning pipelines.
+            </p>
+          </Row>
+          <Row>
+            <Col>
+              <p>Last Updated: {"2024-06-07"}</p>
+            </Col>
+          </Row>
+        </>
+      )}
       <Row>
         <Col md={11}>
           <DynamicRoutes routes={courseLinks} />

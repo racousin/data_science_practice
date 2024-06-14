@@ -11,8 +11,9 @@ const ExploratoryDataAnalysis = () => {
     process.env.PUBLIC_URL + "/modules/module3/course/data_exploration.ipynb";
   const notebookHtmlUrl =
     process.env.PUBLIC_URL + "/modules/module3/course/data_exploration.html";
-  const notebookHtmlUrl =
-    process.env.PUBLIC_URL + "/modules/module3/course/data_exploration.html";
+  const notebookColabUrl =
+    process.env.PUBLIC_URL +
+    "website/public/modules/module3/course/data_exploration.ipynb";
 
   return (
     <Container fluid>

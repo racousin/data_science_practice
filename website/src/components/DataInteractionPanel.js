@@ -7,9 +7,10 @@ const DataInteractionPanel = ({
   testDataUrl,
   notebookUrl,
   notebookHtmlUrl,
+  notebookColabUrl,
 }) => {
   const openInColab = (url) => {
-    const colabUrl = `https://colab.research.google.com/github/${url}`;
+    const colabUrl = `https://colab.research.google.com/github/racousin/data_science_practice/blob/master/${notebookColabUrl}`;
     window.open(colabUrl, "_blank");
   };
 
