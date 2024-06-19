@@ -23,14 +23,14 @@ const RepositoriesList = () => {
         setRepositories(formattedData);
       })
       .catch((error) => {
-        console.error("Error fetching repository list:", error);
+        console.error("Error fetching Sessions Results:", error);
         setError("Failed to fetch repository data.");
       });
   }, []);
 
   return (
     <Container className="custom-repository-list">
-      <h1 className="mb-4 mt-3">Repository List</h1>
+      <h1 className="mb-4 mt-3">Sessions Results</h1>
       {error && <Alert variant="danger">{error}</Alert>}
       <Row xs={1} md={2} lg={3} className="g-4">
         {repositories.map((repo) => (

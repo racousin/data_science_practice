@@ -144,8 +144,8 @@ body p, body li {
 /* Sidebar Styling */
 .flex-column {
   position: sticky;
-  top: 142px;
-  height: calc(100vh - 142px);
+  top: 152px;
+  height: calc(100vh - 152px);
   overflow-y: auto;
 }
 

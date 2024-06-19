@@ -1,5 +1,5 @@
 import React, { lazy } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
 import { useLocation } from "react-router-dom";
@@ -44,14 +44,10 @@ const CourseDataScienceOverview = () => {
     },
     {
       to: "/exploratory-data-analysis",
-      label: "Exploratory Data Analysis",
+      label: "Exploratory Data Analysis And Model Baseline",
       component: lazy(() =>
-        import("pages/module3/course/ExploratoryDataAnalysis")
+        import("pages/module3/course/ExploratoryDataAnalysisAndModelBaseline")
       ),
-      subLinks: [
-        { id: "jupyter-notebooks", label: "Jupyter Notebooks" },
-        { id: "google-colab", label: "Google Colab" },
-      ],
     },
     {
       to: "/best-practices-and-resources",

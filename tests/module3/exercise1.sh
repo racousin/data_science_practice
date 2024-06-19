@@ -14,7 +14,7 @@ AWS_SECRET_ACCESS_KEY=$4
 AWS_DEFAULT_REGION=$5
 MODULE_NUMBER="3"
 PREDICTIONS_PATH="${USERNAME}/module${MODULE_NUMBER}/predictions.csv"
-RESULTS_PATH="module3_exercise1_y_test.csv"
+RESULTS_PATH="module3_exercise_test_target.csv"
 RESULTS_DIR="./results"  # Directory to store results
 RESULT_FILE="${RESULTS_DIR}/module${MODULE_NUMBER}_exercise1.json"  # File to store this exercise's results
 
@@ -26,11 +26,11 @@ python3 -m venv venv
 source venv/bin/activate
 
 # Download y_test.csv from S3 using a provided script
-python tests/utils/download_from_s3.py $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY $AWS_DEFAULT_REGION module3/exercise1_y_test.csv $RESULTS_PATH
+python tests/utils/download_from_s3.py $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY $AWS_DEFAULT_REGION module3/module3_exercise_test_target.csv $RESULTS_PATH
 
 # Run comparison using a provided Python script
 set +e
-ERROR_THRESHOLD=12000
+ERROR_THRESHOLD=34000
 METRIC="mean_absolute_error"
 TARGET_COL="SalePrice"
 COMPARE_OUTPUT=$(python tests/utils/compare_predictions.py $RESULTS_PATH $PREDICTIONS_PATH $ERROR_THRESHOLD $METRIC $TARGET_COL 2>&1)

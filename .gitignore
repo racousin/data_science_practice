@@ -9,6 +9,10 @@ tmp
 tests/students.json
 students.json
 
+
+venv/
+website/public/modules/venv
+
 # Distribution / packaging
 .Python
 build/

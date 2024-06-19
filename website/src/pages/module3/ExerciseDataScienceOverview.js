@@ -11,11 +11,6 @@ const ExerciseDataScienceOverview = () => {
       label: "Exercise 1",
       component: lazy(() => import("pages/module3/exercise/Exercise1")),
     },
-    {
-      to: "/exercise2",
-      label: "Exercise 2",
-      component: lazy(() => import("pages/module3/exercise/Exercise2")),
-    },
     // Add links to other exercises as needed
   ];
 
@@ -31,7 +26,8 @@ const ExerciseDataScienceOverview = () => {
       {location.pathname === `/module${module}/exercise` && (
         <>
           <Row>
-            <p>TODO</p>
+            Exercises to perform exploratory data analysis and model
+            baseline,using Python and Jupyter Notebooks.
           </Row>
         </>
       )}
