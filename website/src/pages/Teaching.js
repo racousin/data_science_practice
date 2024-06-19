@@ -23,7 +23,7 @@ const Teaching = () => {
     },
     {
       id: 4,
-      title: "Module 4: Get Data",
+      title: "Module 4: Data Collection",
       linkCourse: "/module4/course",
       linkExercise: "/module4/exercise",
     },
