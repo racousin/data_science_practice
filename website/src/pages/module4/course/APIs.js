@@ -19,6 +19,7 @@ const APIs = () => {
             Python, you can use the `requests` library.
           </p>
           <CodeBlock
+            language={"python"}
             code={`import requests
 
 response = requests.get("https://api.example.com/data")
@@ -35,6 +36,7 @@ data = response.json()`}
             API in Python, you can use the `gql` and `requests` libraries.
           </p>
           <CodeBlock
+            language={"python"}
             code={`from gql import gql, Client
 from gql.transport.requests import RequestsHTTPTransport
 

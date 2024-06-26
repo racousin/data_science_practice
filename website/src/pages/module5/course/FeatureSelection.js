@@ -18,6 +18,7 @@ const FeatureSelection = () => {
             features. Examples include correlation and Chi-squared test.
           </p>
           <CodeBlock
+            language={"python"}
             code={`# Example of correlation-based feature selection
 import numpy as np
 import pandas as pd
@@ -33,6 +34,7 @@ relevant_features = corr_target[corr_target>0.5]`}
             elimination.
           </p>
           <CodeBlock
+            language={"python"}
             code={`# Example of recursive feature elimination
 from sklearn.feature_selection import RFE
 from sklearn.linear_model import LogisticRegression
@@ -51,6 +53,7 @@ print("Feature Ranking: %s" % fit.ranking_)`}
             tree-based models.
           </p>
           <CodeBlock
+            language={"python"}
             code={`# Example of feature importance from a random forest
 from sklearn.ensemble import RandomForestClassifier
 

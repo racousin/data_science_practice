@@ -10,12 +10,12 @@ import CourseGit from "pages/module1/CourseGit";
 import ExerciseGit from "pages/module1/ExerciseGit";
 import CoursePython from "pages/module2/CoursePython";
 import ExercisePython from "pages/module2/ExercisePython";
-import CourseDataScienceOverview from "pages/module3/CourseDataScienceOverview";
-import ExerciseDataScienceOverview from "pages/module3/ExerciseDataScienceOverview";
-import CourseFeatureEngineering from "pages/module5/CourseFeatureEngineering";
-import ExerciseFeatureEngineering from "pages/module5/ExerciseFeatureEngineering";
-import CourseGetData from "pages/module4/CourseGetData";
-import ExerciseGetData from "pages/module4/ExerciseGetData";
+import CourseMLPipelineAndExploratoryDataAnalysis from "pages/module3/CourseMLPipelineAndExploratoryDataAnalysis";
+import ExerciseMLPipelineAndExploratoryDataAnalysis from "pages/module3/ExerciseMLPipelineAndExploratoryDataAnalysis";
+import CourseDataCleaningAndPreparation from "pages/module5/CourseDataCleaningAndPreparation";
+import ExerciseDataCleaningAndPreparation from "pages/module5/ExerciseDataCleaningAndPreparation";
+import CourseDataCollection from "pages/module4/CourseDataCollection";
+import ExerciseDataCollection from "pages/module4/ExerciseDataCollection";
 import CourseModelBuildingEvaluation from "pages/module6/CourseModelBuildingEvaluation";
 import ExerciseModelBuildingEvaluation from "pages/module6/ExerciseModelBuildingEvaluation";
 import CourseAdvancedTabularModels from "pages/module7/CourseAdvancedTabularModels";
@@ -34,6 +34,7 @@ import CourseGenerativeModels from "pages/module14/CourseGenerativeModels";
 import ExerciseGenerativeModels from "pages/module14/ExerciseGenerativeModels";
 import CourseReinforcementLearning from "pages/module15/CourseReinforcementLearning";
 import ExerciseReinforcementLearning from "pages/module15/ExerciseReinforcementLearning";
+import Resources from "pages/Resources";
 
 import PrerequistAandMethodologie from "pages/module0/PrerequistAandMethodologie";
 
@@ -84,6 +85,7 @@ function App() {
             element={<Student />}
           />
           <Route path="teaching" element={<Teaching />} />
+          <Route path="resources" element={<Resources />} />
 
           <Route
             path="module0/course"
@@ -95,21 +97,24 @@ function App() {
           <Route path="module2/exercise/*" element={<ExercisePython />} />
           <Route
             path="module3/course/*"
-            element={<CourseDataScienceOverview />}
+            element={<CourseMLPipelineAndExploratoryDataAnalysis />}
           />
           <Route
             path="module3/exercise/*"
-            element={<ExerciseDataScienceOverview />}
+            element={<ExerciseMLPipelineAndExploratoryDataAnalysis />}
           />
-          <Route path="module4/course/*" element={<CourseGetData />} />
-          <Route path="module4/exercise/*" element={<ExerciseGetData />} />
+          <Route path="module4/course/*" element={<CourseDataCollection />} />
+          <Route
+            path="module4/exercise/*"
+            element={<ExerciseDataCollection />}
+          />
           <Route
             path="module5/course/*"
-            element={<CourseFeatureEngineering />}
+            element={<CourseDataCleaningAndPreparation />}
           />
           <Route
             path="module5/exercise/*"
-            element={<ExerciseFeatureEngineering />}
+            element={<ExerciseDataCleaningAndPreparation />}
           />
           <Route
             path="module6/course/*"

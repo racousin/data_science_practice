@@ -19,6 +19,7 @@ const Databases = () => {
             can use the `sqlite3` or `psycopg2` library.
           </p>
           <CodeBlock
+            language={"python"}
             code={`import sqlite3
 
 conn = sqlite3.connect("data.db")
@@ -38,6 +39,7 @@ data = cursor.fetchall()`}
             you can use the `pymongo` library.
           </p>
           <CodeBlock
+            language={"python"}
             code={`from pymongo import MongoClient
 
 client = MongoClient("mongodb://localhost:27017/")

@@ -8,7 +8,7 @@ __pycache__/
 tmp
 tests/students.json
 students.json
-
+website/public/modules/sandbox/
 
 venv/
 website/public/modules/venv

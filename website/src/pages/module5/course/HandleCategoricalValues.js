@@ -1,0 +1,109 @@
+import React from "react";
+import { Container, Row, Col, Table } from "react-bootstrap";
+import CodeBlock from "components/CodeBlock";
+import DataInteractionPanel from "components/DataInteractionPanel";
+
+const HandleCategoricalValues = () => {
+  const requirementsUrl =
+    process.env.PUBLIC_URL + "/modules/module5/course/module5_requirements.txt";
+  const DataUrl =
+    process.env.PUBLIC_URL +
+    "/modules/module5/course/module5_course_handling_categorical_values";
+  const notebookUrl =
+    process.env.PUBLIC_URL +
+    "/modules/module5/course/Handling_Categorical_Values.ipynb";
+  const notebookHtmlUrl =
+    process.env.PUBLIC_URL +
+    "/modules/module5/course/Handling_Categorical_Values.html";
+  const notebookColabUrl =
+    process.env.PUBLIC_URL +
+    "website/public/modules/module5/course/Handling_Categorical_Values.ipynb";
+
+  return (
+    <Container fluid>
+      <h1 className="my-4">Handling Categorical Values</h1>
+      <p>
+        Categorical data is commonly used in data science and machine learning
+        projects. It includes variables with a limited and usually fixed number
+        of possible values. Handling and encoding these values correctly is
+        crucial for model performance.
+      </p>
+
+      <Row>
+        <Col>
+          <h2 id="types-of-categorical-data">Types of Categorical Data</h2>
+          <p>
+            There are two main types of categorical data:{" "}
+            <strong>nominal</strong>, where data categories do not have an
+            inherent order (e.g., colors, types of cuisine), and{" "}
+            <strong>ordinal</strong>, where the categories have a logical order
+            (e.g., rankings, education level).
+          </p>
+
+          <h2 id="one-hot-encoding">One-Hot Encoding</h2>
+          <p>
+            One of the most common methods for handling nominal categorical
+            data. It involves creating a new binary column for each category and
+            is particularly useful for models that expect numerical input, like
+            logistic regression and neural networks.
+          </p>
+          <CodeBlock
+            language={"python"}
+            code={`import pandas as pd
+
+df = pd.get_dummies(df, columns=['your_column'])`}
+          />
+
+          <h2 id="label-encoding">Label Encoding</h2>
+          <p>
+            Converts each value in a column to a number. Useful for ordinal data
+            as the numbers can represent the order of the categories.
+          </p>
+          <CodeBlock
+            language={"python"}
+            code={`from sklearn.preprocessing import LabelEncoder
+
+le = LabelEncoder()
+df['your_column'] = le.fit_transform(df['your_column'])`}
+          />
+
+          <h2 id="handling-unseen-categories">Handling Unseen Categories</h2>
+          <p>
+            When your model encounters a category in the test set that wasn't
+            present during training, it's important to have a strategy to handle
+            this. Common approaches include assigning an 'unknown' label or
+            using the most frequent category.
+          </p>
+
+          <h2 id="feature-engineering">
+            Feature Engineering with Categorical Data
+          </h2>
+          <p>
+            Combining categories, creating interaction terms, or extracting
+            information from mixed data types (like addresses) can create
+            valuable features that improve model performance.
+          </p>
+
+          <h2 id="use-in-models">Using Categorical Data in Models</h2>
+          <p>
+            Many machine learning algorithms can now directly handle categorical
+            data. Libraries like CatBoost or handling in algorithms like
+            decision trees do not require explicit encoding as these algorithms
+            can inherently deal with categorical variables.
+          </p>
+        </Col>
+      </Row>
+      <Row>
+        <DataInteractionPanel
+          DataUrl={DataUrl}
+          notebookUrl={notebookUrl}
+          notebookHtmlUrl={notebookHtmlUrl}
+          notebookColabUrl={notebookColabUrl}
+          requirementsUrl={requirementsUrl}
+        />
+      </Row>
+    </Container>
+  );
+};
+
+export default HandleCategoricalValues;

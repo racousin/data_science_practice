@@ -19,6 +19,7 @@ const Files = () => {
             the `pandas` library's `read_csv()` function.
           </p>
           <CodeBlock
+            language={"python"}
             code={`import pandas as pd
 
 data = pd.read_csv("data.csv")`}
@@ -34,6 +35,7 @@ data = pd.read_csv("data.csv")`}
             library's `read_excel()` function.
           </p>
           <CodeBlock
+            language={"python"}
             code={`import pandas as pd
 
 data = pd.read_excel("data.xlsx")`}
@@ -50,6 +52,7 @@ data = pd.read_excel("data.xlsx")`}
             `pandas` library's `read_parquet()` function.
           </p>
           <CodeBlock
+            language={"python"}
             code={`import pandas as pd
 
 data = pd.read_parquet("data.parquet")`}

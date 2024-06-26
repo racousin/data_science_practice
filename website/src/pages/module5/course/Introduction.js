@@ -4,28 +4,55 @@ import { Container, Row, Col } from "react-bootstrap";
 const Introduction = () => {
   return (
     <Container fluid>
-      <h1 className="my-4">Introduction to Feature Engineering</h1>
-      <p>
-        Feature engineering is the process of using domain knowledge to extract
-        features (input variables) from raw data. These features can be used to
-        improve the performance of machine learning models.
-      </p>
       <Row>
-        <Col>
-          <h2>Importance and Impact of Feature Engineering</h2>
+        <Col xs={12}>
+          <h1 className="my-4">
+            Introduction to Data Cleaning and Preparation
+          </h1>
           <p>
-            Feature engineering can significantly impact the performance of
-            machine learning models. It can help to reduce overfitting, improve
-            accuracy, and make models more interpretable.
+            In the realm of data science, the quality of data underpins the
+            success of any analysis or predictive model. This course module is
+            designed to equip you with advanced skills in data cleaning and
+            preparation, ensuring you can enhance data accuracy and utility
+            across diverse contexts. We will delve into systematic approaches to
+            identify and correct inaccuracies, handle missing values, and
+            transform data into formats suitable for analysis.
           </p>
-          <h2>Overview of the Feature Engineering Process</h2>
           <p>
-            The feature engineering process typically involves data cleaning,
-            data transformation, and feature selection. Data cleaning involves
-            handling missing values and outliers. Data transformation involves
-            scaling and normalizing data, encoding categorical data, and binning
-            continuous variables. Feature selection involves selecting the most
-            relevant features for the model.
+            Data cleaning involves more than just removing errors or duplicates;
+            it's about understanding the nuances of data types, detecting
+            underlying patterns, and making informed decisions about how to
+            handle anomalies. By mastering these techniques, you will be able
+            to:
+          </p>
+          <ul>
+            <li>
+              Effectively manage missing data and understand the implications of
+              different imputation techniques.
+            </li>
+            <li>
+              Decode and transform categorical data, adapting it for analytical
+              models that require numerical input.
+            </li>
+            <li>
+              Identify and resolve inconsistencies in data collection and entry
+              that could skew analysis.
+            </li>
+            <li>
+              Utilize feature engineering to uncover additional value from
+              existing data sets.
+            </li>
+            <li>
+              Apply dimensionality reduction techniques to simplify models
+              without sacrificing the integrity of the data.
+            </li>
+          </ul>
+          <p>
+            Each topic is curated to provide comprehensive insights into the
+            practical challenges you'll face in real-world data science
+            projects. From theoretical underpinnings to hands-on applications,
+            this module will advance your abilities to prepare data rigorously,
+            enhancing your overall analytical and predictive capabilities.
           </p>
         </Col>
       </Row>

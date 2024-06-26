@@ -18,6 +18,7 @@ const AdvancedTechniques = () => {
             oversampling, undersampling, and synthetic data generation.
           </p>
           <CodeBlock
+            language={"python"}
             code={`# Example of oversampling
 from imblearn.over_sampling import SMOTE
 
@@ -30,6 +31,7 @@ X_smote, y_smote = smote.fit_resample(X, y)`}
             polynomial features and interaction terms.
           </p>
           <CodeBlock
+            language={"python"}
             code={`# Example of generating synthetic features
 X['interaction'] = X['feature1'] * X['feature2']`}
           />
@@ -39,6 +41,7 @@ X['interaction'] = X['feature1'] * X['feature2']`}
             functions and lag features.
           </p>
           <CodeBlock
+            language={"python"}
             code={`# Example of lag features
 X['lag1'] = X['feature'].shift(1)
 X['lag2'] = X['feature'].shift(2)`}

@@ -90,6 +90,7 @@ predictions = df[['id', 'SalePrice']]
 # Save to CSV
 predictions.to_csv('module3/predictions.csv', index=False)
 `}
+            language={"python"}
           />
         </Col>
       </Row>
