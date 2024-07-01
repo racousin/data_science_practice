@@ -8,18 +8,17 @@ const HandleDuplicates = () => {
     process.env.PUBLIC_URL + "/modules/module5/course/module5_requirements.txt";
   const trainDataUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/module5_course_handling_duplicates_train.csv";
+    "/modules/module5/course/module5_course_handling_duplicate_train.csv";
   const testDataUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/module5_course_handling_duplicates_test.csv";
+    "/modules/module5/course/module5_course_handling_duplicate_test.csv";
   const notebookUrl =
-    process.env.PUBLIC_URL +
-    "/modules/module5/course/Handling_Duplicates.ipynb";
+    process.env.PUBLIC_URL + "/modules/module5/course/handling_duplicate.ipynb";
   const notebookHtmlUrl =
-    process.env.PUBLIC_URL + "/modules/module5/course/Handling_Duplicates.html";
+    process.env.PUBLIC_URL + "/modules/module5/course/handling_duplicate.html";
   const notebookColabUrl =
     process.env.PUBLIC_URL +
-    "website/public/modules/module5/course/Handling_Duplicates.ipynb";
+    "website/public/modules/module5/course/handling_duplicate.ipynb";
 
   return (
     <Container fluid>
