@@ -6,9 +6,12 @@ import DataInteractionPanel from "components/DataInteractionPanel";
 const HandleDuplicates = () => {
   const requirementsUrl =
     process.env.PUBLIC_URL + "/modules/module5/course/module5_requirements.txt";
-  const DataUrl =
+  const trainDataUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/module5_course_handling_duplicates";
+    "/modules/module5/course/module5_course_handling_duplicates_train.csv";
+  const testDataUrl =
+    process.env.PUBLIC_URL +
+    "/modules/module5/course/module5_course_handling_duplicates_test.csv";
   const notebookUrl =
     process.env.PUBLIC_URL +
     "/modules/module5/course/Handling_Duplicates.ipynb";
@@ -149,24 +152,12 @@ print(matches)`}
 if 'date' in df.columns:
     df = df.drop_duplicates(subset=['date', 'category'], keep='first')`}
           />
-
-          <h2 id="verification">Verification Post-Removal</h2>
-          <p>
-            Always verify the results after removing duplicates to ensure the
-            integrity of your data and that no essential information was
-            inadvertently removed.
-          </p>
-          <CodeBlock
-            language={"python"}
-            code={`# Verify by checking the duplicates again
-remaining_duplicates = df[df.duplicated()]
-print("Duplicates remaining after deletion:", remaining_duplicates.shape[0])`}
-          />
         </Col>
       </Row>
       <Row>
         <DataInteractionPanel
-          DataUrl={DataUrl}
+          trainDataUrl={trainDataUrl}
+          testDataUrl={testDataUrl}
           notebookUrl={notebookUrl}
           notebookHtmlUrl={notebookHtmlUrl}
           notebookColabUrl={notebookColabUrl}

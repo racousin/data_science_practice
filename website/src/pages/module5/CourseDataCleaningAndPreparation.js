@@ -56,6 +56,23 @@ const CourseDataCleaningAndPreparation = () => {
       to: "/handle-duplicates",
       label: "Handle Duplicates",
       component: lazy(() => import("pages/module5/course/HandleDuplicates")),
+      subLinks: [
+        { id: "types-of-duplicates", label: "Types of Duplicates" },
+        {
+          id: "identifying-duplicates",
+          label: "Identifying Duplicates",
+        },
+        { id: "visualize-duplicates", label: "Visualize Duplicates" },
+        { id: "removing-duplicates", label: "Removing Duplicates" },
+        {
+          id: "advanced-techniques",
+          label: "Advanced Techniques",
+        },
+        {
+          id: "considerations",
+          label: "Considerations",
+        },
+      ],
     },
     {
       to: "/handle-outliers",

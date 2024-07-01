@@ -6,12 +6,9 @@ import DataInteractionPanel from "components/DataInteractionPanel";
 const HandleCategoricalValues = () => {
   const requirementsUrl =
     process.env.PUBLIC_URL + "/modules/module5/course/module5_requirements.txt";
-  const testDataUrl =
+  const DataUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/module5_course_handling_categorical_test.csv";
-  const trainDataUrl =
-    process.env.PUBLIC_URL +
-    "/modules/module5/course/module5_course_handling_categorical_train.csv";
+    "/modules/module5/course/module5_course_handling_categorical.csv";
   const notebookUrl =
     process.env.PUBLIC_URL +
     "/modules/module5/course/handling_categorical.ipynb";
@@ -157,8 +154,7 @@ df['your_column'] = le.fit_transform(df['your_column'])`}
       </Row>
       <Row>
         <DataInteractionPanel
-          trainDataUrl={trainDataUrl}
-          testDataUrl={testDataUrl}
+          DataUrl={DataUrl}
           notebookUrl={notebookUrl}
           notebookHtmlUrl={notebookHtmlUrl}
           notebookColabUrl={notebookColabUrl}
