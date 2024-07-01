@@ -51,6 +51,15 @@ const DataInteractionPanel = ({
         <Row className="mt-3">
           <Col>
             <h3>Dataset Metadata</h3>
+            <p>
+              <strong>Description:</strong> {metadata.description}
+            </p>
+            <p>
+              <strong>Source:</strong> {metadata.source}
+            </p>
+            <p>
+              <strong>Target Variable:</strong> {metadata.target}
+            </p>
             <Table striped bordered hover size="sm">
               <thead>
                 <tr>
@@ -59,8 +68,8 @@ const DataInteractionPanel = ({
                 </tr>
               </thead>
               <tbody>
-                {metadata.map((item) => (
-                  <tr key={item.name}>
+                {metadata.listData.map((item, index) => (
+                  <tr key={index}>
                     <td>{item.name}</td>
                     <td>{item.description}</td>
                   </tr>

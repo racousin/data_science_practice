@@ -19,6 +19,134 @@ const HandleDuplicates = () => {
   const notebookColabUrl =
     process.env.PUBLIC_URL +
     "website/public/modules/module5/course/handling_duplicate.ipynb";
+  const metadata = {
+    description:
+      "This dataset contains detailed meteorological measurements from various weather stations, capturing daily climatic conditions aimed at aiding weather forecasting and climatic research.",
+    source: "National Weather Service",
+    target: "Precipit", // Assuming Precipitation is a key measure to predict or analyze; adjust if different.
+    listData: [
+      {
+        name: "id",
+        description: "Unique identifier for each record.",
+        dataType: "Integer",
+        example: "1",
+      },
+      {
+        name: "station_id",
+        description: "Identifier for the weather station.",
+        dataType: "Integer",
+        example: "1004",
+      },
+      {
+        name: "Date",
+        description: "Date of observation.",
+        dataType: "Date",
+        example: "2018-02-26",
+      },
+      {
+        name: "Temp_max",
+        description:
+          "Maximum temperature recorded on the day, in degrees Fahrenheit.",
+        dataType: "Continuous",
+        example: "67.97°F",
+      },
+      {
+        name: "Temp_avg",
+        description: "Average temperature on the day, in degrees Fahrenheit.",
+        dataType: "Continuous",
+        example: "60.39°F",
+      },
+      {
+        name: "Temp_min",
+        description:
+          "Minimum temperature recorded on the day, in degrees Fahrenheit.",
+        dataType: "Continuous",
+        example: "55.23°F",
+      },
+      {
+        name: "Dew_max",
+        description: "Maximum dew point on the day, in degrees Fahrenheit.",
+        dataType: "Continuous",
+        example: "55.10°F",
+      },
+      {
+        name: "Dew_avg",
+        description: "Average dew point on the day, in degrees Fahrenheit.",
+        dataType: "Continuous",
+        example: "59.39°F",
+      },
+      {
+        name: "Dew_min",
+        description: "Minimum dew point on the day, in degrees Fahrenheit.",
+        dataType: "Continuous",
+        example: "54.76°F",
+      },
+      {
+        name: "Hum_max",
+        description: "Maximum humidity recorded on the day, in percentage.",
+        dataType: "Continuous",
+        example: "96.85%",
+      },
+      {
+        name: "Hum_avg",
+        description: "Average humidity on the day, in percentage.",
+        dataType: "Continuous",
+        example: "80.60%",
+      },
+      {
+        name: "Hum_min",
+        description: "Minimum humidity on the day, in percentage.",
+        dataType: "Continuous",
+        example: "60.21%",
+      },
+      {
+        name: "Wind_max",
+        description:
+          "Maximum wind speed recorded on the day, in miles per hour.",
+        dataType: "Continuous",
+        example: "12.94 mph",
+      },
+      {
+        name: "Wind_avg",
+        description: "Average wind speed on the day, in miles per hour.",
+        dataType: "Continuous",
+        example: "7.71 mph",
+      },
+      {
+        name: "Wind_min",
+        description: "Minimum wind speed on the day, in miles per hour.",
+        dataType: "Continuous",
+        example: "5.12 mph",
+      },
+      {
+        name: "Press_max",
+        description:
+          "Maximum atmospheric pressure on the day, in inches of mercury.",
+        dataType: "Continuous",
+        example: "30.67 inHg",
+      },
+      {
+        name: "Press_avg",
+        description:
+          "Average atmospheric pressure on the day, in inches of mercury.",
+        dataType: "Continuous",
+        example: "28.96 inHg",
+      },
+      {
+        name: "Press_min",
+        description:
+          "Minimum atmospheric pressure on the day, in inches of mercury.",
+        dataType: "Continuous",
+        example: "29.63 inHg",
+      },
+      {
+        name: "Precipit",
+        description: "Total precipitation on the day, in inches.",
+        dataType: "Continuous",
+        example: "1.01 inches",
+      },
+    ],
+  };
 
   return (
     <Container fluid>
@@ -154,6 +282,7 @@ if 'date' in df.columns:
         </Col>
       </Row>
       <Row>
+        <div id="notebook-example"></div>
         <DataInteractionPanel
           trainDataUrl={trainDataUrl}
           testDataUrl={testDataUrl}
@@ -161,6 +290,7 @@ if 'date' in df.columns:
           notebookHtmlUrl={notebookHtmlUrl}
           notebookColabUrl={notebookColabUrl}
           requirementsUrl={requirementsUrl}
+          metadata={metadata}
         />
       </Row>
     </Container>

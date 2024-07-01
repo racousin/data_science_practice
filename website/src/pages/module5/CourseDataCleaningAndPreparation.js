@@ -22,6 +22,7 @@ const CourseDataCleaningAndPreparation = () => {
         { id: "forward-fill", label: "Forward Fill" },
         { id: "k-nearest-neighbors", label: "K-Nearest Neighbors" },
         { id: "is_missing", label: "Adding a 'is_missing' Column" },
+        { id: "notebook-example", label: "Notebook Example" },
       ],
     },
     {
@@ -50,6 +51,7 @@ const CourseDataCleaningAndPreparation = () => {
           id: "use-in-models",
           label: "Using Categorical Data in Models",
         },
+        { id: "notebook-example", label: "Notebook Example" },
       ],
     },
     {
@@ -72,12 +74,27 @@ const CourseDataCleaningAndPreparation = () => {
           id: "considerations",
           label: "Considerations",
         },
+        { id: "notebook-example", label: "Notebook Example" },
       ],
     },
     {
       to: "/handle-outliers",
       label: "Handle Outliers",
       component: lazy(() => import("pages/module5/course/HandleOutliers")),
+      subLinks: [
+        { id: "what-are-outliers", label: "What Are Outliers?" },
+        {
+          id: "detecting-outliers",
+          label: "Detecting Outliers",
+        },
+        { id: "visualize-outliers", label: "Visualize Outliers" },
+        { id: "managing-outliers", label: "Managing Outliers" },
+        {
+          id: "considerations",
+          label: "Considerations",
+        },
+        { id: "notebook-example", label: "Notebook Example" },
+      ],
     },
     {
       to: "/feature-engineering",

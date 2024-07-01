@@ -6,16 +6,57 @@ import DataInteractionPanel from "components/DataInteractionPanel";
 const HandleOutliers = () => {
   const requirementsUrl =
     process.env.PUBLIC_URL + "/modules/module5/course/module5_requirements.txt";
-  const DataUrl =
+  const trainDataUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/module5_course_handling_outliers";
+    "/modules/module5/course/module5_course_handling_outliers_train.csv";
+  const testDataUrl =
+    process.env.PUBLIC_URL +
+    "/modules/module5/course/module5_course_handling_outliers_test.csv";
   const notebookUrl =
-    process.env.PUBLIC_URL + "/modules/module5/course/Handling_Outliers.ipynb";
+    process.env.PUBLIC_URL + "/modules/module5/course/handling_outliers.ipynb";
   const notebookHtmlUrl =
-    process.env.PUBLIC_URL + "/modules/module5/course/Handling_Outliers.html";
+    process.env.PUBLIC_URL + "/modules/module5/course/handling_outliers.html";
   const notebookColabUrl =
     process.env.PUBLIC_URL +
-    "website/public/modules/module5/course/Handling_Outliers.ipynb";
+    "website/public/modules/module5/course/handling_outliers.ipynb";
+  const metadata = {
+    description:
+      "This dataset includes various property metrics crucial for analyzing real estate sales, features, and pricing.",
+    source: "Real Estate Transaction Records",
+    target: "SalePrice",
+    listData: [
+      {
+        name: "BedroomAbvGr",
+        description:
+          "Bedrooms above grade (does NOT include basement bedrooms)",
+      },
+      { name: "KitchenAbvGr", description: "Kitchens above grade" },
+      {
+        name: "TotRmsAbvGrd",
+        description: "Total rooms above grade (does not include bathrooms)",
+      },
+      { name: "Fireplaces", description: "Number of fireplaces" },
+      { name: "GarageYrBlt", description: "Year garage was built" },
+      { name: "GarageCars", description: "Size of garage in car capacity" },
+      { name: "GarageArea", description: "Size of garage in square feet" },
+      { name: "WoodDeckSF", description: "Wood deck area in square feet" },
+      { name: "OpenPorchSF", description: "Open porch area in square feet" },
+      {
+        name: "EnclosedPorch",
+        description: "Enclosed porch area in square feet",
+      },
+      {
+        name: "3SsnPorch",
+        description: "Three season porch area in square feet",
+      },
+      { name: "ScreenPorch", description: "Screen porch area in square feet" },
+      { name: "PoolArea", description: "Pool area in square feet" },
+      { name: "MiscVal", description: "Value of miscellaneous feature" },
+      { name: "MoSold", description: "Month Sold (MM)" },
+      { name: "YrSold", description: "Year Sold (YYYY)" },
+      { name: "SalePrice", description: "Price of sale (target variable)" },
+    ],
+  };
 
   return (
     <Container fluid>
@@ -130,31 +171,18 @@ df.loc[df['data'] > (Q3 + 1.5 * IQR), 'data'] = Q3 + 1.5 * IQR`}
             can lead to biased results, especially in small datasets or datasets
             with natural variability.
           </p>
-
-          <h2 id="validation">Validation After Handling Outliers</h2>
-          <p>
-            Post-processing validation is crucial to ensure the quality and
-            consistency of the dataset:
-          </p>
-          <CodeBlock
-            language={"python"}
-            code={`# Visualization to confirm outlier handling
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-sns.boxplot(x=filtered_df['data'])
-plt.title('Box Plot after Handling Outliers')
-plt.show()`}
-          />
         </Col>
       </Row>
       <Row>
+        <div id="notebook-example"></div>
         <DataInteractionPanel
-          DataUrl={DataUrl}
+          trainDataUrl={trainDataUrl}
+          testDataUrl={testDataUrl}
           notebookUrl={notebookUrl}
           notebookHtmlUrl={notebookHtmlUrl}
           notebookColabUrl={notebookColabUrl}
           requirementsUrl={requirementsUrl}
+          metadata={metadata}
         />
       </Row>
     </Container>

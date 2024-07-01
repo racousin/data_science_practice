@@ -18,7 +18,49 @@ const HandleCategoricalValues = () => {
   const notebookColabUrl =
     process.env.PUBLIC_URL +
     "website/public/modules/module5/course/handling_categorical.ipynb";
-
+  const metadata = {
+    description:
+      "This dataset includes characteristics of different mushrooms, aiming to classify them as either poisonous or edible based on various physical attributes.",
+    source: "Mycology Research Data",
+    target: "class",
+    listData: [
+      {
+        name: "class",
+        description:
+          "Indicates whether the mushroom is poisonous (p) or edible (e).",
+        dataType: "Categorical",
+        example: "p (poisonous), e (edible)",
+      },
+      {
+        name: "cap-diameter",
+        description:
+          "Numerical measurement likely representing the diameter of the mushroom's cap.",
+        dataType: "Continuous",
+        example: "15 cm",
+      },
+      {
+        name: "cap-shape",
+        description:
+          "Descriptive categories for the shape of the mushroom cap (e.g., x for convex, f for flat).",
+        dataType: "Categorical",
+        example: "x (convex)",
+      },
+      {
+        name: "stem-width",
+        description:
+          "Numerical measurement likely representing the width of the mushroom's stem.",
+        dataType: "Continuous",
+        example: "2 cm",
+      },
+      {
+        name: "has-ring",
+        description:
+          "Boolean indicating the presence of a ring (t for true, f for false).",
+        dataType: "Boolean",
+        example: "t (true)",
+      },
+    ],
+  };
   return (
     <Container fluid>
       <h1 className="my-4">Handling Categorical Values</h1>
@@ -153,12 +195,14 @@ df['your_column'] = le.fit_transform(df['your_column'])`}
         </Col>
       </Row>
       <Row>
+        <div id="notebook-example"></div>
         <DataInteractionPanel
           DataUrl={DataUrl}
           notebookUrl={notebookUrl}
           notebookHtmlUrl={notebookHtmlUrl}
           notebookColabUrl={notebookColabUrl}
           requirementsUrl={requirementsUrl}
+          metadata={metadata}
         />
       </Row>
     </Container>
