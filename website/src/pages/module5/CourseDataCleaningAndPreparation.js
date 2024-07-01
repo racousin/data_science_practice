@@ -109,6 +109,11 @@ const CourseDataCleaningAndPreparation = () => {
       title="Module 5: Data Cleaning and Preparation"
       courseLinks={courseLinks}
     >
+      <Row>
+        <Col md={11}>
+          <DynamicRoutes routes={courseLinks} />
+        </Col>
+      </Row>
       {location.pathname === `/module${module}/course` && (
         <>
           <Row>
@@ -121,11 +126,6 @@ const CourseDataCleaningAndPreparation = () => {
           </Row>
         </>
       )}
-      <Row>
-        <Col md={11}>
-          <DynamicRoutes routes={courseLinks} />
-        </Col>
-      </Row>
     </ModuleFrame>
   );
 };

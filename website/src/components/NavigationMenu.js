@@ -8,7 +8,10 @@ const NavigationMenu = ({ links, prefix }) => {
   const scrollToElement = (id) => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+      window.scrollTo({
+        top: element.offsetTop - 190,
+        behavior: "smooth",
+      });
     }
   };
 

@@ -1,10 +1,10 @@
 # Makefile
 
 # Define the Python environment activation
-VENV_ACTIVATE = source venv/bin/activate
+VENV_ACTIVATE = . venv/bin/activate
 
-# Find all .ipynb files in the specified paths
-NOTEBOOKS := $(shell find website/public/modules/module* -type f -name '*.ipynb')
+# Find all .ipynb files in the specified paths, excluding checkpoints
+NOTEBOOKS := $(shell find website/public/modules/module* -type f -name '*.ipynb' ! -path '*/.ipynb_checkpoints/*')
 
 # Define the HTML targets
 HTMLS := $(NOTEBOOKS:.ipynb=.html)
@@ -15,7 +15,7 @@ all: $(HTMLS)
 # Rule to convert .ipynb to .html
 %.html: %.ipynb
 	@echo "Converting $< to $@"
-	@$(VENV_ACTIVATE) && jupyter nbconvert --to html "$<"
+	@bash -c "$(VENV_ACTIVATE) && jupyter nbconvert --to html \"$<\""
 
 .PHONY: clean
 

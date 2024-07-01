@@ -14,13 +14,13 @@ const HandleCategoricalValues = () => {
     "/modules/module5/course/module5_course_handling_categorical_train.csv";
   const notebookUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/Handling_Categorical_Values.ipynb";
+    "/modules/module5/course/handling_categorical.ipynb";
   const notebookHtmlUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/Handling_Categorical_Values.html";
+    "/modules/module5/course/handling_categorical.html";
   const notebookColabUrl =
     process.env.PUBLIC_URL +
-    "website/public/modules/module5/course/Handling_Categorical_Values.ipynb";
+    "website/public/modules/module5/course/handling_categorical.ipynb";
 
   return (
     <Container fluid>
