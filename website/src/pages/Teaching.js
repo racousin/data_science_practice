@@ -34,16 +34,9 @@ const Teaching = () => {
     },
     {
       id: 5,
-      title: "Module 5.1: Data Cleaning and Preparation",
+      title: "Module 5: Data Cleaning and Preparation",
       linkCourse: "/module5/course",
       linkExercise: "/module5/exercise",
-      tags: ["Analysis"],
-    },
-    {
-      id: 16,
-      title: "Module 5.2: Feature Engineering",
-      linkCourse: "",
-      linkExercise: "",
       tags: ["Analysis"],
     },
     {

@@ -6,9 +6,12 @@ import DataInteractionPanel from "components/DataInteractionPanel";
 const HandleCategoricalValues = () => {
   const requirementsUrl =
     process.env.PUBLIC_URL + "/modules/module5/course/module5_requirements.txt";
-  const DataUrl =
+  const testDataUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/module5_course_handling_categorical_values";
+    "/modules/module5/course/module5_course_handling_categorical_test.csv";
+  const trainDataUrl =
+    process.env.PUBLIC_URL +
+    "/modules/module5/course/module5_course_handling_categorical_train.csv";
   const notebookUrl =
     process.env.PUBLIC_URL +
     "/modules/module5/course/Handling_Categorical_Values.ipynb";
@@ -38,6 +41,65 @@ const HandleCategoricalValues = () => {
             inherent order (e.g., colors, types of cuisine), and{" "}
             <strong>ordinal</strong>, where the categories have a logical order
             (e.g., rankings, education level).
+          </p>
+          <h2 id="identify-and-visualize-categorical-values">
+            Identify and Visualize Categorical Values
+          </h2>
+          <p>
+            Identifying and visualizing categorical data is a crucial step in
+            data preprocessing, helping to understand the distribution of
+            categories and their influence on the dataset. Visualizing
+            categorical data can highlight imbalances or patterns that might
+            affect model performance. Enhanced visualization techniques like
+            count plots and bar plots can provide deeper insights by comparing
+            category distributions across different subgroups or in relation to
+            a target variable.
+          </p>
+          <CodeBlock
+            language={"python"}
+            code={`import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Identifying categorical columns by checking unique values or data type
+categorical_columns = [col for col in df.columns if df[col].dtype == 'object' or df[col].nunique() < 10]
+
+# Visualizing the distribution of a categorical column with a count plot
+plt.figure(figsize=(10, 6))
+sns.countplot(x='category_column', data=df, palette='Blues')
+plt.title('Count Plot of Categorical Data')
+plt.xlabel('Categories')
+plt.ylabel('Count')
+plt.xticks(rotation=45)  # Rotates labels to avoid overlap
+plt.show()
+
+# Using a bar plot to visualize the relationship between a categorical variable and a target variable
+plt.figure(figsize=(12, 8))
+sns.barplot(x='category_column', y='target_column', data=df, ci=None, palette='viridis')
+plt.title('Bar Plot Showing Relationship Between Categories and Target')
+plt.xlabel('Categories')
+plt.ylabel('Average of Target Variable')
+plt.xticks(rotation=45)
+plt.show()
+
+# Advanced visualization with count plot showing distribution across an additional category
+fig = plt.figure(figsize=(12,8))
+sns.countplot(x='category_column', hue='target_column', data=df, palette='Blues');
+fig.autofmt_xdate()
+plt.title('Distribution of Categories by Target')
+plt.xlabel('Categories')
+plt.ylabel('Frequency of target_column')
+plt.legend(title='Transmission')
+plt.show()`}
+          />
+
+          <p>
+            These visualizations offer a comprehensive view of categorical data
+            distribution, both independently and in relation to other variables.
+            Count plots provide a straightforward visual summary of frequency
+            distribution across categories, while bar plots highlight the impact
+            of categorical variables on a continuous or ordinal target,
+            facilitating deeper insights into potential relationships within the
+            data.
           </p>
 
           <h2 id="one-hot-encoding">One-Hot Encoding</h2>
@@ -95,7 +157,8 @@ df['your_column'] = le.fit_transform(df['your_column'])`}
       </Row>
       <Row>
         <DataInteractionPanel
-          DataUrl={DataUrl}
+          trainDataUrl={trainDataUrl}
+          testDataUrl={testDataUrl}
           notebookUrl={notebookUrl}
           notebookHtmlUrl={notebookHtmlUrl}
           notebookColabUrl={notebookColabUrl}

@@ -15,6 +15,14 @@ const CourseDataCleaningAndPreparation = () => {
       to: "/handle-missing-values",
       label: "Handle Missing Values",
       component: lazy(() => import("pages/module5/course/HandleMissingValues")),
+      subLinks: [
+        { id: "what-are-missing-values", label: "What are Missing Values?" },
+        { id: "visualize-missing-values", label: "Visualize Missing Values" },
+        { id: "imputation", label: "Mean/Median/Mode Imputation" },
+        { id: "forward-fill", label: "Forward Fill" },
+        { id: "k-nearest-neighbors", label: "K-Nearest Neighbors" },
+        { id: "is_missing", label: "Adding a 'is_missing' Column" },
+      ],
     },
     {
       to: "/handle-categorical-values",
@@ -22,6 +30,27 @@ const CourseDataCleaningAndPreparation = () => {
       component: lazy(() =>
         import("pages/module5/course/HandleCategoricalValues")
       ),
+      subLinks: [
+        { id: "types-of-categorical-data", label: "Types of Categorical Data" },
+        {
+          id: "identify-and-visualize-categorical-values",
+          label: "Identify and Visualize Categorical Values",
+        },
+        { id: "one-hot-encoding", label: "One-Hot Encoding" },
+        { id: "label-encoding", label: "Label Encoding" },
+        {
+          id: "handling-unseen-categories",
+          label: "Handling Unseen Categories",
+        },
+        {
+          id: "feature-engineering",
+          label: "Feature Engineering with Categorical Data",
+        },
+        {
+          id: "use-in-models",
+          label: "Using Categorical Data in Models",
+        },
+      ],
     },
     {
       to: "/handle-duplicates",

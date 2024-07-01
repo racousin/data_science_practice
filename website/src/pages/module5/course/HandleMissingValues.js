@@ -135,6 +135,53 @@ const HandleMissingValues = () => {
             </ul>
           </p>
           <MissingDataExample></MissingDataExample>
+          <h2 id="visualize-missing-values">Visualize Missing Values</h2>
+          <p>
+            Visualizing missing data is crucial for understanding the patterns
+            of missingness and deciding on appropriate imputation methods.
+            Visual techniques can highlight whether the data is missing at
+            random, missing completely at random, or missing not at random,
+            which can significantly influence your handling strategy.
+          </p>
+          <CodeBlock
+            language={"python"}
+            code={`import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+
+# Assuming df is your DataFrame
+# Heatmap to show where missing values occur
+plt.figure(figsize=(12, 8))
+sns.heatmap(df.isnull(), cbar=False, cmap='viridis')
+plt.title('Heatmap of Missing Values')
+plt.show()
+
+# Bar chart for missing values count
+missing_counts = df.isnull().sum().sort_values(ascending=False)
+missing_counts = missing_counts[missing_counts > 0]
+plt.figure(figsize=(10, 6))
+missing_counts.plot(kind='bar')
+plt.title('Bar Chart of Missing Values Count')
+plt.xlabel('Columns')
+plt.ylabel('Number of Missing Values')
+plt.show()`}
+          />
+
+          <p>
+            The heatmap provides a quick visual overview, showing the presence
+            of missing data across different columns and rows. Columns or rows
+            with no missing data will be consistently one color, while those
+            with missing data will show differently colored patches. This
+            visualization helps in quickly identifying patterns or correlations
+            in missing data across the dataset.
+          </p>
+          <p>
+            The bar chart complements the heatmap by quantifying the exact
+            number of missing entries per feature, allowing you to prioritize
+            which columns might need more attention either for further
+            investigation or for more sophisticated imputation techniques.
+          </p>
+
           <h2 id="imputation">Mean/Median/Mode Imputation</h2>
           <p>
             Missing values can often be imputed using central tendency measures
@@ -215,6 +262,7 @@ df['is_missing'] = df['your_column'].isnull()`}
           notebookHtmlUrl={notebookHtmlUrl}
           notebookColabUrl={notebookColabUrl}
           requirementsUrl={requirementsUrl}
+          metadata={metadata}
         />
       </Row>
     </Container>

@@ -71,6 +71,42 @@ IQR = Q3 - Q1
 outliers = df[(df['data'] < Q1 - 1.5 * IQR) | (df['data'] > Q3 + 1.5 * IQR)]
 print(outliers)`}
           />
+          <h2 id="visualize-outliers">Visualize Outliers</h2>
+          <p>
+            Visualizing outliers is an effective way to identify and understand
+            the anomalies in your data. Visualization helps in determining
+            whether outliers are the result of data entry errors, experimental
+            errors, or natural variation in the dataset.
+          </p>
+          <CodeBlock
+            language={"python"}
+            code={`import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Assuming 'df' is your DataFrame and 'data' is your column of interest
+# Boxplot to visualize outliers
+plt.figure(figsize=(10, 6))
+sns.boxplot(x=df['data'])
+plt.title('Box Plot for Outlier Detection')
+plt.show()
+
+# Scatter plot for multidimensional outlier analysis
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x='data', y='another_feature', data=df)
+plt.title('Scatter Plot for Outlier Detection')
+plt.xlabel('Data')
+plt.ylabel('Another Feature')
+plt.show()`}
+          />
+
+          <p>
+            The box plot provides a clear visual representation of the
+            distribution of the data, highlighting outliers as points that
+            appear far from the rest of the data. Scatter plots are useful for
+            detecting outliers in a multi-dimensional space, helping to identify
+            patterns or groups of outliers that may not be apparent in
+            one-dimensional plots.
+          </p>
 
           <h2 id="managing-outliers">Managing Outliers</h2>
           <p>

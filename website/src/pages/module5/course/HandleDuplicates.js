@@ -70,6 +70,43 @@ partial_duplicates = df[df.duplicated(subset=['column1', 'column2'])]
 print("Exact duplicates:", exact_duplicates.shape[0])
 print("Partial duplicates:", partial_duplicates.shape[0])`}
           />
+          <h2 id="visualize-duplicates">Visualize Duplicates</h2>
+          <p>
+            Visualizing duplicates can provide insightful perspectives on the
+            distribution and impact of duplicate data within your dataset. This
+            visualization helps in identifying patterns that might influence the
+            handling strategy for duplicates, especially when deciding whether
+            to remove or modify them.
+          </p>
+          <CodeBlock
+            language={"python"}
+            code={`import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Assuming 'df' is your DataFrame
+# Creating a temporary column 'is_duplicate' to mark duplicate rows
+df['is_duplicate'] = df.duplicated(keep=False)
+
+# Plotting duplicates
+plt.figure(figsize=(10, 6))
+sns.countplot(x='is_duplicate', data=df)
+plt.title('Visualization of Duplicate Records')
+plt.xlabel('Is Duplicate')
+plt.ylabel('Count')
+plt.show()
+
+# Dropping the temporary column after visualization
+df.drop(columns=['is_duplicate'], inplace=True)`}
+          />
+
+          <p>
+            This visualization uses a simple count plot to show the presence of
+            duplicate entries in the dataset. It marks each row as a duplicate
+            or not and counts the occurrences, providing a clear visual
+            representation of how many entries are affected. This method is
+            particularly useful for quickly assessing the extent of duplication
+            and determining if further cleaning steps are necessary.
+          </p>
 
           <h2 id="removing-duplicates">Removing Duplicates</h2>
           <p>

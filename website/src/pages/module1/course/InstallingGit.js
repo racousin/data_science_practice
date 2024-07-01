@@ -8,7 +8,7 @@ const InstallingGit = () => {
   const commands = {
     mac: "brew install git",
     windows: "choco install git",
-    linux: "sudo apt-get install git",
+    linux: "sudo apt install git",
     version: "git --version",
   };
 
