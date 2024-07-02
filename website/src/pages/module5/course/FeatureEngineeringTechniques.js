@@ -8,17 +8,67 @@ const FeatureEngineeringTechniques = () => {
     process.env.PUBLIC_URL + "/modules/module5/course/module5_requirements.txt";
   const DataUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/module5_course_feature_engineering_techniques";
+    "/modules/module5/course/module5_course_feature_engineering.csv";
   const notebookUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/Feature_Engineering_Techniques.ipynb";
+    "/modules/module5/course/feature_engineering.ipynb";
   const notebookHtmlUrl =
-    process.env.PUBLIC_URL +
-    "/modules/module5/course/Feature_Engineering_Techniques.html";
+    process.env.PUBLIC_URL + "/modules/module5/course/feature_engineering.html";
   const notebookColabUrl =
     process.env.PUBLIC_URL +
-    "website/public/modules/module5/course/Feature_Engineering_Techniques.ipynb";
-
+    "website/public/modules/module5/course/feature_engineering.ipynb";
+  const metadata = {
+    description:
+      "This dataset contains hourly weather and holiday information along with corresponding bike rental counts, aimed at predicting bike rental demand based on various environmental and temporal factors.",
+    source: "City Bike Share Program and Local Weather Station",
+    target: "count",
+    listData: [
+      {
+        name: "datetime",
+        description:
+          "Date and time of the observation, typically in hourly intervals.",
+        dataType: "Datetime",
+        example: "2022-01-01 13:00:00",
+      },
+      {
+        name: "holiday",
+        description:
+          "Boolean indicating whether the day is a holiday (1) or not (0).",
+        dataType: "Boolean",
+        example: "1 (holiday), 0 (not holiday)",
+      },
+      {
+        name: "temp",
+        description: "Temperature in Celsius at the time of observation.",
+        dataType: "Continuous",
+        example: "25.5",
+      },
+      {
+        name: "humidity",
+        description: "Relative humidity as a percentage.",
+        dataType: "Continuous",
+        example: "65.0",
+      },
+      {
+        name: "windspeed",
+        description: "Wind speed in km/h at the time of observation.",
+        dataType: "Continuous",
+        example: "12.7",
+      },
+      {
+        name: "pressure",
+        description: "Atmospheric pressure in hectopascals (hPa).",
+        dataType: "Continuous",
+        example: "1015.2",
+      },
+      {
+        name: "count",
+        description: "Number of bikes rented in the given hour.",
+        dataType: "Discrete",
+        example: "145",
+      },
+    ],
+  };
   return (
     <Container fluid>
       <h1 className="my-4">Feature Engineering Techniques</h1>
@@ -135,6 +185,7 @@ df['lag2'] = df['feature'].shift(2)`}
           notebookHtmlUrl={notebookHtmlUrl}
           notebookColabUrl={notebookColabUrl}
           requirementsUrl={requirementsUrl}
+          metadata={metadata}
         />
       </Row>
     </Container>
