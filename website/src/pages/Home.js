@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import StartLearningButton from "components/StartLearningButton";
 
 const Home = () => {
   return (
@@ -8,21 +9,14 @@ const Home = () => {
       <Row
         className="align-items-center"
         style={{
-          background: "url(/path/to/your/hero/background.jpg) center/cover",
-          height: "75vh",
+          height: "65vh",
         }}
       >
         <Col className="text-center">
-          <h1 className="text-white display-3 font-weight-bold">
+          <h1 className="text-gray display-3 font-weight-bold">
             Welcome to the Teaching Portal
           </h1>
-          <p className="text-white lead">
-            Explore the features and resources available for your learning and
-            development.
-          </p>
-          <Button variant="primary" size="lg" as={Link} to="/teaching">
-            Start Learning
-          </Button>
+          <StartLearningButton />
         </Col>
       </Row>
       <Row className="m-3 text-center">
