@@ -115,7 +115,7 @@ const MachineLearningPipeline = () => {
               duplicate records to avoid biased data.
             </li>
             <li>
-              <strong>Correct Inconsistencies:</strong> Fix any inaccuracies or
+              <strong>Handle Inconsistencies:</strong> Fix any inaccuracies or
               inconsistencies in data entries.
             </li>
             <li>

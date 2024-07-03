@@ -5,11 +5,56 @@ import ModuleFrame from "components/ModuleFrame";
 import { useLocation } from "react-router-dom";
 
 const CourseDataCleaningAndPreparation = () => {
+  const requirementsUrl =
+    process.env.PUBLIC_URL + "/modules/module5/course/module5_requirements.txt";
+  const DataUrl =
+    process.env.PUBLIC_URL +
+    "/modules/module5/course/module5_course_handle_inconsistencies.csv";
+  const notebookUrl =
+    process.env.PUBLIC_URL +
+    "/modules/module5/course/handle_inconsistencies.ipynb";
+  const notebookHtmlUrl =
+    process.env.PUBLIC_URL +
+    "/modules/module5/course/handle_inconsistencies.html";
+  const notebookColabUrl =
+    process.env.PUBLIC_URL +
+    "website/public/modules/module5/course/handle_inconsistencies.ipynb";
+  const metadata = {
+    description:
+      "This dataset contains demographic information including state, country, age, and date.",
+    source: "Demographic Survey Records",
+    target: null,
+    listData: [
+      {
+        name: "State",
+        description: "The state or province of residence",
+      },
+      {
+        name: "Country",
+        description: "The country of residence",
+      },
+      {
+        name: "Age",
+        description: "The age of the individual in years",
+      },
+      {
+        name: "Date",
+        description: "The date the information was recorded (YYYY-MM-DD)",
+      },
+    ],
+  };
   const courseLinks = [
     {
       to: "/introduction",
       label: "Introduction to Data Cleaning and Preparation",
       component: lazy(() => import("pages/module5/course/Introduction")),
+    },
+    {
+      to: "/correct-inconsistencies",
+      label: "Handle Inconsistencies",
+      component: lazy(() =>
+        import("pages/module5/course/HandleInconsistencies")
+      ),
     },
     {
       to: "/handle-missing-values",
@@ -104,34 +149,21 @@ const CourseDataCleaningAndPreparation = () => {
       ),
     },
     {
-      to: "/correct-inconsistencies",
-      label: "Correct Inconsistencies",
-      component: lazy(() =>
-        import("pages/module5/course/DataQualityAndInconsistencies")
-      ),
-    },
-    {
-      to: "/feature-selection",
-      label: "Feature Selection",
-      component: lazy(() => import("pages/module5/course/FeatureSelection")),
-    },
-    {
       to: "/scaling-and-normalization",
       label: "Scaling And Normalization",
       component: lazy(() =>
         import("pages/module5/course/ScalingAndNormalization")
       ),
     },
-    // {
-    //   to: "/filter-outliers",
-    //   label: "Filter Outliers",
-    //   component: lazy(() => import("pages/module5/course/FilterOutliers")),
-    // },
-    // {
-    //   to: "/best-practices",
-    //   label: "Best Practices and Common Pitfalls",
-    //   component: lazy(() => import("pages/module5/course/BestPractices")),
-    // },
+    {
+      to: "/feature-selection-dimensionality-reduction",
+      label: "FeatureSelection And Dimensionality Reduction",
+      component: lazy(() =>
+        import(
+          "pages/module5/course/FeatureSelectionAndDimensionalityReduction"
+        )
+      ),
+    },
   ];
 
   const location = useLocation();

@@ -3,25 +3,48 @@ import { Container, Row, Col } from "react-bootstrap";
 import CodeBlock from "components/CodeBlock";
 import DataInteractionPanel from "components/DataInteractionPanel";
 
-const DataQualityAndInconsistencies = () => {
+const HandleInconsistencies = () => {
   const requirementsUrl =
     process.env.PUBLIC_URL + "/modules/module5/course/module5_requirements.txt";
   const DataUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/module5_course_data_quality_and_inconsistencies";
+    "/modules/module5/course/module5_course_handle_inconsistencies.csv";
   const notebookUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/Data_Quality_And_Inconsistencies.ipynb";
+    "/modules/module5/course/handle_inconsistencies.ipynb";
   const notebookHtmlUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/Data_Quality_And_Inconsistencies.html";
+    "/modules/module5/course/handle_inconsistencies.html";
   const notebookColabUrl =
     process.env.PUBLIC_URL +
-    "website/public/modules/module5/course/Data_Quality_And_Inconsistencies.ipynb";
-
+    "website/public/modules/module5/course/handle_inconsistencies.ipynb";
+  const metadata = {
+    description:
+      "This dataset contains demographic information including state, country, age, and date.",
+    source: "Demographic Survey Records",
+    target: null,
+    listData: [
+      {
+        name: "State",
+        description: "The state or province of residence",
+      },
+      {
+        name: "Country",
+        description: "The country of residence",
+      },
+      {
+        name: "Age",
+        description: "The age of the individual in years",
+      },
+      {
+        name: "Date",
+        description: "The date the information was recorded (YYYY-MM-DD)",
+      },
+    ],
+  };
   return (
     <Container fluid>
-      <h1 className="my-4">Data Quality and Correcting Inconsistencies</h1>
+      <h1 className="my-4">Handle Inconsistencies</h1>
       <p>
         Ensuring high data quality is crucial for any analytical task or machine
         learning project. This section explores common data inconsistencies and
@@ -111,10 +134,11 @@ df['text_column'] = df['text_column'].str.replace(r'[^\\w\\s]', '', regex=True)`
           notebookHtmlUrl={notebookHtmlUrl}
           notebookColabUrl={notebookColabUrl}
           requirementsUrl={requirementsUrl}
+          metadata={metadata}
         />
       </Row>
     </Container>
   );
 };
 
-export default DataQualityAndInconsistencies;
+export default HandleInconsistencies;
