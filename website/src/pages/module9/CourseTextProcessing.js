@@ -9,51 +9,49 @@ const CourseTextProcessing = () => {
     {
       to: "/introduction",
       label: "Introduction to Text Processing",
-      component: lazy(() => import("pages/module12/course/Introduction")),
+      component: lazy(() => import("pages/module9/course/Introduction")),
     },
     {
       to: "/text-preprocessing",
       label: "Text Pre-processing",
-      component: lazy(() => import("pages/module12/course/TextPreprocessing")),
+      component: lazy(() => import("pages/module9/course/TextPreprocessing")),
     },
     {
       to: "/feature-extraction",
       label: "Feature Extraction from Text",
-      component: lazy(() => import("pages/module12/course/FeatureExtraction")),
+      component: lazy(() => import("pages/module9/course/FeatureExtraction")),
     },
     {
       to: "/text-classification",
       label: "Text Classification",
-      component: lazy(() => import("pages/module12/course/TextClassification")),
+      component: lazy(() => import("pages/module9/course/TextClassification")),
     },
     {
       to: "/topic-modeling",
       label: "Topic Modeling",
-      component: lazy(() => import("pages/module12/course/TopicModeling")),
+      component: lazy(() => import("pages/module9/course/TopicModeling")),
     },
     {
       to: "/nlp-with-deep-learning",
       label: "Natural Language Processing with Deep Learning",
-      component: lazy(() =>
-        import("pages/module12/course/NLPWithDeepLearning")
-      ),
+      component: lazy(() => import("pages/module9/course/NLPWithDeepLearning")),
     },
     {
       to: "/advanced-applications",
       label: "Advanced Applications of Text Processing",
       component: lazy(() =>
-        import("pages/module12/course/AdvancedApplications")
+        import("pages/module9/course/AdvancedApplications")
       ),
     },
   ];
 
   const location = useLocation();
-  const module = 12;
+  const module = 9;
   return (
     <ModuleFrame
-      module={12}
+      module={module}
       isCourse={true}
-      title="Module 12: Text Processing"
+      title="Module 9: Text Processing"
       courseLinks={courseLinks}
     >
       {location.pathname === `/module${module}/course` && (

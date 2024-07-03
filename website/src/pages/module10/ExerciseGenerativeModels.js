@@ -4,36 +4,36 @@ import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
 import { useLocation } from "react-router-dom";
 
-const ExerciseRecommendationSystems = () => {
+const ExerciseGenerativeModels = () => {
   const exerciseLinks = [
     {
       to: "/exercise1",
       label: "Exercise 1",
-      component: lazy(() => import("pages/module8/exercise/Exercise1")),
+      component: lazy(() => import("pages/module13/exercise/Exercise1")),
     },
     {
       to: "/exercise2",
       label: "Exercise 2",
-      component: lazy(() => import("pages/module8/exercise/Exercise2")),
+      component: lazy(() => import("pages/module13/exercise/Exercise2")),
     },
     // Add links to other exercises as needed
   ];
 
   const location = useLocation();
-  const module = 13;
+  const module = 10;
   return (
     <ModuleFrame
-      module={13}
+      module={module}
       isCourse={false}
-      title="Module 13: Exercise Recommendation Systems"
+      title="Module 10: Exercise Generative Models"
       courseLinks={exerciseLinks}
     >
       {location.pathname === `/module${module}/exercise` && (
         <>
           <Row>
             <p>
-              In this module, you will practice building recommendation systems
-              and their applications in data science.
+              In this module, you will practice building and applying generative
+              models in AI.
             </p>
           </Row>
           <Row>
@@ -52,4 +52,4 @@ const ExerciseRecommendationSystems = () => {
   );
 };
 
-export default ExerciseRecommendationSystems;
+export default ExerciseGenerativeModels;

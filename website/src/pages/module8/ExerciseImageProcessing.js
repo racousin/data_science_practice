@@ -4,7 +4,7 @@ import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
 import { useLocation } from "react-router-dom";
 
-const ExerciseDeepLearningFundamentals = () => {
+const ExerciseImageProcessing = () => {
   const exerciseLinks = [
     {
       to: "/exercise1",
@@ -23,17 +23,17 @@ const ExerciseDeepLearningFundamentals = () => {
   const module = 8;
   return (
     <ModuleFrame
-      module={8}
+      module={module}
       isCourse={false}
-      title="Module 8: Exercise Deep Learning Fundamentals"
+      title="Module 8: Exercise Image Processing"
       courseLinks={exerciseLinks}
     >
       {location.pathname === `/module${module}/exercise` && (
         <>
           <Row>
             <p>
-              In this module, you will practice building and training neural
-              networks using PyTorch.
+              In this module, you will practice image processing techniques and
+              applications.
             </p>
           </Row>
           <Row>
@@ -52,4 +52,4 @@ const ExerciseDeepLearningFundamentals = () => {
   );
 };
 
-export default ExerciseDeepLearningFundamentals;
+export default ExerciseImageProcessing;

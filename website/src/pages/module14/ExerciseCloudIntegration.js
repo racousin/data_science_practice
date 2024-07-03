@@ -4,7 +4,7 @@ import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
 import { useLocation } from "react-router-dom";
 
-const ExerciseTextProcessing = () => {
+const ExerciseCloudIntegration = () => {
   const exerciseLinks = [
     {
       to: "/exercise1",
@@ -20,20 +20,20 @@ const ExerciseTextProcessing = () => {
   ];
 
   const location = useLocation();
-  const module = 12;
+  const module = 14;
   return (
     <ModuleFrame
-      module={12}
+      module={module}
       isCourse={false}
-      title="Module 12: Exercise Text Processing"
+      title="Module 10: Exercise Cloud Integration (with GCP)"
       courseLinks={exerciseLinks}
     >
       {location.pathname === `/module${module}/exercise` && (
         <>
           <Row>
             <p>
-              In this module, you will practice text processing techniques and
-              applications in data science.
+              In this module, you will practice integrating your applications
+              with Google Cloud Platform (GCP).
             </p>
           </Row>
           <Row>
@@ -52,4 +52,4 @@ const ExerciseTextProcessing = () => {
   );
 };
 
-export default ExerciseTextProcessing;
+export default ExerciseCloudIntegration;

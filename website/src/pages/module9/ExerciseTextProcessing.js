@@ -4,7 +4,7 @@ import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
 import { useLocation } from "react-router-dom";
 
-const ExerciseGenerativeModels = () => {
+const ExerciseTextProcessing = () => {
   const exerciseLinks = [
     {
       to: "/exercise1",
@@ -20,20 +20,20 @@ const ExerciseGenerativeModels = () => {
   ];
 
   const location = useLocation();
-  const module = 14;
+  const module = 9;
   return (
     <ModuleFrame
-      module={14}
+      module={module}
       isCourse={false}
-      title="Module 14: Exercise Generative Models"
+      title="Module 9: Exercise Text Processing"
       courseLinks={exerciseLinks}
     >
       {location.pathname === `/module${module}/exercise` && (
         <>
           <Row>
             <p>
-              In this module, you will practice building and applying generative
-              models in AI.
+              In this module, you will practice text processing techniques and
+              applications in data science.
             </p>
           </Row>
           <Row>
@@ -52,4 +52,4 @@ const ExerciseGenerativeModels = () => {
   );
 };
 
-export default ExerciseGenerativeModels;
+export default ExerciseTextProcessing;

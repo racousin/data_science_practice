@@ -4,36 +4,36 @@ import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
 import { useLocation } from "react-router-dom";
 
-const ExerciseAdvancedTabularModels = () => {
+const ExerciseRecommendationSystems = () => {
   const exerciseLinks = [
     {
       to: "/exercise1",
       label: "Exercise 1",
-      component: lazy(() => import("pages/module7/exercise/Exercise1")),
+      component: lazy(() => import("pages/module11/exercise/Exercise1")),
     },
     {
       to: "/exercise2",
       label: "Exercise 2",
-      component: lazy(() => import("pages/module7/exercise/Exercise2")),
+      component: lazy(() => import("pages/module11/exercise/Exercise2")),
     },
     // Add links to other exercises as needed
   ];
 
   const location = useLocation();
-  const module = 7;
+  const module = 11;
   return (
     <ModuleFrame
-      module={7}
+      module={module}
       isCourse={false}
-      title="Module 7: Exercise Advanced Tabular Models"
+      title="Module 11: Exercise Recommendation Systems"
       courseLinks={exerciseLinks}
     >
       {location.pathname === `/module${module}/exercise` && (
         <>
           <Row>
             <p>
-              In this module, you will practice building and evaluating advanced
-              machine learning models for tabular data.
+              In this module, you will practice building recommendation systems
+              and their applications in data science.
             </p>
           </Row>
           <Row>
@@ -52,4 +52,4 @@ const ExerciseAdvancedTabularModels = () => {
   );
 };
 
-export default ExerciseAdvancedTabularModels;
+export default ExerciseRecommendationSystems;

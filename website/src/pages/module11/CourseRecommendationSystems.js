@@ -9,57 +9,57 @@ const CourseRecommendationSystems = () => {
     {
       to: "/introduction",
       label: "Introduction to Recommendation Systems",
-      component: lazy(() => import("pages/module13/course/Introduction")),
+      component: lazy(() => import("pages/module11/course/Introduction")),
     },
     {
       to: "/content-based-filtering",
       label: "Content-Based Filtering",
       component: lazy(() =>
-        import("pages/module13/course/ContentBasedFiltering")
+        import("pages/module11/course/ContentBasedFiltering")
       ),
     },
     {
       to: "/collaborative-filtering",
       label: "Collaborative Filtering",
       component: lazy(() =>
-        import("pages/module13/course/CollaborativeFiltering")
+        import("pages/module11/course/CollaborativeFiltering")
       ),
     },
     {
       to: "/evaluating-recommendation-systems",
       label: "Evaluating Recommendation Systems",
       component: lazy(() =>
-        import("pages/module13/course/EvaluatingRecommendationSystems")
+        import("pages/module11/course/EvaluatingRecommendationSystems")
       ),
     },
     {
       to: "/scalability-and-challenges",
       label: "Scalability and Real-World Challenges",
       component: lazy(() =>
-        import("pages/module13/course/ScalabilityAndChallenges")
+        import("pages/module11/course/ScalabilityAndChallenges")
       ),
     },
     {
       to: "/advanced-techniques",
       label: "Advanced Recommendation Techniques",
-      component: lazy(() => import("pages/module13/course/AdvancedTechniques")),
+      component: lazy(() => import("pages/module11/course/AdvancedTechniques")),
     },
     {
       to: "/recommendation-systems-in-practice",
       label: "Recommendation Systems in Practice",
       component: lazy(() =>
-        import("pages/module13/course/RecommendationSystemsInPractice")
+        import("pages/module11/course/RecommendationSystemsInPractice")
       ),
     },
   ];
 
   const location = useLocation();
-  const module = 13;
+  const module = 11;
   return (
     <ModuleFrame
-      module={13}
+      module={module}
       isCourse={true}
-      title="Module 13: Recommendation Systems"
+      title="Module 11: Recommendation Systems"
       courseLinks={courseLinks}
     >
       {location.pathname === `/module${module}/course` && (

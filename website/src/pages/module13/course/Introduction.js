@@ -4,22 +4,28 @@ import { Container, Row, Col } from "react-bootstrap";
 const Introduction = () => {
   return (
     <Container fluid>
-      <h1 className="my-4">Introduction to Recommendation Systems</h1>
+      <h1 className="my-4">Introduction to Containerization</h1>
       <p>
-        In this section, you will understand the principles and significance of
-        recommendation systems.
+        In this section, you will learn about containerization and why it's
+        useful.
       </p>
       <Row>
         <Col>
-          <h2>Overview of Recommendation Systems</h2>
+          <h2>Differences between Containers and Virtual Machines</h2>
           <p>
-            Recommendation systems are a type of information filtering system
-            that is used to suggest items to users based on their preferences.
+            Containers and virtual machines (VMs) are both technologies for
+            isolating applications and their dependencies. However, there are
+            some key differences between the two. Containers share the host
+            system's kernel, while VMs run a full-blown operating system. This
+            makes containers more lightweight and faster to start than VMs.
           </p>
-          <h2>Types of Recommendation Systems</h2>
+          <h2>Overview of the Docker Ecosystem</h2>
           <p>
-            There are three main types of recommendation systems: content-based,
-            collaborative filtering, and hybrid.
+            Docker is an open-source platform for building, shipping, and
+            running applications in containers. It provides a set of tools and
+            services for managing containers, including Docker Engine, Docker
+            Compose, and Docker Hub. Docker also has a large and active
+            community of developers and users.
           </p>
         </Col>
       </Row>

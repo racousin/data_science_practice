@@ -9,7 +9,7 @@ const CourseDeepLearningFundamentals = () => {
     {
       to: "/introduction",
       label: "Introduction to Neural Networks",
-      component: lazy(() => import("pages/module8/course/Introduction")),
+      component: lazy(() => import("pages/module7/course/Introduction")),
       subLinks: [
         {
           id: "biological-inspiration",
@@ -25,7 +25,7 @@ const CourseDeepLearningFundamentals = () => {
     {
       to: "/backpropagation",
       label: "Backpropagation and Optimization",
-      component: lazy(() => import("pages/module8/course/Backpropagation")),
+      component: lazy(() => import("pages/module7/course/Backpropagation")),
       subLinks: [
         { id: "chain-rule", label: "Chain rule and gradient descent" },
         { id: "backpropagation-algorithm", label: "Backpropagation algorithm" },
@@ -42,7 +42,7 @@ const CourseDeepLearningFundamentals = () => {
     {
       to: "/autodiff",
       label: "Automatic Differentiation (Autodiff)",
-      component: lazy(() => import("pages/module8/course/Autodiff")),
+      component: lazy(() => import("pages/module7/course/Autodiff")),
       subLinks: [
         { id: "forward-reverse", label: "Forward and reverse mode autodiff" },
         { id: "computational-graphs", label: "Computational graphs" },
@@ -52,7 +52,7 @@ const CourseDeepLearningFundamentals = () => {
     {
       to: "/activation-functions",
       label: "Activation Functions",
-      component: lazy(() => import("pages/module8/course/ActivationFunctions")),
+      component: lazy(() => import("pages/module7/course/ActivationFunctions")),
       subLinks: [
         {
           id: "common-functions",
@@ -68,7 +68,7 @@ const CourseDeepLearningFundamentals = () => {
     {
       to: "/regularization",
       label: "Regularization Techniques",
-      component: lazy(() => import("pages/module8/course/Regularization")),
+      component: lazy(() => import("pages/module7/course/Regularization")),
       subLinks: [
         { id: "l1-l2", label: "L1 and L2 regularization" },
         { id: "dropout", label: "Dropout" },
@@ -79,7 +79,7 @@ const CourseDeepLearningFundamentals = () => {
     {
       to: "/cnn",
       label: "Convolutional Neural Networks (CNNs)",
-      component: lazy(() => import("pages/module8/course/CNN")),
+      component: lazy(() => import("pages/module7/course/CNN")),
       subLinks: [
         { id: "convolution", label: "Convolution operation and intuition" },
         { id: "pooling", label: "Pooling layers" },
@@ -88,7 +88,7 @@ const CourseDeepLearningFundamentals = () => {
     {
       to: "/rnn",
       label: "Recurrent Neural Networks (RNNs)",
-      component: lazy(() => import("pages/module8/course/RNN")),
+      component: lazy(() => import("pages/module7/course/RNN")),
       subLinks: [
         {
           id: "sequence-modeling",
@@ -105,7 +105,7 @@ const CourseDeepLearningFundamentals = () => {
     {
       to: "/advanced-rnn",
       label: "Advanced RNN Architectures",
-      component: lazy(() => import("pages/module8/course/AdvancedRNN")),
+      component: lazy(() => import("pages/module7/course/AdvancedRNN")),
       subLinks: [
         { id: "bidirectional", label: "Bidirectional RNNs" },
         { id: "encoder-decoder", label: "Encoder-Decoder models" },
@@ -116,7 +116,7 @@ const CourseDeepLearningFundamentals = () => {
     {
       to: "/training",
       label: "Training Deep Neural Networks",
-      component: lazy(() => import("pages/module8/course/Training")),
+      component: lazy(() => import("pages/module7/course/Training")),
       subLinks: [
         {
           id: "weight-initialization",
@@ -130,7 +130,7 @@ const CourseDeepLearningFundamentals = () => {
     {
       to: "/interpretation",
       label: "Model Interpretation and Visualization",
-      component: lazy(() => import("pages/module8/course/Interpretation")),
+      component: lazy(() => import("pages/module7/course/Interpretation")),
       subLinks: [
         {
           id: "saliency-maps",
@@ -143,12 +143,12 @@ const CourseDeepLearningFundamentals = () => {
   ];
 
   const location = useLocation();
-  const module = 8;
+  const module = 7;
   return (
     <ModuleFrame
-      module={8}
+      module={module}
       isCourse={true}
-      title="Module 8: Deep Learning Fundamentals"
+      title="Module 7: Deep Learning Fundamentals"
       courseLinks={courseLinks}
     >
       {location.pathname === `/module${module}/course` && (

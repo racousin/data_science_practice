@@ -4,29 +4,30 @@ import { Container, Row, Col } from "react-bootstrap";
 const Introduction = () => {
   return (
     <Container fluid>
-      <h1 className="my-4">Introduction to Containerization</h1>
+      <h1 className="my-4">Introduction to Text Processing</h1>
       <p>
-        In this section, you will learn about containerization and why it's
-        useful.
+        In this section, you will understand the fundamentals of text processing
+        within the context of data science.
       </p>
       <Row>
         <Col>
-          <h2>Differences between Containers and Virtual Machines</h2>
+          <h2>
+            Overview of Text Processing and Its Significance in Data Analytics
+          </h2>
           <p>
-            Containers and virtual machines (VMs) are both technologies for
-            isolating applications and their dependencies. However, there are
-            some key differences between the two. Containers share the host
-            system's kernel, while VMs run a full-blown operating system. This
-            makes containers more lightweight and faster to start than VMs.
+            Text processing is the process of converting raw text data into a
+            format that can be analyzed and used to extract insights. It plays a
+            significant role in data analytics, enabling the analysis of
+            customer reviews, sentiment analysis, spam detection, and more.
           </p>
-          <h2>Overview of the Docker Ecosystem</h2>
-          <p>
-            Docker is an open-source platform for building, shipping, and
-            running applications in containers. It provides a set of tools and
-            services for managing containers, including Docker Engine, Docker
-            Compose, and Docker Hub. Docker also has a large and active
-            community of developers and users.
-          </p>
+          <h2>Challenges in Handling Text Data</h2>
+          <p>Handling text data presents several challenges, including:</p>
+          <ul>
+            <li>Noise and inconsistencies in the data</li>
+            <li>Ambiguity and subjectivity in language</li>
+            <li>Large volumes of data</li>
+            <li>The need for efficient and scalable solutions</li>
+          </ul>
         </Col>
       </Row>
     </Container>

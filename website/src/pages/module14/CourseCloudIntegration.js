@@ -9,55 +9,55 @@ const CourseCloudIntegration = () => {
     {
       to: "/introduction",
       label: "Introduction to Cloud Computing and GCP",
-      component: lazy(() => import("pages/module10/course/Introduction")),
+      component: lazy(() => import("pages/module14/course/Introduction")),
     },
     {
       to: "/managing-compute-resources",
       label: "Managing Compute Resources",
       component: lazy(() =>
-        import("pages/module10/course/ManagingComputeResources")
+        import("pages/module14/course/ManagingComputeResources")
       ),
     },
     {
       to: "/storing-managing-data",
       label: "Storing and Managing Data",
       component: lazy(() =>
-        import("pages/module10/course/StoringManagingData")
+        import("pages/module14/course/StoringManagingData")
       ),
     },
     {
       to: "/data-analysis-machine-learning",
       label: "Data Analysis and Machine Learning on GCP",
       component: lazy(() =>
-        import("pages/module10/course/DataAnalysisMachineLearning")
+        import("pages/module14/course/DataAnalysisMachineLearning")
       ),
     },
     {
       to: "/networking-security",
       label: "Networking and Security",
-      component: lazy(() => import("pages/module10/course/NetworkingSecurity")),
+      component: lazy(() => import("pages/module14/course/NetworkingSecurity")),
     },
     {
       to: "/devops-in-the-cloud",
       label: "DevOps in the Cloud",
-      component: lazy(() => import("pages/module10/course/DevOpsInTheCloud")),
+      component: lazy(() => import("pages/module14/course/DevOpsInTheCloud")),
     },
     {
       to: "/architecting-scalable-applications",
       label: "Architecting Scalable Applications",
       component: lazy(() =>
-        import("pages/module10/course/ArchitectingScalableApplications")
+        import("pages/module14/course/ArchitectingScalableApplications")
       ),
     },
   ];
 
   const location = useLocation();
-  const module = 10;
+  const module = 14;
   return (
     <ModuleFrame
-      module={10}
+      module={module}
       isCourse={true}
-      title="Module 10: Cloud Integration (with GCP)"
+      title="Module 14: Cloud Integration (with GCP)"
       courseLinks={courseLinks}
     >
       {location.pathname === `/module${module}/course` && (

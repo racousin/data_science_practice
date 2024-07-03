@@ -20,12 +20,12 @@ const ExerciseDocker = () => {
   ];
 
   const location = useLocation();
-  const module = 9;
+  const module = 13;
   return (
     <ModuleFrame
-      module={9}
+      module={module}
       isCourse={false}
-      title="Module 9: Exercise Docker"
+      title="Module 13: Exercise Docker"
       courseLinks={exerciseLinks}
     >
       {location.pathname === `/module${module}/exercise` && (

@@ -4,27 +4,22 @@ import { Container, Row, Col } from "react-bootstrap";
 const Introduction = () => {
   return (
     <Container fluid>
-      <h1 className="my-4">Introduction to Image Processing</h1>
+      <h1 className="my-4">Introduction to Recommendation Systems</h1>
       <p>
-        In this section, you will understand the fundamental concepts of image
-        processing.
+        In this section, you will understand the principles and significance of
+        recommendation systems.
       </p>
       <Row>
         <Col>
-          <h2>Overview of Image Processing and Its Applications</h2>
+          <h2>Overview of Recommendation Systems</h2>
           <p>
-            Image processing is a field that deals with the analysis,
-            manipulation, and understanding of digital images. It has a wide
-            range of applications, including medical imaging, computer vision,
-            and digital photography.
+            Recommendation systems are a type of information filtering system
+            that is used to suggest items to users based on their preferences.
           </p>
-          <h2>Basics of Digital Images</h2>
+          <h2>Types of Recommendation Systems</h2>
           <p>
-            Digital images are represented as a grid of pixels, where each pixel
-            has a specific color value. The color model used determines the
-            number of bits required to represent each pixel. Common color models
-            include RGB, Grayscale, and HSV. Image formats such as JPEG, PNG,
-            and TIFF are used to store and transmit digital images.
+            There are three main types of recommendation systems: content-based,
+            collaborative filtering, and hybrid.
           </p>
         </Col>
       </Row>
