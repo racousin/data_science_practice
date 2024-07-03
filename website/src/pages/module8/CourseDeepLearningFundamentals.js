@@ -8,46 +8,137 @@ const CourseDeepLearningFundamentals = () => {
   const courseLinks = [
     {
       to: "/introduction",
-      label: "Introduction to Deep Learning",
+      label: "Introduction to Neural Networks",
       component: lazy(() => import("pages/module8/course/Introduction")),
+      subLinks: [
+        {
+          id: "biological-inspiration",
+          label: "Biological inspiration and history",
+        },
+        {
+          id: "basic-components",
+          label: "Basic components: neurons, layers, activation functions",
+        },
+        { id: "feedforward", label: "Feedforward neural networks" },
+      ],
     },
     {
-      to: "/pytorch-basics",
-      label: "PyTorch Basics",
-      component: lazy(() => import("pages/module8/course/PyTorchBasics")),
+      to: "/backpropagation",
+      label: "Backpropagation and Optimization",
+      component: lazy(() => import("pages/module8/course/Backpropagation")),
+      subLinks: [
+        { id: "chain-rule", label: "Chain rule and gradient descent" },
+        { id: "backpropagation-algorithm", label: "Backpropagation algorithm" },
+        {
+          id: "sgd",
+          label: "Stochastic Gradient Descent (SGD) and its variants",
+        },
+        {
+          id: "optimizers",
+          label: "Learning rate schedules and adaptive optimizers",
+        },
+      ],
     },
     {
-      to: "/building-neural-networks",
-      label: "Building Neural Networks",
-      component: lazy(() =>
-        import("pages/module8/course/BuildingNeuralNetworks")
-      ),
+      to: "/autodiff",
+      label: "Automatic Differentiation (Autodiff)",
+      component: lazy(() => import("pages/module8/course/Autodiff")),
+      subLinks: [
+        { id: "forward-reverse", label: "Forward and reverse mode autodiff" },
+        { id: "computational-graphs", label: "Computational graphs" },
+        { id: "pytorch-autograd", label: "PyTorch's autograd system" },
+      ],
     },
     {
-      to: "/convolutional-neural-networks",
+      to: "/activation-functions",
+      label: "Activation Functions",
+      component: lazy(() => import("pages/module8/course/ActivationFunctions")),
+      subLinks: [
+        {
+          id: "common-functions",
+          label: "Sigmoid, tanh, ReLU, and their variants",
+        },
+        { id: "properties", label: "Properties and use cases" },
+        {
+          id: "custom-activations",
+          label: "Implementing custom activation functions in PyTorch",
+        },
+      ],
+    },
+    {
+      to: "/regularization",
+      label: "Regularization Techniques",
+      component: lazy(() => import("pages/module8/course/Regularization")),
+      subLinks: [
+        { id: "l1-l2", label: "L1 and L2 regularization" },
+        { id: "dropout", label: "Dropout" },
+        { id: "batch-normalization", label: "Batch Normalization" },
+        { id: "early-stopping", label: "Early stopping" },
+      ],
+    },
+    {
+      to: "/cnn",
       label: "Convolutional Neural Networks (CNNs)",
-      component: lazy(() =>
-        import("pages/module8/course/ConvolutionalNeuralNetworks")
-      ),
+      component: lazy(() => import("pages/module8/course/CNN")),
+      subLinks: [
+        { id: "convolution", label: "Convolution operation and intuition" },
+        { id: "pooling", label: "Pooling layers" },
+      ],
     },
     {
-      to: "/recurrent-neural-networks-lstms",
-      label: "Recurrent Neural Networks (RNNs) and LSTMs",
-      component: lazy(() =>
-        import("pages/module8/course/RecurrentNeuralNetworksLSTMs")
-      ),
+      to: "/rnn",
+      label: "Recurrent Neural Networks (RNNs)",
+      component: lazy(() => import("pages/module8/course/RNN")),
+      subLinks: [
+        {
+          id: "sequence-modeling",
+          label: "Sequence modeling and RNN architecture",
+        },
+        {
+          id: "vanishing-exploding",
+          label: "Vanishing and exploding gradients",
+        },
+        { id: "lstm", label: "Long Short-Term Memory (LSTM) networks" },
+        { id: "gru", label: "Gated Recurrent Units (GRU)" },
+      ],
     },
     {
-      to: "/training-deep-networks",
-      label: "Training Deep Networks",
-      component: lazy(() =>
-        import("pages/module8/course/TrainingDeepNetworks")
-      ),
+      to: "/advanced-rnn",
+      label: "Advanced RNN Architectures",
+      component: lazy(() => import("pages/module8/course/AdvancedRNN")),
+      subLinks: [
+        { id: "bidirectional", label: "Bidirectional RNNs" },
+        { id: "encoder-decoder", label: "Encoder-Decoder models" },
+        { id: "attention", label: "Attention mechanisms" },
+        { id: "transformer", label: "Transformer architecture" },
+      ],
     },
     {
-      to: "/advanced-topics",
-      label: "Advanced Topics in Deep Learning",
-      component: lazy(() => import("pages/module8/course/AdvancedTopics")),
+      to: "/training",
+      label: "Training Deep Neural Networks",
+      component: lazy(() => import("pages/module8/course/Training")),
+      subLinks: [
+        {
+          id: "weight-initialization",
+          label: "Weight initialization strategies",
+        },
+        { id: "gradient-clipping", label: "Gradient clipping" },
+        { id: "curriculum-learning", label: "Curriculum learning" },
+        { id: "mixed-precision", label: "Mixed precision training" },
+      ],
+    },
+    {
+      to: "/interpretation",
+      label: "Model Interpretation and Visualization",
+      component: lazy(() => import("pages/module8/course/Interpretation")),
+      subLinks: [
+        {
+          id: "saliency-maps",
+          label: "Saliency maps and activation maximization",
+        },
+        { id: "layer-visualization", label: "Layer visualization" },
+        { id: "tsne", label: "t-SNE for high-dimensional data visualization" },
+      ],
     },
   ];
 
@@ -64,8 +155,9 @@ const CourseDeepLearningFundamentals = () => {
         <>
           <Row>
             <p>
-              In this module, you will learn about the fundamentals of deep
-              learning and how to build and train neural networks using PyTorch.
+              This module covers the fundamentals of deep learning, from basic
+              neural network concepts to advanced architectures and training
+              techniques.
             </p>
           </Row>
           <Row>

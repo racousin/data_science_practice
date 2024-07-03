@@ -4,7 +4,7 @@ import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
 import { useLocation } from "react-router-dom";
 
-const ExerciseBuildingEvaluation = () => {
+const ExerciseTabularModels = () => {
   const exerciseLinks = [
     {
       to: "/exercise1",
@@ -52,4 +52,4 @@ const ExerciseBuildingEvaluation = () => {
   );
 };
 
-export default ExerciseBuildingEvaluation;
+export default ExerciseTabularModels;

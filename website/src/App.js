@@ -16,8 +16,8 @@ import CourseDataCleaningAndPreparation from "pages/module5/CourseDataCleaningAn
 import ExerciseDataCleaningAndPreparation from "pages/module5/ExerciseDataCleaningAndPreparation";
 import CourseDataCollection from "pages/module4/CourseDataCollection";
 import ExerciseDataCollection from "pages/module4/ExerciseDataCollection";
-import CourseModelBuildingEvaluation from "pages/module6/CourseModelBuildingEvaluation";
-import ExerciseModelBuildingEvaluation from "pages/module6/ExerciseModelBuildingEvaluation";
+import CourseTabularModels from "pages/module6/CourseTabularModels";
+import ExerciseTabularModels from "pages/module6/ExerciseTabularModels";
 import CourseAdvancedTabularModels from "pages/module7/CourseAdvancedTabularModels";
 import ExerciseAdvancedTabularModels from "pages/module7/ExerciseAdvancedTabularModels";
 import CourseDeepLearningFundamentals from "pages/module8/CourseDeepLearningFundamentals";
@@ -116,13 +116,10 @@ function App() {
             path="module5/exercise/*"
             element={<ExerciseDataCleaningAndPreparation />}
           />
-          <Route
-            path="module6/course/*"
-            element={<CourseModelBuildingEvaluation />}
-          />
+          <Route path="module6/course/*" element={<CourseTabularModels />} />
           <Route
             path="module6/exercise/*"
-            element={<ExerciseModelBuildingEvaluation />}
+            element={<ExerciseTabularModels />}
           />
           <Route
             path="module7/course/*"
