@@ -19,6 +19,7 @@ const DataInteractionPanel = ({
   const downloadFile = (url) => {
     window.open(url, "_self");
   };
+  // console.log(dataUrl);
   return (
     <Container className="my-4">
       <Row className="mb-2">

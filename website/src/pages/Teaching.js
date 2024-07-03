@@ -20,7 +20,7 @@ const Teaching = () => {
     },
     {
       id: 3,
-      title: "Module 3: ML Pipeline And Exploratory Data Analysis",
+      title: "Module 3: Data Science landscape",
       linkCourse: "/module3/course",
       linkExercise: "/module3/exercise",
       tags: ["Machine Learning", "Analysis"],

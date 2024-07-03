@@ -7,19 +7,87 @@ import { useLocation } from "react-router-dom";
 const CourseDataCollection = () => {
   const courseLinks = [
     {
-      to: "/files",
-      label: "Files",
-      component: lazy(() => import("pages/module4/course/Files")),
+      to: "/introduction",
+      label: "Introduction to Data Collection",
+      component: lazy(() => import("pages/module4/course/Introduction")),
+      subLinks: [
+        { id: "importance", label: "Importance in Data Science Pipeline" },
+        { id: "types", label: "Types of Data" },
+        { id: "sources", label: "Data Sources" },
+      ],
+    },
+    {
+      to: "/file-based-sources",
+      label: "File-based Data Sources",
+      component: lazy(() => import("pages/module4/course/FileBased")),
+      subLinks: [
+        { id: "file-formats", label: "CSV, JSON, XML Files" },
+        { id: "pandas-io", label: "Reading and Writing with Pandas" },
+        { id: "large-files", label: "Handling Large Files" },
+      ],
     },
     {
       to: "/databases",
-      label: "Databases",
+      label: "Database Systems",
       component: lazy(() => import("pages/module4/course/Databases")),
+      subLinks: [
+        { id: "relational", label: "Relational Databases (SQL)" },
+        { id: "nosql", label: "NoSQL Databases" },
+      ],
     },
     {
-      to: "/apis",
-      label: "APIs",
-      component: lazy(() => import("pages/module4/course/APIs")),
+      to: "/apis-web-scraping",
+      label: "APIs and Web Scraping",
+      component: lazy(() => import("pages/module4/course/APIsWebScraping")),
+      subLinks: [
+        { id: "restful-apis", label: "RESTful APIs" },
+        { id: "web-scraping", label: "Web Scraping Basics" },
+      ],
+    },
+    {
+      to: "/real-time-streams",
+      label: "Real-time Data Streams",
+      component: lazy(() => import("pages/module4/course/RealTimeStreams")),
+      subLinks: [
+        { id: "intro-streaming", label: "Introduction to Streaming Data" },
+        { id: "kafka", label: "Working with Apache Kafka" },
+        { id: "processing-streams", label: "Processing Streams with Python" },
+      ],
+    },
+    {
+      to: "/cloud-based-sources",
+      label: "Cloud-based Data Sources",
+      component: lazy(() => import("pages/module4/course/CloudBasedSources")),
+      subLinks: [
+        { id: "object-storage", label: "Object Storage Systems" },
+        { id: "data-warehouses", label: "Cloud Data Warehouses" },
+        { id: "python-sdks", label: "Accessing Cloud Data with Python SDKs" },
+      ],
+    },
+    {
+      to: "/data-manipulation",
+      label: "Data Manipulation with Pandas",
+      component: lazy(() => import("pages/module4/course/DataManipulation")),
+      subLinks: [
+        { id: "dataframe-series", label: "DataFrame and Series Objects" },
+        {
+          id: "loading-cleaning",
+          label: "Data Loading, Cleaning, and Preprocessing",
+        },
+        { id: "merging-joining", label: "Merging, Joining, and Concatenating" },
+        { id: "grouping-aggregation", label: "Grouping and Aggregation" },
+        { id: "missing-outliers", label: "Handling Missing Data and Outliers" },
+      ],
+    },
+    {
+      to: "/data-quality",
+      label: "Data Quality and Validation",
+      component: lazy(() => import("pages/module4/course/DataQuality")),
+      subLinks: [
+        { id: "assessing-quality", label: "Assessing Data Quality" },
+        { id: "profiling", label: "Data Profiling Techniques" },
+        { id: "validation-checks", label: "Implementing Validation Checks" },
+      ],
     },
   ];
 
@@ -36,8 +104,13 @@ const CourseDataCollection = () => {
         <>
           <Row>
             <p>
-              In this module, you will learn about the different sources of data
-              and how to retrieve data from them using Python.
+              In this module, you will learn about the various aspects of data
+              collection, including different data sources, techniques for
+              retrieving and handling data, and important considerations for
+              data quality and manipulation. You'll explore file-based sources,
+              databases, APIs, web scraping, real-time streams, and cloud-based
+              sources. Additionally, you'll learn about data manipulation with
+              Pandas and techniques for ensuring data quality and validation.
             </p>
           </Row>
           <Row>

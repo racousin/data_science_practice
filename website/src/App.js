@@ -10,8 +10,8 @@ import CourseGit from "pages/module1/CourseGit";
 import ExerciseGit from "pages/module1/ExerciseGit";
 import CoursePython from "pages/module2/CoursePython";
 import ExercisePython from "pages/module2/ExercisePython";
-import CourseMLPipelineAndExploratoryDataAnalysis from "pages/module3/CourseMLPipelineAndExploratoryDataAnalysis";
-import ExerciseMLPipelineAndExploratoryDataAnalysis from "pages/module3/ExerciseMLPipelineAndExploratoryDataAnalysis";
+import CourseDataScienceLandscape from "pages/module3/CourseDataScienceLandscape";
+import ExerciseMLPipelineAndExploratoryDataAnalysis from "pages/module3/ExerciseDataScienceLandscape";
 import CourseDataCleaningAndPreparation from "pages/module5/CourseDataCleaningAndPreparation";
 import ExerciseDataCleaningAndPreparation from "pages/module5/ExerciseDataCleaningAndPreparation";
 import CourseDataCollection from "pages/module4/CourseDataCollection";
@@ -97,7 +97,7 @@ function App() {
           <Route path="module2/exercise/*" element={<ExercisePython />} />
           <Route
             path="module3/course/*"
-            element={<CourseMLPipelineAndExploratoryDataAnalysis />}
+            element={<CourseDataScienceLandscape />}
           />
           <Route
             path="module3/exercise/*"

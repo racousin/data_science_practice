@@ -147,6 +147,28 @@ const CourseDataCleaningAndPreparation = () => {
       component: lazy(() =>
         import("pages/module5/course/FeatureEngineeringTechniques")
       ),
+      subLinks: [
+        { id: "decomposition", label: "Decomposition" },
+        {
+          id: "binning",
+          label: "Binning",
+        },
+        {
+          id: "interaction-features",
+          label: "Creation of Interaction Features",
+        },
+        { id: "aggregation", label: "Aggregation" },
+        {
+          id: "polynomial-features",
+          label: "Polynomial Features",
+        },
+        {
+          id: "transformation",
+          label: "Feature Transformation",
+        },
+        { id: "time-series", label: "Time-series Transformations" },
+        { id: "notebook-example", label: "Notebook Example" },
+      ],
     },
     {
       to: "/scaling-and-normalization",
@@ -154,6 +176,19 @@ const CourseDataCleaningAndPreparation = () => {
       component: lazy(() =>
         import("pages/module5/course/ScalingAndNormalization")
       ),
+      subLinks: [
+        { id: "why-scale-and-normalize", label: "Why Scale and Normalize?" },
+        {
+          id: "scaling-methods",
+          label: "Scaling Methods",
+        },
+        {
+          id: "normalization-methods",
+          label: "Normalization Methods",
+        },
+        { id: "choosing-method", label: "Choosing the Right Method" },
+        { id: "notebook-example", label: "Notebook Example" },
+      ],
     },
     {
       to: "/feature-selection-dimensionality-reduction",
@@ -163,6 +198,14 @@ const CourseDataCleaningAndPreparation = () => {
           "pages/module5/course/FeatureSelectionAndDimensionalityReduction"
         )
       ),
+      subLinks: [
+        { id: "Selection", label: "Feature Selection Techniques" },
+        {
+          id: "Reduction",
+          label: "Dimensionality Reduction Techniques",
+        },
+        { id: "notebook-example", label: "Notebook Example" },
+      ],
     },
   ];
 

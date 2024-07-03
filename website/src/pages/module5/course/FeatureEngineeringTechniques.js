@@ -179,6 +179,7 @@ df['lag2'] = df['feature'].shift(2)`}
         </Col>
       </Row>
       <Row>
+        <div id="notebook-example"></div>
         <DataInteractionPanel
           DataUrl={DataUrl}
           notebookUrl={notebookUrl}

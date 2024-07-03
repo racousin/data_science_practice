@@ -243,25 +243,3 @@ const MachineLearningPipeline = () => {
 };
 
 export default MachineLearningPipeline;
-
-// Integrating EDA Throughout the Machine Learning Pipeline
-// 1. Data Collection
-// Initial Data Exploration: Even before deep data collection, preliminary EDA can help define what data is needed. Visualizations and basic statistics can guide the identification of key variables that are likely to impact the outcome.
-// 2. Data Cleaning and Preparation
-// Detailed Examination of Data: Use EDA to understand the range, central tendencies, and dispersion of data. This step helps in identifying anomalies, outliers, and patterns in missing data.
-// Data Quality Checks: EDA tools such as histograms, box plots, and scatter plots can be used to visually check for data quality issues like outliers and anomalies.
-// 3. Feature Engineering
-// Feature Exploration: EDA is crucial here to discover potential relationships between variables that can be exploited to create new features. For example, combining variables, creating interaction terms, or decomposing complex variables (like dates) into simpler ones.
-// Assessing Feature Impact: Visualize how different features affect the target variable, using plots like bar charts for categorical data or scatter plots for continuous data. This helps in understanding which features are most predictive.
-// 4. Scaling and Normalization
-// Distribution Checks: Post-feature engineering, use EDA to check the distributions of your newly created features. This informs decisions on the need for further normalization or scaling.
-// 5. Model Building
-// Correlation Analysis: Before diving into complex model building, EDA can be used to assess the correlation between features using heatmaps, which helps in understanding potential multicollinearity and the impact of different features on the model.
-// 6. Model Evaluation
-// Residual Analysis: EDA techniques can be applied post-model training to examine the residuals of your models. Plotting residuals against fitted values helps in diagnosing issues with model fit and indicating whether further adjustments or transformations are needed.
-// 7. Deployment
-// Validation: Use EDA to validate model outputs in production versus expected outcomes or versus a hold-out sample from your dataset. This can be achieved by visualizing the differences and similarities in distributions and key statistics.
-// 8. Monitoring and Maintenance
-// Trend Analysis: Regularly applying EDA to the output of your model can help catch shifts in data over time (data drift) or changes in model performance, prompting necessary recalibrations.
-// 9. Documentation and Reporting
-// Visual Reporting: EDA provides a graphical way to report on the findings from the model, the insights from the data, and any potential issues. Effective visualizations make the results accessible not just to data scientists but also to business stakeholders.

@@ -175,7 +175,7 @@ const FeatureSelectionAndDimensionalityReduction = () => {
       </section>
 
       <section>
-        <h2>Feature Selection Techniques</h2>
+        <h2 id="Selection">Feature Selection Techniques</h2>
 
         <p>
           Feature selection is the process of selecting a subset of relevant
@@ -325,7 +325,7 @@ plt.show()
       </section>
 
       <section>
-        <h2>Dimensionality Reduction Techniques</h2>
+        <h2 id="Reduction">Dimensionality Reduction Techniques</h2>
 
         <p>
           Dimensionality reduction techniques transform the data from a
@@ -760,6 +760,7 @@ plt.show()
         </p>
       </section>
       <Row>
+        <div id="notebook-example"></div>
         <DataInteractionPanel
           DataUrl={DataUrl}
           notebookUrl={notebookUrl}

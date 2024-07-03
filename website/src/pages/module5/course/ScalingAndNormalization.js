@@ -342,6 +342,7 @@ data_l2 = normalizer.fit_transform(data)`}
         </Col>
       </Row>
       <Row>
+        <div id="notebook-example"></div>
         <DataInteractionPanel
           DataUrl={DataUrl}
           notebookUrl={notebookUrl}
