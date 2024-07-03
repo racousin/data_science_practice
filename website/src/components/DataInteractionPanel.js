@@ -1,5 +1,5 @@
-import React from "react";
-import { Button, Container, Row, Col, Table } from "react-bootstrap";
+import React, { useState } from "react";
+import { Button, Container, Row, Col, Table, Spinner } from "react-bootstrap";
 import { FaDownload, FaExternalLinkAlt } from "react-icons/fa";
 
 const DataInteractionPanel = ({
@@ -12,14 +12,25 @@ const DataInteractionPanel = ({
   dataUrl,
   metadata,
 }) => {
+  const [iframeLoading, setIframeLoading] = useState(true);
   const openInColab = (url) => {
-    const colabUrl = `https://colab.research.google.com/github/racousin/data_science_practice/blob/master/${notebookColabUrl}`;
+    const colabUrl = `https://colab.research.google.com/github/racousin/data_science_practice/blob/master/${url}`;
     window.open(colabUrl, "_blank");
   };
+
   const downloadFile = (url) => {
-    window.open(url, "_self");
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = url.split("/").pop(); // Assumes the URL ends with the filename
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
-  // console.log(dataUrl);
+
+  const openInNewTab = (url) => {
+    window.open(url, "_blank");
+  };
+
   return (
     <Container className="my-4">
       <Row className="mb-2">
@@ -86,7 +97,7 @@ const DataInteractionPanel = ({
           <Button variant="success" onClick={() => downloadFile(notebookUrl)}>
             Download Notebook <FaDownload />
           </Button>{" "}
-          <Button variant="info" onClick={() => openInColab(notebookUrl)}>
+          <Button variant="info" onClick={() => openInColab(notebookColabUrl)}>
             Open in Colab <FaExternalLinkAlt />
           </Button>
           {requirementsUrl && (
@@ -101,10 +112,42 @@ const DataInteractionPanel = ({
       </Row>
       <Row>
         <Col>
+          {iframeLoading && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "500px",
+              }}
+            >
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            </div>
+          )}
           <iframe
             src={notebookHtmlUrl}
-            style={{ width: "100%", height: "500px", border: "none" }}
+            style={{
+              width: "100%",
+              height: "500px",
+              border: "none",
+              display: iframeLoading ? "none" : "block",
+            }}
+            onLoad={() => setIframeLoading(false)}
           ></iframe>
+          <Button
+            variant="secondary"
+            style={{
+              position: "absolute",
+              right: "1rem",
+              top: "1rem",
+              zIndex: 1000,
+            }}
+            onClick={() => openInNewTab(notebookHtmlUrl)}
+          >
+            <FaExternalLinkAlt />
+          </Button>
         </Col>
       </Row>
     </Container>

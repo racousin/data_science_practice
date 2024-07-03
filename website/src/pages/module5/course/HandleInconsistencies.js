@@ -128,6 +128,7 @@ df['text_column'] = df['text_column'].str.replace(r'[^\\w\\s]', '', regex=True)`
         </Col>
       </Row>
       <Row>
+        <div id="notebook-example"></div>
         <DataInteractionPanel
           DataUrl={DataUrl}
           notebookUrl={notebookUrl}

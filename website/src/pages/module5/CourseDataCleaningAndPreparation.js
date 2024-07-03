@@ -55,6 +55,15 @@ const CourseDataCleaningAndPreparation = () => {
       component: lazy(() =>
         import("pages/module5/course/HandleInconsistencies")
       ),
+      subLinks: [
+        { id: "types-of-inconsistencies", label: "Types of Inconsistencies" },
+        { id: "detecting-inconsistencies", label: "Detecting Inconsistencies" },
+        {
+          id: "solutions-to-inconsistencies",
+          label: "Solutions to Inconsistencies",
+        },
+        { id: "notebook-example", label: "Notebook Example" },
+      ],
     },
     {
       to: "/handle-missing-values",

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
+import "styles/Teaching.css";
 
 const Teaching = () => {
   const [selectedTag, setSelectedTag] = useState("All");
@@ -46,13 +47,6 @@ const Teaching = () => {
       linkExercise: "/module6/exercise",
       tags: ["Machine Learning"],
     },
-    // {
-    //   id: 7,
-    //   title: "Module 7: Advanced Tabular Models",
-    //   linkCourse: "/module7/course",
-    //   linkExercise: "/module7/exercise",
-    //   tags: ["Machine Learning"],
-    // },
     {
       id: 7,
       title: "Module 7: Deep Learning Fundamentals",
@@ -131,9 +125,8 @@ const Teaching = () => {
       : modules.filter((module) => module.tags.includes(selectedTag));
 
   return (
-    <Container>
-      <h1 className="my-4">Data Science in Practice</h1>
-      <Form>
+    <Container className="teaching-container">
+      <Form className="teaching-form">
         <Form.Group controlId="tagSelect">
           <Form.Label>Select a tag to filter modules:</Form.Label>
           <Form.Control
@@ -150,45 +143,41 @@ const Teaching = () => {
       <Row>
         {selectedTag === "All" && (
           <Col key={0} md={4} className="mb-4">
-            <Card className="h-100">
+            <Card className="module-card h-100">
               <Card.Body>
-                <Card.Title>
+                <Card.Title className="module-title">
                   {"Module 0: Prerequisites and Methodology"}
                 </Card.Title>
-                <div>
-                  <Button
-                    variant="outline-primary"
-                    href={"/module0/course"}
-                    className="button"
-                  >
-                    Getting started
-                  </Button>
-                </div>
+                <Button
+                  variant="outline-primary"
+                  href={"/module0/course"}
+                  className="module-button module-button-outline-primary"
+                >
+                  Getting started
+                </Button>
               </Card.Body>
             </Card>
           </Col>
         )}
         {filteredModules.map((module) => (
           <Col key={module.id} md={4} className="mb-4">
-            <Card className="h-100">
+            <Card className="module-card h-100">
               <Card.Body>
-                <Card.Title>{module.title}</Card.Title>
-                <div>
-                  <Button
-                    variant="outline-primary"
-                    href={module.linkCourse}
-                    className="button"
-                  >
-                    Go to Course
-                  </Button>
-                  <Button
-                    variant="outline-secondary"
-                    href={module.linkExercise}
-                    className="button"
-                  >
-                    Go to Exercise
-                  </Button>
-                </div>
+                <Card.Title className="module-title">{module.title}</Card.Title>
+                <Button
+                  variant="outline-primary"
+                  href={module.linkCourse}
+                  className="module-button module-button-outline-primary"
+                >
+                  Go to Course
+                </Button>
+                <Button
+                  variant="outline-secondary"
+                  href={module.linkExercise}
+                  className="module-button module-button-outline-secondary"
+                >
+                  Go to Exercise
+                </Button>
               </Card.Body>
             </Card>
           </Col>
