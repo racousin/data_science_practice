@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Image } from "react-bootstrap";
 import CodeBlock from "components/CodeBlock";
 
 const FirstStepsWithGit = () => {
@@ -90,6 +90,21 @@ const FirstStepsWithGit = () => {
             pending to be added to your next commit:
           </p>
           <CodeBlock code="git status" />
+          <CodeBlock
+            code={`$ git status
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	example.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+`}
+            showCopy={false}
+            language=""
+          />
           <p>
             You will see 'example.txt' listed as an untracked file because Git
             has noticed a new file in the directory but it hasn't been added to
@@ -108,7 +123,18 @@ const FirstStepsWithGit = () => {
             running <code>git status</code> again, which will now show
             'example.txt' as staged.
           </p>
+          <CodeBlock
+            code={`$ git status
+On branch master
 
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+	new file:   example.txt
+`}
+            language=""
+          />
           <h4>Step 4: Stage all changes in the directory:</h4>
           <p>
             If you have multiple files to stage, you can add all modified files
@@ -130,7 +156,9 @@ const FirstStepsWithGit = () => {
             This command will remove 'example.txt' from the staging area but the
             file will remain in your working directory with any changes intact.
             Running <code>git status</code> will now show the file as not staged
-            for commit.
+            for commit. NB: If you don't have any commits yet, using{" "}
+            <code>git reset HEAD &quot;&lt;file&gt;&quot;</code> will result in
+            an error.
           </p>
         </Col>
       </Row>
@@ -171,12 +199,33 @@ const FirstStepsWithGit = () => {
             changes and should be informative and concise.
           </p>
           <CodeBlock code="git commit -m 'Your commit message'" />
+          <CodeBlock
+            code={`$ git commit -m 'Your commit message'
+[master (root-commit) 1c17586] Your commit message
+ 1 file changed, 1 insertion(+)
+ create mode 100644 example.txt
+
+`}
+            language=""
+          />
           <p>
             This command captures a snapshot of the project's currently staged
             changes. The commit message should clearly describe what the changes
             do, making it easier for others (and your future self) to understand
             the purpose of the changes without needing to read the code.
           </p>
+        </Col>
+      </Row>
+      <Row className="justify-content-center">
+        <Col xs={12} md={10} lg={8}>
+          <div className="text-center">
+            <Image
+              src="/assets/module1/Git_Workflow.png"
+              alt="Git Workflow Diagram"
+              fluid
+            />
+            <p>Git Workflow Diagram</p>
+          </div>
         </Col>
       </Row>
 
@@ -223,6 +272,27 @@ const FirstStepsWithGit = () => {
             <code>git log</code> command:
           </p>
           <CodeBlock code="git log" />
+          <CodeBlock
+            code={`commit 58ad9c9a1ca32944e9440c354631f5985a262d6e (HEAD -> master)
+Author: username <username@mail.com>
+Date:   Thu Jul 4 12:12:29 2024 +0200
+
+    commit message 3
+
+commit e380ec1ec5b257e96ee15e3648eeec351cf1009c
+Author: username <username@mail.com>
+Date:   Thu Jul 4 12:12:23 2024 +0200
+
+    commit message 2
+
+commit 6bd8e71d76237dfa4b72a8268c0f423e7bc91793
+Author: username <username@mail.com>
+Date:   Thu Jul 4 12:12:14 2024 +0200
+
+    commit message 1
+`}
+            language=""
+          />
           <p>
             This command displays the commit IDs, author information, dates, and
             commit messages in a detailed log format.
@@ -251,13 +321,48 @@ const FirstStepsWithGit = () => {
             <code>--all</code> to show all branches:
           </p>
           <CodeBlock code="git log --graph --oneline --all" />
+          <CodeBlock
+            code={`| * cc56e19 fix/Use correctly backlog and po
+|/  
+*   e035944 Merge pull request #7 from multi/ml
+|\  
+| * 3e0abe6 update
+| * 66598a8 comments
+| *   fe0be5c Merge branch 'refacto/multi/ml/classif' of github.com:main/ml
+ncept into refacto/multi_ml
+| |\  
+| | * 6018bef Update simulation.py
+| | * 64ba655 Update main.py
+| * | 002d42e fix
+| |/  
+| * 5bb7e7c update
+|/  
+*   ef3061f Merge pull request #6 from multi/ml/auto_ml
+|\  
+| * 5da7b55 - Fix issues with recent data.
+| * c98d77a update ML with hotfix for dates
+
+`}
+            language=""
+          />
           <p>
             This graph view provides a visual representation of branches and
             merge points in your commit history.
           </p>
         </Col>
       </Row>
-
+      <Row className="justify-content-center">
+        <Col xs={12} md={10} lg={8}>
+          <div className="text-center">
+            <Image
+              src="/assets/module1/Git_Commit_History.png"
+              alt="Git_Commit_History"
+              fluid
+            />
+            <p>Git_Commit_History</p>
+          </div>
+        </Col>
+      </Row>
       {/* Undoing Changes */}
       <Row>
         <Col>
@@ -295,6 +400,27 @@ const FirstStepsWithGit = () => {
             log:
           </p>
           <CodeBlock code="git log" />
+          <CodeBlock
+            code={`commit 58ad9c9a1ca32944e9440c354631f5985a262d6e (HEAD -> master)
+Author: username <username@mail.com>
+Date:   Thu Jul 4 12:12:29 2024 +0200
+
+    Add modify content
+
+commit e380ec1ec5b257e96ee15e3648eeec351cf1009c
+Author: username <username@mail.com>
+Date:   Thu Jul 4 12:12:23 2024 +0200
+
+    Your commit message
+
+commit 6bd8e71d76237dfa4b72a8268c0f423e7bc91793
+Author: username <username@mail.com>
+Date:   Thu Jul 4 12:12:14 2024 +0200
+
+    commit message 1
+`}
+            language=""
+          />
           <p>
             This command displays a list of recent commits, each with a unique
             hash at the top, author information, date, and commit message. Look
@@ -309,6 +435,18 @@ const FirstStepsWithGit = () => {
           <h4>Viewing the Difference</h4>
           <p>To see what was changed with a previous commit, you can use:</p>
           <CodeBlock code="git diff <commit_hash>" />
+          <CodeBlock
+            code={`$ git diff e380ec1ec5b257e96ee15e3648eeec351cf1009cq
+diff --git a/example.txt b/example.txt
+index 8430408..9201842 100644
+--- a/example.txt
++++ b/example.txt
+@@ -1 +1 @@
+-Initial content
++Modify content
+`}
+            language=""
+          />
           <p>
             This command shows the differences between the current HEAD and the
             previous commit.
@@ -326,13 +464,31 @@ const FirstStepsWithGit = () => {
             undoes all changes made in the previous commit:
           </p>
           <CodeBlock code="git revert <commit_hash>" />
+          <CodeBlock
+            code={`$ git revert 58ad9c9a1ca32944e9440c354631f5985a262d6e
+[master 22a36a3] Revert "Add modify content"
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+`}
+            language=""
+          />
           <p>
             This is safe for shared branches as it does not alter commit
             history.
           </p>
         </Col>
       </Row>
-
+      <Row className="justify-content-center">
+        <Col xs={12} md={10} lg={8}>
+          <div className="text-center">
+            <Image
+              src="/assets/module1/Git_Commit_History_Revert.png"
+              alt="Git_Commit_History_Revert"
+              fluid
+            />
+            <p>Git_Commit_Revert</p>
+          </div>
+        </Col>
+      </Row>
       {/* Checking Out a Previous Version */}
       <Row className="mt-4">
         <Col>
@@ -343,7 +499,7 @@ const FirstStepsWithGit = () => {
           </p>
           <CodeBlock code="git checkout <commit_hash>" />
           <p>
-            This command will go back in the past. You can then return to main
+            This command will go back in the past. You can then return to main{" "}
             <code>HEAD</code> commit using
           </p>
           <CodeBlock code="git checkout main" />

@@ -30,11 +30,6 @@ const Collaborating = () => {
               contains production-quality code.
             </li>
             <li>
-              <strong>Forking Workflow:</strong> Contributors fork a GitHub
-              repository, make changes in their own copies, and submit pull
-              requests. This model is widely used in open-source projects.
-            </li>
-            <li>
               <strong>Gitflow Workflow:</strong> This is an extension of the
               feature branch workflow, adding designated branches for preparing,
               maintaining, and recording releases.

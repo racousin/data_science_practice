@@ -63,6 +63,31 @@ const ConfigureAndAccessGithub = () => {
             Securely connect to GitHub with SSH by generating a new SSH key:
           </p>
           <CodeBlock code={commands.sshKeyGen} language="bash" />
+          <CodeBlock
+            code={`$ ssh-keygen -t rsa -b 4096 -C 'username@email.com'
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/username/.ssh/id_rsa): 
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/username/.ssh/id_rsa
+Your public key has been saved in /home/username/.ssh/id_rsa.pub
+The key fingerprint is:
+SHA256:U508DNoGVSuUKX7KM2Y6+U8tBQujvvqulLsd7/ohS5Q username@email.com
+The key's randomart image is:
++---[RSA 4096]----+
+|        ..++.    |
+|        .=o= o   |
+|       .+.* B    |
+|       o.=.+ .   |
+|      E.So. .    |
+|     +  B. o     |
+|    o ==.oo .    |
+|   . ++* o .     |
+|    =*B*=..      |
++----[SHA256]-----+
+`}
+            language=""
+          />
           <p>
             After generating the key, start the SSH agent in the background and
             add your new SSH key to it:
@@ -91,7 +116,10 @@ const ConfigureAndAccessGithub = () => {
             <li>Go to your GitHub account settings.</li>
             <li>Navigate to "SSH and GPG keys" under "Access."</li>
             <li>Click on "New SSH key" to add a new key.</li>
-            <li>Paste your public key into the field and save it.</li>
+            <li>
+              Paste your public key (<code>cat .ssh/id_rsa.pub</code>) into the
+              field and save it.
+            </li>
           </ol>
           <p>
             This step is essential for authenticating your future SSH sessions
@@ -101,6 +129,12 @@ const ConfigureAndAccessGithub = () => {
           <h4>Test Your SSH Connection</h4>
           <p>Verify that SSH is properly set up by connecting to GitHub:</p>
           <CodeBlock code={commands.testConnection} language="bash" />
+          <CodeBlock
+            code={`$ ssh -T git@github.com
+Hi username! You've successfully authenticated, but GitHub does not provide shell access.
+`}
+            language=""
+          />
           <p>
             If the connection is successful, you'll see a message confirming you
             are authenticated.

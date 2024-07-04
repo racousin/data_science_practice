@@ -47,10 +47,10 @@ const CourseDataScienceLandscape = () => {
         { id: "eda-techniques", label: "EDA Techniques" },
         { id: "visualization-tools", label: "Visualization Tools for EDA" },
         { id: "statistical-measures", label: "Statistical Measures in EDA" },
-        // {
-        //   id: "handling-data-issues",
-        //   label: "Handling Missing Data and Outliers",
-        // },
+        {
+          id: "handling-data-issues",
+          label: "Handling Missing Data and Outliers",
+        },
         { id: "eda-data-types", label: "EDA for Different Data Types" },
         { id: "jupyter-notebooks", label: "Jupyter Notebooks" },
         { id: "google-colab", label: "Google Colab" },
@@ -71,6 +71,15 @@ const CourseDataScienceLandscape = () => {
         },
         { id: "train-test-splits", label: "Train-Test-Validation Splits" },
         { id: "evaluation-metrics", label: "Evaluation Metrics" },
+        { id: "model-comparison", label: "Model Comparison and Selection" },
+        {
+          id: "imbalanced-datasets",
+          label: "Dealing with Imbalanced Datasets",
+        },
+        {
+          id: "model-interpretability",
+          label: "Model Interpretability and Explainability",
+        },
       ],
     },
     {

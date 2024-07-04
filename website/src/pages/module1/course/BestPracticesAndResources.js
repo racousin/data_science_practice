@@ -47,7 +47,7 @@ const BestPracticesAndResources = () => {
         </Col>
       </Row>
       {/* Merge vs. Rebase */}
-      <Row>
+      {/* <Row>
         <Col>
           <h3 id="merge-vs-rebase">Merge vs. Rebase</h3>
           <p>
@@ -72,7 +72,7 @@ const BestPracticesAndResources = () => {
             cleaner and linear history.
           </p>
         </Col>
-      </Row>
+      </Row> */}
       {/* Git Tagging */}
       <Row className="mt-4">
         <Col>
@@ -98,7 +98,9 @@ const BestPracticesAndResources = () => {
             </li>
           </ul>
           <CodeBlock
-            code={`git tag v1.0\n git tag -a v1.1 -m "Release version 1.1"\n git push origin v1.1`}
+            code={`git tag v1.0
+git tag -a v1.1 -m "Release version 1.1"
+git push origin v1.1`}
           />
           <p>
             Tags can help you and your team to refer to specific releases
@@ -116,7 +118,10 @@ const BestPracticesAndResources = () => {
             your working directory, allowing you to work on something else, and
             then come back and re-apply them later on.
           </p>
-          <CodeBlock code={`git stash\n git stash apply`} />
+          <CodeBlock
+            code={`git stash
+git stash apply`}
+          />
           <p>
             Stashing is handy if you need to quickly switch context and work on
             something else, but you're not ready to commit.
@@ -148,51 +153,9 @@ const BestPracticesAndResources = () => {
             repository.
           </p>
           <CodeBlock
+            language=""
             code={`name: CI\n on: push\n jobs: build\n runs-on: ubuntu-latest\n steps:\n - uses: actions/checkout@v2\n - name: Run a one-line script\n run: echo Hello, world!`}
           />
-        </Col>
-      </Row>
-
-      {/* Resources */}
-      <Row className="mt-4">
-        <Col>
-          <h3 id="resources">Resources</h3>
-          <p>
-            Here are some valuable resources for learning more about Git and
-            GitHub:
-          </p>
-          <ul>
-            <li>
-              <a
-                href="https://git-scm.com/book/en/v2"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Pro Git Book
-              </a>{" "}
-              - Comprehensive guide to Git.
-            </li>
-            <li>
-              <a
-                href="https://docs.github.com/en/actions"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                GitHub Actions Documentation
-              </a>{" "}
-              - Learn how to automate your workflow with GitHub Actions.
-            </li>
-            <li>
-              <a
-                href="https://www.atlassian.com/git/tutorials"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Atlassian Git Tutorials
-              </a>{" "}
-              - Tutorials on various Git topics by Atlassian.
-            </li>
-          </ul>
         </Col>
       </Row>
     </Container>

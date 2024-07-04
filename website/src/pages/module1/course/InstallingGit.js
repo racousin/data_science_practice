@@ -125,6 +125,12 @@ const InstallingGit = () => {
             command prompt and type the following command:
           </p>
           <CodeBlock code={commands.version} />
+          <CodeBlock
+            code={`$ git --version
+git version 2.34.1`}
+            showCopy={false}
+            language=""
+          />
           <p>
             This command should display the installed version of Git, confirming
             that the software is ready for use.

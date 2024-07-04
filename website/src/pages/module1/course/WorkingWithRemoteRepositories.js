@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col, Nav, Tab } from "react-bootstrap";
+import { Container, Row, Col, Nav, Tab, Image } from "react-bootstrap";
 import CodeBlock from "components/CodeBlock";
 
 const WorkingWithRemoteRepositories = () => {
@@ -23,7 +23,18 @@ const WorkingWithRemoteRepositories = () => {
               </p>
             </Col>
           </Row>
-
+          <Row className="justify-content-center">
+            <Col xs={12} md={10} lg={8}>
+              <div className="text-center">
+                <Image
+                  src="/assets/module1/Git_Remote_Workflow.png"
+                  alt="Git_Remote_Workflow"
+                  fluid
+                />
+                <p>Git_Remote_Workflow</p>
+              </div>
+            </Col>
+          </Row>
           {/* Creating a Repository on GitHub */}
           <Row>
             <Col>
@@ -54,23 +65,23 @@ const WorkingWithRemoteRepositories = () => {
           <Row>
             <Col>
               <h2>Connecting to Remote Repositories</h2>
-              <p>
-                Managing your projects with remote repositories allows you to
-                collaborate more effectively. Whether you are adding a remote to
-                an existing repository or cloning a new one, these steps will
-                guide you through the process.
-              </p>
+              <ol>
+                <li>Navigate to the Repository of interest.</li>
+                <li>Click &#60;&#62; Code ▼.</li>
+                <li>Select SSH.</li>
+                <li>Copy the &#60;remote_repository_url&#62;</li>
+              </ol>
               <div className="mytab">
-                <Tab.Container defaultActiveKey="add">
+                <Tab.Container defaultActiveKey="clone">
                   <Nav variant="pills" className="mb-3">
-                    <Nav.Item>
-                      <Nav.Link eventKey="add" className="mx-1">
-                        Add to Existing Local Repository
-                      </Nav.Link>
-                    </Nav.Item>
                     <Nav.Item>
                       <Nav.Link eventKey="clone" className="mx-1">
                         Clone Remote Repository
+                      </Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                      <Nav.Link eventKey="add" className="mx-1">
+                        Add to Existing Local Repository
                       </Nav.Link>
                     </Nav.Item>
                   </Nav>
@@ -127,6 +138,13 @@ const WorkingWithRemoteRepositories = () => {
                 </li>
               </ul>
               <CodeBlock code="git remote -v" />
+              <CodeBlock
+                code={`$ git remote -v
+origin	git@github.com:racousin/data_science_practice.git (fetch)
+origin	git@github.com:racousin/data_science_practice.git (push)
+`}
+                language=""
+              />
               <p>
                 This output is particularly useful for verifying which remotes
                 are set up for fetch and push operations, ensuring that you have
@@ -224,6 +242,18 @@ const WorkingWithRemoteRepositories = () => {
                 the repository. It ensures that you are working on the latest
                 version of the project, reducing conflicts and inconsistencies.
               </p>
+            </Col>
+          </Row>
+          <Row className="justify-content-center">
+            <Col xs={12} md={10} lg={8}>
+              <div className="text-center">
+                <Image
+                  src="/assets/module1/Git_Fetch_Merge_Pull.png"
+                  alt="Git_Fetch_Merge_Pull"
+                  fluid
+                />
+                <p>Git_Fetch_Merge_Pull</p>
+              </div>
             </Col>
           </Row>
           <Row>

@@ -175,3 +175,9 @@ div.mytab .tab-content {
   padding: 1rem;
   background-color: white;
 }
+
+.terminal-result {
+  background-color: #2d2d2d; /* Dark background to indicate terminal output */
+  border-left: 4px solid #f39c12; /* Add a colored border to differentiate */
+  padding-left: 10px;
+}

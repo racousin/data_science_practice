@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Image } from "react-bootstrap";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import CodeBlock from "components/CodeBlock";
@@ -20,29 +20,33 @@ const BranchingAndMerging = () => {
       <Row>
         <Col>
           <h3 id="working-with-branches">Working with Branches</h3>
-          <p>
-            Branches in Git are incredibly lightweight, making branching and
-            switching between branches quick and easy:
-          </p>
+          <p></p>
           <ol>
             <li>
+              <strong>List all local Branches:</strong>
+              <CodeBlock code={`git branch`} />
+              <CodeBlock
+                code={`$ git branch
+  master
+  my_branch1
+* my_branch2
+  my_branch3`}
+                language=""
+              />
+              The <code>*</code> indicates the current branch.
+            </li>
+
+            <li>
               <strong>Create a Branch:</strong> Use{" "}
-              <code>git branch new-branch-name</code> to create a new branch.
-            </li>
-            <li>
-              <strong>Switch to a Branch:</strong> Use{" "}
-              <code>git checkout new-branch-name</code> to switch to your new
-              branch and start working independently from other branches.
-            </li>
-            <li>
-              <strong>List Branches:</strong> Use <code>git branch</code> to
-              list all local branches. Add <code>-a</code> to see remote
-              branches as well.
+              <CodeBlock code={`git checkout -b newbranch`} />
+              <CodeBlock
+                code={`$ git checkout -b newbranch
+Switched to a new branch 'newbranch'
+`}
+                language=""
+              />
             </li>
           </ol>
-          <CodeBlock
-            code={`git branch\n git checkout new-branch-name\n git branch -a`}
-          />
         </Col>
       </Row>
 
@@ -52,26 +56,165 @@ const BranchingAndMerging = () => {
           <h3 id="merging-branches">Merging Branches</h3>
           <p>
             Once development on a branch is complete, the changes can be merged
-            back into the main branch (e.g., 'main' or 'master'):
+            back into the main branch (e.g. 'main'). Here are different merge
+            types:
           </p>
           <ul>
             <li>
-              <strong>Standard Merge:</strong> Use{" "}
-              <code>git merge branch-name</code> from the receiving branch to
-              integrate changes.
+              <strong>Fast-forward Merge:</strong>
+              <p>
+                Occurs when the target branch hasn't diverged from the source
+                branch. Git simply moves the pointer forward.
+              </p>
+              <CodeBlock
+                code={`git checkout main
+git merge feature-branch`}
+              />
+              <CodeBlock
+                code={`$ git checkout main
+Switched to branch 'main'
+$ git merge feature-branch
+Updating 22a36a3..3951f63
+Fast-forward
+ example.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)`}
+                language=""
+              />
             </li>
             <li>
-              <strong>No-Fast-Forward Merge:</strong> Use{" "}
-              <code>git merge --no-ff branch-name</code> to ensure a new commit
-              is made even if the merge could be performed with a fast-forward.
+              <strong>Three-way Merge:</strong>
+              <p>
+                Occurs when the target branch has diverged from the source
+                branch. Git creates a new commit to merge the histories.
+              </p>
+              <CodeBlock
+                code={`git checkout main
+git merge feature-branch`}
+              />
+              <CodeBlock
+                code={`$ git checkout main
+Switched to branch 'main'
+$ git merge feature-branch
+Merge made by the 'recursive' strategy.
+ example.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)`}
+                language=""
+              />
+            </li>
+            <li>
+              <strong>Squash Merge:</strong>
+              <p>
+                Combines all changes from the source branch into a single commit
+                in the target branch.
+              </p>
+              <CodeBlock
+                code={`git checkout main
+git merge --squash feature-branch
+git commit -m "Squashed feature-branch changes"`}
+              />
+            </li>
+            <li>
+              <strong>Rebase:</strong>
+              <p>
+                Moves the entire feature branch to begin on the tip of the main
+                branch, effectively incorporating all new commits in main.
+              </p>
+              <CodeBlock
+                code={`git checkout feature-branch
+git rebase main
+git checkout main
+git merge feature-branch`}
+              />
+            </li>
+            <li>
+              <strong>No-fast-forward Merge:</strong>
+              <p>
+                Forces a new merge commit even when a fast-forward merge is
+                possible. Useful for maintaining a record of merges.
+              </p>
+              <CodeBlock
+                code={`git checkout main
+git merge --no-ff feature-branch`}
+              />
             </li>
           </ul>
-          <CodeBlock
-            code={`git checkout main\n git merge new-branch-name\n git merge --no-ff new-branch-name`}
-          />
         </Col>
       </Row>
+      <Row className="justify-content-center">
+        <Col xs={12} md={10} lg={8}>
+          <div className="text-center">
+            <Image
+              src="/assets/module1/Git_Merge_Types.png"
+              alt="Git_Merge_Types"
+              fluid
+            />
+            <p>Git_Merge_Types</p>
+          </div>
+        </Col>
+      </Row>
+      {/* Merging Branches */}
+      <Row className="mt-4">{/* ... (existing code) ... */}</Row>
 
+      {/* Advantages of Merge Strategies */}
+      <Row className="mt-4">
+        <Col>
+          <h4>Advantages of Different Merge Strategies</h4>
+          <table className="table table-bordered">
+            <thead>
+              <tr>
+                <th>Merge Type</th>
+                <th>Advantages</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Fast-forward</td>
+                <td>
+                  - Simplest and cleanest history
+                  <br />
+                  - No additional merge commits
+                  <br />- Preserves linear history
+                </td>
+              </tr>
+              <tr>
+                <td>Three-way</td>
+                <td>
+                  - Preserves complete history of both branches
+                  <br />
+                  - Clearly shows where branches diverged and merged
+                  <br />- Useful for complex feature integrations
+                </td>
+              </tr>
+              <tr>
+                <td>Squash</td>
+                <td>
+                  - Simplifies feature history into a single commit
+                  <br />
+                  - Keeps main branch history clean and concise
+                  <br />- Easier to revert entire features if needed
+                </td>
+              </tr>
+              <tr>
+                <td>Rebase</td>
+                <td>
+                  - Creates a linear, clean history
+                  <br />
+                  <br />- Avoids unnecessary merge commits
+                </td>
+              </tr>
+              <tr>
+                <td>No-fast-forward</td>
+                <td>
+                  - Always creates a merge commit
+                  <br />
+                  - Preserves branch structure and merge points
+                  <br />- Useful for tracking when and where merges occurred
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </Col>
+      </Row>
       {/* Resolving Merge Conflicts */}
       <Row className="mt-4">
         <Col>
@@ -84,6 +227,24 @@ const BranchingAndMerging = () => {
             <li>
               <strong>Identify Conflicts:</strong> During a merge, Git will tell
               you if there are conflicts that need manual resolution.
+              <CodeBlock
+                code={`$ git merge newbranch
+Auto-merging example.txt
+CONFLICT (content): Merge conflict in example.txt
+Automatic merge failed; fix conflicts and then commit the result.
+$ git status
+On branch main
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+  (use "git merge --abort" to abort the merge)
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+	both modified:   example.txt
+`}
+                language=""
+                showCopy={false}
+              />
             </li>
             <li>
               <strong>Edit Files:</strong> Open the conflicted files and make
@@ -92,23 +253,22 @@ const BranchingAndMerging = () => {
             <li>
               <strong>Mark as Resolved:</strong> Use <code>git add</code> on the
               resolved files to mark them as resolved.
+              <CodeBlock code={`git add example.txt`} />
             </li>
             <li>
               <strong>Complete the Merge:</strong> Use <code>git commit</code>{" "}
               to complete the merge.
+              <CodeBlock
+                code={`git commit -m "Resolved merge conflict by including both suggestions."`}
+              />
             </li>
           </ol>
-          <CodeBlock
-            code={`git add resolved-file.txt\n git commit -m "Resolved merge conflict by including both suggestions."`}
-          />
         </Col>
       </Row>
       {/* Concrete Example of Branching and Merging */}
       <Row className="mt-4">
         <Col>
-          <h3 id="example-case">
-            Concrete Example: Adding a Feature via Branch
-          </h3>
+          <h3 id="example-case">Example: Adding a Feature via Branch</h3>
           <p>
             Imagine you are working on a project and need to add a new feature
             without disrupting the main development line. Here’s how you can
