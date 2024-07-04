@@ -72,64 +72,86 @@ const Introduction = () => {
       </Row>
       <Row>
         <Col md={12}>
-          <h3 id="applications">The Applications</h3>
+          <h3 id="applications">Recent Breakthroughs in AI Applications</h3>
           <p>
-            Data science finds its application in virtually every sector,
-            driving innovation and efficiency while significantly impacting
-            global GDP. By harnessing the power of data, industries can optimize
-            operations, predict trends, and enhance customer experiences.
+            Recent years have seen remarkable advancements in AI applications
+            across various domains, demonstrating the transformative power of
+            data science and machine learning. Here are some notable
+            breakthroughs:
           </p>
-          <h4>Economic Impact</h4>
+
+          <h4>AlphaFold: Revolutionizing Protein Structure Prediction</h4>
           <p>
-            According to a 2024 report by McKinsey Global Institute, data-driven
-            decision making has the potential to add $15 trillion to global GDP
-            by 2030. This impact is predominantly seen in sectors like
-            healthcare, retail, and manufacturing, where predictive analytics
-            and machine learning offer massive improvements in efficiency and
-            service delivery.
-          </p>
-          <h4>Healthcare</h4>
-          <p>
-            In healthcare, data science is revolutionizing patient care through
-            predictive analytics and personalized medicine. For example, machine
-            learning models are used to predict patient readmission risks and
-            customize treatment plans based on individual genetic profiles.
-          </p>
-          <h4>Retail</h4>
-          <p>
-            The retail sector utilizes data science to enhance customer
-            engagement and optimize supply chains. Big data analytics help
-            retailers understand consumer behavior, predict trends, and manage
-            inventory more efficiently. An example is Amazon’s recommendation
-            engine, which analyzes customer data to suggest products, driving
-            significant sales increases.
-          </p>
-          <h4>Finance</h4>
-          <p>
-            In finance, data science techniques are employed to detect
-            fraudulent transactions and automate trading strategies. Banks and
-            financial institutions use complex algorithms to monitor for unusual
-            patterns that indicate fraud, significantly reducing losses.
-          </p>
-          <h4>Manufacturing</h4>
-          <p>
-            Smart manufacturing with IoT (Internet of Things) devices uses data
-            science to predict equipment failures and schedule preventive
-            maintenance, which minimizes downtime and extends the lifespan of
-            machinery.
-          </p>
-          <h4>Urban Planning</h4>
-          <p>
-            Data science contributes to smarter urban planning through traffic
-            management and resource distribution in cities. By analyzing traffic
-            flow data, city planners can optimize traffic lights and reduce
-            congestion, enhancing the quality of urban life.
+            In 2020, DeepMind's AlphaFold achieved a major breakthrough in the
+            protein folding problem. It predicted protein structures with
+            unprecedented accuracy, reaching a median score of 92.4 GDT across
+            all targets in CASP14. This advancement has significant implications
+            for drug discovery and understanding diseases at a molecular level.
           </p>
           <p>
-            The scope of data science applications continues to expand as new
-            technologies emerge and existing ones are further developed,
-            promising even greater innovations and economic impacts in the years
-            to come.
+            <em>
+              Source: Jumper, J., Evans, R., Pritzel, A. et al. Highly accurate
+              protein structure prediction with AlphaFold. Nature 596, 583–589
+              (2021).
+            </em>
+          </p>
+
+          <h4>GPT-3 and ChatGPT: Advancing Natural Language Processing</h4>
+          <p>
+            OpenAI's GPT-3, released in 2020, demonstrated remarkable natural
+            language understanding and generation capabilities. Its successor,
+            ChatGPT, launched in 2022, showed even more impressive results in
+            conversational AI. ChatGPT reached 100 million monthly active users
+            just two months after its launch, showcasing unprecedented adoption
+            rates for an AI application.
+          </p>
+          <p>
+            <em>
+              Source: OpenAI. (2023). ChatGPT: Optimizing Language Models for
+              Dialogue.
+            </em>
+          </p>
+
+          <h4>DALL-E and Midjourney: AI in Image Generation</h4>
+          <p>
+            AI models like DALL-E 2 (2022) and Midjourney have shown remarkable
+            capabilities in generating high-quality images from text
+            descriptions. These models have achieved human-level performance in
+            certain image generation tasks, with DALL-E 2 scoring 66.4% on the
+            CLIP score metric for image-text similarity.
+          </p>
+          <p>
+            <em>
+              Source: Ramesh, A., et al. (2022). Hierarchical Text-Conditional
+              Image Generation with CLIP Latents. arXiv:2204.06125.
+            </em>
+          </p>
+
+          <h4>AlphaGo and MuZero: Mastering Complex Games</h4>
+          <p>
+            DeepMind's AlphaGo defeated the world champion in Go in 2016, a feat
+            previously thought to be decades away. Its successor, MuZero,
+            demonstrated even more general capabilities, mastering chess, shogi,
+            and Atari games without being taught the rules, achieving superhuman
+            performance in all of these domains.
+          </p>
+          <p>
+            <em>
+              Source: Silver, D., et al. (2020). Mastering Atari, Go, Chess and
+              Shogi by Planning with a Learned Model. Nature 588, 604–609.
+            </em>
+          </p>
+
+          <h4>GPT-4: Multimodal AI</h4>
+          <p>
+            Released in 2023, GPT-4 showcased impressive multimodal
+            capabilities, able to process both text and images. It demonstrated
+            human-level performance on various academic and professional tests,
+            scoring in the 90th percentile on the Uniform Bar Exam and
+            outperforming 99% of human test-takers on the Biology Olympiad.
+          </p>
+          <p>
+            <em>Source: OpenAI. (2023). GPT-4 Technical Report.</em>
           </p>
         </Col>
       </Row>
@@ -230,8 +252,12 @@ const Introduction = () => {
               and complex iterative algorithms.
             </li>
           </ul>
-          <h4>Machine Learning Platforms</h4>
+          <h4>Machine Learning Library</h4>
           <ul>
+            <li>
+              <strong>scikit-learn.:</strong> An open-source framework Simple
+              and efficient tools for predictive data analysis
+            </li>
             <li>
               <strong>TensorFlow:</strong> An open-source framework developed by
               Google for deep learning projects.
