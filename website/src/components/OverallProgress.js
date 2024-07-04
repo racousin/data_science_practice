@@ -8,7 +8,7 @@ const OverallProgress = ({ progress }) => {
       <Card.Header as="h5">Overall Progress</Card.Header>
       <Card.Body>
         <Card.Title>{progress}% Complete</Card.Title>
-        <ProgressBar now={progress} label={`${progress}%`} striped animated />
+        <ProgressBar now={progress} label={`${progress}%`} />
         <Card.Text className="mt-3">
           This is an overview of your current completion rate across all
           modules. Keep up the good work!

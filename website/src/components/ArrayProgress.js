@@ -13,8 +13,6 @@ const ArrayProgress = ({ progressPercent }) => {
       now={progressPercent}
       label={`${progressPercent.toFixed(0)}%`}
       variant={getProgressVariant()}
-      striped
-      animated
     />
   );
 };

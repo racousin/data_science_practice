@@ -6,49 +6,49 @@ import { useLocation } from "react-router-dom";
 
 const CourseReinforcementLearning = () => {
   const courseLinks = [
-    {
-      to: "/introduction",
-      label: "Introduction to Reinforcement Learning",
-      component: lazy(() => import("pages/module12/course/Introduction")),
-    },
-    {
-      to: "/rl-problem-formulation",
-      label: "RL Problem Formulation",
-      component: lazy(() =>
-        import("pages/module12/course/RLProblemFormulation")
-      ),
-    },
-    {
-      to: "/value-based-methods",
-      label: "Value-Based Methods",
-      component: lazy(() => import("pages/module12/course/ValueBasedMethods")),
-    },
-    {
-      to: "/policy-based-methods",
-      label: "Policy-Based Methods",
-      component: lazy(() => import("pages/module12/course/PolicyBasedMethods")),
-    },
-    {
-      to: "/model-free-and-model-based-rl",
-      label: "Model-Free and Model-Based RL",
-      component: lazy(() =>
-        import("pages/module12/course/ModelFreeAndModelBasedRL")
-      ),
-    },
-    {
-      to: "/deep-reinforcement-learning",
-      label: "Deep Reinforcement Learning",
-      component: lazy(() =>
-        import("pages/module12/course/DeepReinforcementLearning")
-      ),
-    },
-    {
-      to: "/real-world-applications-and-challenges",
-      label: "Real-World Applications and Challenges",
-      component: lazy(() =>
-        import("pages/module12/course/RealWorldApplicationsAndChallenges")
-      ),
-    },
+    // {
+    //   to: "/introduction",
+    //   label: "Introduction to Reinforcement Learning",
+    //   component: lazy(() => import("pages/module12/course/Introduction")),
+    // },
+    // {
+    //   to: "/rl-problem-formulation",
+    //   label: "RL Problem Formulation",
+    //   component: lazy(() =>
+    //     import("pages/module12/course/RLProblemFormulation")
+    //   ),
+    // },
+    // {
+    //   to: "/value-based-methods",
+    //   label: "Value-Based Methods",
+    //   component: lazy(() => import("pages/module12/course/ValueBasedMethods")),
+    // },
+    // {
+    //   to: "/policy-based-methods",
+    //   label: "Policy-Based Methods",
+    //   component: lazy(() => import("pages/module12/course/PolicyBasedMethods")),
+    // },
+    // {
+    //   to: "/model-free-and-model-based-rl",
+    //   label: "Model-Free and Model-Based RL",
+    //   component: lazy(() =>
+    //     import("pages/module12/course/ModelFreeAndModelBasedRL")
+    //   ),
+    // },
+    // {
+    //   to: "/deep-reinforcement-learning",
+    //   label: "Deep Reinforcement Learning",
+    //   component: lazy(() =>
+    //     import("pages/module12/course/DeepReinforcementLearning")
+    //   ),
+    // },
+    // {
+    //   to: "/real-world-applications-and-challenges",
+    //   label: "Real-World Applications and Challenges",
+    //   component: lazy(() =>
+    //     import("pages/module12/course/RealWorldApplicationsAndChallenges")
+    //   ),
+    // },
   ];
 
   const location = useLocation();

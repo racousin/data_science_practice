@@ -6,49 +6,49 @@ import { useLocation } from "react-router-dom";
 
 const CourseDocker = () => {
   const courseLinks = [
-    {
-      to: "/introduction",
-      label: "Introduction to Containerization",
-      component: lazy(() => import("pages/module13/course/Introduction")),
-    },
-    {
-      to: "/docker-fundamentals",
-      label: "Docker Fundamentals",
-      component: lazy(() => import("pages/module13/course/DockerFundamentals")),
-    },
-    {
-      to: "/working-with-containers",
-      label: "Working with Docker Containers",
-      component: lazy(() =>
-        import("pages/module13/course/WorkingWithContainers")
-      ),
-    },
-    {
-      to: "/docker-compose-services",
-      label: "Docker Compose and Services",
-      component: lazy(() =>
-        import("pages/module13/course/DockerComposeServices")
-      ),
-    },
-    {
-      to: "/docker-in-development-production",
-      label: "Docker in Development and Production",
-      component: lazy(() =>
-        import("pages/module13/course/DockerInDevelopmentProduction")
-      ),
-    },
-    {
-      to: "/advanced-techniques",
-      label: "Advanced Docker Techniques",
-      component: lazy(() => import("pages/module13/course/AdvancedTechniques")),
-    },
-    {
-      to: "/docker-for-data-science",
-      label: "Docker for Data Science and Machine Learning",
-      component: lazy(() =>
-        import("pages/module13/course/DockerForDataScience")
-      ),
-    },
+    // {
+    //   to: "/introduction",
+    //   label: "Introduction to Containerization",
+    //   component: lazy(() => import("pages/module13/course/Introduction")),
+    // },
+    // {
+    //   to: "/docker-fundamentals",
+    //   label: "Docker Fundamentals",
+    //   component: lazy(() => import("pages/module13/course/DockerFundamentals")),
+    // },
+    // {
+    //   to: "/working-with-containers",
+    //   label: "Working with Docker Containers",
+    //   component: lazy(() =>
+    //     import("pages/module13/course/WorkingWithContainers")
+    //   ),
+    // },
+    // {
+    //   to: "/docker-compose-services",
+    //   label: "Docker Compose and Services",
+    //   component: lazy(() =>
+    //     import("pages/module13/course/DockerComposeServices")
+    //   ),
+    // },
+    // {
+    //   to: "/docker-in-development-production",
+    //   label: "Docker in Development and Production",
+    //   component: lazy(() =>
+    //     import("pages/module13/course/DockerInDevelopmentProduction")
+    //   ),
+    // },
+    // {
+    //   to: "/advanced-techniques",
+    //   label: "Advanced Docker Techniques",
+    //   component: lazy(() => import("pages/module13/course/AdvancedTechniques")),
+    // },
+    // {
+    //   to: "/docker-for-data-science",
+    //   label: "Docker for Data Science and Machine Learning",
+    //   component: lazy(() =>
+    //     import("pages/module13/course/DockerForDataScience")
+    //   ),
+    // },
   ];
 
   const location = useLocation();

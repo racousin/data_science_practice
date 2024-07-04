@@ -1,33 +1,158 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import CodeBlock from "components/CodeBlock";
 
 const Introduction = () => {
   return (
     <Container fluid>
-      <h1 className="my-4">Introduction to Image Processing</h1>
+      <h2 id="history">Brief History of Computer Vision</h2>
       <p>
-        In this section, you will understand the fundamental concepts of image
-        processing.
+        Computer vision has its roots in the 1960s when researchers began
+        exploring ways to mimic human visual perception using computers. Key
+        milestones include:
       </p>
-      <Row>
-        <Col>
-          <h2>Overview of Image Processing and Its Applications</h2>
-          <p>
-            Image processing is a field that deals with the analysis,
-            manipulation, and understanding of digital images. It has a wide
-            range of applications, including medical imaging, computer vision,
-            and digital photography.
-          </p>
-          <h2>Basics of Digital Images</h2>
-          <p>
-            Digital images are represented as a grid of pixels, where each pixel
-            has a specific color value. The color model used determines the
-            number of bits required to represent each pixel. Common color models
-            include RGB, Grayscale, and HSV. Image formats such as JPEG, PNG,
-            and TIFF are used to store and transmit digital images.
-          </p>
-        </Col>
-      </Row>
+      <ul>
+        <li>
+          1960s: Early experiments with pattern recognition and edge detection
+        </li>
+        <li>
+          1970s: Development of image segmentation techniques and optical flow
+          algorithms
+        </li>
+        <li>
+          1980s: Introduction of feature-based approaches and 3D computer vision
+        </li>
+        <li>1990s: Advances in face recognition and object detection</li>
+        <li>
+          2000s: Rise of machine learning approaches, particularly Support
+          Vector Machines
+        </li>
+        <li>2010s: Deep learning revolution, starting with AlexNet in 2012</li>
+        <li>
+          2020s: Transformer-based architectures and self-supervised learning
+        </li>
+      </ul>
+
+      <h2 id="challenges">Challenges in Computer Vision</h2>
+      <p>
+        Despite significant progress, computer vision still faces several
+        challenges:
+      </p>
+      <ul>
+        <li>
+          Variability in appearance: Objects can look different due to lighting,
+          pose, or occlusion
+        </li>
+        <li>
+          Scale and perspective: Objects can appear at different sizes and
+          angles
+        </li>
+        <li>
+          Background clutter: Distinguishing objects from complex backgrounds
+        </li>
+        <li>
+          Computational efficiency: Balancing accuracy with speed for real-time
+          applications
+        </li>
+        <li>
+          Domain adaptation: Generalizing models to work in new environments
+        </li>
+        <li>Few-shot learning: Recognizing objects from limited examples</li>
+        <li>Interpretability: Understanding and explaining model decisions</li>
+        <li>
+          Ethical concerns: Privacy issues and potential misuse of technology
+        </li>
+      </ul>
+
+      <h2 id="applications">
+        Applications of Deep Learning in Computer Vision
+      </h2>
+      <p>
+        Deep learning has revolutionized computer vision, enabling numerous
+        applications:
+      </p>
+      <ul>
+        <li>
+          Image Classification: Categorizing images into predefined classes
+        </li>
+        <li>
+          Object Detection: Identifying and locating objects in images or video
+        </li>
+        <li>
+          Semantic Segmentation: Assigning each pixel in an image to a class
+        </li>
+        <li>
+          Instance Segmentation: Identifying and delineating individual object
+          instances
+        </li>
+        <li>
+          Face Recognition: Identifying or verifying a person from their face
+        </li>
+        <li>
+          Image Generation: Creating new images using generative models like
+          GANs
+        </li>
+        <li>Image Super-Resolution: Enhancing the resolution of images</li>
+        <li>
+          Pose Estimation: Detecting the position and orientation of objects or
+          people
+        </li>
+        <li>Medical Imaging: Assisting in diagnosis through image analysis</li>
+        <li>
+          Autonomous Vehicles: Enabling self-driving cars to perceive their
+          environment
+        </li>
+        <li>
+          Augmented Reality: Overlaying digital information on the real world
+        </li>
+      </ul>
+
+      <h3>Example: Simple Image Classification with PyTorch</h3>
+      <p>
+        Here's a basic example of how to perform image classification using a
+        pre-trained ResNet model in PyTorch:
+      </p>
+      <CodeBlock
+        language="python"
+        code={`
+import torch
+import torchvision.models as models
+import torchvision.transforms as transforms
+from PIL import Image
+
+# Load pre-trained ResNet model
+model = models.resnet50(pretrained=True)
+model.eval()
+
+# Define image transformations
+transform = transforms.Compose([
+    transforms.Resize(256),
+    transforms.CenterCrop(224),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+
+# Load and preprocess the image
+image = Image.open("path_to_your_image.jpg")
+input_tensor = transform(image)
+input_batch = input_tensor.unsqueeze(0)
+
+# Make prediction
+with torch.no_grad():
+    output = model(input_batch)
+
+# Get the predicted class
+_, predicted_idx = torch.max(output, 1)
+predicted_label = predicted_idx.item()
+
+print(f"Predicted class: {predicted_label}")
+        `}
+      />
+      <p>
+        This example demonstrates how to use a pre-trained ResNet model to
+        classify an image. It includes loading the model, preprocessing the
+        image, and making a prediction.
+      </p>
     </Container>
   );
 };
