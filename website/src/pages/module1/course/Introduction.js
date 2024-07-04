@@ -6,7 +6,7 @@ const Introduction = () => {
     <Container fluid>
       <h2>Introduction</h2>
       <Row>
-        <Col md={8}>
+        <Col md={12}>
           <p>
             Git is a distributed version control system widely used to
             coordinate work among programmers. It tracks changes in source code
@@ -63,16 +63,6 @@ const Introduction = () => {
             These platforms leverage Git’s foundational capabilities to
             facilitate more dynamic and collaborative environments.
           </p>
-        </Col>
-      </Row>
-      <Row>
-        <Col md={10}>
-          <Image
-            src="/assets/git-diagram.png"
-            alt="Git Workflow Diagram"
-            fluid
-          />
-          <p className="text-center">Fig.1 - Git Workflow Diagram</p>
         </Col>
       </Row>
     </Container>

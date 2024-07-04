@@ -6,7 +6,7 @@ const Introduction = () => {
     <Container fluid>
       <h2>Introduction</h2>
       <Row>
-        <Col md={8}>
+        <Col md={12}>
           <p>
             Python environments and package management are foundational concepts
             in Python development that ensure projects are portable and

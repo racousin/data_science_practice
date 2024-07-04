@@ -14,13 +14,6 @@ const PrerequisiteAndMethodology = () => {
       courseLinks={[]}
     >
       <Row>
-        <p>
-          Welcome to the introductory module of the course. This section will
-          guide you through the setup process and explain the methodologies we
-          will use throughout the course.
-        </p>
-      </Row>
-      <Row>
         <Col>
           <p>Last Updated: {"2024-06-07"}</p>
         </Col>
@@ -64,14 +57,12 @@ const PrerequisiteAndMethodology = () => {
                 rel="noopener noreferrer"
               >
                 <i>data_science_practice</i>
-              </a>
-              repository which contains the materials and exercises relevant to
-              this course.
+              </a>{" "}
+              repository in order to submit your exercises answers.
             </li>
             <li>
-              <strong>Access Course Materials:</strong> After receiving the
-              invitation, accept it to access and you can start with the
-              <Link to="/module1/course/">Module 1: Git</Link>
+              After receiving the invitation, accept it to access and you can
+              start with the <Link to="/module1/course/">Module 1: Git</Link>
             </li>
           </ol>
         </Col>
@@ -140,26 +131,30 @@ const PrerequisiteAndMethodology = () => {
           </li>
           <li>
             <strong>Create and checkout to a new branch:</strong>
-            <CodeBlock code={`git checkout -b myusername/module1`} />
+            <CodeBlock code={`git checkout -b myusername_branch/module1`} />
           </li>
           <li>
             <strong>Work on the exercise in your repository folder:</strong>
             <p>Example files and folder:</p>
             <ul>
-              <li>myusername/module1/file.py</li>
-              <li>myusername/module1/file.csv</li>
-              <li>myusername/module1/my_pkg/</li>
+              <li>myusername_branch/module1/file.py</li>
+              <li>myusername_branch/module1/file.csv</li>
+              <li>myusername_branch/module1/my_pkg/</li>
             </ul>
           </li>
           <li>
             <strong>Stage your changes:</strong>
-            <CodeBlock code={`git add myusername/module1`} />
+            <CodeBlock code={`git add myusername_branch/module1`} />
           </li>
           <li>
             <strong>Commit your changes:</strong>
             <CodeBlock
               code={`git commit -m "My content for module 1 exercises"`}
             />
+          </li>
+          <li>
+            <strong>Push your changes:</strong>
+            <CodeBlock code={`git push -m origin myusername_branch/module1`} />
           </li>
           <li>
             <strong>Go to GitHub to create a new pull request:</strong>
@@ -169,7 +164,7 @@ const PrerequisiteAndMethodology = () => {
                 GitHub Pull Requests
               </a>{" "}
               to create a new pull request from branch{" "}
-              <code>myusername/module1</code> to <code>main</code>.
+              <code>myusername_branch/module1</code> to <code>main</code>.
             </p>
           </li>
           <li>
