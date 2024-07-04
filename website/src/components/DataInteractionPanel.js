@@ -30,7 +30,7 @@ const DataInteractionPanel = ({
   const openInNewTab = (url) => {
     window.open(url, "_blank");
   };
-
+  console.log(notebookHtmlUrl);
   return (
     <Container className="my-4">
       <Row className="mb-2">
@@ -99,7 +99,7 @@ const DataInteractionPanel = ({
           </Button>{" "}
           <Button variant="info" onClick={() => openInColab(notebookColabUrl)}>
             Open in Colab <FaExternalLinkAlt />
-          </Button>
+          </Button>{" "}
           {requirementsUrl && (
             <Button
               variant="primary"
@@ -108,46 +108,22 @@ const DataInteractionPanel = ({
               Requirements.txt <FaDownload />
             </Button>
           )}
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          {iframeLoading && (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "500px",
-              }}
-            >
-              <Spinner animation="border" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </Spinner>
-            </div>
-          )}
-          <iframe
-            src={notebookHtmlUrl}
-            style={{
-              width: "100%",
-              height: "500px",
-              border: "none",
-              display: iframeLoading ? "none" : "block",
-            }}
-            onLoad={() => setIframeLoading(false)}
-          ></iframe>
           <Button
             variant="secondary"
-            style={{
-              position: "absolute",
-              right: "1rem",
-              top: "1rem",
-              zIndex: 1000,
-            }}
             onClick={() => openInNewTab(notebookHtmlUrl)}
           >
             <FaExternalLinkAlt />
           </Button>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <object
+            type="text/html"
+            data={notebookHtmlUrl}
+            width="100%"
+            height="700px"
+          ></object>
         </Col>
       </Row>
     </Container>
