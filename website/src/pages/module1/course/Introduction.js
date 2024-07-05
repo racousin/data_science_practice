@@ -29,7 +29,7 @@ const Introduction = () => {
             tracking the contributions of each team member is necessary for
             effective progression.
           </p>
-          <h4>The Role of Git in Modern Development</h4>
+          <h4>Git Platforms in Modern Development</h4>
           <p>
             Git's impact extends beyond just tracking changes. It integrates
             with various services to enhance project management capabilities.
@@ -59,10 +59,6 @@ const Introduction = () => {
               </a>
             </li>
           </ul>
-          <p>
-            These platforms leverage Git’s foundational capabilities to
-            facilitate more dynamic and collaborative environments.
-          </p>
         </Col>
       </Row>
     </Container>

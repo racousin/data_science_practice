@@ -25,12 +25,6 @@ const ExercisePython = () => {
       {location.pathname === `/module${module}/exercise` && (
         <>
           <Row>
-            <p>
-              In this module, students will practice setting up a Python
-              environment and installing packages using pip.
-            </p>
-          </Row>
-          <Row>
             <Col>
               <p>Last Updated: {"2024-06-07"}</p>
             </Col>

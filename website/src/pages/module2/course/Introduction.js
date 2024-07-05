@@ -7,18 +7,6 @@ const Introduction = () => {
       <h2>Introduction</h2>
       <Row>
         <Col md={12}>
-          <p>
-            Python environments and package management are foundational concepts
-            in Python development that ensure projects are portable and
-            reproducible. They allow developers to maintain different
-            dependencies and Python versions without conflicts.
-          </p>
-          <p>
-            Understanding how to effectively manage Python environments and
-            packages is essential for both individual and collaborative
-            projects, enabling consistent behavior across different development
-            and production settings.
-          </p>
           <h4>Why Use Python Environments?</h4>
           <p>
             Python environments are isolated contexts where Python packages and
@@ -50,23 +38,17 @@ const Introduction = () => {
             </li>
             <li>
               <strong>conda:</strong> An open-source package management system
-              and environment management system that runs on Windows, macOS, and
-              Linux.
+              and environment management system.
             </li>
             <li>
-              <strong>Poetry:</strong> A tool for dependency management and
-              packaging in Python.
+              <strong>Poetry:</strong> An open-source package management system
+              and environment management system.
             </li>
             <li>
-              <strong>Pipenv:</strong> A tool that aims to bring the best of all
-              packaging worlds to the Python world.
+              <strong>Pipenv:</strong> An open-source package management system
+              and environment management system.
             </li>
           </ul>
-          <p>
-            Mastery of these tools enhances efficiency and reliability in
-            software development, especially when dealing with complex projects
-            or teams.
-          </p>
         </Col>
       </Row>
       {/* <Row>

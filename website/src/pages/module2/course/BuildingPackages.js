@@ -6,20 +6,10 @@ const BuildingPackages = () => {
   return (
     <Container fluid>
       <h1 className="my-4">Building Python Packages</h1>
-      <p>
-        In this section, you will learn how to build and distribute your own
-        Python packages using setuptools. Packaging your code makes it easy to
-        share and distribute it to others, as well as to use it across different
-        projects.
-      </p>
       <Row>
         <Col>
           <h3 id="package-structure">Package Project Structure</h3>
-          <p>
-            Before we start building our package, let's understand the typical
-            structure of a Python package project. Here's what the directory
-            structure should look like:
-          </p>
+          <p>Here's what the directory structure should look like:</p>
           <pre>
             {`
 mypackage/

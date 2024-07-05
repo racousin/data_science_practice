@@ -129,12 +129,7 @@ const CoursePython = () => {
     >
       {location.pathname === `/module${module}/course` && (
         <>
-          <Row>
-            <p>
-              In this module, students will learn how to set up a Python
-              environment and install packages using pip.
-            </p>
-          </Row>
+          <Row></Row>
           <Row>
             <Col>
               <p>Last Updated: {"2024-06-07"}</p>

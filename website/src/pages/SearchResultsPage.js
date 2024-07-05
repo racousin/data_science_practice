@@ -13,7 +13,7 @@ const SearchResultsPage = () => {
   const documents = [
     {
       title: "Home Page",
-      content: "Welcome to the Teaching Portal.",
+      content: "Welcome to the Data Science Practice Portal.",
       path: "/",
     },
     {

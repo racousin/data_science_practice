@@ -4,170 +4,250 @@ import { Container, Row, Col } from "react-bootstrap";
 const MachineLearningPipeline = () => {
   return (
     <Container fluid>
-      <h1 className="my-4">Overview of the Machine Learning Pipeline</h1>
+      <h1 className="my-4">The Machine Learning Pipeline</h1>
       <p>
-        Understanding the machine learning pipeline is crucial for effectively
-        applying models to real-world problems. This pipeline encompasses
-        several key stages, each critical for ensuring the accuracy and
-        efficiency of the final model.
+        The machine learning pipeline is a systematic approach to developing and
+        deploying ML models. It consists of several interconnected stages, each
+        crucial for creating effective and reliable models.
       </p>
+
       <Row>
         <Col md={12}>
-          <h3 id="data-collection">Data Collection</h3>
+          <h2>1. Problem Definition and Data Collection</h2>
+          <p>
+            <strong>Objective:</strong> Define the problem and acquire relevant
+            data
+          </p>
+          <p>
+            <strong>Input:</strong> Business problem, data sources
+          </p>
+          <p>
+            <strong>Output:</strong> Problem statement, success criteria, raw
+            dataset(s)
+          </p>
+          <p>
+            <strong>Key Considerations:</strong>
+          </p>
           <ul>
             <li>
-              <strong>Identify Data Sources:</strong> Determine the sources of
-              data, which could include databases, APIs, third-party data
-              providers, and more.
+              Determine if machine learning is the appropriate solution and
+              Align ML goals with business objectives
+            </li>
+            <li>Identify appropriate data sources for the problem type</li>
+            <li>Ensure data collection adheres to legal standards</li>
+            <li>Set up data versioning and storage systems</li>
+          </ul>
+          <p>
+            <strong>Data Types Specifics:</strong>
+          </p>
+          <ul>
+            <li>Tabular: Determine relevant features and target variable</li>
+            <li>
+              Time Series: Define time granularity and historical data needs
             </li>
             <li>
-              <strong>Data Acquisition:</strong> Gather data from the identified
-              sources.
+              Image/Video: Consider resolution, format, and annotation
+              requirements
             </li>
             <li>
-              <strong>Data Storage:</strong> Store the collected data in a
-              suitable format and location for easy access and further
-              processing.
+              Text: Identify language(s) and text sources (e.g., social media,
+              documents)
             </li>
           </ul>
+          <p>
+            <strong>Roles:</strong> Business Analyst, Data Engineer, Domain
+            Expert
+          </p>
+          <p>
+            <strong>Tools:</strong> SQL, Hadoop, Apache Kafka, web scraping
+            tools
+          </p>
 
-          <h3 id="data-cleaning">Data Cleaning and Preparation</h3>
+          <h2>2. Data Preprocessing and Feature Engineering</h2>
+          <p>
+            <strong>Objective:</strong> Clean data and create informative
+            features
+          </p>
+          <p>
+            <strong>Input:</strong> Raw dataset(s)
+          </p>
+          <p>
+            <strong>Output:</strong> Processed dataset with engineered features
+          </p>
+          <p>
+            <strong>Key Considerations:</strong>
+          </p>
+          <ul>
+            <li>Handle missing data, outliers, and inconsistencies</li>
+            <li>Normalize or standardize features as needed</li>
+            <li>Create domain-specific features</li>
+            <li>Apply dimensionality reduction techniques if necessary</li>
+          </ul>
+          <p>
+            <strong>Data Types Specifics:</strong>
+          </p>
           <ul>
             <li>
-              <strong>Initial Data Inspection:</strong> Examine the dataset for
-              understanding its structure, type, and first glimpse at potential
-              quality issues.
+              Tabular: Encode categorical variables, handle numerical features
             </li>
+            <li>Time Series: Extract temporal features, handle seasonality</li>
             <li>
-              <strong>Handle Missing Values:</strong> Impute or remove missing
-              data based on the extent and nature of the missingness.
+              Image/Video: Apply transformations, augmentations, and feature
+              extraction
             </li>
+            <li>Text: Tokenization, stemming/lemmatization, embeddings</li>
             <li>
-              <strong>Remove Duplicates:</strong> Identify and eliminate
-              duplicate records to avoid biased data.
-            </li>
-            <li>
-              <strong>Handle Inconsistencies:</strong> Fix any inaccuracies or
-              inconsistencies in data entries.
-            </li>
-            <li>
-              <strong>Filter Outliers:</strong> Identify and treat outliers to
-              prevent skewed analysis.
+              Deep Learning: Data augmentation, transfer learning preparation
             </li>
           </ul>
+          <p>
+            <strong>Roles:</strong> Data Scientist, Machine Learning Engineer
+          </p>
+          <p>
+            <strong>Tools:</strong> Pandas, NumPy, Scikit-learn, OpenCV, NLTK,
+            TensorFlow
+          </p>
 
-          <h3 id="feature-engineering">Feature Engineering</h3>
+          <h2>3. Model Selection, Training, and Evaluation</h2>
+          <p>
+            <strong>Objective:</strong> Select, train, and evaluate appropriate
+            ML models
+          </p>
+          <p>
+            <strong>Input:</strong> Processed dataset
+          </p>
+          <p>
+            <strong>Output:</strong> Trained and validated model(s)
+          </p>
+          <p>
+            <strong>Key Considerations:</strong>
+          </p>
           <ul>
             <li>
-              <strong>Decomposition:</strong> Break down complex features (e.g.,
-              extracting date parts from a timestamp).
+              Choose algorithms based on problem type and data characteristics
             </li>
+            <li>Split data into training, validation, and test sets</li>
+            <li>Implement cross-validation and hyperparameter tuning</li>
+            <li>Evaluate model performance using appropriate metrics</li>
+            <li>Analyze error patterns and model behavior</li>
+          </ul>
+          <p>
+            <strong>Data Types Specifics:</strong>
+          </p>
+          <ul>
             <li>
-              <strong>Creation of Interaction Features:</strong> Generate
-              features that are combinations of existing features.
+              Tabular: Decision trees, random forests, gradient boosting, neural
+              networks
             </li>
+            <li>Time Series: ARIMA, Prophet, RNNs (LSTM, GRU)</li>
+            <li>Image: CNNs, object detection models (YOLO, R-CNN), GANs</li>
+            <li>Text: RNNs, Transformers (BERT, GPT), topic modeling</li>
+            <li>Video: 3D CNNs, action recognition models</li>
             <li>
-              <strong>Aggregation:</strong> Produce aggregate metrics (e.g.,
-              averages or sums) for groups of data.
-            </li>
-            <li>
-              <strong>Feature Transformation:</strong> Apply transformations
-              such as scaling or encoding before more complex operations.
+              Deep Learning: Transfer learning, fine-tuning, custom
+              architectures
             </li>
           </ul>
+          <p>
+            <strong>Roles:</strong> Data Scientist, Machine Learning Engineer,
+            Research Scientist
+          </p>
+          <p>
+            <strong>Tools:</strong> Scikit-learn, TensorFlow, PyTorch, Keras,
+            XGBoost, Hugging Face
+          </p>
 
-          <h3 id="scaling-and-normalization">Scaling and Normalization</h3>
+          <h2>4. Model Interpretability and Explainability</h2>
+          <p>
+            <strong>Objective:</strong> Understand and explain model decisions
+          </p>
+          <p>
+            <strong>Input:</strong> Trained model, test data
+          </p>
+          <p>
+            <strong>Output:</strong> Model explanations, feature importance
+          </p>
+          <p>
+            <strong>Key Considerations:</strong>
+          </p>
           <ul>
+            <li>Implement appropriate explainability techniques</li>
+            <li>Ensure compliance with regulatory requirements</li>
+            <li>Communicate insights to stakeholders effectively</li>
+          </ul>
+          <p>
+            <strong>Data Types Specifics:</strong>
+          </p>
+          <ul>
+            <li>Tabular: SHAP values, LIME, partial dependence plots</li>
             <li>
-              <strong>Re-scaling New Features:</strong> Apply scaling or
-              normalization to all features, including those engineered in the
-              previous step, to ensure consistent range and distribution.
+              Time Series: Feature importance over time, counterfactual
+              explanations
+            </li>
+            <li>Image: Saliency maps, GradCAM, concept activation vectors</li>
+            <li>
+              Text: Attention visualization, influential training examples
             </li>
             <li>
-              <strong>Feature Selection:</strong> Post-scaling, select the most
-              relevant features for modeling using statistical techniques and
-              domain knowledge.
+              Deep Learning: Layer-wise relevance propagation, neuron activation
+              analysis
             </li>
           </ul>
+          <p>
+            <strong>Roles:</strong> Data Scientist, Domain Expert
+          </p>
+          <p>
+            <strong>Tools:</strong> SHAP, LIME, Captum, TensorBoard
+          </p>
 
-          <h3 id="model-building">Model Building</h3>
+          <h2>5. Deployment, Monitoring, and Maintenance</h2>
+          <p>
+            <strong>Objective:</strong> Deploy model to production and maintain
+            performance
+          </p>
+          <p>
+            <strong>Input:</strong> Validated model
+          </p>
+          <p>
+            <strong>Output:</strong> Deployed model, monitoring system
+          </p>
+          <p>
+            <strong>Key Considerations:</strong>
+          </p>
           <ul>
+            <li>Prepare model for production environment</li>
+            <li>Set up necessary infrastructure and APIs</li>
+            <li>Implement monitoring for model performance and data drift</li>
+            <li>Establish protocols for model updates and retraining</li>
+          </ul>
+          <p>
+            <strong>Data Types Specifics:</strong>
+          </p>
+          <ul>
+            <li>Tabular: Batch vs. real-time prediction setups</li>
             <li>
-              <strong>Model Selection:</strong> Choose appropriate modeling
-              techniques (e.g., regression, classification) based on the
-              problem.
+              Time Series: Sliding window predictions, continuous retraining
             </li>
             <li>
-              <strong>Data Splitting:</strong> Divide data into training,
-              validation, and test sets.
+              Image/Video: Optimize for inference speed, handle varying input
+              sizes
             </li>
             <li>
-              <strong>Model Training:</strong> Train models using the training
-              set with a focus on tuning hyperparameters.
+              Text: Manage vocabulary updates, handle out-of-vocabulary words
+            </li>
+            <li>
+              Deep Learning: Model compression, hardware acceleration (GPUs,
+              TPUs)
             </li>
           </ul>
-
-          <h3 id="model-evaluation">Model Evaluation</h3>
-          <ul>
-            <li>
-              <strong>Cross-Validation:</strong> Use cross-validation methods to
-              evaluate model performance robustly across different subsets of
-              data.
-            </li>
-            <li>
-              <strong>Performance Metrics:</strong> Assess model using relevant
-              metrics (accuracy, precision, recall, F1 score for classification;
-              MSE, RMSE for regression).
-            </li>
-          </ul>
-
-          <h3 id="deployment">Deployment</h3>
-          <ul>
-            <li>
-              <strong>Integration:</strong> Integrate the model into the
-              production environment ensuring it can receive inputs and provide
-              outputs as required.
-            </li>
-            <li>
-              <strong>Deployment Strategy:</strong> Choose an appropriate
-              deployment strategy (real-time, batch processing, on-demand) based
-              on the application needs.
-            </li>
-            <li>
-              <strong>Monitoring Setup:</strong> Establish monitoring for the
-              model's performance and operational health.
-            </li>
-          </ul>
-
-          <h3 id="monitoring-and-maintenance">Monitoring and Maintenance</h3>
-          <ul>
-            <li>
-              <strong>Performance Monitoring:</strong> Regularly review the
-              model’s predictions and performance metrics.
-            </li>
-            <li>
-              <strong>Model Updating:</strong> Retrain or refine the model using
-              new data or to adjust for changes in underlying data patterns.
-            </li>
-            <li>
-              <strong>Feedback Loop:</strong> Implement mechanisms for utilizing
-              feedback from the model’s output to continually improve the model.
-            </li>
-          </ul>
-
-          <h3 id="documentation-and-reporting">Documentation and Reporting</h3>
-          <ul>
-            <li>
-              <strong>Documentation:</strong> Maintain thorough documentation of
-              the data sources, model development process, decisions made, and
-              versions of datasets and models.
-            </li>
-            <li>
-              <strong>Reporting:</strong> Prepare reports or dashboards that
-              summarize findings, model performance, and business impact for
-              stakeholders.
-            </li>
-          </ul>
+          <p>
+            <strong>Roles:</strong> MLOps Engineer, DevOps Engineer, Data
+            Engineer
+          </p>
+          <p>
+            <strong>Tools:</strong> Docker, Kubernetes, MLflow, Kubeflow,
+            TensorFlow Serving
+          </p>
         </Col>
       </Row>
     </Container>

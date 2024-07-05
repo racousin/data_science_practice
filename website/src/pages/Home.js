@@ -14,7 +14,7 @@ const Home = () => {
       >
         <Col className="text-center">
           <h1 className="text-gray display-3 font-weight-bold">
-            Welcome to the Teaching Portal
+            Welcome to the Data Science Practice Portal
           </h1>
           <StartLearningButton />
         </Col>
@@ -25,9 +25,8 @@ const Home = () => {
             <Card.Body>
               <Card.Title>Teaching</Card.Title>
               <Card.Text>
-                Explore a variety of educational materials and courses designed
-                to enhance your skills and knowledge in data science and related
-                fields.
+                Explore a variety of modules designed to enhance your skills and
+                knowledge in data science and related fields.
               </Card.Text>
               <Button variant="outline-primary" as={Link} to="/teaching">
                 Learn More

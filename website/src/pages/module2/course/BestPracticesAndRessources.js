@@ -6,11 +6,6 @@ const BestPracticesAndResources = () => {
   return (
     <Container fluid>
       <h1 className="my-4">Best Practices and Resources</h1>
-      <p>
-        This section covers best practices in Python development and provides
-        resources for further learning and improvement. Following these
-        practices will help you write clean, efficient, and maintainable code.
-      </p>
 
       <Row>
         <Col>
@@ -120,58 +115,6 @@ if __name__ == '__main__':
           <CodeBlock code={`pip install flake8`} />
           <p>Run Flake8:</p>
           <CodeBlock code={`flake8 myscript.py`} />
-        </Col>
-      </Row>
-
-      <Row>
-        <Col>
-          <h3 id="resources">Additional Resources</h3>
-          <p>
-            Here are some additional resources to help you further your Python
-            knowledge and improve your coding skills.
-          </p>
-
-          <h4>Books</h4>
-          <ul>
-            <li>
-              <a
-                href="https://automatetheboringstuff.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Automate the Boring Stuff with Python
-              </a>{" "}
-              by Al Sweigart
-            </li>
-          </ul>
-
-          <h4>Performance Optimization</h4>
-          <p>
-            Improving the performance of your Python code can be crucial in
-            resource-intensive applications. Here are some tools and techniques:
-          </p>
-          <ul>
-            <li>
-              <a
-                href="https://docs.python.org/3/library/profile.html"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                cProfile
-              </a>{" "}
-              - A built-in Python module for profiling your code.
-            </li>
-            <li>
-              <a
-                href="https://pandas.pydata.org/pandas-docs/stable/user_guide/scale.html"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Pandas Performance
-              </a>{" "}
-              - Best practices for optimizing Pandas operations.
-            </li>
-          </ul>
         </Col>
       </Row>
     </Container>

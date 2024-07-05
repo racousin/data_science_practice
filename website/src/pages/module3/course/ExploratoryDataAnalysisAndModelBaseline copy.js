@@ -3,7 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import DataInteractionPanel from "components/DataInteractionPanel";
 import CodeBlock from "components/CodeBlock";
 
-const ExploratoryDataAnalysisAndModelBaseline = () => {
+const ExploratoryDataAnalysis = () => {
   const trainDataUrl =
     process.env.PUBLIC_URL + "/modules/module3/course/module3_course_train.csv";
   const testDataUrl =
@@ -20,8 +20,17 @@ const ExploratoryDataAnalysisAndModelBaseline = () => {
 
   return (
     <Container fluid>
-      <h1 className="my-4">Exploratory Data Analysis and Model Baseline</h1>
-
+      <h1 className="my-4">Exploratory Data Analysis</h1>
+      <p>
+        EDA is an ongoing process that can be performed at various stages of the
+        pipeline. It involves:
+      </p>
+      <ul>
+        <li>Visualizing data distributions and relationships</li>
+        <li>Identifying patterns, trends, and anomalies</li>
+        <li>Generating hypotheses about feature importance</li>
+        <li>Informing decisions throughout the pipeline</li>
+      </ul>
       <section>
         <h2 id="importance-objectives">Importance and Objectives of EDA</h2>
         <p>
@@ -253,4 +262,4 @@ df['binned_feature'] = pd.cut(df['continuous_feature'], bins=5)
   );
 };
 
-export default ExploratoryDataAnalysisAndModelBaseline;
+export default ExploratoryDataAnalysis;

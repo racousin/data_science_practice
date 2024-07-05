@@ -201,7 +201,7 @@ const CourseDataCleaningAndPreparation = () => {
     },
     {
       to: "/feature-selection-dimensionality-reduction",
-      label: "FeatureSelection And Dimensionality Reduction",
+      label: "Feature Selection And Dimensionality Reduction",
       component: lazy(() =>
         import(
           "pages/module5/course/FeatureSelectionAndDimensionalityReduction"

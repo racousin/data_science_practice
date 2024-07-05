@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import CodeBlock from "components/CodeBlock";
+import EvaluationModal from "components/EvaluationModal";
 
 const Exercise1 = () => {
   return (
@@ -80,6 +81,11 @@ setup(
               language={"python"}
             />
           </ol>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <EvaluationModal module={module} />
         </Col>
       </Row>
     </Container>

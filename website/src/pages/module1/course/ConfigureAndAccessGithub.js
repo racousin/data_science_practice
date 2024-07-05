@@ -64,6 +64,7 @@ const ConfigureAndAccessGithub = () => {
           </p>
           <CodeBlock code={commands.sshKeyGen} language="bash" />
           <CodeBlock
+            showCopy={false}
             code={`$ ssh-keygen -t rsa -b 4096 -C 'username@email.com'
 Generating public/private rsa key pair.
 Enter file in which to save the key (/home/username/.ssh/id_rsa): 
@@ -134,6 +135,7 @@ The key's randomart image is:
 Hi username! You've successfully authenticated, but GitHub does not provide shell access.
 `}
             language=""
+            showCopy={false}
           />
           <p>
             If the connection is successful, you'll see a message confirming you

@@ -170,8 +170,8 @@ origin	git@github.com:racousin/data_science_practice.git (push)
                   local repo's working directory.
                 </li>
                 <li>
-                  <strong>Update Tracking Branches:</strong>
-                  <code>git fetch</code> updates your tracking branches under
+                  <strong>Update Tracking Branches:</strong>{" "}
+                  <code>git fetch</code> updates your tracking branches under{" "}
                   <code>refs/remotes/origin/</code>, which represent the state
                   of your branches at the remote repository.
                 </li>

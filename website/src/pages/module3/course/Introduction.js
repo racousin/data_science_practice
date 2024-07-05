@@ -157,58 +157,161 @@ const Introduction = () => {
       </Row>
       <Row>
         <Col md={12}>
-          <h3 id="roles">Roles in Data Science</h3>
+          <h2 id="roles">Roles in Data Science</h2>
           <p>
-            Data science teams are composed of professionals with diverse skill
-            sets and roles, each contributing uniquely to the extraction of
-            actionable insights from data. Understanding these roles and their
-            responsibilities is crucial for effective collaboration and project
-            success.
+            Data science teams comprise professionals with diverse skill sets,
+            each contributing uniquely to extracting actionable insights from
+            data. Understanding these roles and their responsibilities is
+            crucial for effective collaboration and project success. As the
+            field evolves, these roles continue to adapt and transform.
           </p>
+
+          <h3>Core Data Science Roles</h3>
+
           <h4>Data Scientist</h4>
           <p>
-            Data Scientists are at the core of data science projects. They
-            design models and algorithms to analyze complex data sets to derive
-            predictive insights and patterns that support decision making. They
+            Data Scientists are central to data science projects. They design
+            models and algorithms to analyze complex datasets, deriving
+            predictive insights and patterns to support decision-making. They
             typically have a strong background in statistics, machine learning,
             and programming.
           </p>
+          <p>
+            <strong>Key Skills:</strong> Statistical analysis, machine learning,
+            programming (Python, R), data visualization
+          </p>
+
           <h4>Data Engineer</h4>
           <p>
             Data Engineers develop and maintain the architectures (such as
             databases and large-scale processing systems) that data scientists
-            use to perform their analyses. They ensure that data flows between
-            servers and applications seamlessly and is readily accessible.
+            use. They ensure data flows seamlessly between servers and
+            applications, making it readily accessible for analysis.
           </p>
+          <p>
+            <strong>Key Skills:</strong> Database management, ETL processes, big
+            data technologies (Hadoop, Spark), cloud platforms
+          </p>
+
           <h4>Machine Learning Engineer</h4>
           <p>
             Machine Learning Engineers specialize in building and deploying
             machine learning models. They work closely with data scientists to
-            optimize algorithms and implement them into production environments,
+            optimize algorithms and implement them in production environments,
             often requiring expertise in software development and data
             architecture.
           </p>
+          <p>
+            <strong>Key Skills:</strong> Deep learning frameworks, MLOps,
+            software engineering, scalable ML systems
+          </p>
+
           <h4>Data Analyst</h4>
           <p>
-            Data Analysts focus primarily on parsing through data using
-            statistical tools to create detailed reports and visualizations.
-            Their insights help organizations make strategic decisions based on
-            quantitative data and trend analysis.
-          </p>
-          <h4>Business Intelligence (BI) Developer</h4>
-          <p>
-            BI Developers design and develop strategies to assist business users
-            in quickly finding the information they need to make better business
-            decisions. They use BI tools or develop custom BI analytic
-            applications to facilitate user access to data.
+            Data Analysts focus on parsing data using statistical tools to
+            create detailed reports and visualizations. Their insights help
+            organizations make strategic decisions based on quantitative data
+            and trend analysis.
           </p>
           <p>
-            These roles often overlap, and their boundaries can vary
-            significantly among organizations. However, the common goal remains:
-            to harness the power of data to drive decision-making and
-            innovation. As the field of data science evolves, these roles adapt
-            and transform to meet the ever-changing challenges of dealing with
-            data.
+            <strong>Key Skills:</strong> SQL, data visualization tools (Tableau,
+            Power BI), statistical analysis, business intelligence
+          </p>
+
+          <h3>Specialized and Emerging Roles</h3>
+
+          <h4>Research Scientist</h4>
+          <p>
+            Research Scientists in data science focus on developing new
+            algorithms, methodologies, and approaches to solve complex data
+            problems. They often work on cutting-edge projects and contribute to
+            the academic community.
+          </p>
+          <p>
+            <strong>Key Skills:</strong> Advanced mathematics, research
+            methodologies, publishing academic papers
+          </p>
+
+          <h4>MLOps Engineer</h4>
+          <p>
+            MLOps Engineers bridge the gap between data science and IT
+            operations. They focus on the deployment, monitoring, and
+            maintenance of machine learning models in production environments.
+          </p>
+          <p>
+            <strong>Key Skills:</strong> CI/CD for ML, containerization
+            (Docker), orchestration (Kubernetes), monitoring tools
+          </p>
+
+          <h4>Data Architect</h4>
+          <p>
+            Data Architects design and manage an organization's data
+            infrastructure. They create blueprints for data management systems
+            to integrate, centralize, protect, and maintain data sources.
+          </p>
+          <p>
+            <strong>Key Skills:</strong> Data modeling, system design, data
+            governance, cloud architecture
+          </p>
+
+          <h3>Business and Domain-Specific Roles</h3>
+
+          <h4>Business Intelligence Developer</h4>
+          <p>
+            BI Developers create and manage platforms for data visualization and
+            reporting. They transform complex data into easily understandable
+            dashboards and reports for business stakeholders.
+          </p>
+          <p>
+            <strong>Key Skills:</strong> BI tools (Power BI, Tableau), data
+            warehousing, SQL, business analysis
+          </p>
+
+          <h4>Domain Expert</h4>
+          <p>
+            Domain Experts bring specific industry or field knowledge to data
+            science projects. They help interpret results in the context of the
+            business and ensure that data science solutions align with
+            industry-specific needs and regulations.
+          </p>
+          <p>
+            <strong>Key Skills:</strong> Deep industry knowledge, ability to
+            translate between technical and business languages
+          </p>
+
+          <h3>Leadership and Management Roles</h3>
+
+          <h4>Chief Data Officer (CDO)</h4>
+          <p>
+            The CDO is responsible for enterprise-wide data strategy,
+            governance, and utilization. They ensure that the organization
+            leverages its data assets effectively and in compliance with
+            regulations.
+          </p>
+          <p>
+            <strong>Key Skills:</strong> Strategic planning, data governance,
+            executive communication, change management
+          </p>
+
+          <h4>Data Science Manager / Team Lead</h4>
+          <p>
+            Data Science Managers oversee teams of data professionals, aligning
+            data science projects with business objectives. They manage
+            resources, timelines, and stakeholder expectations.
+          </p>
+          <p>
+            <strong>Key Skills:</strong> Project management, team leadership,
+            technical expertise, stakeholder management
+          </p>
+
+          <p>
+            These roles often have overlapping responsibilities, and their
+            specific duties can vary significantly among organizations. The
+            common goal remains: to harness the power of data to drive
+            decision-making, innovation, and business value. As the field of
+            data science continues to evolve, new roles may emerge, and existing
+            ones may transform to meet the ever-changing challenges of working
+            with data.
           </p>
         </Col>
       </Row>
@@ -218,8 +321,7 @@ const Introduction = () => {
           <p>
             Data science relies heavily on a suite of powerful tools that help
             professionals manage data, perform analyses, build models, and
-            visualize results. Here’s an overview of some of the most widely
-            used tools across different stages of data science workflows:
+            visualize results.
           </p>
           <h4>Programming Languages</h4>
           <ul>
@@ -286,12 +388,6 @@ const Introduction = () => {
               visualizations.
             </li>
           </ul>
-          <p>
-            These tools are foundational to tackling the various challenges of
-            data science, from data cleaning and analysis to predictive modeling
-            and data visualization. Mastery of these tools is essential for any
-            aspiring data scientist.
-          </p>
         </Col>
       </Row>
     </Container>

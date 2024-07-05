@@ -144,11 +144,47 @@ git merge --no-ff feature-branch`}
         <Col xs={12} md={10} lg={8}>
           <div className="text-center">
             <Image
-              src="/assets/module1/Git_Merge_Types.png"
-              alt="Git_Merge_Types"
+              src="/assets/module1/Git_Fast-forward_Merge.png"
+              alt="Git_Fast-forward_Merge"
               fluid
             />
-            <p>Git_Merge_Types</p>
+            <p>Git_Fast-forward_Merge</p>
+          </div>
+        </Col>
+      </Row>
+      <Row className="justify-content-center">
+        <Col xs={12} md={10} lg={8}>
+          <div className="text-center">
+            <Image
+              src="/assets/module1/Git_Rebase_Merge.png"
+              alt="Git_Rebase_Merge"
+              fluid
+            />
+            <p>Git_Rebase_Merge</p>
+          </div>
+        </Col>
+      </Row>
+      <Row className="justify-content-center">
+        <Col xs={12} md={10} lg={8}>
+          <div className="text-center">
+            <Image
+              src="/assets/module1/Git_Squash_Merge.png"
+              alt="Git_Squash_Merge"
+              fluid
+            />
+            <p>Git_Squash_Merge</p>
+          </div>
+        </Col>
+      </Row>
+      <Row className="justify-content-center">
+        <Col xs={12} md={10} lg={8}>
+          <div className="text-center">
+            <Image
+              src="/assets/module1/Git_Three-way_Merge.png"
+              alt="Git_Three-way_Merge"
+              fluid
+            />
+            <p>Git_Three-way_Merge</p>
           </div>
         </Col>
       </Row>

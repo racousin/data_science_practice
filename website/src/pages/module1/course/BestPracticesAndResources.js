@@ -154,7 +154,7 @@ git stash apply`}
           </p>
           <CodeBlock
             language=""
-            code={`name: CI\n on: push\n jobs: build\n runs-on: ubuntu-latest\n steps:\n - uses: actions/checkout@v2\n - name: Run a one-line script\n run: echo Hello, world!`}
+            code={`name: CI\n on: push\n jobs: build\n runs-on: ubuntu-latest\n steps:\n - uses: actions/checkout@v2\n - name: Run a one-line script\n run: python tests.py`}
           />
         </Col>
       </Row>

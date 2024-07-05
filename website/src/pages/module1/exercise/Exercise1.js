@@ -1,17 +1,20 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import CodeBlock from "components/CodeBlock";
+import EvaluationModal from "components/EvaluationModal";
 
 const Exercise1 = () => {
   return (
     <Container fluid>
-      <h1 className="my-4">Exercise 1: Creating and Formatting a File</h1>
+      <h1 className="my-4">
+        Exercise 1: Add a simple file to repository through pull request
+      </h1>
       <p>
         In this exercise, you are tasked with creating a file named{" "}
         <code>user</code>
         within the <code>module1</code> directory under your username folder.
         This file should contain your username, first name, and surname,
-        separated by commas.
+        separated by commas (no space).
       </p>
       <Row>
         <Col md={6}>
@@ -31,6 +34,7 @@ const Exercise1 = () => {
               text or characters.
             </li>
             <li>Save and close the file.</li>
+            <li>Submit your answer though through request</li>
           </ol>
           <p>
             Ensure the file is saved with the correct content to pass automated
@@ -52,6 +56,9 @@ const Exercise1 = () => {
           </p>
         </Col>
       </Row>
+      <Col>
+        <EvaluationModal module={module} />
+      </Col>
     </Container>
   );
 };

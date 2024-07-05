@@ -61,7 +61,10 @@ const EvaluationModal = ({ module }) => {
                   Ensure you are on the main branch and your repository is up to
                   date:
                 </p>
-                <CodeBlock code={`git checkout main\n git pull origin main`} />
+                <CodeBlock
+                  code={`git checkout main
+git pull origin main`}
+                />
               </Col>
             </Row>
             <Row>

@@ -6,11 +6,6 @@ const InstallPython = () => {
   return (
     <Container fluid>
       <h1 className="my-4">Installing Python</h1>
-      <p>
-        Python is a widely-used programming language that's great for beginners
-        and professionals alike. This section provides a step-by-step guide to
-        installing Python on various operating systems.
-      </p>
       <Row>
         <Col md={12}>
           <h3 id="windows">Windows</h3>
@@ -36,14 +31,22 @@ const InstallPython = () => {
           </ol>
           <h3 id="mac">MacOS</h3>
           <p>
-            MacOS comes with Python pre-installed, but it's often a good idea to
-            use a more recent version than the system's default. To check the
-            installed version and consider upgrading:
+            MacOS comes with Python pre-installed. To check the installed
+            version:
           </p>
           <ol>
             <li>
               Open a terminal window and type the following command to check
               your current Python version:
+              <CodeBlock code={`python3 --version`} />
+              <CodeBlock
+                showCopy={false}
+                code={`$ python3 --version
+Python 3.10.12
+`}
+                language=""
+              />
+              or try:
               <CodeBlock code={`python --version`} />
             </li>
             <li>
@@ -66,6 +69,15 @@ const InstallPython = () => {
           <ol>
             <li>
               Open a terminal window and check the installed version of Python:
+              <CodeBlock code={`python3 --version`} />
+              <CodeBlock
+                showCopy={false}
+                code={`$ python3 --version
+Python 3.10.12
+`}
+                language=""
+              />
+              or try:
               <CodeBlock code={`python --version`} />
             </li>
             <li>
@@ -91,7 +103,15 @@ const InstallPython = () => {
               To check if <code>pip</code> is installed, open a terminal or
               command prompt and type:
               <CodeBlock code={`pip --version`} />
+              <CodeBlock
+                showCopy={false}
+                code={`$ pip --version
+pip 22.0.2 from /usr/lib/python3/dist-packages/pip (python 3.10)
+`}
+                language=""
+              />
             </li>
+
             <li>
               If <code>pip</code> is not installed, you can install it by
               downloading <code>get-pip.py</code>:
