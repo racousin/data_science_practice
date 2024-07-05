@@ -224,19 +224,6 @@ asyncio.run(process_stream())
           </li>
         </ul>
       </section>
-
-      <section>
-        <h2>Conclusion</h2>
-        <p>
-          Real-time data streams present both challenges and opportunities for
-          data scientists. By mastering tools like Apache Kafka and Apache
-          Flink, and understanding the principles of stream processing, you can
-          build powerful systems that process and analyze data in real-time.
-          This enables applications ranging from real-time analytics dashboards
-          to complex event processing systems that can react to data as it's
-          generated.
-        </p>
-      </section>
     </Container>
   );
 };

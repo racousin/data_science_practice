@@ -76,7 +76,6 @@ const CourseDataCollection = () => {
         },
         { id: "merging-joining", label: "Merging, Joining, and Concatenating" },
         { id: "grouping-aggregation", label: "Grouping and Aggregation" },
-        { id: "missing-outliers", label: "Handling Missing Data and Outliers" },
       ],
     },
     {
@@ -88,6 +87,11 @@ const CourseDataCollection = () => {
         { id: "profiling", label: "Data Profiling Techniques" },
         { id: "validation-checks", label: "Implementing Validation Checks" },
       ],
+    },
+    {
+      to: "/CaseStudy4",
+      label: "CaseStudy",
+      component: lazy(() => import("pages/module4/course/CaseStudy")),
     },
   ];
 
@@ -107,10 +111,7 @@ const CourseDataCollection = () => {
               In this module, you will learn about the various aspects of data
               collection, including different data sources, techniques for
               retrieving and handling data, and important considerations for
-              data quality and manipulation. You'll explore file-based sources,
-              databases, APIs, web scraping, real-time streams, and cloud-based
-              sources. Additionally, you'll learn about data manipulation with
-              Pandas and techniques for ensuring data quality and validation.
+              data quality and manipulation.
             </p>
           </Row>
           <Row>

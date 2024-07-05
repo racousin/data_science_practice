@@ -110,6 +110,11 @@ const CourseImageProcessing = () => {
         },
       ],
     },
+    {
+      to: "/CaseStudy8",
+      label: "CaseStudy",
+      component: lazy(() => import("pages/module8/course/CaseStudy")),
+    },
   ];
 
   const location = useLocation();

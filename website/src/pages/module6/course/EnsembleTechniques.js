@@ -187,20 +187,6 @@ for name, model in models:
           `}
         />
       </section>
-
-      <section>
-        <h2>Conclusion</h2>
-        <p>
-          Ensemble techniques are powerful methods for improving model
-          performance and robustness. Bagging helps reduce variance, boosting
-          algorithms like AdaBoost and Gradient Boosting focus on reducing bias,
-          while stacking allows for creative combinations of diverse models.
-          Each technique has its strengths and is suited for different types of
-          problems. In practice, it's often useful to experiment with multiple
-          ensemble methods and compare their performance for your specific
-          dataset and problem.
-        </p>
-      </section>
     </Container>
   );
 };

@@ -156,18 +156,6 @@ print(df.head())
           `}
         />
       </section>
-
-      <section>
-        <h2>Conclusion</h2>
-        <p>
-          Effective data collection is fundamental to successful data science
-          projects. Understanding the types of data and their sources allows
-          data scientists to make informed decisions about data acquisition
-          strategies. As we progress through this module, we'll explore various
-          methods and tools for collecting and working with different types of
-          data from various sources.
-        </p>
-      </section>
     </Container>
   );
 };

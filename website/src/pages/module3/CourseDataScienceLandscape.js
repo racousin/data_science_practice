@@ -72,8 +72,12 @@ const CourseDataScienceLandscape = () => {
         { id: "visualization-tools", label: "Visualization Tools for EDA" },
         { id: "statistical-measures", label: "Statistical Measures in EDA" },
         { id: "eda-data-types", label: "EDA for Different Data Types" },
-        { id: "case-study", label: "EDA and Model Baseline Case Study" },
       ],
+    },
+    {
+      to: "/eda-and-model-baseline-case-study",
+      label: "EDA and Model Baseline Case Study",
+      component: lazy(() => import("pages/module3/course/CaseStudy")),
     },
     // {
     //   to: "/model-deployment",

@@ -161,13 +161,6 @@ print(f"Input gradient: {input.grad}")
         This example implements a custom ELU function with a manually defined
         backward pass for more efficient gradient computation.
       </p>
-
-      <p>
-        Understanding activation functions and their properties is crucial for
-        designing effective neural networks. The choice of activation function
-        can significantly impact the network's performance and training
-        dynamics.
-      </p>
     </Container>
   );
 };

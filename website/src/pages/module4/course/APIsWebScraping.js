@@ -202,19 +202,6 @@ response = requests.get('https://example.com', headers=headers)
           `}
         />
       </section>
-
-      <section>
-        <h2>Conclusion</h2>
-        <p>
-          APIs and web scraping are powerful tools for collecting data from the
-          internet. APIs provide a structured way to access data from web
-          services, while web scraping allows you to extract data from websites
-          that don't offer an API. Both methods require careful consideration of
-          authentication, error handling, and ethical practices. As a data
-          scientist, mastering these techniques will greatly expand your ability
-          to gather diverse datasets for analysis and modeling.
-        </p>
-      </section>
     </Container>
   );
 };

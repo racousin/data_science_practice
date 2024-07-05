@@ -166,15 +166,6 @@ const FeatureSelectionAndDimensionalityReduction = () => {
       <h1 className="my-4">Feature Selection and Dimensionality Reduction</h1>
 
       <section>
-        <h2>Introduction</h2>
-        <p>
-          Feature selection and dimensionality reduction are crucial techniques
-          in machine learning that help in reducing the number of input
-          variables to create more efficient and effective models.
-        </p>
-      </section>
-
-      <section>
         <h2 id="Selection">Feature Selection Techniques</h2>
 
         <p>

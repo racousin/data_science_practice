@@ -191,18 +191,6 @@ while True:
           </li>
         </ul>
       </section>
-
-      <section>
-        <h2>Conclusion</h2>
-        <p>
-          File-based data sources are a common and versatile way to store and
-          exchange data. Understanding how to efficiently read, write, and
-          process various file formats is crucial for any data scientist. By
-          leveraging pandas and other Python libraries, we can handle a wide
-          range of file types and sizes, from small CSV files to large datasets
-          that require chunking and iterative processing.
-        </p>
-      </section>
     </Container>
   );
 };

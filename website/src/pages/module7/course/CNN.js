@@ -121,39 +121,6 @@ print(output.shape)  # Should print torch.Size([1, 10])
         <li>Introduces a degree of translation invariance</li>
         <li>Helps control overfitting by reducing the number of parameters</li>
       </ul>
-
-      <h2>Advanced CNN Concepts</h2>
-
-      <h3>1. Inception Modules</h3>
-      <p>
-        Inception modules use multiple filter sizes in parallel to capture
-        features at different scales.
-      </p>
-
-      <h3>2. Residual Connections</h3>
-      <p>
-        Residual connections, introduced in ResNet, allow for training of very
-        deep networks by providing shortcut connections.
-      </p>
-
-      <h3>3. Dilated Convolutions</h3>
-      <p>
-        Dilated (or atrous) convolutions expand the receptive field without
-        increasing the number of parameters.
-      </p>
-
-      <h3>4. Depthwise Separable Convolutions</h3>
-      <p>
-        Used in models like MobileNet, these convolutions factorize a standard
-        convolution into a depthwise convolution and a pointwise convolution,
-        reducing computational cost.
-      </p>
-
-      <p>
-        Understanding CNNs and their components is crucial for working with
-        image data in deep learning. The concepts of convolution and pooling
-        form the foundation for many advanced computer vision tasks.
-      </p>
     </Container>
   );
 };

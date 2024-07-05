@@ -140,6 +140,11 @@ const CourseDeepLearningFundamentals = () => {
         { id: "tsne", label: "t-SNE for high-dimensional data visualization" },
       ],
     },
+    {
+      to: "/CaseStudy7",
+      label: "CaseStudy",
+      component: lazy(() => import("pages/module7/course/CaseStudy")),
+    },
   ];
 
   const location = useLocation();

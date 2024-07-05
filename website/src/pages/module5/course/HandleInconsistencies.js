@@ -45,11 +45,6 @@ const HandleInconsistencies = () => {
   return (
     <Container fluid>
       <h1 className="my-4">Handle Inconsistencies</h1>
-      <p>
-        Ensuring high data quality is crucial for any analytical task or machine
-        learning project. This section explores common data inconsistencies and
-        provides strategies for their detection and correction.
-      </p>
 
       <Row>
         <Col>

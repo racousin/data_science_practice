@@ -120,10 +120,6 @@ scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=30, gamma=0.1)
 scheduler.step()
         `}
       />
-      <p>
-        This example demonstrates how to implement a simple neural network in
-        PyTorch, use the Adam optimizer, and apply a learning rate scheduler.
-      </p>
     </Container>
   );
 };

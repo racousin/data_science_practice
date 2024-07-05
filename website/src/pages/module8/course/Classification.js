@@ -180,12 +180,6 @@ print('Confusion Matrix:')
 print(conf_matrix)
         `}
       />
-
-      <p>
-        These metrics provide a comprehensive view of your model's performance,
-        helping you understand where it excels and where it might need
-        improvement.
-      </p>
     </Container>
   );
 };

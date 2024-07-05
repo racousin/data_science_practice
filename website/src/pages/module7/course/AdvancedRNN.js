@@ -278,12 +278,6 @@ class TransformerModel(nn.Module):
 # Note: You would need to implement PositionalEncoding separately
         `}
       />
-
-      <p>
-        These advanced RNN architectures and the Transformer model have
-        significantly improved the state-of-the-art in many sequence modeling
-        tasks, particularly in natural language processing.
-      </p>
     </Container>
   );
 };

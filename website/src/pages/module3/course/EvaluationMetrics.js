@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Image } from "react-bootstrap";
 import { BlockMath, InlineMath } from "react-katex";
 import CodeBlock from "components/CodeBlock";
 
@@ -14,6 +14,13 @@ const EvaluationMetrics = () => {
         model's predictions align with the actual outcomes. The choice of metric
         depends on the type of problem being solved and the specific goals of
         the project.
+      </p>
+
+      <p>
+        Evaluation metrics quantify the difference between the target variable{" "}
+        <InlineMath math="y" /> and the model's predictions{" "}
+        <InlineMath math="\hat{y}" />, providing a measure of how well our model
+        is performing.
       </p>
       <h2>Choosing the Right Metric</h2>
       <p>The choice of evaluation metric depends on various factors:</p>
@@ -288,6 +295,14 @@ from sklearn.metrics import roc_auc_score
 roc_auc = roc_auc_score(y_true, y_pred_proba)
   `}
       />
+      <Row className="justify-content-center">
+        <Col xs={12} md={10} lg={8}>
+          <div className="text-center">
+            <Image src="/assets/module3/roc_auc.png" alt="roc_auc" fluid />
+            <p>roc_auc</p>
+          </div>
+        </Col>
+      </Row>
       <p>
         <strong>Characteristic:</strong> ROC AUC is scale-invariant and
         classification-threshold-invariant. It measures the quality of the

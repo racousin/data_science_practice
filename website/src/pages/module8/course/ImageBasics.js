@@ -121,11 +121,6 @@ auto_augment = transforms.AutoAugment(policy)
 augmented_image = auto_augment(original_image)
         `}
       />
-
-      <p>
-        Proper preprocessing and augmentation can significantly improve the
-        performance and generalization of computer vision models.
-      </p>
     </Container>
   );
 };

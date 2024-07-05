@@ -4,20 +4,6 @@ import DataInteractionPanel from "components/DataInteractionPanel";
 import CodeBlock from "components/CodeBlock";
 
 const ExploratoryDataAnalysis = () => {
-  const trainDataUrl =
-    process.env.PUBLIC_URL + "/modules/module3/course/module3_course_train.csv";
-  const testDataUrl =
-    process.env.PUBLIC_URL + "/modules/module3/course/module3_course_test.csv";
-  const requirementsUrl =
-    process.env.PUBLIC_URL + "/modules/module3/course/module3_requirements.txt";
-  const notebookUrl =
-    process.env.PUBLIC_URL + "/modules/module3/course/module3_course.ipynb";
-  const notebookHtmlUrl =
-    process.env.PUBLIC_URL + "/modules/module3/course/module3_course.html";
-  const notebookColabUrl =
-    process.env.PUBLIC_URL +
-    "website/public/modules/module3/course/module3_course.ipynb";
-
   return (
     <Container fluid>
       <h1 className="my-4">Exploratory Data Analysis (EDA)</h1>
@@ -199,22 +185,6 @@ const ExploratoryDataAnalysis = () => {
             Iterate between EDA and other stages of the data science process
           </li>
         </ul>
-      </section>
-
-      <section>
-        <h2 id="case-study">EDA and Model Baseline Case Study</h2>
-        <p>
-          Let's walk through a basic EDA and model baseline process using the
-          provided dataset:
-        </p>
-        <DataInteractionPanel
-          trainDataUrl={trainDataUrl}
-          testDataUrl={testDataUrl}
-          notebookUrl={notebookUrl}
-          notebookHtmlUrl={notebookHtmlUrl}
-          notebookColabUrl={notebookColabUrl}
-          requirementsUrl={requirementsUrl}
-        />
       </section>
     </Container>
   );

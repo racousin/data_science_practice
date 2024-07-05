@@ -180,13 +180,6 @@ for epoch in range(num_epochs):
 # Remember to add validation and model saving
         `}
       />
-
-      <p>
-        This example demonstrates how to use a pre-trained Faster R-CNN model
-        for inference and how to set up training for a custom object detection
-        task. In practice, you'd need to handle data loading, augmentation, and
-        implement a more robust training loop with validation.
-      </p>
     </Container>
   );
 };

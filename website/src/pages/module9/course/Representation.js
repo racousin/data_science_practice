@@ -159,14 +159,6 @@ print("Vector for 'cat':", model.wv['cat'])
 print("Vector for out-of-vocabulary word 'catlike':", model.wv['catlike'])
         `}
       />
-
-      <p>
-        These text representation techniques form the foundation for many NLP
-        tasks. While BoW and TF-IDF are simpler and often used as baselines,
-        word embeddings and their variations have become the go-to choice for
-        many modern NLP applications due to their ability to capture semantic
-        relationships between words.
-      </p>
     </Container>
   );
 };

@@ -3,6 +3,12 @@ import { Container, Row, Col } from "react-bootstrap";
 import { BlockMath, InlineMath } from "react-katex";
 import CodeBlock from "components/CodeBlock";
 
+// import DataSplittingDiagram from "components/module3/DataSplittingDiagram";
+// import ModelEvaluationFlowchart from "components/module3/ModelEvaluationFlowchart";
+// import ErrorComparisonChart from "components/module3/ErrorComparisonChart";
+// import DatasetPartitioningVenn from "components/module3/DatasetPartitioningVenn";
+// import GeneralizationErrorConcept from "components/module3/GeneralizationErrorConcept";
+
 const ModelEvaluationValidation = () => {
   return (
     <Container fluid>
@@ -88,49 +94,89 @@ print("Predictions:", y_pred)
         `}
       />
 
-      <h2>2. Data Splitting</h2>
+      <h2>2. Model Evaluation and Data Splitting</h2>
       <p>
-        Before we can evaluate a model, we need to understand how to properly
-        split our data. This is crucial for getting an unbiased estimate of our
-        model's performance.
+        To properly evaluate a model's performance and ensure unbiased estimates
+        of its generalization ability, we need to carefully partition our data.
+        This partitioning is crucial for understanding how well our model learns
+        and generalizes.
       </p>
+
+      <h3>The Need for Data Splitting</h3>
+      <p>
+        When evaluating a model, we aim to estimate its performance on unseen
+        data. If we use the same data for training and evaluation, we risk
+        overly optimistic estimates due to the model memorizing the training
+        data rather than learning generalizable patterns. To mitigate this, we
+        split our data into distinct sets:
+      </p>
+      <p>
+        Let D be our complete dataset. We partition D into three disjoint
+        subsets:
+      </p>
+      <BlockMath math="D = D_{train} \cup D_{val} \cup D_{test}" />
+      <BlockMath math="D_{train} \cap D_{val} = D_{train} \cap D_{test} = D_{val} \cap D_{test} = \emptyset" />
 
       <h3>Training Set</h3>
       <p>
-        The training set is used to train the model. It's the largest portion of
-        the data, typically 60-80% of the total dataset. The model learns
-        patterns from this data.
+        The training set is used to fit the model, allowing it to learn the
+        underlying patterns in the data. Typically, it comprises 60-80% of the
+        total dataset.
       </p>
 
       <h3>Validation Set</h3>
-      <p>
-        The validation set is used to tune hyperparameters and evaluate the
-        model during the training process. It's typically 10-20% of the total
-        dataset. This set helps us make choices about our model without using
-        our final test set.
-      </p>
+      <p>The validation set serves two primary purposes:</p>
+      <ol>
+        <li>
+          Tuning hyperparameters: We use this set to optimize model parameters
+          that are not learned during training.
+        </li>
+        <li>
+          Model selection: When comparing different models or architectures, the
+          validation set helps us choose the best performing one.
+        </li>
+      </ol>
+      <p>The validation set usually consists of 10-20% of the total dataset.</p>
 
       <h3>Test Set</h3>
       <p>
-        The test set is used to evaluate the final model performance. It's kept
-        completely separate from the training process and is typically 10-20% of
-        the total dataset. This set gives us an unbiased estimate of our model's
-        performance on new, unseen data.
+        The test set provides an unbiased estimate of the model's performance on
+        new, unseen data. It's crucial to keep this set completely separate from
+        the training process to avoid data leakage. The test set typically
+        comprises 10-20% of the total dataset.
       </p>
 
       <h3>Implementation</h3>
+      <p>In practice, we often use a two-step splitting process:</p>
       <CodeBlock
         language="python"
         code={`
 from sklearn.model_selection import train_test_split
 
-# First split: separate test set
+# Step 1: Separate test set
 X_train_val, X_test, y_train_val, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Second split: separate train and validation sets
-X_train, X_val, y_train, y_val = train_test_split(X_train_val, y_train_val, test_size=0.25, random_state=42)  # 0.25 x 0.8 = 0.2
-        `}
+# Step 2: Split remaining data into training and validation sets
+X_train, X_val, y_train, y_val = train_test_split(X_train_val, y_train_val, test_size=0.25, random_state=42)  # 0.25 * 0.8 = 0.2
+  `}
       />
+
+      <h3>Evaluation Process</h3>
+      <p>
+        With this splitting strategy, our model evaluation process follows these
+        steps:
+      </p>
+      <ol>
+        <li>Train the model on D_train</li>
+        <li>Evaluate and tune the model using D_val</li>
+        <li>Once the model is finalized, assess its performance on D_test</li>
+      </ol>
+
+      <p>
+        This approach allows us to obtain unbiased estimates of model
+        performance and make informed decisions about model selection and
+        hyperparameter tuning.
+      </p>
 
       <h2>3. Understanding Model Performance</h2>
       <p>

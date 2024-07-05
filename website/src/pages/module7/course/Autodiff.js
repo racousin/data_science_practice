@@ -139,12 +139,6 @@ print(f"Gradient of input: {input.grad}")
         doubles its input in the forward pass and its gradient in the backward
         pass.
       </p>
-
-      <p>
-        Understanding autodiff and computational graphs is crucial for
-        effectively using and optimizing deep learning models, especially when
-        implementing custom layers or loss functions.
-      </p>
     </Container>
   );
 };

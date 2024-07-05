@@ -64,12 +64,6 @@ const HandleCategoricalValues = () => {
   return (
     <Container fluid>
       <h1 className="my-4">Handling Categorical Values</h1>
-      <p>
-        Categorical data is commonly used in data science and machine learning
-        projects. It includes variables with a limited and usually fixed number
-        of possible values. Handling and encoding these values correctly is
-        crucial for model performance.
-      </p>
 
       <Row>
         <Col>

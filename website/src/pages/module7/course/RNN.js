@@ -213,13 +213,6 @@ output = model(input_tensor)
 print(output.shape)  # Should print torch.Size([32, 5])
         `}
       />
-
-      <p>
-        Understanding RNNs and their variants (LSTM and GRU) is crucial for
-        working with sequential data in deep learning. These architectures form
-        the foundation for many natural language processing and time series
-        analysis tasks.
-      </p>
     </Container>
   );
 };

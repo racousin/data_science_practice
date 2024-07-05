@@ -190,13 +190,6 @@ for epoch in range(num_epochs):
         print(f"Epoch {epoch}, Loss: {loss}")
         `}
       />
-
-      <p>
-        These advanced training techniques can significantly improve the
-        performance and efficiency of deep neural networks. It's important to
-        experiment with these methods and understand their impact on your
-        specific tasks and models.
-      </p>
     </Container>
   );
 };

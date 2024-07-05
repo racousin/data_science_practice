@@ -179,14 +179,6 @@ for epoch in range(num_epochs):
         based on validation loss and stops training if the validation loss
         doesn't improve for a specified number of epochs.
       </p>
-
-      <p>
-        Regularization techniques are crucial for preventing overfitting and
-        improving the generalization of deep learning models. The choice and
-        combination of regularization methods can significantly impact model
-        performance and should be carefully considered based on the specific
-        problem and dataset.
-      </p>
     </Container>
   );
 };

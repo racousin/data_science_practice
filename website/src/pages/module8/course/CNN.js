@@ -134,13 +134,6 @@ for param in model.parameters():
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)  # Lower learning rate
         `}
       />
-
-      <p>
-        Transfer learning and fine-tuning are powerful techniques that allow you
-        to leverage the features learned by models trained on large datasets,
-        significantly reducing training time and improving performance on new
-        tasks with limited data.
-      </p>
     </Container>
   );
 };

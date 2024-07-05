@@ -7,25 +7,6 @@ import { useLocation } from "react-router-dom";
 const CourseTabularModels = () => {
   const courseLinks = [
     {
-      to: "/introduction",
-      label: "Introduction to Tabular Models",
-      component: lazy(() => import("pages/module6/course/Introduction")),
-      subLinks: [
-        {
-          id: "definition",
-          label: "Definition and characteristics of tabular data",
-        },
-        {
-          id: "supervised-learning",
-          label: "Overview of supervised learning for tabular data",
-        },
-        {
-          id: "importance",
-          label: "Importance of tabular models in data science",
-        },
-      ],
-    },
-    {
       to: "/linear-models",
       label: "Linear Models",
       component: lazy(() => import("pages/module6/course/LinearModels")),
@@ -130,6 +111,11 @@ const CourseTabularModels = () => {
         { id: "pros-cons", label: "Pros and cons of AutoML" },
       ],
     },
+    {
+      to: "/CaseStudy6",
+      label: "CaseStudy",
+      component: lazy(() => import("pages/module6/course/CaseStudy")),
+    },
   ];
 
   const location = useLocation();
@@ -143,17 +129,6 @@ const CourseTabularModels = () => {
     >
       {location.pathname === `/module${module}/course` && (
         <>
-          <Row>
-            <p>
-              In this module, you will learn about various tabular models used
-              in machine learning, from basic linear models to advanced ensemble
-              techniques. You'll explore the theory behind these models, their
-              implementation using popular libraries like scikit-learn, and
-              techniques for model selection and hyperparameter optimization.
-              The module concludes with an introduction to AutoML for tabular
-              data.
-            </p>
-          </Row>
           <Row>
             <Col>
               <p>Last Updated: {"2024-06-07"}</p>

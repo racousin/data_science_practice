@@ -197,18 +197,6 @@ driver.close()
           `}
         />
       </section>
-
-      <section>
-        <h2>Conclusion</h2>
-        <p>
-          Database systems are crucial for storing, retrieving, and managing
-          large amounts of data efficiently. Relational databases excel at
-          handling structured data with complex relationships, while NoSQL
-          databases offer flexibility for unstructured or semi-structured data.
-          As a data scientist, understanding how to work with various database
-          systems is essential for effective data collection and analysis.
-        </p>
-      </section>
     </Container>
   );
 };

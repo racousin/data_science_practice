@@ -61,10 +61,6 @@ const HandleOutliers = () => {
   return (
     <Container fluid>
       <h1 className="my-4">Handling Outliers</h1>
-      <p>
-        This section explores methods to detect and manage outliers in your
-        dataset, ensuring more accurate and reliable data analysis.
-      </p>
 
       <Row>
         <Col>

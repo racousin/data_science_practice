@@ -133,43 +133,6 @@ cross_tab = pd.crosstab(df['category'], df['subcategory'])
       </section>
 
       <section>
-        <h2 id="missing-outliers">Handling Missing Data and Outliers</h2>
-        <p>
-          Dealing with missing data and outliers is a crucial part of data
-          preprocessing.
-        </p>
-        <CodeBlock
-          language="python"
-          code={`
-# Identifying missing data
-print(df.isnull().sum())
-
-# Filling missing data
-df_filled = df.fillna(df.mean())  # Fill with mean
-df_filled = df.fillna(method='ffill')  # Forward fill
-df_filled = df.fillna(method='bfill')  # Backward fill
-
-# Interpolating missing values
-df_interpolated = df.interpolate()
-
-# Detecting outliers using IQR
-Q1 = df['column'].quantile(0.25)
-Q3 = df['column'].quantile(0.75)
-IQR = Q3 - Q1
-lower_bound = Q1 - 1.5 * IQR
-upper_bound = Q3 + 1.5 * IQR
-outliers = df[(df['column'] < lower_bound) | (df['column'] > upper_bound)]
-
-# Removing outliers
-df_no_outliers = df[(df['column'] >= lower_bound) & (df['column'] <= upper_bound)]
-
-# Capping outliers
-df['column'] = df['column'].clip(lower_bound, upper_bound)
-          `}
-        />
-      </section>
-
-      <section>
         <h2>Advanced Pandas Techniques</h2>
         <p>
           Here are some advanced techniques that can be useful in data
@@ -232,18 +195,6 @@ df_unstacked = df_multi.unstack(level='category')
             steps for reproducibility.
           </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Conclusion</h2>
-        <p>
-          Pandas is a powerful library for data manipulation in Python. It
-          provides a wide range of functions and methods to efficiently load,
-          clean, transform, and analyze data. By mastering these techniques,
-          data scientists can spend less time on data preparation and more time
-          on analysis and modeling. Remember that effective data manipulation is
-          often the key to successful data science projects.
-        </p>
       </section>
     </Container>
   );

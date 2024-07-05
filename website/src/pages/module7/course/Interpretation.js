@@ -185,14 +185,6 @@ features, labels = get_features(model, dataloader)
 visualize_tsne(features.cpu().numpy(), labels.cpu().numpy())
         `}
       />
-
-      <p>
-        These visualization and interpretation techniques can provide valuable
-        insights into how deep learning models work, what features they're
-        learning, and how they make decisions. They're essential tools for
-        debugging, improving model performance, and building trust in model
-        predictions.
-      </p>
     </Container>
   );
 };

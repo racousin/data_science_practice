@@ -151,11 +151,6 @@ const HandleDuplicates = () => {
   return (
     <Container fluid>
       <h1 className="my-4">Handling Duplicate Entries</h1>
-      <p>
-        Duplicates in a dataset can skew results and lead to inaccurate
-        analyses. This section provides a comprehensive guide to identifying,
-        categorizing, and removing duplicate entries effectively.
-      </p>
 
       <Row>
         <Col>

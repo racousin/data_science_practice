@@ -68,12 +68,6 @@ const ScalingAndNormalization = () => {
   return (
     <Container fluid>
       <h1 className="my-4">Scaling and Normalization</h1>
-      <p>
-        Scaling and normalization are critical preprocessing steps in many data
-        science workflows. They help to standardize the range of features, which
-        is crucial for models that are sensitive to the scale of input data,
-        such as distance-based algorithms.
-      </p>
 
       <Row>
         <Col>

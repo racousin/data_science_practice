@@ -187,20 +187,6 @@ print("Best individual is: %s\nwith fitness: %s" % (best_ind, best_ind.fitness))
           `}
         />
       </section>
-
-      <section>
-        <h2>Conclusion</h2>
-        <p>
-          Hyperparameter optimization is a crucial step in developing
-          high-performing machine learning models. While grid search and random
-          search are simple and widely used, more advanced techniques like
-          Bayesian optimization and genetic algorithms can often find better
-          hyperparameters more efficiently, especially for complex models with
-          many hyperparameters. The choice of optimization method depends on the
-          specific problem, the model being used, and the computational
-          resources available.
-        </p>
-      </section>
     </Container>
   );
 };

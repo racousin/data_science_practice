@@ -122,11 +122,6 @@ const HandleMissingValues = () => {
   return (
     <Container fluid>
       <h1 className="my-4">Handling Missing Values</h1>
-      <p>
-        In this section, you will learn about different techniques to handle
-        missing data in datasets, which is a common issue in data science
-        projects.
-      </p>
 
       <Row>
         <Col>

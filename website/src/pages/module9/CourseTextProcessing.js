@@ -103,6 +103,11 @@ const CourseTextProcessing = () => {
         { id: "spam-detection", label: "Spam Detection" },
       ],
     },
+    {
+      to: "/CaseStudy9",
+      label: "CaseStudy",
+      component: lazy(() => import("pages/module9/course/CaseStudy")),
+    },
     // {
     //   to: "/ner",
     //   label: "Named Entity Recognition (NER)",
@@ -169,10 +174,7 @@ const CourseTextProcessing = () => {
           <Row>
             <p>
               This module covers advanced topics in Natural Language Processing
-              (NLP) using Deep Learning techniques. You'll learn about various
-              text processing methods, neural network architectures for NLP, and
-              applications such as text classification, machine translation, and
-              text generation.
+              (NLP) using Deep Learning techniques.
             </p>
           </Row>
           <Row>

@@ -172,10 +172,7 @@ const CourseRecommendationSystems = () => {
           <Row>
             <p>
               This module covers the fundamentals and advanced topics in
-              recommendation systems. You'll learn about different types of
-              recommendation algorithms, evaluation metrics, and important
-              considerations such as the cold start problem, scalability, and
-              ethical issues.
+              recommendation systems.
             </p>
           </Row>
           <Row>

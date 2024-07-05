@@ -93,11 +93,6 @@ print(output)
         hidden layer, using PyTorch. The network takes an input of size 10, has
         a hidden layer of size 20, and produces an output of size 1.
       </p>
-      <p>
-        Feedforward networks form the foundation for more complex architectures
-        like Convolutional Neural Networks (CNNs) and Recurrent Neural Networks
-        (RNNs), which we'll explore in later sections.
-      </p>
     </Container>
   );
 };

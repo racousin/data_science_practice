@@ -35,39 +35,6 @@ const DataQuality = () => {
             format or range?
           </li>
         </ul>
-        <CodeBlock
-          language="python"
-          code={`
-import pandas as pd
-import numpy as np
-
-def assess_data_quality(df):
-    quality_report = {
-        'total_rows': len(df),
-        'total_columns': len(df.columns),
-        'missing_values': df.isnull().sum().to_dict(),
-        'duplicates': df.duplicated().sum(),
-        'data_types': df.dtypes.to_dict()
-    }
-    
-    # Check for potential outliers using IQR
-    for column in df.select_dtypes(include=[np.number]).columns:
-        Q1 = df[column].quantile(0.25)
-        Q3 = df[column].quantile(0.75)
-        IQR = Q3 - Q1
-        lower_bound = Q1 - 1.5 * IQR
-        upper_bound = Q3 + 1.5 * IQR
-        potential_outliers = ((df[column] < lower_bound) | (df[column] > upper_bound)).sum()
-        quality_report[f'{column}_potential_outliers'] = potential_outliers
-    
-    return quality_report
-
-# Usage
-df = pd.read_csv('your_data.csv')
-quality_report = assess_data_quality(df)
-print(quality_report)
-          `}
-        />
       </section>
 
       <section>
@@ -239,18 +206,6 @@ print(f"Data Quality Score: {quality_score:.2f}")
             data flows and transforms through your systems.
           </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Conclusion</h2>
-        <p>
-          Ensuring data quality is a critical aspect of any data science
-          project. By implementing robust data quality assessment and validation
-          techniques, you can increase the reliability of your analyses and the
-          confidence in your results. Remember that data quality is an ongoing
-          process, not a one-time task, and should be integrated into your
-          entire data lifecycle.
-        </p>
       </section>
     </Container>
   );
