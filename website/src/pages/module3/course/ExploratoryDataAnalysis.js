@@ -215,14 +215,6 @@ const ExploratoryDataAnalysis = () => {
           notebookColabUrl={notebookColabUrl}
           requirementsUrl={requirementsUrl}
         />
-        <p>The notebook above demonstrates:</p>
-        <ul>
-          <li>Loading and initial exploration of the dataset</li>
-          <li>Visualization of key variables and relationships</li>
-          <li>Handling of missing data and outliers</li>
-          <li>Feature engineering based on EDA insights</li>
-          <li>Building and evaluating a simple baseline model</li>
-        </ul>
       </section>
     </Container>
   );
