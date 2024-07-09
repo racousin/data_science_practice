@@ -10,7 +10,6 @@ const HyperparameterOptimization = () => {
       <h1 className="my-4">Hyperparameter Optimization</h1>
 
       <section>
-        <h2 id="introduction">Introduction</h2>
         <p>
           Hyperparameter optimization is the process of finding the best set of
           hyperparameters for a machine learning model. Hyperparameters are

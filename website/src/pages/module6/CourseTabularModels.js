@@ -7,6 +7,30 @@ import { useLocation } from "react-router-dom";
 const CourseTabularModels = () => {
   const courseLinks = [
     {
+      to: "/model-selection",
+      label: "Model Selection Techniques",
+      component: lazy(() => import("pages/module6/course/ModelSelection")),
+      subLinks: [
+        { id: "cross-validation", label: "Cross-validation strategies" },
+        { id: "nested-cv", label: "Nested cross-validation" },
+        { id: "comparison-metrics", label: "Model comparison metrics" },
+      ],
+    },
+    {
+      to: "/hyperparameter-optimization",
+      label: "Hyperparameter Optimization",
+      component: lazy(() =>
+        import("pages/module6/course/HyperparameterOptimization")
+      ),
+      subLinks: [
+        { id: "grid-search", label: "Grid Search" },
+        { id: "random-search", label: "Random Search" },
+        { id: "bayesian-optimization", label: "Bayesian Optimization" },
+        { id: "genetic-algorithms", label: "Genetic Algorithms" },
+      ],
+    },
+
+    {
       to: "/linear-models",
       label: "Linear Models",
       component: lazy(() => import("pages/module6/course/LinearModels")),
@@ -18,7 +42,7 @@ const CourseTabularModels = () => {
     },
     {
       to: "/tree-based-models",
-      label: "Tree-based Models",
+      label: "Decision Trees",
       component: lazy(() => import("pages/module6/course/TreeBasedModels")),
       subLinks: [
         { id: "decision-trees", label: "Decision Trees" },
@@ -63,8 +87,18 @@ const CourseTabularModels = () => {
       ],
     },
     {
+      to: "/ensemble-model",
+      label: "Ensemble Models",
+      component: lazy(() => import("pages/module6/course/EnsembleModels")),
+      subLinks: [
+        { id: "bagging", label: "Bagging" },
+        { id: "boosting", label: "Boosting" },
+        { id: "stacking", label: "Stacking" },
+      ],
+    },
+    {
       to: "/ensemble-techniques",
-      label: "Advanced Ensemble Techniques",
+      label: "Ensemble Techniques",
       component: lazy(() => import("pages/module6/course/EnsembleTechniques")),
       subLinks: [
         { id: "bagging", label: "Bagging" },
@@ -77,29 +111,7 @@ const CourseTabularModels = () => {
       label: "Time Series Models",
       component: lazy(() => import("pages/module6/course/TimeSeriesModels")),
     },
-    {
-      to: "/hyperparameter-optimization",
-      label: "Hyperparameter Optimization",
-      component: lazy(() =>
-        import("pages/module6/course/HyperparameterOptimization")
-      ),
-      subLinks: [
-        { id: "grid-search", label: "Grid Search" },
-        { id: "random-search", label: "Random Search" },
-        { id: "bayesian-optimization", label: "Bayesian Optimization" },
-        { id: "genetic-algorithms", label: "Genetic Algorithms" },
-      ],
-    },
-    {
-      to: "/model-selection",
-      label: "Model Selection Techniques",
-      component: lazy(() => import("pages/module6/course/ModelSelection")),
-      subLinks: [
-        { id: "cross-validation", label: "Cross-validation strategies" },
-        { id: "nested-cv", label: "Nested cross-validation" },
-        { id: "comparison-metrics", label: "Model comparison metrics" },
-      ],
-    },
+
     {
       to: "/automl",
       label: "AutoML for Tabular Data",

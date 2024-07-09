@@ -42,7 +42,7 @@ const Teaching = () => {
     },
     {
       id: 6,
-      title: "Tabular Models",
+      title: "Module 6: Tabular Models",
       linkCourse: "/module6/course",
       linkExercise: "/module6/exercise",
       tags: ["Machine Learning"],

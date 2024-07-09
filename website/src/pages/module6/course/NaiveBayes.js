@@ -85,7 +85,7 @@ print("\nClassification Report for Gaussian Naive Bayes:")
 print(classification_report(y_test, y_pred_gnb))
           `}
         />
-
+        {/* 
         <h3>Use Cases</h3>
         <ul>
           <li>
@@ -168,6 +168,7 @@ plt.show()
           understand the assumptions and limitations of Naive Bayes when
           applying it to real-world problems.
         </p>
+      </section> */}
       </section>
     </Container>
   );

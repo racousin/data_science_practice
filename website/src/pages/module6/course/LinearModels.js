@@ -5,13 +5,22 @@ import { InlineMath, BlockMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
 const LinearModels = () => {
+  <section>
+    <p>
+      Linear models are fundamental in machine learning and serve as a starting
+      point for many analyses. They offer good interpretability and can be
+      extended with regularization techniques to prevent overfitting. While they
+      may not capture complex non-linear relationships, they provide a solid
+      baseline and are often used in combination with other models in ensemble
+      methods.
+    </p>
+  </section>;
   return (
     <Container fluid>
       <h1 className="my-4">Linear Models</h1>
 
       <section>
         <h2 id="linear-regression">Linear Regression</h2>
-        <h3>Theory and Assumptions</h3>
         <p>
           Linear regression models the relationship between a dependent variable
           y and one or more independent variables X, assuming a linear
@@ -214,18 +223,6 @@ print(f"Elastic Net MSE: {mse_elastic}")
             l1_ratio &lt;= 1)
           </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Conclusion</h2>
-        <p>
-          Linear models are fundamental in machine learning and serve as a
-          starting point for many analyses. They offer good interpretability and
-          can be extended with regularization techniques to prevent overfitting.
-          While they may not capture complex non-linear relationships, they
-          provide a solid baseline and are often used in combination with other
-          models in ensemble methods.
-        </p>
       </section>
     </Container>
   );

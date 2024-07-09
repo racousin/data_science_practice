@@ -10,12 +10,10 @@ const SVM = () => {
       <h1 className="my-4">Support Vector Machines (SVM)</h1>
 
       <section>
-        <h2 id="theory">Theory and Kernel Trick</h2>
+        <h2 id="theory">The Kernel Trick</h2>
         <p>
-          Support Vector Machines (SVM) are powerful and versatile machine
-          learning models used for both classification and regression tasks. The
-          main idea behind SVM is to find the optimal hyperplane that separates
-          different classes in the feature space.
+          The main idea behind SVM is to find the optimal hyperplane that
+          separates different classes in the feature space.
         </p>
         <p>
           For linearly separable data, SVM tries to maximize the margin, which
@@ -103,7 +101,7 @@ print(f"Polynomial Kernel SVM Accuracy: {accuracy_score(y_test, y_pred_poly)}")
       </section>
 
       <section>
-        <h2 id="implementation">Implementation and Key Hyperparameters</h2>
+        {/* <h2 id="implementation">Implementation and Key Hyperparameters</h2>
         <p>
           SVMs in scikit-learn are implemented in the <code>SVC</code> (Support
           Vector Classification), <code>SVR</code> (Support Vector Regression),
@@ -139,7 +137,7 @@ best_svm = grid_search.best_estimator_
 y_pred_best = best_svm.predict(X_test_scaled)
 print(f"Best SVM Accuracy: {accuracy_score(y_test, y_pred_best)}")
           `}
-        />
+        /> */}
 
         <h3>Key Hyperparameters</h3>
         <ul>
@@ -166,7 +164,7 @@ print(f"Best SVM Accuracy: {accuracy_score(y_test, y_pred_best)}")
         </ul>
       </section>
 
-      <section>
+      {/* <section>
         <h2>Pros and Cons of SVM</h2>
         <h3>Pros</h3>
         <ul>
@@ -180,8 +178,8 @@ print(f"Best SVM Accuracy: {accuracy_score(y_test, y_pred_best)}")
             function, making it memory efficient
           </li>
           <li>
-            Versatile: different kernel functions can be specified for the
-            decision function
+            Different kernel functions can be specified for the decision
+            function
           </li>
         </ul>
         <h3>Cons</h3>
@@ -197,20 +195,7 @@ print(f"Best SVM Accuracy: {accuracy_score(y_test, y_pred_best)}")
           </li>
           <li>Can be computationally expensive for large datasets</li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Conclusion</h2>
-        <p>
-          Support Vector Machines are powerful and flexible models that can be
-          used for both linear and non-linear classification and regression
-          tasks. They are particularly effective in high-dimensional spaces and
-          cases where the number of dimensions is greater than the number of
-          samples. However, their performance can be sensitive to the choice of
-          hyperparameters, and they may not be the best choice for very large
-          datasets due to their computational complexity.
-        </p>
-      </section>
+      </section> */}
     </Container>
   );
 };

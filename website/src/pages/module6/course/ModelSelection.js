@@ -1,14 +1,36 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Image } from "react-bootstrap";
 import CodeBlock from "components/CodeBlock";
 import { InlineMath, BlockMath } from "react-katex";
-import "katex/dist/katex.min.css";
+import DataSplitDiagram from "components/module6/DataSplitDiagram";
 
 const ModelSelection = () => {
   return (
     <Container fluid>
       <h1 className="my-4">Model Selection Techniques</h1>
 
+      <section>
+        <h2>Train-Test Split</h2>
+        <DataSplitDiagram />
+        <p>
+          The train-test split method is fundamental for evaluating machine
+          learning model performance. It involves:
+        </p>
+
+        <ol>
+          <li>
+            Randomly partitioning the dataset into two subsets: training and
+            test sets
+          </li>
+          <li>Training the model on the training set</li>
+          <li>Evaluating the model's performance on the test set</li>
+        </ol>
+
+        <p>
+          This approach ensures unbiased performance estimation by using
+          separate data for training and evaluation.
+        </p>
+      </section>
       <section>
         <h2 id="cross-validation">Cross-validation Strategies</h2>
         <p>
@@ -18,6 +40,18 @@ const ModelSelection = () => {
         </p>
 
         <h3>K-Fold Cross-validation</h3>
+        <Row className="justify-content-center">
+          <Col xs={12} md={10} lg={8}>
+            <div className="text-center">
+              <Image
+                src="/assets/module6/kfold-cross-validation.svg"
+                alt="kfold-cross-validation"
+                fluid
+              />
+              <p>kfold-cross-validation</p>
+            </div>
+          </Col>
+        </Row>
         <p>
           K-Fold CV involves splitting the dataset into k subsets, then for each
           subset:
@@ -131,79 +165,6 @@ print("Nested CV scores:", nested_scores)
 print("Mean nested CV score:", nested_scores.mean())
           `}
         />
-      </section>
-
-      <section>
-        <h2 id="comparison-metrics">Model Comparison Metrics</h2>
-
-        <h3>Classification Metrics</h3>
-        <p>For classification problems, common metrics include:</p>
-        <ul>
-          <li>Accuracy</li>
-          <li>Precision</li>
-          <li>Recall</li>
-          <li>F1-score</li>
-          <li>ROC-AUC</li>
-        </ul>
-        <CodeBlock
-          language="python"
-          code={`
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
-
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-svm.fit(X_train, y_train)
-y_pred = svm.predict(X_test)
-
-print("Accuracy:", accuracy_score(y_test, y_pred))
-print("Precision:", precision_score(y_test, y_pred))
-print("Recall:", recall_score(y_test, y_pred))
-print("F1-score:", f1_score(y_test, y_pred))
-print("ROC-AUC:", roc_auc_score(y_test, svm.decision_function(X_test)))
-          `}
-        />
-
-        <h3>Regression Metrics</h3>
-        <p>For regression problems, common metrics include:</p>
-        <ul>
-          <li>Mean Squared Error (MSE)</li>
-          <li>Root Mean Squared Error (RMSE)</li>
-          <li>Mean Absolute Error (MAE)</li>
-          <li>R-squared (Coefficient of Determination)</li>
-        </ul>
-        <CodeBlock
-          language="python"
-          code={`
-from sklearn.datasets import make_regression
-from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-import numpy as np
-
-X, y = make_regression(n_samples=1000, n_features=20, noise=0.1, random_state=42)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-reg = LinearRegression().fit(X_train, y_train)
-y_pred = reg.predict(X_test)
-
-print("MSE:", mean_squared_error(y_test, y_pred))
-print("RMSE:", np.sqrt(mean_squared_error(y_test, y_pred)))
-print("MAE:", mean_absolute_error(y_test, y_pred))
-print("R-squared:", r2_score(y_test, y_pred))
-          `}
-        />
-      </section>
-
-      <section>
-        <h2>Conclusion</h2>
-        <p>
-          Model selection is a critical step in the machine learning pipeline.
-          By using appropriate cross-validation strategies and evaluation
-          metrics, we can select models that generalize well to unseen data and
-          avoid overfitting. It's important to choose the right validation
-          strategy and metrics based on the specific problem, dataset
-          characteristics, and the goals of the analysis.
-        </p>
       </section>
     </Container>
   );

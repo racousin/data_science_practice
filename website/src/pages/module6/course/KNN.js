@@ -12,10 +12,10 @@ const KNN = () => {
       <section>
         <h2 id="theory">Theory and Distance Metrics</h2>
         <p>
-          K-Nearest Neighbors (KNN) is a simple, versatile, and non-parametric
-          algorithm used for both classification and regression tasks. The core
-          idea is to predict the target variable of a new data point based on
-          the values of its K nearest neighbors in the feature space.
+          K-Nearest Neighbors (KNN) is a simple and non-parametric algorithm
+          used for both classification and regression tasks. The core idea is to
+          predict the target variable of a new data point based on the values of
+          its K nearest neighbors in the feature space.
         </p>
         <h3>Algorithm Steps:</h3>
         <ol>
@@ -118,38 +118,7 @@ print(f"KNN Regression MSE: {mean_squared_error(y_test, y_pred_reg)}")
         </ul>
       </section>
 
-      <section>
-        <h2 id="hyperparameter-tuning">Hyperparameter Tuning</h2>
-        <p>
-          Finding the optimal value of K and other hyperparameters is crucial
-          for KNN performance. We can use techniques like cross-validation and
-          grid search for this purpose.
-        </p>
-        <CodeBlock
-          language="python"
-          code={`
-from sklearn.model_selection import GridSearchCV
-
-param_grid = {
-    'n_neighbors': [3, 5, 7, 9, 11],
-    'weights': ['uniform', 'distance'],
-    'metric': ['euclidean', 'manhattan']
-}
-
-grid_search = GridSearchCV(KNeighborsClassifier(), param_grid, cv=5, n_jobs=-1)
-grid_search.fit(X_train_scaled, y_train)
-
-print("Best parameters:", grid_search.best_params_)
-print("Best cross-validation score:", grid_search.best_score_)
-
-best_knn = grid_search.best_estimator_
-y_pred_best = best_knn.predict(X_test_scaled)
-print(f"Best KNN Accuracy: {accuracy_score(y_test, y_pred_best)}")
-          `}
-        />
-      </section>
-
-      <section>
+      {/* <section>
         <h2 id="pros-cons">Pros and Cons of Lazy Learning</h2>
         <h3>Pros</h3>
         <ul>
@@ -172,22 +141,7 @@ print(f"Best KNN Accuracy: {accuracy_score(y_test, y_pred_best)}")
           <li>Needs to store all training data</li>
           <li>Choosing the optimal value of K can be challenging</li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Conclusion</h2>
-        <p>
-          K-Nearest Neighbors is a versatile and intuitive algorithm that can be
-          effective for many machine learning tasks. Its simplicity makes it a
-          good baseline model and a useful tool for understanding the structure
-          of the data. However, it may not be suitable for very large datasets
-          or high-dimensional spaces due to its computational complexity and
-          sensitivity to irrelevant features. As with any machine learning
-          algorithm, careful consideration of the problem at hand, proper
-          preprocessing of the data, and thorough hyperparameter tuning are
-          essential for achieving good performance with KNN.
-        </p>
-      </section>
+      </section> */}
     </Container>
   );
 };

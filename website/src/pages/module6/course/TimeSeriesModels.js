@@ -8,7 +8,6 @@ const TimeSeriesModels = () => {
       <h1 className="my-4">Time Series Models</h1>
 
       <section>
-        <h2>Introduction to Time Series Analysis</h2>
         <p>
           Time series analysis involves working with data points indexed in time
           order. It's crucial in many fields, including finance, economics, and
@@ -77,7 +76,7 @@ print(forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail())
           Long Short-Term Memory (LSTM) networks, a type of recurrent neural
           network, can be very effective for time series prediction.
         </p>
-        <CodeBlock
+        {/* <CodeBlock
           language="python"
           code={`
 from keras.models import Sequential
@@ -106,10 +105,10 @@ model.add(Dense(1))
 model.compile(loss='mean_squared_error', optimizer='adam')
 model.fit(X, Y, epochs=100, batch_size=1, verbose=2)
           `}
-        />
+        /> */}
       </section>
 
-      <section>
+      {/* <section>
         <h2>Conclusion</h2>
         <p>
           Time series models are crucial for analyzing and forecasting
@@ -119,7 +118,7 @@ model.fit(X, Y, epochs=100, batch_size=1, verbose=2)
           strengths and is suitable for different types of time series data and
           forecasting tasks.
         </p>
-      </section>
+      </section> */}
     </Container>
   );
 };

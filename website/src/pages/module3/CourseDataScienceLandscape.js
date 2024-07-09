@@ -42,7 +42,7 @@ const CourseDataScienceLandscape = () => {
     },
     {
       to: "/model-evaluation-validation",
-      label: "Model Evaluation and Validation",
+      label: "Model Evaluation",
       component: lazy(() =>
         import("pages/module3/course/ModelEvaluationValidation")
       ),

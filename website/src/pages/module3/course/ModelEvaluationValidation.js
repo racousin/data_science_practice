@@ -12,7 +12,7 @@ import CodeBlock from "components/CodeBlock";
 const ModelEvaluationValidation = () => {
   return (
     <Container fluid>
-      <h1 className="my-4">Model Evaluation and Validation</h1>
+      <h1 className="my-4">Model Evaluation</h1>
       <p>
         Model evaluation is the process of assessing how well a machine learning
         model performs. It's a crucial step in the machine learning pipeline for

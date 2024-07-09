@@ -7,7 +7,7 @@ import "katex/dist/katex.min.css";
 const EnsembleTechniques = () => {
   return (
     <Container fluid>
-      <h1 className="my-4">Advanced Ensemble Techniques</h1>
+      <h1 className="my-4">Ensemble Techniques</h1>
 
       <section>
         <h2 id="bagging">Bagging (Bootstrap Aggregating)</h2>
@@ -44,50 +44,6 @@ bagging_model = BaggingClassifier(base_estimator=base_model, n_estimators=10, ra
 bagging_model.fit(X_train, y_train)
 y_pred = bagging_model.predict(X_test)
 print(f"Bagging Classifier Accuracy: {accuracy_score(y_test, y_pred)}")
-          `}
-        />
-      </section>
-
-      <section>
-        <h2 id="boosting">Boosting</h2>
-        <p>
-          Boosting is a family of algorithms that convert weak learners into
-          strong learners. It builds models sequentially, where each new model
-          tries to correct the errors of the previous ones.
-        </p>
-        <h3>AdaBoost (Adaptive Boosting)</h3>
-        <p>
-          AdaBoost adjusts the weights of misclassified instances after each
-          iteration, focusing subsequent models on the hard-to-classify
-          instances.
-        </p>
-        <CodeBlock
-          language="python"
-          code={`
-from sklearn.ensemble import AdaBoostClassifier
-
-adaboost_model = AdaBoostClassifier(n_estimators=50, random_state=42)
-adaboost_model.fit(X_train, y_train)
-y_pred_ada = adaboost_model.predict(X_test)
-print(f"AdaBoost Classifier Accuracy: {accuracy_score(y_test, y_pred_ada)}")
-          `}
-        />
-
-        <h3>Gradient Boosting</h3>
-        <p>
-          Gradient Boosting builds models sequentially, with each new model
-          trying to minimize the loss function of the entire ensemble using
-          gradient descent.
-        </p>
-        <CodeBlock
-          language="python"
-          code={`
-from sklearn.ensemble import GradientBoostingClassifier
-
-gb_model = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, random_state=42)
-gb_model.fit(X_train, y_train)
-y_pred_gb = gb_model.predict(X_test)
-print(f"Gradient Boosting Classifier Accuracy: {accuracy_score(y_test, y_pred_gb)}")
           `}
         />
       </section>
@@ -164,28 +120,6 @@ print(f"Stacking Classifier Accuracy: {accuracy_score(y_test, y_pred_stack)}")
             its simplicity and interpretability
           </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Comparing Ensemble Techniques</h2>
-        <CodeBlock
-          language="python"
-          code={`
-from sklearn.model_selection import cross_val_score
-import numpy as np
-
-models = [
-    ("Bagging", bagging_model),
-    ("AdaBoost", adaboost_model),
-    ("Gradient Boosting", gb_model),
-    ("Stacking", stacking_model)
-]
-
-for name, model in models:
-    scores = cross_val_score(model, X, y, cv=5)
-    print(f"{name} - Mean Accuracy: {np.mean(scores):.4f} (+/- {np.std(scores) * 2:.4f})")
-          `}
-        />
       </section>
     </Container>
   );

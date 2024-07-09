@@ -10,18 +10,10 @@ const AutoML = () => {
       <h1 className="my-4">AutoML for Tabular Data</h1>
 
       <section>
-        <h2 id="introduction">Introduction to AutoML</h2>
-        <p>
-          Automated Machine Learning (AutoML) refers to the process of
-          automating the end-to-end process of applying machine learning to
-          real-world problems. AutoML covers everything from data preprocessing
-          and feature engineering to model selection and hyperparameter tuning.
-        </p>
         <p>The main goals of AutoML are to:</p>
         <ul>
           <li>Make machine learning accessible to non-experts</li>
           <li>Save time and resources for expert data scientists</li>
-          <li>Produce more accurate and robust models</li>
           <li>
             Facilitate the exploration of a wider range of models and parameters
           </li>
@@ -213,19 +205,6 @@ print("Test set score:", grid_search.score(X_test, y_test))
           </li>
           <li>Risk of overfitting if not properly validated</li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Conclusion</h2>
-        <p>
-          AutoML is a powerful tool that can significantly speed up the machine
-          learning workflow and produce high-quality models. However, it's not a
-          complete replacement for data science expertise. Understanding the
-          underlying principles of machine learning, careful problem framing,
-          and domain knowledge are still crucial for successful ML projects.
-          AutoML should be seen as a tool to augment and enhance the
-          capabilities of data scientists, rather than replace them entirely.
-        </p>
       </section>
     </Container>
   );
