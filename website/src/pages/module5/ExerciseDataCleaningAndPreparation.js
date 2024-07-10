@@ -6,6 +6,11 @@ import { useLocation } from "react-router-dom";
 
 const ExerciseDataCleaningAndPreparation = () => {
   const exerciseLinks = [
+    {
+      to: "/exercise1",
+      label: "Exercise 1",
+      component: lazy(() => import("pages/module5/exercise/Exercise1")),
+    },
     // Add links to other exercises as needed
   ];
 

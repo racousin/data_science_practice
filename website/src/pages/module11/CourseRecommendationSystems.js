@@ -124,6 +124,11 @@ const CourseRecommendationSystems = () => {
         { id: "strategies-for-cold-start", label: "Strategies for Cold Start" },
       ],
     },
+    {
+      to: "/CaseStudy11",
+      label: "CaseStudy",
+      component: lazy(() => import("pages/module5/course/CaseStudy")),
+    },
     // {
     //   to: "/scalability-and-performance",
     //   label: "Scalability and Performance",
