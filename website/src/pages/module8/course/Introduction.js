@@ -106,53 +106,6 @@ const Introduction = () => {
           Augmented Reality: Overlaying digital information on the real world
         </li>
       </ul>
-
-      <h3>Example: Simple Image Classification with PyTorch</h3>
-      <p>
-        Here's a basic example of how to perform image classification using a
-        pre-trained ResNet model in PyTorch:
-      </p>
-      <CodeBlock
-        language="python"
-        code={`
-import torch
-import torchvision.models as models
-import torchvision.transforms as transforms
-from PIL import Image
-
-# Load pre-trained ResNet model
-model = models.resnet50(pretrained=True)
-model.eval()
-
-# Define image transformations
-transform = transforms.Compose([
-    transforms.Resize(256),
-    transforms.CenterCrop(224),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-])
-
-# Load and preprocess the image
-image = Image.open("path_to_your_image.jpg")
-input_tensor = transform(image)
-input_batch = input_tensor.unsqueeze(0)
-
-# Make prediction
-with torch.no_grad():
-    output = model(input_batch)
-
-# Get the predicted class
-_, predicted_idx = torch.max(output, 1)
-predicted_label = predicted_idx.item()
-
-print(f"Predicted class: {predicted_label}")
-        `}
-      />
-      <p>
-        This example demonstrates how to use a pre-trained ResNet model to
-        classify an image. It includes loading the model, preprocessing the
-        image, and making a prediction.
-      </p>
     </Container>
   );
 };

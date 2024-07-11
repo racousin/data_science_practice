@@ -129,38 +129,6 @@ const CourseRecommendationSystems = () => {
       label: "CaseStudy",
       component: lazy(() => import("pages/module5/course/CaseStudy")),
     },
-    // {
-    //   to: "/scalability-and-performance",
-    //   label: "Scalability and Performance",
-    //   component: lazy(() =>
-    //     import("pages/module11/course/ScalabilityPerformance")
-    //   ),
-    //   subLinks: [
-    //     { id: "data-sampling", label: "Data Sampling" },
-    //     { id: "dimensionality-reduction", label: "Dimensionality Reduction" },
-    //     { id: "distributed-computing", label: "Distributed Computing" },
-    //     { id: "caching-strategies", label: "Caching Strategies" },
-    //   ],
-    // },
-    // {
-    //   to: "/ethical-considerations",
-    //   label: "Ethical Considerations in Recommendation Systems",
-    //   component: lazy(() =>
-    //     import("pages/module11/course/EthicalConsiderations")
-    //   ),
-    //   subLinks: [
-    //     { id: "privacy-concerns", label: "Privacy Concerns" },
-    //     { id: "filter-bubbles", label: "Filter Bubbles and Echo Chambers" },
-    //     {
-    //       id: "fairness-in-recommendations",
-    //       label: "Fairness in Recommendations",
-    //     },
-    //     {
-    //       id: "transparency-and-explainability",
-    //       label: "Transparency and Explainability",
-    //     },
-    //   ],
-    // },
   ];
 
   const location = useLocation();

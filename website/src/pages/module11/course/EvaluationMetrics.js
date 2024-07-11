@@ -1,190 +1,185 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import CodeBlock from "components/CodeBlock";
 import { InlineMath, BlockMath } from "react-katex";
 
 const EvaluationMetrics = () => {
   return (
-    <Container fluid>
-      <h1 className="my-4">Evaluation Metrics for Recommendation Systems</h1>
-      <p>
-        Evaluating recommendation systems is crucial to understand their
-        performance and effectiveness. This section covers various metrics used
-        to evaluate recommendation systems.
-      </p>
-      <Row>
-        <Col>
-          <h2 id="accuracy-metrics">Accuracy Metrics</h2>
-          <p>
-            Accuracy metrics measure how well the recommendations match the
-            user's actual preferences.
-          </p>
+    <Container>
+      <h1>Evaluation Metrics for Recommendation Systems</h1>
 
-          <h3>Mean Absolute Error (MAE)</h3>
-          <p>
-            MAE measures the average absolute difference between predicted and
-            actual ratings.
-          </p>
-          <BlockMath math="MAE = \frac{1}{n} \sum_{i=1}^n |y_i - \hat{y}_i|" />
+      <section id="introduction">
+        <h2>Introduction</h2>
+        <p>
+          Evaluating recommendation systems is crucial to assess their
+          performance and compare different approaches. Various metrics are used
+          depending on the type of recommendation task and the specific goals of
+          the system.
+        </p>
+      </section>
 
-          <h3>Root Mean Square Error (RMSE)</h3>
-          <p>RMSE is similar to MAE but gives more weight to larger errors.</p>
-          <BlockMath math="RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^n (y_i - \hat{y}_i)^2}" />
+      <section id="accuracy-metrics">
+        <h2>Accuracy Metrics</h2>
 
-          <CodeBlock
-            code={`
+        <h3>Mean Absolute Error (MAE)</h3>
+        <p>
+          MAE measures the average absolute difference between predicted and
+          actual ratings.
+        </p>
+        <BlockMath>
+          {`MAE = \\frac{1}{n} \\sum_{i=1}^n |y_i - \\hat{y}_i|`}
+        </BlockMath>
+
+        <h3>Root Mean Square Error (RMSE)</h3>
+        <p>RMSE is similar to MAE but gives more weight to large errors.</p>
+        <BlockMath>
+          {`RMSE = \\sqrt{\\frac{1}{n} \\sum_{i=1}^n (y_i - \\hat{y}_i)^2}`}
+        </BlockMath>
+
+        <CodeBlock
+          code={`
 import numpy as np
 
-def calculate_mae(actual, predicted):
-    return np.mean(np.abs(np.array(actual) - np.array(predicted)))
+def mae(y_true, y_pred):
+    return np.mean(np.abs(y_true - y_pred))
 
-def calculate_rmse(actual, predicted):
-    return np.sqrt(np.mean((np.array(actual) - np.array(predicted))**2))
-
-# Usage
-actual_ratings = [4, 3, 5, 2, 1]
-predicted_ratings = [3.8, 3.2, 4.7, 2.3, 1.5]
-
-mae = calculate_mae(actual_ratings, predicted_ratings)
-rmse = calculate_rmse(actual_ratings, predicted_ratings)
-
-print(f"MAE: {mae}")
-print(f"RMSE: {rmse}")
-`}
-          />
-
-          <h2 id="ranking-metrics">Ranking Metrics</h2>
-          <p>
-            Ranking metrics evaluate the quality of the ordered list of
-            recommendations.
-          </p>
-
-          <h3>Precision and Recall</h3>
-          <p>
-            Precision measures the proportion of relevant items among the
-            recommended items, while recall measures the proportion of relevant
-            items that were recommended.
-          </p>
-          <BlockMath math="Precision@k = \frac{\text{# of relevant items in top-k recommendations}}{\text{k}}" />
-          <BlockMath math="Recall@k = \frac{\text{# of relevant items in top-k recommendations}}{\text{total # of relevant items}}" />
-
-          <h3>Mean Average Precision (MAP)</h3>
-          <p>
-            MAP provides a single-figure measure of quality across recall
-            levels.
-          </p>
-          <BlockMath math="MAP = \frac{1}{|U|} \sum_{u=1}^{|U|} \frac{1}{|R_u|} \sum_{k=1}^n P(k) \times rel(k)" />
-
-          <CodeBlock
-            code={`
-def precision_at_k(actual, predicted, k):
-    act_set = set(actual)
-    pred_set = set(predicted[:k])
-    return len(act_set & pred_set) / float(k)
-
-def average_precision(actual, predicted):
-    precisions = [precision_at_k(actual, predicted, k+1) for k in range(len(predicted))]
-    return sum(precisions) / len(actual)
-
-def mean_average_precision(actual, predicted):
-    return sum(average_precision(a, p) for a, p in zip(actual, predicted)) / len(actual)
+def rmse(y_true, y_pred):
+    return np.sqrt(np.mean((y_true - y_pred)**2))
 
 # Usage
-actual_items = [[1, 2, 3, 4, 5], [2, 4, 6, 8, 10]]
-predicted_items = [[1, 3, 2, 6, 4], [2, 6, 4, 8, 10]]
+y_true = np.array([4, 3, 5, 2, 1])
+y_pred = np.array([3.8, 3.2, 4.9, 2.1, 1.2])
+print(f"MAE: {mae(y_true, y_pred):.4f}")
+print(f"RMSE: {rmse(y_true, y_pred):.4f}")
+          `}
+          language="python"
+        />
+      </section>
 
-map_score = mean_average_precision(actual_items, predicted_items)
-print(f"MAP: {map_score}")
-`}
-          />
+      <section id="ranking-metrics">
+        <h2>Ranking Metrics</h2>
 
-          <h2 id="diversity-and-novelty">Diversity and Novelty</h2>
-          <p>
-            Diversity measures how different the recommended items are from each
-            other, while novelty assesses how different the recommended items
-            are from what the user has interacted with in the past.
-          </p>
+        <h3>Precision@k and Recall@k</h3>
+        <p>
+          These metrics evaluate the relevance of the top-k recommended items.
+        </p>
+        <BlockMath>
+          {`Precision@k = \\frac{\\text{# of relevant items in top-k}}{k}`}
+        </BlockMath>
+        <BlockMath>
+          {`Recall@k = \\frac{\\text{# of relevant items in top-k}}{\\text{total # of relevant items}}`}
+        </BlockMath>
 
-          <h3>Intra-List Diversity</h3>
-          <p>
-            Intra-List Diversity measures the diversity within a list of
-            recommendations.
-          </p>
-          <BlockMath math="ILD = \frac{1}{|L|(|L|-1)} \sum_{i \in L} \sum_{j \in L, j \neq i} d(i, j)" />
+        <h3>Normalized Discounted Cumulative Gain (NDCG)</h3>
+        <p>
+          NDCG measures the quality of ranking, taking into account the position
+          of relevant items.
+        </p>
+        <BlockMath>{`NDCG@k = \\frac{DCG@k}{IDCG@k}`}</BlockMath>
+        <BlockMath>
+          {`DCG@k = \\sum_{i=1}^k \\frac{2^{rel_i} - 1}{\\log_2(i+1)}`}
+        </BlockMath>
 
-          <CodeBlock
-            code={`
+        <CodeBlock
+          code={`
 import numpy as np
 
-def intra_list_diversity(recommendations, similarity_matrix):
-    n = len(recommendations)
-    diversity_sum = 0
-    for i in range(n):
-        for j in range(i+1, n):
-            diversity_sum += 1 - similarity_matrix[recommendations[i]][recommendations[j]]
-    return (2 * diversity_sum) / (n * (n - 1))
+def precision_at_k(y_true, y_pred, k):
+    y_true = np.array(y_true)
+    y_pred = np.array(y_pred)
+    relevant = y_true[y_pred.argsort()[::-1][:k]]
+    return np.sum(relevant) / k
+
+def dcg_at_k(y_true, y_pred, k):
+    y_true = np.array(y_true)
+    y_pred = np.array(y_pred)
+    order = y_pred.argsort()[::-1]
+    y_true = y_true[order[:k]]
+    gain = 2 ** y_true - 1
+    discounts = np.log2(np.arange(len(y_true)) + 2)
+    return np.sum(gain / discounts)
+
+def ndcg_at_k(y_true, y_pred, k):
+    dcg = dcg_at_k(y_true, y_pred, k)
+    idcg = dcg_at_k(y_true, y_true, k)
+    return dcg / idcg
 
 # Usage
-similarity_matrix = np.random.rand(100, 100)
-recommendations = [5, 23, 41, 12, 9]
-ild = intra_list_diversity(recommendations, similarity_matrix)
-print(f"Intra-List Diversity: {ild}")
-`}
-          />
+y_true = np.array([1, 0, 1, 0, 1])
+y_pred = np.array([0.9, 0.8, 0.7, 0.6, 0.5])
+k = 3
+print(f"Precision@{k}: {precision_at_k(y_true, y_pred, k):.4f}")
+print(f"NDCG@{k}: {ndcg_at_k(y_true, y_pred, k):.4f}")
+          `}
+          language="python"
+        />
+      </section>
 
-          <h2 id="user-studies">User Studies</h2>
-          <p>
-            User studies involve collecting feedback directly from users to
-            evaluate the recommendation system.
-          </p>
+      <section id="diversity-and-novelty">
+        <h2>Diversity and Novelty</h2>
 
-          <h3>A/B Testing</h3>
-          <p>
-            A/B testing compares two versions of the recommendation system to
-            see which performs better with real users.
-          </p>
+        <h3>Intra-List Diversity</h3>
+        <p>Measures how different the recommended items are from each other.</p>
+        <BlockMath>
+          {`ILD = \\frac{1}{|L|(|L|-1)} \\sum_{i \\in L} \\sum_{j \\in L, j \\neq i} d(i,j)`}
+        </BlockMath>
+        <p>
+          Where <InlineMath>d(i,j)</InlineMath> is a distance measure between
+          items i and j, and L is the list of recommendations.
+        </p>
 
-          <CodeBlock
-            code={`
-import scipy.stats as stats
+        <h3>Novelty</h3>
+        <p>
+          Measures how unexpected or new the recommended items are to a user.
+        </p>
+        <BlockMath>
+          {`Novelty = -\\frac{1}{|L|} \\sum_{i \\in L} \\log_2 p(i)`}
+        </BlockMath>
+        <p>
+          Where <InlineMath>p(i)</InlineMath> is the probability of item i being
+          known to the user (often estimated from the training data).
+        </p>
+      </section>
 
-def ab_test(control_conversions, control_size, treatment_conversions, treatment_size):
-    control_rate = control_conversions / control_size
-    treatment_rate = treatment_conversions / treatment_size
-    
-    z_score, p_value = stats.proportions_ztest(
-        [control_conversions, treatment_conversions],
-        [control_size, treatment_size],
-        alternative='two-sided'
-    )
-    
-    return control_rate, treatment_rate, p_value
+      <section id="coverage">
+        <h2>Coverage</h2>
+        <p>
+          Coverage measures the proportion of items that the recommender system
+          is able to recommend.
+        </p>
+        <BlockMath>
+          {`Coverage = \\frac{|\\text{Unique recommended items}|}{|\\text{All items}|}`}
+        </BlockMath>
+      </section>
 
-# Usage
-control_conversions = 200
-control_size = 10000
-treatment_conversions = 250
-treatment_size = 10000
+      <section id="user-studies">
+        <h2>User Studies</h2>
+        <p>
+          While offline metrics are useful, user studies provide invaluable
+          insights into the real-world performance of recommendation systems.
+          These studies often measure:
+        </p>
+        <ul>
+          <li>User satisfaction</li>
+          <li>Perceived relevance of recommendations</li>
+          <li>System usability</li>
+          <li>User engagement and retention</li>
+        </ul>
+      </section>
 
-control_rate, treatment_rate, p_value = ab_test(
-    control_conversions, control_size, treatment_conversions, treatment_size
-)
-
-print(f"Control conversion rate: {control_rate:.2%}")
-print(f"Treatment conversion rate: {treatment_rate:.2%}")
-print(f"P-value: {p_value:.4f}")
-`}
-          />
-
-          <p>
-            These metrics provide a comprehensive view of a recommendation
-            system's performance, covering accuracy, ranking quality, diversity,
-            and user satisfaction. It's important to choose the right
-            combination of metrics based on the specific goals and context of
-            your recommendation system.
-          </p>
-        </Col>
-      </Row>
+      <section id="online-evaluation">
+        <h2>Online Evaluation</h2>
+        <p>
+          A/B testing is a common method for online evaluation of recommendation
+          systems. Key metrics in online evaluation include:
+        </p>
+        <ul>
+          <li>Click-through rate (CTR)</li>
+          <li>Conversion rate</li>
+          <li>User engagement time</li>
+          <li>Revenue or other business-specific metrics</li>
+        </ul>
+      </section>
     </Container>
   );
 };

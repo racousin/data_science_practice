@@ -1,102 +1,187 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import CodeBlock from "components/CodeBlock";
+import { InlineMath, BlockMath } from "react-katex";
 
-const EvaluatingRecommendationSystems = () => {
+const EvaluationMetrics = () => {
   return (
-    <Container fluid>
-      <h1 className="my-4">Evaluating Recommendation Systems</h1>
-      <p>
-        In this section, you will learn methods to evaluate and improve the
-        performance of recommendation systems.
-      </p>
-      <Row>
-        <Col>
-          <h2>Precision, Recall, and F1-Score</h2>
-          <p>
-            Precision, recall, and F1-score are common metrics for evaluating
-            the performance of recommendation systems.
-          </p>
-          <CodeBlock
-            code={`
-// Example code for calculating precision, recall, and F1-score
-function calculateMetrics(recommendedItems, relevantItems) {
-  const truePositives = recommendedItems.filter(item => relevantItems.includes(item)).length;
-  const falsePositives = recommendedItems.filter(item => !relevantItems.includes(item)).length;
-  const falseNegatives = relevantItems.filter(item => !recommendedItems.includes(item)).length;
+    <Container>
+      <h1>Evaluation Metrics for Recommendation Systems</h1>
 
-  const precision = truePositives / (truePositives + falsePositives);
-  const recall = truePositives / (truePositives + falseNegatives);
-  const f1Score = 2 * (precision * recall) / (precision + recall);
+      <section id="introduction">
+        <h2>Introduction</h2>
+        <p>
+          Evaluating recommendation systems is crucial to assess their
+          performance and compare different approaches. Various metrics are used
+          depending on the type of recommendation task and the specific goals of
+          the system.
+        </p>
+      </section>
 
-  return { precision, recall, f1Score };
-}
-`}
-          />
-          <h2>A/B Testing</h2>
-          <p>
-            A/B testing is a powerful technique for evaluating the performance
-            of recommendation systems in a live production environment.
-          </p>
-          <CodeBlock
-            code={`
-// Example code for A/B testing
-function runABTest(recommenderSystemA, recommenderSystemB, data) {
-  const users = data.map(entry => entry.userId);
+      <section id="accuracy-metrics">
+        <h2>Accuracy Metrics</h2>
 
-  // Split the users into two groups
-  const groupA = users.filter((user, i) => i % 2 === 0);
-  const groupB = users.filter((user, i) => i % 2 === 1);
+        <h3>Mean Absolute Error (MAE)</h3>
+        <p>
+          MAE measures the average absolute difference between predicted and
+          actual ratings.
+        </p>
+        <BlockMath>
+          {`MAE = \\frac{1}{n} \\sum_{i=1}^n |y_i - \\hat{y}_i|`}
+        </BlockMath>
 
-  // Generate recommendations for each group
-  const recommendationsA = groupA.map(user => recommenderSystemA.recommendItems(user, data));
-  const recommendationsB = groupB.map(user => recommenderSystemB.recommendItems(user, data));
+        <h3>Root Mean Square Error (RMSE)</h3>
+        <p>RMSE is similar to MAE but gives more weight to large errors.</p>
+        <BlockMath>
+          {`RMSE = \\sqrt{\\frac{1}{n} \\sum_{i=1}^n (y_i - \\hat{y}_i)^2}`}
+        </BlockMath>
 
-  // Calculate the metrics for each group
-  const metricsA = recommendationsA.map(recommendedItems => calculateMetrics(recommendedItems, relevantItems));
-  const metricsB = recommendationsB.map(recommendedItems => calculateMetrics(recommendedItems, relevantItems));
+        <CodeBlock
+          code={`
+import numpy as np
 
-  // Compare the metrics to determine which system performs better
-  const avgPrecisionA = metricsA.reduce((acc, cur) => acc + cur.precision, 0) / metricsA.length;
-  const avgPrecisionB = metricsB.reduce((acc, cur) => acc + cur.precision, 0) / metricsB.length;
+def mae(y_true, y_pred):
+    return np.mean(np.abs(y_true - y_pred))
 
-  if (avgPrecisionA > avgPrecisionB) {
-    return 'Recommender System A performs better';
-  } else if (avgPrecisionA < avgPrecisionB) {
-    return 'Recommender System B performs better';
-  } else {
-    return 'Both systems perform equally well';
-  }
-}
-`}
-          />
-          <h2>Common Pitfalls and Challenges</h2>
-          <p>
-            There are many pitfalls and challenges to be aware of when building
-            and evaluating recommendation systems.{" "}
-          </p>
+def rmse(y_true, y_pred):
+    return np.sqrt(np.mean((y_true - y_pred)**2))
 
-          <CodeBlock
-            code={`
-// Example code for addressing a common pitfall: the cold start problem
-function recommendItemsForNewUser(data) {
-  // Calculate the average rating for each item
-  const itemRatings = data.map(entry => entry.itemId).map(itemId => {
-    const ratings = data.filter(entry => entry.itemId === itemId).map(entry => entry.rating);
-    return { itemId, rating: ratings.reduce((acc, cur) => acc + cur, 0) / ratings.length };
-  });
+# Usage
+y_true = np.array([4, 3, 5, 2, 1])
+y_pred = np.array([3.8, 3.2, 4.9, 2.1, 1.2])
+print(f"MAE: {mae(y_true, y_pred):.4f}")
+print(f"RMSE: {rmse(y_true, y_pred):.4f}")
+          `}
+          language="python"
+        />
+      </section>
 
-  // Sort the items by their average rating and return the top N items
-  const recommendedItems = itemRatings.sort((a, b) => b.rating - a.rating).slice(0, N).map(item => item.itemId);
+      <section id="ranking-metrics">
+        <h2>Ranking Metrics</h2>
 
-  return recommendedItems;
-}
-`}
-          />
-        </Col>
-      </Row>
+        <h3>Precision@k and Recall@k</h3>
+        <p>
+          These metrics evaluate the relevance of the top-k recommended items.
+        </p>
+        <BlockMath>
+          {`Precision@k = \\frac{\\text{# of relevant items in top-k}}{k}`}
+        </BlockMath>
+        <BlockMath>
+          {`Recall@k = \\frac{\\text{# of relevant items in top-k}}{\\text{total # of relevant items}}`}
+        </BlockMath>
+
+        <h3>Normalized Discounted Cumulative Gain (NDCG)</h3>
+        <p>
+          NDCG measures the quality of ranking, taking into account the position
+          of relevant items.
+        </p>
+        <BlockMath>{`NDCG@k = \\frac{DCG@k}{IDCG@k}`}</BlockMath>
+        <BlockMath>
+          {`DCG@k = \\sum_{i=1}^k \\frac{2^{rel_i} - 1}{\\log_2(i+1)}`}
+        </BlockMath>
+
+        <CodeBlock
+          code={`
+import numpy as np
+
+def precision_at_k(y_true, y_pred, k):
+    y_true = np.array(y_true)
+    y_pred = np.array(y_pred)
+    relevant = y_true[y_pred.argsort()[::-1][:k]]
+    return np.sum(relevant) / k
+
+def dcg_at_k(y_true, y_pred, k):
+    y_true = np.array(y_true)
+    y_pred = np.array(y_pred)
+    order = y_pred.argsort()[::-1]
+    y_true = y_true[order[:k]]
+    gain = 2 ** y_true - 1
+    discounts = np.log2(np.arange(len(y_true)) + 2)
+    return np.sum(gain / discounts)
+
+def ndcg_at_k(y_true, y_pred, k):
+    dcg = dcg_at_k(y_true, y_pred, k)
+    idcg = dcg_at_k(y_true, y_true, k)
+    return dcg / idcg
+
+# Usage
+y_true = np.array([1, 0, 1, 0, 1])
+y_pred = np.array([0.9, 0.8, 0.7, 0.6, 0.5])
+k = 3
+print(f"Precision@{k}: {precision_at_k(y_true, y_pred, k):.4f}")
+print(f"NDCG@{k}: {ndcg_at_k(y_true, y_pred, k):.4f}")
+          `}
+          language="python"
+        />
+      </section>
+
+      <section id="diversity-and-novelty">
+        <h2>Diversity and Novelty</h2>
+
+        <h3>Intra-List Diversity</h3>
+        <p>Measures how different the recommended items are from each other.</p>
+        <BlockMath>
+          {`ILD = \\frac{1}{|L|(|L|-1)} \\sum_{i \\in L} \\sum_{j \\in L, j \\neq i} d(i,j)`}
+        </BlockMath>
+        <p>
+          Where <InlineMath>d(i,j)</InlineMath> is a distance measure between
+          items i and j, and L is the list of recommendations.
+        </p>
+
+        <h3>Novelty</h3>
+        <p>
+          Measures how unexpected or new the recommended items are to a user.
+        </p>
+        <BlockMath>
+          {`Novelty = -\\frac{1}{|L|} \\sum_{i \\in L} \\log_2 p(i)`}
+        </BlockMath>
+        <p>
+          Where <InlineMath>p(i)</InlineMath> is the probability of item i being
+          known to the user (often estimated from the training data).
+        </p>
+      </section>
+
+      <section id="coverage">
+        <h2>Coverage</h2>
+        <p>
+          Coverage measures the proportion of items that the recommender system
+          is able to recommend.
+        </p>
+        <BlockMath>
+          {`Coverage = \\frac{|\\text{Unique recommended items}|}{|\\text{All items}|}`}
+        </BlockMath>
+      </section>
+
+      <section id="user-studies">
+        <h2>User Studies</h2>
+        <p>
+          While offline metrics are useful, user studies provide invaluable
+          insights into the real-world performance of recommendation systems.
+          These studies often measure:
+        </p>
+        <ul>
+          <li>User satisfaction</li>
+          <li>Perceived relevance of recommendations</li>
+          <li>System usability</li>
+          <li>User engagement and retention</li>
+        </ul>
+      </section>
+
+      <section id="online-evaluation">
+        <h2>Online Evaluation</h2>
+        <p>
+          A/B testing is a common method for online evaluation of recommendation
+          systems. Key metrics in online evaluation include:
+        </p>
+        <ul>
+          <li>Click-through rate (CTR)</li>
+          <li>Conversion rate</li>
+          <li>User engagement time</li>
+          <li>Revenue or other business-specific metrics</li>
+        </ul>
+      </section>
     </Container>
   );
 };
 
-export default EvaluatingRecommendationSystems;
+export default EvaluationMetrics;

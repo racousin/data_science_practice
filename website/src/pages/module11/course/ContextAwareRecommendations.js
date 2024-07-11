@@ -1,171 +1,133 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import CodeBlock from "components/CodeBlock";
+import { InlineMath, BlockMath } from "react-katex";
 
 const ContextAwareRecommendations = () => {
   return (
-    <Container fluid>
-      <h1 className="my-4">Context-Aware Recommendations</h1>
-      <p>
-        Context-aware recommendation systems take into account additional
-        contextual information beyond just user-item interactions to provide
-        more relevant and personalized recommendations.
-      </p>
-      <Row>
-        <Col>
-          <h2 id="contextual-information">Contextual Information</h2>
-          <p>
-            Contextual information can include factors such as time, location,
-            weather, user's mood, or any other relevant situational data that
-            might influence user preferences.
-          </p>
-          <CodeBlock
-            code={`
-// Example of a context-aware user-item interaction
-const contextAwareInteraction = {
-  userId: 123,
-  itemId: 456,
-  rating: 4.5,
-  context: {
-    time: '2023-07-10T14:30:00Z',
-    location: 'home',
-    device: 'mobile',
-    weather: 'sunny'
-  }
-};
-`}
-          />
+    <Container>
+      <h1>Context-Aware Recommendations</h1>
 
-          <h2 id="pre-filtering">Pre-filtering</h2>
-          <p>
-            Pre-filtering is a technique where contextual information is used to
-            filter the dataset before applying traditional recommendation
-            algorithms.
-          </p>
-          <CodeBlock
-            code={`
-function preFilter(interactions, context) {
-  return interactions.filter(interaction => {
-    return Object.keys(context).every(key => 
-      interaction.context[key] === context[key]
-    );
-  });
-}
+      <section id="introduction">
+        <h2>Introduction</h2>
+        <p>
+          Context-aware recommendation systems (CARS) incorporate contextual
+          information into the recommendation process. This approach aims to
+          provide more relevant recommendations by considering factors such as
+          time, location, or user mood.
+        </p>
+      </section>
 
-// Usage
-const currentContext = { time: 'evening', location: 'home' };
-const filteredInteractions = preFilter(allInteractions, currentContext);
-const recommendations = traditionalRecommender.recommend(filteredInteractions);
-`}
-          />
+      <section id="contextual-information">
+        <h2>Contextual Information</h2>
+        <p>Contextual information can be categorized into different types:</p>
+        <ul>
+          <li>Temporal context (e.g., time of day, season)</li>
+          <li>Spatial context (e.g., location, environment)</li>
+          <li>Social context (e.g., alone, with friends)</li>
+          <li>User state (e.g., mood, goal)</li>
+          <li>Device context (e.g., mobile, desktop)</li>
+        </ul>
+      </section>
 
-          <h2 id="post-filtering">Post-filtering</h2>
-          <p>
-            Post-filtering applies context-based filtering after generating
-            recommendations using traditional methods.
-          </p>
-          <CodeBlock
-            code={`
-function postFilter(recommendations, context, threshold) {
-  return recommendations.filter(recommendation => {
-    const contextualRelevance = calculateContextualRelevance(recommendation, context);
-    return contextualRelevance >= threshold;
-  });
-}
+      <section id="pre-filtering">
+        <h2>Pre-filtering</h2>
+        <p>
+          Pre-filtering approaches filter the data before applying traditional
+          recommendation algorithms.
+        </p>
+        <CodeBlock
+          code={`
+def pre_filter(data, context):
+    return data[data['context'] == context]
 
-// Usage
-const traditionalRecommendations = traditionalRecommender.recommend(user);
-const currentContext = { time: 'evening', location: 'home' };
-const finalRecommendations = postFilter(traditionalRecommendations, currentContext, 0.7);
-`}
-          />
+filtered_data = pre_filter(all_data, current_context)
+recommendations = traditional_recommender(filtered_data)
+          `}
+          language="python"
+        />
+      </section>
 
-          <h2 id="contextual-modeling">Contextual Modeling</h2>
-          <p>
-            Contextual modeling incorporates context directly into the
-            recommendation algorithm, often by extending traditional models to
-            include contextual dimensions.
-          </p>
-          <CodeBlock
-            code={`
-class ContextAwareMatrixFactorization {
-  constructor(numUsers, numItems, numContexts, numFactors) {
-    this.userFactors = initializeMatrix(numUsers, numFactors);
-    this.itemFactors = initializeMatrix(numItems, numFactors);
-    this.contextFactors = initializeMatrix(numContexts, numFactors);
-  }
+      <section id="post-filtering">
+        <h2>Post-filtering</h2>
+        <p>
+          Post-filtering approaches apply context-based filtering after
+          generating recommendations.
+        </p>
+        <CodeBlock
+          code={`
+def post_filter(recommendations, context):
+    return [rec for rec in recommendations if is_relevant(rec, context)]
 
-  predict(userId, itemId, contextId) {
-    return dotProduct(
-      this.userFactors[userId],
-      this.itemFactors[itemId],
-      this.contextFactors[contextId]
-    );
-  }
+initial_recommendations = traditional_recommender(all_data)
+final_recommendations = post_filter(initial_recommendations, current_context)
+          `}
+          language="python"
+        />
+      </section>
 
-  train(interactions, learningRate, regularization, epochs) {
-    for (let epoch = 0; epoch < epochs; epoch++) {
-      for (const interaction of interactions) {
-        const { userId, itemId, contextId, rating } = interaction;
-        const prediction = this.predict(userId, itemId, contextId);
-        const error = rating - prediction;
+      <section id="contextual-modeling">
+        <h2>Contextual Modeling</h2>
+        <p>
+          Contextual modeling incorporates context directly into the
+          recommendation algorithm.
+        </p>
+        <BlockMath>
+          {`R: User \\times Item \\times Context \\rightarrow Rating`}
+        </BlockMath>
+        <p>A simple contextual modeling approach using matrix factorization:</p>
+        <CodeBlock
+          code={`
+import numpy as np
 
-        // Update factors
-        this.updateFactors(userId, itemId, contextId, error, learningRate, regularization);
-      }
-    }
-  }
+class ContextualMF:
+    def __init__(self, num_users, num_items, num_contexts, num_factors):
+        self.user_factors = np.random.rand(num_users, num_factors)
+        self.item_factors = np.random.rand(num_items, num_factors)
+        self.context_factors = np.random.rand(num_contexts, num_factors)
 
-  updateFactors(userId, itemId, contextId, error, learningRate, regularization) {
-    // Implementation of factor updates
-  }
-}
+    def predict(self, user, item, context):
+        return np.dot(self.user_factors[user], self.item_factors[item]) * self.context_factors[context]
 
-// Usage
-const model = new ContextAwareMatrixFactorization(numUsers, numItems, numContexts, 10);
-model.train(contextAwareInteractions, 0.01, 0.1, 100);
-const prediction = model.predict(userId, itemId, contextId);
-`}
-          />
+    def train(self, ratings, learning_rate=0.01, num_iterations=100):
+        for _ in range(num_iterations):
+            for user, item, context, rating in ratings:
+                prediction = self.predict(user, item, context)
+                error = rating - prediction
+                
+                self.user_factors[user] += learning_rate * (error * self.item_factors[item] * self.context_factors[context] - 0.01 * self.user_factors[user])
+                self.item_factors[item] += learning_rate * (error * self.user_factors[user] * self.context_factors[context] - 0.01 * self.item_factors[item])
+                self.context_factors[context] += learning_rate * (error * self.user_factors[user] * self.item_factors[item] - 0.01 * self.context_factors[context])
 
-          <h2>Implementing Context-Aware Recommendations</h2>
-          <p>
-            Here's an example of how to implement a simple context-aware
-            recommendation system using a pre-filtering approach:
-          </p>
-          <CodeBlock
-            code={`
-class ContextAwareRecommender {
-  constructor(baseRecommender) {
-    this.baseRecommender = baseRecommender;
-  }
+# Usage
+model = ContextualMF(num_users=100, num_items=1000, num_contexts=5, num_factors=20)
+ratings = [(0, 5, 2, 4.5), (1, 10, 1, 3.0), ...]  # (user, item, context, rating)
+model.train(ratings)
+          `}
+          language="python"
+        />
+      </section>
 
-  preFilter(interactions, context) {
-    return interactions.filter(interaction => {
-      return Object.keys(context).every(key => 
-        interaction.context[key] === context[key]
-      );
-    });
-  }
-
-  recommend(user, context, n = 10) {
-    const filteredInteractions = this.preFilter(this.baseRecommender.interactions, context);
-    this.baseRecommender.updateData(filteredInteractions);
-    return this.baseRecommender.recommend(user, n);
-  }
-}
-
-// Usage
-const baseRecommender = new CollaborativeFilteringRecommender(allInteractions);
-const contextAwareRecommender = new ContextAwareRecommender(baseRecommender);
-
-const user = 123;
-const currentContext = { time: 'evening', location: 'home' };
-const recommendations = contextAwareRecommender.recommend(user, currentContext, 5);
-`}
-          />
-        </Col>
-      </Row>
+      <section id="evaluation">
+        <h2>Evaluation</h2>
+        <p>
+          Evaluating context-aware recommender systems often requires special
+          considerations:
+        </p>
+        <ul>
+          <li>Context-aware accuracy metrics (e.g., contextual NDCG)</li>
+          <li>User studies to assess real-world effectiveness</li>
+          <li>A/B testing in production environments</li>
+        </ul>
+        <p>Example of a context-aware evaluation metric:</p>
+        <BlockMath>
+          {`cNDCG@k = \\frac{1}{|U|} \\sum_{u \\in U} \\frac{\\sum_{i=1}^k \\frac{2^{rel_i} - 1}{\\log_2(i+1)} \\cdot contextRelevance_i}{IDCG_k}`}
+        </BlockMath>
+        <p>
+          Where <InlineMath>contextRelevance_i</InlineMath> is a measure of how
+          relevant the item is in the given context.
+        </p>
+      </section>
     </Container>
   );
 };

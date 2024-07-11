@@ -1,122 +1,166 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import CodeBlock from "components/CodeBlock";
+import { InlineMath, BlockMath } from "react-katex";
 
 const CollaborativeFiltering = () => {
   return (
-    <Container fluid>
-      <h1 className="my-4">Collaborative Filtering</h1>
-      <p>
-        In this section, you will master collaborative filtering techniques for
-        recommendation systems.
-      </p>
-      <Row>
-        <Col>
-          <h2>User-Item Interactions Matrix</h2>
-          <p>
-            We'll start by discussing the concept of a User-Item interactions
-            matrix.
-          </p>
-          <CodeBlock
-            code={`
-// Example code for creating a User-Item interactions matrix
-function createInteractionsMatrix(data) {
-  const users = data.map(entry => entry.userId);
-  const items = data.map(entry => entry.itemId);
+    <Container>
+      <h1>Collaborative Filtering</h1>
 
-  // Create an empty matrix
-  const matrix = users.map(() => items.map(() => 0));
+      <section id="definition">
+        <h2>Definition</h2>
+        <p>
+          Collaborative filtering is a recommendation technique that makes
+          predictions about a user's interests by collecting preferences from
+          many users. It operates on the assumption that users who agreed in the
+          past tend to agree again in the future.
+        </p>
+      </section>
 
-  // Fill in the matrix with the interactions data
-  data.forEach(entry => {
-    const userId = entry.userId;
-    const itemId = entry.itemId;
-    const rating = entry.rating;
+      <section id="user-based-cf">
+        <h2>User-Based Collaborative Filtering</h2>
+        <p>
+          User-based CF finds users with similar rating patterns to the target
+          user and uses their ratings to predict preferences for the target
+          user.
+        </p>
+        <h3>Mathematical Formulation:</h3>
+        <BlockMath>
+          {`
+\\hat{r}_{ui} = \\mu_u + \\frac{\\sum_{v \\in N(u)} sim(u,v) \\cdot (r_{vi} - \\mu_v)}{\\sum_{v \\in N(u)} |sim(u,v)|}
+          `}
+        </BlockMath>
+        <p>Where:</p>
+        <ul>
+          <li>
+            <InlineMath>{`\hat{r}_{ui}}`}</InlineMath>: Predicted rating of user
+            u for item i
+          </li>
+          <li>
+            <InlineMath>\mu_u</InlineMath>: Mean rating of user u
+          </li>
+          <li>
+            <InlineMath>sim(u,v)</InlineMath>: Similarity between users u and v
+          </li>
+          <li>
+            <InlineMath>{`r_{vi}`}</InlineMath>: Rating of user v for item i
+          </li>
+          <li>
+            <InlineMath>N(u)</InlineMath>: Set of users similar to u
+          </li>
+        </ul>
+      </section>
 
-    matrix[userId][itemId] = rating;
-  });
+      <section id="item-based-cf">
+        <h2>Item-Based Collaborative Filtering</h2>
+        <p>
+          Item-based CF computes similarities between items based on user rating
+          patterns and uses these to make predictions.
+        </p>
+        <h3>Mathematical Formulation:</h3>
+        <BlockMath>
+          {`
+\\hat{r}_{ui} = \\frac{\\sum_{j \\in N(i)} sim(i,j) \\cdot r_{uj}}{\\sum_{j \\in N(i)} |sim(i,j)|}
+          `}
+        </BlockMath>
+        <p>Where:</p>
+        <ul>
+          <li>
+            <InlineMath>{`\hat{r}_{ui}`}</InlineMath>: Predicted rating of user
+            u for item i
+          </li>
+          <li>
+            <InlineMath>sim(i,j)</InlineMath>: Similarity between items i and j
+          </li>
+          <li>
+            <InlineMath>{`r_{uj}`}</InlineMath>: Rating of user u for item j
+          </li>
+          <li>
+            <InlineMath>N(i)</InlineMath>: Set of items similar to i
+          </li>
+        </ul>
+      </section>
 
-  return matrix;
-}
-`}
-          />
-          <h2>Memory-Based Approaches</h2>
-          <p>
-            We'll cover memory-based approaches to collaborative filtering,
-            including user-user and item-item methods.
-          </p>
-          <CodeBlock
-            code={`
-// Example code for user-user collaborative filtering
-function userSimilarity(userA, userB, data) {
-  const commonItems = userA.items.filter(item => userB.items.includes(item));
+      <section id="matrix-factorization">
+        <h2>Matrix Factorization</h2>
+        <p>
+          Matrix factorization is a latent factor model that represents users
+          and items as vectors in a lower-dimensional space.
+        </p>
+        <h3>Mathematical Formulation:</h3>
+        <BlockMath>{`R \\approx P \\cdot Q^T`}</BlockMath>
+        <p>Where:</p>
+        <ul>
+          <li>
+            <InlineMath>R</InlineMath>: User-item rating matrix
+          </li>
+          <li>
+            <InlineMath>P</InlineMath>: User latent factor matrix
+          </li>
+          <li>
+            <InlineMath>Q</InlineMath>: Item latent factor matrix
+          </li>
+        </ul>
+        <p>Predicted rating:</p>
+        <BlockMath>{`\\hat{r}_{ui} = p_u \\cdot q_i`}</BlockMath>
+        <p>Optimization objective:</p>
+        <BlockMath>
+          {`\\min_{P,Q} \\sum_{(u,i) \\in K} (r_{ui} - p_u \\cdot q_i)^2 + \\lambda(\\|p_u\\|^2 + \\|q_i\\|^2)`}
+        </BlockMath>
+      </section>
 
-  if (commonItems.length === 0) {
-    return 0;
-  }
+      <section id="implementing-collaborative">
+        <h2>Implementing Collaborative Filtering</h2>
+        <p>
+          Here's a basic implementation of matrix factorization using Python and
+          NumPy:
+        </p>
+        <CodeBlock
+          language="python"
+          code={`
+import numpy as np
 
-  const userARatings = commonItems.map(item => data[userA.id][item.id]);
-  const userBRatings = commonItems.map(item => data[userB.id][item.id]);
+class MatrixFactorization:
+    def __init__(self, R, K, alpha=0.001, beta=0.02, iterations=100):
+        self.R = R
+        self.num_users, self.num_items = R.shape
+        self.K = K
+        self.alpha = alpha
+        self.beta = beta
+        self.iterations = iterations
+        
+    def train(self):
+        self.P = np.random.normal(scale=1./self.K, size=(self.num_users, self.K))
+        self.Q = np.random.normal(scale=1./self.K, size=(self.num_items, self.K))
+        
+        for i in range(self.iterations):
+            for u in range(self.num_users):
+                for i in range(self.num_items):
+                    if self.R[u][i] > 0:
+                        eui = self.R[u][i] - np.dot(self.P[u,:], self.Q[i,:].T)
+                        for k in range(self.K):
+                            self.P[u][k] += self.alpha * (2 * eui * self.Q[i][k] - self.beta * self.P[u][k])
+                            self.Q[i][k] += self.alpha * (2 * eui * self.P[u][k] - self.beta * self.Q[i][k])
+            
+    def predict(self, user, item):
+        return np.dot(self.P[user,:], self.Q[item,:].T)
 
-  return cosineSimilarity(userARatings, userBRatings);
-}
+# Usage
+R = np.array([
+    [5, 3, 0, 1],
+    [4, 0, 0, 1],
+    [1, 1, 0, 5],
+    [1, 0, 0, 4],
+    [0, 1, 5, 4],
+])
 
-function recommendItemsUsingUserSimilarity(user, data, users) {
-  const userSimilarities = users.map(otherUser => userSimilarity(user, otherUser, data));
-
-  const weightedRatings = data.map((row, userId) => {
-    const similarity = userSimilarities[userId];
-    return row.map(rating => rating * similarity);
-  });
-
-  const summedRatings = weightedRatings.reduce((acc, row) => acc.map((val, i) => val + row[i]), []);
-
-  const recommendedItems = summedRatings.map((rating, itemId) => ({ itemId, rating })).sort((a, b) => b.rating - a.rating);
-
-  return recommendedItems.slice(0, N);
-}
-`}
-          />
-          <h2>Model-Based Approaches</h2>
-          <p>
-            Finally, we'll explore model-based approaches to collaborative
-            filtering, such as matrix factorization techniques like SVD and ALS.
-          </p>
-          <CodeBlock
-            code={`
-// Example code for matrix factorization using SVD
-function recommendItemsUsingSVD(user, data, k) {
-  const U = [];
-  const S = [];
-  const Vt = [];
-
-  // Perform SVD on the data matrix
-  const result = svd(data, k);
-  U = result.U;
-  S = result.S;
-  Vt = result.Vt;
-
-  // Create a reduced user matrix
-  const userMatrix = U.map(row => row.slice(0, k));
-  const reducedUserMatrix = userMatrix.map(row => row.map(val => val * S[row.indexOf(val)]));
-
-  // Calculate the predicted ratings for the user
-  const predictedRatings = Vt.map(row => row.slice(0, k)).map(row => {
-    let rating = 0;
-    row.forEach((val, i) => {
-      rating += val * reducedUserMatrix[user.id][i];
-    });
-    return rating;
-  });
-
-  const recommendedItems = predictedRatings.map((rating, itemId) => ({ itemId, rating })).sort((a, b) => b.rating - a.rating);
-
-  return recommendedItems.slice(0, N);
-}
-`}
-          />
-        </Col>
-      </Row>
+mf = MatrixFactorization(R, K=2, alpha=0.1, beta=0.01, iterations=100)
+mf.train()
+print(mf.predict(user=1, item=2))  # Predict rating for user 1, item 2
+          `}
+        />
+      </section>
     </Container>
   );
 };

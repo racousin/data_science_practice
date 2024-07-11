@@ -138,14 +138,6 @@ const CourseGenerativeModels = () => {
       {location.pathname === `/module${module}/course` && (
         <>
           <Row>
-            <p>
-              This module covers various types of generative models, their
-              architectures, training procedures, applications, and evaluation
-              metrics. We'll explore state-of-the-art models and discuss
-              challenges and future directions in the field of generative AI.
-            </p>
-          </Row>
-          <Row>
             <Col>
               <p>Last Updated: {"2024-06-07"}</p>
             </Col>
