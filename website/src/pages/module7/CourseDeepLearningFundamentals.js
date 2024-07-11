@@ -76,43 +76,43 @@ const CourseDeepLearningFundamentals = () => {
         { id: "early-stopping", label: "Early stopping" },
       ],
     },
-    {
-      to: "/cnn",
-      label: "Convolutional Neural Networks (CNNs)",
-      component: lazy(() => import("pages/module7/course/CNN")),
-      subLinks: [
-        { id: "convolution", label: "Convolution operation and intuition" },
-        { id: "pooling", label: "Pooling layers" },
-      ],
-    },
-    {
-      to: "/rnn",
-      label: "Recurrent Neural Networks (RNNs)",
-      component: lazy(() => import("pages/module7/course/RNN")),
-      subLinks: [
-        {
-          id: "sequence-modeling",
-          label: "Sequence modeling and RNN architecture",
-        },
-        {
-          id: "vanishing-exploding",
-          label: "Vanishing and exploding gradients",
-        },
-        { id: "lstm", label: "Long Short-Term Memory (LSTM) networks" },
-        { id: "gru", label: "Gated Recurrent Units (GRU)" },
-      ],
-    },
-    {
-      to: "/advanced-rnn",
-      label: "Advanced RNN Architectures",
-      component: lazy(() => import("pages/module7/course/AdvancedRNN")),
-      subLinks: [
-        { id: "bidirectional", label: "Bidirectional RNNs" },
-        { id: "encoder-decoder", label: "Encoder-Decoder models" },
-        { id: "attention", label: "Attention mechanisms" },
-        { id: "transformer", label: "Transformer architecture" },
-      ],
-    },
+    // {
+    //   to: "/cnn",
+    //   label: "Convolutional Neural Networks (CNNs)",
+    //   component: lazy(() => import("pages/module7/course/CNN")),
+    //   subLinks: [
+    //     { id: "convolution", label: "Convolution operation and intuition" },
+    //     { id: "pooling", label: "Pooling layers" },
+    //   ],
+    // },
+    // {
+    //   to: "/rnn",
+    //   label: "Recurrent Neural Networks (RNNs)",
+    //   component: lazy(() => import("pages/module7/course/RNN")),
+    //   subLinks: [
+    //     {
+    //       id: "sequence-modeling",
+    //       label: "Sequence modeling and RNN architecture",
+    //     },
+    //     {
+    //       id: "vanishing-exploding",
+    //       label: "Vanishing and exploding gradients",
+    //     },
+    //     { id: "lstm", label: "Long Short-Term Memory (LSTM) networks" },
+    //     { id: "gru", label: "Gated Recurrent Units (GRU)" },
+    //   ],
+    // },
+    // {
+    //   to: "/advanced-rnn",
+    //   label: "Advanced RNN Architectures",
+    //   component: lazy(() => import("pages/module7/course/AdvancedRNN")),
+    //   subLinks: [
+    //     { id: "bidirectional", label: "Bidirectional RNNs" },
+    //     { id: "encoder-decoder", label: "Encoder-Decoder models" },
+    //     { id: "attention", label: "Attention mechanisms" },
+    //     { id: "transformer", label: "Transformer architecture" },
+    //   ],
+    // },
     {
       to: "/training",
       label: "Training Deep Neural Networks",
@@ -127,19 +127,19 @@ const CourseDeepLearningFundamentals = () => {
         { id: "mixed-precision", label: "Mixed precision training" },
       ],
     },
-    {
-      to: "/interpretation",
-      label: "Model Interpretation and Visualization",
-      component: lazy(() => import("pages/module7/course/Interpretation")),
-      subLinks: [
-        {
-          id: "saliency-maps",
-          label: "Saliency maps and activation maximization",
-        },
-        { id: "layer-visualization", label: "Layer visualization" },
-        { id: "tsne", label: "t-SNE for high-dimensional data visualization" },
-      ],
-    },
+    // {
+    //   to: "/interpretation",
+    //   label: "Model Interpretation and Visualization",
+    //   component: lazy(() => import("pages/module7/course/Interpretation")),
+    //   subLinks: [
+    //     {
+    //       id: "saliency-maps",
+    //       label: "Saliency maps and activation maximization",
+    //     },
+    //     { id: "layer-visualization", label: "Layer visualization" },
+    //     { id: "tsne", label: "t-SNE for high-dimensional data visualization" },
+    //   ],
+    // },
     {
       to: "/CaseStudy7",
       label: "CaseStudy",

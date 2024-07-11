@@ -35,8 +35,17 @@ const CourseImageProcessing = () => {
     },
     {
       to: "/cnn",
-      label: "Convolutional Neural Networks (CNNs) for Image Processing",
-      component: lazy(() => import("pages/module8/course/CNN")),
+      label: "Convolutional Neural Networks (CNNs)",
+      component: lazy(() => import("pages/module7/course/CNN")),
+      subLinks: [
+        { id: "convolution", label: "Convolution operation and intuition" },
+        { id: "pooling", label: "Pooling layers" },
+      ],
+    },
+    {
+      to: "/cnn_archi",
+      label: "CNN Architecture",
+      component: lazy(() => import("pages/module8/course/CNN_archi")),
       subLinks: [
         { id: "architecture", label: "Review of CNN architecture" },
         {

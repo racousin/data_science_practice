@@ -37,12 +37,35 @@ import ExerciseDocker from "pages/module13/ExerciseDocker";
 import CourseCloudIntegration from "pages/module14/CourseCloudIntegration";
 import ExerciseCloudIntegration from "pages/module14/ExerciseCloudIntegration";
 
+import PageToScrap from "pages/module4/course/PageToScrap";
+import PageToScrapExercise from "pages/module4/course/PageToScrapExercise";
+
 import Resources from "pages/Resources";
 
 import "App.css";
 
 import SearchNavbar from "components/SearchNavbar";
 import SearchResultsPage from "pages/SearchResultsPage";
+
+const RobotsTxt = () => {
+  // Sitemap: https://example.com/sitemap.xml TODO
+  return (
+    <pre>
+      {`User-agent: *
+Allow: /
+Disallow: /private/
+Disallow: /admin/
+
+User-agent: Googlebot
+Allow: /
+
+Crawl-delay: 5
+
+
+`}
+    </pre>
+  );
+};
 
 function App() {
   return (
@@ -88,7 +111,7 @@ function App() {
           />
           <Route path="teaching" element={<Teaching />} />
           <Route path="resources" element={<Resources />} />
-
+          <Route path="robots.txt" component={RobotsTxt} />
           <Route
             path="module0/course"
             element={<PrerequistAandMethodologie />}
@@ -109,6 +132,11 @@ function App() {
           <Route
             path="module4/exercise/*"
             element={<ExerciseDataCollection />}
+          />
+          <Route path="page-to-scrap" element={<PageToScrap />} />
+          <Route
+            path="page-to-scrap-exercise/*"
+            element={<PageToScrapExercise />}
           />
           <Route
             path="module5/course/*"
