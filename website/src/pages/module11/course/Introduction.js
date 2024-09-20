@@ -1,123 +1,104 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import CodeBlock from "components/CodeBlock";
-import { BlockMath, InlineMath } from "react-katex";
 
 const Introduction = () => {
   return (
     <Container fluid>
-      <h1 className="my-4">Introduction to Recommendation Systems</h1>
-
-      <section id="what-are-recommendation-systems">
-        <h2>What are Recommendation Systems?</h2>
-        <p>
-          Recommendation systems are sophisticated algorithms designed to
-          predict user preferences and suggest relevant items or content.
-          Mathematically, we can represent a recommendation system as a
-          function:
-        </p>
-        <BlockMath math="f: U \times I \rightarrow R" />
-        <p>
-          Where:
+      <Row>
+        <Col>
+          <h1>Introduction to Generative Models</h1>
+          <p>
+            In this section, you will learn about the core concepts and
+            applications of generative models in AI.
+          </p>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <h2>Definition and Significance of Generative Models</h2>
+          <p>
+            Generative models are a class of statistical models that can
+            generate new data instances that resemble the training data. They
+            have gained significant attention in recent years due to their
+            ability to create realistic and diverse data samples, which can be
+            used in a variety of applications such as image and video
+            generation, text synthesis, and data augmentation.
+          </p>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <h2>Overview of the Types of Generative Models</h2>
+          <p>
+            There are several types of generative models, each with its own
+            strengths and weaknesses. Some of the most popular ones include:
+          </p>
           <ul>
             <li>
-              <InlineMath math="U" /> is the set of users
+              <strong>Variational Autoencoders (VAEs)</strong>: VAEs are a type
+              of neural network that can learn to compress and reconstruct data.
+              They can also be used to generate new data instances by sampling
+              from the learned latent space.
             </li>
             <li>
-              <InlineMath math="I" /> is the set of items
+              <strong>Generative Adversarial Networks (GANs)</strong>: GANs are
+              a type of neural network that consists of two parts: a generator
+              and a discriminator. The generator is trained to generate new data
+              instances that resemble the training data, while the discriminator
+              is trained to distinguish between real and fake data. The two
+              parts are trained together in a minimax game, where the generator
+              tries to fool the discriminator and the discriminator tries to
+              correctly classify the data.
             </li>
             <li>
-              <InlineMath math="R" /> is the set of ratings or preferences
+              <strong>Autoregressive Models</strong>: Autoregressive models are
+              a type of statistical model that can generate new data instances
+              by modeling the joint probability distribution of the data. They
+              are often used in text synthesis and image generation.
+            </li>
+            <li>
+              <strong>Energy-Based Models</strong>: Energy-based models are a
+              type of statistical model that can generate new data instances by
+              modeling the energy function of the data. They are often used in
+              unsupervised learning and density estimation.
             </li>
           </ul>
-        </p>
-      </section>
-
-      <section id="types-of-recommendation-systems">
-        <h2>Types of Recommendation Systems</h2>
-        <ol>
-          <li>
-            <strong>Content-Based Filtering:</strong> Recommends items similar
-            to those a user has liked in the past.
-            <BlockMath math="\text{similarity}(i_1, i_2) = \cos(\vec{v_{i_1}}, \vec{v_{i_2}}) = \frac{\vec{v_{i_1}} \cdot \vec{v_{i_2}}}{|\vec{v_{i_1}}| |\vec{v_{i_2}}|}" />
-          </li>
-          <li>
-            <strong>Collaborative Filtering:</strong> Recommends items based on
-            the preferences of similar users.
-            <BlockMath math="r_{ui} = \bar{r_u} + \frac{\sum_{v \in N(u)} \text{sim}(u, v) \cdot (r_{vi} - \bar{r_v})}{\sum_{v \in N(u)} |\text{sim}(u, v)|}" />
-          </li>
-          <li>
-            <strong>Hybrid Methods:</strong> Combines multiple recommendation
-            techniques.
-          </li>
-        </ol>
-      </section>
-
-      <section id="applications">
-        <h2>Applications of Recommendation Systems</h2>
-        <ul>
-          <li>E-commerce product recommendations</li>
-          <li>Streaming service content suggestions</li>
-          <li>Social media friend and content recommendations</li>
-          <li>News article personalization</li>
-          <li>Job and career recommendations</li>
-        </ul>
-      </section>
-
-      <section id="basic-implementation">
-        <h2>Basic Implementation Example</h2>
-        <p>
-          Here's a simple content-based recommendation system using cosine
-          similarity:
-        </p>
-        <CodeBlock
-          language="python"
-          code={`
-import numpy as np
-from sklearn.metrics.pairwise import cosine_similarity
-
-# Item features (rows are items, columns are features)
-item_features = np.array([
-    [1, 1, 0, 1],
-    [0, 1, 1, 1],
-    [1, 0, 1, 0]
-])
-
-# User profile
-user_profile = np.array([1, 1, 0, 1])
-
-# Calculate cosine similarity
-similarities = cosine_similarity(user_profile.reshape(1, -1), item_features)
-
-# Get recommendations (indices of items sorted by similarity)
-recommendations = similarities.argsort()[0][::-1]
-
-print("Recommended items (by index):", recommendations)
-          `}
-        />
-      </section>
-
-      <section id="challenges">
-        <h2>Challenges in Recommendation Systems</h2>
-        <ul>
-          <li>
-            <strong>Cold Start Problem:</strong> Difficulty in recommending to
-            new users or items.
-          </li>
-          <li>
-            <strong>Scalability:</strong> Handling large-scale datasets
-            efficiently.
-          </li>
-          <li>
-            <strong>Sparsity:</strong> Dealing with sparse user-item interaction
-            matrices.
-          </li>
-          <li>
-            <strong>Privacy Concerns:</strong> Balancing personalization with
-            user privacy.
-          </li>
-        </ul>
-      </section>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <h2>Use Cases of Generative Models</h2>
+          <p>
+            Generative models have a wide range of applications in AI,
+            including:
+          </p>
+          <ul>
+            <li>
+              <strong>Image and Video Generation</strong>: Generative models can
+              be used to create realistic and diverse images and videos, which
+              can be used in entertainment, advertising, and virtual reality.
+            </li>
+            <li>
+              <strong>Text Synthesis</strong>: Generative models can be used to
+              generate coherent and meaningful text, which can be used in
+              chatbots, language translation, and content creation.
+            </li>
+            <li>
+              <strong>Data Augmentation</strong>: Generative models can be used
+              to create synthetic data that can be used to augment the training
+              data, which can improve the performance of machine learning
+              models.
+            </li>
+            <li>
+              <strong>Density Estimation</strong>: Generative models can be used
+              to estimate the probability density function of the data, which
+              can be used in anomaly detection, clustering, and dimensionality
+              reduction.
+            </li>
+          </ul>
+        </Col>
+      </Row>
     </Container>
   );
 };

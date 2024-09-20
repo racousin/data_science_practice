@@ -1,6 +1,8 @@
-import React from "react";
-import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { BrowserRouter, Routes, Route, Navigate, Link, useLocation } from "react-router-dom";
 import { Navbar, Nav, Container } from "react-bootstrap";
+import ReactGA from "react-ga4";
+
 import Home from "./pages/Home";
 import RepositoriesList from "pages/RepositoriesList";
 import StudentsList from "./pages/StudentsList";
@@ -24,18 +26,18 @@ import CourseDeepLearningFundamentals from "pages/module7/CourseDeepLearningFund
 import ExerciseDeepLearningFundamentals from "pages/module7/ExerciseDeepLearningFundamentals";
 import CourseImageProcessing from "pages/module8/CourseImageProcessing";
 import ExerciseImageProcessing from "pages/module8/ExerciseImageProcessing";
-import CourseTextProcessing from "pages/module9/CourseTextProcessing";
-import ExerciseTextProcessing from "pages/module9/ExerciseTextProcessing";
-import CourseGenerativeModels from "pages/module10/CourseGenerativeModels";
-import ExerciseGenerativeModels from "pages/module10/ExerciseGenerativeModels";
-import CourseRecommendationSystems from "pages/module11/CourseRecommendationSystems";
-import ExerciseRecommendationSystems from "pages/module11/ExerciseRecommendationSystems";
-import CourseReinforcementLearning from "pages/module12/CourseReinforcementLearning";
-import ExerciseReinforcementLearning from "pages/module12/ExerciseReinforcementLearning";
-import CourseDocker from "pages/module13/CourseDocker";
-import ExerciseDocker from "pages/module13/ExerciseDocker";
-import CourseCloudIntegration from "pages/module14/CourseCloudIntegration";
-import ExerciseCloudIntegration from "pages/module14/ExerciseCloudIntegration";
+import CourseTextProcessing from "pages/module10/CourseTextProcessing";
+import ExerciseTextProcessing from "pages/module10/ExerciseTextProcessing";
+import CourseGenerativeModels from "pages/module11/CourseGenerativeModels";
+import ExerciseGenerativeModels from "pages/module11/ExerciseGenerativeModels";
+import CourseRecommendationSystems from "pages/module12/CourseRecommendationSystems";
+import ExerciseRecommendationSystems from "pages/module12/ExerciseRecommendationSystems";
+import CourseReinforcementLearning from "pages/module13/CourseReinforcementLearning";
+import ExerciseReinforcementLearning from "pages/module13/ExerciseReinforcementLearning";
+import CourseDocker from "pages/module14/CourseDocker";
+import ExerciseDocker from "pages/module14/ExerciseDocker";
+import CourseCloudIntegration from "pages/module15/CourseCloudIntegration";
+import ExerciseCloudIntegration from "pages/module15/ExerciseCloudIntegration";
 
 import PageToScrap from "pages/module4/course/PageToScrap";
 import PageToScrapExercise from "pages/module4/course/PageToScrapExercise";
@@ -46,6 +48,8 @@ import "App.css";
 
 import SearchNavbar from "components/SearchNavbar";
 import SearchResultsPage from "pages/SearchResultsPage";
+
+ReactGA.initialize("G-0VW1PJ0H17"); 
 
 const RobotsTxt = () => {
   // Sitemap: https://example.com/sitemap.xml TODO
@@ -100,7 +104,9 @@ function App() {
         </Container>
       </Navbar>
       <Container fluid className="mt-3">
+      <GoogleAnalyticsRouteTracker />
         <Routes>
+        
           <Route path="/" element={<Home />} />
           <Route path="search" element={<SearchResultsPage />} />
           <Route path="repositories" element={<RepositoriesList />} />
@@ -111,7 +117,7 @@ function App() {
           />
           <Route path="teaching" element={<Teaching />} />
           <Route path="resources" element={<Resources />} />
-          <Route path="robots.txt" component={RobotsTxt} />
+          <Route path="robots.txt" element={<RobotsTxt />} />
           <Route
             path="module0/course"
             element={<PrerequistAandMethodologie />}
@@ -165,43 +171,43 @@ function App() {
             element={<ExerciseImageProcessing />}
           />
 
-          <Route path="module9/course/*" element={<CourseTextProcessing />} />
+          <Route path="module10/course/*" element={<CourseTextProcessing />} />
           <Route
-            path="module9/exercise/*"
+            path="module10/exercise/*"
             element={<ExerciseTextProcessing />}
           />
           <Route
-            path="module10/course/*"
+            path="module11/course/*"
             element={<CourseGenerativeModels />}
           />
           <Route
-            path="module10/exercise/*"
+            path="module11/exercise/*"
             element={<ExerciseGenerativeModels />}
           />
           <Route
-            path="module11/course/*"
+            path="module12/course/*"
             element={<CourseRecommendationSystems />}
           />
           <Route
-            path="module11/exercise/*"
+            path="module12/exercise/*"
             element={<ExerciseRecommendationSystems />}
           />
           <Route
-            path="module12/course/*"
+            path="module13/course/*"
             element={<CourseReinforcementLearning />}
           />
           <Route
-            path="module12/exercise/*"
+            path="module13/exercise/*"
             element={<ExerciseReinforcementLearning />}
           />
-          <Route path="module13/course/*" element={<CourseDocker />} />
-          <Route path="module13/exercise/*" element={<ExerciseDocker />} />
+          <Route path="module14/course/*" element={<CourseDocker />} />
+          <Route path="module14/exercise/*" element={<ExerciseDocker />} />
           <Route
-            path="module14/course/*"
+            path="module15/course/*"
             element={<CourseCloudIntegration />}
           />
           <Route
-            path="module14/exercise/*"
+            path="module15/exercise/*"
             element={<CourseCloudIntegration />}
           />
 
@@ -210,6 +216,16 @@ function App() {
       </Container>
     </BrowserRouter>
   );
+}
+
+function GoogleAnalyticsRouteTracker() {
+  const location = useLocation();
+
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: location.pathname });
+  }, [location]);
+
+  return null;
 }
 
 export default App;

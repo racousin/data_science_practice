@@ -5,77 +5,78 @@ import ModuleFrame from "components/ModuleFrame";
 import { useLocation } from "react-router-dom";
 
 const CourseDeepLearningFundamentals = () => {
-  const courseLinks = [
-    {
-      to: "/introduction",
-      label: "Introduction to Neural Networks",
-      component: lazy(() => import("pages/module7/course/Introduction")),
-      subLinks: [
-        {
-          id: "biological-inspiration",
-          label: "Biological inspiration and history",
-        },
-        {
-          id: "basic-components",
-          label: "Basic components: neurons, layers, activation functions",
-        },
-        { id: "feedforward", label: "Feedforward neural networks" },
-      ],
-    },
-    {
-      to: "/backpropagation",
-      label: "Backpropagation and Optimization",
-      component: lazy(() => import("pages/module7/course/Backpropagation")),
-      subLinks: [
-        { id: "chain-rule", label: "Chain rule and gradient descent" },
-        { id: "backpropagation-algorithm", label: "Backpropagation algorithm" },
-        {
-          id: "sgd",
-          label: "Stochastic Gradient Descent (SGD) and its variants",
-        },
-        {
-          id: "optimizers",
-          label: "Learning rate schedules and adaptive optimizers",
-        },
-      ],
-    },
-    {
-      to: "/autodiff",
-      label: "Automatic Differentiation (Autodiff)",
-      component: lazy(() => import("pages/module7/course/Autodiff")),
-      subLinks: [
-        { id: "forward-reverse", label: "Forward and reverse mode autodiff" },
-        { id: "computational-graphs", label: "Computational graphs" },
-        { id: "pytorch-autograd", label: "PyTorch's autograd system" },
-      ],
-    },
-    {
-      to: "/activation-functions",
-      label: "Activation Functions",
-      component: lazy(() => import("pages/module7/course/ActivationFunctions")),
-      subLinks: [
-        {
-          id: "common-functions",
-          label: "Sigmoid, tanh, ReLU, and their variants",
-        },
-        { id: "properties", label: "Properties and use cases" },
-        {
-          id: "custom-activations",
-          label: "Implementing custom activation functions in PyTorch",
-        },
-      ],
-    },
-    {
-      to: "/regularization",
-      label: "Regularization Techniques",
-      component: lazy(() => import("pages/module7/course/Regularization")),
-      subLinks: [
-        { id: "l1-l2", label: "L1 and L2 regularization" },
-        { id: "dropout", label: "Dropout" },
-        { id: "batch-normalization", label: "Batch Normalization" },
-        { id: "early-stopping", label: "Early stopping" },
-      ],
-    },
+  const courseLinks = []
+  // const courseLinks = [
+  //   {
+  //     to: "/introduction",
+  //     label: "Introduction to Neural Networks",
+  //     component: lazy(() => import("pages/module7/course/Introduction")),
+  //     subLinks: [
+  //       {
+  //         id: "biological-inspiration",
+  //         label: "Biological inspiration and history",
+  //       },
+  //       {
+  //         id: "basic-components",
+  //         label: "Basic components: neurons, layers, activation functions",
+  //       },
+  //       { id: "feedforward", label: "Feedforward neural networks" },
+  //     ],
+  //   },
+  //   {
+  //     to: "/backpropagation",
+  //     label: "Backpropagation and Optimization",
+  //     component: lazy(() => import("pages/module7/course/Backpropagation")),
+  //     subLinks: [
+  //       { id: "chain-rule", label: "Chain rule and gradient descent" },
+  //       { id: "backpropagation-algorithm", label: "Backpropagation algorithm" },
+  //       {
+  //         id: "sgd",
+  //         label: "Stochastic Gradient Descent (SGD) and its variants",
+  //       },
+  //       {
+  //         id: "optimizers",
+  //         label: "Learning rate schedules and adaptive optimizers",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     to: "/autodiff",
+  //     label: "Automatic Differentiation (Autodiff)",
+  //     component: lazy(() => import("pages/module7/course/Autodiff")),
+  //     subLinks: [
+  //       { id: "forward-reverse", label: "Forward and reverse mode autodiff" },
+  //       { id: "computational-graphs", label: "Computational graphs" },
+  //       { id: "pytorch-autograd", label: "PyTorch's autograd system" },
+  //     ],
+  //   },
+  //   {
+  //     to: "/activation-functions",
+  //     label: "Activation Functions",
+  //     component: lazy(() => import("pages/module7/course/ActivationFunctions")),
+  //     subLinks: [
+  //       {
+  //         id: "common-functions",
+  //         label: "Sigmoid, tanh, ReLU, and their variants",
+  //       },
+  //       { id: "properties", label: "Properties and use cases" },
+  //       {
+  //         id: "custom-activations",
+  //         label: "Implementing custom activation functions in PyTorch",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     to: "/regularization",
+  //     label: "Regularization Techniques",
+  //     component: lazy(() => import("pages/module7/course/Regularization")),
+  //     subLinks: [
+  //       { id: "l1-l2", label: "L1 and L2 regularization" },
+  //       { id: "dropout", label: "Dropout" },
+  //       { id: "batch-normalization", label: "Batch Normalization" },
+  //       { id: "early-stopping", label: "Early stopping" },
+  //     ],
+  //   },
     // {
     //   to: "/cnn",
     //   label: "Convolutional Neural Networks (CNNs)",
@@ -113,20 +114,20 @@ const CourseDeepLearningFundamentals = () => {
     //     { id: "transformer", label: "Transformer architecture" },
     //   ],
     // },
-    {
-      to: "/training",
-      label: "Training Deep Neural Networks",
-      component: lazy(() => import("pages/module7/course/Training")),
-      subLinks: [
-        {
-          id: "weight-initialization",
-          label: "Weight initialization strategies",
-        },
-        { id: "gradient-clipping", label: "Gradient clipping" },
-        { id: "curriculum-learning", label: "Curriculum learning" },
-        { id: "mixed-precision", label: "Mixed precision training" },
-      ],
-    },
+    // {
+    //   to: "/training",
+    //   label: "Training Deep Neural Networks",
+    //   component: lazy(() => import("pages/module7/course/Training")),
+    //   subLinks: [
+    //     {
+    //       id: "weight-initialization",
+    //       label: "Weight initialization strategies",
+    //     },
+    //     { id: "gradient-clipping", label: "Gradient clipping" },
+    //     { id: "curriculum-learning", label: "Curriculum learning" },
+    //     { id: "mixed-precision", label: "Mixed precision training" },
+    //   ],
+    // },
     // {
     //   to: "/interpretation",
     //   label: "Model Interpretation and Visualization",
@@ -140,12 +141,12 @@ const CourseDeepLearningFundamentals = () => {
     //     { id: "tsne", label: "t-SNE for high-dimensional data visualization" },
     //   ],
     // },
-    {
-      to: "/CaseStudy7",
-      label: "CaseStudy",
-      component: lazy(() => import("pages/module7/course/CaseStudy")),
-    },
-  ];
+  //   {
+  //     to: "/CaseStudy7",
+  //     label: "CaseStudy",
+  //     component: lazy(() => import("pages/module7/course/CaseStudy")),
+  //   },
+  // ];
 
   const location = useLocation();
   const module = 7;
@@ -167,7 +168,7 @@ const CourseDeepLearningFundamentals = () => {
           </Row>
           <Row>
             <Col>
-              <p>Last Updated: {"2024-06-07"}</p>
+              <p>Last Updated: {"2024-09-20"}</p>
             </Col>
           </Row>
         </>

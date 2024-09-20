@@ -5,7 +5,8 @@
         "exercise1": {
             "is_passed_test": false,
             "score": "",
-            "logs": "Not published yet"
+            "logs": "Not published yet",
+            "updated_time_utc": ""
         }
         
     },
@@ -15,13 +16,8 @@
         "exercise1": {
             "is_passed_test": false,
             "score": "",
-            "logs": "Not published yet"
-        },
-        
-        "exercise2": {
-            "is_passed_test": false,
-            "score": "",
-            "logs": "Not published yet"
+            "logs": "Not published yet",
+            "updated_time_utc": ""
         }
         
     },
@@ -31,13 +27,8 @@
         "exercise1": {
             "is_passed_test": false,
             "score": "",
-            "logs": "Not published yet"
-        },
-        
-        "exercise2": {
-            "is_passed_test": false,
-            "score": "",
-            "logs": "Not published yet"
+            "logs": "Not published yet",
+            "updated_time_utc": ""
         }
         
     },
@@ -47,13 +38,8 @@
         "exercise1": {
             "is_passed_test": false,
             "score": "",
-            "logs": "Not published yet"
-        },
-        
-        "exercise2": {
-            "is_passed_test": false,
-            "score": "",
-            "logs": "Not published yet"
+            "logs": "Not published yet",
+            "updated_time_utc": ""
         }
         
     },
@@ -63,13 +49,8 @@
         "exercise1": {
             "is_passed_test": false,
             "score": "",
-            "logs": "Not published yet"
-        },
-        
-        "exercise2": {
-            "is_passed_test": false,
-            "score": "",
-            "logs": "Not published yet"
+            "logs": "Not published yet",
+            "updated_time_utc": ""
         }
         
     },
@@ -79,13 +60,8 @@
         "exercise1": {
             "is_passed_test": false,
             "score": "",
-            "logs": "Not published yet"
-        },
-        
-        "exercise2": {
-            "is_passed_test": false,
-            "score": "",
-            "logs": "Not published yet"
+            "logs": "Not published yet",
+            "updated_time_utc": ""
         }
         
     },
@@ -95,13 +71,8 @@
         "exercise1": {
             "is_passed_test": false,
             "score": "",
-            "logs": "Not published yet"
-        },
-        
-        "exercise2": {
-            "is_passed_test": false,
-            "score": "",
-            "logs": "Not published yet"
+            "logs": "Not published yet",
+            "updated_time_utc": ""
         }
         
     },
@@ -111,13 +82,8 @@
         "exercise1": {
             "is_passed_test": false,
             "score": "",
-            "logs": "Not published yet"
-        },
-        
-        "exercise2": {
-            "is_passed_test": false,
-            "score": "",
-            "logs": "Not published yet"
+            "logs": "Not published yet",
+            "updated_time_utc": ""
         }
         
     },
@@ -127,13 +93,8 @@
         "exercise1": {
             "is_passed_test": false,
             "score": "",
-            "logs": "Not published yet"
-        },
-        
-        "exercise2": {
-            "is_passed_test": false,
-            "score": "",
-            "logs": "Not published yet"
+            "logs": "Not published yet",
+            "updated_time_utc": ""
         }
         
     },
@@ -143,13 +104,8 @@
         "exercise1": {
             "is_passed_test": false,
             "score": "",
-            "logs": "Not published yet"
-        },
-        
-        "exercise2": {
-            "is_passed_test": false,
-            "score": "",
-            "logs": "Not published yet"
+            "logs": "Not published yet",
+            "updated_time_utc": ""
         }
         
     },
@@ -159,13 +115,8 @@
         "exercise1": {
             "is_passed_test": false,
             "score": "",
-            "logs": "Not published yet"
-        },
-        
-        "exercise2": {
-            "is_passed_test": false,
-            "score": "",
-            "logs": "Not published yet"
+            "logs": "Not published yet",
+            "updated_time_utc": ""
         }
         
     },
@@ -175,13 +126,30 @@
         "exercise1": {
             "is_passed_test": false,
             "score": "",
-            "logs": "Not published yet"
-        },
+            "logs": "Not published yet",
+            "updated_time_utc": ""
+        }
         
-        "exercise2": {
+    },
+
+    "module13": {
+        
+        "exercise1": {
             "is_passed_test": false,
             "score": "",
-            "logs": "Not published yet"
+            "logs": "Not published yet",
+            "updated_time_utc": ""
+        }
+        
+    },
+
+    "module14": {
+        
+        "exercise1": {
+            "is_passed_test": false,
+            "score": "",
+            "logs": "Not published yet",
+            "updated_time_utc": ""
         }
         
     }

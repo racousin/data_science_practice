@@ -8,7 +8,7 @@ const ExerciseMLPipelineAndExploratoryDataAnalysis = () => {
   const exerciseLinks = [
     {
       to: "/exercise1",
-      label: "Exercise 1",
+      label: <>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></>,
       component: lazy(() => import("pages/module3/exercise/Exercise1")),
     },
     // Add links to other exercises as needed

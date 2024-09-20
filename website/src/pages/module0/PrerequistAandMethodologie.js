@@ -15,7 +15,7 @@ const PrerequisiteAndMethodology = () => {
     >
       <Row>
         <Col>
-          <p>Last Updated: {"2024-06-07"}</p>
+          <p>Last Updated: {"2024-09-20"}</p>
         </Col>
       </Row>
 
@@ -69,42 +69,51 @@ const PrerequisiteAndMethodology = () => {
       </Row>
 
       <Row>
-        <Col md={11}>
-          <h2>Methodology and Submitting Exercises</h2>
-          <p>
-            Each module in this course is divided into a learning section and an
-            exercise section.
-          </p>
-          <p>The objectives of submitting exercises are:</p>
-          <ul>
-            <li>
-              <strong>Mastering Git and GitHub:</strong> Essential tools in the
-              data science industry and in research.
-            </li>
-            <li>
-              <strong>Understanding the Review Process:</strong> Critical for
-              software development and fostering collaborative skills.
-            </li>
-            <li>
-              <strong>Tracking Your Progress:</strong> After merging your
-              changes to the main branch, CI/CD processes will validate your
-              exercises. Successfully passing these tests will reflect on your
-              student results page.
-            </li>
-          </ul>
-          <p>
-            To view your progress and results, visit the{" "}
-            <a
-              href="https://www.raphaelcousin.com/repositories"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Student Results Page
-            </a>{" "}
-            on the course website.
-          </p>
-        </Col>
-      </Row>
+      <Col md={11}>
+        <h2>Methodology and Submitting Exercises</h2>
+        <p>
+          Each module in this course is divided into a learning section and an
+          exercise section.
+        </p>
+        <p>In each module, you will find:</p>
+        <ul>
+          <li>
+            <strong>Mandatory exercises (e.g., Exercise1<span style={{color: 'red', fontWeight: 'bold'}}>*</span>):</strong> These exercises are required and will be evaluated.
+          </li>
+          <li>
+            <strong>Optional exercises (e.g., Exercise2):</strong> You are encouraged to complete these for additional practice and learning.
+          </li>
+        </ul>
+        <p>The objectives of submitting exercises are:</p>
+        <ul>
+          <li>
+            <strong>Mastering Git and GitHub:</strong> Essential tools in the
+            data science industry and in research.
+          </li>
+          <li>
+            <strong>Understanding the Review Process:</strong> Critical for
+            software development and fostering collaborative skills.
+          </li>
+          <li>
+            <strong>Tracking Your Progress:</strong> After merging your
+            changes to the main branch, CI/CD processes will validate your
+            exercises. Successfully passing these tests will reflect on your
+            student results page.
+          </li>
+        </ul>
+        <p>
+          To view your progress and results, visit the{" "}
+          <a
+            href="https://www.raphaelcousin.com/repositories"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Student Results Page
+          </a>{" "}
+          on the course website.
+        </p>
+      </Col>
+    </Row>
 
       <Row>
         <h2>Example Exercise Submission Steps</h2>

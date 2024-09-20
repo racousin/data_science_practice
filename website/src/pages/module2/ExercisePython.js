@@ -8,7 +8,7 @@ const ExercisePython = () => {
   const exerciseLinks = [
     {
       to: "/exercise1",
-      label: "Exercise 1",
+      label: <>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></>,
       component: lazy(() => import("pages/module2/exercise/Exercise1")),
     },
   ];
@@ -26,7 +26,7 @@ const ExercisePython = () => {
         <>
           <Row>
             <Col>
-              <p>Last Updated: {"2024-06-07"}</p>
+              <p>Last Updated: {"2024-09-20"}</p>
             </Col>
           </Row>
         </>

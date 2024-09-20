@@ -5,100 +5,143 @@ import CodeBlock from "components/CodeBlock";
 const Introduction = () => {
   return (
     <Container fluid>
-      <Row>
-        <Col>
-          <h1>Introduction to Generative Models</h1>
-          <p>
-            In this section, you will learn about the core concepts and
-            applications of generative models in AI.
-          </p>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <h2>Definition and Significance of Generative Models</h2>
-          <p>
-            Generative models are a class of statistical models that can
-            generate new data instances that resemble the training data. They
-            have gained significant attention in recent years due to their
-            ability to create realistic and diverse data samples, which can be
-            used in a variety of applications such as image and video
-            generation, text synthesis, and data augmentation.
-          </p>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <h2>Overview of the Types of Generative Models</h2>
-          <p>
-            There are several types of generative models, each with its own
-            strengths and weaknesses. Some of the most popular ones include:
-          </p>
-          <ul>
-            <li>
-              <strong>Variational Autoencoders (VAEs)</strong>: VAEs are a type
-              of neural network that can learn to compress and reconstruct data.
-              They can also be used to generate new data instances by sampling
-              from the learned latent space.
-            </li>
-            <li>
-              <strong>Generative Adversarial Networks (GANs)</strong>: GANs are
-              a type of neural network that consists of two parts: a generator
-              and a discriminator. The generator is trained to generate new data
-              instances that resemble the training data, while the discriminator
-              is trained to distinguish between real and fake data. The two
-              parts are trained together in a minimax game, where the generator
-              tries to fool the discriminator and the discriminator tries to
-              correctly classify the data.
-            </li>
-            <li>
-              <strong>Autoregressive Models</strong>: Autoregressive models are
-              a type of statistical model that can generate new data instances
-              by modeling the joint probability distribution of the data. They
-              are often used in text synthesis and image generation.
-            </li>
-            <li>
-              <strong>Energy-Based Models</strong>: Energy-based models are a
-              type of statistical model that can generate new data instances by
-              modeling the energy function of the data. They are often used in
-              unsupervised learning and density estimation.
-            </li>
-          </ul>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <h2>Use Cases of Generative Models</h2>
-          <p>
-            Generative models have a wide range of applications in AI,
-            including:
-          </p>
-          <ul>
-            <li>
-              <strong>Image and Video Generation</strong>: Generative models can
-              be used to create realistic and diverse images and videos, which
-              can be used in entertainment, advertising, and virtual reality.
-            </li>
-            <li>
-              <strong>Text Synthesis</strong>: Generative models can be used to
-              generate coherent and meaningful text, which can be used in
-              chatbots, language translation, and content creation.
-            </li>
-            <li>
-              <strong>Data Augmentation</strong>: Generative models can be used
-              to create synthetic data that can be used to augment the training
-              data, which can improve the performance of machine learning
-              models.
-            </li>
-            <li>
-              <strong>Density Estimation</strong>: Generative models can be used
-              to estimate the probability density function of the data, which
-              can be used in anomaly detection, clustering, and dimensionality
-              reduction.
-            </li>
-          </ul>
-        </Col>
-      </Row>
+      <h2 id="what-is-nlp">What is NLP?</h2>
+      <p>
+        Natural Language Processing (NLP) is a subfield of artificial
+        intelligence that focuses on the interaction between computers and
+        humans using natural language. The ultimate objective of NLP is to read,
+        decipher, understand, and make sense of human languages in a valuable
+        way.
+      </p>
+      <p>
+        NLP combines computational linguistics—rule-based modeling of human
+        language—with statistical, machine learning, and deep learning models.
+        These technologies enable computers to process human language in the
+        form of text or voice data and to 'understand' its full meaning,
+        complete with the speaker or writer's intent and sentiment.
+      </p>
+
+      <h2 id="applications">Applications of NLP</h2>
+      <p>NLP has a wide range of applications across various domains:</p>
+      <ul>
+        <li>
+          <strong>Machine Translation:</strong> Automatically translating text
+          or speech from one language to another (e.g., Google Translate).
+        </li>
+        <li>
+          <strong>Sentiment Analysis:</strong> Determining the sentiment
+          (positive, negative, neutral) of a piece of text (e.g., social media
+          monitoring).
+        </li>
+        <li>
+          <strong>Chatbots and Virtual Assistants:</strong> Creating
+          conversational agents that can interact with humans (e.g., Siri,
+          Alexa).
+        </li>
+        <li>
+          <strong>Text Summarization:</strong> Automatically generating concise
+          summaries of longer texts.
+        </li>
+        <li>
+          <strong>Named Entity Recognition (NER):</strong> Identifying and
+          classifying named entities (e.g., person names, organizations) in
+          text.
+        </li>
+        <li>
+          <strong>Question Answering Systems:</strong> Building systems that can
+          automatically answer questions posed in natural language.
+        </li>
+        <li>
+          <strong>Speech Recognition:</strong> Converting spoken language into
+          text.
+        </li>
+        <li>
+          <strong>Text Generation:</strong> Generating human-like text for
+          various applications (e.g., content creation, chatbots).
+        </li>
+      </ul>
+
+      <h2 id="challenges">Challenges in NLP</h2>
+      <p>
+        Despite significant advancements, NLP still faces several challenges:
+      </p>
+      <ul>
+        <li>
+          <strong>Ambiguity:</strong> Words and sentences can have multiple
+          meanings depending on context.
+        </li>
+        <li>
+          <strong>Language Diversity:</strong> There are thousands of languages
+          and dialects worldwide, each with its own rules and nuances.
+        </li>
+        <li>
+          <strong>Contextual Understanding:</strong> Understanding context,
+          sarcasm, and implicit meaning in text.
+        </li>
+        <li>
+          <strong>Multimodal Integration:</strong> Combining text with other
+          modalities like images or video for comprehensive understanding.
+        </li>
+        <li>
+          <strong>Low-Resource Languages:</strong> Lack of data and resources
+          for many languages.
+        </li>
+        <li>
+          <strong>Common Sense Reasoning:</strong> Incorporating common sense
+          knowledge into NLP systems.
+        </li>
+        <li>
+          <strong>Bias and Fairness:</strong> Ensuring NLP systems are unbiased
+          and fair across different demographics.
+        </li>
+        <li>
+          <strong>Interpretability:</strong> Understanding and explaining the
+          decisions made by complex NLP models.
+        </li>
+      </ul>
+
+      <h3>Example: Simple Text Processing with NLTK</h3>
+      <p>
+        Here's a basic example of text processing using the Natural Language
+        Toolkit (NLTK) in Python:
+      </p>
+      <CodeBlock
+        language="python"
+        code={`
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
+
+# Download necessary NLTK data
+nltk.download('punkt')
+nltk.download('stopwords')
+
+def process_text(text):
+    # Tokenization
+    tokens = word_tokenize(text.lower())
+    
+    # Remove stopwords
+    stop_words = set(stopwords.words('english'))
+    filtered_tokens = [token for token in tokens if token not in stop_words]
+    
+    # Stemming
+    stemmer = PorterStemmer()
+    stemmed_tokens = [stemmer.stem(token) for token in filtered_tokens]
+    
+    return stemmed_tokens
+
+# Example usage
+text = "Natural language processing is a subfield of linguistics, computer science, and artificial intelligence."
+processed_text = process_text(text)
+print(processed_text)
+        `}
+      />
+      <p>
+        This example demonstrates basic text processing steps including
+        tokenization, stopword removal, and stemming. These are fundamental
+        operations in many NLP tasks.
+      </p>
     </Container>
   );
 };

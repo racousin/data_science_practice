@@ -179,7 +179,7 @@ const CourseGit = () => {
           </Row>
           <Row>
             <Col>
-              <p>Last Updated: {"2024-06-07"}</p>
+              <p>Last Updated: {"2024-09-20"}</p>
             </Col>
           </Row>
         </>

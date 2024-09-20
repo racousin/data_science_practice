@@ -6,11 +6,11 @@ import { useLocation } from "react-router-dom";
 
 const ExerciseTabularModels = () => {
   const exerciseLinks = [
-    {
-      to: "/exercise1",
-      label: "Exercise 1",
-      component: lazy(() => import("pages/module6/exercise/Exercise1")),
-    },
+    // {
+    //   to: "/exercise1",
+    //   label: <>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></>,
+    //   component: lazy(() => import("pages/module6/exercise/Exercise1")),
+    // },
     // Add links to other exercises as needed
   ];
 
@@ -33,7 +33,7 @@ const ExerciseTabularModels = () => {
           </Row>
           <Row>
             <Col>
-              <p>Last Updated: {"2024-06-07"}</p>
+              <p>Last Updated: {"2024-09-20"}</p>
             </Col>
           </Row>
         </>
