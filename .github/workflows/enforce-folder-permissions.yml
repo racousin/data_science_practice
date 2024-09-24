@@ -60,5 +60,5 @@ jobs:
             echo "::error file=$FILE,Title=Unauthorized File Modification::You can only modify files in your own directory."
             exit 1
           fi
-
         done
+
