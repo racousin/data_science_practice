@@ -105,7 +105,7 @@ git pull origin main`}
                   <li>
                     Visit{" "}
                     <a
-                      href="https://github.com/racousin/data_science_practice/pulls"
+                      href="https://github.com/racousin/data_science_practice_2024/pulls"
                       target="_blank"
                       rel="noopener noreferrer"
                     >

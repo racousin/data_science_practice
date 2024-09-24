@@ -52,7 +52,7 @@ const PrerequisiteAndMethodology = () => {
               replacing $name, $surname, and $username with your actual details.
               You will receive an invitation to join the{" "}
               <a
-                href="https://github.com/racousin/data_science_practice"
+                href="https://github.com/racousin/data_science_practice_2024"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -121,7 +121,7 @@ const PrerequisiteAndMethodology = () => {
           <li>
             <strong>If not done, clone the repository:</strong>
             <CodeBlock
-              code={`git clone https://github.com/racousin/data_science_practice.git`}
+              code={`git clone https://github.com/racousin/data_science_practice_2024.git`}
             />
           </li>
           <li>
@@ -169,7 +169,7 @@ const PrerequisiteAndMethodology = () => {
             <strong>Go to GitHub to create a new pull request:</strong>
             <p>
               Visit{" "}
-              <a href="https://github.com/racousin/data_science_practice/pulls">
+              <a href="https://github.com/racousin/data_science_practice_2024/pulls">
                 GitHub Pull Requests
               </a>{" "}
               to create a new pull request from branch{" "}
