@@ -146,14 +146,14 @@ const PrerequisiteAndMethodology = () => {
             <strong>Work on the exercise in your repository folder:</strong>
             <p>Example files and folder:</p>
             <ul>
-              <li>myusername_branch/module1/file.py</li>
-              <li>myusername_branch/module1/file.csv</li>
-              <li>myusername_branch/module1/my_pkg/</li>
+              <li>myusername/module1/file.py</li>
+              <li>myusername/module1/file.csv</li>
+              <li>myusername/module1/my_pkg/</li>
             </ul>
           </li>
           <li>
             <strong>Stage your changes:</strong>
-            <CodeBlock code={`git add myusername_branch/module1`} />
+            <CodeBlock code={`git add myusername/module1`} />
           </li>
           <li>
             <strong>Commit your changes:</strong>
