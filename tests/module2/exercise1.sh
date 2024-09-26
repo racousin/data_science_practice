@@ -39,6 +39,8 @@ if ! pip install $PACKAGE_DIR; then
   exit 1
 fi
 
+export PYTHONPATH=$PACKAGE_DIR:$PYTHONPATH
+
 if ! python -m pytest $TESTS_DIR/test_exercise1.py --junitxml=results.xml; then
   # Check if results.xml exists and has content
   if [ -f results.xml ] && [ -s results.xml ]; then
