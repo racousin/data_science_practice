@@ -179,6 +179,17 @@ setup(
       linked to your current working directory, so any changes made to the 
       package will immediately be reflected without needing to reinstall.
     </p>
+    <p>
+            Now you can use your package in Python just like any other package:
+          </p>
+          <CodeBlock
+            code={`import mypackage.functions1 as fct1
+import mypackage.functions2 as fct2
+
+fct1.hello()
+fct2.goodbye()`}
+            language={"python"}
+          />
   </Col>
 </Row>
 
@@ -206,11 +217,11 @@ setup(
             Now you can use your package in Python just like any other package:
           </p>
           <CodeBlock
-            code={`import mypackage.module1 as mod1
-import mypackage.module2 as mod2
+            code={`import mypackage.functions1 as fct1
+import mypackage.functions2 as fct2
 
-mod1.hello()
-mod2.goodbye()`}
+fct1.hello()
+fct2.goodbye()`}
             language={"python"}
           />
         </Col>
