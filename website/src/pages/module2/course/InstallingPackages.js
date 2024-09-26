@@ -57,7 +57,7 @@ const InstallingPackages = () => {
           <CodeBlock code={`pip freeze`} language="bash"/>
           <p>This will output a list of installed packages with their versions.</p>
 
-          <h3 id="create-requirements-file">
+          <h3 id="create-a-requirements-file">
             Create a Requirements File
           </h3>
           <p>To save the current environment’s dependencies to a <code>requirements.txt</code> file, run:</p>

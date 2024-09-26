@@ -11,6 +11,11 @@ const ExercisePython = () => {
       label: <>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></>,
       component: lazy(() => import("pages/module2/exercise/Exercise1")),
     },
+    {
+      to: "/exercise2",
+      label: "Exercise 2",
+      component: lazy(() => import("pages/module2/exercise/Exercise2")),
+    },
   ];
 
   const location = useLocation();

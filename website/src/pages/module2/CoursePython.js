@@ -54,6 +54,14 @@ const CoursePython = () => {
           id: "install-from-requirements",
           label: "Install Packages from a Requirements File",
         },
+        {
+          id: "display-installed-packages",
+          label: "Display Installed Packages",
+        },
+        {
+          id: "create-a-requirements-file",
+          label: "Create a Requirements File",
+        },
       ],
     },
     {
@@ -78,13 +86,14 @@ const CoursePython = () => {
           label: "Add Modules to Your Package",
         },
         {
+          id: "install-your-pkg",
+          label: "Install your package",
+        },
+        {
           id: "build-package",
           label: "Build the Package",
         },
-        {
-          id: "editable-install",
-          label: "Editable Install",
-        },
+
         {
           id: "publishing-package",
           label: "Publishing Your Package",

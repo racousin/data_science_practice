@@ -31,7 +31,7 @@ mypackage/
               project.
             </li>
             <li>
-              <strong>mypackage/:</strong> The directory containing your
+              <strong>mypackage/mypackage/:</strong> The directory containing your
               package's modules.
             </li>
             <li>
@@ -158,6 +158,30 @@ setup(
           />
         </Col>
       </Row>
+
+      <Row>
+  <Col>
+    <h3 id="install-your-pkg">Install Your Package</h3>
+    <p>
+      To install your package locally, use the following command:
+    </p>
+    <CodeBlock code={`pip install mypackage/`} />
+    <p>
+      This will install the package directly from the local directory. However,
+      during development, it is often useful to install the package in 
+      "editable" mode. This allows you to make changes to the code without 
+      needing to reinstall it every time. To install the package in editable 
+      mode, run:
+    </p>
+    <CodeBlock code={`pip install -e mypackage/`} />
+    <p>
+      The <code>-e</code> flag stands for "editable", meaning the package is 
+      linked to your current working directory, so any changes made to the 
+      package will immediately be reflected without needing to reinstall.
+    </p>
+  </Col>
+</Row>
+
       <Row>
         <Col>
           <h3 id="build-package">Build the Package</h3>
@@ -171,7 +195,7 @@ setup(
       </Row>
       <Row>
         <Col>
-          <h3 id="install-package">Install the Package</h3>
+          <h3 id="install-package-built">Install the built Package</h3>
           <p>Install the newly created package using pip:</p>
           <CodeBlock code={`pip install dist/mypackage-1.0.tar.gz`} />
           <p>
@@ -189,23 +213,6 @@ mod1.hello()
 mod2.goodbye()`}
             language={"python"}
           />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <h3 id="editable-install">Editable Install</h3>
-          <p>
-            During development, it’s useful to install your package in an
-            "editable" mode. This allows you to modify your package without
-            reinstalling it every time. Use the following command to install
-            your package in editable mode:
-          </p>
-          <CodeBlock code={`pip install -e .`} />
-          <p>
-            This installs the package in the current directory and links it to
-            your Python environment. Changes to your package will be reflected
-            immediately without needing to reinstall.
-          </p>
         </Col>
       </Row>
       <Row>
