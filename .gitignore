@@ -1,4 +1,7 @@
 # Byte-compiled / optimized / DLL files
+results.xml
+*.json
+scripts/simulate_ci.sh
 __pycache__/
 *.py[cod]
 *$py.class

@@ -23,7 +23,7 @@ mkdir -p $RESULTS_DIR  # Ensure results directory exists
 sudo apt-get install -y xmlstarlet
 
 # Setup a Python virtual environment
-python3 -m venv venv
+# python3 -m venv venv
 source venv/bin/activate
 
 PACKAGE_DIR="$(pwd)/${USERNAME}/module2/mysupertools"
