@@ -16,9 +16,20 @@ jobs:
       with:
         fetch-depth: 2
 
+    # Retrieve the PR author from the event payload
     - name: Set Environment Variables
+      if: github.event_name == 'push'
       run: |
-        echo "AUTHOR=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
+        if [ -f $GITHUB_EVENT_PATH ]; then
+          PR_AUTHOR=$(jq -r .pull_request.user.login < $GITHUB_EVENT_PATH)
+          if [ "$PR_AUTHOR" != "null" ]; then
+            echo "AUTHOR=$PR_AUTHOR" >> $GITHUB_ENV
+          else
+            echo "AUTHOR=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
+          fi
+        else
+          echo "AUTHOR=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
+        fi
         echo "GITHUB_REPOSITORY_NAME=$(echo ${{ github.repository }} | cut -d '/' -f2)" >> $GITHUB_ENV
 
     - name: Setup AWS CLI

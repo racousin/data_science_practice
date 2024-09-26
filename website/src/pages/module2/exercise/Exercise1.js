@@ -19,12 +19,12 @@ const Exercise1 = () => {
           <ol>
             <li>Your final directory structure should look like this:</li>
             <CodeBlock
-              code={`mysupertools/\n├── setup.py\n└── mysupertools/\n    ├── __init__.py\n    └── tool/\n        ├── __init__.py\n        └── multiplication_a_b.py`}
+              code={`$username/module2/mysupertools/\n                ├── setup.py\n                └── mysupertools/\n                    ├── __init__.py\n                    └── tool/\n                        ├── __init__.py\n                        └── multiplication_a_b.py`}
             />
             <li>
               The <code>multiplication_a_b.py</code> file contains a function{" "}
               <code>multiply(a, b)</code> that return <i>a x b</i> results if
-              doable or "error".
+              doable else the string value "error".
             </li>
             <li>
               Create a <code>setup.py</code> file in the{" "}

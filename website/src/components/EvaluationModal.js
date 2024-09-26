@@ -56,7 +56,7 @@ const EvaluationModal = ({ module }) => {
               <Col>
                 <h3>Initial Setup</h3>
                 <p>Navigate to your project directory:</p>
-                <CodeBlock code={`cd your_project_directory`} />
+                <CodeBlock code={`cd data_science_practice_2024`} />
                 <p>
                   Ensure you are on the main branch and your repository is up to
                   date:

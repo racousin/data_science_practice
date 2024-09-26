@@ -15,8 +15,8 @@ const BuildingPackages = () => {
 mypackage/
 ├── mypackage/
 │   ├── __init__.py
-│   ├── module1.py
-│   ├── module2.py
+│   ├── functions1.py
+│   ├── functions2.py
 │   ├── tools/
 │       ├── __init__.py
 │       └── tools1.py
@@ -39,11 +39,11 @@ mypackage/
               and can contain package-level variables and imports.
             </li>
             <li>
-              <strong>module1.py:</strong> A module within the package. You can
+              <strong>functions1.py:</strong> A module within the package. You can
               add more modules as needed.
             </li>
             <li>
-              <strong>module2.py:</strong> Another module within the package.
+              <strong>functions2.py:</strong> Another module within the package.
             </li>
             <li>
               <strong>setup.py:</strong> The setup script containing metadata
@@ -73,9 +73,7 @@ mypackage/
             The `setup.py` file is the center of a Python project. It contains
             metadata about the package and instructions on how to install it.
           </p>
-          <p>Create the `setup.py` file:</p>
-          <CodeBlock code={`touch setup.py`} />
-          <p>Open `setup.py` in a text editor and add the following code:</p>
+          <p>Create the `setup.py` in a text editor and add the following code:</p>
           <CodeBlock
             code={`from setuptools import setup
 
@@ -142,20 +140,20 @@ setup(
           <p>
             Create Python modules within the `mypackage` directory. For example:
           </p>
-          <CodeBlock code={`touch mypackage/module1.py mypackage/module2.py`} />
+          <CodeBlock code={`touch mypackage/functions1.py mypackage/functions2.py`} />
           <p>
-            Add your code to these modules. For example, `module1.py` might
+            Add your code to these modules. For example, `functions1.py` might
             contain:
           </p>
           <CodeBlock
             code={`def hello():
-    print("Hello from module1!")`}
+    print("Hello from functions1!")`}
             language={"python"}
           />
-          <p>And `module2.py` might contain:</p>
+          <p>And `functions2.py` might contain:</p>
           <CodeBlock
             code={`def goodbye():
-    print("Goodbye from module2!")`}
+    print("Goodbye from functions2!")`}
             language={"python"}
           />
         </Col>
