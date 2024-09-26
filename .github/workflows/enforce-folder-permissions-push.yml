@@ -1,0 +1,17 @@
+name: Enforce and Evaluate
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  check-and-update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: main
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 2
