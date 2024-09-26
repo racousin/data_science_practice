@@ -1,5 +1,5 @@
 def multiply(a, b):
     try:
-        return -12
+        return float(a) * float(b)
     except:
         return "error"
