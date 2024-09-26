@@ -77,7 +77,7 @@ setup(
               language={"python"}
             />
             <CodeBlock
-              code={`assert multiply("a", 5) == "error"`}
+              code={`assert multiply("a", 5) == "error" # "aaaaa" is not considering as a correct answer!`}
               language={"python"}
             />
           </ol>

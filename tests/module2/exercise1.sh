@@ -39,7 +39,7 @@ if ! pip install $PACKAGE_DIR; then
   exit 1
 fi
 
-if ! pytest $TESTS_DIR/test_exercise1.py --junitxml=results.xml; then
+if ! python -m pytest $TESTS_DIR/test_exercise1.py --junitxml=results.xml; then
   # Check if results.xml exists and has content
   if [ -f results.xml ] && [ -s results.xml ]; then
     # Extract error messages from the XML file using xmlstarlet
