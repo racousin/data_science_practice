@@ -24,21 +24,22 @@ const CourseDataScienceLandscape = () => {
         import("pages/module3/course/MachineLearningPipeline")
       ),
       subLinks: [
+        {id: "problem-definition", label: "Problem Definition"},
         { id: "data-collection", label: "Data Collection" },
-        { id: "data-cleaning", label: "Data Cleaning and Preparation" },
-        { id: "feature-engineering", label: "Feature Engineering" },
-        { id: "model-building", label: "Model Building" },
-        { id: "evaluation", label: "Evaluation" },
-        { id: "deployment", label: "Deployment" },
-        { id: "monitoring", label: "Monitoring and Maintenance" },
+        { id: "data-cleaning", label: "Data Preprocessing and Feature Engineering" },
+        { id: "model-building", label: "Model Selection, Training, and Evaluation" },
+        { id: "deployment", label: "Deployment, Monitoring, and Maintenance" },
+        { id: "monitoring", label: "Model Interpretability and Explainability" },
       ],
     },
-
     {
-      to: "/evaluation-metrics",
-      label: "Evaluation Metrics",
-      component: lazy(() => import("pages/module3/course/EvaluationMetrics")),
-      subLinks: [],
+      to: "/model-training-prediction",
+      label: "Model Training and Prediction",
+      component: lazy(() => import("pages/module3/course/ModelTrainingPrediction")),
+      subLinks: [
+        { id: "model-fitting", label: "Model Fitting" },
+        { id: "prediction", label: "Prediction" },
+      ],
     },
     {
       to: "/model-evaluation-validation",
@@ -47,31 +48,35 @@ const CourseDataScienceLandscape = () => {
         import("pages/module3/course/ModelEvaluationValidation")
       ),
       subLinks: [
-        { id: "importance", label: "Importance of Model Evaluation" },
-        {
-          id: "overfitting-underfitting",
-          label: "Overfitting and Underfitting",
-        },
-        { id: "train-test-splits", label: "Train-Test-Validation Splits" },
+        { id: "performance-metrics", label: "Performance Metrics" },
+        { id: "overfitting-underfitting", label: "Overfitting and Underfitting" },
+        { id: "bias-variance", label: "Bias-Variance Tradeoff" },
+        { id: "cross-validation", label: "Cross-Validation" },
+        { id: "time-series-cv", label: "Time Series Cross-Validation" },
       ],
     },
     {
+      to: "/evaluation-metrics",
+      label: "Evaluation Metrics",
+      component: lazy(() => import("pages/module3/course/EvaluationMetrics")),
+      subLinks: [
+        { id: "regression-metrics", label: "Regression Metrics" },
+        { id: "binary-classification-metrics", label: "Binary Classification Metrics" },
+        { id: "multi-class-classification-metrics", label: "Multi-class Classification Metrics" },
+        { id: "ranking-metrics", label: "Ranking Metrics" },
+        { id: "time-series-metrics", label: "Time Series Metrics" },
+        { id: "choosing-metrics", label: "Choosing the Right Metric" },
+      ],
+    },
+
+    {
       to: "/exploratory-data-analysis",
       label: "Exploratory Data Analysis",
-      component: lazy(() =>
-        import("pages/module3/course/ExploratoryDataAnalysis")
-      ),
+      component: lazy(() => import("pages/module3/course/ExploratoryDataAnalysis")),
       subLinks: [
-        {
-          id: "importance-objectives",
-          label: "Importance and Objectives of EDA",
-        },
+        { id: "main-components", label: "Main Components of EDA" },
         { id: "jupyter-notebooks", label: "Jupyter Notebooks" },
         { id: "google-colab", label: "Google Colab" },
-        { id: "eda-techniques", label: "EDA Techniques" },
-        { id: "visualization-tools", label: "Visualization Tools for EDA" },
-        { id: "statistical-measures", label: "Statistical Measures in EDA" },
-        { id: "eda-data-types", label: "EDA for Different Data Types" },
       ],
     },
     {
@@ -109,7 +114,7 @@ const CourseDataScienceLandscape = () => {
     // },
   ];
 
-  const title = `Module 3: ML landscape`;
+  const title = `Module 3: Data Science landscape`;
   const location = useLocation();
   const module = 3;
 

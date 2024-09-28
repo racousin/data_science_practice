@@ -1,10 +1,10 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Image } from "react-bootstrap";
 
 const Introduction = () => {
   return (
     <Container fluid>
-      <h2 className="my-4">Introduction to Data Science</h2>
+      <h2 className="my-4">Introduction</h2>
       <p>
         Data science is a multidisciplinary field focused on extracting
         knowledge from data, which are typically large and complex. Data science
@@ -48,31 +48,11 @@ const Introduction = () => {
             significantly to the generation of user-generated content, offering
             rich datasets that are invaluable for insights and marketing.
           </p>
-          <h4>Future Trends</h4>
-          <p>
-            Looking forward, the integration of advanced technologies such as AI
-            and machine learning with big data analytics will continue to
-            evolve, driving more personalized and predictive models. Real-time
-            data processing is becoming a standard due to demands for instant
-            insights and actions, especially in sectors like finance,
-            healthcare, and manufacturing.
-          </p>
-          <p>
-            The future of data is also closely tied to ongoing discussions and
-            regulations around privacy and data sovereignty, as consumers and
-            governments alike push for greater control and transparency.
-          </p>
-          <p>
-            As data continues to grow both in volume and importance, the
-            strategies companies use to harness, analyze, and protect this
-            valuable asset will increasingly define their competitive edge and
-            compliance with global standards.
-          </p>
         </Col>
       </Row>
       <Row>
         <Col md={12}>
-          <h3 id="applications">Recent Breakthroughs in AI Applications</h3>
+          <h3 id="applications">"Recent" Breakthroughs in AI Applications</h3>
           <p>
             Recent years have seen remarkable advancements in AI applications
             across various domains, demonstrating the transformative power of
@@ -218,6 +198,14 @@ const Introduction = () => {
             Power BI), statistical analysis, business intelligence
           </p>
 
+          <div className="text-center">
+            <Image
+              src="/assets/module3/job-type.png"
+              alt="Jobs in Data Science"
+              fluid
+            />
+          </div>
+
           <h3>Specialized and Emerging Roles</h3>
 
           <h4>Research Scientist</h4>
@@ -336,7 +324,7 @@ const Introduction = () => {
               rigorous statistical analysis.
             </li>
           </ul>
-          <h4>Data Management and Big Data Platforms</h4>
+          <h4>Data Management and Big Data</h4>
           <ul>
             <li>
               <strong>SQL:</strong> Essential for querying and managing database
