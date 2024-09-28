@@ -14,7 +14,7 @@ const DataInteractionPanel = ({
 }) => {
   const [iframeLoading, setIframeLoading] = useState(true);
   const openInColab = (url) => {
-    const colabUrl = `https://colab.research.google.com/github/racousin/data_science_practice_2024/blob/master/${url}`;
+    const colabUrl = `https://colab.research.google.com/github/racousin/data_science_practice/blob/master/${url}`;
     window.open(colabUrl, "_blank");
   };
 
