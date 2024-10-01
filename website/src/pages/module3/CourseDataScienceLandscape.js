@@ -37,7 +37,7 @@ const CourseDataScienceLandscape = () => {
       label: "Model Training and Prediction",
       component: lazy(() => import("pages/module3/course/ModelTrainingPrediction")),
       subLinks: [
-        { id: "model-fitting", label: "Model Fitting" },
+        { id: "model-fitting", label: "Training" },
         { id: "prediction", label: "Prediction" },
       ],
     },

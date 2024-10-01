@@ -18,7 +18,7 @@ const EvaluationMetrics = () => {
         refinements.
       </p>
 
-      <h2 id="regression-metrics">1. Regression Metrics</h2>
+      <h2 id="regression-metrics">Regression Metrics</h2>
       <p>
         Regression problems involve predicting continuous numerical values. Key
         metrics include:
@@ -54,7 +54,7 @@ mae = mean_absolute_error(y_true, y_pred)
         `}
       />
 
-      <h2 id="binary-classification-metrics">2. Binary Classification Metrics</h2>
+      <h2 id="binary-classification-metrics">Binary Classification Metrics</h2>
       <p>
         Binary classification involves predicting one of two possible outcomes.
         Key metrics include:
@@ -141,7 +141,7 @@ roc_auc = roc_auc_score(y_true, y_pred_proba)
           </div>
         </Col>
       </Row>
-      <h2 id="multi-class-classification-metrics">3. Multi-class Classification Metrics</h2>
+      <h2 id="multi-class-classification-metrics">Multi-class Classification Metrics</h2>
         <p>
           Multi-class classification involves predicting one of three or more possible outcomes. Key metrics include:
         </p>
@@ -170,7 +170,7 @@ roc_auc = roc_auc_score(y_true, y_pred_proba)
       weighted_f1 = f1_score(y_true, y_pred, average='weighted')
       `}
       />
-      <h2 id="ranking-metrics">4. Ranking Metrics</h2>
+      <h2 id="ranking-metrics">Ranking Metrics</h2>
       <p>
         Ranking problems involve ordering items based on relevance or
         importance. Key metrics include:
@@ -204,7 +204,7 @@ ndcg = ndcg_score(y_true, y_score)
         `}
       />
 
-      <h2 id="time-series-metrics">5. Time Series Metrics</h2>
+      <h2 id="time-series-metrics">Time Series Metrics</h2>
       <p>
         Time series forecasting involves predicting future values based on
         historical data. A key metric is:
