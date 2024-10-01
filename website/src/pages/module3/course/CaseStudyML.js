@@ -11,12 +11,12 @@ const CaseStudy = () => {
   const requirementsUrl =
     process.env.PUBLIC_URL + "/modules/module3/course/module3_requirements.txt";
   const notebookUrl =
-    process.env.PUBLIC_URL + "/modules/module3/course/module3_course.ipynb";
+    process.env.PUBLIC_URL + "/modules/module3/course/module3_course_model.ipynb";
   const notebookHtmlUrl =
-    process.env.PUBLIC_URL + "/modules/module3/course/module3_course.html";
+    process.env.PUBLIC_URL + "/modules/module3/course/module3_course_model.html";
   const notebookColabUrl =
     process.env.PUBLIC_URL +
-    "website/public/modules/module3/course/module3_course.ipynb";
+    "website/public/modules/module3/course/module3_course_model.ipynb";
   const metadata = {
     description:
       "This dataset contains information about passengers aboard the Titanic, including various demographic and travel details, as well as their survival status.",
@@ -63,7 +63,7 @@ const CaseStudy = () => {
   };
   return (
     <Container fluid>
-      <h1 className="my-4">EDA Case Study</h1>
+      <h1 className="my-4">Model Baseline Case Study</h1>
       <DataInteractionPanel
         trainDataUrl={trainDataUrl}
         testDataUrl={testDataUrl}

@@ -57,7 +57,7 @@ const Exercise1 = () => {
         </Col>
       </Row>
       <Col>
-        <EvaluationModal module={module} />
+        <EvaluationModal module={1} />
       </Col>
     </Container>
   );

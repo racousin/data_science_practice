@@ -22,7 +22,7 @@ const ExerciseGit = () => {
   const module = 1;
   return (
     <ModuleFrame
-      module={1}
+      module={module}
       isCourse={false}
       title="Module 1: Git Exercises"
       courseLinks={exerciseLinks}

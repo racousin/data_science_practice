@@ -85,7 +85,7 @@ setup(
       </Row>
       <Row>
         <Col>
-          <EvaluationModal module={module} />
+          <EvaluationModal module={2} />
         </Col>
       </Row>
     </Container>

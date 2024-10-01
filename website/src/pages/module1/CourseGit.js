@@ -164,7 +164,7 @@ const CourseGit = () => {
   const module = 1;
   return (
     <ModuleFrame
-      module={1}
+      module={module}
       isCourse={true}
       title="Module 1: Git"
       courseLinks={courseLinks}

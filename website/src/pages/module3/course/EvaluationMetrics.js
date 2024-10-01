@@ -154,11 +154,11 @@ roc_auc = roc_auc_score(y_true, y_pred_proba)
         <CodeBlock
           language="python"
           code={`
-      from sklearn.metrics import f1_score
-      macro_f1 = f1_score(y_true, y_pred, average='macro')
+from sklearn.metrics import f1_score
+macro_f1 = f1_score(y_true, y_pred, average='macro')
       `}
       />
-      Copy  <h3>Weighted-averaged F1 Score</h3>
+      <h3>Weighted-averaged F1 Score</h3>
         <p>
           Calculates F1 score for each class and takes the weighted mean based on class frequency.
           Accounts for class imbalance.
@@ -166,8 +166,8 @@ roc_auc = roc_auc_score(y_true, y_pred_proba)
         <CodeBlock
           language="python"
           code={`
-      from sklearn.metrics import f1_score
-      weighted_f1 = f1_score(y_true, y_pred, average='weighted')
+from sklearn.metrics import f1_score
+weighted_f1 = f1_score(y_true, y_pred, average='weighted')
       `}
       />
       <h2 id="ranking-metrics">Ranking Metrics</h2>

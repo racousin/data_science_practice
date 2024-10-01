@@ -30,6 +30,7 @@ const CourseDataScienceLandscape = () => {
         { id: "model-building", label: "Model Selection, Training, and Evaluation" },
         { id: "deployment", label: "Deployment, Monitoring, and Maintenance" },
         { id: "monitoring", label: "Model Interpretability and Explainability" },
+        { id: "best-practices", label: "Best Practices: Baseline and Iterate" }
       ],
     },
     {
@@ -80,10 +81,16 @@ const CourseDataScienceLandscape = () => {
       ],
     },
     {
-      to: "/eda-and-model-baseline-case-study",
-      label: "EDA and Model Baseline Case Study",
+      to: "/eda-case-study",
+      label: "EDA Case Study",
       component: lazy(() => import("pages/module3/course/CaseStudy")),
     },
+    {
+      to: "/model-baseline-case-study",
+      label: "Model Baseline Case Study",
+      component: lazy(() => import("pages/module3/course/CaseStudyML")),
+    },
+
     // {
     //   to: "/model-deployment",
     //   label: "From Model Evaluation to Deployment",
