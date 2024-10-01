@@ -1,75 +1,87 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import CodeBlock from "components/CodeBlock";
+import { Container, Row, Col, Image } from "react-bootstrap";
 
 const Collaborating = () => {
   return (
     <Container fluid>
-      <h2>Collaborating with Git</h2>
+      <h2>Collaborating</h2>
       <p>
-        Collaboration in software development is crucial for scaling projects
-        and improving code quality. Git, alongside hosting services like GitHub,
-        provides a powerful set of tools to enhance collaboration among
-        developers.
+        Collaboration is essential in software development for scaling projects and improving code quality. 
+        Git, along with hosting services like GitHub, provides powerful tools to enhance collaboration among developers. 
+        This guide will walk you through the process of creating, reviewing, and merging pull requests on GitHub.
       </p>
 
-      {/* Git Workflows */}
-      <Row>
+      <Row className="mt-4">
         <Col>
-          <h3 id="git-workflows">Git Workflows</h3>
+          <h3 id="creating-pull-request">Creating a Pull Request</h3>
           <p>
-            Git workflows define a consistent way to handle code changes in
-            projects. The choice of workflow can affect the productivity of a
-            team and the quality of a codebase. Here are some common Git
-            workflows used in the industry:
+            After you've made changes in your feature branch and pushed it to GitHub, follow these steps to create a pull request:
           </p>
-          <ul>
-            <li>
-              <strong>Feature Branch Workflow:</strong> Developers create new
-              branches for each new feature, ensuring the master branch always
-              contains production-quality code.
-            </li>
-            <li>
-              <strong>Gitflow Workflow:</strong> This is an extension of the
-              feature branch workflow, adding designated branches for preparing,
-              maintaining, and recording releases.
-            </li>
-          </ul>
+          <ol>
+            <li>Go to your repository on GitHub.</li>
+            <li>Click on the "Pull requests" tab.</li>
+            <li>Click the "New pull request" button.</li>
+            <li>Select your feature branch as the compare branch and the main branch as the base branch.</li>
+            <li>Review your changes and click "Create pull request".</li>
+            <li>Add a title and description for your pull request, explaining the changes you've made.</li>
+            <li>Click "Create pull request" to submit it.</li>
+          </ol>
+          <Image src="/assets/module1/createPR.png" alt="Creating a Pull Request on GitHub" fluid className="my-3" />
         </Col>
       </Row>
 
-      {/* Code Reviews and Peer Review */}
       <Row className="mt-4">
         <Col>
-          <h3 id="code-reviews">Code Reviews and Peer Reviews</h3>
+          <h3 id="review-process">The Review Process</h3>
           <p>
-            Code reviews are a critical part of any collaborative project. They
-            involve scrutinizing code changes by one or more developers other
-            than the author:
+            Once you've created a pull request, it's time for others to review your code:
           </p>
           <ol>
             <li>
-              <strong>Submit a Pull Request (PR):</strong> The developer pushes
-              their branch to the remote repository and opens a PR against the
-              main branch. This starts the review process.
+              <strong>Request reviewers:</strong> Click on the gear icon in the "Reviewers" section of your pull request and select team members to review your code.
+              <Image src="/assets/module1/askReview.png" alt="Reviewing a Pull Request on GitHub" fluid className="my-3" />
             </li>
             <li>
-              <strong>Review Process:</strong> Team members comment on the code,
-              suggest improvements, and discuss potential issues.
+              <strong>Reviewers examine the code:</strong> They will look at your changes, leave comments, and suggest improvements.
+              <Image src="/assets/module1/review.png" alt="Reviewing a Pull Request on GitHub" fluid className="my-3" />
             </li>
             <li>
-              <strong>Revise and Push:</strong> Based on feedback, the developer
-              makes the necessary revisions and updates the PR.
+              <strong>Address feedback:</strong> Make any necessary changes based on the reviews and push new commits to your branch.
+              
             </li>
             <li>
-              <strong>Approval and Merge:</strong> Once approved, the PR is
-              merged into the main branch, integrating the changes.
+              <strong>Re-request review:</strong> After making changes, you can re-request a review.
             </li>
           </ol>
+          
+        </Col>
+      </Row>
+
+      <Row className="mt-4">
+        <Col>
+          <h3 id="merging-pull-request">Merging a Pull Request</h3>
           <p>
-            Effective code reviews catch bugs, improve code quality, and spread
-            knowledge across the team.
+            Once your pull request has been approved, you can merge it into the main branch:
           </p>
+          <ol>
+            <li>Go to your pull request page on GitHub.</li>
+            <li>If all checks have passed and you have the necessary approvals, the "Merge pull request" button will be green.</li>
+            <li>Click "Merge pull request".</li>
+            <li>Confirm the merge by clicking "Confirm merge".</li>
+          </ol>
+          <Image src="/assets/module1/mergePR.png" alt="Merging a Pull Request on GitHub" fluid className="my-3" />
+        </Col>
+      </Row>
+
+      <Row className="mt-4">
+        <Col>
+          <h3 id="best-practices">Best Practices</h3>
+          <ul>
+            <li>Keep your pull requests small and focused on a single feature or bug fix.</li>
+            <li>Write clear and descriptive titles and descriptions for your pull requests.</li>
+            <li>Respond promptly to review comments and be open to feedback.</li>
+            <li>If you're a reviewer, be constructive and specific in your feedback.</li>
+          </ul>
         </Col>
       </Row>
     </Container>
