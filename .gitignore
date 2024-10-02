@@ -1,17 +1,3 @@
-# Byte-compiled / optimized / DLL files
-poetry.lock
-pyproject.toml
-notebooks/
-scripts/aws.sh
-results.xml
-*.json
-scripts/simulate_ci.sh
-__pycache__/
-*.py[cod]
-*$py.class
-# racousin/
-# C extensions
-*.so
 tmp
 tests/students.json
 students.json
@@ -21,6 +7,26 @@ racousin/
 
 venv/
 website/public/modules/venv
+
+# Byte-compiled / optimized / DLL files
+poetry.lock
+pyproject.toml
+notebooks/
+scripts/aws.sh
+results.xml
+*.json
+scripts/simulate_ci.sh
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+
+.DS_Store
+**/.DS_Store
 
 # Distribution / packaging
 .Python
@@ -41,6 +47,15 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
+# Ignore specific folders recursively
+**/build/
+**/dist/
+**/eggs/
+**/.eggs/
+**/lib/
+**/lib64/
+**/wheels/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -93,6 +108,7 @@ target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+**/.ipynb_checkpoints/
 
 # IPython
 profile_default/
@@ -140,6 +156,8 @@ celerybeat.pid
 .venv
 env/
 venv/
+**/venv/
+**/env/
 ENV/
 env.bak/
 venv.bak/
