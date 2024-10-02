@@ -1,18 +1,36 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Table, Container, Alert, Form, Button } from "react-bootstrap";
-import "styles/StudentsList.css"; // Ensure to create this CSS for additional styling
-import BackButton from "components/BackButton";
-import ArrayProgress from "components/ArrayProgress";
+import {
+  Table,
+  Container,
+  Alert,
+  TextInput,
+  Button,
+  Progress,
+  Box,
+  Title,
+  Group,
+} from "@mantine/core";
+import { IconRefresh, IconChevronUp, IconChevronDown } from "@tabler/icons-react";
+import { useNavigate } from "react-router-dom";
+
+const BackButton = () => {
+  const navigate = useNavigate();
+  return <Button onClick={() => navigate(-1)}>Back</Button>;
+};
+
+const ArrayProgress = ({ progressPercent }) => (
+  <Progress value={progressPercent} size="xl" radius="xl" />
+);
 
 const StudentsList = () => {
   const { repositoryId } = useParams();
   const [students, setStudents] = useState([]);
   const [error, setError] = useState("");
   const [filter, setFilter] = useState("");
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
+  const [sortConfig, setSortConfig] = useState({ key: "name", direction: "ascending" });
 
-  useEffect(() => {
+  const fetchStudents = () => {
     fetch(`/repositories/${repositoryId}/students/config/students.json`)
       .then((response) => {
         if (!response.ok) {
@@ -31,6 +49,10 @@ const StudentsList = () => {
         console.error("Error fetching student list:", error);
         setError("Failed to fetch student data.");
       });
+  };
+
+  useEffect(() => {
+    fetchStudents();
   }, [repositoryId]);
 
   const sortedStudents = useMemo(() => {
@@ -63,24 +85,51 @@ const StudentsList = () => {
     setSortConfig({ key, direction });
   };
 
+  const getSortIcon = (key) => {
+    if (sortConfig.key === key) {
+      return sortConfig.direction === "ascending" ? (
+        <IconChevronUp size={14} />
+      ) : (
+        <IconChevronDown size={14} />
+      );
+    }
+    return null;
+  };
+
+  const handleHardRefresh = () => {
+    fetchStudents();
+  };
+
   return (
-    <Container className="students-list-container">
-      <BackButton />
-      <h1 className="mb-4">Student List for {repositoryId}</h1>
-      {error && <Alert variant="danger">{error}</Alert>}
-      <Form className="d-flex mb-3">
-        <Form.Control
-          type="text"
-          placeholder="Filter by name..."
-          onChange={(e) => setFilter(e.target.value)}
-          value={filter}
-        />
-      </Form>
-      <Table striped bordered hover responsive>
+    <Container size="xl">
+      <Group position="apart" mb="md">
+        <BackButton />
+        <Button
+          leftIcon={<IconRefresh size={14} />}
+          onClick={handleHardRefresh}
+        >
+          Refresh Data
+        </Button>
+      </Group>
+      <Title order={1} mb="md">
+        Student List for {repositoryId}
+      </Title>
+      {error && <Alert color="red">{error}</Alert>}
+      <TextInput
+        placeholder="Filter by name..."
+        mb="md"
+        value={filter}
+        onChange={(event) => setFilter(event.currentTarget.value)}
+      />
+      <Table striped highlightOnHover>
         <thead>
           <tr>
-            <th onClick={() => requestSort("name")}>Name</th>
-            <th onClick={() => requestSort("progress_percentage")}>Progress</th>
+            <th onClick={() => requestSort("name")}>
+              Name {getSortIcon("name")}
+            </th>
+            <th onClick={() => requestSort("progress_percentage")}>
+              Progress {getSortIcon("progress_percentage")}
+            </th>
             <th>Details</th>
           </tr>
         </thead>
@@ -89,17 +138,20 @@ const StudentsList = () => {
             <tr key={index}>
               <td>{student.name}</td>
               <td>
-                <ArrayProgress
-                  progressPercent={student.progress_percentage * 100}
-                />
+                <Box sx={{ width: 200 }}>
+                  <ArrayProgress
+                    progressPercent={student.progress_percentage * 100}
+                  />
+                </Box>
               </td>
               <td>
-                <Link
+                <Button
+                  component={Link}
                   to={`/student/${repositoryId}/${student.name}`}
-                  className="btn btn-primary"
+                  variant="light"
                 >
                   View Details
-                </Link>
+                </Button>
               </td>
             </tr>
           ))}

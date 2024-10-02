@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate, Link, useLocation } from "react-router-dom";
-import { Navbar, Nav, Container } from "react-bootstrap";
+import { MantineProvider, AppShell, Group, Text, Container, Button } from '@mantine/core';
 import ReactGA from "react-ga4";
 
 import Home from "./pages/Home";
@@ -46,7 +46,6 @@ import Resources from "pages/Resources";
 
 import "App.css";
 
-import SearchNavbar from "components/SearchNavbar";
 import SearchResultsPage from "pages/SearchResultsPage";
 
 ReactGA.initialize("G-0VW1PJ0H17"); 
@@ -73,39 +72,31 @@ Crawl-delay: 5
 
 function App() {
   return (
-    <BrowserRouter>
-      <Navbar
-        bg="dark"
-        variant="dark"
-        expand="lg"
-        sticky="top"
-        className="navbar"
-      >
-        <Container>
-          <Navbar.Brand as={Link} to="/">
-            Teaching Portal
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link as={Link} to="/">
-                Home
-              </Nav.Link>
-              <Nav.Link as={Link} to="/teaching">
-                Teaching
-              </Nav.Link>
+    <MantineProvider>
+      <BrowserRouter>
+        <AppShell
+          header={{ height: 60 }}
+          padding="md"
+        >
+          <AppShell.Header>
+            <Container size="xl" h="100%">
+              <Group justify="space-between" align="center" h="100%">
+                <Text component={Link} to="/" size="xl" fw={700} style={{ textDecoration: 'none', color: 'inherit' }}>
+                  Teaching Portal
+                </Text>
+                <Group>
+                  <Button component={Link} to="/" variant="subtle">Home</Button>
+                  <Button component={Link} to="/teaching" variant="subtle">Teaching</Button>
+                  <Button component={Link} to="/repositories" variant="subtle">Sessions Results</Button>
+                </Group>
+              </Group>
+            </Container>
+          </AppShell.Header>
 
-              <Nav.Link as={Link} to="/repositories">
-                Sessions Results
-              </Nav.Link>
-            </Nav>
-            <SearchNavbar />
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-      <Container fluid className="mt-3">
-      <GoogleAnalyticsRouteTracker />
-        <Routes>
+          <AppShell.Main>
+            <Container size="xl">
+              <GoogleAnalyticsRouteTracker />
+              <Routes>
         
           <Route path="/" element={<Home />} />
           <Route path="search" element={<SearchResultsPage />} />
@@ -212,9 +203,12 @@ function App() {
           />
 
           <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Container>
-    </BrowserRouter>
+          </Routes>
+            </Container>
+          </AppShell.Main>
+        </AppShell>
+      </BrowserRouter>
+    </MantineProvider>
   );
 }
 
