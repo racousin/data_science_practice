@@ -2,161 +2,154 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
   Container,
+  Title,
   Accordion,
-  Card,
   Badge,
-  ListGroup,
-  Row,
-  Col,
-} from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCheckCircle,
-  faTimesCircle,
-  faChevronDown,
-  faChevronUp,
-} from "@fortawesome/free-solid-svg-icons";
-import ArrayProgress from "components/ArrayProgress";
+  Text,
+  Group,
+  Button,
+  Stack,
+  Paper,
+  Code,
+  Alert,
+} from "@mantine/core";
+import { IconRefresh, IconAlertTriangle } from "@tabler/icons-react";
 import BackButton from "components/BackButton";
 import OverallProgress from "components/OverallProgress";
-import { format, parseISO } from "date-fns";
+
+const StatusIndicator = ({ progressPercent, hasUpdates }) => {
+  let color, label;
+
+  if (progressPercent === 100) {
+    color = "teal";
+    label = "Passed";
+  } else if (hasUpdates) {
+    color = "red";
+    label = "Failed";
+  } else {
+    color = "gray";
+    label = "Not Published";
+  }
+
+  return (
+    <Badge color={color} variant="light" size="lg">
+      {label}
+    </Badge>
+  );
+};
 
 const Student = () => {
   const { repositoryId, studentId } = useParams();
   const [modulesResults, setModulesResults] = useState({});
   const [error, setError] = useState("");
-  const [activeKey, setActiveKey] = useState(null);
-  const [overviewProgress, setOverviewProgress] = useState(0);
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date
-      .toLocaleString("en-US", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false, // Use 24-hour time
-      })
-      .replace(",", ""); // Remove the comma after the date
-  };
-  useEffect(() => {
-    fetch(`/repositories/${repositoryId}/students/${studentId}.json`)
-      .then((response) => {
-        if (!response.ok) {
+  const [loading, setLoading] = useState(false);
+  const [overallProgress, setOverallProgress] = useState({ progress: 0, errors: 0 });
+
+  const fetchData = () => {
+    const cacheBuster = `?t=${new Date().getTime()}`;
+    setLoading(true);
+    Promise.all([
+      fetch(`/repositories/${repositoryId}/students/config/students.json${cacheBuster}`),
+      fetch(`/repositories/${repositoryId}/students/${studentId}.json${cacheBuster}`)
+    ])
+      .then(([overallResponse, detailsResponse]) => {
+        if (!overallResponse.ok || !detailsResponse.ok) {
           throw new Error("Failed to load the data");
         }
-        return response.json();
+        return Promise.all([overallResponse.json(), detailsResponse.json()]);
       })
-      .then((data) => {
-        setModulesResults(data);
-        calculateOverallProgress(data);
+      .then(([overallData, detailsData]) => {
+        const studentOverall = overallData[studentId];
+        if (studentOverall) {
+          setOverallProgress({
+            progress: parseFloat(studentOverall.progress_percentage) * 100,
+            errors: parseFloat(studentOverall.error_percentage) * 100
+          });
+        }
+        setModulesResults(detailsData);
+        setLoading(false);
       })
       .catch((error) => {
-        console.error("Error fetching module results:", error);
-        setError("Failed to fetch module results.");
+        console.error("Error fetching data:", error);
+        setError("Failed to fetch student data.");
+        setLoading(false);
       });
-  }, [repositoryId, studentId]);
-
-  const handleToggle = (moduleName) => {
-    setActiveKey(activeKey === moduleName ? null : moduleName);
   };
 
-  const getResultIcon = (isPassed) => {
-    return isPassed ? (
-      <FontAwesomeIcon icon={faCheckCircle} color="green" />
-    ) : (
-      <FontAwesomeIcon icon={faTimesCircle} color="red" />
-    );
-  };
+  useEffect(() => {
+    fetchData();
+  }, [repositoryId]);
 
-  const calculateOverallProgress = (modules) => {
-    // Aggregate all exercises across all modules
-    const allExercises = Object.values(modules).reduce((acc, exercises) => {
-      return acc.concat(Object.values(exercises));
-    }, []);
-
-    // Count all exercises that have passed
-    const passedExercises = allExercises.filter(
-      (ex) => ex.is_passed_test
-    ).length;
-    const totalExercises = allExercises.length;
-
-    // Calculate the overall progress as a percentage
-    const overallProgress =
-      totalExercises > 0
-        ? ((passedExercises / totalExercises) * 100).toFixed(2)
-        : "0.00";
-    setOverviewProgress(overallProgress);
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString("en-US", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    });
   };
 
   return (
-    <Container>
-      <BackButton />
-      <h1>Module Results for {studentId}</h1>
-      <OverallProgress progress={overviewProgress} />
-      {error && <Badge bg="danger">{error}</Badge>}
-      <Accordion activeKey={activeKey}>
-        {Object.entries(modulesResults).map(([moduleName, exercises], idx) => {
+    <Container size="lg">
+      <Group justify="space-between" mb="md">
+        <BackButton />
+        <Button
+          leftSection={<IconRefresh size={14} />}
+          onClick={fetchData}
+          loading={loading}
+          variant="light"
+        >
+          Refresh Data
+        </Button>
+      </Group>
+      <Title order={1} mb="md">Results for {studentId}</Title>
+      <OverallProgress progress={overallProgress.progress} errors={overallProgress.errors} />
+      {error && <Alert color="red" mb="md" title="Error">{error}</Alert>}
+      <Accordion variant="contained">
+        {Object.entries(modulesResults).map(([moduleName, exercises]) => {
           const totalExercises = Object.values(exercises).length;
-          const passedExercises = Object.values(exercises).filter(
-            (ex) => ex.is_passed_test
-          ).length;
-          const progressPercent =
-            totalExercises > 0 ? (passedExercises / totalExercises) * 100 : 0;
+          const passedExercises = Object.values(exercises).filter((ex) => ex.is_passed_test).length;
+          const progressPercent = totalExercises > 0 ? (passedExercises / totalExercises) * 100 : 0;
+          const hasUpdates = Object.values(exercises).some(ex => ex.updated_time_utc);
 
           return (
-            <Card key={moduleName}>
-              <Accordion.Item eventKey={moduleName}>
-                <Accordion.Header onClick={() => handleToggle(moduleName)}>
-                  <Row className="align-items-center">
-                    <Col md={8}>
-                      {moduleName.toUpperCase()} - Progress: {passedExercises}/
-                      {totalExercises}
-                    </Col>
-                    <Col md={4}>
-                      <ArrayProgress progressPercent={progressPercent} />
-                    </Col>
-                  </Row>
-                  <FontAwesomeIcon
-                    icon={
-                      activeKey === moduleName ? faChevronUp : faChevronDown
-                    }
-                    className="ml-auto"
-                  />
-                </Accordion.Header>
-                <Accordion.Body>
-                  <ListGroup variant="flush">
-                    {Object.entries(exercises).map(
-                      ([exerciseName, exerciseDetails], index) => (
-                        <ListGroup.Item key={index}>
-                          {exerciseName}:{" "}
-                          {getResultIcon(exerciseDetails.is_passed_test)}
-                          <div>Score: {exerciseDetails.score}</div>
-                          <div>
-                            Logs:{" "}
-                            {exerciseDetails.logs ? (
-                              <pre style={{ whiteSpace: "pre-wrap" }}>
-                                {exerciseDetails.logs}
-                              </pre>
-                            ) : (
-                              "No logs available"
-                            )}
-                          </div>
-                          <div>
-                            Updated Time:{" "}
-                            {exerciseDetails.updated_time_utc
-                              ? formatDate(exerciseDetails.updated_time_utc)
-                              : "Not updated"}
-                          </div>
-                        </ListGroup.Item>
-                      )
-                    )}
-                  </ListGroup>
-                </Accordion.Body>
-              </Accordion.Item>
-            </Card>
+            <Accordion.Item key={moduleName} value={moduleName}>
+              <Accordion.Control>
+                <Group justify="space-between">
+                  <Text fw={500}>{moduleName.toUpperCase()} - Progress: {passedExercises}/{totalExercises}</Text>
+                  <StatusIndicator progressPercent={progressPercent} hasUpdates={hasUpdates} />
+                </Group>
+              </Accordion.Control>
+              <Accordion.Panel>
+                <Stack gap="md">
+                  {Object.entries(exercises).map(([exerciseName, exerciseDetails], index) => (
+                    <Paper key={index} p="md" withBorder shadow="sm">
+                      <Group justify="space-between" mb="xs">
+                        <Text fw={500}>{exerciseName}</Text>
+                        <Badge color={exerciseDetails.is_passed_test ? "teal" : "red"} variant="light" size="lg">
+                          {exerciseDetails.is_passed_test ? "Passed" : "Failed"}
+                        </Badge>
+                      </Group>
+                      <Text size="sm" mb="xs">Score: {exerciseDetails.score}</Text>
+                      {/* {!exerciseDetails.is_passed_test && exerciseDetails.updated_time_utc && (
+                        <Alert icon={<IconAlertTriangle size="1rem" />} title="Issue Detected" color="yellow" mb="xs">
+                          This exercise failed but has been updated. It may require attention.
+                        </Alert>
+                      )} */}
+                      <Text size="sm" mb="xs">Logs:</Text>
+                      <Code block mb="xs">{exerciseDetails.logs || "No logs available"}</Code>
+                      <Text size="sm" c="dimmed">
+                        Updated: {exerciseDetails.updated_time_utc ? formatDate(exerciseDetails.updated_time_utc) : "Not updated"}
+                      </Text>
+                    </Paper>
+                  ))}
+                </Stack>
+              </Accordion.Panel>
+            </Accordion.Item>
           );
         })}
       </Accordion>

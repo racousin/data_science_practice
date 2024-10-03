@@ -10,8 +10,9 @@ import {
   Box,
   Title,
   Group,
+  Tooltip, Text, ActionIcon
 } from "@mantine/core";
-import { IconRefresh, IconChevronUp, IconChevronDown } from "@tabler/icons-react";
+import { IconRefresh, IconChevronUp, IconChevronDown, IconArrowLeft, IconSearch  } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 
 const BackButton = () => {
@@ -19,9 +20,24 @@ const BackButton = () => {
   return <Button onClick={() => navigate(-1)}>Back</Button>;
 };
 
-const ArrayProgress = ({ progressPercent }) => (
-  <Progress value={progressPercent} size="xl" radius="xl" />
-);
+const ProgressBar = ({ progressPercent, errorPercent }) => {
+  return (
+    <Tooltip
+      label={`Progress: ${progressPercent.toFixed(1)}%, Errors: ${errorPercent.toFixed(1)}%`}
+      position="top"
+      withArrow
+    >
+      <Box>
+        <Progress.Root size="xl">
+          <Progress.Section value={progressPercent} color="green" />
+          <Progress.Section value={errorPercent} color="rgba(255, 99, 71, 0.8)" />
+        </Progress.Root>
+      </Box>
+    </Tooltip>
+  );
+};
+
+
 
 const StudentsList = () => {
   const { repositoryId } = useParams();
@@ -31,7 +47,8 @@ const StudentsList = () => {
   const [sortConfig, setSortConfig] = useState({ key: "name", direction: "ascending" });
 
   const fetchStudents = () => {
-    fetch(`/repositories/${repositoryId}/students/config/students.json`)
+    const cacheBuster = `?t=${new Date().getTime()}`;
+    fetch(`/repositories/${repositoryId}/students/config/students.json${cacheBuster}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -39,10 +56,16 @@ const StudentsList = () => {
         return response.json();
       })
       .then((data) => {
-        const formattedData = Object.entries(data).map(([name, details]) => ({
-          name,
-          ...details,
-        }));
+        const formattedData = Object.entries(data).map(([name, details]) => {
+          const progress = parseFloat(details.progress_percentage) * 100;
+          const errors = parseFloat(details.error_percentage) * 100;
+          return {
+            name,
+            ...details,
+            progress_percentage: progress,
+            error_percentage: errors,
+          };
+        });
         setStudents(formattedData);
       })
       .catch((error) => {
@@ -101,61 +124,72 @@ const StudentsList = () => {
   };
 
   return (
-    <Container size="xl">
-      <Group position="apart" mb="md">
-        <BackButton />
+    <Container size="xl" py="xl">
+      <Group justify="space-between" mb="lg">
+        <Group>
+          <BackButton />
+          <Title order={2}>Student List: {repositoryId}</Title>
+        </Group>
         <Button
-          leftIcon={<IconRefresh size={14} />}
-          onClick={handleHardRefresh}
+          leftSection={<IconRefresh size={14} />}
+          onClick={fetchStudents}
+          variant="light"
         >
           Refresh Data
         </Button>
       </Group>
-      <Title order={1} mb="md">
-        Student List for {repositoryId}
-      </Title>
-      {error && <Alert color="red">{error}</Alert>}
+      
+      {error && <Alert color="red" mb="md">{error}</Alert>}
+      
       <TextInput
+        leftSection={<IconSearch size={14} />}
         placeholder="Filter by name..."
         mb="md"
         value={filter}
         onChange={(event) => setFilter(event.currentTarget.value)}
       />
+      
       <Table striped highlightOnHover>
-        <thead>
-          <tr>
-            <th onClick={() => requestSort("name")}>
-              Name {getSortIcon("name")}
-            </th>
-            <th onClick={() => requestSort("progress_percentage")}>
-              Progress {getSortIcon("progress_percentage")}
-            </th>
-            <th>Details</th>
-          </tr>
-        </thead>
-        <tbody>
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th>
+              <Group gap="xs" style={{cursor: 'pointer'}} onClick={() => requestSort('name')}>
+                <Text>Name</Text>
+                {getSortIcon('name')}
+              </Group>
+            </Table.Th>
+            <Table.Th>
+              <Group gap="xs" style={{cursor: 'pointer'}} onClick={() => requestSort('progress_percentage')}>
+                <Text>Progress/Errors</Text>
+                {getSortIcon('progress_percentage')}
+              </Group>
+            </Table.Th>
+            <Table.Th>Details</Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>
           {filteredStudents.map((student, index) => (
-            <tr key={index}>
-              <td>{student.name}</td>
-              <td>
-                <Box sx={{ width: 200 }}>
-                  <ArrayProgress
-                    progressPercent={student.progress_percentage * 100}
-                  />
-                </Box>
-              </td>
-              <td>
+            <Table.Tr key={index}>
+              <Table.Td>{student.name}</Table.Td>
+              <Table.Td style={{ width: '40%' }}>
+                <ProgressBar
+                  progressPercent={student.progress_percentage}
+                  errorPercent={student.error_percentage}
+                />
+              </Table.Td>
+              <Table.Td>
                 <Button
                   component={Link}
                   to={`/student/${repositoryId}/${student.name}`}
                   variant="light"
+                  size="sm"
                 >
                   View Details
                 </Button>
-              </td>
-            </tr>
+              </Table.Td>
+            </Table.Tr>
           ))}
-        </tbody>
+        </Table.Tbody>
       </Table>
     </Container>
   );
