@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Container,
   Title,
@@ -14,8 +14,12 @@ import {
   Alert,
 } from "@mantine/core";
 import { IconRefresh, IconAlertTriangle } from "@tabler/icons-react";
-import BackButton from "components/BackButton";
 import OverallProgress from "components/OverallProgress";
+
+const BackButton = () => {
+  const navigate = useNavigate();
+  return <Button onClick={() => navigate(-1)}>Back</Button>;
+};
 
 const StatusIndicator = ({ progressPercent, hasUpdates }) => {
   let color, label;

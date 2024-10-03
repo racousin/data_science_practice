@@ -72,34 +72,61 @@ Crawl-delay: 5
 
 function App() {
   return (
-    <MantineProvider>
+    <MantineProvider withGlobalStyles withNormalizeCSS>
       <BrowserRouter>
         <AppShell
           header={{ height: 60 }}
           padding="md"
         >
-          <AppShell.Header>
-            <Container size="xl" h="100%">
-              <Group justify="space-between" align="center" h="100%">
-                <Text component={Link} to="/" size="xl" fw={700} style={{ textDecoration: 'none', color: 'inherit' }}>
-                  Teaching Portal
-                </Text>
-                <Group>
-                  <Button component={Link} to="/" variant="subtle">Home</Button>
-                  <Button component={Link} to="/teaching" variant="subtle">Teaching</Button>
-                  <Button component={Link} to="/repositories" variant="subtle">Sessions Results</Button>
-                </Group>
+        <AppShell.Header style={{ backgroundColor: 'black' }}>
+          <Container size="xl" h="100%">
+            <Group justify="space-between" align="center" h="100%">
+              <Text 
+                component={Link} 
+                to="/" 
+                size="xl" 
+                fw={700} 
+                style={{ textDecoration: 'none', color: 'white' }}
+              >
+                Teaching Portal
+              </Text>
+              <Group>
+                <Button 
+                  component={Link} 
+                  to="/" 
+                  variant="subtle" 
+                  styles={{ root: { color: 'white' } }}
+                >
+                  Home
+                </Button>
+                <Button 
+                  component={Link} 
+                  to="/teaching" 
+                  variant="subtle" 
+                  styles={{ root: { color: 'white' } }}
+                >
+                  Teaching
+                </Button>
+                <Button 
+                  component={Link} 
+                  to="/repositories" 
+                  variant="subtle" 
+                  styles={{ root: { color: 'white' } }}
+                >
+                  Sessions Results
+                </Button>
               </Group>
-            </Container>
-          </AppShell.Header>
+            </Group>
+          </Container>
+        </AppShell.Header>
+
 
           <AppShell.Main>
-            <Container size="xl">
+          <Container fluid>
               <GoogleAnalyticsRouteTracker />
               <Routes>
         
           <Route path="/" element={<Home />} />
-          <Route path="search" element={<SearchResultsPage />} />
           <Route path="repositories" element={<RepositoriesList />} />
           <Route path="students/:repositoryId" element={<StudentsList />} />
           <Route

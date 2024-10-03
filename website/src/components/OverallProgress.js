@@ -17,8 +17,8 @@ const OverallProgress = ({ progress, errors }) => {
       >
         <Box>
           <Progress.Root size="xl">
-            <Progress.Section value={progress} color="green" />
-            <Progress.Section value={errors} color="rgba(255, 99, 71, 0.8)"/>
+            <Progress.Section value={progress} color="green"/>
+            <Progress.Section value={errors} color="gray"/>
           </Progress.Root>
         </Box>
       </Tooltip>

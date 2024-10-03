@@ -1,28 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { Nav, Button, Container } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { Group, Button, Title, Box } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
 import EvaluationModal from "components/EvaluationModal";
 
 const ModuleNavigation = ({ module, isCourse, title = "" }) => {
-  const [navBarHeight, setNavBarHeight] = useState(0); // Set default height or get dynamically
+  const [navBarHeight, setNavBarHeight] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
     const updateNavBarHeight = () => {
-      const navbar = document.querySelector(".navbar");
+      const navbar = document.querySelector('.mantine-AppShell-header');
       if (navbar) {
-        setNavBarHeight(navbar.offsetHeight); // Update only if navbar exists
+        setNavBarHeight(navbar.offsetHeight);
       }
     };
 
-    // Update on component mount
     updateNavBarHeight();
-
-    // Ensure the height is updated on window resize
-    window.addEventListener("resize", updateNavBarHeight);
-
-    // Cleanup listener on component unmount
-    return () => window.removeEventListener("resize", updateNavBarHeight);
+    window.addEventListener('resize', updateNavBarHeight);
+    return () => window.removeEventListener('resize', updateNavBarHeight);
   }, []);
 
   const navigateTo = (path) => {
@@ -30,54 +25,50 @@ const ModuleNavigation = ({ module, isCourse, title = "" }) => {
   };
 
   return (
-    <Nav
-      className="justify-content-between align-items-center navigation-header"
-      style={{ top: `${navBarHeight}px` }}
+    <Box 
+      className="module-navigation"
+      style={{ 
+        position: 'sticky', 
+        top: navBarHeight, 
+        zIndex: 10, 
+        backgroundColor: 'white', 
+        padding: '15px', 
+        borderBottom: '1px solid #e0e0e0',
+        marginBottom: '20px'
+      }}
     >
-      <h1 className="module-title">{title}</h1>
-      <div>
-        {module > 0 && (
-          <Button
-            variant="outline-primary"
-            className="nav-button button-outline"
-            onClick={() => navigateTo(`/module${module - 1}/course`)}
-          >
-            Previous Module
-          </Button>
-        )}
-        {isCourse !== null &&
-          (isCourse ? (
-            <Button
-              variant="outline-secondary"
-              className="nav-button button-outline"
-              onClick={() => navigateTo(`/module${module}/exercise`)}
+      <Group justify="space-between" position="apart">
+        <Title order={2}>{title}</Title>
+        <Group>
+          {module > 0 && (
+            <Button 
+              variant="outline" 
+              color="blue"
+              onClick={() => navigateTo(`/module${module - 1}/course`)}
             >
-              Exercises
+              Previous Module
             </Button>
-          ) : (
-            <>
-              <Button
-                variant="outline-secondary"
-                className="nav-button button-outline"
-                onClick={() => navigateTo(`/module${module}/course`)}
-              >
-                Courses
-              </Button>
-              <EvaluationModal module={module} />
-            </>
-          ))}
-
-        {module < 14 && (
-          <Button
-            variant="outline-success"
-            className="nav-button button-outline"
-            onClick={() => navigateTo(`/module${module + 1}/course`)}
-          >
-            Next Module
+          )}
+          <Button 
+            variant="outline" 
+              color="gray"
+              onClick={() => navigateTo(`/module${module}/${isCourse ? "exercise" : "course"}`)}
+            >
+              {isCourse ? "Exercises" : "Course"}
           </Button>
-        )}
-      </div>
-    </Nav>
+          {!isCourse && <EvaluationModal module={module} />}
+          {module < 14 && (
+            <Button 
+              variant="outline" 
+              color="green"
+              onClick={() => navigateTo(`/module${module + 1}/course`)}
+            >
+              Next Module
+            </Button>
+          )}
+        </Group>
+      </Group>
+    </Box>
   );
 };
 

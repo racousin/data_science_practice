@@ -9,7 +9,7 @@ const NavigationMenu = ({ links, prefix }) => {
     const element = document.getElementById(id);
     if (element) {
       window.scrollTo({
-        top: element.offsetTop - 190,
+        top: element.offsetTop - 170,
         behavior: "smooth",
       });
     }

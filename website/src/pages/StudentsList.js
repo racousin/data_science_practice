@@ -30,7 +30,7 @@ const ProgressBar = ({ progressPercent, errorPercent }) => {
       <Box>
         <Progress.Root size="xl">
           <Progress.Section value={progressPercent} color="green" />
-          <Progress.Section value={errorPercent} color="rgba(255, 99, 71, 0.8)" />
+          <Progress.Section value={errorPercent} color="gray" />
         </Progress.Root>
       </Box>
     </Tooltip>
@@ -128,7 +128,6 @@ const StudentsList = () => {
       <Group justify="space-between" mb="lg">
         <Group>
           <BackButton />
-          <Title order={2}>Student List: {repositoryId}</Title>
         </Group>
         <Button
           leftSection={<IconRefresh size={14} />}
@@ -138,7 +137,7 @@ const StudentsList = () => {
           Refresh Data
         </Button>
       </Group>
-      
+      <Title order={1}>Student List: {repositoryId}</Title>
       {error && <Alert color="red" mb="md">{error}</Alert>}
       
       <TextInput
