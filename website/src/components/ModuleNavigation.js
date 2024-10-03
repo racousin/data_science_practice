@@ -41,6 +41,7 @@ const ModuleNavigation = ({ module, isCourse, title = "" }) => {
         <Title order={2}>{title}</Title>
         <Group>
           {module > 0 && (
+            <>
             <Button 
               variant="outline" 
               color="blue"
@@ -48,7 +49,7 @@ const ModuleNavigation = ({ module, isCourse, title = "" }) => {
             >
               Previous Module
             </Button>
-          )}
+          
           <Button 
             variant="outline" 
               color="gray"
@@ -56,7 +57,10 @@ const ModuleNavigation = ({ module, isCourse, title = "" }) => {
             >
               {isCourse ? "Exercises" : "Course"}
           </Button>
+          
           {!isCourse && <EvaluationModal module={module} />}
+          </>
+        )}
           {module < 14 && (
             <Button 
               variant="outline" 

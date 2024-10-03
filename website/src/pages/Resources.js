@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
-import "styles/Resources.css";
+import React, { useState } from 'react';
+import { Container, Grid, Card, Button, Text, Title, Select, Image, Group, Badge } from '@mantine/core';
 
 const Resources = () => {
   const [selectedTag, setSelectedTag] = useState("All");
@@ -209,57 +208,69 @@ const Resources = () => {
     "Education",
   ];
 
-  const handleSelectTag = (e) => {
-    setSelectedTag(e.target.value);
-  };
-
   const filteredResources =
     selectedTag === "All"
       ? resources
       : resources.filter((resource) => resource.tags.includes(selectedTag));
 
   return (
-    <Container className="resources-container">
-      <h1 className="my-4">Useful Resources</h1>
-      <Form>
-        <Form.Group controlId="tagSelect">
-          <Form.Label>Select a tag to filter resources:</Form.Label>
-          <Form.Control
-            as="select"
-            value={selectedTag}
-            onChange={handleSelectTag}
-          >
-            {tags.map((tag) => (
-              <option key={tag}>{tag}</option>
-            ))}
-          </Form.Control>
-        </Form.Group>
-      </Form>
-      <Row>
+    <Container size="xl" py="xl">
+      <Title order={1} align="center" mb="xl">Useful Resources</Title>
+      
+      <Select
+        label="Select a tag to filter resources:"
+        placeholder="Choose a tag"
+        data={tags}
+        value={selectedTag}
+        onChange={setSelectedTag}
+        mb="xl"
+        searchable
+        clearable
+      />
+
+      <Grid gutter="lg">
         {filteredResources.map((resource) => (
-          <Col key={resource.id} md={4} className="mb-4">
-            <Card className="resources-card">
-              <Card.Img
-                variant="top"
-                src={resource.logo_url || "path/to/generic_logo.png"}
-                className="resources-logo-image"
-              />
-              <Card.Body>
-                <Card.Title className="resources-title">
-                  {resource.title}
-                </Card.Title>
-                <Button
-                  variant="primary"
-                  href={resource.link}
-                  className="resources-button"
-                >
-                  Learn More
-                </Button>
-              </Card.Body>
+          <Grid.Col key={resource.id} span={{ base: 12, sm: 6, lg: 4 }}>
+            <Card shadow="sm" padding="lg" radius="md" withBorder>
+              <Card.Section>
+                <Image
+                  src={resource.logo_url || "/path/to/generic_logo.png"}
+                  height={160}
+                  alt={resource.title}
+                  fit="contain"
+                  p="md"
+                />
+              </Card.Section>
+
+              <Group position="apart" mt="md" mb="xs">
+                <Text weight={500}>{resource.title}</Text>
+              </Group>
+
+              <Group spacing={5} mt="sm">
+                {resource.tags.map((tag) => (
+                  <Badge key={tag} color="blue" variant="light">
+                    {tag}
+                  </Badge>
+                ))}
+              </Group>
+
+              <Button
+                variant="light"
+                color="blue"
+                fullWidth
+                mt="md"
+                radius="md"
+                component="a"
+                href={resource.link}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Learn More
+              </Button>
             </Card>
-          </Col>
+          </Grid.Col>
         ))}
-      </Row>
+      </Grid>
     </Container>
   );
 };
