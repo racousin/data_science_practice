@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Group, Button, Title, Box } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
+import { IconArrowLeft, IconArrowRight, IconNotebook, IconClipboardList } from '@tabler/icons-react';
 import EvaluationModal from "components/EvaluationModal";
 
 const ModuleNavigation = ({ module, isCourse, title = "" }) => {
@@ -47,15 +48,26 @@ const ModuleNavigation = ({ module, isCourse, title = "" }) => {
               color="blue"
               onClick={() => navigateTo(`/module${module - 1}/course`)}
             >
+              <IconArrowLeft size="1rem" style={{ marginRight: '0.5rem' }} />
               Previous Module
             </Button>
           
           <Button 
             variant="outline" 
-              color="gray"
-              onClick={() => navigateTo(`/module${module}/${isCourse ? "exercise" : "course"}`)}
-            >
-              {isCourse ? "Exercises" : "Course"}
+            color="gray"
+            onClick={() => navigateTo(`/module${module}/${isCourse ? "exercise" : "course"}`)}
+          >
+            {isCourse ? (
+              <>
+                <IconClipboardList size="1rem" style={{ marginRight: '0.5rem' }} />
+                Exercises
+              </>
+            ) : (
+              <>
+                <IconNotebook size="1rem" style={{ marginRight: '0.5rem' }} />
+                Course
+              </>
+            )}
           </Button>
           
           {!isCourse && <EvaluationModal module={module} />}
@@ -68,6 +80,7 @@ const ModuleNavigation = ({ module, isCourse, title = "" }) => {
               onClick={() => navigateTo(`/module${module + 1}/course`)}
             >
               Next Module
+              <IconArrowRight size="1rem" style={{ marginLeft: '0.5rem' }} />
             </Button>
           )}
         </Group>

@@ -3,12 +3,12 @@ import { Container, Row, Col } from "react-bootstrap";
 import DataInteractionPanel from "components/DataInteractionPanel";
 import CodeBlock from "components/CodeBlock";
 
-const Exercise1 = () => {
+const Exercise0 = () => {
   const trainDataUrl = process.env.PUBLIC_URL + "/modules/module3/exercise/module3_exercise_train.csv";
   const testDataUrl = process.env.PUBLIC_URL + "/modules/module3/exercise/module3_exercise_test.csv";
-  const notebookUrl = process.env.PUBLIC_URL + "/modules/module3/exercise/module3_exercise1.ipynb";
-  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/module3/exercise/module3_exercise1.html";
-  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/module3/exercise/module3_exercise1.ipynb";
+  const notebookUrl = process.env.PUBLIC_URL + "/modules/module3/exercise/module3_exercise0.ipynb";
+  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/module3/exercise/module3_exercise0.html";
+  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/module3/exercise/module3_exercise0.ipynb";
 
   const metadata = {
     description: "This dataset includes various property metrics crucial for analyzing real estate sales, features, and pricing.",
@@ -37,19 +37,19 @@ const Exercise1 = () => {
 
   return (
     <Container fluid>
-      <h1 className="my-4">Exercise 1: Baseline Model Prediction</h1>
+      <h1 className="my-4">Exercise 0: Exploratory Data Analysis (EDA)</h1>
       <p>
-        In this exercise, you will develop a baseline model and make predictions on the test dataset.
+        In this exercise, you will perform exploratory data analysis (EDA) to understand the underlying patterns and relationships within the data, with a specific emphasis on the visual and graphical representation of these elements.
       </p>
       <Row>
         <Col>
           <h2>Overview</h2>
           <ul>
             <li>Load the dataset and explore its structure and statistics.</li>
-            <li>Prepare the data for modeling based on your EDA findings.</li>
-            <li>Develop a simple baseline model to predict house prices.</li>
-            <li>Evaluate the model's performance using appropriate metrics.</li>
-            <li>Generate predictions for the test dataset.</li>
+            <li>Create visualizations to understand the data distributions and relationships.</li>
+            <li>Identify potential correlations between features and the target variable (SalePrice).</li>
+            <li>Investigate any outliers or anomalies in the data.</li>
+            <li>Summarize your findings and insights from the EDA process.</li>
           </ul>
         </Col>
       </Row>
@@ -57,40 +57,23 @@ const Exercise1 = () => {
         <Col>
           <h2>Expected Output</h2>
           <p>
-            You are expected to submit two files:
+            You are expected to submit a Jupyter Notebook named <code>exercise0.ipynb</code> containing your exploratory data analysis. The notebook should include:
           </p>
-          <ol>
-            <li>A Jupyter Notebook named <code>exercise1.ipynb</code> containing your baseline model development and evaluation.</li>
-            <li>A CSV file named <code>submission.csv</code> with your predictions.</li>
-          </ol>
         </Col>
       </Row>
       <Row>
         <Col>
-          <h2>Submission Requirements</h2>
-          <ol>
-            <li>
-              A CSV file named <code>submission.csv</code> with two columns:
+          <h2>Review PR Validation</h2>
+          The reviewer will assess:
               <ul>
-                <li><code>id</code>: The identifier for each prediction.</li>
-                <li><code>SalePrice</code>: The predicted values.</li>
+                <li>Thoroughness of the analysis</li>
+                <li>Quality and relevance of visualizations</li>
+                <li>Clarity of explanations and insights</li>
+                <li>Identification of important patterns or relationships in the data</li>
+                <li>Proper handling and discussion of data quality issues</li>
               </ul>
-            </li>
-            <CodeBlock
-              code={`id,SalePrice\n1,200000\n2,250000\n3,300000\n...`}
-            />
-            <li>
-              Save both the <code>exercise1.ipynb</code> notebook and the <code>submission.csv</code> file in the <code>module3</code> directory under your username folder.
-            </li>
-          </ol>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <h2>Evaluation</h2>
-          <p>Your baseline model and predictions will be evaluated based on the following criteria:</p>
           <p>
-            The error threshold for this exercise is a Mean Absolute Error (MAE) of 34000. Ensure your predictions are accurate enough to meet this threshold.
+            Remember, the goal of this exercise is to gain a deep understanding of the dataset and to communicate your findings effectively through visual and written means. The review process is designed to help you improve your data analysis and presentation skills.
           </p>
         </Col>
       </Row>
@@ -108,4 +91,4 @@ const Exercise1 = () => {
   );
 };
 
-export default Exercise1;
+export default Exercise0;

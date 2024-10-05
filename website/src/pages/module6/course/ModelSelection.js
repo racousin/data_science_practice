@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Row, Col, Image } from "react-bootstrap";
 import CodeBlock from "components/CodeBlock";
 import { InlineMath, BlockMath } from "react-katex";
-import DataSplitDiagram from "components/module6/DataSplitDiagram";
+// import DataSplitDiagram from "components/module6/DataSplitDiagram";
 
 const ModelSelection = () => {
   return (
@@ -11,7 +11,7 @@ const ModelSelection = () => {
 
       <section>
         <h2>Train-Test Split</h2>
-        <DataSplitDiagram />
+        {/* <DataSplitDiagram /> */}
         <p>
           The train-test split method is fundamental for evaluating machine
           learning model performance. It involves:

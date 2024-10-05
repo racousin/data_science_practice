@@ -1,34 +1,44 @@
-import React, { useState } from "react";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { Button } from "react-bootstrap";
+import React from 'react';
+import { CopyButton, Tooltip, ActionIcon, Box } from '@mantine/core';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { a11yDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { IconCheck, IconCopy } from '@tabler/icons-react';
 
 const CodeBlock = ({ code, language = "bash", showCopy = true }) => {
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = () => {
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   return (
-    <div className={`position-relative ${!showCopy ? "terminal-result" : ""}`}>
+    <Box pos="relative" style={{ marginBottom: '16px' }}  className={!showCopy ? "terminal-result" : ""}>
       {showCopy && (
-        <CopyToClipboard text={code} onCopy={handleCopy}>
-          <Button
-            variant="outline-secondary"
-            size="sm"
-            className="position-absolute top-0 end-0 m-2"
-          >
-            {copied ? "Copied!" : "Copy"}
-          </Button>
-        </CopyToClipboard>
+        <CopyButton value={code} timeout={2000}>
+          {({ copied, copy }) => (
+            <Tooltip label={copied ? 'Copied!' : 'Copy'} position="left" withArrow>
+              <ActionIcon
+                onClick={copy}
+                variant="subtle"
+                color={copied ? 'teal' : 'gray'}
+                style={{
+                  position: 'absolute',
+                  top: '8px',
+                  right: '8px',
+                  zIndex: 1,
+                }}
+              >
+                {copied ? <IconCheck size="1rem" /> : <IconCopy size="1rem" />}
+              </ActionIcon>
+            </Tooltip>
+          )}
+        </CopyButton>
       )}
-      <SyntaxHighlighter language={language} style={a11yDark}>
+      <SyntaxHighlighter 
+        language={language} 
+        style={a11yDark}
+        customStyle={{
+          margin: 0,
+          borderRadius: '4px',
+        }}
+      >
         {code}
       </SyntaxHighlighter>
-    </div>
+    </Box>
   );
 };
 
