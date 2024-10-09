@@ -4,7 +4,7 @@ import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
 import { useLocation } from "react-router-dom";
 
-const CourseDataCleaningAndPreparation = () => {
+const CourseDataPreprocessing = () => {
   const courseLinks = [
     {
       to: "/correct-inconsistencies",
@@ -172,12 +172,7 @@ const CourseDataCleaningAndPreparation = () => {
         },
         { id: "notebook-example", label: "Notebook Example" },
       ],
-    },
-    {
-      to: "/CaseStudy5",
-      label: "CaseStudy",
-      component: lazy(() => import("pages/module5/course/CaseStudy")),
-    },
+    }
   ];
 
   const location = useLocation();
@@ -186,7 +181,7 @@ const CourseDataCleaningAndPreparation = () => {
     <ModuleFrame
       module={5}
       isCourse={true}
-      title="Module 5: Data Cleaning and Preparation"
+      title="Module 5: Data Preprocessing"
       courseLinks={courseLinks}
     >
       <Row>
@@ -210,4 +205,4 @@ const CourseDataCleaningAndPreparation = () => {
   );
 };
 
-export default CourseDataCleaningAndPreparation;
+export default CourseDataPreprocessing;

@@ -18,8 +18,8 @@ import CourseDataScienceLandscape from "pages/module3/CourseDataScienceLandscape
 import ExerciseMLPipelineAndExploratoryDataAnalysis from "pages/module3/ExerciseDataScienceLandscape";
 import CourseDataCollection from "pages/module4/CourseDataCollection";
 import ExerciseDataCollection from "pages/module4/ExerciseDataCollection";
-import CourseDataCleaningAndPreparation from "pages/module5/CourseDataCleaningAndPreparation";
-import ExerciseDataCleaningAndPreparation from "pages/module5/ExerciseDataCleaningAndPreparation";
+import CourseDataPreprocessing from "pages/module5/CourseDataPreprocessing";
+import ExerciseDataPreprocessing from "pages/module5/ExerciseDataPreprocessing";
 import CourseTabularModels from "pages/module6/CourseTabularModels";
 import ExerciseTabularModels from "pages/module6/ExerciseTabularModels";
 import CourseDeepLearningFundamentals from "pages/module7/CourseDeepLearningFundamentals";
@@ -169,11 +169,11 @@ function App() {
           />
           <Route
             path="module5/course/*"
-            element={<CourseDataCleaningAndPreparation />}
+            element={<CourseDataPreprocessing />}
           />
           <Route
             path="module5/exercise/*"
-            element={<ExerciseDataCleaningAndPreparation />}
+            element={<ExerciseDataPreprocessing />}
           />
           <Route path="module6/course/*" element={<CourseTabularModels />} />
           <Route

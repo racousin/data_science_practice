@@ -33,7 +33,7 @@ const modules = [
   },
   {
     id: 5,
-    title: "Module 5: Data Cleaning and Preparation",
+    title: "Module 5: Data Preprocessing",
     linkCourse: "/module5/course",
     linkExercise: "/module5/exercise",
     tags: ["Analysis"],

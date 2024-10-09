@@ -4,7 +4,7 @@ import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
 import { useLocation } from "react-router-dom";
 
-const ExerciseDataCleaningAndPreparation = () => {
+const ExerciseDataPreprocessing = () => {
   const exerciseLinks = [
     // {
     //   to: "/exercise1",
@@ -20,14 +20,14 @@ const ExerciseDataCleaningAndPreparation = () => {
     <ModuleFrame
       module={5}
       isCourse={false}
-      title="Module 5: Exercise Data Cleaning and Preparation"
+      title="Module 5: Exercise Data Preprocessing"
       courseLinks={exerciseLinks}
     >
       {location.pathname === `/module${module}/exercise` && (
         <>
           <Row>
             <p>
-              In this module, you will practice Data Cleaning and Preparation
+              In this module, you will practice Data Preprocessing
               techniques to improve the performance of machine learning models.
             </p>
           </Row>
@@ -47,4 +47,4 @@ const ExerciseDataCleaningAndPreparation = () => {
   );
 };
 
-export default ExerciseDataCleaningAndPreparation;
+export default ExerciseDataPreprocessing;
