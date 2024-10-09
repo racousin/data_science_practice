@@ -12,7 +12,7 @@ const Exercise1 = () => {
   const notebookColabUrl = process.env.PUBLIC_URL + "/modules/module4/exercise/module4_exercise1.ipynb";
 
   const metadata = {
-    description: "This dataset contains sales information from multiple stores to predict sales for Neighborhood Market.",
+    description: "This dataset contains sales information from multiple stores to predict sales for Neighborhood_Market.",
     source: "Multiple store sales records",
     target: "quantity_sold",
     listData: [
@@ -41,7 +41,7 @@ const Exercise1 = () => {
         <Section title="Objective">
           <Text>
             In this exercise, you will develop a baseline model to predict the <Code>quantity sold </Code> for 
-            <Text span fw={700}> Neighborhood Market</Text> based on sales data from multiple stores.
+            <Text span fw={700}> Neighborhood_Market</Text> based on sales data from multiple stores.
           </Text>
         </Section>
 
@@ -51,16 +51,16 @@ const Exercise1 = () => {
             icon={<IconDatabase size={16} />}
             mb="md"
           >
-            <List.Item>5 stores (CityMart, Greenfield Grocers, SuperSaver Outlet, HighStreet Bazaar, Neighborhood Market) each provide their data files in different formats (CSV, XLSX, JSON).</List.Item>
+            <List.Item>5 stores (CityMart, Greenfield_Grocers, SuperSaver_Outlet, HighStreet_Bazaar, Neighborhood_Market) each provide their data files in different formats (CSV, XLSX, JSON).</List.Item>
             <List.Item>
             <Code>Unit cost</Code> information is centralized for all stores and accessible through an API. 
-              <Anchor href="https://www.example.com/api-doc" target="_blank" ml={5} fw={500}>
+              <Anchor href="https://www.raphaelcousin.com/module4/api-doc" target="_blank" ml={5} fw={500}>
                 See API documentation
               </Anchor>
             </List.Item>
             <List.Item>
             <Code>Customer score</Code> and <Code>total reviews</Code> are displayed on a 
-              <Anchor href="https://www.example.com/reviews" target="_blank" ml={5} fw={500}>
+              <Anchor href="https://www.raphaelcousin.com/module4/scrapable-data" target="_blank" ml={5} fw={500}>
                 web page
               </Anchor> 
               and need to be scraped.
@@ -74,7 +74,7 @@ const Exercise1 = () => {
             <List.Item>Perform exploratory data analysis (EDA) on the combined dataset.</List.Item>
             <List.Item>Prepare the data for modeling based on your EDA findings.</List.Item>
             <List.Item>Develop and evaluate a baseline model.</List.Item>
-            <List.Item>Generate predictions for the test dataset Neighborhood Market.</List.Item>
+            <List.Item>Generate predictions for the test dataset Neighborhood_Market.</List.Item>
           </List>
         </Section>
 

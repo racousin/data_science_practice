@@ -7528,7 +7528,7 @@ a.anchor-link {
 <span class="n">n_samples</span> <span class="o">=</span> <span class="mi">2000</span>
 
 <span class="c1"># Generate features</span>
-<span class="n">stores</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'CityMart'</span><span class="p">,</span> <span class="s1">'Greenfield Grocers'</span><span class="p">,</span> <span class="s1">'SuperSaver Outlet'</span><span class="p">,</span> <span class="s1">'HighStreet Bazaar'</span><span class="p">,</span> <span class="s1">'Neighborhood Market'</span><span class="p">]</span>
+<span class="n">stores</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'CityMart'</span><span class="p">,</span> <span class="s1">'Greenfield_Grocers'</span><span class="p">,</span> <span class="s1">'SuperSaver_Outlet'</span><span class="p">,</span> <span class="s1">'HighStreet_Bazaar'</span><span class="p">,</span> <span class="s1">'Neighborhood_Market'</span><span class="p">]</span>
 
 <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">'item_code'</span><span class="p">:</span> <span class="p">[</span><span class="sa">f</span><span class="s1">'P</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s1">04d</span><span class="si">}</span><span class="s1">'</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_samples</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)],</span>
@@ -7572,10 +7572,10 @@ a.anchor-link {
 <span class="c1"># Store-specific effects for A-D</span>
 <span class="n">store_sales_effects</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">'CityMart'</span><span class="p">:</span> <span class="mf">1.2</span><span class="p">,</span>
-    <span class="s1">'Greenfield Grocers'</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>
-    <span class="s1">'SuperSaver Outlet'</span><span class="p">:</span> <span class="mf">1.1</span><span class="p">,</span>
-    <span class="s1">'HighStreet Bazaar'</span><span class="p">:</span> <span class="mf">1.4</span><span class="p">,</span>
-    <span class="s1">'Neighborhood Market'</span><span class="p">:</span> <span class="mi">1</span>  <span class="c1"># Placeholder effect for Store E (will be replaced with regression prediction)</span>
+    <span class="s1">'Greenfield_Grocers'</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>
+    <span class="s1">'SuperSaver_Outlet'</span><span class="p">:</span> <span class="mf">1.1</span><span class="p">,</span>
+    <span class="s1">'HighStreet_Bazaar'</span><span class="p">:</span> <span class="mf">1.4</span><span class="p">,</span>
+    <span class="s1">'Neighborhood_Market'</span><span class="p">:</span> <span class="mi">1</span>  <span class="c1"># Placeholder effect for Store E (will be replaced with regression prediction)</span>
 <span class="p">}</span>
 
 <span class="c1"># Apply the sales function for Stores A-D</span>
@@ -7586,8 +7586,8 @@ a.anchor-link {
 <span class="n">df</span><span class="p">[</span><span class="s1">'last_modified'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">start_date</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)]</span>
 
 <span class="c1"># Split data for Stores A-D and Store E</span>
-<span class="n">df_ad</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'store_name'</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">'CityMart'</span><span class="p">,</span> <span class="s1">'Greenfield Grocers'</span><span class="p">,</span> <span class="s1">'SuperSaver Outlet'</span><span class="p">,</span> <span class="s1">'HighStreet Bazaar'</span><span class="p">])]</span>
-<span class="n">df_e</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'store_name'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'Neighborhood Market'</span><span class="p">]</span>
+<span class="n">df_ad</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'store_name'</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">'CityMart'</span><span class="p">,</span> <span class="s1">'Greenfield_Grocers'</span><span class="p">,</span> <span class="s1">'SuperSaver_Outlet'</span><span class="p">,</span> <span class="s1">'HighStreet_Bazaar'</span><span class="p">])]</span>
+<span class="n">df_e</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'store_name'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'Neighborhood_Market'</span><span class="p">]</span>
 
 <span class="c1"># Features to use in regression (excluding 'product_id' and 'last_updated')</span>
 <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'mass'</span><span class="p">,</span> <span class="s1">'dimension_length'</span><span class="p">,</span> <span class="s1">'dimension_width'</span><span class="p">,</span> <span class="s1">'dimension_height'</span><span class="p">,</span> <span class="s1">'package_volume'</span><span class="p">,</span> <span class="s1">'customer_score'</span><span class="p">,</span> <span class="s1">'total_reviews'</span><span class="p">,</span> <span class="s1">'days_since_last_purchase'</span><span class="p">,</span> <span class="s1">'unit_cost'</span><span class="p">]</span>
@@ -7601,7 +7601,7 @@ a.anchor-link {
 
 <span class="c1"># Predict 'number_sold' for Store E using the trained model</span>
 <span class="n">X_test</span> <span class="o">=</span> <span class="n">df_e</span><span class="p">[</span><span class="n">features</span><span class="p">]</span>
-<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'store_name'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'Neighborhood Market'</span><span class="p">,</span> <span class="s1">'quantity_sold'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'store_name'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'Neighborhood_Market'</span><span class="p">,</span> <span class="s1">'quantity_sold'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 
 <span class="c1"># Display the first few rows and data info</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
@@ -7622,11 +7622,11 @@ a.anchor-link {
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>  item_code           store_name  mass  dimension_length  dimension_width  \
-0     P0001    HighStreet Bazaar  6.11             75.46            91.62   
-1     P0002  Neighborhood Market  5.51             51.79            46.72   
-2     P0003    SuperSaver Outlet  2.40             50.90             8.80   
-3     P0004  Neighborhood Market  3.97             84.63            39.42   
-4     P0005  Neighborhood Market  5.99             39.33            83.51   
+0     P0001    HighStreet_Bazaar  6.11             75.46            91.62   
+1     P0002  Neighborhood_Market  5.51             51.79            46.72   
+2     P0003    SuperSaver_Outlet  2.40             50.90             8.80   
+3     P0004  Neighborhood_Market  3.97             84.63            39.42   
+4     P0005  Neighborhood_Market  5.99             39.33            83.51   
 
    dimension_height  customer_score  total_reviews  days_since_last_purchase  \
 0             92.08               2            972                        78   
@@ -7789,11 +7789,11 @@ Correlation matrix:
 <div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">dfe</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'store_name'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'Neighborhood Market'</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">dfe</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'store_name'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'Neighborhood_Market'</span><span class="p">]</span>
 
-<span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'CityMart'</span><span class="p">,</span> <span class="s1">'Greenfield Grocers'</span><span class="p">,</span> <span class="s1">'SuperSaver Outlet'</span><span class="p">,</span> <span class="s1">'HighStreet Bazaar'</span><span class="p">]:</span>
+<span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'CityMart'</span><span class="p">,</span> <span class="s1">'Greenfield_Grocers'</span><span class="p">,</span> <span class="s1">'SuperSaver_Outlet'</span><span class="p">,</span> <span class="s1">'HighStreet_Bazaar'</span><span class="p">]:</span>
     <span class="nb">print</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">st2</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'CityMart'</span><span class="p">,</span> <span class="s1">'Greenfield Grocers'</span><span class="p">,</span> <span class="s1">'SuperSaver Outlet'</span><span class="p">,</span> <span class="s1">'HighStreet Bazaar'</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">st2</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'CityMart'</span><span class="p">,</span> <span class="s1">'Greenfield_Grocers'</span><span class="p">,</span> <span class="s1">'SuperSaver_Outlet'</span><span class="p">,</span> <span class="s1">'HighStreet_Bazaar'</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">st</span> <span class="o">==</span> <span class="n">st2</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="n">df1</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'store_name'</span><span class="p">]</span> <span class="o">==</span> <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">st</span><span class="si">}</span><span class="s1">'</span><span class="p">]</span>
@@ -7806,7 +7806,7 @@ Correlation matrix:
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"test on E: </span><span class="si">{</span><span class="n">mean_absolute_error</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span><span class="w"> </span><span class="n">dfe</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 
-<span class="n">train</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'store_name'</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">'Neighborhood Market'</span><span class="p">]</span>
+<span class="n">train</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'store_name'</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">'Neighborhood_Market'</span><span class="p">]</span>
 <span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">train</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">2</span><span class="p">])</span>
 
 <span class="nb">print</span><span class="p">()</span>
@@ -7829,32 +7829,32 @@ Correlation matrix:
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>
-train on CityMart x Greenfield Grocers: 43.37774102702816
+train on CityMart x Greenfield_Grocers: 43.37774102702816
 test on E: 28.929363440664208
-train on CityMart x SuperSaver Outlet: 16.256685361171314
+train on CityMart x SuperSaver_Outlet: 16.256685361171314
 test on E: 5.317018701104124
-train on CityMart x HighStreet Bazaar: 21.109282213058073
+train on CityMart x HighStreet_Bazaar: 21.109282213058073
 test on E: 30.34005107642623
 
-train on Greenfield Grocers x CityMart: 43.37774102702815
+train on Greenfield_Grocers x CityMart: 43.37774102702815
 test on E: 28.929363440664197
-train on Greenfield Grocers x SuperSaver Outlet: 35.74106748745561
+train on Greenfield_Grocers x SuperSaver_Outlet: 35.74106748745561
 test on E: 39.18564077730082
-train on Greenfield Grocers x HighStreet Bazaar: 61.27348116763629
+train on Greenfield_Grocers x HighStreet_Bazaar: 61.27348116763629
 test on E: 12.503666592216769
 
-train on SuperSaver Outlet x CityMart: 16.25668536117131
+train on SuperSaver_Outlet x CityMart: 16.25668536117131
 test on E: 5.317018701104132
-train on SuperSaver Outlet x Greenfield Grocers: 35.74106748745561
+train on SuperSaver_Outlet x Greenfield_Grocers: 35.74106748745561
 test on E: 39.18564077730074
-train on SuperSaver Outlet x HighStreet Bazaar: 27.697781221493834
+train on SuperSaver_Outlet x HighStreet_Bazaar: 27.697781221493834
 test on E: 23.3655342164145
 
-train on HighStreet Bazaar x CityMart: 21.10928221305805
+train on HighStreet_Bazaar x CityMart: 21.10928221305805
 test on E: 30.340051076426175
-train on HighStreet Bazaar x Greenfield Grocers: 61.27348116763629
+train on HighStreet_Bazaar x Greenfield_Grocers: 61.27348116763629
 test on E: 12.503666592216563
-train on HighStreet Bazaar x SuperSaver Outlet: 27.697781221493806
+train on HighStreet_Bazaar x SuperSaver_Outlet: 27.697781221493806
 test on E: 23.36553421641442
 
 train all store_name: 39.85100756923331
@@ -8041,7 +8041,7 @@ final test on E: 3.493040250441976
 <tr>
 <th>0</th>
 <td>P0001</td>
-<td>HighStreet Bazaar</td>
+<td>HighStreet_Bazaar</td>
 <td>6.11</td>
 <td>75.46</td>
 <td>91.62</td>
@@ -8055,7 +8055,7 @@ final test on E: 3.493040250441976
 <tr>
 <th>1</th>
 <td>P0002</td>
-<td>Neighborhood Market</td>
+<td>Neighborhood_Market</td>
 <td>5.51</td>
 <td>51.79</td>
 <td>46.72</td>
@@ -8069,7 +8069,7 @@ final test on E: 3.493040250441976
 <tr>
 <th>2</th>
 <td>P0003</td>
-<td>SuperSaver Outlet</td>
+<td>SuperSaver_Outlet</td>
 <td>2.40</td>
 <td>50.90</td>
 <td>8.80</td>
@@ -8083,7 +8083,7 @@ final test on E: 3.493040250441976
 <tr>
 <th>3</th>
 <td>P0004</td>
-<td>Neighborhood Market</td>
+<td>Neighborhood_Market</td>
 <td>3.97</td>
 <td>84.63</td>
 <td>39.42</td>
@@ -8097,7 +8097,7 @@ final test on E: 3.493040250441976
 <tr>
 <th>4</th>
 <td>P0005</td>
-<td>Neighborhood Market</td>
+<td>Neighborhood_Market</td>
 <td>5.99</td>
 <td>39.33</td>
 <td>83.51</td>
@@ -8139,7 +8139,7 @@ final test on E: 3.493040250441976
 <tr>
 <th>1996</th>
 <td>P1997</td>
-<td>Neighborhood Market</td>
+<td>Neighborhood_Market</td>
 <td>8.91</td>
 <td>66.50</td>
 <td>5.79</td>
@@ -8167,7 +8167,7 @@ final test on E: 3.493040250441976
 <tr>
 <th>1998</th>
 <td>P1999</td>
-<td>Neighborhood Market</td>
+<td>Neighborhood_Market</td>
 <td>2.03</td>
 <td>66.77</td>
 <td>60.18</td>
@@ -8181,7 +8181,7 @@ final test on E: 3.493040250441976
 <tr>
 <th>1999</th>
 <td>P2000</td>
-<td>SuperSaver Outlet</td>
+<td>SuperSaver_Outlet</td>
 <td>4.94</td>
 <td>98.34</td>
 <td>72.87</td>
@@ -8209,7 +8209,7 @@ final test on E: 3.493040250441976
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Split the data by store</span>
-<span class="n">stores</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'CityMart'</span><span class="p">,</span> <span class="s1">'Greenfield Grocers'</span><span class="p">,</span> <span class="s1">'SuperSaver Outlet'</span><span class="p">,</span> <span class="s1">'HighStreet Bazaar'</span><span class="p">,</span> <span class="s1">'Neighborhood Market'</span><span class="p">]</span>
+<span class="n">stores</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'CityMart'</span><span class="p">,</span> <span class="s1">'Greenfield_Grocers'</span><span class="p">,</span> <span class="s1">'SuperSaver_Outlet'</span><span class="p">,</span> <span class="s1">'HighStreet_Bazaar'</span><span class="p">,</span> <span class="s1">'Neighborhood_Market'</span><span class="p">]</span>
 <span class="n">store_dfs</span> <span class="o">=</span> <span class="p">{</span><span class="n">store</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'store_name'</span><span class="p">]</span> <span class="o">==</span> <span class="n">store</span><span class="p">]</span> <span class="k">for</span> <span class="n">store</span> <span class="ow">in</span> <span class="n">stores</span><span class="p">}</span>
 </pre></div>
 </div>
@@ -8268,7 +8268,7 @@ final test on E: 3.493040250441976
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 'StoreB'</span>
-<span class="n">store</span> <span class="o">=</span> <span class="s1">'Greenfield Grocers'</span>
+<span class="n">store</span> <span class="o">=</span> <span class="s1">'Greenfield_Grocers'</span>
 
 <span class="n">store_dfs</span><span class="p">[</span><span class="n">store</span><span class="p">]</span> <span class="o">=</span> <span class="n">add_null</span><span class="p">(</span><span class="n">store_dfs</span><span class="p">[</span><span class="n">store</span><span class="p">])</span>
 <span class="n">store_dfs</span><span class="p">[</span><span class="n">store</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">store_dfs</span><span class="p">[</span><span class="n">store</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
@@ -8318,7 +8318,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 'StoreC'</span>
-<span class="n">store</span> <span class="o">=</span> <span class="s1">'SuperSaver Outlet'</span>
+<span class="n">store</span> <span class="o">=</span> <span class="s1">'SuperSaver_Outlet'</span>
 
 <span class="n">store_dfs</span><span class="p">[</span><span class="n">store</span><span class="p">]</span> <span class="o">=</span> <span class="n">add_null</span><span class="p">(</span><span class="n">store_dfs</span><span class="p">[</span><span class="n">store</span><span class="p">])</span>
 
@@ -8364,7 +8364,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>SuperSaver Outlet_data.xlsx has been created with two sheets.
+<pre>SuperSaver_Outlet_data.xlsx has been created with two sheets.
 </pre>
 </div>
 </div>
@@ -8379,7 +8379,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 'StoreD'</span>
-<span class="n">store</span> <span class="o">=</span> <span class="s1">'HighStreet Bazaar'</span>
+<span class="n">store</span> <span class="o">=</span> <span class="s1">'HighStreet_Bazaar'</span>
 
 <span class="n">store_dfs</span><span class="p">[</span><span class="n">store</span><span class="p">]</span> <span class="o">=</span> <span class="n">add_null</span><span class="p">(</span><span class="n">store_dfs</span><span class="p">[</span><span class="n">store</span><span class="p">])</span>
 
@@ -8398,7 +8398,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 'StoreE'</span>
-<span class="n">store</span> <span class="o">=</span> <span class="s1">'Neighborhood Market'</span>
+<span class="n">store</span> <span class="o">=</span> <span class="s1">'Neighborhood_Market'</span>
 
 <span class="n">y</span> <span class="o">=</span> <span class="n">store_dfs</span><span class="p">[</span><span class="n">store</span><span class="p">][[</span><span class="s1">'item_code'</span><span class="p">,</span> <span class="s1">'quantity_sold'</span><span class="p">]]</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">store_dfs</span><span class="p">[</span><span class="n">store</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">'quantity_sold'</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
