@@ -73,7 +73,10 @@ if __name__ == "__main__":
     error_threshold = float(sys.argv[3])
     metric = sys.argv[4]
     target_col = sys.argv[5]
+    
+    # Default the id_col to 'id' if not provided
+    id_col = sys.argv[6] if len(sys.argv) > 6 else 'id'
 
     compare_predictions(
-        true_values_path, predictions_path, error_threshold, metric, target_col
+        true_values_path, predictions_path, error_threshold, metric, target_col, id_col
     )
