@@ -96,29 +96,37 @@ const DataQuality = () => {
 
       <Title order={2} mt="xl">Example: Data Cleaning with Pandas</Title>
       
-      <CodeBlock language="python" mt="md">
+      <CodeBlock
+        language="python"
+        code=
 {`import pandas as pd
-import numpy as np
 
 # Load data
 df = pd.read_csv('data.csv')
 
-# Handle missing values
-df['column_name'].fillna(df['column_name'].mean(), inplace=True)
+# Rename columns
+df.rename(columns={'old_column_name': 'new_column_name'}, inplace=True)
+
+# Drop corrupt columns (example: column with irrelevant or corrupt data)
+df.drop(columns=['corrupt_column'], inplace=True)
+
+# Set an index and reset it
+df.set_index('new_column_name', inplace=True)
+df.reset_index(drop=False, inplace=True)
 
 # Remove duplicates
 df.drop_duplicates(inplace=True)
 
-# Handle outliers (example using Z-score)
-z_scores = np.abs((df['column_name'] - df['column_name'].mean()) / df['column_name'].std())
-df = df[z_scores < 3]
+# Drop corrupt lines (example: drop rows with NaN in critical columns)
+df.dropna(subset=['important_column'], inplace=True)
 
-# Standardize data formats
-df['date_column'] = pd.to_datetime(df['date_column'])
+# Convert text to uppercase and remove redundant spaces
+df['text_column'] = df['text_column'].str.upper().str.strip()
 
-print(df.info())
+print(df.head())
+
 `}
-      </CodeBlock>
+      />
 
       <Title order={2} mt="xl">Data Governance</Title>
       

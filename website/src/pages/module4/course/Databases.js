@@ -184,7 +184,7 @@ r.close()`
   ];
 
   return (
-    <Container>
+    <Container fluid>
       <Title order={1}>Databases</Title>
       <Text mt="md">
         Databases are essential components in data science workflows, providing structured storage and efficient retrieval of large amounts of data. In this section, we'll explore the two main categories of databases: SQL (relational) and NoSQL (non-relational) databases.

@@ -77,14 +77,16 @@ const ManipulatingSources = () => {
               <List.Item>Use a combination of existing columns to create a unique key</List.Item>
               <List.Item>Generate a new unique identifier using pandas' built-in functions</List.Item>
             </List>
-            <CodeBlock language="python" mt="md">
+            <CodeBlock
+        language="python"
+        code=
 {`# Creating a unique ID from multiple columns
 df['unique_id'] = df['column1'] + '_' + df['column2'] + '_' + df['column3'].astype(str)
 
 # Generate a new unique identifier
 df['new_id'] = pd.Series(range(len(df)))
 `}
-            </CodeBlock>
+            />
           </Accordion.Panel>
         </Accordion.Item>
 
@@ -98,14 +100,16 @@ df['new_id'] = pd.Series(range(len(df)))
               <List.Item>Use pandas merge with different join types (left, right, inner, outer)</List.Item>
               <List.Item>Handle duplicate IDs by aggregating or choosing a preferred source</List.Item>
             </List>
-            <CodeBlock language="python" mt="md">
+            <CodeBlock
+        language="python"
+        code=
 {`# Merging with handling of duplicate IDs
 merged_df = pd.merge(df1, df2, on='id', how='left', suffixes=('_primary', '_secondary'))
 
 # Prioritize data from df1 in case of conflicts
 merged_df['value'] = merged_df['value_primary'].fillna(merged_df['value_secondary'])
 `}
-            </CodeBlock>
+            />
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion>
@@ -117,7 +121,9 @@ merged_df['value'] = merged_df['value_primary'].fillna(merged_df['value_secondar
         <Text mt="sm">
           Let's combine sales data from a CSV file with customer information from a SQL database.
         </Text>
-        <CodeBlock language="python" mt="md">
+        <CodeBlock
+        language="python"
+        code=
 {`import pandas as pd
 import sqlite3
 
@@ -133,7 +139,7 @@ merged_df = pd.merge(sales_df, customer_df, on='customer_id', how='left')
 
 print(merged_df.head())
 `}
-        </CodeBlock>
+        />
       </Paper>
 
       <Paper withBorder p="md" mt="xl">
@@ -141,7 +147,9 @@ print(merged_df.head())
         <Text mt="sm">
           Here's an example of how to combine real-time data from an API with historical records stored in a CSV file.
         </Text>
-        <CodeBlock language="python" mt="md">
+        <CodeBlock
+        language="python"
+        code=
 {`import pandas as pd
 import requests
 
@@ -164,7 +172,7 @@ combined_df.drop_duplicates(subset='timestamp', keep='last', inplace=True)
 
 print(combined_df.tail())
 `}
-        </CodeBlock>
+        />
       </Paper>
 
     </div>

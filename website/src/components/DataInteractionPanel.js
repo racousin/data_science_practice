@@ -40,8 +40,8 @@ const DataInteractionPanel = ({
   );
 
   return (
-    <Container size="xl" mt="xl">
-      <Box mb="xl">
+    <Container fluid mt="xl">
+      <Box w="100%" mb="xl">
         <Title order={2} size="h3" weight={600} color="#2F80ED" mb="md">Download Data</Title>
         <Group position="left" spacing="md">
           {trainDataUrl && (

@@ -203,7 +203,7 @@ for headline in news_headlines:
   ];
 
   return (
-    <Container>
+    <Container fluid>
       <Title order={1}>Web Scraping</Title>
       <Text mt="md">
         Web scraping is a powerful technique for collecting data from websites, especially when the data is not available through APIs or other structured formats. It's an essential skill for data scientists, enabling them to gather diverse datasets for analysis and model training.

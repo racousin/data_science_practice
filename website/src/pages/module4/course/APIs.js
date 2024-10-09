@@ -224,7 +224,7 @@ except Exception as e:
   ];
 
   return (
-    <Container>
+    <Container fluid>
       <Title order={1}>APIs (Application Programming Interfaces)</Title>
       <Text mt="md">
         APIs play a crucial role in data science by providing standardized ways to access and manipulate data from various sources. Understanding how to work with APIs is essential for efficient data collection and integration in data science workflows.

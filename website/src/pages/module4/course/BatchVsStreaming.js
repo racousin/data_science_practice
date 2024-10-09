@@ -56,8 +56,9 @@ const BatchVsStreaming = () => {
       <Text mt="md">
         In streaming architectures, message queues play a crucial role in managing data flow. Tools like Apache Kafka or RabbitMQ are commonly used to store and deliver messages between services.
       </Text>
-
-      <CodeBlock language="python" mt="md">
+      <CodeBlock
+        language="python"
+        code=
 {`# Example: Using Kafka consumer in Python
 from kafka import KafkaConsumer
 
@@ -70,7 +71,7 @@ consumer = KafkaConsumer('my_topic',
 for message in consumer:
     print(f"Received: {message.value.decode('utf-8')}")
 `}
-      </CodeBlock>
+      />
 
       <Title order={2} mt="xl">Choosing Between Batch and Streaming</Title>
       <Paper withBorder p="md" mt="md">

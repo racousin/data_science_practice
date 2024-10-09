@@ -251,7 +251,7 @@ print(f"Data type: {img_array.dtype}")`
   ];
 
   return (
-    <Container>
+    <Container fluid>
       <Title order={1}>Files</Title>
       
       <Title id="metadata" order={2} mt="xl">File Metadata</Title>
