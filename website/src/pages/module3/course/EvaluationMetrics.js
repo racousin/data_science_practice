@@ -125,6 +125,7 @@ f1 = f1_score(y_true, y_pred)
         ROC AUC represents the model's ability to distinguish between classes.
         It's scale-invariant and classification-threshold-invariant.
       </p>
+      {/* TODO explain the value of ROC auc */}
       <CodeBlock
         language="python"
         code={`

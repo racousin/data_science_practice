@@ -14,7 +14,7 @@ const ModelTrainingPrediction = () => {
       <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
     </marker>
   </defs>
-  
+
 
   <rect x="10" y="10" width="180" height="80" rx="5" fill="#e6f3ff" stroke="#333" stroke-width="2"/>
   <text x="100" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="14">Historical Data</text>
@@ -85,6 +85,7 @@ const ModelTrainingPrediction = () => {
                 <InlineMath math="\hat{f}: \mathbb{R}^p \rightarrow \mathbb{R}" />:
                 Our model's approximation of f
               </li>
+              {/* TODO consider supervided regression, classification */}
             </ul>
             <p>
               The goal is to find <InlineMath math="\hat{f}" /> that minimizes some

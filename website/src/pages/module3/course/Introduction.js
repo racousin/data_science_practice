@@ -304,80 +304,116 @@ const Introduction = () => {
         </Col>
       </Row>
       <Row>
-        <Col md={12}>
-          <h3 id="tools">The Data Science Tools</h3>
-          <p>
-            Data science relies heavily on a suite of powerful tools that help
-            professionals manage data, perform analyses, build models, and
-            visualize results.
-          </p>
-          <h4>Programming Languages</h4>
-          <ul>
-            <li>
-              <strong>Python:</strong> Dominant in data science for its
-              simplicity and readability, Python boasts a rich ecosystem of
-              libraries like NumPy, Pandas, Scikit-learn, and TensorFlow.
-            </li>
-            <li>
-              <strong>R:</strong> Preferred for statistical analysis and
-              graphics, R is widely used in academia and industries that require
-              rigorous statistical analysis.
-            </li>
-          </ul>
-          <h4>Data Management and Big Data</h4>
-          <ul>
-            <li>
-              <strong>SQL:</strong> Essential for querying and managing database
-              systems. Tools like MySQL, PostgreSQL, and Microsoft SQL Server
-              are commonly used.
-            </li>
-            <li>
-              <strong>Hadoop:</strong> A framework that allows for the
-              distributed processing of large data sets across clusters of
-              computers using simple programming models.
-            </li>
-            <li>
-              <strong>Apache Spark:</strong> Known for its speed and ease of
-              use, Spark extends the Hadoop model to also support data streaming
-              and complex iterative algorithms.
-            </li>
-          </ul>
-          <h4>Machine Learning Library</h4>
-          <ul>
-            <li>
-              <strong>scikit-learn.:</strong> An open-source framework Simple
-              and efficient tools for predictive data analysis
-            </li>
-            <li>
-              <strong>TensorFlow:</strong> An open-source framework developed by
-              Google for deep learning projects.
-            </li>
-            <li>
-              <strong>PyTorch:</strong> Known for its flexibility and ease of
-              use in the research community, particularly in academia.
-            </li>
-          </ul>
-          <h4>Data Visualization Tools</h4>
-          <ul>
-            <li>
-              <strong>Tableau:</strong> Widely recognized for making complex
-              data visualizations user-friendly and accessible to business
-              professionals.
-            </li>
-            <li>
-              <strong>PowerBI:</strong> Microsoft’s analytics service provides
-              interactive visualizations and business intelligence capabilities
-              with an interface simple enough for end users to create their own
-              reports and dashboards.
-            </li>
-            <li>
-              <strong>Matplotlib and Seaborn:</strong> Popular Python libraries
-              that offer a wide range of static, animated, and interactive
-              visualizations.
-            </li>
-          </ul>
-        </Col>
-      </Row>
+  <Col md={12}>
+    <h3 id="tools">The Data Science Tools</h3>
+    <p>
+      Data science relies heavily on a suite of powerful tools that help
+      professionals manage data, perform analyses, build models, and
+      visualize results.
+    </p>
+    <h4>Programming Languages</h4>
+    <ul>
+      <li>
+        <strong>Python:</strong> Dominant in data science for its
+        simplicity and readability, Python boasts a rich ecosystem of
+        libraries like NumPy, Pandas, Scikit-learn, and TensorFlow.
+      </li>
+      <li>
+        <strong>R:</strong> Preferred for statistical analysis and
+        graphics, R is widely used in academia and industries that require
+        rigorous statistical analysis.
+      </li>
+    </ul>
+    <h4>Data Management and Big Data</h4>
+    <ul>
+      <li>
+        <strong>SQL:</strong> Essential for querying and managing database
+        systems. Tools like MySQL, PostgreSQL, and Microsoft SQL Server
+        are commonly used.
+      </li>
+      <li>
+        <strong>Hadoop:</strong> A framework that allows for the
+        distributed processing of large data sets across clusters of
+        computers using simple programming models.
+      </li>
+      <li>
+        <strong>Apache Spark:</strong> Known for its speed and ease of
+        use, Spark extends the Hadoop model to also support data streaming
+        and complex iterative algorithms.
+      </li>
+    </ul>
+    <h4>Machine Learning Library</h4>
+    <ul>
+      <li>
+        <strong>scikit-learn:</strong> An open-source framework Simple
+        and efficient tools for predictive data analysis
+      </li>
+      <li>
+        <strong>TensorFlow:</strong> An open-source framework developed by
+        Google for deep learning projects.
+      </li>
+      <li>
+        <strong>PyTorch:</strong> Known for its flexibility and ease of
+        use in the research community, particularly in academia.
+      </li>
+    </ul>
+    <h4>Data Visualization Tools</h4>
+    <ul>
+      <li>
+        <strong>Tableau:</strong> Widely recognized for making complex
+        data visualizations user-friendly and accessible to business
+        professionals.
+      </li>
+      <li>
+        <strong>PowerBI:</strong> Microsoft's analytics service provides
+        interactive visualizations and business intelligence capabilities
+        with an interface simple enough for end users to create their own
+        reports and dashboards.
+      </li>
+      <li>
+        <strong>Matplotlib and Seaborn:</strong> Popular Python libraries
+        that offer a wide range of static, animated, and interactive
+        visualizations.
+      </li>
+    </ul>
+    <h4>AI-Powered Coding Assistants</h4>
+    <ul>
+      <li>
+        <strong>ChatGPT:</strong> A large language model capable of generating code, explaining concepts, and assisting with problem-solving in data science.
+      </li>
+      <li>
+        <strong>GitHub Copilot:</strong> An AI pair programmer that suggests code completions and entire functions in real-time.
+      </li>
+      <li>
+        <strong>Claude:</strong> An AI assistant that can help with code generation, debugging, and explaining data science concepts.
+      </li>
+    </ul>
+    <h4>Project Management and Version Control</h4>
+    <ul>
+      <li>
+        <strong>Git:</strong> A distributed version control system essential for tracking changes in source code during software development.
+      </li>
+      <li>
+        <strong>Jira:</strong> An agile project management tool used for issue tracking, bug tracking, and project management in data science teams.
+      </li>
+    </ul>
+    <h4>Cloud Tools</h4>
+    <ul>
+      <li>
+        <strong>Amazon Web Services (AWS):</strong> Offers a wide range of cloud computing services, including EC2 for compute power, S3 for storage, and SageMaker for machine learning.
+      </li>
+      <li>
+        <strong>Google Cloud Platform (GCP):</strong> Provides services like BigQuery for analytics, Cloud Storage for data storage, and Vertex AI for machine learning operations.
+      </li>
+      <li>
+        <strong>Microsoft Azure:</strong> Features services such as Azure Databricks for big data analytics, Azure Machine Learning for building and deploying models, and Azure Data Lake for data storage.
+      </li>
+      <li>
+        <strong>Databricks:</strong> A unified analytics platform built on top of Apache Spark, offering collaborative notebooks and integrated workflows for big data processing and machine learning.
+      </li>
+    </ul>
+  </Col>
+</Row>
     </Container>
   );
 };

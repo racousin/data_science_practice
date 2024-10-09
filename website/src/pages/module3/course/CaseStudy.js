@@ -57,7 +57,7 @@ const CaseStudy = () => {
       },
       {
         name: "embarked",
-        description: "Port of Embarkation (encoded as integers)",
+        description: "Port of Embarkation",
       },
     ],
   };

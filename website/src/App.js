@@ -39,6 +39,9 @@ import ExerciseDocker from "pages/module14/ExerciseDocker";
 import CourseCloudIntegration from "pages/module15/CourseCloudIntegration";
 import ExerciseCloudIntegration from "pages/module15/ExerciseCloudIntegration";
 
+import ApiDoc from './pages/module4/ApiDoc';
+import ScrapableData from './pages/module4/ScrapableData';
+
 import PageToScrap from "pages/module4/course/PageToScrap";
 import PageToScrapExercise from "pages/module4/course/PageToScrapExercise";
 
@@ -153,6 +156,8 @@ function App() {
             element={<ExerciseMLPipelineAndExploratoryDataAnalysis />}
           />
           <Route path="module4/course/*" element={<CourseDataCollection />} />
+          <Route path="module4/api-doc" element={<ApiDoc />} />
+          <Route path="module4/scrapable-data" element={<ScrapableData />} />
           <Route
             path="module4/exercise/*"
             element={<ExerciseDataCollection />}

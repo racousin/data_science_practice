@@ -5,6 +5,7 @@ import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
 
 const CourseDataCollection = () => {
+  // const courseLinks = []
   const courseLinks = [
     {
       to: "/introduction",
