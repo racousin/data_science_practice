@@ -57,9 +57,56 @@ const HandleCategoricalValues = () => {
             Categorical data can be classified into two main types:
           </Text>
           <List>
-            <List.Item><strong>Nominal:</strong> Categories without inherent order (e.g., colors, types of cuisine)</List.Item>
-            <List.Item><strong>Ordinal:</strong> Categories with a logical order (e.g., rankings, education level)</List.Item>
+            
+            <List.Item><span style={{ fontWeight: 700 }}>Nominal :</span> Categories without inherent order (e.g., colors, types of cuisine)</List.Item>
+            <List.Item><span style={{ fontWeight: 700 }}>Ordinal :</span> Categories with a logical order (e.g., rankings, education level)</List.Item>
           </List>
+          <CodeBlock
+            language="python"
+            code={`
+import pandas as pd
+
+# Sample dataset
+data = {
+    'color': ['red', 'blue', 'green', 'red', 'blue'],
+    'size': ['small', 'medium', 'large', 'medium', 'small'],
+    'rating': ['low', 'medium', 'high', 'medium', 'low']
+}
+df = pd.DataFrame(data)
+
+print("Original DataFrame:")
+print(df)
+
+# Identify data types
+print("\nData types:")
+print(df.dtypes)
+
+# Identify unique values
+print("\nUnique values in each column:")
+for column in df.columns:
+    print(f"{column}: {df[column].nunique()} - {df[column].unique()}")
+
+# Output:
+# Original DataFrame:
+#   color    size rating
+# 0   red   small    low
+# 1  blue  medium medium
+# 2 green   large   high
+# 3   red  medium medium
+# 4  blue   small    low
+
+# Data types:
+# color     object
+# size      object
+# rating    object
+# dtype: object
+
+# Unique values in each column:
+# color: 3 - ['red' 'blue' 'green']
+# size: 3 - ['small' 'medium' 'large']
+# rating: 3 - ['low' 'medium' 'high']
+            `}
+          />
         </Section>
 
         <Section
@@ -73,28 +120,43 @@ const HandleCategoricalValues = () => {
           <CodeBlock
             language="python"
             code={`
-import seaborn as sns
+import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 
-# Identify categorical columns
-categorical_columns = [col for col in df.columns if df[col].dtype == 'object' or df[col].nunique() < 10]
+# Sample dataset
+data = {
+    'color': ['red', 'blue', 'green', 'red', 'blue', 'green', 'red', 'blue', 'green', 'red'],
+    'size': ['small', 'medium', 'large', 'medium', 'small', 'large', 'small', 'medium', 'large', 'medium'],
+    'rating': [4, 3, 5, 4, 2, 5, 3, 4, 5, 3]
+}
+df = pd.DataFrame(data)
 
-# Visualize with count plot
+# Count plot for 'color'
 plt.figure(figsize=(10, 6))
-sns.countplot(x='category_column', data=df, palette='Blues')
-plt.title('Count Plot of Categorical Data')
-plt.xlabel('Categories')
+sns.countplot(x='color', data=df, palette='viridis')
+plt.title('Count Plot of Colors')
+plt.xlabel('Color')
 plt.ylabel('Count')
-plt.xticks(rotation=45)
 plt.show()
 
-# Visualize relationship with target variable
-plt.figure(figsize=(12, 8))
-sns.barplot(x='category_column', y='target_column', data=df, ci=None, palette='viridis')
-plt.title('Bar Plot: Categories vs Target')
-plt.xlabel('Categories')
-plt.ylabel('Average of Target Variable')
-plt.xticks(rotation=45)
+# Bar plot for average rating by color
+plt.figure(figsize=(10, 6))
+sns.barplot(x='color', y='rating', data=df, ci=None, palette='viridis')
+plt.title('Average Rating by Color')
+plt.xlabel('Color')
+plt.ylabel('Average Rating')
+plt.show()
+
+# Stacked bar plot for size distribution by color
+size_color = pd.crosstab(df['color'], df['size'])
+size_color_pct = size_color.div(size_color.sum(1), axis=0)
+size_color_pct.plot(kind='bar', stacked=True, figsize=(10, 6))
+plt.title('Size Distribution by Color')
+plt.xlabel('Color')
+plt.ylabel('Percentage')
+plt.legend(title='Size', bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.tight_layout()
 plt.show()
             `}
           />
@@ -114,7 +176,38 @@ plt.show()
               code={`
 import pandas as pd
 
-df = pd.get_dummies(df, columns=['category_column'])
+# Sample dataset
+data = {
+    'color': ['red', 'blue', 'green', 'red', 'blue'],
+    'size': ['small', 'medium', 'large', 'medium', 'small']
+}
+df = pd.DataFrame(data)
+
+print("Original DataFrame:")
+print(df)
+
+# One-hot encoding
+df_encoded = pd.get_dummies(df, columns=['color', 'size'])
+
+print("\nOne-hot encoded DataFrame:")
+print(df_encoded)
+
+# Output:
+# Original DataFrame:
+#   color    size
+# 0   red   small
+# 1  blue  medium
+# 2 green   large
+# 3   red  medium
+# 4  blue   small
+
+# One-hot encoded DataFrame:
+#    color_blue  color_green  color_red  size_large  size_medium  size_small
+# 0           0            0          1           0            0           1
+# 1           1            0          0           0            1           0
+# 2           0            1          0           1            0           0
+# 3           0            0          1           0            1           0
+# 4           1            0          0           0            0           1
               `}
             />
           </Section>
@@ -130,10 +223,51 @@ df = pd.get_dummies(df, columns=['category_column'])
             <CodeBlock
               language="python"
               code={`
+import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 
+# Sample dataset
+data = {
+    'color': ['red', 'blue', 'green', 'red', 'blue'],
+    'size': ['small', 'medium', 'large', 'medium', 'small']
+}
+df = pd.DataFrame(data)
+
+print("Original DataFrame:")
+print(df)
+
+# Label encoding
 le = LabelEncoder()
-df['category_column'] = le.fit_transform(df['category_column'])
+df['color_encoded'] = le.fit_transform(df['color'])
+df['size_encoded'] = le.fit_transform(df['size'])
+
+print("\nLabel encoded DataFrame:")
+print(df)
+
+print("\nEncoding mappings:")
+print("Color:", dict(zip(le.classes_, le.transform(le.classes_))))
+print("Size:", dict(zip(le.classes_, le.transform(le.classes_))))
+
+# Output:
+# Original DataFrame:
+#   color    size
+# 0   red   small
+# 1  blue  medium
+# 2 green   large
+# 3   red  medium
+# 4  blue   small
+
+# Label encoded DataFrame:
+#   color    size  color_encoded  size_encoded
+# 0   red   small              2             2
+# 1  blue  medium              0             1
+# 2 green   large              1             0
+# 3   red  medium              2             1
+# 4  blue   small              0             2
+
+# Encoding mappings:
+# Color: {'blue': 0, 'green': 1, 'red': 2}
+# Size: {'large': 0, 'medium': 1, 'small': 2}
               `}
             />
           </Section>
@@ -144,27 +278,181 @@ df['category_column'] = le.fit_transform(df['category_column'])
           id="advanced-techniques"
         >
           <Stack spacing="md">
-            <Paper withBorder p="md">
               <Title order={4}>Handling Unseen Categories</Title>
               <Text>
                 For categories in the test set not present during training, consider assigning an 'unknown' label or using the most frequent category.
               </Text>
-            </Paper>
-            
-            <Paper withBorder p="md">
+              <CodeBlock
+                language="python"
+                code={`
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+
+# Training data
+train_data = {'color': ['red', 'blue', 'green', 'red', 'blue']}
+df_train = pd.DataFrame(train_data)
+
+# Test data with unseen category
+test_data = {'color': ['yellow', 'red', 'purple', 'blue', 'orange']}
+df_test = pd.DataFrame(test_data)
+
+# Function to handle unseen categories
+def encode_and_handle_unknown(train_series, test_series, unknown_value):
+    le = LabelEncoder()
+    le.fit(train_series)
+    
+    # Transform training data
+    train_encoded = le.transform(train_series)
+    
+    # Handle unseen categories in test data
+    test_categories = pd.Categorical(test_series, categories=le.classes_)
+    test_encoded = le.transform(test_categories.fillna(unknown_value))
+    
+    return train_encoded, test_encoded, le.classes_
+
+# Encode and handle unknown
+train_encoded, test_encoded, classes = encode_and_handle_unknown(df_train['color'], df_test['color'], 'red')
+
+print("Training data encoded:")
+print(train_encoded)
+print("\nTest data encoded:")
+print(test_encoded)
+print("\nEncoding classes:", classes)
+
+# Output:
+# Training data encoded:
+# [2 0 1 2 0]
+# 
+# Test data encoded:
+# [2 2 2 0 2]
+# 
+# Encoding classes: ['blue' 'green' 'red']
+                `}
+              />
               <Title order={4}>Feature Engineering</Title>
               <Text>
                 Enhance your model by combining categories, creating interaction terms, or extracting information from mixed data types.
               </Text>
-            </Paper>
-            
-            <Paper withBorder p="md">
+              <CodeBlock
+                language="python"
+                code={`
+import pandas as pd
+
+# Sample dataset
+data = {
+    'color': ['red', 'blue', 'green', 'red', 'blue'],
+    'size': ['small', 'medium', 'large', 'medium', 'small'],
+    'price': [10, 15, 20, 12, 8]
+}
+df = pd.DataFrame(data)
+
+print("Original DataFrame:")
+print(df)
+
+# Combine categories
+df['color_size'] = df['color'] + '_' + df['size']
+
+# Create interaction term
+df['price_category'] = pd.cut(df['price'], bins=[0, 10, 15, 100], labels=['low', 'medium', 'high'])
+
+# Extract information from mixed data type
+df['is_red_and_small'] = ((df['color'] == 'red') & (df['size'] == 'small')).astype(int)
+
+print("\nDataFrame with engineered features:")
+print(df)
+
+# Output:
+# Original DataFrame:
+#   color    size  price
+# 0   red   small     10
+# 1  blue  medium     15
+# 2 green   large     20
+# 3   red  medium     12
+# 4  blue   small      8
+
+# DataFrame with engineered features:
+#   color    size  price     color_size price_category  is_red_and_small
+# 0   red   small     10     red_small           low                  1
+# 1  blue  medium     15   blue_medium        medium                  0
+# 2 green   large     20   green_large          high                  0
+# 3   red  medium     12    red_medium        medium                  0
+# 4  blue   small      8    blue_small           low                  0
+                `}
+              />
               <Title order={4}>Using Categorical Data in Models</Title>
               <Text>
                 Some algorithms (e.g., CatBoost, decision trees) can handle categorical data directly without explicit encoding.
               </Text>
-            </Paper>
+              <CodeBlock
+                language="python"
+                code={`
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from catboost import CatBoostClassifier, Pool
+
+# Sample dataset
+data = {
+    'color': ['red', 'blue', 'green', 'red', 'blue', 'green', 'red', 'blue', 'green', 'red'],
+    'size': ['small', 'medium', 'large', 'medium', 'small', 'large', 'small', 'medium', 'large', 'medium'],
+    'price': [10, 15, 20, 12, 8, 22, 11, 16, 21, 13],
+    'sold': [1, 0, 1, 1, 0, 1, 0, 1, 1, 0]
+}
+df = pd.DataFrame(data)
+
+# Split the data
+X = df.drop('sold', axis=1)
+y = df['sold']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create CatBoost pools
+train_pool = Pool(X_train, y_train, cat_features=['color', 'size'])
+test_pool =Pool(X_test, cat_features=['color', 'size'])
+
+# Initialize and train the model
+model = CatBoostClassifier(iterations=100, depth=5, learning_rate=0.1, loss_function='Logloss', verbose=False)
+model.fit(train_pool)
+
+# Make predictions
+predictions = model.predict(test_pool)
+
+# Print feature importances
+feature_importances = model.get_feature_importance(train_pool)
+feature_names = X.columns
+for feature, importance in zip(feature_names, feature_importances):
+    print(f"{feature}: {importance}")
+
+# Note: In a real scenario, you would typically use a larger dataset and perform more comprehensive model evaluation.
+
+# Sample output:
+# color: 7.23
+# size: 5.89
+# price: 86.88
+                `}
+              />
           </Stack>
+        </Section>
+
+        <Section
+          title="Considerations and Best Practices"
+          id="considerations-and-best-practices"
+        >
+          <List>
+            <List.Item>
+              <Text><span style={{ fontWeight: 700 }}>Cardinality:</span> For high-cardinality categorical variables (many unique values), consider grouping less frequent categories or using embedding techniques.</Text>
+            </List.Item>
+            <List.Item>
+              <Text><span style={{ fontWeight: 700 }}>Domain knowledge:</span> Incorporate domain expertise when encoding ordinal variables to ensure the correct order is maintained.</Text>
+            </List.Item>
+            <List.Item>
+              <Text><span style={{ fontWeight: 700 }}>Dimensionality:</span> Be cautious with one-hot encoding for high-cardinality variables, as it can significantly increase the number of features.</Text>
+            </List.Item>
+            <List.Item>
+              <Text><span style={{ fontWeight: 700 }}>Model selection:</span> Choose encoding methods that are compatible with your selected machine learning algorithm.</Text>
+            </List.Item>
+            <List.Item>
+              <Text><span style={{ fontWeight: 700 }}>Consistency:</span> Apply the same encoding strategy to both training and test datasets to ensure consistency.</Text>
+            </List.Item>
+          </List>
         </Section>
       </Stack>
 

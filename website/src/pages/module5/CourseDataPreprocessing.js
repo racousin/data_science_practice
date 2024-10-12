@@ -7,6 +7,15 @@ import { useLocation } from "react-router-dom";
 const CourseDataPreprocessing = () => {
   const courseLinks = [
     {
+      to: "/introduction",
+      label: "Introduction",
+      component: lazy(() =>
+        import("pages/module5/course/Introduction")
+      ),
+      subLinks: [
+      ],
+    },
+    {
       to: "/correct-inconsistencies",
       label: "Handle Inconsistencies",
       component: lazy(() =>
@@ -23,11 +32,35 @@ const CourseDataPreprocessing = () => {
       ],
     },
     {
+      to: "/handle-duplicates",
+      label: "Handle Duplicates",
+      component: lazy(() => import("pages/module5/course/HandleDuplicates")),
+      subLinks: [
+        { id: "types-of-duplicates", label: "Types of Duplicates" },
+        {
+          id: "identifying-duplicates",
+          label: "Identifying Duplicates",
+        },
+        { id: "visualize-duplicates", label: "Visualize Duplicates" },
+        { id: "removing-duplicates", label: "Removing Duplicates" },
+        {
+          id: "advanced-techniques",
+          label: "Advanced Techniques",
+        },
+        {
+          id: "considerations",
+          label: "Considerations",
+        },
+        { id: "notebook-example", label: "Notebook Example" },
+      ],
+    },
+
+    {
       to: "/handle-missing-values",
       label: "Handle Missing Values",
       component: lazy(() => import("pages/module5/course/HandleMissingValues")),
       subLinks: [
-        { id: "what-are-missing-values", label: "What are Missing Values?" },
+        { id: "types-of-missing-values", label: "Types of Missing Values" },
         { id: "visualize-missing-values", label: "Visualize Missing Values" },
         { id: "imputation", label: "Mean/Median/Mode Imputation" },
         { id: "forward-fill", label: "Forward Fill" },
@@ -65,29 +98,7 @@ const CourseDataPreprocessing = () => {
         { id: "notebook-example", label: "Notebook Example" },
       ],
     },
-    {
-      to: "/handle-duplicates",
-      label: "Handle Duplicates",
-      component: lazy(() => import("pages/module5/course/HandleDuplicates")),
-      subLinks: [
-        { id: "types-of-duplicates", label: "Types of Duplicates" },
-        {
-          id: "identifying-duplicates",
-          label: "Identifying Duplicates",
-        },
-        { id: "visualize-duplicates", label: "Visualize Duplicates" },
-        { id: "removing-duplicates", label: "Removing Duplicates" },
-        {
-          id: "advanced-techniques",
-          label: "Advanced Techniques",
-        },
-        {
-          id: "considerations",
-          label: "Considerations",
-        },
-        { id: "notebook-example", label: "Notebook Example" },
-      ],
-    },
+
     {
       to: "/handle-outliers",
       label: "Handle Outliers",

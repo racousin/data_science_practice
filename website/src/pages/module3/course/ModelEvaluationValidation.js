@@ -309,7 +309,71 @@ print("Mean CV score:", scores.mean())
       </p>
       <ul>
         <li><strong>Time Series Split:</strong> Respects temporal order of data</li>
+        <CodeBlock
+        language="python"
+        code={`
+# Ensure your time series data is ordered
+df = df.sort_values(by='date_column')  # Be sure your time series df is ordered
+
+X = df[['feature_column1', 'feature_column2']].values
+y = df['target_column'].values
+
+# Sequential train-test split (70% train, 30% test)
+train_size = 0.7
+split_index = int(len(X) * train_size)
+
+X_train, X_test = X[:split_index], X[split_index:]
+y_train, y_test = y[:split_index], y[split_index:]
+
+# Fit the model on (X_train, y_train)
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Test the model on (X_test, y_test)
+y_pred = model.predict(X_test)
+
+# Calculate performance metric (e.g., Mean Squared Error)
+mse = mean_squared_error(y_test, y_pred)
+print("Mean Squared Error:", mse)
+        `}
+      />  
         <li><strong>Rolling Window Validation:</strong> Uses fixed-size moving window</li>
+        <CodeBlock
+        language="python"
+        code={`
+from sklearn.model_selection import TimeSeriesSplit
+import numpy as np
+
+# Ensure your time series data is ordered
+df = df.sort_values(by='date_column')  # Be sure your time series df is ordered
+
+X = df[['feature_column1', 'feature_column2']].values
+y = df['target_column'].values
+
+tscv = TimeSeriesSplit(n_splits=5)
+mse_scores = []
+# TimeSeriesSplit cross-validation
+for train_index, test_index in tscv.split(X):
+    X_train, X_test = X[train_index], X[test_index]
+    y_train, y_test = y[train_index], y[test_index]
+    
+    # Fit the model on (X_train, y_train)
+    model = LinearRegression()
+    model.fit(X_train, y_train)
+    
+    # Test the model on (X_test, y_test)
+    y_pred = model.predict(X_test)
+    
+    # Calculate and store the performance metric (e.g., Mean Squared Error)
+    mse = mean_squared_error(y_test, y_pred)
+    mse_scores.append(mse)
+    print(f"Fold {len(mse_scores)} - Mean Squared Error: {mse}")
+
+# Average MSE across all folds
+average_mse = np.mean(mse_scores)
+print("Average Mean Squared Error across all folds:", average_mse)
+        `}
+      />
       </ul>
     </Container>
   );

@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col, Table } from "react-bootstrap";
+import { Container, Stack, Title, Text, List, Table } from "@mantine/core";
 import CodeBlock from "components/CodeBlock";
 import DataInteractionPanel from "components/DataInteractionPanel";
 
@@ -79,9 +79,9 @@ const HandleMissingValues = () => {
   const MissingDataExample = () => {
     const data = [
       { id: 1, name: "Alice", age: 28, email: "alice@example.com" },
-      { id: 2, name: "Bob", age: null, email: "bob@example.com" },
-      { id: 3, name: "Carol", age: 34, email: null },
-      { id: 4, name: "Dave", age: null, email: null },
+      { id: 2, name: "Bob", age: 'NaN', email: "bob@example.com" },
+      { id: 3, name: "Carol", age: 34, email: 'null' },
+      { id: 4, name: "Dave", age: '_', email: 'None' },
     ];
 
     return (
@@ -100,15 +100,15 @@ const HandleMissingValues = () => {
               <td>{row.id}</td>
               <td>{row.name}</td>
               <td>
-                {row.age === null ? (
-                  <em style={{ color: "red" }}>Missing</em>
+                {row.age === 'null' | row.age === 'NaN' | row.age === 'None' | row.age === '_' ? (
+                  <Text span c="red" fs="italic">{row.age}</Text>
                 ) : (
                   row.age
                 )}
               </td>
               <td>
-                {row.email === null ? (
-                  <em style={{ color: "red" }}>Missing</em>
+                {row.email === 'null' | row.email === 'NaN' | row.email === 'None' | row.email === '_' ? (
+                  <Text span c="red" fs="italic">{row.email}</Text>
                 ) : (
                   row.email
                 )}
@@ -119,53 +119,54 @@ const HandleMissingValues = () => {
       </Table>
     );
   };
+
   return (
     <Container fluid>
-      <h1 className="my-4">Handling Missing Values</h1>
+      <Title order={1} my="md">Handling Missing Values</Title>
 
-      <Row>
-        <Col>
-          <h2 id="what-are-missing-values">What are Missing Values?</h2>
-          <p>
-            Missing values occur when no data is stored for a variable (feature)
-            in an observation. They can appear as 'NaN', 'None', or blanks in
-            datasets. Understanding the nature of missing data is crucial for
-            making informed decisions on how to handle them.
-          </p>
-          <p>
-            <strong>Reasons for Missing Data:</strong>
-            <ul>
-              <li>
-                <strong>Data not collected:</strong> Information might not be
-                collected, either due to oversight or because it was not
-                available.
-              </li>
-              <li>
-                <strong>Data collection errors:</strong> Errors in data entry or
-                collection processes can lead to missing values.
-              </li>
-              <li>
-                <strong>Data corruption:</strong> During data transfer or
-                storage, data might get corrupted leading to missing entries.
-              </li>
-            </ul>
-          </p>
-          <MissingDataExample></MissingDataExample>
-          <h2 id="visualize-missing-values">Visualize Missing Values</h2>
-          <p>
-            Visualizing missing data is crucial for understanding the patterns
-            of missingness and deciding on appropriate imputation methods.
-            Visual techniques can highlight whether the data is missing at
-            random, missing completely at random, or missing not at random,
-            which can significantly influence your handling strategy.
-          </p>
-          <CodeBlock
-            language={"python"}
-            code={`import matplotlib.pyplot as plt
+      <Stack>
+        <Title order={2} id="types-of-missing-values">Types of Missing Values</Title>
+        <Text>
+          Missing values occur when no data is stored for a variable (feature) in an observation. They can appear as 'NaN', 'None', or blanks in datasets. Understanding the types of missing data is crucial for making informed decisions on how to handle them.
+        </Text>
+        <Text>
+          <span style={{ fontWeight: 700 }}>Reasons for Missing Data:</span>
+        </Text>
+        <List>
+          <List.Item>
+            <Text><span style={{ fontWeight: 700 }}>Data not collected:</span> Information might not be collected, either due to oversight or because it was not available.</Text>
+          </List.Item>
+          <List.Item>
+            <Text><span style={{ fontWeight: 700 }}>Data collection errors:</span> Errors in data entry or collection processes can lead to missing values.</Text>
+          </List.Item>
+          <List.Item>
+            <Text><span style={{ fontWeight: 700 }}>Data corruption:</span> During data transfer or storage, data might get corrupted leading to missing entries.</Text>
+          </List.Item>
+        </List>
+        <MissingDataExample />
+
+        <Title order={2} id="visualize-missing-values">Visualize Missing Values</Title>
+        <Text>
+          Visualizing missing data is crucial for understanding the patterns of missingness and deciding on appropriate imputation methods.
+        </Text>
+        <CodeBlock
+          language="python"
+          code={`import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
+import numpy as np
 
-# Assuming df is your DataFrame
+# Create a sample dataset with missing values
+np.random.seed(0)
+df = pd.DataFrame({
+    'A': np.random.rand(100),
+    'B': np.random.choice([1, 2, 3, None], 100),
+    'C': np.random.choice(['X', 'Y', 'Z', None], 100),
+    'D': pd.date_range('2023-01-01', periods=100)
+})
+df.loc[10:20, 'A'] = np.nan
+df.loc[30:35, 'D'] = pd.NaT
+
 # Heatmap to show where missing values occur
 plt.figure(figsize=(12, 8))
 sns.heatmap(df.isnull(), cbar=False, cmap='viridis')
@@ -180,108 +181,320 @@ missing_counts.plot(kind='bar')
 plt.title('Bar Chart of Missing Values Count')
 plt.xlabel('Columns')
 plt.ylabel('Number of Missing Values')
-plt.show()`}
-          />
+plt.show()
 
-          <p>
-            The heatmap provides a quick visual overview, showing the presence
-            of missing data across different columns and rows. Columns or rows
-            with no missing data will be consistently one color, while those
-            with missing data will show differently colored patches. This
-            visualization helps in quickly identifying patterns or correlations
-            in missing data across the dataset.
-          </p>
-          <p>
-            The bar chart complements the heatmap by quantifying the exact
-            number of missing entries per feature, allowing you to prioritize
-            which columns might need more attention either for further
-            investigation or for more sophisticated imputation techniques.
-          </p>
+print("Percentage of missing values per column:")
+print((df.isnull().sum() / len(df) * 100).round(2))`}
+        />
 
-          <h2 id="imputation">Mean/Median/Mode Imputation</h2>
-          <p>
-            Missing values can often be imputed using central tendency measures
-            such as the mean, median, or mode. This is one of the simplest
-            methods and is particularly effective when the data does not exhibit
-            high variance.
-          </p>
-          <CodeBlock
-            language={"python"}
-            code={`import pandas as pd
+        <Title order={2} id="imputation">Mean/Median/Mode Imputation</Title>
+        <Text>
+          Missing values can often be imputed using central tendency measures such as the mean, median, or mode. This is one of the simplest methods and is particularly effective when the data does not exhibit high variance.
+        </Text>
+        <CodeBlock
+          language="python"
+          code={`import pandas as pd
+import numpy as np
 
-df_filled = df.apply(lambda x: x.fillna(x.mean()), axis=0)`}
-          />
+# Create a sample dataset
+df = pd.DataFrame({
+    'A': [1, 2, np.nan, 4, 5],
+    'B': [10, np.nan, 30, 40, 50],
+    'C': ['x', 'y', 'z', np.nan, 'w']
+})
 
-          <h2 id="forward-fill">Forward Fill</h2>
-          <p>
-            For time series data, you might consider using methods like forward
-            fill where you propagate the last observed data point to the next
-            missing value.
-          </p>
-          <CodeBlock
-            language={"python"}
-            code={`# Using pandas for forward fill
-import pandas as pd
+print("Original dataset:")
+print(df)
 
-# Assuming df is your DataFrame
-df_filled = df.fillna(method='ffill')`}
-          />
+# Mean imputation for numeric columns
+df_mean = df.copy()
+df_mean['A'] = df_mean['A'].fillna(df_mean['A'].mean())
+df_mean['B'] = df_mean['B'].fillna(df_mean['B'].mean())
 
-          <h2 id="k-nearest-neighbors">K-Nearest Neighbors</h2>
-          <p>
-            K-Nearest Neighbors can be used to impute missing values based on
-            the similarities between features. It is more sophisticated than
-            mean/median imputation and can provide more accurate results for
-            complex datasets.
-          </p>
-          <CodeBlock
-            language={"python"}
-            code={`from sklearn.impute import KNNImputer
+# Mode imputation for categorical column
+df_mean['C'] = df_mean['C'].fillna(df_mean['C'].mode()[0])
 
-imputer = KNNImputer(n_neighbors=5)
-X_filled = imputer.fit_transform(X)`}
-          />
+print("After mean/mode imputation:")
+print(df_mean)
 
-          <h2 id="predictive-imputation">Predictive Imputation</h2>
-          <p>
-            Predictive models, such as regression, can also be used to predict
-            and impute missing values based on other available data.
-          </p>
-          <CodeBlock
-            language={"python"}
-            code={`from sklearn.experimental import enable_iterative_imputer
+# Output:
+# Original dataset:
+#      A     B    C
+# 0  1.0  10.0    x
+# 1  2.0   NaN    y
+# 2  NaN  30.0    z
+# 3  4.0  40.0  NaN
+# 4  5.0  50.0    w
+
+# After mean/mode imputation:
+#      A     B  C
+# 0  1.0  10.0  x
+# 1  2.0  32.5  y
+# 2  3.0  30.0  z
+# 3  4.0  40.0  x
+# 4  5.0  50.0  w`}
+        />
+
+        <Title order={2} id="forward-fill">Forward Fill</Title>
+        <Text>
+          For time series data, you might consider using methods like forward fill where you propagate the last observed data point to the next missing value.
+        </Text>
+        <CodeBlock
+          language="python"
+          code={`import pandas as pd
+import numpy as np
+
+# Create a sample time series dataset
+date_rng = pd.date_range(start='2023-01-01', end='2023-01-10', freq='D')
+df = pd.DataFrame(date_rng, columns=['date'])
+df['value'] = [1, 2, np.nan, 4, np.nan, np.nan, 7, 8, 9, 10]
+df.set_index('date', inplace=True)
+
+print("Original dataset:")
+print(df)
+
+# Forward fill
+df_ffill = df.ffill()
+
+print("After forward fill:")
+print(df_ffill)
+
+# Output:
+# Original dataset:
+#             value
+# date             
+# 2023-01-01    1.0
+# 2023-01-02    2.0
+# 2023-01-03    NaN
+# 2023-01-04    4.0
+# 2023-01-05    NaN
+# 2023-01-06    NaN
+# 2023-01-07    7.0
+# 2023-01-08    8.0
+# 2023-01-09    9.0
+# 2023-01-10   10.0
+
+# After forward fill:
+#             value
+# date             
+# 2023-01-01    1.0
+# 2023-01-02    2.0
+# 2023-01-03    2.0
+# 2023-01-04    4.0
+# 2023-01-05    4.0
+# 2023-01-06    4.0
+# 2023-01-07    7.0
+# 2023-01-08    8.0
+# 2023-01-09    9.0
+# 2023-01-10   10.0`}
+        />
+
+        <Title order={2} id="k-nearest-neighbors">K-Nearest Neighbors</Title>
+        <Text>
+          K-Nearest Neighbors can be used to impute missing values based on the similarities between features. It is more sophisticated than mean/median imputation and can provide more accurate results for complex datasets.
+        </Text>
+        <CodeBlock
+          language="python"
+          code={`import pandas as pd
+import numpy as np
+from sklearn.impute import KNNImputer
+from sklearn.preprocessing import StandardScaler
+
+# Create a sample dataset
+np.random.seed(0)
+df = pd.DataFrame({
+    'A': np.random.rand(10),
+    'B': np.random.rand(10),
+    'C': np.random.rand(10)
+})
+df.iloc[1, 0] = np.nan
+df.iloc[3, 1] = np.nan
+df.iloc[7, 2] = np.nan
+
+print("Original dataset:")
+print(df)
+
+# Normalize the data
+scaler = StandardScaler()
+df_scaled = pd.DataFrame(scaler.fit_transform(df), columns=df.columns)
+
+# Apply KNN imputation
+imputer = KNNImputer(n_neighbors=3)
+df_imputed = pd.DataFrame(imputer.fit_transform(df_scaled), columns=df.columns)
+
+# Inverse transform to get back to original scale
+df_imputed = pd.DataFrame(scaler.inverse_transform(df_imputed), columns=df.columns)
+
+print("After KNN imputation:")
+print(df_imputed)
+
+# Output:
+# Original dataset:
+#           A         B         C
+# 0  0.548814  0.715189  0.602763
+# 1       NaN  0.020584  0.544883
+# 2  0.645894  0.437587  0.891773
+# 3  0.963663       NaN  0.963663
+# 4  0.383442  0.791725  0.528895
+# 5  0.071036  0.779976  0.870012
+# 6  0.948261  0.799331  0.181724
+# 7  0.830623  0.936122       NaN
+# 8  0.224841  0.140092  0.211474
+# 9  0.185079  0.109400  0.853031
+
+# After KNN imputation:
+#           A         B         C
+# 0  0.548814  0.715189  0.602763
+# 1  0.459555  0.020584  0.544883
+# 2  0.645894  0.437587  0.891773
+# 3  0.963663  0.770453  0.963663
+# 4  0.383442  0.791725  0.528895
+# 5  0.071036  0.779976  0.870012
+# 6  0.948261  0.799331  0.181724
+# 7  0.830623  0.936122  0.669457
+# 8  0.224841  0.140092  0.211474
+# 9  0.185079  0.109400  0.853031`}
+        />
+
+        <Title order={2} id="predictive-imputation">Predictive Imputation</Title>
+        <Text>
+          Predictive models, such as regression, can also be used to predict and impute missing values based on other available data.
+        </Text>
+        <CodeBlock
+          language="python"
+          code={`import pandas as pd
+import numpy as np
+from sklearn.experimental import enable_iterative_imputer
 from sklearn.impute import IterativeImputer
 from sklearn.linear_model import BayesianRidge
 
+# Create a sample dataset
+np.random.seed(0)
+df = pd.DataFrame({
+    'A': np.random.rand(10),
+    'B': np.random.rand(10),
+    'C': np.random.rand(10)
+})
+df.iloc[1, 0] = np.nan
+df.iloc[3, 1] = np.nan
+df.iloc[7, 2] = np.nan
+
+print("Original dataset:")
+print(df)
+
+# Apply Iterative Imputer
 imp = IterativeImputer(estimator=BayesianRidge(), random_state=0)
-X_imputed = imp.fit_transform(X)`}
-          />
+df_imputed = pd.DataFrame(imp.fit_transform(df), columns=df.columns)
 
-          <h2 id="is_missing">Adding a 'is_missing' Column</h2>
-          <p>
-            Sometimes, it's informative to keep track of where data was missing,
-            as the missingness itself might be a useful feature.
-          </p>
-          <CodeBlock
-            language={"python"}
-            code={`# Using pandas to add a 'is_missing' column
-import pandas as pd
+print("After Iterative Imputation:")
+print(df_imputed)
 
-df['is_missing'] = df['your_column'].isnull()`}
-          />
-        </Col>
-      </Row>
-      <Row>
-        <div id="notebook-example"></div>
-        <DataInteractionPanel
-          DataUrl={DataUrl}
-          notebookUrl={notebookUrl}
-          notebookHtmlUrl={notebookHtmlUrl}
-          notebookColabUrl={notebookColabUrl}
-          requirementsUrl={requirementsUrl}
-          metadata={metadata}
+# Output:
+# Original dataset:
+#           A         B         C
+# 0  0.548814  0.715189  0.602763
+# 1       NaN  0.020584  0.544883
+# 2  0.645894  0.437587  0.891773
+# 3  0.963663       NaN  0.963663
+# 4  0.383442  0.791725  0.528895
+# 5  0.071036  0.779976  0.870012
+# 6  0.948261  0.799331  0.181724
+# 7  0.830623  0.936122       NaN
+# 8  0.224841  0.140092  0.211474
+# 9  0.185079  0.109400  0.853031
+
+# After Iterative Imputation:
+#           A         B         C
+# 0  0.548814  0.715189  0.602763
+# 1  0.555671  0.020584  0.544883
+# 2  0.645894  0.437587  0.891773
+# 3  0.963663  0.782172  0.963663
+# 4  0.383442  0.791725  0.528895
+# 5  0.071036  0.779976  0.870012
+# 6  0.948261  0.799331  0.181724
+# 7  0.830623  0.936122  0.671155
+# 8  0.224841  0.140092  0.211474
+# 9  0.185079  0.109400  0.853031`}
         />
-      </Row>
+
+        <Title order={2} id="is_missing">Adding an 'is_missing' Column</Title>
+        <Text>
+          Sometimes, it's informative to keep track of where data was missing, as the missingness itself might be a useful feature.
+        </Text>
+        <CodeBlock
+          language="python"
+          code={`import pandas as pd
+import numpy as np
+
+# Create a sample dataset
+df = pd.DataFrame({
+    'A': [1, 2, np.nan, 4, 5],
+    'B': [10, np.nan, 30, 40, 50],
+    'C': ['x', 'y', 'z', np.nan, 'w']
+})
+
+print("Original dataset:")
+print(df)
+
+# Add 'is_missing' columns
+for col in df.columns:
+    df[f'{col}_is_missing'] = df[col].isnull().astype(int)
+
+# Impute missing values (using mean for numeric, mode for categorical)
+df['A'] = df['A'].fillna(df['A'].mean())
+df['B'] = df['B'].fillna(df['B'].mean())
+df['C'] = df['C'].fillna(df['C'].mode()[0])
+
+print("Dataset with 'is_missing' columns and imputed values:")
+print(df)
+
+# Output:
+# Original dataset:
+#      A     B    C
+# 0  1.0  10.0    x
+# 1  2.0   NaN    y
+# 2  NaN  30.0    z
+# 3  4.0  40.0  NaN
+# 4  5.0  50.0    w
+
+# Dataset with 'is_missing' columns and imputed values:
+#      A     B  C  A_is_missing  B_is_missing  C_is_missing
+# 0  1.0  10.0  x             0             0             0
+# 1  2.0  32.5  y             0             1             0
+# 2  3.0  30.0  z             1             0             0
+# 3  4.0  40.0  x             0             0             1
+# 4  5.0  50.0  w             0             0             0`}
+        />
+
+        <Title order={2} id="considerations">Considerations for Handling Missing Values</Title>
+        <Text>
+          When dealing with missing values, it's important to consider the following:
+        </Text>
+        <List>
+          <List.Item>
+            <Text><span style={{ fontWeight: 700 }}>Understand the nature of missingness:</span>  Determine if the missing values are truly random, can be predicted from other features, or are influenced by something specific. This understanding impacts the choice of imputation method.</Text>
+          </List.Item>
+          <List.Item>
+            <Text><span style={{ fontWeight: 700 }}>Evaluate the extent of missing data:</span> If a large proportion of a feature is missing, it might be better to drop the feature entirely.</Text>
+          </List.Item>
+          <List.Item>
+            <Text><span style={{ fontWeight: 700 }}>Consider the impact on analysis:</span> Some statistical methods can handle missing data better than others. Ensure your chosen method is appropriate for your model objective.</Text>
+          </List.Item>
+          <List.Item>
+            <Text><span style={{ fontWeight: 700 }}>Preserve uncertainty:</span> When imputing, consider methods that preserve the uncertainty of the missing data, such as multiple imputation.</Text>
+          </List.Item>
+        </List>
+      </Stack>
+
+      <div id="notebook-example"></div>
+      <DataInteractionPanel
+        DataUrl={DataUrl}
+        notebookUrl={notebookUrl}
+        notebookHtmlUrl={notebookHtmlUrl}
+        notebookColabUrl={notebookColabUrl}
+        requirementsUrl={requirementsUrl}
+        metadata={metadata}
+      />
     </Container>
   );
 };

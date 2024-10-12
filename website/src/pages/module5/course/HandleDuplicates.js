@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Stack, Title, Text, List } from "@mantine/core";
 import CodeBlock from "components/CodeBlock";
 import DataInteractionPanel from "components/DataInteractionPanel";
 
@@ -150,67 +150,87 @@ const HandleDuplicates = () => {
 
   return (
     <Container fluid>
-      <h1 className="my-4">Handling Duplicate Entries</h1>
+      <Title order={1} my="md">Handling Duplicates</Title>
 
-      <Row>
-        <Col>
-          <h2 id="types-of-duplicates">Types of Duplicates</h2>
-          <p>
-            Understanding the nature of duplicates is crucial for effective data
-            cleaning:
-          </p>
-          <ul>
-            <li>
-              <strong>Exact Duplicates:</strong> Records that are identical
-              across all features. Often arise from data entry errors or data
-              merging processes.
-            </li>
-            <li>
-              <strong>Partial Duplicates:</strong> Records that are identical in
-              key fields but differ in others. They may occur due to
-              inconsistent data collection or merging of similar datasets.
-            </li>
-            <li>
-              <strong>Approximate Duplicates:</strong> Records that are not
-              identical but very similar, often due to typos or different data
-              entry standards.
-            </li>
-          </ul>
+      <Stack>
+        <Title order={2} id="types-of-duplicates">Types of Duplicates</Title>
+        <Text>
+          Understanding the nature of duplicates is crucial for effective data cleaning:
+        </Text>
+        <List>
+          <List.Item>
+            <Text><span style={{ fontWeight: 700 }}>Exact Duplicates:</span> Records that are identical
+            across all features. Often arise from data entry errors or data merging processes.</Text>
+          </List.Item>
+          <List.Item>
+            <Text><span style={{ fontWeight: 700 }}>Partial Duplicates:</span> Records that are identical in
+            key fields but differ in others. They may occur due to inconsistent data collection or merging of similar datasets.</Text>
+          </List.Item>
+          <List.Item>
+            <Text><span style={{ fontWeight: 700 }}>Approximate Duplicates:</span> Records that are not
+            identical but very similar, often due to typos or different data entry standards.</Text>
+          </List.Item>
+        </List>
 
-          <h2 id="identifying-duplicates">Identifying Duplicates</h2>
-          <p>
-            The first step in handling duplicates is identifying them through
-            various methods depending on their nature.
-          </p>
-          <CodeBlock
-            language={"python"}
-            code={`import pandas as pd
+        <Title order={2} id="identifying-duplicates">Identifying Duplicates</Title>
+        <Text>
+          The first step in handling duplicates is identifying them through various methods depending on their nature.
+        </Text>
+        <CodeBlock
+          language="python"
+          code={`import pandas as pd
+import numpy as np
 
-# For exact duplicates
+# Create a sample dataset
+df = pd.DataFrame({
+    'ID': [1, 2, 3, 3, 4, 5, 5],
+    'Name': ['John', 'Jane', 'Bob', 'Bob', 'Alice', 'Charlie', 'Charlie'],
+    'Age': [25, 30, 35, 35, 40, 45, 46],
+    'City': ['New York', 'London', 'Paris', 'Paris', 'Tokyo', 'Sydney', 'Sydney']
+})
+
+# Identify exact duplicates
 exact_duplicates = df[df.duplicated()]
+print("Exact duplicates:")
+print(exact_duplicates)
 
-# For partial duplicates, specify columns
-partial_duplicates = df[df.duplicated(subset=['column1', 'column2'])]
+# Identify partial duplicates based on 'Name' and 'City'
+partial_duplicates = df[df.duplicated(subset=['Name', 'City'], keep=False)]
+print("\nPartial duplicates (based on Name and City):")
+print(partial_duplicates)
 
-print("Exact duplicates:", exact_duplicates.shape[0])
-print("Partial duplicates:", partial_duplicates.shape[0])`}
-          />
-          <h2 id="visualize-duplicates">Visualize Duplicates</h2>
-          <p>
-            Visualizing duplicates can provide insightful perspectives on the
-            distribution and impact of duplicate data within your dataset. This
-            visualization helps in identifying patterns that might influence the
-            handling strategy for duplicates, especially when deciding whether
-            to remove or modify them.
-          </p>
-          <CodeBlock
-            language={"python"}
-            code={`import seaborn as sns
+# Count duplicates
+print(f"\nNumber of exact duplicates: {exact_duplicates.shape[0]}")
+print(f"Number of partial duplicates: {partial_duplicates.shape[0]}")
+
+# Output:
+# Exact duplicates:
+#    ID Name  Age   City
+# 3   3  Bob   35  Paris
+
+# Partial duplicates (based on Name and City):
+#    ID    Name  Age    City
+# 2   3     Bob   35   Paris
+# 3   3     Bob   35   Paris
+# 5   5  Charlie   45  Sydney
+# 6   5  Charlie   46  Sydney
+
+# Number of exact duplicates: 1
+# Number of partial duplicates: 4`}
+        />
+
+        <Title order={2} id="visualize-duplicates">Visualize Duplicates</Title>
+        <Text>
+          Visualizing duplicates can provide insightful perspectives on the distribution and impact of duplicate data within your dataset.
+        </Text>
+        <CodeBlock
+          language="python"
+          code={`import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 
-# Assuming 'df' is your DataFrame
-# Creating a temporary column 'is_duplicate' to mark duplicate rows
-df['is_duplicate'] = df.duplicated(keep=False)
+# Using the same sample dataset as before
+df['is_duplicate'] = df.duplicated(subset=['Name', 'City'], keep=False)
 
 # Plotting duplicates
 plt.figure(figsize=(10, 6))
@@ -220,63 +240,97 @@ plt.xlabel('Is Duplicate')
 plt.ylabel('Count')
 plt.show()
 
-# Dropping the temporary column after visualization
-df.drop(columns=['is_duplicate'], inplace=True)`}
-          />
+# Visualize duplicates by category
+plt.figure(figsize=(12, 6))
+sns.countplot(x='City', hue='is_duplicate', data=df)
+plt.title('Duplicate Records by City')
+plt.xlabel('City')
+plt.ylabel('Count')
+plt.legend(title='Is Duplicate', labels=['No', 'Yes'])
+plt.show()
 
-          <p>
-            This visualization uses a simple count plot to show the presence of
-            duplicate entries in the dataset. It marks each row as a duplicate
-            or not and counts the occurrences, providing a clear visual
-            representation of how many entries are affected. This method is
-            particularly useful for quickly assessing the extent of duplication
-            and determining if further cleaning steps are necessary.
-          </p>
+# Clean up
+df.drop(columns=['is_duplicate'], inplace=True)
+`}
+        />
 
-          <h2 id="removing-duplicates">Removing Duplicates</h2>
-          <p>
-            Removing duplicates should be tailored based on the type identified
-            and the specific needs of your dataset:
-          </p>
-          <CodeBlock
-            language={"python"}
-            code={`# Removing exact duplicates
-df = df.drop_duplicates()
+        <Title order={2} id="removing-duplicates">Removing Duplicates</Title>
+        <Text>
+          Removing duplicates should be tailored based on the type identified and the specific needs of your dataset:
+        </Text>
+        <CodeBlock
+          language="python"
+          code={`# Remove exact duplicates
+df_no_exact_dupes = df.drop_duplicates()
+print("After removing exact duplicates:")
+print(df_no_exact_dupes)
 
-# Keeping the last occurrence of partial duplicates
-df = df.drop_duplicates(subset=['column1', 'column2'], keep='last')`}
-          />
+# Remove partial duplicates based on 'Name' and 'City', keeping the last occurrence
+df_no_partial_dupes = df.drop_duplicates(subset=['Name', 'City'], keep='last')
+print("\nAfter removing partial duplicates (keeping last):")
+print(df_no_partial_dupes)
 
-          <h2 id="advanced-techniques">Advanced Techniques</h2>
-          <p>
-            For more complex scenarios, such as approximate duplicates, advanced
-            techniques like fuzzy matching might be required:
-          </p>
-          <CodeBlock
-            language={"python"}
-            code={`from fuzzywuzzy import process
+# Output:
+# After removing exact duplicates:
+#    ID    Name  Age    City
+# 0   1    John   25   New York
+# 1   2    Jane   30   London
+# 2   3     Bob   35   Paris
+# 4   4   Alice   40   Tokyo
+# 5   5  Charlie  45   Sydney
+# 6   5  Charlie  46   Sydney
 
-# Example of using fuzzy matching to find close matches
-choices = df['column_name'].unique()
-matches = process.extract('search_term', choices, limit=10)
-print(matches)`}
-          />
+# After removing partial duplicates (keeping last):
+#    ID    Name  Age    City
+# 0   1    John   25   New York
+# 1   2    Jane   30   London
+# 3   3     Bob   35   Paris
+# 4   4   Alice   40   Tokyo
+# 6   5  Charlie  46   Sydney`}
+        />
 
-          <h2 id="considerations">Considerations</h2>
-          <p>
-            Consider the implications of removing duplicates in your data
-            analysis. It’s essential to understand why duplicates appear and
-            confirm that their removal is justified:
-          </p>
-          <CodeBlock
-            language={"python"}
-            code={`# Considerations for time-series data
-if 'date' in df.columns:
-    df = df.drop_duplicates(subset=['date', 'category'], keep='first')`}
-          />
-        </Col>
-      </Row>
-      <Row>
+        <Title order={2} id="advanced-techniques">Advanced Techniques</Title>
+        <Text>
+          For more complex scenarios, such as approximate duplicates, advanced techniques like fuzzy matching might be required:
+        </Text>
+        <CodeBlock
+          language="python"
+          code={`from fuzzywuzzy import process, fuzz
+
+# Sample data with typos
+names = ['John Smith', 'Jane Doe', 'John Smyth', 'Jane Do', 'Bob Johnson']
+
+# Function to find fuzzy duplicates
+def find_fuzzy_duplicates(names, threshold=80):
+    duplicates = []
+    for i, name in enumerate(names):
+        matches = process.extract(name, names, limit=len(names), scorer=fuzz.token_sort_ratio)
+        for match in matches:
+            if match[1] >= threshold and match[0] != name:
+                duplicates.append((name, match[0], match[1]))
+    return duplicates
+
+# Find fuzzy duplicates
+fuzzy_dupes = find_fuzzy_duplicates(names)
+
+print("Potential fuzzy duplicates:")
+for original, duplicate, score in fuzzy_dupes:
+    print(f"{original} <-> {duplicate} (Similarity: {score}%)")
+
+# Output:
+# Potential fuzzy duplicates:
+# John Smith <-> John Smyth (Similarity: 91%)
+# John Smyth <-> John Smith (Similarity: 91%)
+# Jane Doe <-> Jane Do (Similarity: 89%)
+# Jane Do <-> Jane Doe (Similarity: 89%)`}
+        />
+
+        <Title order={2} id="considerations">Considerations</Title>
+        <Text>
+          Consider the implications of removing duplicates in your data analysis. It's essential to understand why duplicates appear and confirm that their removal is justified:
+        </Text>
+      
+      </Stack>
         <div id="notebook-example"></div>
         <DataInteractionPanel
           trainDataUrl={trainDataUrl}
@@ -287,7 +341,6 @@ if 'date' in df.columns:
           requirementsUrl={requirementsUrl}
           metadata={metadata}
         />
-      </Row>
     </Container>
   );
 };

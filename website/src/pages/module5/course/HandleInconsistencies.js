@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Stack, Title, Text, List } from "@mantine/core";
 import CodeBlock from "components/CodeBlock";
 import DataInteractionPanel from "components/DataInteractionPanel";
 
@@ -42,97 +42,175 @@ const HandleInconsistencies = () => {
       },
     ],
   };
+
   return (
     <Container fluid>
-      <h1 className="my-4">Handle Inconsistencies</h1>
+      <Title order={1} my="md">Handle Inconsistencies</Title>
 
-      <Row>
-        <Col>
-          <h2 id="types-of-inconsistencies">Types of Inconsistencies</h2>
-          <p>Data inconsistencies can manifest in several ways:</p>
-          <ul>
-            <li>
-              <strong>Formatting inconsistencies:</strong> Variations in date
-              formats, text capitalization, or use of special characters.
-            </li>
-            <li>
-              <strong>Type inconsistencies:</strong> Mixed data types within a
-              column (e.g., numbers and strings).
-            </li>
-            <li>
-              <strong>Duplicate records:</strong> Repeated entries that may or
-              may not be exact duplicates.
-            </li>
-            <li>
-              <strong>Contradictory data:</strong> Records that conflict with
-              each other, often due to data entry errors or merging issues.
-            </li>
-          </ul>
+      <Stack>
+        <Title order={2} id="types-of-inconsistencies">Types of Inconsistencies</Title>
+        <List>
+          <List.Item>
+            <Text><span style={{ fontWeight: 700 }}>Formatting inconsistencies:</span> Variations in date
+            formats, text capitalization, or use of special characters.</Text>
+          </List.Item>
+          <List.Item>
+            <Text><span style={{ fontWeight: 700 }}>Type inconsistencies:</span> Mixed data types within a
+            column (e.g., numbers and strings).</Text>
+          </List.Item>
+          <List.Item>
+            <Text><span style={{ fontWeight: 700 }}>Contradictory data:</span> Records that conflict with
+            each other, often due to data entry errors or merging issues.</Text>
+          </List.Item>
+        </List>
 
-          <h2 id="detecting-inconsistencies">Detecting Inconsistencies</h2>
-          <p>Effective detection is the first step towards cleaning:</p>
-          <CodeBlock
-            language={"python"}
-            code={`# Detecting type inconsistencies
-df['column'].apply(type).value_counts()
+        <Title order={2} id="detecting-inconsistencies">Detecting Inconsistencies</Title>
+        <Text>Effective detection is the first step towards cleaning:</Text>
+        <CodeBlock
+          language="python"
+          code={`# Example dataset with type inconsistencies
 
-# Detecting formatting issues
-df['date'].apply(lambda x: isinstance(x, str) and not re.match(r'\\d{4}-\\d{2}-\\d{2}', x)).sum()`}
-          />
+df_type = pd.DataFrame({'mixed_column': [1, 2, 3, 'one', 'two', 'three']})
 
-          <h2 id="solutions-to-inconsistencies">
-            Solutions to Inconsistencies
-          </h2>
-          <p>
-            Depending on the issue, you may choose to treat, remove, or modify
-            inconsistent data:
-          </p>
-          <ul>
-            <li>
-              <strong>Casting types:</strong> Ensure all data in a column is of
-              the same type.
-            </li>
-            <li>
-              <strong>Standardizing text:</strong> Convert all text data to a
-              consistent format (e.g., all lower case).
-            </li>
-            <li>
-              <strong>Removing or correcting outliers:</strong> Based on
-              business rules or statistical methods.
-            </li>
-          </ul>
-          <CodeBlock
-            language={"python"}
-            code={`# Casting types
-df['numeric_column'] = pd.to_numeric(df['numeric_column'], errors='coerce')
+# Detect type inconsistencies
+print(df_type['mixed_column'].apply(type).value_counts())
 
-# Standardizing text
-df['text_column'] = df['text_column'].str.lower().str.strip().replace(r'\\s+', ' ', regex=True)`}
-          />
+# Output:
+# <class 'str'>     3
+# <class 'int'>     3`}/>
 
-          <h2 id="advanced-text-manipulation">Advanced Text Manipulation</h2>
-          <p>
-            Manage special characters and whitespace to improve text data
-            quality:
-          </p>
-          <CodeBlock
-            language={"python"}
-            code={`# Remove special characters
-df['text_column'] = df['text_column'].str.replace(r'[^\\w\\s]', '', regex=True)`}
-          />
-        </Col>
-      </Row>
-      <Row>
-        <div id="notebook-example"></div>
-        <DataInteractionPanel
-          DataUrl={DataUrl}
-          notebookUrl={notebookUrl}
-          notebookHtmlUrl={notebookHtmlUrl}
-          notebookColabUrl={notebookColabUrl}
-          requirementsUrl={requirementsUrl}
-          metadata={metadata}
+        <CodeBlock
+          language="python"
+          code={`# Example dataset with date format inconsistencies
+
+import re
+
+df_date = pd.DataFrame({'date': ['2023-01-01', '01/02/2023', '2023-03-03', '04-05-2023']})
+
+# Detect date format issues
+print(df_date['date'].apply(lambda x: not re.match(r'\\d{4}-\\d{2}-\\d{2}', x)).sum())
+
+# Output:
+# 2
+`}
         />
-      </Row>
+
+<CodeBlock
+          language="python"
+          code={`# Example dataset with contradictory data
+
+df_contradictory = pd.DataFrame({
+    'is_positive': [True, True, False, False],
+    'value': [5, -2, 3, 3]
+})
+
+# Detect contradictory data
+print(df_contradictory[(df_contradictory['is_positive'] & (df_contradictory['value'] <= 0)) |
+                       (~df_contradictory['is_positive'] & (df_contradictory['value'] => 0))])
+
+# Output:
+#   is_positive  value
+# 1         True    -2
+# 3         True     3`}
+        />
+
+        <Title order={2} id="solutions-to-inconsistencies">Solutions to Inconsistencies</Title>
+        <Text>
+          Depending on the issue, you may choose to treat, remove, or modify
+          inconsistent data:
+        </Text>
+        <List>
+          <List.Item>
+            <Text><span style={{ fontWeight: 700 }}>Casting types:</span> Ensure all data in a column is of
+            the same type.</Text>
+          </List.Item>
+          <List.Item>
+            <Text><span style={{ fontWeight: 700 }}>Standardizing text:</span> Convert all text data to a
+            consistent format (e.g., all lower case).</Text>
+          </List.Item>
+        </List>
+
+        <CodeBlock
+          language="python"
+          code={`# Casting types
+# Define a mapping dictionary for text-to-number conversion
+text_to_num = {'one': 1, 'two': 2, 'three': 3}
+
+# Convert string values to their numeric equivalents
+df_type['mixed_column'] = df_type['mixed_column'].map(lambda x: text_to_num.get(x, x))
+
+# Convert the entire column to numeric type
+df_type['mixed_column'] = pd.to_numeric(df_type['mixed_column'])
+# Output:
+# After casting types:
+#    mixed_column
+# 0           1
+# 1           2
+# 2           3
+# 3           1
+# 4           2
+# 5           3`}/>
+
+      
+        <CodeBlock
+          language="python"
+          code={`# Standardizing text
+df_text = pd.DataFrame({'text_column': ['     Hello WORLD ', ' data  Science ', '  PYTHoN']})
+df_text['text_column'] = df_text['text_column'].str.lower().str.strip()
+# After standardizing text:
+print(df_text)
+
+# Output:
+#     text_column
+# 0   hello world
+# 1  data science
+# 2        python`}
+        />
+
+        <Title order={2} id="advanced-text-manipulation">Advanced Text Manipulation</Title>
+        <Text>
+          Manage special characters and whitespace to improve text data
+          quality:
+        </Text>
+        <CodeBlock
+          language="python"
+          code={`import re
+
+# Dataset with a column containing formatted strings
+df_formatted = pd.DataFrame({
+    'formatted_column': [
+        'ID: 123 | Name: John Doe | Age: 30',
+        'ID: 456 | Name: Jane Smith | Age: 25',
+        'ID: 789 | Name: Bob Johnson | Age: 40'
+    ]
+})
+
+# Extract information using regex
+df_formatted['id'] = df_formatted['formatted_column'].str.extract(r'ID: (\d+)')
+df_formatted['name'] = df_formatted['formatted_column'].str.extract(r'Name: ([^|]+)')
+df_formatted['age'] = df_formatted['formatted_column'].str.extract(r'Age: (\d+)')
+
+print("After extracting information:")
+print(df_formatted)
+
+# Output:
+# After extracting information:
+#                                  formatted_column   id         name age
+# 0  ID: 123 | Name: John Doe | Age: 30             123     John Doe   30
+# 1  ID: 456 | Name: Jane Smith | Age: 25           456   Jane Smith   25
+# 2  ID: 789 | Name: Bob Johnson | Age: 40          789  Bob Johnson   40`}
+        />
+      </Stack>
+
+      <div id="notebook-example"></div>
+      <DataInteractionPanel
+        DataUrl={DataUrl}
+        notebookUrl={notebookUrl}
+        notebookHtmlUrl={notebookHtmlUrl}
+        notebookColabUrl={notebookColabUrl}
+        requirementsUrl={requirementsUrl}
+        metadata={metadata}
+      />
     </Container>
   );
 };
