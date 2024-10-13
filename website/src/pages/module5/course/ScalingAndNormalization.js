@@ -215,29 +215,27 @@ print(X_normalized)
         </Section>
 
         <Section
-          title="Practical Considerations"
-          id="practical-considerations"
-        >
-          <List>
-            <List.Item>
-              <Text><span style={{ fontWeight: 700 }}>Apply to Training and Test Data:</span> Always fit the scaler on the training data and apply the same transformation to both training and test data.</Text>
-            </List.Item>
-            <List.Item>
-              <Text><span style={{ fontWeight: 700 }}>Handle Outliers:</span> Consider removing or capping outliers before scaling, especially for methods sensitive to extreme values.</Text>
-            </List.Item>
-            <List.Item>
-              <Text><span style={{ fontWeight: 700 }}>Feature Types:</span> Be aware of the nature of your features. Categorical variables might need different preprocessing (e.g., one-hot encoding) before scaling.</Text>
-            </List.Item>
-            <List.Item>
-              <Text><span style={{ fontWeight: 700 }}>Model Requirements:</span> Some models (e.g., tree-based models) may not require feature scaling, while others (e.g., neural networks) often benefit greatly from it.</Text>
-            </List.Item>
-            <List.Item>
-              <Text><span style={{ fontWeight: 700 }}>Interpretability:</span> Consider the impact on feature interpretability. Scaled features might lose their original meaning, which could be important in some contexts.</Text>
-            </List.Item>
-          </List>
-        </Section>
-      </Stack>
+  title="Practical Considerations"
+  id="practical-considerations"
+>
+  <List>
+    <List.Item>
+      <Text><span style={{ fontWeight: 700 }}>Apply to Training and Test Data:</span> Always fit the scaler on the training data and apply the same transformation to both training and test data.</Text>
+    </List.Item>
+    <List.Item>
+      <Text><span style={{ fontWeight: 700 }}>Handle Outliers:</span> Consider removing or capping outliers before scaling, especially for methods sensitive to extreme values.</Text>
+    </List.Item>
+    <List.Item>
+      <Text><span style={{ fontWeight: 700 }}>Feature Types:</span> Be aware of the nature of your features. Avoid scaling one-hot encoded variables. These variables represent distinct categories, not numerical magnitudes, so scaling them would distort their meaning.</Text>
+    </List.Item>
+    <List.Item>
+      <Text><span style={{ fontWeight: 700 }}>Model Requirements:</span> Some models (e.g., tree-based models) may not require feature scaling, while others (e.g., neural networks) often benefit greatly from it.</Text>
+    </List.Item>
+  </List>
+</Section>
 
+      </Stack>
+      <div id="notebook-example"></div>
       <DataInteractionPanel
         dataUrl="/modules/module5/course/module5_course_scaling_and_normalization"
         notebookUrl="/modules/module5/course/scaling_and_normalization.ipynb"

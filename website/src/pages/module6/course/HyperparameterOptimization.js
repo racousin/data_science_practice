@@ -1,193 +1,198 @@
-import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import CodeBlock from "components/CodeBlock";
-import { InlineMath, BlockMath } from "react-katex";
-import "katex/dist/katex.min.css";
+import React from 'react';
+import { Container, Title, Text, Stack, List, Group, Image } from '@mantine/core';
+import { IconAdjustments, IconArrowsShuffle, IconBrain } from '@tabler/icons-react';
+import CodeBlock from 'components/CodeBlock';
+import { InlineMath, BlockMath } from 'react-katex';
+import 'katex/dist/katex.min.css';
 
 const HyperparameterOptimization = () => {
   return (
     <Container fluid>
-      <h1 className="my-4">Hyperparameter Optimization</h1>
+      <Title order={1} id="hyperparameter-optimization" mt="xl" mb="md">Hyperparameter Optimization</Title>
+      
+      <Text>
+        Hyperparameter optimization is the process of finding the best set of hyperparameters for a machine learning model. Hyperparameters are parameters that are set before the learning process begins, as opposed to parameters that are learned during training.
+      </Text>
 
-      <section>
-        <p>
-          Hyperparameter optimization is the process of finding the best set of
-          hyperparameters for a machine learning model. Hyperparameters are
-          parameters that are not learned from the data but are set before the
-          learning process begins. Optimizing these parameters can significantly
-          improve model performance.
-        </p>
-      </section>
+      <Stack spacing="xl" mt="xl">
+        <Section
+          icon={<IconAdjustments size={28} />}
+          title="Grid Search"
+          id="grid-search"
+        >
+          <Text>
+            Grid search is an exhaustive search through a manually specified subset of the hyperparameter space. It tries all possible combinations of the specified hyperparameter values.
+          </Text>
 
-      <section>
-        <h2 id="grid-search">Grid Search</h2>
-        <p>
-          Grid search is an exhaustive search through a manually specified
-          subset of the hyperparameter space. It tries all possible combinations
-          of the specified hyperparameter values.
-        </p>
-        <CodeBlock
-          language="python"
-          code={`
+          <CodeBlock
+            language="python"
+            code={`
 from sklearn.model_selection import GridSearchCV
 from sklearn.svm import SVC
-from sklearn.datasets import make_classification
-from sklearn.model_selection import train_test_split
+from sklearn.datasets import load_iris
 
-# Create a sample dataset
-X, y = make_classification(n_samples=1000, n_features=20, n_classes=2, random_state=42)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# Load the iris dataset
+X, y = load_iris(return_X_y=True)
 
 # Define the parameter grid
 param_grid = {
-    'C': [0.1, 1, 10, 100],
-    'kernel': ['rbf', 'poly', 'sigmoid'],
-    'gamma': ['scale', 'auto', 0.1, 1]
+    'C': [0.1, 1, 10],
+    'kernel': ['rbf', 'linear'],
+    'gamma': [0.1, 1, 'scale']
 }
 
-# Create a base model
-svm = SVC(random_state=42)
+# Create an SVC classifier
+svc = SVC()
 
-# Instantiate the grid search model
-grid_search = GridSearchCV(estimator=svm, param_grid=param_grid, 
-                           cv=5, n_jobs=-1, verbose=2)
+# Perform grid search
+grid_search = GridSearchCV(svc, param_grid, cv=5, scoring='accuracy')
+grid_search.fit(X, y)
 
-# Fit the grid search to the data
-grid_search.fit(X_train, y_train)
+print("Best parameters:", grid_search.best_params_)
+print("Best cross-validation score:", grid_search.best_score_)
+            `}
+          />
 
-print("Best parameters found: ", grid_search.best_params_)
-print("Best cross-validation score: {:.2f}".format(grid_search.best_score_))
-print("Test set score: {:.2f}".format(grid_search.score(X_test, y_test)))
-          `}
-        />
-      </section>
+          <Text mt="md">
+            Grid search is comprehensive but can be computationally expensive, especially with a large number of hyperparameters or a wide range of values.
+          </Text>
+        </Section>
 
-      <section>
-        <h2 id="random-search">Random Search</h2>
-        <p>
-          Random search selects random combinations of hyperparameters. It's
-          often more efficient than grid search, especially when only a few
-          hyperparameters actually matter.
-        </p>
-        <CodeBlock
-          language="python"
-          code={`
+        <Section
+          icon={<IconArrowsShuffle size={28} />}
+          title="Random Search"
+          id="random-search"
+        >
+          <Text>
+            Random search samples random combinations of hyperparameters from specified distributions. It can be more efficient than grid search, especially when not all hyperparameters are equally important.
+          </Text>
+
+          <CodeBlock
+            language="python"
+            code={`
 from sklearn.model_selection import RandomizedSearchCV
-from scipy.stats import uniform, randint
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.datasets import load_iris
+from scipy.stats import randint, uniform
+
+# Load the iris dataset
+X, y = load_iris(return_X_y=True)
 
 # Define the parameter distributions
 param_dist = {
-    'C': uniform(0.1, 100),
-    'kernel': ['rbf', 'poly', 'sigmoid'],
-    'gamma': uniform(0.001, 1),
-    'degree': randint(1, 6)
+    'n_estimators': randint(10, 200),
+    'max_depth': randint(1, 20),
+    'min_samples_split': randint(2, 20),
+    'min_samples_leaf': randint(1, 10),
+    'max_features': uniform(0, 1)
 }
 
-# Instantiate the random search model
-random_search = RandomizedSearchCV(estimator=svm, param_distributions=param_dist,
-                                   n_iter=100, cv=5, n_jobs=-1, verbose=2, random_state=42)
+# Create a random forest classifier
+rf = RandomForestClassifier()
 
-# Fit the random search to the data
-random_search.fit(X_train, y_train)
+# Perform random search
+random_search = RandomizedSearchCV(rf, param_distributions=param_dist, n_iter=100, cv=5, scoring='accuracy')
+random_search.fit(X, y)
 
-print("Best parameters found: ", random_search.best_params_)
-print("Best cross-validation score: {:.2f}".format(random_search.best_score_))
-print("Test set score: {:.2f}".format(random_search.score(X_test, y_test)))
-          `}
-        />
-      </section>
+print("Best parameters:", random_search.best_params_)
+print("Best cross-validation score:", random_search.best_score_)
+            `}
+          />
 
-      <section>
-        <h2 id="bayesian-optimization">Bayesian Optimization</h2>
-        <p>
-          Bayesian optimization builds a probabilistic model of the function
-          mapping from hyperparameter values to the objective evaluated on a
-          validation set. It tries to balance exploration of unknown areas and
-          exploitation of known good areas.
-        </p>
-        <CodeBlock
-          language="python"
-          code={`
-from sklearn.gaussian_process import GaussianProcessRegressor
-from sklearn.gaussian_process.kernels import Matern
+          <Text mt="md">
+            Random search can often find good hyperparameters in fewer iterations than grid search, making it a popular choice for many applications.
+          </Text>
+        </Section>
+
+        <Section
+          icon={<IconBrain size={28} />}
+          title="Bayesian Optimization"
+          id="bayesian-optimization"
+        >
+          <Text>
+            Bayesian optimization uses probabilistic models to guide the search for optimal hyperparameters. It tries to balance exploration of unknown regions and exploitation of known good regions.
+          </Text>
+
+          <CodeBlock
+            language="python"
+            code={`
+from sklearn.datasets import load_iris
+from sklearn.svm import SVC
+from sklearn.model_selection import cross_val_score
 from skopt import BayesSearchCV
+from skopt.space import Real, Categorical, Integer
+
+# Load the iris dataset
+X, y = load_iris(return_X_y=True)
 
 # Define the search space
 search_spaces = {
-    'C': (1e-6, 1e+6, 'log-uniform'),
-    'gamma': (1e-6, 1e+1, 'log-uniform'),
-    'degree': (1, 8),  # integer valued parameter
-    'kernel': ['rbf', 'poly', 'sigmoid'],
+    'C': Real(1e-6, 1e+6, prior='log-uniform'),
+    'gamma': Real(1e-6, 1e+1, prior='log-uniform'),
+    'degree': Integer(1, 8),
+    'kernel': Categorical(['linear', 'poly', 'rbf'])
 }
 
-# Instantiate the BayesSearchCV object
-bayes_search = BayesSearchCV(
-    estimator=svm,
-    search_spaces=search_spaces,
+# Create an SVC classifier
+svc = SVC()
+
+# Perform Bayesian optimization
+opt = BayesSearchCV(
+    svc,
+    search_spaces,
     n_iter=50,
     cv=5,
     n_jobs=-1,
-    verbose=2,
-    random_state=42
+    verbose=0
 )
 
-# Fit the Bayesian optimization to the data
-bayes_search.fit(X_train, y_train)
+opt.fit(X, y)
 
-print("Best parameters found: ", bayes_search.best_params_)
-print("Best cross-validation score: {:.2f}".format(bayes_search.best_score_))
-print("Test set score: {:.2f}".format(bayes_search.score(X_test, y_test)))
-          `}
-        />
-      </section>
+print("Best parameters:", opt.best_params_)
+print("Best cross-validation score:", opt.best_score_)
+            `}
+          />
 
-      <section>
-        <h2 id="genetic-algorithms">Genetic Algorithms</h2>
-        <p>
-          Genetic algorithms are inspired by the process of natural selection.
-          They evolve a population of hyperparameter configurations over
-          multiple generations to find the best performing set.
-        </p>
-        <CodeBlock
-          language="python"
-          code={`
-from sklearn.model_selection import cross_val_score
-import numpy as np
-from deap import base, creator, tools, algorithms
+          <Text mt="md">
+            Bayesian optimization can be more efficient than both grid and random search, especially for expensive-to-evaluate objective functions.
+          </Text>
+        </Section>
 
-# This is a simplified example. In practice, you'd need to implement more complex genetic operations.
-
-# Define the fitness function
-def evaluate(individual):
-    C, gamma = individual
-    svm = SVC(C=C, gamma=gamma, random_state=42)
-    return np.mean(cross_val_score(svm, X_train, y_train, cv=5)),
-
-# Set up the genetic algorithm
-creator.create("FitnessMax", base.Fitness, weights=(1.0,))
-creator.create("Individual", list, fitness=creator.FitnessMax)
-
-toolbox = base.Toolbox()
-toolbox.register("attr_float", np.random.uniform, 0.1, 100)
-toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_float, n=2)
-toolbox.register("population", tools.initRepeat, list, toolbox.individual)
-
-toolbox.register("evaluate", evaluate)
-toolbox.register("mate", tools.cxBlend, alpha=0.5)
-toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=1, indpb=0.2)
-toolbox.register("select", tools.selTournament, tournsize=3)
-
-# Run the genetic algorithm
-population = toolbox.population(n=50)
-result, log = algorithms.eaSimple(population, toolbox, cxpb=0.5, mutpb=0.2, ngen=10, verbose=True)
-
-best_ind = tools.selBest(result, 1)[0]
-print("Best individual is: %s\nwith fitness: %s" % (best_ind, best_ind.fitness))
-          `}
-        />
-      </section>
+        <Section
+          title="Best Practices"
+          id="best-practices"
+        >
+          <List>
+            <List.Item>
+              <Text><span style={{ fontWeight: 700 }}>Start with a broad search:</span> Begin with a wide range of hyperparameters and gradually narrow down.</Text>
+            </List.Item>
+            <List.Item>
+              <Text><span style={{ fontWeight: 700 }}>Use domain knowledge:</span> Incorporate prior knowledge about good hyperparameter ranges when available.</Text>
+            </List.Item>
+            <List.Item>
+              <Text><span style={{ fontWeight: 700 }}>Consider computational resources:</span> Choose the optimization method based on the available computational budget.</Text>
+            </List.Item>
+            <List.Item>
+              <Text><span style={{ fontWeight: 700 }}>Avoid overfitting:</span> Use cross-validation to ensure the optimized hyperparameters generalize well.</Text>
+            </List.Item>
+            <List.Item>
+              <Text><span style={{ fontWeight: 700 }}>Log-scale for certain parameters:</span> Use log-scale for parameters like learning rates or regularization strengths that can span several orders of magnitude.</Text>
+            </List.Item>
+          </List>
+        </Section>
+      </Stack>
     </Container>
   );
 };
+
+const Section = ({ icon, title, id, children }) => (
+  <Stack spacing="sm">
+    <Group spacing="xs">
+      {icon}
+      <Title order={2} id={id}>{title}</Title>
+    </Group>
+    {children}
+  </Stack>
+);
 
 export default HyperparameterOptimization;

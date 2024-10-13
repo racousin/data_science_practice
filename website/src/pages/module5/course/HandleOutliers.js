@@ -217,7 +217,7 @@ df['column_imputed'] = impute_outliers(df['column'], method='median')
           </List>
         </Section>
       </Stack>
-
+      <div id="notebook-example"></div>
       <DataInteractionPanel
         trainDataUrl="/modules/module5/course/module5_course_handling_outliers_train.csv"
         testDataUrl="/modules/module5/course/module5_course_handling_outliers_test.csv"

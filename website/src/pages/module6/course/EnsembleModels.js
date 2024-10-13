@@ -1,177 +1,344 @@
-import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import CodeBlock from "components/CodeBlock";
-import { InlineMath, BlockMath } from "react-katex";
-import "katex/dist/katex.min.css";
+import React from 'react';
+import { Container, Title, Text, Stack, List, Group, Table, Badge } from '@mantine/core';
+import { IconCheck, IconX } from '@tabler/icons-react';
+import CodeBlock from 'components/CodeBlock';
+import { InlineMath, BlockMath } from 'react-katex';
+import 'katex/dist/katex.min.css';
 
 const EnsembleModels = () => {
   return (
     <Container fluid>
-      <h1 className="my-4">Ensemble Models</h1>
+      <Title order={1} mt="xl" mb="md">Ensemble Models</Title>
 
-      <section>
-        <h2 id="boosting">Boosting</h2>
-        <p>
-          Boosting is a family of algorithms that convert weak learners into
-          strong learners. It builds models sequentially, where each new model
-          tries to correct the errors of the previous ones.
-        </p>
-        <h3>AdaBoost (Adaptive Boosting)</h3>
-        <p>
-          AdaBoost adjusts the weights of misclassified instances after each
-          iteration, focusing subsequent models on the hard-to-classify
-          instances.
-        </p>
-        <CodeBlock
-          language="python"
-          code={`
-from sklearn.ensemble import AdaBoostClassifier
+      <Stack spacing="xl">
+        <ModelSection
+          title="Boosting"
+          id="boosting"
+          math={<BlockMath math="F_m(x) = F_{m-1}(x) + \alpha_m h_m(x)" />}
+          description="Boosting builds models sequentially, where each new model tries to correct the errors of the previous ones. It converts weak learners into strong learners."
+          submodels={[
+            {
+              name: "AdaBoost",
+              description: "Adjusts weights of misclassified instances after each iteration.",
+              hyperparameters: [
+                { name: 'n_estimators', description: 'Number of weak learners' },
+                { name: 'learning_rate', description: 'Weight applied to each classifier at each boosting iteration' },
+              ],
+              checks: {
+                unscaled: false,
+                missing: false,
+                categorical: false,
+                regression: true,
+                classification: true
+              },
+              bayesianOptimization: `
+from skopt import BayesSearchCV
+from skopt.space import Real, Integer
+from sklearn.ensemble import AdaBoostClassifier, AdaBoostRegressor
 
-adaboost_model = AdaBoostClassifier(n_estimators=50, random_state=42)
-adaboost_model.fit(X_train, y_train)
-y_pred_ada = adaboost_model.predict(X_test)
-print(f"AdaBoost Classifier Accuracy: {accuracy_score(y_test, y_pred_ada)}")
-          `}
+param_space = {
+    'n_estimators': Integer(50, 500),
+    'learning_rate': Real(0.01, 1.0, prior='log-uniform'),
+}
+
+# For classification
+opt_clf = BayesSearchCV(AdaBoostClassifier(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
+opt_clf.fit(X_train, y_train)
+
+# For regression
+opt_reg = BayesSearchCV(AdaBoostRegressor(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
+opt_reg.fit(X_train, y_train)
+              `
+            },
+            {
+              name: "Gradient Boosting",
+              description: "Minimizes the loss function of the entire ensemble using gradient descent.",
+              hyperparameters: [
+                { name: 'n_estimators', description: 'Number of boosting stages to perform' },
+                { name: 'learning_rate', description: 'Shrinks the contribution of each tree' },
+                { name: 'max_depth', description: 'Maximum depth of the individual regression estimators' },
+              ],
+              checks: {
+                unscaled: true,
+                missing: false,
+                categorical: false,
+                regression: true,
+                classification: true
+              },
+              bayesianOptimization: `
+from skopt import BayesSearchCV
+from skopt.space import Real, Integer
+from sklearn.ensemble import GradientBoostingClassifier, GradientBoostingRegressor
+
+param_space = {
+    'n_estimators': Integer(50, 500),
+    'learning_rate': Real(0.01, 1.0, prior='log-uniform'),
+    'max_depth': Integer(3, 10),
+    'min_samples_split': Integer(2, 20),
+    'min_samples_leaf': Integer(1, 20)
+}
+
+# For classification
+opt_clf = BayesSearchCV(GradientBoostingClassifier(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
+opt_clf.fit(X_train, y_train)
+
+# For regression
+opt_reg = BayesSearchCV(GradientBoostingRegressor(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
+opt_reg.fit(X_train, y_train)
+              `
+            }
+          ]}
         />
 
-        <h3>Gradient Boosting</h3>
-        <p>
-          Gradient Boosting builds models sequentially, with each new model
-          trying to minimize the loss function of the entire ensemble using
-          gradient descent.
-        </p>
-        <CodeBlock
-          language="python"
-          code={`
-from sklearn.ensemble import GradientBoostingClassifier
-
-gb_model = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, random_state=42)
-gb_model.fit(X_train, y_train)
-y_pred_gb = gb_model.predict(X_test)
-print(f"Gradient Boosting Classifier Accuracy: {accuracy_score(y_test, y_pred_gb)}")
-          `}
-        />
-      </section>
-
-      <section>
-        <h2 id="random-forests">Random Forests</h2>
-        <h3>Ensemble Learning Concept</h3>
-        <p>
-          Random Forests are an ensemble learning method that operate by
-          constructing multiple decision trees during training and outputting
-          the class that is the mode of the classes (classification) or mean
-          prediction (regression) of the individual trees.
-        </p>
-        <p>Key concepts:</p>
-        <ul>
-          <li>
-            Bagging (Bootstrap Aggregating): Training each tree on a random
-            subset of the data
-          </li>
-          <li>
-            Feature Randomness: Considering only a random subset of features for
-            splitting at each node
-          </li>
-        </ul>
-
-        <h3>Implementation and Key Hyperparameters</h3>
-        <CodeBlock
-          language="python"
-          code={`
+        <ModelSection
+          title="Random Forests"
+          id="random-forests"
+          math={<BlockMath math="f(x) = \frac{1}{B} \sum_{b=1}^B f_b(x)" />}
+          description="Random Forests are an ensemble of decision trees, where each tree is trained on a random subset of the data and features. The final prediction is the average (for regression) or majority vote (for classification) of all trees."
+          hyperparameters={[
+            { name: 'n_estimators', description: 'Number of trees in the forest' },
+            { name: 'max_depth', description: 'Maximum depth of the trees' },
+            { name: 'min_samples_split', description: 'Minimum number of samples required to split an internal node' },
+            { name: 'min_samples_leaf', description: 'Minimum number of samples required to be at a leaf node' },
+            { name: 'max_features', description: 'Number of features to consider when looking for the best split' },
+          ]}
+          checks={{
+            unscaled: true,
+            missing: true,
+            categorical: false,
+            regression: true,
+            classification: true
+          }}
+          bayesianOptimization={`
+from skopt import BayesSearchCV
+from skopt.space import Real, Integer, Categorical
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
-from sklearn.datasets import make_classification, make_regression
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, mean_squared_error
 
-# Classification
-X, y = make_classification(n_samples=1000, n_features=20, n_classes=2, random_state=42)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+param_space = {
+    'n_estimators': Integer(10, 500),
+    'max_depth': Integer(1, 20),
+    'min_samples_split': Integer(2, 20),
+    'min_samples_leaf': Integer(1, 20),
+    'max_features': Real(0.1, 1.0)
+}
 
-rf_clf = RandomForestClassifier(n_estimators=100, random_state=42)
-rf_clf.fit(X_train, y_train)
-y_pred = rf_clf.predict(X_test)
-print(f"Random Forest Classification Accuracy: {accuracy_score(y_test, y_pred)}")
+# For classification
+opt_clf = BayesSearchCV(RandomForestClassifier(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
+opt_clf.fit(X_train, y_train)
 
-# Regression
-X, y = make_regression(n_samples=1000, n_features=20, noise=0.1, random_state=42)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-rf_reg = RandomForestRegressor(n_estimators=100, random_state=42)
-rf_reg.fit(X_train, y_train)
-y_pred = rf_reg.predict(X_test)
-print(f"Random Forest Regression MSE: {mean_squared_error(y_test, y_pred)}")
-          `}
-        />
-      </section>
-
-      <section>
-        <h2 id="gradient-boosting">Gradient Boosting Machines</h2>
-        <p>
-          Gradient Boosting is a machine learning technique that produces a
-          prediction model in the form of an ensemble of weak prediction models,
-          typically decision trees.
-        </p>
-
-        <h3>XGBoost, LightGBM, and CatBoost</h3>
-        <p>These are popular implementations of gradient boosting:</p>
-        <ul>
-          <li>
-            <strong>XGBoost</strong>: Optimized distributed gradient boosting
-            library
-          </li>
-          <li>
-            <strong>LightGBM</strong>: Light Gradient Boosting Machine, uses
-            histogram-based algorithms
-          </li>
-          <li>
-            <strong>CatBoost</strong>: Implements ordered boosting and an
-            innovative algorithm for processing categorical features
-          </li>
-        </ul>
-
-        <h3>Implementation and Key Hyperparameters</h3>
-        <CodeBlock
-          language="python"
-          code={`
-from xgboost import XGBClassifier
-from lightgbm import LGBMClassifier
-from catboost import CatBoostClassifier
-from sklearn.datasets import make_classification
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-
-X, y = make_classification(n_samples=1000, n_features=20, n_classes=2, random_state=42)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-# XGBoost
-xgb = XGBClassifier(n_estimators=100, random_state=42)
-xgb.fit(X_train, y_train)
-y_pred_xgb = xgb.predict(X_test)
-print(f"XGBoost Accuracy: {accuracy_score(y_test, y_pred_xgb)}")
-
-# LightGBM
-lgbm = LGBMClassifier(n_estimators=100, random_state=42)
-lgbm.fit(X_train, y_train)
-y_pred_lgbm = lgbm.predict(X_test)
-print(f"LightGBM Accuracy: {accuracy_score(y_test, y_pred_lgbm)}")
-
-# CatBoost
-cb = CatBoostClassifier(n_estimators=100, random_state=42, verbose=0)
-cb.fit(X_train, y_train)
-y_pred_cb = cb.predict(X_test)
-print(f"CatBoost Accuracy: {accuracy_score(y_test, y_pred_cb)}")
+# For regression
+opt_reg = BayesSearchCV(RandomForestRegressor(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
+opt_reg.fit(X_train, y_train)
           `}
         />
 
-        <ul>
-          <li>
-            CatBoost can handle categorical variables natively using its ordered
-            boosting algorithm
-          </li>
-        </ul>
-      </section>
+        <ModelSection
+          title="Advanced Gradient Boosting"
+          id="advanced-gradient-boosting"
+          math={<BlockMath math="L(\phi) = \sum_i l(y_i, \hat{y}_i) + \sum_k \Omega(f_k)" />}
+          description="Advanced Gradient Boosting implementations like XGBoost, LightGBM, and CatBoost offer improved performance and efficiency over traditional Gradient Boosting."
+          submodels={[
+            {
+              name: "XGBoost",
+              description: "Optimized distributed gradient boosting library.",
+              hyperparameters: [
+                { name: 'n_estimators', description: 'Number of gradient boosted trees' },
+                { name: 'learning_rate', description: 'Boosting learning rate' },
+                { name: 'max_depth', description: 'Maximum tree depth for base learners' },
+                { name: 'subsample', description: 'Subsample ratio of the training instance' },
+                { name: 'colsample_bytree', description: 'Subsample ratio of columns when constructing each tree' },
+              ],
+              checks: {
+                unscaled: true,
+                missing: true,
+                categorical: false,
+                regression: true,
+                classification: true
+              },
+              bayesianOptimization: `
+from skopt import BayesSearchCV
+from skopt.space import Real, Integer, Categorical
+from xgboost import XGBClassifier, XGBRegressor
+
+param_space = {
+    'n_estimators': Integer(50, 1000),
+    'learning_rate': Real(0.01, 1.0, prior='log-uniform'),
+    'max_depth': Integer(3, 10),
+    'subsample': Real(0.5, 1.0),
+    'colsample_bytree': Real(0.5, 1.0)
+}
+
+# For classification
+opt_clf = BayesSearchCV(XGBClassifier(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
+opt_clf.fit(X_train, y_train)
+
+# For regression
+opt_reg = BayesSearchCV(XGBRegressor(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
+opt_reg.fit(X_train, y_train)
+              `
+            },
+            {
+              name: "LightGBM",
+              description: "Light Gradient Boosting Machine, uses histogram-based algorithms.",
+              hyperparameters: [
+                { name: 'n_estimators', description: 'Number of boosting iterations' },
+                { name: 'learning_rate', description: 'Boosting learning rate' },
+                { name: 'num_leaves', description: 'Maximum tree leaves for base learners' },
+                { name: 'feature_fraction', description: 'Fraction of features to be used in each iteration' },
+                { name: 'bagging_fraction', description: 'Fraction of data to be used for each iteration' },
+              ],
+              checks: {
+                unscaled: true,
+                missing: true,
+                categorical: true,
+                regression: true,
+                classification: true
+              },
+              bayesianOptimization: `
+from skopt import BayesSearchCV
+from skopt.space import Real, Integer, Categorical
+from lightgbm import LGBMClassifier, LGBMRegressor
+
+param_space = {
+    'n_estimators': Integer(50, 1000),
+    'learning_rate': Real(0.01, 1.0, prior='log-uniform'),
+    'num_leaves': Integer(20, 100),
+    'feature_fraction': Real(0.5, 1.0),
+    'bagging_fraction': Real(0.5, 1.0)
+}
+
+# For classification
+opt_clf = BayesSearchCV(LGBMClassifier(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
+opt_clf.fit(X_train, y_train)
+
+# For regression
+opt_reg = BayesSearchCV(LGBMRegressor(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
+opt_reg.fit(X_train, y_train)
+              `
+            },
+            {
+              name: "CatBoost",
+              description: "Implements ordered boosting and an innovative algorithm for processing categorical features.",
+              hyperparameters: [
+                { name: 'iterations', description: 'Number of boosting iterations' },
+                { name: 'learning_rate', description: 'Boosting learning rate' },
+                { name: 'depth', description: 'Depth of the tree' },
+                { name: 'l2_leaf_reg', description: 'L2 regularization coefficient' },
+                { name: 'border_count', description: 'Number of splits for numerical features' },
+              ],
+              checks: {
+                unscaled: true,
+                missing: true,
+                categorical: true,
+                regression: true,
+                classification: true
+              },
+              bayesianOptimization: `
+from skopt import BayesSearchCV
+from skopt.space import Real, Integer, Categorical
+from catboost import CatBoostClassifier, CatBoostRegressor
+
+param_space = {
+    'iterations': Integer(50, 1000),
+    'learning_rate': Real(0.01, 1.0, prior='log-uniform'),
+    'depth': Integer(3, 10),
+    'l2_leaf_reg': Real(1e-3, 10, prior='log-uniform'),
+    'border_count': Integer(32, 255)
+}
+
+# For classification
+opt_clf = BayesSearchCV(CatBoostClassifier(verbose=False), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
+opt_clf.fit(X_train, y_train)
+
+# For regression
+opt_reg = BayesSearchCV(CatBoostRegressor(verbose=False), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
+opt_reg.fit(X_train, y_train)
+              `
+            }
+          ]}
+        />
+      </Stack>
     </Container>
   );
 };
+
+const ModelSection = ({ title, id, math, description, hyperparameters, submodels, checks, bayesianOptimization }) => (
+  <Stack spacing="md">
+    <Title order={2} id={id}>{title}</Title>
+    {math}
+    <Text>{description}</Text>
+    {submodels ? (
+      submodels.map((submodel, index) => (
+        <Stack key={index} spacing="sm">
+          <Title order={3}>{submodel.name}</Title>
+          <Text>{submodel.description}</Text>
+          <HyperparameterTable hyperparameters={submodel.hyperparameters} />
+          <ChecksTable checks={submodel.checks} />
+          <Title order={4}>Bayesian Optimization Cheat Sheet</Title>
+          <CodeBlock language="python" code={submodel.bayesianOptimization} />
+        </Stack>
+      ))
+    ) : (
+      <>
+        <HyperparameterTable hyperparameters={hyperparameters} />
+        <ChecksTable checks={checks} />
+        <Title order={3}>Bayesian Optimization Cheat Sheet</Title>
+        <CodeBlock language="python" code={bayesianOptimization} />
+      </>
+    )}
+  </Stack>
+);
+
+const HyperparameterTable = ({ hyperparameters }) => (
+  <Table>
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      {hyperparameters.map((param, index) => (
+        <tr key={index}>
+          <td><code>{param.name}</code></td>
+          <td>{param.description}</td>
+        </tr>
+      ))}
+    </tbody>
+  </Table>
+);
+
+const ChecksTable = ({ checks }) => (
+  <Table>
+    <thead>
+      <tr>
+        <th>Check</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Robust to unscaled data</td>
+        <td>{checks.unscaled ? <IconCheck color="green" /> : <IconX color="red" />}</td>
+      </tr>
+      <tr>
+        <td>Handles missing values</td>
+        <td>{checks.missing ? <IconCheck color="green" /> : <IconX color="red" />}</td>
+      </tr>
+      <tr>
+        <td>Handles categorical data</td>
+        <td>{checks.categorical ? <IconCheck color="green" /> : <IconX color="red" />}</td>
+      </tr>
+      <tr>
+        <td>Supports regression</td>
+        <td>{checks.regression ? <IconCheck color="green" /> : <IconX color="red" />}</td>
+      </tr>
+      <tr>
+        <td>Supports classification</td>
+        <td>{checks.classification ? <IconCheck color="green" /> : <IconX color="red" />}</td>
+      </tr>
+    </tbody>
+  </Table>
+);
 
 export default EnsembleModels;

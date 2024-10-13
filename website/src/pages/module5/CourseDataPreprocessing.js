@@ -84,16 +84,12 @@ const CourseDataPreprocessing = () => {
         { id: "one-hot-encoding", label: "One-Hot Encoding" },
         { id: "label-encoding", label: "Label Encoding" },
         {
-          id: "handling-unseen-categories",
-          label: "Handling Unseen Categories",
+          id: "advanced-techniques",
+          label: "Advanced Techniques",
         },
         {
-          id: "feature-engineering",
-          label: "Feature Engineering with Categorical Data",
-        },
-        {
-          id: "use-in-models",
-          label: "Using Categorical Data in Models",
+          id: "considerations-and-best-practices",
+          label: "Considerations and Best Practices",
         },
         { id: "notebook-example", label: "Notebook Example" },
       ],
@@ -104,17 +100,13 @@ const CourseDataPreprocessing = () => {
       label: "Handle Outliers",
       component: lazy(() => import("pages/module5/course/HandleOutliers")),
       subLinks: [
-        { id: "what-are-outliers", label: "What Are Outliers?" },
+        { id: "types-of-outliers", label: "Types of Outliers" },
         {
-          id: "detecting-outliers",
-          label: "Detecting Outliers",
+          id: "detecting-visualizing-outliers",
+          label: "Detecting and Visualizing Outliers",
         },
-        { id: "visualize-outliers", label: "Visualize Outliers" },
         { id: "managing-outliers", label: "Managing Outliers" },
-        {
-          id: "considerations",
-          label: "Considerations",
-        },
+        { id: "considerations-best-practices", label: "Considerations and Best Practices" },
         { id: "notebook-example", label: "Notebook Example" },
       ],
     },
@@ -125,25 +117,20 @@ const CourseDataPreprocessing = () => {
         import("pages/module5/course/FeatureEngineering")
       ),
       subLinks: [
-        { id: "decomposition", label: "Decomposition" },
+        { id: "Decomposition and Feature Extraction", label: "decomposition-extraction" },
         {
-          id: "binning",
-          label: "Binning",
+          id: "mathematical-transformations",
+          label: "Mathematical Transformations",
         },
         {
-          id: "interaction-features",
-          label: "Creation of Interaction Features",
+          id: "binning-aggregation",
+          label: "Binning and Aggregation",
         },
-        { id: "aggregation", label: "Aggregation" },
+        { id: "time-series-features", label: "Time Series Features" },
         {
-          id: "polynomial-features",
-          label: "Polynomial Features",
+          id: "considerations-best-practices",
+          label: "Considerations and Best Practices",
         },
-        {
-          id: "transformation",
-          label: "Feature Transformation",
-        },
-        { id: "time-series", label: "Time-series Transformations" },
         { id: "notebook-example", label: "Notebook Example" },
       ],
     },
@@ -154,7 +141,7 @@ const CourseDataPreprocessing = () => {
         import("pages/module5/course/ScalingAndNormalization")
       ),
       subLinks: [
-        { id: "why-scale-and-normalize", label: "Why Scale and Normalize?" },
+        { id: "why-scale-normalize", label: "Why Scale and Normalize?" },
         {
           id: "scaling-methods",
           label: "Scaling Methods",
@@ -164,6 +151,7 @@ const CourseDataPreprocessing = () => {
           label: "Normalization Methods",
         },
         { id: "choosing-method", label: "Choosing the Right Method" },
+        { id: "practical-considerations", label: "Practical Considerations" },
         { id: "notebook-example", label: "Notebook Example" },
       ],
     },
@@ -176,11 +164,13 @@ const CourseDataPreprocessing = () => {
         )
       ),
       subLinks: [
-        { id: "Selection", label: "Feature Selection Techniques" },
+        { id: "feature-selection", label: "Feature Selection Techniques" },
         {
-          id: "Reduction",
+          id: "dimensionality-reduction",
           label: "Dimensionality Reduction Techniques",
         },
+        { id: "comparison", label: "Comparison of Techniques" },
+        { id: "best-practices", label: "Best Practices" },
         { id: "notebook-example", label: "Notebook Example" },
       ],
     }

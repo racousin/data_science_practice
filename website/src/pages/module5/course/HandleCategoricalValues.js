@@ -388,7 +388,7 @@ model.fit(train_pool)
           </List>
         </Section>
       </Stack>
-
+      <div id="notebook-example"></div>
       <DataInteractionPanel
         dataUrl="/modules/module5/course/module5_course_handling_categorical.csv"
         notebookUrl="/modules/module5/course/handling_categorical.ipynb"

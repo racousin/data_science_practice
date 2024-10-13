@@ -403,19 +403,13 @@ print("Explained variance ratio:", lda.explained_variance_ratio_)
         >
           <List>
             <List.Item><span style={{ fontWeight: 700 }}>Understand Your Data:</span> Thoroughly explore your dataset before applying any technique.</List.Item>
-            <List.Item><span style={{ fontWeight: 700 }}>Consider the Problem Type:</span> Choose techniques appropriate for your problem and data characteristics.</List.Item>
-            <List.Item><span style={{ fontWeight: 700 }}>Use Cross-Validation:</span> Always use cross-validation to avoid overfitting, especially with wrapper methods.</List.Item>
             <List.Item><span style={{ fontWeight: 700 }}>Combine Multiple Techniques:</span> Often, a combination of techniques can yield better results.</List.Item>
             <List.Item><span style={{ fontWeight: 700 }}>Consider Interpretability:</span> If model interpretability is important, favor feature selection over dimensionality reduction.</List.Item>
             <List.Item><span style={{ fontWeight: 700 }}>Scale Your Data:</span> Normalize or standardize your data before applying dimensionality reduction techniques.</List.Item>
-            <List.Item><span style={{ fontWeight: 700 }}>Validate Results:</span> Ensure the reduced feature set or transformed data still captures important characteristics of your original dataset.</List.Item>
-            <List.Item><span style={{ fontWeight: 700 }}>Consider Computational Resources:</span> Start with computationally efficient methods for large datasets.</List.Item>
-            <List.Item><span style={{ fontWeight: 700 }}>Incorporate Domain Knowledge:</span> Use domain expertise when selecting or interpreting features.</List.Item>
-            <List.Item><span style={{ fontWeight: 700 }}>Iterative Process:</span> Be prepared to try multiple techniques and combinations to find the best approach.</List.Item>
           </List>
         </Section>
       </Stack>
-
+      <div id="notebook-example"></div>
       <DataInteractionPanel
         dataUrl="/modules/module5/course/module5_course_feature_selection_and_dimensionality_reduction.csv"
         notebookUrl="/modules/module5/course/feature_selection_and_dimensionality_reduction.ipynb"
