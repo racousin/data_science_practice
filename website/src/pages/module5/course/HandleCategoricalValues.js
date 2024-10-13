@@ -78,11 +78,11 @@ print("Original DataFrame:")
 print(df)
 
 # Identify data types
-print("\nData types:")
+print("Data types:")
 print(df.dtypes)
 
 # Identify unique values
-print("\nUnique values in each column:")
+print("Unique values in each column:")
 for column in df.columns:
     print(f"{column}: {df[column].nunique()} - {df[column].unique()}")
 
@@ -189,7 +189,7 @@ print(df)
 # One-hot encoding
 df_encoded = pd.get_dummies(df, columns=['color', 'size'])
 
-print("\nOne-hot encoded DataFrame:")
+print("One-hot encoded DataFrame:")
 print(df_encoded)
 
 # Output:
@@ -241,10 +241,10 @@ le = LabelEncoder()
 df['color_encoded'] = le.fit_transform(df['color'])
 df['size_encoded'] = le.fit_transform(df['size'])
 
-print("\nLabel encoded DataFrame:")
+print("Label encoded DataFrame:")
 print(df)
 
-print("\nEncoding mappings:")
+print("Encoding mappings:")
 print("Color:", dict(zip(le.classes_, le.transform(le.classes_))))
 print("Size:", dict(zip(le.classes_, le.transform(le.classes_))))
 
@@ -286,7 +286,7 @@ print("Size:", dict(zip(le.classes_, le.transform(le.classes_))))
                 language="python"
                 code={`
 import pandas as pd
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import OrdinalEncoder
 
 # Training data
 train_data = {'color': ['red', 'blue', 'green', 'red', 'blue']}
@@ -296,87 +296,36 @@ df_train = pd.DataFrame(train_data)
 test_data = {'color': ['yellow', 'red', 'purple', 'blue', 'orange']}
 df_test = pd.DataFrame(test_data)
 
-# Function to handle unseen categories
-def encode_and_handle_unknown(train_series, test_series, unknown_value):
-    le = LabelEncoder()
-    le.fit(train_series)
-    
-    # Transform training data
-    train_encoded = le.transform(train_series)
-    
-    # Handle unseen categories in test data
-    test_categories = pd.Categorical(test_series, categories=le.classes_)
-    test_encoded = le.transform(test_categories.fillna(unknown_value))
-    
-    return train_encoded, test_encoded, le.classes_
+# Instantiate OrdinalEncoder with unknown value handling
+oe = OrdinalEncoder(handle_unknown='use_encoded_value', unknown_value=-1)
 
-# Encode and handle unknown
-train_encoded, test_encoded, classes = encode_and_handle_unknown(df_train['color'], df_test['color'], 'red')
+# Fit the encoder on the training data
+oe.fit(df_train[['color']])
+
+# Transform the training data
+train_encoded = oe.transform(df_train[['color']])
+
+# Transform the test data, handling unknown categories
+test_encoded = oe.transform(df_test[['color']])
+
+# Flatten the results for easier reading
+train_encoded = train_encoded.flatten()
+test_encoded = test_encoded.flatten()
 
 print("Training data encoded:")
 print(train_encoded)
-print("\nTest data encoded:")
+print("Test data encoded:")
 print(test_encoded)
-print("\nEncoding classes:", classes)
+print("Encoding categories:", oe.categories_)
 
 # Output:
 # Training data encoded:
 # [2 0 1 2 0]
 # 
 # Test data encoded:
-# [2 2 2 0 2]
+# [-1 2 -1 0 -1]
 # 
-# Encoding classes: ['blue' 'green' 'red']
-                `}
-              />
-              <Title order={4}>Feature Engineering</Title>
-              <Text>
-                Enhance your model by combining categories, creating interaction terms, or extracting information from mixed data types.
-              </Text>
-              <CodeBlock
-                language="python"
-                code={`
-import pandas as pd
-
-# Sample dataset
-data = {
-    'color': ['red', 'blue', 'green', 'red', 'blue'],
-    'size': ['small', 'medium', 'large', 'medium', 'small'],
-    'price': [10, 15, 20, 12, 8]
-}
-df = pd.DataFrame(data)
-
-print("Original DataFrame:")
-print(df)
-
-# Combine categories
-df['color_size'] = df['color'] + '_' + df['size']
-
-# Create interaction term
-df['price_category'] = pd.cut(df['price'], bins=[0, 10, 15, 100], labels=['low', 'medium', 'high'])
-
-# Extract information from mixed data type
-df['is_red_and_small'] = ((df['color'] == 'red') & (df['size'] == 'small')).astype(int)
-
-print("\nDataFrame with engineered features:")
-print(df)
-
-# Output:
-# Original DataFrame:
-#   color    size  price
-# 0   red   small     10
-# 1  blue  medium     15
-# 2 green   large     20
-# 3   red  medium     12
-# 4  blue   small      8
-
-# DataFrame with engineered features:
-#   color    size  price     color_size price_category  is_red_and_small
-# 0   red   small     10     red_small           low                  1
-# 1  blue  medium     15   blue_medium        medium                  0
-# 2 green   large     20   green_large          high                  0
-# 3   red  medium     12    red_medium        medium                  0
-# 4  blue   small      8    blue_small           low                  0
+# Encoding categories: [['blue' 'green' 'red']]
                 `}
               />
               <Title order={4}>Using Categorical Data in Models</Title>
@@ -411,22 +360,6 @@ test_pool =Pool(X_test, cat_features=['color', 'size'])
 # Initialize and train the model
 model = CatBoostClassifier(iterations=100, depth=5, learning_rate=0.1, loss_function='Logloss', verbose=False)
 model.fit(train_pool)
-
-# Make predictions
-predictions = model.predict(test_pool)
-
-# Print feature importances
-feature_importances = model.get_feature_importance(train_pool)
-feature_names = X.columns
-for feature, importance in zip(feature_names, feature_importances):
-    print(f"{feature}: {importance}")
-
-# Note: In a real scenario, you would typically use a larger dataset and perform more comprehensive model evaluation.
-
-# Sample output:
-# color: 7.23
-# size: 5.89
-# price: 86.88
                 `}
               />
           </Stack>
@@ -457,7 +390,7 @@ for feature, importance in zip(feature_names, feature_importances):
       </Stack>
 
       <DataInteractionPanel
-        DataUrl="/modules/module5/course/module5_course_handling_categorical.csv"
+        dataUrl="/modules/module5/course/module5_course_handling_categorical.csv"
         notebookUrl="/modules/module5/course/handling_categorical.ipynb"
         notebookHtmlUrl="/modules/module5/course/handling_categorical.html"
         notebookColabUrl="/website/public/modules/module5/course/handling_categorical.ipynb"

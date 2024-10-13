@@ -122,7 +122,7 @@ const CourseDataPreprocessing = () => {
       to: "/feature-engineering",
       label: "Feature Engineering",
       component: lazy(() =>
-        import("pages/module5/course/FeatureEngineeringTechniques")
+        import("pages/module5/course/FeatureEngineering")
       ),
       subLinks: [
         { id: "decomposition", label: "Decomposition" },
@@ -202,9 +202,6 @@ const CourseDataPreprocessing = () => {
       </Row>
       {location.pathname === `/module${module}/course` && (
         <>
-          <Row>
-            <p>In this module, you will learn about #TOOO</p>
-          </Row>
           <Row>
             <Col>
               <p>Last Updated: {"2024-09-20"}</p>

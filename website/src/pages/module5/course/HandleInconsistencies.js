@@ -6,7 +6,7 @@ import DataInteractionPanel from "components/DataInteractionPanel";
 const HandleInconsistencies = () => {
   const requirementsUrl =
     process.env.PUBLIC_URL + "/modules/module5/course/module5_requirements.txt";
-  const DataUrl =
+  const dataUrl =
     process.env.PUBLIC_URL +
     "/modules/module5/course/module5_course_handle_inconsistencies.csv";
   const notebookUrl =
@@ -204,7 +204,7 @@ print(df_formatted)
 
       <div id="notebook-example"></div>
       <DataInteractionPanel
-        DataUrl={DataUrl}
+        dataUrl={dataUrl}
         notebookUrl={notebookUrl}
         notebookHtmlUrl={notebookHtmlUrl}
         notebookColabUrl={notebookColabUrl}

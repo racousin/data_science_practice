@@ -20,17 +20,11 @@ const ExerciseDataPreprocessing = () => {
     <ModuleFrame
       module={5}
       isCourse={false}
-      title="Module 5: Exercise Data Preprocessing"
+      title="Module 5: Data Preprocessing"
       courseLinks={exerciseLinks}
     >
       {location.pathname === `/module${module}/exercise` && (
         <>
-          <Row>
-            <p>
-              In this module, you will practice Data Preprocessing
-              techniques to improve the performance of machine learning models.
-            </p>
-          </Row>
           <Row>
             <Col>
               <p>Last Updated: {"2024-09-20"}</p>

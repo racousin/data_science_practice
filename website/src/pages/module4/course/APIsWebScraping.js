@@ -56,7 +56,7 @@ new_post = {
     'userId': 1
 }
 post_response = requests.post('https://jsonplaceholder.typicode.com/posts', json=new_post)
-print("\nPOST Response:")
+print("POST Response:")
 print(post_response.json())
 
 # Handling errors
@@ -95,7 +95,7 @@ print(f"Author of first post: {first_post_author}")
 # Convert JSON to pandas DataFrame
 import pandas as pd
 df = pd.DataFrame(data)
-print("\nFirst 5 posts:")
+print("First 5 posts:")
 print(df[['id', 'title']].head())
   `}
         />

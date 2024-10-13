@@ -196,7 +196,7 @@ print(exact_duplicates)
 
 # Identify partial duplicates based on 'Name' and 'City'
 partial_duplicates = df[df.duplicated(subset=['Name', 'City'], keep=False)]
-print("\nPartial duplicates (based on Name and City):")
+print("Partial duplicates (based on Name and City):")
 print(partial_duplicates)
 
 # Count duplicates
@@ -267,7 +267,7 @@ print(df_no_exact_dupes)
 
 # Remove partial duplicates based on 'Name' and 'City', keeping the last occurrence
 df_no_partial_dupes = df.drop_duplicates(subset=['Name', 'City'], keep='last')
-print("\nAfter removing partial duplicates (keeping last):")
+print("After removing partial duplicates (keeping last):")
 print(df_no_partial_dupes)
 
 # Output:

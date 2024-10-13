@@ -6,7 +6,7 @@ import DataInteractionPanel from "components/DataInteractionPanel";
 const HandleMissingValues = () => {
   const requirementsUrl =
     process.env.PUBLIC_URL + "/modules/module5/course/module5_requirements.txt";
-  const DataUrl =
+  const dataUrl =
     process.env.PUBLIC_URL +
     "/modules/module5/course/module5_course_handling_missing_values";
   const notebookUrl =
@@ -488,7 +488,7 @@ print(df)
 
       <div id="notebook-example"></div>
       <DataInteractionPanel
-        DataUrl={DataUrl}
+        dataUrl={dataUrl}
         notebookUrl={notebookUrl}
         notebookHtmlUrl={notebookHtmlUrl}
         notebookColabUrl={notebookColabUrl}

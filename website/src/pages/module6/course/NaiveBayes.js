@@ -81,7 +81,7 @@ y_pred_bnb = bnb.predict(X_test)
 print("Bernoulli Naive Bayes Accuracy:", accuracy_score(y_test, y_pred_bnb))
 
 # Detailed classification report for Gaussian Naive Bayes
-print("\nClassification Report for Gaussian Naive Bayes:")
+print("Classification Report for Gaussian Naive Bayes:")
 print(classification_report(y_test, y_pred_gnb))
           `}
         />
