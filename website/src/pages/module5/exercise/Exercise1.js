@@ -40,7 +40,6 @@ const Exercise1 = () => {
         <List.Item>Perform data analysis to identify preprocessing needs.</List.Item>
         <List.Item>Apply appropriate preprocessing techniques.</List.Item>
         <List.Item>Evaluate the effectiveness of your preprocessing steps.</List.Item>
-        <List.Item>Prepare the data for modeling.</List.Item>
       </List>
       <Alert icon={<IconInfoCircle size="1rem" />} title="" color="blue" mt="md">
         <List>
@@ -67,13 +66,11 @@ const Exercise1 = () => {
         <List.Item>Start with simple transformations and gradually improve your baseline.</List.Item>
         <List.Item>Use cross-validation to assess the impact of preprocessing on model performance.</List.Item>
         <List.Item>Compare different preprocessing techniques</List.Item>
-        <List.Item>Analyze the effect of feature engineering on model accuracy.</List.Item>
-        <List.Item>Evaluate the trade-offs between dimensionality reduction and model performance.</List.Item>
       </List>
 
       <Title order={2} mt="xl" mb="md" id="submission">Generating Submission File</Title>
       <Text>
-        After preprocessing the data and training your model, generate a submission file with your predictions:
+        After preprocessing the data and training your model, generate a submission file with your predictions on <Code>X_test</Code>:
       </Text>
       <List>
         <List.Item>

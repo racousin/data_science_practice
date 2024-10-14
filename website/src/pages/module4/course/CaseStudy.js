@@ -12,12 +12,12 @@ const CaseStudy = () => {
   const requirementsUrl =
     process.env.PUBLIC_URL + "/modules/module4/course/module4_requirements.txt";
   const notebookUrl =
-    process.env.PUBLIC_URL + "/modules/module4/course/module4_course.ipynb";
+    process.env.PUBLIC_URL + "/modules/module4/course/module4_course_model.ipynb";
   const notebookHtmlUrl =
-    process.env.PUBLIC_URL + "/modules/module4/course/module4_course.html";
+    process.env.PUBLIC_URL + "/modules/module4/course/module4_course_model.html";
   const notebookColabUrl =
     process.env.PUBLIC_URL +
-    "website/public/modules/module4/course/module4_course.ipynb";
+    "website/public/modules/module4/course/module4_course_model.ipynb";
   const metadata = {
     description: "This dataset contains sales information from multiple stores to predict sales for StoreE.",
     source: "Multiple store sales records",

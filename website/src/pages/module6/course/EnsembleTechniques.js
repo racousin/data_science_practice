@@ -157,7 +157,7 @@ Key benefits:
 - Decreases variance
 - Improves stability and accuracy
           `}
-          svg={'bagging'}
+          svgType={'bagging'}
           simpleImplementation={`
 import numpy as np
 from sklearn.tree import DecisionTreeClassifier
@@ -248,6 +248,7 @@ Key benefits:
 - Often produces higher accuracy than individual models
 - Allows combining diverse types of models
           `}
+          svgType={'stacking'}
           simpleImplementation={`
 import numpy as np
 from sklearn.datasets import make_classification

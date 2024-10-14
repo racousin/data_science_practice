@@ -35,16 +35,16 @@ const CourseTabularModels = () => {
         import("pages/module6/course/EnsembleTechniques")
       ),
     },
-    // {
-    //   to: "/time-series-models",
-    //   label: "Time Series Models",
-    //   component: lazy(() => import("pages/module6/course/TimeSeriesModels")),
-    // },
-    // {
-    //   to: "/automl",
-    //   label: "AutoML for Tabular Data",
-    //   component: lazy(() => import("pages/module6/course/AutoML")),
-    // },
+    {
+      to: "/time-series-models",
+      label: "Time Series Models",
+      component: lazy(() => import("pages/module6/course/TimeSeriesModels")),
+    },
+    {
+      to: "/automl",
+      label: "AutoML for Tabular Data",
+      component: lazy(() => import("pages/module6/course/AutoML")),
+    },
     // {
     //   to: "/CaseStudy6",
     //   label: "Case Study",
