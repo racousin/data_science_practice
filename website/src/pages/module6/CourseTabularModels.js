@@ -45,11 +45,11 @@ const CourseTabularModels = () => {
     //   label: "AutoML for Tabular Data",
     //   component: lazy(() => import("pages/module6/course/AutoML")),
     // },
-    {
-      to: "/CaseStudy6",
-      label: "Case Study",
-      component: lazy(() => import("pages/module6/course/CaseStudy")),
-    },
+    // {
+    //   to: "/CaseStudy6",
+    //   label: "Case Study",
+    //   component: lazy(() => import("pages/module6/course/CaseStudy")),
+    // },
   ];
   
 
