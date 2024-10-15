@@ -8137,7 +8137,7 @@ Predicting on test dataset of shape: (365, 11)
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Generating Submission File</span>
 <span class="n">submission</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s1">'date'</span><span class="p">:</span> <span class="n">X_test</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+    <span class="s1">'date'</span><span class="p">:</span> <span class="n">X_test</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span>
     <span class="s1">'electricity_demand'</span><span class="p">:</span> <span class="n">y_test_pred</span>
 <span class="p">})</span>
 
