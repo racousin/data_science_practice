@@ -147,40 +147,6 @@ print("Best cross-validation score (regression):", opt_reg.best_score_)
         />
 
         <ModelSection
-          title="Naive Bayes"
-          id="naive-bayes"
-          math={<BlockMath math="P(y|x_1, ..., x_n) = \frac{P(y) \prod_{i=1}^n P(x_i|y)}{P(x_1, ..., x_n)}" />}
-          description="Naive Bayes is a probabilistic classifier based on applying Bayes' theorem with strong independence assumptions between the features."
-          hyperparameters={[
-            { name: 'alpha', description: 'Additive (Laplace/Lidstone) smoothing parameter' },
-            { name: 'fit_prior', description: 'Whether to learn class prior probabilities or not' },
-            { name: 'class_prior', description: 'Prior probabilities of the classes' },
-          ]}
-          checks={{
-            unscaled: true,
-            missing: false,
-            categorical: false,
-            regression: false,
-            classification: true
-          }}
-          bayesianOptimization={`
-from skopt import BayesSearchCV
-from skopt.space import Real, Categorical
-from sklearn.naive_bayes import GaussianNB
-
-param_space = {
-    'var_smoothing': Real(1e-11, 1e-7, prior='log-uniform')
-}
-
-opt = BayesSearchCV(GaussianNB(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
-opt.fit(X_train, y_train)
-
-print("Best parameters:", opt.best_params_)
-print("Best cross-validation score:", opt.best_score_)
-          `}
-        />
-
-        <ModelSection
           title="Decision Trees"
           id="decision-trees"
           math={<BlockMath math="\text{Information Gain} = H(S) - \sum_{i=1}^n \frac{|S_i|}{|S|} H(S_i)" />}

@@ -42,8 +42,6 @@ import ExerciseCloudIntegration from "pages/module15/ExerciseCloudIntegration";
 import ApiDoc from './pages/module4/ApiDoc';
 import ScrapableData from './pages/module4/ScrapableData';
 
-import PageToScrap from "pages/module4/course/PageToScrap";
-import PageToScrapExercise from "pages/module4/course/PageToScrapExercise";
 
 import Resources from "pages/Resources";
 
@@ -161,11 +159,6 @@ function App() {
           <Route
             path="module4/exercise/*"
             element={<ExerciseDataCollection />}
-          />
-          <Route path="page-to-scrap" element={<PageToScrap />} />
-          <Route
-            path="page-to-scrap-exercise/*"
-            element={<PageToScrapExercise />}
           />
           <Route
             path="module5/course/*"

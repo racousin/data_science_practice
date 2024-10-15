@@ -97,35 +97,6 @@ const CourseDataScienceLandscape = () => {
       label: "Model Baseline Case Study",
       component: lazy(() => import("pages/module3/course/CaseStudyML")),
     },
-
-    // {
-    //   to: "/model-deployment",
-    //   label: "From Model Evaluation to Deployment",
-    //   component: lazy(() => import("pages/module3/course/ModelDeployment")),
-    //   subLinks: [
-    //     {
-    //       id: "versioning-tracking",
-    //       label: "Model Versioning and Experiment Tracking",
-    //     },
-    //     { id: "ab-testing", label: "A/B Testing in Production" },
-    //     { id: "performance-monitoring", label: "Monitoring Model Performance" },
-    //     {
-    //       id: "update-strategies",
-    //       label: "Strategies for Model Updates and Retraining",
-    //     },
-    //   ],
-    // },
-    // {
-    //   to: "/best-practices-and-resources",
-    //   label: "Best Practices And Resources",
-    //   component: lazy(() =>
-    //     import("pages/module3/course/BestPracticesAndRessources.js")
-    //   ),
-    //   subLinks: [
-    //     { id: "bi-tools", label: "BI Tools" },
-    //     { id: "resources", label: "Useful Links and Resources" },
-    //   ],
-    // },
   ];
 
   const title = `Module 3: Data Science landscape`;

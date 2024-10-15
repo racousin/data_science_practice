@@ -1,6 +1,6 @@
 import React from 'react';
-import { Container, Title, Text, Stack, List, Group, Image } from '@mantine/core';
-import { IconAdjustments, IconArrowsShuffle, IconBrain } from '@tabler/icons-react';
+import { Container, Title, Text, Stack, List, Group, Alert } from '@mantine/core';
+import { IconAdjustments, IconArrowsShuffle, IconBrain, IconAlertCircle} from '@tabler/icons-react';
 import CodeBlock from 'components/CodeBlock';
 import { InlineMath, BlockMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
@@ -105,58 +105,95 @@ print("Best cross-validation score:", random_search.best_score_)
         </Section>
 
         <Section
-          icon={<IconBrain size={28} />}
-          title="Bayesian Optimization"
-          id="bayesian-optimization"
-        >
-          <Text>
-            Bayesian optimization uses probabilistic models to guide the search for optimal hyperparameters. It tries to balance exploration of unknown regions and exploitation of known good regions.
-          </Text>
+  icon={<IconBrain size={28} />}
+  title="Bayesian Optimization"
+  id="bayesian-optimization"
+>
+  <Text>
+    Bayesian optimization uses probabilistic models to guide the search for optimal hyperparameters. It tries to balance exploration of unknown regions and exploitation of known good regions.
+  </Text>
 
-          <CodeBlock
-            language="python"
-            code={`
-from sklearn.datasets import load_iris
-from sklearn.svm import SVC
+<List>
+  <List.Item>
+    <><span style={{ fontWeight: 700 }}>Prior:</span> We start with a prior belief <InlineMath math="P(\theta)" /> about good hyperparameter values <InlineMath math="\theta" />. For example, we might believe the learning rate is uniformly distributed between 0.0001 and 0.1.</>
+  </List.Item>
+  <List.Item>
+    <><span style={{ fontWeight: 700 }}>Likelihood:</span> We try some hyperparameter values and observe the model's performance. This gives us the likelihood <InlineMath math="P(D|\theta)" />, where <InlineMath math="D" /> is our observed data.</>
+  </List.Item>
+  <List.Item>
+    <><span style={{ fontWeight: 700 }}>Posterior:</span> We update our belief using Bayes' theorem:</>
+    <BlockMath math="P(\theta|D) = \frac{P(D|\theta)P(\theta)}{P(D)}" />
+    <Text>This posterior <InlineMath math="P(\theta|D)" /> represents our updated belief about good hyperparameter values.</Text>
+  </List.Item>
+</List>
+
+  <Title order={3} mt="md" mb="sm">Common Priors in Bayesian Optimization</Title>
+
+  <List>
+    <List.Item>
+      <><span style={{ fontWeight: 700 }}>Uniform Prior:</span> Assumes all values in a range are equally likely. Used when you have no prior knowledge about the parameter.</>
+    </List.Item>
+    <List.Item>
+      <><span style={{ fontWeight: 700 }}>Log-Uniform Prior:</span> Useful for parameters that span several orders of magnitude, like learning rates or regularization strengths.</>
+    </List.Item>
+    <List.Item>
+      <><span style={{ fontWeight: 700 }}>Normal (Gaussian) Prior:</span> Assumes values are more likely near a central value and less likely far from it. Used when you have an idea of a good starting point.</>
+    </List.Item>
+    <List.Item>
+      <><span style={{ fontWeight: 700 }}>Beta Prior:</span> Useful for parameters bounded between 0 and 1, like dropout rates.</>
+    </List.Item>
+    <List.Item>
+      <><span style={{ fontWeight: 700 }}>Categorical Prior:</span> Used for non-numeric hyperparameters, like choice of activation function or kernel type.</>
+    </List.Item>
+  </List>
+
+  <CodeBlock
+    language="python"
+    code={`
+from sklearn.datasets import load_boston
 from sklearn.model_selection import cross_val_score
+from sklearn.ensemble import RandomForestRegressor
 from skopt import BayesSearchCV
-from skopt.space import Real, Categorical, Integer
+from skopt.space import Real, Integer, Categorical
 
-# Load the iris dataset
-X, y = load_iris(return_X_y=True)
+# Load the Boston Housing dataset
+X, y = load_boston(return_X_y=True)
 
-# Define the search space
+# Define the search space with diverse priors
 search_spaces = {
-    'C': Real(1e-6, 1e+6, prior='log-uniform'),
-    'gamma': Real(1e-6, 1e+1, prior='log-uniform'),
-    'degree': Integer(1, 8),
-    'kernel': Categorical(['linear', 'poly', 'rbf'])
+    'n_estimators': Integer(10, 200),  # Uniform prior
+    'max_depth': Integer(1, 20),  # Uniform prior
+    'min_samples_split': Real(0.1, 1.0, prior='uniform'),  # Uniform prior
+    'min_samples_leaf': Real(0.1, 0.5, prior='log-uniform'),  # Log-uniform prior
+    'max_features': Categorical(['auto', 'sqrt', 'log2']),  # Categorical prior
+    'bootstrap': Categorical([True, False])  # Categorical prior
 }
 
-# Create an SVC classifier
-svc = SVC()
+# Create a random forest regressor
+rf = RandomForestRegressor(random_state=42)
 
 # Perform Bayesian optimization
 opt = BayesSearchCV(
-    svc,
+    rf,
     search_spaces,
-    n_iter=50,
+    n_iter=50, # The algorithm will try up to 50 different hyperparameter combinations.
     cv=5,
     n_jobs=-1,
-    verbose=0
+    random_state=42
 )
 
 opt.fit(X, y)
 
 print("Best parameters:", opt.best_params_)
 print("Best cross-validation score:", opt.best_score_)
-            `}
-          />
+    `}
+  />
 
-          <Text mt="md">
-            Bayesian optimization can be more efficient than both grid and random search, especially for expensive-to-evaluate objective functions.
-          </Text>
-        </Section>
+  <Text mt="md">
+    Bayesian optimization can be more efficient than both grid and random search, especially for expensive-to-evaluate objective functions. The choice of prior can significantly impact the efficiency of the optimization process.
+  </Text>
+
+</Section>
 
         <Section
           title="Best Practices"
@@ -174,9 +211,6 @@ print("Best cross-validation score:", opt.best_score_)
             </List.Item>
             <List.Item>
               <Text><span style={{ fontWeight: 700 }}>Avoid overfitting:</span> Use cross-validation to ensure the optimized hyperparameters generalize well.</Text>
-            </List.Item>
-            <List.Item>
-              <Text><span style={{ fontWeight: 700 }}>Log-scale for certain parameters:</span> Use log-scale for parameters like learning rates or regularization strengths that can span several orders of magnitude.</Text>
             </List.Item>
           </List>
         </Section>

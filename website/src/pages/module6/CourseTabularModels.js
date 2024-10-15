@@ -8,7 +8,7 @@ const CourseTabularModels = () => {
   const courseLinks = [
     {
       to: "/model-selection",
-      label: "Model Selection Techniques",
+      label: "Model Selection",
       component: lazy(() => import("pages/module6/course/ModelSelection")),
     },
     {
