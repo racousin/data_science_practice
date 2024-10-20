@@ -6,6 +6,9 @@ import { InlineMath, BlockMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 import DataInteractionPanel from 'components/DataInteractionPanel';
 
+
+// TODO add custom metrics
+
 const ModelSelection = () => {
 
   return (

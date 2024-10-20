@@ -208,7 +208,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 # Create and train the BaggingClassifier
 bagging = BaggingClassifier(
-    base_estimator=DecisionTreeClassifier(),
+    estimator=DecisionTreeClassifier(),
     n_estimators=10,
     max_samples=0.8,
     max_features=0.8,

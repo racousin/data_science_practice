@@ -99,7 +99,7 @@ submission.to_csv('submission.csv', index=False)
         Your preprocessing steps and predictions will be evaluated based on the following criteria:
       </Text>
       <Text>
-        The error threshold for this exercise is a Mean Squared Error (MAE) of 1000. Ensure your predictions are accurate enough to meet this threshold.
+        The error threshold for this exercise is a Mean Squared Error (MSE) of 1000. Ensure your predictions are accurate enough to meet this threshold.
       </Text>
 
       <Title order={2} mt="xl" mb="md" id="submission-requirements">Submission Requirements</Title>
