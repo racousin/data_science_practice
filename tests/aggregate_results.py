@@ -48,6 +48,7 @@ def aggregate_results(
             module, exercise = filename.replace(".json", "").split("_")
             print(f"extract module: {module}, exercise: {exercise}")
             with open(os.path.join(results_dir, filename), "r") as file:
+                # print(file.read())
                 result = json.load(file)
                 if module in all_results and exercise in all_results[module]:
                     all_results[module][exercise] = result

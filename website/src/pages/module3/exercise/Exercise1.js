@@ -90,7 +90,7 @@ const Exercise1 = () => {
           <h2>Evaluation</h2>
           <p>Your baseline model and predictions will be evaluated based on the following criteria:</p>
           <p>
-            The error threshold for this exercise is a Mean Absolute Error (MAE) of 34000. Ensure your predictions are accurate enough to meet this threshold.
+            The error threshold for this exercise is a Mean Absolute Error (MAE) of 36000. Ensure your predictions are accurate enough to meet this threshold.
           </p>
         </Col>
       </Row>

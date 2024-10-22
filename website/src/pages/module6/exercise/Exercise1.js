@@ -34,7 +34,7 @@ const Exercise1 = () => {
         <List.Item>Implement and fine-tune multiple machine learning models.</List.Item>
         <List.Item>Experiment with different target representations (regression vs. classification).</List.Item>
         <List.Item>Evaluate models using appropriate metrics, focusing on weighted accuracy.</List.Item>
-        <List.Item>Optimize model performance to achieve a weighted accuracy above 0.56.</List.Item>
+        <List.Item>Optimize model performance to achieve a weighted accuracy above 0.53.</List.Item>
       </List>
 
       <Alert icon={<IconInfoCircle size="1rem" />} title="Important Note" color="blue" mt="md">
