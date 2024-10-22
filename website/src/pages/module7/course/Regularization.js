@@ -1,185 +1,195 @@
-import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import CodeBlock from "components/CodeBlock";
-import { InlineMath, BlockMath } from "react-katex";
+import React from 'react';
+import { Title, Text, Stack, Group, Table } from '@mantine/core';
+import { InlineMath, BlockMath } from 'react-katex';
+import CodeBlock from 'components/CodeBlock';
+import 'katex/dist/katex.min.css';
 
 const Regularization = () => {
-  return (
-    <Container fluid>
-      <h2 id="l1-l2">L1 and L2 Regularization</h2>
+  const L2RegExample = `
+# Define model with L2 regularization
+model = nn.Linear(10, 1)
+optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
+criterion = nn.MSELoss()
 
-      <p>
-        Regularization techniques help prevent overfitting by adding a penalty
-        term to the loss function, discouraging complex models.
-      </p>
+# Training loop with L2 regularization
+for epoch in range(num_epochs):
+    # Forward pass
+    outputs = model(inputs)
+    
+    # Calculate primary loss
+    loss = criterion(outputs, targets)
+    
+    # Add L2 regularization term
+    l2_lambda = 0.01
+    l2_norm = sum(p.pow(2.0).sum() for p in model.parameters())
+    loss = loss + l2_lambda * l2_norm
+    
+    # Backward and optimize
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+`;
 
-      <h3>L1 Regularization (Lasso)</h3>
-      <p>
-        L1 regularization adds the absolute value of the weights to the loss
-        function:
-      </p>
-      <BlockMath math="L_{regularized} = L + \lambda \sum_{i} |w_i|" />
-      <p>
-        L1 regularization tends to produce sparse models by pushing some weights
-        to exactly zero.
-      </p>
-
-      <h3>L2 Regularization (Ridge)</h3>
-      <p>
-        L2 regularization adds the squared value of the weights to the loss
-        function:
-      </p>
-      <BlockMath math="L_{regularized} = L + \lambda \sum_{i} w_i^2" />
-      <p>
-        L2 regularization tends to distribute weight values more evenly,
-        preventing any single feature from having a very large impact.
-      </p>
-
-      <h3>Implementation in PyTorch</h3>
-      <CodeBlock
-        language="python"
-        code={`
+  const dropoutExample = `
 import torch.nn as nn
 
-# L1 regularization
-l1_lambda = 0.01
-l1_norm = sum(p.abs().sum() for p in model.parameters())
-loss = criterion(output, target) + l1_lambda * l1_norm
-
-# L2 regularization
-optimizer = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=1e-5)
-        `}
-      />
-
-      <h2 id="dropout">Dropout</h2>
-
-      <p>
-        Dropout is a regularization technique where randomly selected neurons
-        are ignored during training. This helps prevent complex co-adaptations
-        on training data.
-      </p>
-
-      <p>
-        During inference, all neurons are used, but their outputs are scaled by
-        the dropout rate to maintain the expected output magnitude.
-      </p>
-
-      <h3>Implementation in PyTorch</h3>
-      <CodeBlock
-        language="python"
-        code={`
-import torch.nn as nn
-
-class Net(nn.Module):
+class NetworkWithDropout(nn.Module):
     def __init__(self):
-        super(Net, self).__init__()
-        self.fc1 = nn.Linear(784, 256)
-        self.dropout = nn.Dropout(0.5)
-        self.fc2 = nn.Linear(256, 10)
-
+        super().__init__()
+        self.linear1 = nn.Linear(784, 256)
+        self.dropout1 = nn.Dropout(p=0.5)  # 50% dropout rate
+        self.linear2 = nn.Linear(256, 10)
+    
     def forward(self, x):
-        x = torch.relu(self.fc1(x))
-        x = self.dropout(x)
-        x = self.fc2(x)
+        x = torch.relu(self.linear1(x))
+        x = self.dropout1(x)  # Apply dropout after activation
+        x = self.linear2(x)
         return x
-        `}
-      />
 
-      <h2 id="batch-normalization">Batch Normalization</h2>
+# Note: Dropout is automatically disabled during model.eval()
+`;
 
-      <p>
-        Batch Normalization normalizes the inputs to each layer for each
-        mini-batch. This helps to address the internal covariate shift problem
-        and generally allows for higher learning rates and faster convergence.
-      </p>
-
-      <BlockMath math="\hat{x}^{(k)} = \frac{x^{(k)} - E[x^{(k)}]}{\sqrt{Var[x^{(k)}] + \epsilon}}" />
-
-      <h3>Implementation in PyTorch</h3>
-      <CodeBlock
-        language="python"
-        code={`
-import torch.nn as nn
-
-class Net(nn.Module):
-    def __init__(self):
-        super(Net, self).__init__()
-        self.fc1 = nn.Linear(784, 256)
-        self.bn1 = nn.BatchNorm1d(256)
-        self.fc2 = nn.Linear(256, 10)
-
-    def forward(self, x):
-        x = self.fc1(x)
-        x = self.bn1(x)
-        x = torch.relu(x)
-        x = self.fc2(x)
-        return x
-        `}
-      />
-
-      <h2 id="early-stopping">Early Stopping</h2>
-
-      <p>
-        Early stopping is a form of regularization used to prevent overfitting
-        when training a learner with an iterative method, such as gradient
-        descent. It stops training when the model performance on a validation
-        dataset starts to degrade.
-      </p>
-
-      <h3>Implementation in PyTorch</h3>
-      <CodeBlock
-        language="python"
-        code={`
+  const earlyStoppingExample = `
 class EarlyStopping:
-    def __init__(self, patience=7, verbose=False, delta=0):
+    def __init__(self, patience=7, min_delta=0):
         self.patience = patience
-        self.verbose = verbose
+        self.min_delta = min_delta
         self.counter = 0
-        self.best_score = None
+        self.best_loss = None
         self.early_stop = False
-        self.val_loss_min = float('inf')
-        self.delta = delta
-
-    def __call__(self, val_loss, model):
-        score = -val_loss
-
-        if self.best_score is None:
-            self.best_score = score
-            self.save_checkpoint(val_loss, model)
-        elif score < self.best_score + self.delta:
+        
+    def __call__(self, val_loss):
+        if self.best_loss is None:
+            self.best_loss = val_loss
+        elif val_loss > self.best_loss - self.min_delta:
             self.counter += 1
             if self.counter >= self.patience:
                 self.early_stop = True
         else:
-            self.best_score = score
-            self.save_checkpoint(val_loss, model)
+            self.best_loss = val_loss
             self.counter = 0
 
-    def save_checkpoint(self, val_loss, model):
-        if self.verbose:
-            print(f'Validation loss decreased ({self.val_loss_min:.6f} --> {val_loss:.6f}). Saving model ...')
-        torch.save(model.state_dict(), 'checkpoint.pt')
-        self.val_loss_min = val_loss
-
 # Usage in training loop
-early_stopping = EarlyStopping(patience=10, verbose=True)
+early_stopping = EarlyStopping(patience=5)
 for epoch in range(num_epochs):
-    # ... training code ...
+    train_loss = train(model, train_loader)
     val_loss = validate(model, val_loader)
-    early_stopping(val_loss, model)
     
+    early_stopping(val_loss)
     if early_stopping.early_stop:
-        print("Early stopping")
+        print("Early stopping triggered")
         break
-        `}
-      />
+`;
 
-      <p>
-        This implementation of early stopping keeps track of the best model
-        based on validation loss and stops training if the validation loss
-        doesn't improve for a specified number of epochs.
-      </p>
-    </Container>
+  return (
+    <Stack spacing="xl" w="100%">
+      {/* Understanding Overfitting Section */}
+      <div>
+        <Title order={2} id="overfitting" mb="md">Understanding Overfitting</Title>
+        <Text>
+          Overfitting occurs when a model learns the training data too well, including noise and outliers, leading to poor generalization on unseen data. Signs of overfitting include:
+        </Text>
+        <Table striped highlightOnHover mt="md">
+          <thead>
+            <tr>
+              <th>Indicator</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Training vs Validation Gap</td>
+              <td>Large difference between training and validation performance</td>
+            </tr>
+            <tr>
+              <td>Perfect Training Accuracy</td>
+              <td>Model achieves near 100% accuracy on training data</td>
+            </tr>
+            <tr>
+              <td>Poor Generalization</td>
+              <td>Model performs significantly worse on new, unseen data</td>
+            </tr>
+          </tbody>
+        </Table>
+      </div>
+
+      {/* Regularization Techniques Section */}
+      <div>
+        <Title order={2} id="techniques" mb="md">Regularization Techniques</Title>
+        
+        {/* L2 Regularization */}
+        <Title order={3} mb="sm">L2 Regularization (Weight Decay)</Title>
+        <Text mb="md">
+          L2 regularization adds a penalty term to the loss function proportional to the square of weights:
+        </Text>
+        <BlockMath>
+          {`L_{total} = L_{original} + \\lambda \\sum_{w} w^2`}
+        </BlockMath>
+        <Text mb="lg">
+          where <InlineMath>{`\\lambda`}</InlineMath> is the regularization strength hyperparameter.
+        </Text>
+
+        {/* Dropout */}
+        <Title order={3} mb="sm">Dropout</Title>
+        <Text mb="md">
+          Dropout randomly deactivates neurons during training with probability p, preventing co-adaptation of features. During inference, all neurons are active but their outputs are scaled by (1-p).
+        </Text>
+
+        {/* Early Stopping */}
+        <Title order={3} mb="sm">Early Stopping</Title>
+        <Text mb="md">
+          Early stopping monitors validation performance and stops training when the model begins to overfit, saving the best model weights.
+        </Text>
+      </div>
+
+      {/* PyTorch Implementation Section */}
+      <div>
+        <Title order={2} id="implementation" mb="md">PyTorch Implementation</Title>
+        
+        {/* L2 Regularization Implementation */}
+        <Title order={3} mb="sm">L2 Regularization Example</Title>
+        <CodeBlock language="python" code={L2RegExample} />
+
+        {/* Dropout Implementation */}
+        <Title order={3} mt="lg" mb="sm">Dropout Implementation</Title>
+        <CodeBlock language="python" code={dropoutExample} />
+
+        {/* Early Stopping Implementation */}
+        <Title order={3} mt="lg" mb="sm">Early Stopping Implementation</Title>
+        <CodeBlock language="python" code={earlyStoppingExample} />
+      </div>
+
+      {/* Summary Table */}
+      <div>
+        <Title order={2} mb="md">Quick Reference Guide</Title>
+        <Table striped highlightOnHover>
+          <thead>
+            <tr>
+              <th>Technique</th>
+              <th>Best Used When</th>
+              <th>Key Parameters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>L2 Regularization</td>
+              <td>Large weights are causing overfitting</td>
+              <td>λ (regularization strength)</td>
+            </tr>
+            <tr>
+              <td>Dropout</td>
+              <td>Network is large and prone to co-adaptation</td>
+              <td>p (dropout probability)</td>
+            </tr>
+            <tr>
+              <td>Early Stopping</td>
+              <td>Validation loss starts increasing</td>
+              <td>patience, min_delta</td>
+            </tr>
+          </tbody>
+        </Table>
+      </div>
+    </Stack>
   );
 };
 

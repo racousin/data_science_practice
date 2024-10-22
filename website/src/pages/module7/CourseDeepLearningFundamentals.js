@@ -1,155 +1,192 @@
-import React, { lazy } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import DynamicRoutes from "components/DynamicRoutes";
-import ModuleFrame from "components/ModuleFrame";
-import { useLocation } from "react-router-dom";
+import React, { lazy } from 'react';
+import { Container, Stack, Text, Title } from '@mantine/core';
+import DynamicRoutes from 'components/DynamicRoutes';
+import ModuleFrame from 'components/ModuleFrame';
+import { useLocation } from 'react-router-dom';
 
 const CourseDeepLearningFundamentals = () => {
-  const courseLinks = []
-  // const courseLinks = [
-  //   {
-  //     to: "/introduction",
-  //     label: "Introduction to Neural Networks",
-  //     component: lazy(() => import("pages/module7/course/Introduction")),
-  //     subLinks: [
-  //       {
-  //         id: "biological-inspiration",
-  //         label: "Biological inspiration and history",
-  //       },
-  //       {
-  //         id: "basic-components",
-  //         label: "Basic components: neurons, layers, activation functions",
-  //       },
-  //       { id: "feedforward", label: "Feedforward neural networks" },
-  //     ],
-  //   },
-  //   {
-  //     to: "/backpropagation",
-  //     label: "Backpropagation and Optimization",
-  //     component: lazy(() => import("pages/module7/course/Backpropagation")),
-  //     subLinks: [
-  //       { id: "chain-rule", label: "Chain rule and gradient descent" },
-  //       { id: "backpropagation-algorithm", label: "Backpropagation algorithm" },
-  //       {
-  //         id: "sgd",
-  //         label: "Stochastic Gradient Descent (SGD) and its variants",
-  //       },
-  //       {
-  //         id: "optimizers",
-  //         label: "Learning rate schedules and adaptive optimizers",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     to: "/autodiff",
-  //     label: "Automatic Differentiation (Autodiff)",
-  //     component: lazy(() => import("pages/module7/course/Autodiff")),
-  //     subLinks: [
-  //       { id: "forward-reverse", label: "Forward and reverse mode autodiff" },
-  //       { id: "computational-graphs", label: "Computational graphs" },
-  //       { id: "pytorch-autograd", label: "PyTorch's autograd system" },
-  //     ],
-  //   },
-  //   {
-  //     to: "/activation-functions",
-  //     label: "Activation Functions",
-  //     component: lazy(() => import("pages/module7/course/ActivationFunctions")),
-  //     subLinks: [
-  //       {
-  //         id: "common-functions",
-  //         label: "Sigmoid, tanh, ReLU, and their variants",
-  //       },
-  //       { id: "properties", label: "Properties and use cases" },
-  //       {
-  //         id: "custom-activations",
-  //         label: "Implementing custom activation functions in PyTorch",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     to: "/regularization",
-  //     label: "Regularization Techniques",
-  //     component: lazy(() => import("pages/module7/course/Regularization")),
-  //     subLinks: [
-  //       { id: "l1-l2", label: "L1 and L2 regularization" },
-  //       { id: "dropout", label: "Dropout" },
-  //       { id: "batch-normalization", label: "Batch Normalization" },
-  //       { id: "early-stopping", label: "Early stopping" },
-  //     ],
-  //   },
-    // {
-    //   to: "/cnn",
-    //   label: "Convolutional Neural Networks (CNNs)",
-    //   component: lazy(() => import("pages/module7/course/CNN")),
-    //   subLinks: [
-    //     { id: "convolution", label: "Convolution operation and intuition" },
-    //     { id: "pooling", label: "Pooling layers" },
-    //   ],
-    // },
-    // {
-    //   to: "/rnn",
-    //   label: "Recurrent Neural Networks (RNNs)",
-    //   component: lazy(() => import("pages/module7/course/RNN")),
-    //   subLinks: [
-    //     {
-    //       id: "sequence-modeling",
-    //       label: "Sequence modeling and RNN architecture",
-    //     },
-    //     {
-    //       id: "vanishing-exploding",
-    //       label: "Vanishing and exploding gradients",
-    //     },
-    //     { id: "lstm", label: "Long Short-Term Memory (LSTM) networks" },
-    //     { id: "gru", label: "Gated Recurrent Units (GRU)" },
-    //   ],
-    // },
-    // {
-    //   to: "/advanced-rnn",
-    //   label: "Advanced RNN Architectures",
-    //   component: lazy(() => import("pages/module7/course/AdvancedRNN")),
-    //   subLinks: [
-    //     { id: "bidirectional", label: "Bidirectional RNNs" },
-    //     { id: "encoder-decoder", label: "Encoder-Decoder models" },
-    //     { id: "attention", label: "Attention mechanisms" },
-    //     { id: "transformer", label: "Transformer architecture" },
-    //   ],
-    // },
-    // {
-    //   to: "/training",
-    //   label: "Training Deep Neural Networks",
-    //   component: lazy(() => import("pages/module7/course/Training")),
-    //   subLinks: [
-    //     {
-    //       id: "weight-initialization",
-    //       label: "Weight initialization strategies",
-    //     },
-    //     { id: "gradient-clipping", label: "Gradient clipping" },
-    //     { id: "curriculum-learning", label: "Curriculum learning" },
-    //     { id: "mixed-precision", label: "Mixed precision training" },
-    //   ],
-    // },
-    // {
-    //   to: "/interpretation",
-    //   label: "Model Interpretation and Visualization",
-    //   component: lazy(() => import("pages/module7/course/Interpretation")),
-    //   subLinks: [
-    //     {
-    //       id: "saliency-maps",
-    //       label: "Saliency maps and activation maximization",
-    //     },
-    //     { id: "layer-visualization", label: "Layer visualization" },
-    //     { id: "tsne", label: "t-SNE for high-dimensional data visualization" },
-    //   ],
-    // },
-  //   {
-  //     to: "/CaseStudy7",
-  //     label: "CaseStudy",
-  //     component: lazy(() => import("pages/module7/course/CaseStudy")),
-  //   },
-  // ];
+  const courseLinks = [
+    {
+      to: "/introduction",
+      label: "Introduction to Deep Learning",
+      component: lazy(() => import("pages/module7/course/Introduction")),
+      subLinks: [
+        {
+          id: "historical-context",
+          label: "Historical Context and Evolution"
+        },
+        {
+          id: "frameworks",
+          label: "Deep Learning Frameworks"
+        },
+        {
+          id: "backpropagation",
+          label: "Backpropagation and AutoDiff"
+        },
+        {
+          id: "basic-example",
+          label: "Simple Neural Network Example"
+        }
+      ]
+    },
+    {
+      to: "/architecture",
+      label: "Neural Network Architecture",
+      component: lazy(() => import("pages/module7/course/Architecture")),
+      subLinks: [
+        {
+          id: "network-structure",
+          label: "Network Structure and Components"
+        },
+        {
+          id: "layers",
+          label: "Understanding Layers"
+        },
+        {
+          id: "model-capacity",
+          label: "Model Capacity and Depth"
+        },
+        {
+          id: "computations",
+          label: "Forward and Backward Computations"
+        }
+      ]
+    },
+    {
+      to: "/activation",
+      label: "Activation Functions",
+      component: lazy(() => import("pages/module7/course/Activation")),
+      subLinks: [
+        {
+          id: "purpose",
+          label: "Role of Activation Functions"
+        },
+        {
+          id: "common-functions",
+          label: "Common Activation Functions"
+        },
+        {
+          id: "properties",
+          label: "Mathematical Properties"
+        },
+        {
+          id: "usage-guidelines",
+          label: "Usage Guidelines"
+        }
+      ]
+    },
+    {
+      to: "/optimization",
+      label: "Optimization Techniques",
+      component: lazy(() => import("pages/module7/course/Optimization")),
+      subLinks: [
+        {
+          id: "loss-functions",
+          label: "Loss Functions"
+        },
+        {
+          id: "optimizers",
+          label: "Common Optimizers"
+        },
+        {
+          id: "math-formulations",
+          label: "Mathematical Foundations"
+        },
+        {
+          id: "hyperparameters",
+          label: "Hyperparameter Impact"
+        }
+      ]
+    },
+    {
+      to: "/initialization",
+      label: "Weight Initialization",
+      component: lazy(() => import("pages/module7/course/Initialization")),
+      subLinks: [
+        {
+          id: "importance",
+          label: "Importance of Initialization"
+        },
+        {
+          id: "methods",
+          label: "Initialization Methods"
+        },
+        {
+          id: "guidelines",
+          label: "Selection Guidelines"
+        }
+      ]
+    },
+    {
+      to: "/regularization",
+      label: "Regularization Methods",
+      component: lazy(() => import("pages/module7/course/Regularization")),
+      subLinks: [
+        {
+          id: "overfitting",
+          label: "Understanding Overfitting"
+        },
+        {
+          id: "techniques",
+          label: "Regularization Techniques"
+        },
+        {
+          id: "implementation",
+          label: "PyTorch Implementation"
+        }
+      ]
+    },
+    {
+      to: "/advanced",
+      label: "Advanced Topics",
+      component: lazy(() => import("pages/module7/course/Advanced")),
+      subLinks: [
+        {
+          id: "hyperparameter-opt",
+          label: "Hyperparameter Optimization"
+        },
+        {
+          id: "custom-loss",
+          label: "Custom Loss Functions"
+        },
+        {
+          id: "advanced-reg",
+          label: "Advanced Regularization"
+        },
+        {
+          id: "batch-norm",
+          label: "Batch Normalization"
+        }
+      ]
+    },
+    {
+      to: "/case-study",
+      label: "Case Study",
+      component: lazy(() => import("pages/module7/course/CaseStudy")),
+      subLinks: [
+        {
+          id: "dataset",
+          label: "Dataset Analysis"
+        },
+        {
+          id: "model-building",
+          label: "Model Architecture"
+        },
+        {
+          id: "training",
+          label: "Training Process"
+        },
+        {
+          id: "evaluation",
+          label: "Results and Visualization"
+        }
+      ]
+    }
+  ];
 
   const location = useLocation();
   const module = 7;
+
   return (
     <ModuleFrame
       module={module}
@@ -158,26 +195,39 @@ const CourseDeepLearningFundamentals = () => {
       courseLinks={courseLinks}
     >
       {location.pathname === `/module${module}/course` && (
-        <>
-          <Row>
-            <p>
-              This module covers the fundamentals of deep learning, from basic
-              neural network concepts to advanced architectures and training
-              techniques.
-            </p>
-          </Row>
-          <Row>
-            <Col>
-              <p>Last Updated: {"2024-09-20"}</p>
-            </Col>
-          </Row>
-        </>
+        <Stack spacing="md">
+          <Text>
+            This comprehensive module covers the fundamentals of deep learning, from basic neural network 
+            concepts to advanced architectures and training techniques. The course is designed for students 
+            with a strong mathematical background and focuses on both theoretical understanding and 
+            practical implementation using PyTorch 2.5.
+          </Text>
+          
+          <Title order={2} mt="md">Course Overview</Title>
+          <Text>
+            Throughout this module, you will learn:
+          </Text>
+          <ul>
+            <li>Fundamental concepts of neural networks and deep learning</li>
+            <li>Mathematical foundations of backpropagation and optimization</li>
+            <li>Implementation of various neural network architectures</li>
+            <li>Best practices for training and optimizing deep learning models</li>
+            <li>Advanced techniques for improving model performance</li>
+          </ul>
+
+          <Text mt="sm">
+            Each section includes theoretical explanations, mathematical formulations, 
+            practical code examples, and interactive demonstrations using PyTorch 2.5.
+          </Text>
+
+          <Text mt="md" c="dimmed" size="sm">
+            Last Updated: 2024-09-20
+          </Text>
+        </Stack>
       )}
-      <Row>
-        <Col md={11}>
-          <DynamicRoutes routes={courseLinks} />
-        </Col>
-      </Row>
+      <Container fluid p={0}>
+        <DynamicRoutes routes={courseLinks} />
+      </Container>
     </ModuleFrame>
   );
 };
