@@ -325,10 +325,10 @@ const ChecksTable = ({ checks }) => (
         <td>Handles missing values</td>
         <td>{checks.missing ? <IconCheck color="green" /> : <IconX color="red" />}</td>
       </tr>
-      <tr>
+      {/* <tr>
         <td>Handles categorical data</td>
         <td>{checks.categorical ? <IconCheck color="green" /> : <IconX color="red" />}</td>
-      </tr>
+      </tr> */}
       <tr>
         <td>Supports regression</td>
         <td>{checks.regression ? <IconCheck color="green" /> : <IconX color="red" />}</td>

@@ -426,7 +426,7 @@ print(f"Standard deviation of RMSE: {np.std(rf_rmse):.2f}")`}
               <Text><span style={{ fontWeight: 700 }}>Choose an appropriate number of folds</span> (typically 5 or 10) based on dataset size and computational resources.</Text>
             </List.Item>
             <List.Item>
-              <Text><span style={{ fontWeight: 700 }}>Use appropriate metrics</span> for your problem (e.g., RMSE for regression, AUC-ROC for binary classification).</Text>
+              <Text><span style={{ fontWeight: 700 }}>Use appropriate metrics</span> for your problem (e.g., RMSE for regression, AUC-ROC for binary classification, Custom Metric).</Text>
             </List.Item>
             <List.Item>
               <Text><span style={{ fontWeight: 700 }}>Be cautious of data leakage</span> ensure that the test set remains completely unseen during the entire model selection process.</Text>

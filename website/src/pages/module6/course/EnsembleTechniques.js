@@ -4,6 +4,8 @@ import CodeBlock from 'components/CodeBlock';
 import { InlineMath, BlockMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 
+// TODO add boosting
+
 const BaggingSVG = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
     <rect x="10" y="10" width="120" height="80" fill="#f0f0f0" stroke="#000000" strokeWidth="2"/>

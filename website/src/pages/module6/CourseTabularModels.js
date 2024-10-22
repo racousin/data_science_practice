@@ -81,6 +81,16 @@ const CourseTabularModels = () => {
       subLinks: []
     },
     {
+      to: "/custom-objectives",
+      label: "Custom Objectives Guide",
+      component: lazy(() => import("pages/module6/course/CustomObjectivesGuide")),
+      subLinks: [
+        { id: "understanding-objective", label: "Understanding the Objective" },
+        { id: "customization-techniques", label: "Customization Techniques" },
+        { id: "model-combinations", label: "Model Combinations" }
+      ]
+    },
+    {
       to: "/CaseStudy6",
       label: "Case Study",
       component: lazy(() => import("pages/module6/course/CaseStudy")),

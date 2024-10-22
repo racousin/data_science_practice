@@ -149,7 +149,7 @@ print("Best cross-validation score (regression):", opt_reg.best_score_)
         <ModelSection
           title="Decision Trees"
           id="decision-trees"
-          math={<BlockMath math="\text{Information Gain} = H(S) - \sum_{i=1}^n \frac{|S_i|}{|S|} H(S_i)" />}
+          math={<BlockMath math="\text{Information Gain} = H(S) - \sum_{i=1}^m \frac{|S_i|}{|S|} H(S_i)" />}
           description="Decision Trees are non-parametric supervised learning methods used for classification and regression. The model is represented as a tree structure."
           hyperparameters={[
             { name: 'max_depth', description: 'Maximum depth of the tree' },
@@ -234,10 +234,10 @@ const ModelSection = ({ title, id, math, description, hyperparameters, checks, b
           <td>Handles missing values</td>
           <td>{checks.missing ? <IconCheck color="green" /> : <IconX color="red" />}</td>
         </tr>
-        <tr>
+        {/* <tr>
           <td>Handles categorical data</td>
           <td>{checks.categorical ? <IconCheck color="green" /> : <IconX color="red" />}</td>
-        </tr>
+        </tr> */}
         <tr>
           <td>Supports regression</td>
           <td>{checks.regression ? <IconCheck color="green" /> : <IconX color="red" />}</td>
