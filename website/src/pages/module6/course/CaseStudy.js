@@ -1,7 +1,5 @@
 import React from 'react';
-import { Container, Title, Text, Space, Grid, Paper, List, ThemeIcon } from '@mantine/core';
-import { IconTemperature, IconDroplet, IconGauge, IconMoldOff, IconSun, IconCalendar, IconClock, IconChartBar } from '@tabler/icons-react';
-import { MathJax, MathJaxContext } from "better-react-mathjax";
+import { Container } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 import DataInteractionPanel from "components/DataInteractionPanel";
 

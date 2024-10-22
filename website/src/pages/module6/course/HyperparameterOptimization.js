@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Title, Text, Stack, List, Group, Alert } from '@mantine/core';
-import { IconAdjustments, IconArrowsShuffle, IconBrain, IconAlertCircle} from '@tabler/icons-react';
+import { IconAdjustments, IconArrowsShuffle, IconBrain, IconAlertCircle, IconChartBar, IconFold} from '@tabler/icons-react';
 import CodeBlock from 'components/CodeBlock';
 import { InlineMath, BlockMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
@@ -50,6 +50,8 @@ grid_search.fit(X, y)
 
 print("Best parameters:", grid_search.best_params_)
 print("Best cross-validation score:", grid_search.best_score_)
+# Best parameters: {'C': 1, 'gamma': 0.1, 'kernel': 'rbf'}
+# Best cross-validation score: 0.9800000000000001
             `}
           />
 
@@ -96,6 +98,8 @@ random_search.fit(X, y)
 
 print("Best parameters:", random_search.best_params_)
 print("Best cross-validation score:", random_search.best_score_)
+# Best parameters: {'max_depth': 3, 'max_features': 0.7360065387687408, 'min_samples_leaf': 3, 'min_samples_split': 7, 'n_estimators': 170}
+# Best cross-validation score: 0.9666666666666668
             `}
           />
 
@@ -155,6 +159,7 @@ from sklearn.model_selection import cross_val_score
 from sklearn.ensemble import RandomForestRegressor
 from skopt import BayesSearchCV
 from skopt.space import Real, Integer, Categorical
+from skopt.callbacks import DeltaYStopper
 
 # Load the Boston Housing dataset
 X, y = load_boston(return_X_y=True)
@@ -172,6 +177,13 @@ search_spaces = {
 # Create a random forest regressor
 rf = RandomForestRegressor(random_state=42)
 
+
+# Define the DeltaYStopper callback
+# This stops the optimization early if the change in the objective function (score) 
+# is less than 0.001 for the best 3 consecutive iterations.
+delta_stopper = DeltaYStopper(delta=0.001, n_best=3)
+
+
 # Perform Bayesian optimization
 opt = BayesSearchCV(
     rf,
@@ -179,14 +191,15 @@ opt = BayesSearchCV(
     n_iter=50, # The algorithm will try up to 50 different hyperparameter combinations.
     cv=5,
     n_jobs=-1,
-    random_state=42
+    random_state=42,
+    scoring='accuracy'
 )
 
-opt.fit(X, y)
+opt.fit(X, y, callback=[delta_stopper])
 
 print("Best parameters:", opt.best_params_)
 print("Best cross-validation score:", opt.best_score_)
-    `}
+`}
   />
 
   <Text mt="md">
@@ -195,6 +208,99 @@ print("Best cross-validation score:", opt.best_score_)
 
 </Section>
 
+<Section
+  icon={<IconChartBar size={28} />}
+  title="Scoring Methods"
+  id="scoring-methods"
+>
+  <Text>
+    Scoring methods define how we evaluate model performance during hyperparameter optimization. scikit-learn provides built-in scoring metrics, and you can also create custom scoring functions.
+  </Text>
+
+  <CodeBlock
+    language="python"
+    code={`
+from sklearn.metrics import make_scorer, mean_squared_error, accuracy_score
+from sklearn.model_selection import cross_val_score
+import numpy as np
+
+# Example 1: Using built-in scoring metrics
+param_search = GridSearchCV(
+    estimator=model,
+    param_grid=param_grid,
+    scoring={
+        'accuracy': 'accuracy',
+        'precision_macro': 'precision_macro',
+        'recall_macro': 'recall_macro'
+    },
+    refit='accuracy'  # Use accuracy to select the best model
+)
+
+# Example 2: Custom scoring function
+def custom_metric(y_true, y_pred):
+    # Example: Weighted combination of precision and recall
+    precision = precision_score(y_true, y_pred)
+    recall = recall_score(y_true, y_pred)
+    return 0.7 * precision + 0.3 * recall
+
+# Create a scorer object
+custom_scorer = make_scorer(custom_metric)
+
+# Use custom scorer in GridSearchCV
+param_search = GridSearchCV(
+    estimator=model,
+    param_grid=param_grid,
+    scoring=custom_scorer
+)
+
+`}
+  />
+</Section>
+
+<Section
+  icon={<IconFold size={28} />}
+  title="Cross-validation Strategies"
+  id="cv-strategies"
+>
+  <Text>
+    Cross-validation strategies determine how the data is split during hyperparameter optimization. Different problems may require different CV strategies.
+  </Text>
+
+  <CodeBlock
+    language="python"
+    code={`
+from sklearn.model_selection import (
+    KFold, StratifiedKFold, TimeSeriesSplit,
+    GroupKFold, LeaveOneOut
+)
+
+# Example 1: Basic K-Fold CV
+kfold = KFold(n_splits=5, shuffle=True, random_state=42)
+param_search = GridSearchCV(
+    estimator=model,
+    param_grid=param_grid,
+    cv=kfold
+)
+
+# Example 2: Stratified K-Fold for imbalanced classification
+skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+param_search = GridSearchCV(
+    estimator=model,
+    param_grid=param_grid,
+    cv=skf
+)
+
+# Example 3: Time Series CV
+# Maintains temporal order and prevents future data leakage
+tscv = TimeSeriesSplit(n_splits=5)
+param_search = GridSearchCV(
+    estimator=model,
+    param_grid=param_grid,
+    cv=tscv
+)
+`}
+  />
+</Section>
         <Section
           title="Best Practices"
           id="best-practices"
@@ -204,13 +310,10 @@ print("Best cross-validation score:", opt.best_score_)
               <Text><span style={{ fontWeight: 700 }}>Start with a broad search:</span> Begin with a wide range of hyperparameters and gradually narrow down.</Text>
             </List.Item>
             <List.Item>
-              <Text><span style={{ fontWeight: 700 }}>Use domain knowledge:</span> Incorporate prior knowledge about good hyperparameter ranges when available.</Text>
+              <Text><span style={{ fontWeight: 700 }}>Consider computational resources:</span> Choose the optimization method based on the available computational budget/time.</Text>
             </List.Item>
             <List.Item>
-              <Text><span style={{ fontWeight: 700 }}>Consider computational resources:</span> Choose the optimization method based on the available computational budget.</Text>
-            </List.Item>
-            <List.Item>
-              <Text><span style={{ fontWeight: 700 }}>Avoid overfitting:</span> Use cross-validation to ensure the optimized hyperparameters generalize well.</Text>
+              <Text><span style={{ fontWeight: 700 }}>Be cautious of data leakage</span> ensure that the test set remains completely unseen during the entire model selection process.</Text>
             </List.Item>
           </List>
         </Section>

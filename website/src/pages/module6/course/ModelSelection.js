@@ -8,6 +8,7 @@ import DataInteractionPanel from 'components/DataInteractionPanel';
 
 
 // TODO add custom metrics
+// TODO add notion on time computation
 
 const ModelSelection = () => {
 
@@ -197,23 +198,37 @@ print(f"Decision Tree RMSE: {rmse_tree:.2f}")
       <CodeBlock
         language="python"
         code={`
-from sklearn.model_selection import cross_val_score
+import numpy as np
+from sklearn.model_selection import KFold
 from sklearn.linear_model import LinearRegression
 from sklearn.datasets import load_boston
 
 # Load the Boston housing dataset
 X, y = load_boston(return_X_y=True)
 
-# Create a linear regression model
+# Initialize the model and K-fold cross-validation
 model = LinearRegression()
+kf = KFold(n_splits=5, shuffle=True, random_state=42)
 
-# Perform 5-fold cross-validation
-scores = cross_val_score(model, X, y, cv=5, scoring='neg_mean_squared_error')
+# Lists to store scores
+rmse_scores = []
 
-# Convert MSE to RMSE
-rmse_scores = np.sqrt(-scores)
-
-print(f"Cross-validated RMSE scores: {rmse_scores}")
+for train_index, test_index in kf.split(X):
+    # Split the data
+    X_train, X_test = X[train_index], X[test_index]
+    y_train, y_test = y[train_index], y[test_index]
+    
+    # Train the model
+    model.fit(X_train, y_train)
+    
+    # Make predictions
+    y_pred = model.predict(X_test)
+    
+    # Calculate RMSE for this fold
+    rmse = np.sqrt(np.mean((y_test - y_pred) ** 2))
+    rmse_scores.append(rmse)
+    
+# Print summary statistics
 print(f"Mean RMSE: {np.mean(rmse_scores):.2f}")
 print(f"Standard deviation of RMSE: {np.std(rmse_scores):.2f}")
         `}
@@ -226,10 +241,10 @@ print(f"Standard deviation of RMSE: {np.std(rmse_scores):.2f}")
 
       <CodeBlock
         language="python"
-        code={`
-from sklearn.model_selection import StratifiedKFold
+        code={`from sklearn.model_selection import StratifiedKFold
 from sklearn.datasets import load_iris
 from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score
 import numpy as np
 
 # Load the Iris dataset
@@ -247,12 +262,13 @@ for train_index, test_index in skf.split(X, y):
     X_train, X_test = X[train_index], X[test_index]
     y_train, y_test = y[train_index], y[test_index]
     svc.fit(X_train, y_train)
-    scores.append(svc.score(X_test, y_test))
+    y_pred = svc.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    scores.append(accuracy)
 
-print(f"Stratified K-Fold scores: {scores}")
+print(f"Stratified K-Fold accuracies: {scores}")
 print(f"Mean accuracy: {np.mean(scores):.2f}")
-print(f"Standard deviation of accuracy: {np.std(scores):.2f}")
-        `}
+print(f"Standard deviation of accuracy: {np.std(scores):.2f}")`}
       />
 
       <Title order={3} mt="md">Time Series Cross-Validation</Title>
@@ -266,6 +282,7 @@ print(f"Standard deviation of accuracy: {np.std(scores):.2f}")
         code={`
 from sklearn.model_selection import TimeSeriesSplit
 from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
 import numpy as np
 
 # Generate sample time series data
@@ -280,17 +297,19 @@ model = LinearRegression()
 tscv = TimeSeriesSplit(n_splits=5)
 
 # Perform time series cross-validation
-scores = []
+mse_scores = []
 for train_index, test_index in tscv.split(X):
     X_train, X_test = X[train_index], X[test_index]
     y_train, y_test = y[train_index], y[test_index]
     model.fit(X_train, y_train)
-    scores.append(model.score(X_test, y_test))
+    y_pred = model.predict(X_test)
+    mse = mean_squared_error(y_test, y_pred)
+    mse_scores.append(mse)
 
-print(f"Time Series Cross-Validation R² scores: {scores}")
-print(f"Mean R² score: {np.mean(scores):.2f}")
-print(f"Standard deviation of R² score: {np.std(scores):.2f}")
-        `}
+print(f"Time Series Cross-Validation MSE scores: {mse_scores}")
+print(f"Mean MSE: {np.mean(mse_scores):.2f}")
+print(f"Standard deviation of MSE: {np.std(mse_scores):.2f}")
+`}
       />
 
       <Title order={3} mt="md">Leave-One-Out Cross-Validation (LOOCV)</Title>
@@ -304,6 +323,7 @@ print(f"Standard deviation of R² score: {np.std(scores):.2f}")
 from sklearn.model_selection import LeaveOneOut
 from sklearn.linear_model import LinearRegression
 from sklearn.datasets import load_boston
+from sklearn.metrics import mean_squared_error
 import numpy as np
 
 # Load the Boston housing dataset
@@ -316,17 +336,19 @@ model = LinearRegression()
 loo = LeaveOneOut()
 
 # Perform LOOCV
-scores = []
+mse_scores = []
 for train_index, test_index in loo.split(X):
     X_train, X_test = X[train_index], X[test_index]
     y_train, y_test = y[train_index], y[test_index]
     model.fit(X_train, y_train)
-    scores.append(model.score(X_test, y_test))
+    y_pred = model.predict(X_test)
+    mse = mean_squared_error(y_test, y_pred)
+    mse_scores.append(mse)
 
 print(f"Number of splits in LOOCV: {loo.get_n_splits(X)}")
-print(f"Mean R² score: {np.mean(scores):.2f}")
-print(f"Standard deviation of R² score: {np.std(scores):.2f}")
-        `}
+print(f"Mean MSE: {np.mean(mse_scores):.2f}")
+print(f"Standard deviation of MSE: {np.std(mse_scores):.2f}")
+`}
       />
     </Section>
 
@@ -385,7 +407,7 @@ rf_rmse = np.array(rf_rmse)
 print("Linear Regression:")
 print(f"Mean RMSE: {np.mean(linear_rmse):.2f}")
 print(f"Standard deviation of RMSE: {np.std(linear_rmse):.2f}")
-print("\nRandom Forest:")
+print("Random Forest:")
 print(f"Mean RMSE: {np.mean(rf_rmse):.2f}")
 print(f"Standard deviation of RMSE: {np.std(rf_rmse):.2f}")`}
           />
@@ -400,9 +422,6 @@ print(f"Standard deviation of RMSE: {np.std(rf_rmse):.2f}")`}
           id="best-practices"
         >
           <List>
-            <List.Item>
-              <Text><span style={{ fontWeight: 700 }}>Use stratified sampling</span> for classification problems to maintain class distribution across folds.</Text>
-            </List.Item>
             <List.Item>
               <Text><span style={{ fontWeight: 700 }}>Choose an appropriate number of folds</span> (typically 5 or 10) based on dataset size and computational resources.</Text>
             </List.Item>
