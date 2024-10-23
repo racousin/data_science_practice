@@ -254,7 +254,7 @@ Key benefits:
           simpleImplementation={`
 import numpy as np
 from sklearn.datasets import make_classification
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, KFold
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import SVC
@@ -264,31 +264,42 @@ from sklearn.metrics import accuracy_score
 X, y = make_classification(n_samples=1000, n_features=20, n_classes=2, random_state=42)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Simple Stacking implementation
-class SimpleStacking:
-    def __init__(self, base_models, meta_model):
+# Correct Stacking implementation with CV
+class StackingCV:
+    def __init__(self, base_models, meta_model, n_splits=5):
         self.base_models = base_models
         self.meta_model = meta_model
+        self.n_splits = n_splits
+        self.base_models_ = base_models
 
     def fit(self, X, y):
-        # Train base models
-        for model in self.base_models:
-            model.fit(X, y)
+        # Prepare cross-validation
+        kf = KFold(n_splits=self.n_splits, shuffle=True, random_state=42)
+        meta_features = np.zeros((X.shape[0], len(self.base_models)))
         
-        # Generate meta-features
-        meta_features = self._generate_meta_features(X)
+        for i, (train_idx, valid_idx) in enumerate(kf.split(X)):
+            X_train_fold, X_valid_fold = X[train_idx], X[valid_idx]
+            y_train_fold, y_valid_fold = y[train_idx], y[valid_idx]
+            
+            # Train each base model on the training fold and predict on the validation fold
+            for j, model in enumerate(self.base_models_):
+                model[i].fit(X_train_fold, y_train_fold)
+                meta_features[valid_idx, j] = model[i].predict(X_valid_fold)
         
-        # Train meta-model
+        # Train the meta-model on out-of-fold predictions (meta-features)
         self.meta_model.fit(meta_features, y)
 
+        # Train base models on the entire dataset for final predictions
+        for model in self.base_models:
+            model.fit(X, y)
+
     def predict(self, X):
-        meta_features = self._generate_meta_features(X)
+        # Generate meta-features for test data
+        meta_features = np.column_stack([model.predict(X) for model in self.base_models])
         return self.meta_model.predict(meta_features)
 
-    def _generate_meta_features(self, X):
-        return np.column_stack([model.predict(X) for model in self.base_models])
+# Use the StackingCV implementation
 
-# Use the simple stacking implementation
 base_models = [
     LogisticRegression(),
     DecisionTreeClassifier(),
@@ -296,7 +307,7 @@ base_models = [
 ]
 meta_model = LogisticRegression()
 
-stacking = SimpleStacking(base_models, meta_model)
+stacking = StackingCV(base_models, meta_model)
 stacking.fit(X_train, y_train)
 y_pred = stacking.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)

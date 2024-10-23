@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Title, Text, Accordion, Table, Stack, Paper, List } from '@mantine/core';
+import { Container, Title, Text, Accordion, Stack, List, Paper, Table } from '@mantine/core';
 import { Database, Table as TableIcon } from 'lucide-react';
 import CodeBlock from "components/CodeBlock";
 
@@ -14,7 +14,7 @@ const DatabaseItem = ({ type, name, description, characteristics, examples, code
       {name}
     </Accordion.Control>
     <Accordion.Panel>
-      <Stack spacing="md">
+      <Stack gap="md">
         <Text>{description}</Text>
         <Title order={4}>Characteristics</Title>
         <List>
@@ -22,13 +22,13 @@ const DatabaseItem = ({ type, name, description, characteristics, examples, code
             <List.Item key={index}>{char}</List.Item>
           ))}
         </List>
-        <Title order={4}>Examples</Title>
+        <Title order={4}>Popular Examples</Title>
         <List>
           {examples.map((example, index) => (
             <List.Item key={index}>{example}</List.Item>
           ))}
         </List>
-        <Title order={4}>Interacting with the Database</Title>
+        <Title order={4}>Basic Usage Principles</Title>
         <CodeBlock language="python" code={code} />
       </Stack>
     </Accordion.Panel>
@@ -36,208 +36,221 @@ const DatabaseItem = ({ type, name, description, characteristics, examples, code
 );
 
 const Databases = () => {
+  // Enhanced comparison data structure
+  const comparisonData = [
+    {
+      feature: "Data Model",
+      sql: "Tabular with fixed rows and columns",
+      nosql: "Flexible: Documents, Key-Value, Graph, etc.",
+      description: "How data is organized and structured"
+    },
+    {
+      feature: "Schema",
+      sql: "Strict, predefined schema required",
+      nosql: "Dynamic, schema-less or flexible schema",
+      description: "Rules that define data organization"
+    },
+    {
+      feature: "Relationships",
+      sql: "Built-in support via foreign keys and JOINs",
+      nosql: "Handled at application level or denormalized",
+      description: "How data connections are managed"
+    },
+    {
+      feature: "Scalability",
+      sql: "Vertical (better hardware)",
+      nosql: "Horizontal (more servers)",
+      description: "How system handles increased load"
+    },
+    {
+      feature: "Consistency",
+      sql: "ACID guarantees",
+      nosql: "Eventually consistent (BASE)",
+      description: "Data reliability and transaction handling"
+    },
+    {
+      feature: "Use Cases",
+      sql: "Complex queries, transactions",
+      nosql: "High throughput, flexible data, rapid changes",
+      description: "Ideal application scenarios"
+    }
+  ];
+
   const databaseTypes = [
     {
       type: 'sql',
       name: 'SQL Databases',
-      description: 'SQL (Structured Query Language) databases are relational databases that use structured query language for defining and manipulating the data.',
+      description: 'Relational databases using structured tables with predefined schemas and relationships.',
       characteristics: [
-        'Table-based structure with predefined schema',
-        'Support for complex queries and joins',
-        'ACID (Atomicity, Consistency, Isolation, Durability) compliance',
-        'Vertical scalability (scaling up)',
-        'Best for complex queries and transactions',
+        'Fixed schema with tables, rows, and columns',
+        'Strong data consistency and ACID compliance',
+        'Powerful querying with JOIN operations',
+        'Best for complex relationships and transactions',
+        'Mature ecosystem with standardized language (SQL)',
       ],
       examples: [
-        'PostgreSQL',
-        'MySQL',
-        'Oracle',
-        'Microsoft SQL Server',
-        'SQLite',
+        'PostgreSQL - Advanced open-source RDBMS',
+        'MySQL - Popular open-source database',
+        'SQLite - Lightweight, serverless database',
       ],
-      code: `import psycopg2
+      code: `# Basic SQL Database Operations Example
+from sqlalchemy import create_engine, text
 
-# Connect to the database
-conn = psycopg2.connect(
-    dbname="your_database",
-    user="your_username",
-    password="your_password",
-    host="your_host",
-    port="your_port"
-)
+# Create database connection
+engine = create_engine('database_url')
 
-# Create a cursor
-cur = conn.cursor()
+# Basic CRUD Operations
+with engine.connect() as conn:
+    # Create - Insert data
+    conn.execute(text("""
+        INSERT INTO users (name, email) 
+        VALUES (:name, :email)
+    """), {"name": "John", "email": "john@example.com"})
+    
+    # Read - Query data
+    result = conn.execute(text("""
+        SELECT * FROM users 
+        WHERE email LIKE :pattern
+    """), {"pattern": "%@example.com"})
+    
+    # Update - Modify data
+    conn.execute(text("""
+        UPDATE users 
+        SET status = :status 
+        WHERE email = :email
+    """), {"status": "active", "email": "john@example.com"})
+    
+    # Delete - Remove data
+    conn.execute(text("""
+        DELETE FROM users 
+        WHERE email = :email
+    """), {"email": "john@example.com"})
 
-# Execute a query
-cur.execute("SELECT * FROM users WHERE age > 25")
-
-# Fetch the results
-results = cur.fetchall()
-
-# Print the results
-for row in results:
-    print(row)
-
-# Close the cursor and connection
-cur.close()
-conn.close()
-
-# Using SQLAlchemy ORM
-from sqlalchemy import create_engine, Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-
-Base = declarative_base()
-
-class User(Base):
-    __tablename__ = 'users'
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    age = Column(Integer)
-
-engine = create_engine('postgresql://username:password@host:port/dbname')
-Session = sessionmaker(bind=engine)
-session = Session()
-
-# Query using ORM
-users = session.query(User).filter(User.age > 25).all()
-
-for user in users:
-    print(f"{user.name}, {user.age}")
-
-session.close()`
+# Transaction Example
+with engine.begin() as conn:
+    try:
+        conn.execute(text("UPDATE accounts SET balance = balance - 100 WHERE id = 1"))
+        conn.execute(text("UPDATE accounts SET balance = balance + 100 WHERE id = 2"))
+    except Exception as e:
+        # Transaction automatically rolls back on error
+        print(f"Transfer failed: {e}")
+        raise`
     },
     {
       type: 'nosql',
       name: 'NoSQL Databases',
-      description: 'NoSQL (Not Only SQL) databases provide a mechanism for storage and retrieval of data that is modeled in means other than the tabular relations used in relational databases.',
+      description: 'Non-relational databases optimized for flexible data models and horizontal scaling.',
       characteristics: [
-        'Flexible schema or schema-less',
-        'Horizontal scalability (scaling out)',
-        'Eventual consistency (in some cases)',
-        'Optimized for specific data models and access patterns',
-        'Best for handling large volumes of unstructured or semi-structured data',
+        'Flexible schema for evolving data structures',
+        'Horizontal scalability for large datasets',
+        'Optimized for specific data models and patterns',
+        'Eventually consistent in distributed scenarios',
+        'High performance for specific use cases',
       ],
       examples: [
-        'MongoDB (Document-based)',
-        'Cassandra (Column-family)',
-        'Redis (Key-value)',
-        'Neo4j (Graph)',
-        'Elasticsearch (Search engine)',
+        'MongoDB - Document store for JSON-like data',
+        'Redis - In-memory key-value store',
+        'Neo4j - Graph database for connected data',
       ],
-      code: `# Using MongoDB with pymongo
+      code: `# NoSQL Database Operations Example (MongoDB-style)
 from pymongo import MongoClient
 
-# Connect to MongoDB
-client = MongoClient('mongodb://localhost:27017/')
-db = client['your_database']
-collection = db['your_collection']
+# Connect to database
+client = MongoClient('database_url')
+db = client.database_name
+collection = db.collection_name
 
-# Insert a document
-document = {"name": "John Doe", "age": 30, "city": "New York"}
-result = collection.insert_one(document)
-print(f"Inserted document ID: {result.inserted_id}")
+# Basic CRUD Operations
 
-# Query documents
-query = {"age": {"$gt": 25}}
-results = collection.find(query)
+# Create - Insert documents
+doc = {
+    "name": "John",
+    "email": "john@example.com",
+    "preferences": {
+        "theme": "dark",
+        "notifications": True
+    }
+}
+result = collection.insert_one(doc)
 
-for doc in results:
-    print(doc)
+# Read - Query documents
+# Simple query
+user = collection.find_one({"email": "john@example.com"})
 
-# Update a document
-update_query = {"name": "John Doe"}
-new_values = {"$set": {"age": 31}}
-collection.update_one(update_query, new_values)
+# Complex query
+users = collection.find({
+    "preferences.theme": "dark",
+    "age": {"$gt": 25}
+})
 
-# Delete a document
-delete_query = {"name": "John Doe"}
-collection.delete_one(delete_query)
+# Update - Modify documents
+collection.update_one(
+    {"email": "john@example.com"},
+    {
+        "$set": {"status": "active"},
+        "$push": {"login_times": "2024-01-01"}
+    }
+)
 
-client.close()
+# Delete - Remove documents
+collection.delete_one({"email": "john@example.com"})
 
-# Using Redis with redis-py
-import redis
-
-# Connect to Redis
-r = redis.Redis(host='localhost', port=6379, db=0)
-
-# Set a key-value pair
-r.set('user:1', 'John Doe')
-
-# Get a value
-value = r.get('user:1')
-print(value)
-
-# Set with expiration
-r.setex('session:42', 3600, 'active')  # expires in 1 hour
-
-# Increment a counter
-r.incr('pageviews')
-
-# Delete a key
-r.delete('user:1')
-
-r.close()`
+# Aggregation Example
+pipeline = [
+    {"$match": {"status": "active"}},
+    {"$group": {
+        "_id": "$country",
+        "user_count": {"$sum": 1}
+    }}
+]
+results = collection.aggregate(pipeline)`
     }
   ];
 
   return (
     <Container fluid>
-      <Title order={1}>Databases</Title>
-      <Text mt="md">
-        Databases are essential components in data science workflows, providing structured storage and efficient retrieval of large amounts of data. In this section, we'll explore the two main categories of databases: SQL (relational) and NoSQL (non-relational) databases.
-      </Text>
-      
-      <Title order={2} mt="xl">Database Comparison</Title>
-      <Table>
-        <thead>
-          <tr>
-            <th>Feature</th>
-            <th>SQL Databases</th>
-            <th>NoSQL Databases</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Data Model</td>
-            <td>Relational (tables)</td>
-            <td>Various (document, key-value, column-family, graph)</td>
-          </tr>
-          <tr>
-            <td>Schema</td>
-            <td>Fixed, predefined</td>
-            <td>Flexible or schema-less</td>
-          </tr>
-          <tr>
-            <td>Scalability</td>
-            <td>Vertical (scale up)</td>
-            <td>Horizontal (scale out)</td>
-          </tr>
-          <tr>
-            <td>ACID Compliance</td>
-            <td>Yes</td>
-            <td>Varies (some offer eventual consistency)</td>
-          </tr>
-          <tr>
-            <td>Query Language</td>
-            <td>SQL (standardized)</td>
-            <td>Database-specific</td>
-          </tr>
-          <tr>
-            <td>Best For</td>
-            <td>Complex queries, transactions</td>
-            <td>Large volumes of unstructured data, rapid development</td>
-          </tr>
-        </tbody>
-      </Table>
+      <Stack gap="xl">
+        <div>
+          <Title order={1}>Databases</Title>
+          <Text mt="md">
+            Databases are fundamental to data science, providing organized storage and efficient retrieval of data. 
+            Understanding the differences between SQL and NoSQL databases is crucial for choosing the right tool for your data needs.
+          </Text>
+        </div>
 
-      <Accordion mt="xl">
-        {databaseTypes.map(db => (
-          <DatabaseItem key={db.type} {...db} />
-        ))}
-      </Accordion>
+        <div>
+          <Title order={2} id="comparison">Database Comparison</Title>
+          <Paper p="md" radius="md" className="bg-slate-50">
+            <Table striped highlightOnHover>
+              <thead>
+                <tr>
+                  <th>Feature</th>
+                  <th>SQL Databases</th>
+                  <th>NoSQL Databases</th>
+                </tr>
+              </thead>
+              <tbody>
+                {comparisonData.map((row, index) => (
+                  <tr key={index}>
+                    <td><Text fw={500}>{row.feature}</Text></td>
+                    <td>{row.sql}</td>
+                    <td>{row.nosql}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Paper>
+        </div>
+
+        <div>
+          <Title order={2} id="implementations">Database Implementations</Title>
+          <Accordion>
+            {databaseTypes.map(db => (
+              <DatabaseItem key={db.type} {...db} />
+            ))}
+          </Accordion>
+        </div>
+      </Stack>
     </Container>
   );
 };

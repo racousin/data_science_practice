@@ -1,150 +1,112 @@
 import React from 'react';
-import { Text, Title, Paper, Grid, List, ThemeIcon, Accordion } from '@mantine/core';
+import { Text, Title, Paper, List, ThemeIcon } from '@mantine/core';
 import { CheckCircle, AlertTriangle, RefreshCw, Filter } from 'lucide-react';
-import CodeBlock from "components/CodeBlock";
+
+const QualitySection = ({ icon: Icon, title, description, points }) => (
+  <Paper p="lg" radius="md" className="bg-slate-50">
+    <div className="flex items-start gap-3">
+      <ThemeIcon size={24} radius="md" className="mt-1">
+        <Icon size={16} />
+      </ThemeIcon>
+      <div>
+        <Title order={3} size="h4">{title}</Title>
+        <Text size="sm" mt="xs">{description}</Text>
+        <List size="sm" mt="md">
+          {points.map((point, index) => (
+            <List.Item key={index}>{point}</List.Item>
+          ))}
+        </List>
+      </div>
+    </div>
+  </Paper>
+);
 
 const DataQuality = () => {
+  const qualityDimensions = [
+    {
+      icon: CheckCircle,
+      title: "Completeness",
+      description: "Ensures all required data is present and accounted for",
+      points: [
+        "All mandatory fields are populated",
+        "Coverage across time periods is consistent",
+        "Sample sizes are statistically significant",
+        "Missing data is documented and justified"
+      ]
+    },
+    {
+      icon: RefreshCw,
+      title: "Consistency",
+      description: "Data maintains uniformity across all sources and over time",
+      points: [
+        "Standardized formats across datasets",
+        "Consistent naming conventions",
+        "Uniform units of measurement",
+        "Coherent relationships between fields"
+      ]
+    },
+    {
+      icon: AlertTriangle,
+      title: "Accuracy",
+      description: "Data correctly represents the real-world values it's meant to describe",
+      points: [
+        "Values are within expected ranges",
+        "Data matches source systems",
+        "Regular validation against known facts",
+        "Error rates are monitored and documented"
+      ]
+    },
+    {
+      icon: Filter,
+      title: "Validity",
+      description: "Data conforms to defined business rules and formats",
+      points: [
+        "Data types are appropriate",
+        "Values follow specified patterns",
+        "Relationships between fields are logical",
+        "Business rules are enforced"
+      ]
+    }
+  ];
+
   return (
     <div>
-      <Title order={1}>Data Quality and Governance</Title>
-      
-      <Text mt="md" id="quality-overview">
-        Ensuring high data quality is crucial for reliable analysis and decision-making in data science. Data quality refers to the condition of a set of values of qualitative or quantitative variables. High-quality data is accurate, complete, consistent, and timely.
-      </Text>
-
-      <Paper withBorder p="md" mt="xl">
-        <Title order={2}>Why Data Quality Matters</Title>
-        <List mt="sm">
-          <List.Item>Ensures accurate insights and predictions</List.Item>
-          <List.Item>Reduces errors in decision-making</List.Item>
-          <List.Item>Increases efficiency in data processing</List.Item>
-          <List.Item>Enhances trust in data-driven processes</List.Item>
-        </List>
-      </Paper>
-
-      <Title order={2} mt="xl" id="key-aspects">Key Aspects of Data Quality</Title>
-      
-      <Accordion mt="md">
-        <Accordion.Item value="completeness">
-          <Accordion.Control icon={<CheckCircle size={20} />}>
-            Completeness
-          </Accordion.Control>
-          <Accordion.Panel>
-            Ensures all required data is available. Check for missing values and handle them appropriately.
-          </Accordion.Panel>
-        </Accordion.Item>
-
-        <Accordion.Item value="consistency">
-          <Accordion.Control icon={<RefreshCw size={20} />}>
-            Consistency
-          </Accordion.Control>
-          <Accordion.Panel>
-            Data should be uniform across all sources and systems. Ensure data formats and definitions are standardized.
-          </Accordion.Panel>
-        </Accordion.Item>
-
-        <Accordion.Item value="accuracy">
-          <Accordion.Control icon={<AlertTriangle size={20} />}>
-            Accuracy
-          </Accordion.Control>
-          <Accordion.Panel>
-            Data should correctly represent the real-world values. Verify data against trusted sources when possible.
-          </Accordion.Panel>
-        </Accordion.Item>
-
-        <Accordion.Item value="validity">
-          <Accordion.Control icon={<Filter size={20} />}>
-            Validity
-          </Accordion.Control>
-          <Accordion.Panel>
-            Data should conform to defined formats and fall within acceptable ranges.
-          </Accordion.Panel>
-        </Accordion.Item>
-      </Accordion>
-
-      <Title order={2} mt="xl">Data Cleaning Techniques</Title>
-      
-      <Grid mt="md">
-        <Grid.Col span={6}>
-          <Paper withBorder p="md">
-            <Title order={3}>Handling Missing Values</Title>
-            <Text mt="sm">
-              Missing values can be handled through various methods:
-            </Text>
-            <List mt="sm">
-              <List.Item>Imputation (mean, median, mode)</List.Item>
-              <List.Item>Deletion (listwise or pairwise)</List.Item>
-              <List.Item>Prediction using machine learning</List.Item>
-            </List>
-          </Paper>
-        </Grid.Col>
-        
-        <Grid.Col span={6}>
-          <Paper withBorder p="md">
-            <Title order={3}>Dealing with Outliers</Title>
-            <Text mt="sm">
-              Outliers can significantly impact analysis. Common approaches:
-            </Text>
-            <List mt="sm">
-              <List.Item>Trimming</List.Item>
-              <List.Item>Winsorization</List.Item>
-              <List.Item>Transformation (e.g., log transformation)</List.Item>
-            </List>
-          </Paper>
-        </Grid.Col>
-      </Grid>
-
-      <Title order={2} mt="xl">Example: Data Cleaning with Pandas</Title>
-      
-      <CodeBlock
-        language="python"
-        code=
-{`import pandas as pd
-
-# Load data
-df = pd.read_csv('data.csv')
-
-# Rename columns
-df.rename(columns={'old_column_name': 'new_column_name'}, inplace=True)
-
-# Drop corrupt columns (example: column with irrelevant or corrupt data)
-df.drop(columns=['corrupt_column'], inplace=True)
-
-# Set an index and reset it
-df.set_index('new_column_name', inplace=True)
-df.reset_index(drop=False, inplace=True)
-
-# Remove duplicates
-df.drop_duplicates(inplace=True)
-
-# Drop corrupt lines (example: drop rows with NaN in critical columns)
-df.dropna(subset=['important_column'], inplace=True)
-
-# Convert text to uppercase and remove redundant spaces
-df['text_column'] = df['text_column'].str.upper().str.strip()
-
-print(df.head())
-
-`}
-      />
-
-      <Title order={2} mt="xl">Data Governance</Title>
+      <Title order={1}>Data Quality</Title>
       
       <Text mt="md">
-        Data governance involves the overall management of data availability, usability, integrity, and security. It encompasses policies, procedures, and standards that ensure high-quality data throughout its lifecycle.
+        Data quality is fundamental to reliable analysis and decision-making. A robust data quality framework 
+        ensures that data is trustworthy, consistent, and fit for its intended use.
       </Text>
 
-      <Paper withBorder p="md" mt="md">
-        <Title order={3}>Key Components of Data Governance</Title>
-        <List mt="sm">
-          <List.Item>Data policies and standards</List.Item>
-          <List.Item>Data quality management</List.Item>
-          <List.Item>Data security and privacy</List.Item>
-          <List.Item>Data lifecycle management</List.Item>
-          <List.Item>Metadata management</List.Item>
-        </List>
-      </Paper>
+      <div className="grid grid-cols-1 gap-4 mt-8">
+        {qualityDimensions.map((dim, index) => (
+          <QualitySection key={index} {...dim} />
+        ))}
+      </div>
 
+      <Paper p="lg" mt="xl" radius="md">
+        <Title order={2} size="h3">Implementing Quality Controls</Title>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+          <div>
+            <Title order={3} size="h5">Prevention Strategies</Title>
+            <List size="sm" mt="xs">
+              <List.Item>Standardized data collection procedures</List.Item>
+              <List.Item>Clear data ownership and responsibilities</List.Item>
+              <List.Item>Regular team training on data standards</List.Item>
+              <List.Item>Automated validation at data entry</List.Item>
+            </List>
+          </div>
+          <div>
+            <Title order={3} size="h5">Monitoring Practices</Title>
+            <List size="sm" mt="xs">
+              <List.Item>Regular data quality assessments</List.Item>
+              <List.Item>Quality metrics tracking and reporting</List.Item>
+              <List.Item>Stakeholder feedback integration</List.Item>
+              <List.Item>Documentation of quality issues</List.Item>
+            </List>
+          </div>
+        </div>
+      </Paper>
     </div>
   );
 };

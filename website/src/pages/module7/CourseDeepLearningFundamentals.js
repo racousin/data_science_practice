@@ -196,29 +196,6 @@ const CourseDeepLearningFundamentals = () => {
     >
       {location.pathname === `/module${module}/course` && (
         <Stack spacing="md">
-          <Text>
-            This comprehensive module covers the fundamentals of deep learning, from basic neural network 
-            concepts to advanced architectures and training techniques. The course is designed for students 
-            with a strong mathematical background and focuses on both theoretical understanding and 
-            practical implementation using PyTorch 2.5.
-          </Text>
-          
-          <Title order={2} mt="md">Course Overview</Title>
-          <Text>
-            Throughout this module, you will learn:
-          </Text>
-          <ul>
-            <li>Fundamental concepts of neural networks and deep learning</li>
-            <li>Mathematical foundations of backpropagation and optimization</li>
-            <li>Implementation of various neural network architectures</li>
-            <li>Best practices for training and optimizing deep learning models</li>
-            <li>Advanced techniques for improving model performance</li>
-          </ul>
-
-          <Text mt="sm">
-            Each section includes theoretical explanations, mathematical formulations, 
-            practical code examples, and interactive demonstrations using PyTorch 2.5.
-          </Text>
 
           <Text mt="md" c="dimmed" size="sm">
             Last Updated: 2024-09-20

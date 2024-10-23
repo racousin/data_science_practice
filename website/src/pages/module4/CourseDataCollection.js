@@ -12,13 +12,11 @@ const CourseDataCollection = () => {
       label: "Introduction",
       component: lazy(() => import("pages/module4/course/Introduction")),
       subLinks: [
-        { id: "data-pipeline", label: "Data Pipeline" },
-        { id: "types-of-data", label: "Types of Data" },
-        { id: "data-sources", label: "Data Sources" },
-        { id: "batch-vs-streaming", label: "Batch vs. Streaming Data Collection" },
-        { id: "data-size", label: "Data Size" },
-        { id: "data-quality", label: "Data Quality" },
-        { id: "managing-multiple-sources", label: "Managing Multiple Sources" },
+        { id: "types", label: "Types of Data" },
+        { id: "sources", label: "Data Sources" },
+        { id: "collection-methods", label: "Collection Methods" },
+        { id: "integration-example", label: "Data Integration Example" },
+        { id: "considerations", label: "Key Considerations" }
       ],
     },
 

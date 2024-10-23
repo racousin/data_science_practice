@@ -8,8 +8,7 @@ const SectionIcon = ({ type }) => {
   switch (type) {
     case 'overview': return <Globe {...iconProps} />;
     case 'ethics': return <Shield {...iconProps} />;
-    case 'extracting': return <Code {...iconProps} />;
-    case 'examples': return <FileSearch {...iconProps} />;
+    case 'implementation': return <Code {...iconProps} />;
     default: return null;
   }
 };
@@ -20,7 +19,7 @@ const ScrapingSection = ({ type, title, content }) => (
       {title}
     </Accordion.Control>
     <Accordion.Panel>
-      <Stack spacing="md">
+      <Stack gap="md">
         {content}
       </Stack>
     </Accordion.Panel>
@@ -31,172 +30,150 @@ const WebScraping = () => {
   const sections = [
     {
       type: 'overview',
-      title: 'High-level Overview',
+      title: 'Web Scraping Fundamentals',
       content: (
         <>
           <Text>
-            Web scraping is the process of automatically extracting data from websites. It's a powerful technique for collecting data that's not available through APIs or other structured formats.
+            Web scraping extracts data from websites when APIs aren't available. It involves parsing HTML content to collect structured data for analysis.
           </Text>
-          <Title order={4}>Key Concepts:</Title>
-          <List>
-            <List.Item>HTML parsing: Understanding and navigating the structure of web pages</List.Item>
-            <List.Item>HTTP requests: Fetching web pages programmatically</List.Item>
-            <List.Item>Data extraction: Identifying and extracting relevant information from HTML</List.Item>
-            <List.Item>Automation: Scraping multiple pages or websites efficiently</List.Item>
-          </List>
-          <Text mt="md">
-            Common libraries for web scraping in Python include:
-          </Text>
-          <List>
-            <List.Item>Beautiful Soup: For parsing HTML and XML documents</List.Item>
-            <List.Item>Scrapy: A comprehensive framework for large-scale web scraping</List.Item>
-            <List.Item>Selenium: For scraping dynamic websites that require JavaScript rendering</List.Item>
-          </List>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Paper p="md" className="bg-slate-50">
+              <Stack gap="sm">
+                <Title order={4}>Key Components</Title>
+                <List>
+                  <List.Item><strong>HTML Parser:</strong> BeautifulSoup or lxml</List.Item>
+                  <List.Item><strong>HTTP Client:</strong> requests library</List.Item>
+                  <List.Item><strong>Selectors:</strong> CSS or XPath queries</List.Item>
+                </List>
+              </Stack>
+            </Paper>
+            <Paper p="md" className="bg-slate-50">
+              <Stack gap="sm">
+                <Title order={4}>Common Use Cases</Title>
+                <List>
+                  <List.Item>Product price monitoring</List.Item>
+                  <List.Item>Research data collection</List.Item>
+                  <List.Item>Content aggregation</List.Item>
+                </List>
+              </Stack>
+            </Paper>
+          </div>
         </>
       )
     },
     {
       type: 'ethics',
-      title: 'Ethical Considerations',
+      title: 'Legal & Ethical Guidelines',
       content: (
         <>
-          <Text>
-            While web scraping can be a powerful tool for data collection, it's crucial to consider the ethical and legal implications of your scraping activities.
-          </Text>
-          <Title order={4}>Ethical Guidelines:</Title>
-          <List>
-            <List.Item>Respect robots.txt: Check and adhere to the website's robots.txt file, which specifies which parts of the site can be crawled</List.Item>
-            <List.Item>Rate limiting: Implement reasonable rate limits to avoid overloading the server</List.Item>
-            <List.Item>Identify yourself: Use a custom User-Agent string to identify your bot</List.Item>
-            <List.Item>Respect copyright: Be aware of and comply with copyright laws regarding the scraped content</List.Item>
-            <List.Item>Personal data: Be cautious when scraping personal information and comply with data protection regulations (e.g., GDPR)</List.Item>
-          </List>
-          <Alert icon={<Shield size={16} />} title="Legal Considerations" color="yellow" mt="md">
-            Always review the website's Terms of Service before scraping. Some websites explicitly prohibit scraping, which could lead to legal issues if violated.
+          <Alert icon={<Shield size={16} />} color="blue">
+            Before scraping any website, check the robots.txt file and Terms of Service for scraping policies.
           </Alert>
+          <Paper p="md" className="bg-slate-50">
+            <Stack gap="sm">
+              <Title order={4}>Best Practices</Title>
+              <List>
+                <List.Item><strong>Rate Limiting:</strong> Space out requests (1-2 seconds between calls)</List.Item>
+                <List.Item><strong>User Agent:</strong> Identify your scraper in request headers</List.Item>
+                <List.Item><strong>Data Usage:</strong> Respect copyright and personal data protection</List.Item>
+                <List.Item><strong>Server Load:</strong> Minimize impact on the website's resources</List.Item>
+              </List>
+            </Stack>
+          </Paper>
         </>
       )
     },
     {
-      type: 'extracting',
-      title: 'Extracting Data from HTML Pages',
+      type: 'implementation',
+      title: 'Practical Example: Product Price Tracker',
       content: (
         <>
           <Text>
-            Extracting data from HTML pages involves parsing the HTML structure and using selectors to locate and extract the desired information.
+            Let's build a practical price tracker that monitors product prices from an e-commerce website. This example demonstrates proper scraping techniques and data handling.
           </Text>
-          <Title order={4}>Common Techniques:</Title>
+          <CodeBlock
+            language="python"
+            code={`import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+from datetime import datetime
+import time
+
+class PriceTracker:
+    def __init__(self):
+        self.headers = {
+            'User-Agent': 'Price Tracker Bot 1.0 (Educational Project)',
+            'Accept': 'text/html,application/xhtml+xml'
+        }
+        self.data = []
+
+    def fetch_product_data(self, url):
+        """Fetch and parse product data from URL."""
+        try:
+            response = requests.get(url, headers=self.headers)
+            response.raise_for_status()
+            soup = BeautifulSoup(response.text, 'html.parser')
+            
+            return {
+                'title': soup.select_one('h1.product-title').text.strip(),
+                'price': self._extract_price(soup.select_one('span.price')),
+                'rating': soup.select_one('div.rating').text.strip(),
+                'stock': soup.select_one('span.stock-status').text.strip(),
+                'timestamp': datetime.now().isoformat()
+            }
+        except Exception as e:
+            print(f"Error fetching {url}: {e}")
+            return None
+
+    def _extract_price(self, element):
+        """Extract and clean price value."""
+        if not element:
+            return None
+        # Remove currency symbol and convert to float
+        return float(element.text.strip().replace('$', '').replace(',', ''))
+
+    def track_products(self, urls, interval_seconds=3600):
+        """Track multiple products over time."""
+        while True:
+            for url in urls:
+                data = self.fetch_product_data(url)
+                if data:
+                    self.data.append(data)
+                time.sleep(2)  # Respect rate limiting
+            
+            # Save current data
+            self._save_data()
+            
+            # Wait for next check
+            time.sleep(interval_seconds)
+
+    def _save_data(self):
+        """Save tracked data to CSV."""
+        df = pd.DataFrame(self.data)
+        df.to_csv('price_history.csv', index=False)
+        print(f"Data saved: {len(self.data)} records")
+
+# Usage Example
+if __name__ == "__main__":
+    tracker = PriceTracker()
+    
+    # List of products to track
+    products = [
+        'https://example.com/product/1',
+        'https://example.com/product/2'
+    ]
+    
+    # Start tracking (check every hour)
+    tracker.track_products(products, interval_seconds=3600)`}
+          />
+          <Title order={4} mt="md">Key Features</Title>
           <List>
-            <List.Item>CSS Selectors: Target elements based on their CSS classes or IDs</List.Item>
-            <List.Item>XPath: Use XML Path Language to navigate through the HTML structure</List.Item>
-            <List.Item>Regular Expressions: For extracting patterns from text content</List.Item>
+            <List.Item><strong>Proper Headers:</strong> Identifies the bot and sets appropriate request headers</List.Item>
+            <List.Item><strong>Error Handling:</strong> Gracefully handles failed requests and parsing errors</List.Item>
+            <List.Item><strong>Rate Limiting:</strong> Implements delays between requests</List.Item>
+            <List.Item><strong>Data Storage:</strong> Saves historical data in CSV format</List.Item>
+            <List.Item><strong>Modular Design:</strong> Easy to extend for different websites or data types</List.Item>
           </List>
-          <CodeBlock
-            language="python"
-            code={`import requests
-from bs4 import BeautifulSoup
-
-# Fetch the webpage
-url = 'https://example.com'
-response = requests.get(url)
-html_content = response.text
-
-# Parse the HTML
-soup = BeautifulSoup(html_content, 'html.parser')
-
-# Extract data using CSS selectors
-title = soup.select_one('h1').text
-paragraphs = [p.text for p in soup.select('p')]
-
-# Extract data using XPath
-from lxml import html
-tree = html.fromstring(html_content)
-links = tree.xpath('//a/@href')
-
-# Print extracted data
-print(f"Title: {title}")
-print(f"Paragraphs: {paragraphs}")
-print(f"Links: {links}")
-`}
-          />
-          <Text mt="md">
-            This example demonstrates how to use Beautiful Soup for CSS selector-based extraction and lxml for XPath-based extraction.
-          </Text>
-        </>
-      )
-    },
-    {
-      type: 'examples',
-      title: 'Simple Scraping Examples',
-      content: (
-        <>
-          <Text>
-            Let's look at a couple of simple scraping examples to illustrate common use cases in data science.
-          </Text>
-          <Title order={4}>Example 1: Scraping a Weather Website</Title>
-          <CodeBlock
-            language="python"
-            code={`import requests
-from bs4 import BeautifulSoup
-
-def scrape_weather(city):
-    url = f'https://www.example-weather-site.com/{city}'
-    response = requests.get(url)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    
-    temperature = soup.select_one('.temperature').text
-    condition = soup.select_one('.condition').text
-    
-    return {
-        'city': city,
-        'temperature': temperature,
-        'condition': condition
-    }
-
-# Usage
-weather_data = scrape_weather('new-york')
-print(weather_data)
-`}
-          />
-          <Text mt="md">
-            This example scrapes basic weather information for a given city.
-          </Text>
-          <Title order={4}>Example 2: Scraping a News Website</Title>
-          <CodeBlock
-            language="python"
-            code={`import requests
-from bs4 import BeautifulSoup
-
-def scrape_news_headlines():
-    url = 'https://www.example-news-site.com'
-    response = requests.get(url)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    
-    headlines = []
-    for article in soup.select('article'):
-        headline = article.select_one('h2').text
-        link = article.select_one('a')['href']
-        headlines.append({
-            'title': headline,
-            'link': link
-        })
-    
-    return headlines
-
-# Usage
-news_headlines = scrape_news_headlines()
-for headline in news_headlines:
-    print(f"Title: {headline['title']}")
-    print(f"Link: {headline['link']}")
-    print('---')
-`}
-          />
-          <Text mt="md">
-            This example scrapes news headlines and their corresponding links from a news website's homepage.
-          </Text>
-          <Alert icon={<Shield size={16} />} title="Remember" color="blue" mt="md">
-            These are simplified examples. In real-world scenarios, you'd need to handle errors, implement rate limiting, and possibly deal with more complex HTML structures or dynamic content.
-          </Alert>
         </>
       )
     }
@@ -204,20 +181,20 @@ for headline in news_headlines:
 
   return (
     <Container fluid>
-      <Title order={1}>Web Scraping</Title>
-      <Text mt="md">
-        Web scraping is a powerful technique for collecting data from websites, especially when the data is not available through APIs or other structured formats. It's an essential skill for data scientists, enabling them to gather diverse datasets for analysis and model training.
-      </Text>
-      
-      <Accordion mt="xl">
-        {sections.map(section => (
-          <ScrapingSection key={section.type} {...section} />
-        ))}
-      </Accordion>
+      <Stack gap="xl">
+        <div>
+          <Title order={1}>Web Scraping</Title>
+          <Text mt="md">
+            Web scraping enables automated data collection from websites when APIs aren't available. This guide covers the fundamentals and best practices, with a practical example of building a price tracker.
+          </Text>
+        </div>
 
-      <Text mt="xl">
-        Web scraping can significantly expand your data collection capabilities, but it's important to approach it responsibly and ethically. Always consider the legal and ethical implications of your scraping activities, and strive to minimize the impact on the websites you're scraping. With the right techniques and considerations, web scraping can be a valuable tool in your data science toolkit.
-      </Text>
+        <Accordion>
+          {sections.map(section => (
+            <ScrapingSection key={section.type} {...section} />
+          ))}
+        </Accordion>
+      </Stack>
     </Container>
   );
 };

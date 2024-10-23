@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, Title, Paper, Grid, List, ThemeIcon } from '@mantine/core';
-import { BarChart, Activity, Database, Clock } from 'lucide-react';
+import { Database, Activity, Clock } from 'lucide-react';
 import CodeBlock from "components/CodeBlock";
 
 const BatchVsStreaming = () => {
@@ -9,95 +9,67 @@ const BatchVsStreaming = () => {
       <Title order={1}>Batch vs. Streaming Data Collection</Title>
       
       <Text mt="md">
-        In data science and engineering, there are two primary approaches to collecting and processing data: batch processing and stream processing. Each method has its own advantages and use cases.
+        Data collection in data science follows two main patterns: batch processing and stream processing. 
+        Understanding when to use each approach is crucial for effective data collection strategies.
       </Text>
 
-      <Grid mt="xl">
+      <Grid mt="xl" gutter="lg">
         <Grid.Col span={6}>
-          <Paper withBorder p="md">
-            <Title order={2} mb="sm">
-              <ThemeIcon size={30} radius="md" variant="light" color="blue" mr="xs">
-                <Database size={20} />
-              </ThemeIcon>
+          <Paper p="lg" radius="md" className="bg-slate-50">
+            <Title order={2} mb="md" className="flex items-center gap-2">
+              <Database size={24} className="text-blue-600" />
               Batch Collection
             </Title>
-            <Text>
-              Batch processing involves collecting and processing data in large, scheduled batches.
-            </Text>
-            <List mt="sm">
-              <List.Item>Processed at regular intervals (e.g., daily, hourly)</List.Item>
-              <List.Item>Suitable for historical analysis</List.Item>
-              <List.Item>Typically involves larger datasets</List.Item>
+            <List spacing="sm">
+              <List.Item><strong>When:</strong> Data is processed at scheduled intervals</List.Item>
+              <List.Item><strong>Volume:</strong> Handles large amounts of data efficiently</List.Item>
+              <List.Item><strong>Use Case:</strong> Historical analysis, daily reports</List.Item>
+              <List.Item><strong>Example:</strong> End-of-day financial data processing</List.Item>
             </List>
           </Paper>
         </Grid.Col>
         
         <Grid.Col span={6}>
-          <Paper withBorder p="md">
-            <Title order={2} mb="sm">
-              <ThemeIcon size={30} radius="md" variant="light" color="green" mr="xs">
-                <Activity size={20} />
-              </ThemeIcon>
-              Streaming/Event-based Collection
+          <Paper p="lg" radius="md" className="bg-slate-50">
+            <Title order={2} mb="md" className="flex items-center gap-2">
+              <Activity size={24} className="text-green-600" />
+              Stream Collection
             </Title>
-            <Text>
-              Stream processing involves collecting and processing data in real-time or near real-time as it becomes available.
-            </Text>
-            <List mt="sm">
-              <List.Item>Processed continuously as data arrives</List.Item>
-              <List.Item>Enables immediate analysis and action</List.Item>
-              <List.Item>Ideal for real-time applications</List.Item>
+            <List spacing="sm">
+              <List.Item><strong>When:</strong> Data is processed as it arrives</List.Item>
+              <List.Item><strong>Volume:</strong> Handles continuous flow of small updates</List.Item>
+              <List.Item><strong>Use Case:</strong> Real-time monitoring, live updates</List.Item>
+              <List.Item><strong>Example:</strong> Social media sentiment analysis</List.Item>
             </List>
           </Paper>
         </Grid.Col>
       </Grid>
 
-      <Title order={2} mt="xl">Queues in Event-based Systems</Title>
-      <Text mt="md">
-        In streaming architectures, message queues play a crucial role in managing data flow. Tools like Apache Kafka or RabbitMQ are commonly used to store and deliver messages between services.
-      </Text>
-      <CodeBlock
-        language="python"
-        code=
-{`# Example: Using Kafka consumer in Python
-from kafka import KafkaConsumer
-
-consumer = KafkaConsumer('my_topic',
-                         bootstrap_servers=['localhost:9092'],
-                         auto_offset_reset='earliest',
-                         enable_auto_commit=True,
-                         group_id='my-group')
-
-for message in consumer:
-    print(f"Received: {message.value.decode('utf-8')}")
-`}
-      />
-
-      <Title order={2} mt="xl">Choosing Between Batch and Streaming</Title>
-      <Paper withBorder p="md" mt="md">
-        <List spacing="sm">
-          <List.Item icon={
-            <ThemeIcon color="blue" size={24} radius="xl">
-              <Clock size={16} />
-            </ThemeIcon>
-          }>
-            <Text weight={700}>Data Latency Requirements:</Text> If you need real-time insights, streaming is preferred. For historical analysis, batch processing works well.
-          </List.Item>
-          <List.Item icon={
-            <ThemeIcon color="green" size={24} radius="xl">
-              <Database size={16} />
-            </ThemeIcon>
-          }>
-            <Text weight={700}>Data Volume:</Text> Batch processing can handle larger volumes of data more efficiently, while streaming is better for continuous, smaller chunks of data.
-          </List.Item>
-          <List.Item icon={
-            <ThemeIcon color="orange" size={24} radius="xl">
-              <BarChart size={16} />
-            </ThemeIcon>
-          }>
-            <Text weight={700}>Processing Complexity:</Text> Complex computations might be more suited to batch processing, while simpler, incremental computations work well with streaming.
-          </List.Item>
-        </List>
+      <Paper p="lg" mt="xl" radius="md" className="bg-slate-50">
+        <Title order={2} className="flex items-center gap-2 mb-md">
+          <Clock size={24} className="text-violet-600" />
+          When to Use Each
+        </Title>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Title order={3} size="h4" mb="xs">Choose Batch When:</Title>
+            <List>
+              <List.Item>Processing large volumes of historical data</List.Item>
+              <List.Item>Running complex aggregations</List.Item>
+              <List.Item>Resource efficiency is priority</List.Item>
+              <List.Item>Real-time updates aren't required</List.Item>
+            </List>
+          </div>
+          <div>
+            <Title order={3} size="h4" mb="xs">Choose Streaming When:</Title>
+            <List>
+              <List.Item>Immediate data processing is needed</List.Item>
+              <List.Item>Monitoring real-time metrics</List.Item>
+              <List.Item>Detecting patterns as they occur</List.Item>
+              <List.Item>Building interactive dashboards</List.Item>
+            </List>
+          </div>
+        </div>
       </Paper>
     </div>
   );

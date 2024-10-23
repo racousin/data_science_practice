@@ -4,6 +4,12 @@ import { Container, Grid, Card, Button, Select, Title, Text } from '@mantine/cor
 
 const modules = [
   {
+    id: 0,
+    title: "Prerequisite And Methodology",
+    linkCourse: "/module0/course",
+    tags: [],
+  },
+  {
     id: 1,
     title: "Git and Github",
     linkCourse: "/module1/course",
