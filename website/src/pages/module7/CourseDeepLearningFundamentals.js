@@ -31,8 +31,8 @@ const CourseDeepLearningFundamentals = () => {
     },
     {
       to: "/architecture",
-      label: "Neural Network Architecture",
-      component: lazy(() => import("pages/module7/course/Architecture")),
+      label: "Neural Network Architecture and backpropagation",
+      component: lazy(() => import("pages/module7/course/ArchitectureAndBackpropagation")),
       subLinks: [
         {
           id: "network-structure",

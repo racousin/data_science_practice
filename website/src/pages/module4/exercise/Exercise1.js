@@ -114,7 +114,7 @@ A003,100
 
         <Section title="Evaluation">
           <Text>Your baseline model and predictions will be evaluated based on the Mean Absolute Error (MAE).</Text>
-          <Text fw={700}>The error threshold for this exercise is an MAE of 5. Ensure your predictions are accurate enough to meet this threshold.</Text>
+          <Text fw={700}>The error threshold for this exercise is an MAE of 20. Ensure your predictions are accurate enough to meet this threshold.</Text>
         </Section>
         </Stack>
         <DataInteractionPanel

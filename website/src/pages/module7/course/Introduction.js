@@ -1,8 +1,8 @@
 import React from 'react';
-import { Title, Text, Stack, Grid, Timeline, Box, List } from '@mantine/core';
+import { Title, Text, Stack, Grid, Timeline, Box, List, Table, Alert } from '@mantine/core';
 import { InlineMath, BlockMath } from 'react-katex';
 import CodeBlock from 'components/CodeBlock';
-import { BookOpen, Cpu, Network, Brain } from 'lucide-react';
+import { BookOpen, Cpu, Network, Brain, AlertCircle } from 'lucide-react';
 
 const Introduction = () => {
   return (
@@ -71,96 +71,170 @@ const Introduction = () => {
         </Grid.Col>
       </Grid>
 
-      <Title order={2} id="backpropagation" className="mt-6">
-        Backpropagation and Automatic Differentiation
+
+      <Title order={2} id="pytorch-fundamentals" className="mt-8">
+        PyTorch 2.5 Fundamentals
       </Title>
-      <Text>
-        Backpropagation is the cornerstone algorithm for training neural networks, utilizing the chain rule to compute gradients efficiently through the network.
-      </Text>
-
-      <Box className="p-4 bg-gray-50 rounded mt-4">
-        <Title order={4}>Mathematical Formulation</Title>
-        <BlockMath>
-          {`\\frac{\\partial L}{\\partial w_{i,j}^{(l)}} = \\frac{\\partial L}{\\partial a_j^{(l)}} \\frac{\\partial a_j^{(l)}}{\\partial z_j^{(l)}} \\frac{\\partial z_j^{(l)}}{\\partial w_{i,j}^{(l)}}`}
-        </BlockMath>
-        <Text className="mt-2">
-          Where:
-        </Text>
-        <List>
-          <List.Item><InlineMath>{`L`}</InlineMath> is the loss function</List.Item>
-          <List.Item><InlineMath>{`w_{i,j}^{(l)}`}</InlineMath> is the weight connecting neuron i in layer l-1 to neuron j in layer l</List.Item>
-          <List.Item><InlineMath>{`a_j^{(l)}`}</InlineMath> is the activation of neuron j in layer l</List.Item>
-          <List.Item><InlineMath>{`z_j^{(l)}`}</InlineMath> is the weighted input to neuron j in layer l</List.Item>
-        </List>
-      </Box>
-
-      <Box className="mt-4">
-        <Title order={4}>Automatic Differentiation in PyTorch</Title>
-        <Text>
-          PyTorch implements reverse-mode automatic differentiation, building a dynamic computational graph that tracks operations for gradient computation.
-        </Text>
-        <CodeBlock
-          language="python"
-          code={`
-import torch
-
-# Create tensors with gradient tracking
-x = torch.tensor([2.0], requires_grad=True)
-y = torch.tensor([3.0], requires_grad=True)
-
-# Forward pass: define the computation
-z = x**2 + y**3
-
-# Backward pass: compute gradients
-z.backward()
-
-# Access gradients
-print(f"dz/dx: {x.grad}")  # Output: 4.0
-print(f"dz/dy: {y.grad}")  # Output: 27.0
-          `}
-        />
-      </Box>
-
-      <Title order={2} id="basic-example" className="mt-6">
-        Simple Neural Network Example
-      </Title>
-      <Text>
-        Let's implement a basic neural network to demonstrate these concepts in practice:
-      </Text>
       
+      <Title order={3} id="tensors" className="mt-6">
+        Tensors: The Building Blocks
+      </Title>
+      <Text>
+        Tensors are the fundamental data structure in PyTorch, representing multi-dimensional arrays with uniform data type. They support automatic differentiation and GPU acceleration.
+      </Text>
+
       <CodeBlock
         language="python"
         code={`
 import torch
-import torch.nn as nn
 
-# Define a simple neural network
-class SimpleNN(nn.Module):
-    def __init__(self, input_size, hidden_size, output_size):
-        super(SimpleNN, self).__init__()
-        self.layer1 = nn.Linear(input_size, hidden_size)
-        self.activation = nn.ReLU()
-        self.layer2 = nn.Linear(hidden_size, output_size)
-    
-    def forward(self, x):
-        x = self.activation(self.layer1(x))
-        x = self.layer2(x)
-        return x
+# Creating tensors
+x = torch.tensor([[1, 2, 3], [4, 5, 6]])  # From list
+y = torch.zeros(2, 3)                      # Zeros tensor
+z = torch.randn(2, 3)                      # Random normal distribution
+ones = torch.ones(2, 3)                    # Ones tensor
+arange = torch.arange(0, 10, step=2)       # Range tensor
 
-# Create and test the model
-model = SimpleNN(input_size=2, hidden_size=4, output_size=1)
-x = torch.tensor([[1.0, 2.0]])  # Example input
-y = model(x)
+# Basic properties
+print(f"Shape: {x.shape}")         # Size of each dimension
+print(f"Dtype: {x.dtype}")         # Data type
+print(f"Device: {x.device}")       # CPU/GPU location
+
+# Moving to GPU (if available)
+if torch.cuda.is_available():
+    x_gpu = x.cuda()  # or x.to('cuda')
+`}
+      />
+
+      <Title order={3} id="tensor-operations" className="mt-6">
+        Essential Tensor Operations
+      </Title>
+      
+      <Grid grow gutter="md">
+        <Grid.Col span={6}>
+          <Box className="p-4 border rounded">
+            <Title order={4}>Arithmetic Operations</Title>
+            <CodeBlock
+              language="python"
+              code={`
+# Basic operations
+a = torch.tensor([1, 2, 3])
+b = torch.tensor([4, 5, 6])
+
+add = a + b  # or torch.add(a, b)
+sub = a - b  # or torch.sub(a, b)
+mul = a * b  # or torch.mul(a, b)
+div = a / b  # or torch.div(a, b)
+
+# Matrix operations
+mat1 = torch.randn(2, 3)
+mat2 = torch.randn(3, 2)
+matmul = torch.matmul(mat1, mat2)  # Matrix multiplication
+`}
+            />
+          </Box>
+        </Grid.Col>
+        
+        <Grid.Col span={6}>
+          <Box className="p-4 border rounded">
+            <Title order={4}>Reshaping & Indexing</Title>
+            <CodeBlock
+              language="python"
+              code={`
+# Reshaping operations
+x = torch.randn(4, 4)
+reshaped = x.view(16)      # Reshape to 1D
+reshaped = x.view(-1, 8)   # Auto-infer first dimension
+permuted = x.permute(1, 0) # Transpose dimensions
+
+# Indexing and slicing
+first_row = x[0]           # First row
+slice_2d = x[1:3, 1:3]    # 2D slice
+boolean_idx = x[x > 0]     # Boolean indexing
+`}
+            />
+          </Box>
+        </Grid.Col>
+      </Grid>
+
+      <Title order={3} id="autograd" className="mt-6">
+        Automatic Differentiation
+      </Title>
+      <Text>
+        PyTorch's autograd system enables automatic computation of gradients for all operations on tensors.
+      </Text>
+
+      <CodeBlock
+        language="python"
+        code={`
+# Creating tensors with gradients
+x = torch.randn(2, 2, requires_grad=True)
+y = torch.randn(2, 2, requires_grad=True)
+
+# Forward pass
+z = x * 2 + y ** 2
 
 # Compute gradients
-loss = y.sum()
+loss = z.mean()
 loss.backward()
 
-# Print parameter gradients
-for name, param in model.named_parameters():
-    print(f"{name} gradient shape: {param.grad.shape}")
-        `}
+# Access gradients
+print(f"x.grad: {x.grad}")
+print(f"y.grad: {y.grad}")
+
+# Zero gradients for next iteration
+x.grad.zero_()
+y.grad.zero_()
+`}
       />
+
+      <Alert 
+        icon={<AlertCircle size={16} />} 
+        title="Best Practices" 
+        color="blue"
+        className="mt-4"
+      >
+        <List>
+          <List.Item>Always check tensor device location before operations</List.Item>
+          <List.Item>Use in-place operations (methods with trailing underscore) carefully</List.Item>
+          <List.Item>Remember to zero gradients before each backward pass in training loops</List.Item>
+          <List.Item>Use torch.no_grad() for inference to save memory</List.Item>
+        </List>
+      </Alert>
+
+      <Table className="mt-6">
+        <thead>
+          <tr>
+            <th>Operation Category</th>
+            <th>Common Methods</th>
+            <th>Use Cases</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Creation</td>
+            <td>zeros(), ones(), randn(), arange()</td>
+            <td>Initializing tensors, creating masks</td>
+          </tr>
+          <tr>
+            <td>Manipulation</td>
+            <td>view(), reshape(), permute(), transpose()</td>
+            <td>Changing tensor dimensions, preparing data</td>
+          </tr>
+          <tr>
+            <td>Math Operations</td>
+            <td>add(), mul(), matmul(), sum()</td>
+            <td>Neural network computations</td>
+          </tr>
+          <tr>
+            <td>Indexing</td>
+            <td>index_select(), masked_select()</td>
+            <td>Batch processing, attention mechanisms</td>
+          </tr>
+        </tbody>
+      </Table>
+
+
     </Stack>
   );
 };
