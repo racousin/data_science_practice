@@ -7509,40 +7509,56 @@ a.anchor-link {
 </style>
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4f942bd5-6b21-4075-8623-9c5368383b77">
+<main><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=5ed6d52b-732b-4462-8f1d-75741067ecba">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ea3ee8dd-5dae-4900-8f89-2f57a02231ff">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Exercise:-Combining-Data-from-Multiple-Sources">Exercise: Combining Data from Multiple Sources<a class="anchor-link" href="#Exercise:-Combining-Data-from-Multiple-Sources">¶</a></h3><h4 id="Objectives">Objectives<a class="anchor-link" href="#Objectives">¶</a></h4><ul>
-<li>Retrieve data from various sources: Excel, JSON, SQLite3, and web.</li>
-<li>Join the data correctly on different IDs.</li>
-<li>Return a combined dataframe with the correct IDs and answers.</li>
-</ul>
-<h4 id="Data-Sources">Data Sources<a class="anchor-link" href="#Data-Sources">¶</a></h4><ol>
-<li><strong>Excel File</strong>: Contains user information with IDs.</li>
-<li><strong>JSON File</strong>: Contains purchase data linked by user IDs.</li>
-<li><strong>SQLite3 Database</strong>: Contains transaction details linked by transaction IDs.</li>
-<li><strong>Web Data</strong>: Retrieve additional user details from a web page.</li>
-</ol>
+<h2 id="Data-Collection">Data Collection<a class="anchor-link" href="#Data-Collection">¶</a></h2>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=0d887630-65b5-4bc5-aed7-ca7f1f30c193">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=dff7b6c3-5df9-4f2c-87e9-38d9a812cbcc">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Files-sources">Files sources<a class="anchor-link" href="#Files-sources">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=19b8c48c-9f5c-4796-b25e-cd52e1a5dc22">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
-
-<span class="c1"># URLs of the files</span>
-<span class="n">train_data_url</span> <span class="o">=</span> <span class="s1">'https://www.raphaelcousin.com/modules/module3/exercise/module4_exercise_train.csv'</span>
-<span class="n">test_data_url</span> <span class="o">=</span> <span class="s1">'https://www.raphaelcousin.com/modules/module3/exercise/module4_exercise_test.csv'</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># URLs of the files</span>
+<span class="n">train_datas_url</span> <span class="o">=</span> <span class="s1">'https://www.raphaelcousin.com/modules/module4/exercise/module4_exercise_train.zip'</span>
+<span class="n">test_data_url</span> <span class="o">=</span> <span class="s1">'https://www.raphaelcousin.com/modules/module4/exercise/Neighborhood_Market_data.csv'</span>
 
 <span class="c1"># Function to download a file</span>
 <span class="k">def</span> <span class="nf">download_file</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">file_name</span><span class="p">):</span>
@@ -7553,184 +7569,815 @@ a.anchor-link {
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Downloaded </span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s1"> from </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
 
 <span class="c1"># Downloading the files</span>
-<span class="n">download_file</span><span class="p">(</span><span class="n">train_data_url</span><span class="p">,</span> <span class="s1">'module4_exercise_train.csv'</span><span class="p">)</span>
-<span class="n">download_file</span><span class="p">(</span><span class="n">test_data_url</span><span class="p">,</span> <span class="s1">'module4_exercise_test.csv'</span><span class="p">)</span>
+<span class="n">download_file</span><span class="p">(</span><span class="n">train_datas_url</span><span class="p">,</span> <span class="s1">'module4_exercise_train.zip'</span><span class="p">)</span>
+<span class="n">download_file</span><span class="p">(</span><span class="n">test_data_url</span><span class="p">,</span> <span class="s1">'Neighborhood_Market_data.csv'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=cdbcccd3-b0be-4945-acd2-721cc7f318ef">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Downloaded module4_exercise_train.zip from https://www.raphaelcousin.com/modules/module4/exercise/module4_exercise_train.zip
+Downloaded Neighborhood_Market_data.csv from https://www.raphaelcousin.com/modules/module4/exercise/Neighborhood_Market_data.csv
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=72397636-457a-4f62-818c-18d4967396d1">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="CityMart">CityMart<a class="anchor-link" href="#CityMart">¶</a></h4>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=13aa4dce-b3ac-4b52-939c-081445f17494">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1">### Step-by-Step Guide</span>
-
-<span class="c1">#### 1. Retrieve Data from Excel File</span>
-
-<span class="err">```</span><span class="n">python</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-
-<span class="c1"># Load the Excel file</span>
-<span class="n">excel_file</span> <span class="o">=</span> <span class="s1">'users.xlsx'</span>
-<span class="n">df_users</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excel_file</span><span class="p">)</span>
-
-<span class="c1"># Display the dataframe</span>
-<span class="n">df_users</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="err">```</span>
-
-<span class="c1">#### 2. Retrieve Data from JSON File</span>
-
-<span class="err">```</span><span class="n">python</span>
-<span class="kn">import</span> <span class="nn">json</span>
-
-<span class="c1"># Load the JSON file</span>
-<span class="n">json_file</span> <span class="o">=</span> <span class="s1">'purchases.json'</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
-
-<span class="n">df_purchases</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-
-<span class="c1"># Display the dataframe</span>
-<span class="n">df_purchases</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="err">```</span>
-
-<span class="c1">#### 3. Retrieve Data from SQLite3 Database</span>
-
-<span class="err">```</span><span class="n">python</span>
-<span class="kn">import</span> <span class="nn">sqlite3</span>
-
-<span class="c1"># Connect to the SQLite3 database</span>
-<span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">'transactions.db'</span><span class="p">)</span>
-
-<span class="c1"># Query the database</span>
-<span class="n">query</span> <span class="o">=</span> <span class="s1">'SELECT * FROM transactions'</span>
-<span class="n">df_transactions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
-
-<span class="c1"># Close the connection</span>
-<span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-
-<span class="c1"># Display the dataframe</span>
-<span class="n">df_transactions</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="err">```</span>
-
-<span class="c1">#### 4. Retrieve Data from a Web Page</span>
-
-<span class="err">```</span><span class="n">python</span>
-<span class="kn">import</span> <span class="nn">requests</span>
-
-<span class="c1"># Web scraping additional user details</span>
-<span class="n">url</span> <span class="o">=</span> <span class="s1">'https://example.com/user-details'</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-
-<span class="c1"># Assuming the web page returns JSON data</span>
-<span class="n">web_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-<span class="n">df_web</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">web_data</span><span class="p">)</span>
-
-<span class="c1"># Display the dataframe</span>
-<span class="n">df_web</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="err">```</span>
-
-<span class="c1">#### 5. Combine Data from All Sources</span>
-
-<span class="err">```</span><span class="n">python</span>
-<span class="c1"># Merge dataframes on appropriate IDs</span>
-<span class="n">df_combined</span> <span class="o">=</span> <span class="n">df_users</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_purchases</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">'user_id'</span><span class="p">)</span> \
-                      <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_transactions</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">'transaction_id'</span><span class="p">)</span> \
-                      <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_web</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">'user_id'</span><span class="p">)</span>
-
-<span class="c1"># Display the combined dataframe</span>
-<span class="n">df_combined</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="err">```</span>
-
-<span class="c1">### Sample Data</span>
-
-<span class="n">Here</span> <span class="ow">is</span> <span class="n">some</span> <span class="n">sample</span> <span class="n">data</span> <span class="n">to</span> <span class="n">use</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">exercise</span><span class="p">:</span>
-
-<span class="mf">1.</span> <span class="o">**</span><span class="n">users</span><span class="o">.</span><span class="n">xlsx</span><span class="o">**</span><span class="p">:</span>
-   <span class="o">|</span> <span class="n">user_id</span> <span class="o">|</span> <span class="n">name</span>  <span class="o">|</span> <span class="n">age</span> <span class="o">|</span>
-   <span class="o">|---------|-------|-----|</span>
-   <span class="o">|</span> <span class="mi">1</span>       <span class="o">|</span> <span class="n">Alice</span> <span class="o">|</span> <span class="mi">30</span>  <span class="o">|</span>
-   <span class="o">|</span> <span class="mi">2</span>       <span class="o">|</span> <span class="n">Bob</span>   <span class="o">|</span> <span class="mi">25</span>  <span class="o">|</span>
-   <span class="o">|</span> <span class="mi">3</span>       <span class="o">|</span> <span class="n">Carol</span> <span class="o">|</span> <span class="mi">27</span>  <span class="o">|</span>
-
-<span class="mf">2.</span> <span class="o">**</span><span class="n">purchases</span><span class="o">.</span><span class="n">json</span><span class="o">**</span><span class="p">:</span>
-   <span class="err">```</span><span class="n">json</span>
-   <span class="p">[</span>
-       <span class="p">{</span><span class="s2">"user_id"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"transaction_id"</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">"item"</span><span class="p">:</span> <span class="s2">"Laptop"</span><span class="p">},</span>
-       <span class="p">{</span><span class="s2">"user_id"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"transaction_id"</span><span class="p">:</span> <span class="mi">101</span><span class="p">,</span> <span class="s2">"item"</span><span class="p">:</span> <span class="s2">"Phone"</span><span class="p">},</span>
-       <span class="p">{</span><span class="s2">"user_id"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"transaction_id"</span><span class="p">:</span> <span class="mi">102</span><span class="p">,</span> <span class="s2">"item"</span><span class="p">:</span> <span class="s2">"Tablet"</span><span class="p">}</span>
-   <span class="p">]</span>
-   <span class="err">```</span>
-
-<span class="mf">3.</span> <span class="o">**</span><span class="n">transactions</span><span class="o">.</span><span class="n">db</span><span class="o">**</span> <span class="p">(</span><span class="n">SQLite3</span> <span class="n">Database</span><span class="p">):</span>
-   <span class="o">|</span> <span class="n">transaction_id</span> <span class="o">|</span> <span class="n">amount</span> <span class="o">|</span> <span class="n">date</span>       <span class="o">|</span>
-   <span class="o">|----------------|--------|------------|</span>
-   <span class="o">|</span> <span class="mi">100</span>            <span class="o">|</span> <span class="mi">1200</span>   <span class="o">|</span> <span class="mi">2023</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">10</span> <span class="o">|</span>
-   <span class="o">|</span> <span class="mi">101</span>            <span class="o">|</span> <span class="mi">800</span>    <span class="o">|</span> <span class="mi">2023</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">15</span> <span class="o">|</span>
-   <span class="o">|</span> <span class="mi">102</span>            <span class="o">|</span> <span class="mi">600</span>    <span class="o">|</span> <span class="mi">2023</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">20</span> <span class="o">|</span>
-
-<span class="mf">4.</span> <span class="o">**</span><span class="n">Web</span> <span class="n">Data</span><span class="o">**</span><span class="p">:</span>
-   <span class="err">```</span><span class="n">json</span>
-   <span class="p">[</span>
-       <span class="p">{</span><span class="s2">"user_id"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"address"</span><span class="p">:</span> <span class="s2">"123 Main St"</span><span class="p">},</span>
-       <span class="p">{</span><span class="s2">"user_id"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"address"</span><span class="p">:</span> <span class="s2">"456 Maple Ave"</span><span class="p">},</span>
-       <span class="p">{</span><span class="s2">"user_id"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"address"</span><span class="p">:</span> <span class="s2">"789 Oak Dr"</span><span class="p">}</span>
-   <span class="p">]</span>
-   <span class="err">```</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># read "CityMart_data.csv"</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=c53b4959-67b0-40f7-b992-f78b29a51985">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f4d16f20-40d2-457c-a3fc-5f7a416be0aa">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Greenfield_Grocers">Greenfield_Grocers<a class="anchor-link" href="#Greenfield_Grocers">¶</a></h4>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=5620b628-b30d-4670-a2d5-6576c009f5dc">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Import necessary libraries</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">sqlite3</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">requests</span>
-
-<span class="c1"># Step 1: Retrieve Data from Excel File</span>
-<span class="n">excel_file</span> <span class="o">=</span> <span class="s1">'users.xlsx'</span>
-<span class="n">df_users</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excel_file</span><span class="p">)</span>
-
-<span class="c1"># Step 2: Retrieve Data from JSON File</span>
-<span class="n">json_file</span> <span class="o">=</span> <span class="s1">'purchases.json'</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
-<span class="n">df_purchases</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-
-<span class="c1"># Step 3: Retrieve Data from SQLite3 Database</span>
-<span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">'transactions.db'</span><span class="p">)</span>
-<span class="n">query</span> <span class="o">=</span> <span class="s1">'SELECT * FROM transactions'</span>
-<span class="n">df_transactions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
-<span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-
-<span class="c1"># Step 4: Retrieve Data from a Web Page</span>
-<span class="n">url</span> <span class="o">=</span> <span class="s1">'https://example.com/user-details'</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<span class="n">web_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-<span class="n">df_web</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">web_data</span><span class="p">)</span>
-
-<span class="c1"># Step 5: Combine Data from All Sources</span>
-<span class="n">df_combined</span> <span class="o">=</span> <span class="n">df_users</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_purchases</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">'user_id'</span><span class="p">)</span> \
-                      <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_transactions</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">'transaction_id'</span><span class="p">)</span> \
-                      <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_web</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">'user_id'</span><span class="p">)</span>
-
-<span class="c1"># Display the combined dataframe</span>
-<span class="n">df_combined</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># read "Greenfield_Grocers_data.csv"</span>
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=86db4848-6a0f-4742-b4ce-4afe50fd1c09">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Outlet_data">Outlet_data<a class="anchor-link" href="#Outlet_data">¶</a></h4>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a7738fac-9711-4cc7-9b12-e564c539ba9c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># read "SuperSaver_Outlet_data.xlsx"</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8e716a08-25b0-4554-9627-285c4c03212c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="HighStreet_Bazaar">HighStreet_Bazaar<a class="anchor-link" href="#HighStreet_Bazaar">¶</a></h4>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=f0fad164-436e-46db-acba-04a634c0b00c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># read 'HighStreet_Bazaar_data.json'</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f851e40e-4644-4b3f-9636-04ec5010ba89">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Aggregate">Aggregate<a class="anchor-link" href="#Aggregate">¶</a></h4>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=75f9bbff-1f14-48f3-a6f8-76ac701644cf">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Simple-baseline">Simple baseline<a class="anchor-link" href="#Simple-baseline">¶</a></h4>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=143b8d21-b305-4e5a-a83a-8d1d3359d173">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">KFold</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_absolute_error</span><span class="p">,</span> <span class="n">accuracy_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span><span class="p">,</span> <span class="n">MinMaxScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span><span class="p">,</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">get_simple_baseline</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">fillna_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">drop_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">k_fold</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="s1">'standard'</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">'linear'</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">'mae'</span><span class="p">,</span> <span class="n">target_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">X_data_test</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="c1"># Handle missing values</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">fillna_value</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">X_data_test</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">X_data_test</span> <span class="o">=</span> <span class="n">X_data_test</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">X_data_test</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">fillna_value</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="c1"># Drop unwanted columns</span>
+    <span class="k">if</span> <span class="n">drop_cols</span><span class="p">:</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">drop_cols</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">X_data_test</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">X_data_test</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">drop_cols</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Split data into features (X) and target (y)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">target_col</span><span class="p">]</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">target_col</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Feature scaling</span>
+    <span class="k">if</span> <span class="n">scaler</span> <span class="o">==</span> <span class="s1">'standard'</span><span class="p">:</span>
+        <span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">scaler</span> <span class="o">==</span> <span class="s1">'minmax'</span><span class="p">:</span>
+        <span class="n">scaler</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">scaler</span> <span class="o">=</span> <span class="kc">None</span>
+    
+    <span class="k">if</span> <span class="n">scaler</span><span class="p">:</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">X_data_test</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">X_data_test</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_data_test</span><span class="p">)</span>
+
+    <span class="c1"># Initialize the model</span>
+    <span class="k">if</span> <span class="n">model</span> <span class="o">==</span> <span class="s1">'linear'</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">model</span> <span class="o">==</span> <span class="s1">'logistic'</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">model</span> <span class="o">==</span> <span class="s1">'random_forest'</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Unsupported model type"</span><span class="p">)</span>
+
+    <span class="c1"># Initialize cross-validation</span>
+    <span class="n">kf</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">k_fold</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Train and evaluate using k-fold cross-validation</span>
+    <span class="k">for</span> <span class="n">train_index</span><span class="p">,</span> <span class="n">test_index</span> <span class="ow">in</span> <span class="n">kf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+        <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
+        <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">y</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
+        
+        <span class="c1"># Train the model</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+        
+        <span class="c1"># Make predictions</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+        
+        <span class="c1"># Evaluate using the specified metric</span>
+        <span class="k">if</span> <span class="n">metric</span> <span class="o">==</span> <span class="s1">'mae'</span><span class="p">:</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="n">mean_absolute_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">metric</span> <span class="o">==</span> <span class="s1">'accuracy'</span><span class="p">:</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">y_pred</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Unsupported metric"</span><span class="p">)</span>
+
+        <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">X_data_test</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores</span><span class="p">),</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_data_test</span><span class="p">)</span>
+    
+    <span class="c1"># Return the average score</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=82b7a46a-7c5e-4288-be2d-43269d0e859e">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># get_simple_baseline(data, fillna_value=-1, drop_cols=['store_name', 'last_modified'], k_fold=5, scaler='standard', model='linear', metric='mae', target_col='quantity_sold')</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=697e0db3-f0c3-4a9e-b032-a355e23e866c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="API-sources">API sources<a class="anchor-link" href="#API-sources">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=1f3436ce-88b5-49de-8209-05291c260ac0">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_api</span><span class="p">(</span><span class="n">endpoint_url</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Make the GET request to the mock API</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">endpoint_url</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">"message"</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="s1">'data'</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Failed to retrieve volume data. Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"An error occurred: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="c1"># password = </span>
+<span class="c1"># prices = </span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=ea5a0066-38cc-46ce-8bcb-ab70c2ac8bed">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># df_prices = </span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4c0880c2-2338-4e43-a04c-fdaf90275592">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Aggregate">Aggregate<a class="anchor-link" href="#Aggregate">¶</a></h4>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=7dc3484b-5ebc-4769-9889-90253a05d44c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># data = pd.merge(data, df_prices, left_index=True, right_index=True, how='left')</span>
+<span class="c1"># data</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=ceb325b3-06f6-4c01-965e-08a833ed7c49">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># get_simple_baseline(data, fillna_value=-1, drop_cols=['store_name', 'last_modified'], k_fold=5, scaler='standard', model='linear', metric='mae', target_col='quantity_sold')</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2500a918-74a0-44eb-8a95-ec35cd3617ae">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Scrapping-sources">Scrapping sources<a class="anchor-link" href="#Scrapping-sources">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=f8f373c5-452d-408c-a9a4-5e905b361175">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="c1"># Set up the Selenium WebDriver (e.g., Chrome)</span>
+<span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Chrome</span><span class="p">()</span>  <span class="c1"># Make sure ChromeDriver is installed</span>
+<span class="c1"># driver = webdriver.Firefox()</span>
+<span class="c1"># driver = webdriver.Edge()</span>
+<span class="c1"># driver = webdriver.Safari()</span>
+
+<span class="c1"># Open the URL</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s1">'https://www.raphaelcousin.com/module4/scrapable-data'</span>
+<span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+<span class="c1"># Wait for the page to fully load (increase time if needed)</span>
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># Get the fully rendered page source</span>
+<span class="n">html</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">page_source</span>
+
+<span class="c1"># Parse the HTML with BeautifulSoup</span>
+<span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span>
+
+<span class="c1"># Initialize lists to store scraped data</span>
+<span class="n">exercise_data</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Find both tables</span>
+<span class="n">tables</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'table'</span><span class="p">)</span>
+
+<span class="c1"># Close the Selenium WebDriver</span>
+<span class="n">driver</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+
+<span class="c1"># Scrape the second table (Exercise Data)</span>
+<span class="n">course_table</span> <span class="o">=</span> <span class="n">tables</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">course_table</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'tbody'</span><span class="p">)</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'tr'</span><span class="p">):</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'td'</span><span class="p">)</span>
+    <span class="c1">#exercise_data.append({ TODO })</span>
+
+<span class="c1"># Convert the lists to pandas DataFrames</span>
+<span class="n">df_exercise</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">exercise_data</span><span class="p">)</span>
+<span class="n">df_exercise</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[13]:</div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7666fdbc-4735-4758-a3fe-8a1c87eff295">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Aggregate">Aggregate<a class="anchor-link" href="#Aggregate">¶</a></h4>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=20d8a96a-aad2-4103-92b8-8635987bfa2c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># data = pd.merge(data, df_exercise, left_index=True, right_index=True, how='left')</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=d8ab523c-53e6-43f7-8602-55bb32592305">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># get_simple_baseline(data, fillna_value=-1, drop_cols=['store_name', 'last_modified'], k_fold=5, scaler='standard', model='linear', metric='mae', target_col='quantity_sold')</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=032415ae-f5d6-4689-9835-44124fa4afa2">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Generating-Submission-File">Generating Submission File<a class="anchor-link" href="#Generating-Submission-File">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=51ebcf1c-dd7a-4dbd-8b74-326c45c81872">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># X_test =  read  Neighborhood_Market_data</span>
+
+<span class="c1"># read</span>
+<span class="n">df_StoreN</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"Neighborhood_Market_data.csv"</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">","</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">'item_code'</span><span class="p">)</span>
+<span class="n">df_StoreN</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[19]:</div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>store_name</th>
+<th>mass</th>
+<th>dimension_length</th>
+<th>dimension_width</th>
+<th>dimension_height</th>
+<th>days_since_last_purchase</th>
+<th>package_volume</th>
+<th>stock_age</th>
+<th>last_modified</th>
+</tr>
+<tr>
+<th>item_code</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>P0002</th>
+<td>Neighborhood_Market</td>
+<td>5.51</td>
+<td>51.79</td>
+<td>46.72</td>
+<td>72.02</td>
+<td>344</td>
+<td>174261.666176</td>
+<td>287</td>
+<td>2023-01-02</td>
+</tr>
+<tr>
+<th>P0004</th>
+<td>Neighborhood_Market</td>
+<td>3.97</td>
+<td>84.63</td>
+<td>39.42</td>
+<td>42.46</td>
+<td>189</td>
+<td>141651.425916</td>
+<td>387</td>
+<td>2023-01-04</td>
+</tr>
+<tr>
+<th>P0005</th>
+<td>Neighborhood_Market</td>
+<td>5.99</td>
+<td>39.33</td>
+<td>83.51</td>
+<td>5.12</td>
+<td>183</td>
+<td>16816.375296</td>
+<td>382</td>
+<td>2023-01-05</td>
+</tr>
+<tr>
+<th>P0010</th>
+<td>Neighborhood_Market</td>
+<td>4.10</td>
+<td>77.43</td>
+<td>49.56</td>
+<td>74.41</td>
+<td>208</td>
+<td>285543.225828</td>
+<td>656</td>
+<td>2023-01-10</td>
+</tr>
+<tr>
+<th>P0013</th>
+<td>Neighborhood_Market</td>
+<td>6.96</td>
+<td>95.39</td>
+<td>34.61</td>
+<td>23.24</td>
+<td>114</td>
+<td>76725.649196</td>
+<td>755</td>
+<td>2023-01-13</td>
+</tr>
+<tr>
+<th>...</th>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr>
+<th>P1972</th>
+<td>Neighborhood_Market</td>
+<td>5.68</td>
+<td>17.89</td>
+<td>71.87</td>
+<td>95.67</td>
+<td>296</td>
+<td>123008.113881</td>
+<td>411</td>
+<td>2028-05-25</td>
+</tr>
+<tr>
+<th>P1977</th>
+<td>Neighborhood_Market</td>
+<td>1.53</td>
+<td>84.32</td>
+<td>64.91</td>
+<td>66.30</td>
+<td>171</td>
+<td>362873.902560</td>
+<td>702</td>
+<td>2028-05-30</td>
+</tr>
+<tr>
+<th>P1991</th>
+<td>Neighborhood_Market</td>
+<td>7.79</td>
+<td>84.46</td>
+<td>82.96</td>
+<td>52.14</td>
+<td>50</td>
+<td>365334.635424</td>
+<td>190</td>
+<td>2028-06-13</td>
+</tr>
+<tr>
+<th>P1997</th>
+<td>Neighborhood_Market</td>
+<td>8.91</td>
+<td>66.50</td>
+<td>5.79</td>
+<td>41.11</td>
+<td>336</td>
+<td>15828.788850</td>
+<td>177</td>
+<td>2028-06-19</td>
+</tr>
+<tr>
+<th>P1999</th>
+<td>Neighborhood_Market</td>
+<td>2.03</td>
+<td>66.77</td>
+<td>60.18</td>
+<td>73.20</td>
+<td>190</td>
+<td>294133.601520</td>
+<td>806</td>
+<td>2028-06-21</td>
+</tr>
+</tbody>
+</table>
+<p>409 rows × 9 columns</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=dada6c87-c1a3-4cfb-bd1c-326908e94276">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># df_StoreN = pd.merge(df_StoreN, df_prices, left_index=True, right_index=True, how='left')</span>
+<span class="c1"># df_StoreN = pd.merge(df_StoreN, df_exercise, left_index=True, right_index=True, how='left')</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b8d5c235-2415-42eb-848e-b1fe02800531">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># _, x_pred = get_simple_baseline(data, fillna_value=-1, drop_cols=['store_name', 'last_modified'], k_fold=5, scaler='standard', model='linear', metric='mae', target_col='quantity_sold', X_data_test = df_StoreN)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=65d179ac-e982-4a06-931f-8e6fdf24dc7d">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">submission</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">'item_code'</span><span class="p">:</span> <span class="n">df_StoreN</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+    <span class="s1">'quantity_sold'</span><span class="p">:</span> <span class="mi">0</span> <span class="c1"># your_prediction</span>
+<span class="p">})</span>
+
+<span class="n">submission</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">'submission.csv'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">','</span><span class="p">)</span>
+<span class="n">submission</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[22]:</div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>item_code</th>
+<th>quantity_sold</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>0</th>
+<td>P0002</td>
+<td>0</td>
+</tr>
+<tr>
+<th>1</th>
+<td>P0004</td>
+<td>0</td>
+</tr>
+<tr>
+<th>2</th>
+<td>P0005</td>
+<td>0</td>
+</tr>
+<tr>
+<th>3</th>
+<td>P0010</td>
+<td>0</td>
+</tr>
+<tr>
+<th>4</th>
+<td>P0013</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 </div>
