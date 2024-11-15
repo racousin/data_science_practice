@@ -35,13 +35,6 @@ const CaseStudy = () => {
   return (
     <Container fluid>
       <Stack spacing="xl">
-        <Title order={1} id="case-study">Deep Learning Case Study: Handwritten Digit Classification</Title>
-        
-        <Text>
-          In this case study, we'll implement a complete deep learning pipeline for handwritten digit 
-          classification using the MNIST dataset. We'll apply the concepts covered in previous sections
-          and demonstrate best practices in model development, training, and evaluation.
-        </Text>
 
         <Title order={2} id="case-objectives">Learning Objectives</Title>
         <Group>
@@ -58,42 +51,7 @@ const CaseStudy = () => {
           ))}
         </Group>
 
-        <Title order={2} id="model-architecture">Model Architecture Overview</Title>
-        <CodeBlock
-          language="python"
-          code={`
-import torch
-import torch.nn as nn
 
-class MNISTClassifier(nn.Module):
-    def __init__(self, dropout_rate=0.3):
-        super().__init__()
-        self.network = nn.Sequential(
-            nn.Linear(784, 256),
-            nn.ReLU(),
-            nn.Dropout(dropout_rate),
-            nn.Linear(256, 128),
-            nn.ReLU(),
-            nn.Dropout(dropout_rate),
-            nn.Linear(128, 10)
-        )
-    
-    def forward(self, x):
-        return self.network(x)
-
-# Model initialization
-model = MNISTClassifier()
-criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=0.001)`}
-        />
-
-
-        <Title order={2} id="interactive-notebook">Interactive Notebook</Title>
-        <Text mb="md">
-          Explore the complete implementation in the interactive notebook below. The notebook includes
-          detailed explanations, code comments, and visualizations to help you understand each step
-          of the deep learning pipeline.
-        </Text>
 
         <DataInteractionPanel
           trainDataUrl={trainDataUrl}

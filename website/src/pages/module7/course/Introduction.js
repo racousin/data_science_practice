@@ -4,10 +4,11 @@ import { InlineMath, BlockMath } from 'react-katex';
 import CodeBlock from 'components/CodeBlock';
 import { BookOpen, Cpu, Network, Brain, AlertCircle } from 'lucide-react';
 
+
 const Introduction = () => {
   return (
     <Stack spacing="xl" className="w-full">
-      <Title order={1} id="introduction">Introduction to Deep Learning</Title>
+      <Title order={1} id="introduction">Introduction</Title>
       
       <Title order={2} id="historical-context" className="mt-6">
         Historical Context and Evolution
@@ -41,7 +42,7 @@ const Introduction = () => {
       <Grid grow className="mt-4">
         <Grid.Col span={4}>
           <Box className="p-4 border rounded">
-            <Title order={4}>PyTorch 2.5</Title>
+            <Title order={4}>PyTorch</Title>
             <List>
               <List.Item>Dynamic computational graphs</List.Item>
               <List.Item>Python-first approach</List.Item>
@@ -73,7 +74,7 @@ const Introduction = () => {
 
 
       <Title order={2} id="pytorch-fundamentals" className="mt-8">
-        PyTorch 2.5 Fundamentals
+        PyTorch Fundamentals
       </Title>
       
       <Title order={3} id="tensors" className="mt-6">
@@ -112,7 +113,6 @@ if torch.cuda.is_available():
       
       <Grid grow gutter="md">
         <Grid.Col span={6}>
-          <Box className="p-4 border rounded">
             <Title order={4}>Arithmetic Operations</Title>
             <CodeBlock
               language="python"
@@ -132,11 +132,9 @@ mat2 = torch.randn(3, 2)
 matmul = torch.matmul(mat1, mat2)  # Matrix multiplication
 `}
             />
-          </Box>
         </Grid.Col>
         
         <Grid.Col span={6}>
-          <Box className="p-4 border rounded">
             <Title order={4}>Reshaping & Indexing</Title>
             <CodeBlock
               language="python"
@@ -153,88 +151,44 @@ slice_2d = x[1:3, 1:3]    # 2D slice
 boolean_idx = x[x > 0]     # Boolean indexing
 `}
             />
-          </Box>
         </Grid.Col>
-      </Grid>
 
-      <Title order={3} id="autograd" className="mt-6">
-        Automatic Differentiation
-      </Title>
+      <Grid.Col span={6}>
+      <Title order={4}>AutoGrad computes partial derivatives</Title>
+        <List>
+          <List.Item>Each operation node maintains a reference to its inputs (<code>grad_fn</code>)</List.Item>
+          <List.Item>Gradients are computed only for leaf nodes with <code>requires_grad=True</code></List.Item>
+          <List.Item>The backward pass is triggered by calling <code>backward()</code> on a scalar output</List.Item>
+          <List.Item>For vector outputs, you must specify a gradient vector in <code>backward(gradient)</code></List.Item>
+        </List>
       <Text>
-        PyTorch's autograd system enables automatic computation of gradients for all operations on tensors.
-      </Text>
+  For a function <InlineMath>{"f(x, y)"}</InlineMath>, AutoGrad computes partial derivatives <InlineMath>{"\\frac{\\partial f}{\\partial x}"}</InlineMath> and <InlineMath>{"\\frac{\\partial f}{\\partial y}"}</InlineMath> through the computational graph.
+</Text>
 
       <CodeBlock
         language="python"
         code={`
-# Creating tensors with gradients
-x = torch.randn(2, 2, requires_grad=True)
-y = torch.randn(2, 2, requires_grad=True)
+# Example of gradient computation
+def f(x, y):
+    return x**2 * y + y**3
 
-# Forward pass
-z = x * 2 + y ** 2
+# Create tensors with gradient tracking
+x = torch.tensor([2.0], requires_grad=True)
+y = torch.tensor([3.0], requires_grad=True)
+
+# Compute function
+z = f(x, y)
 
 # Compute gradients
-loss = z.mean()
-loss.backward()
+z.backward()
 
-# Access gradients
-print(f"x.grad: {x.grad}")
-print(f"y.grad: {y.grad}")
-
-# Zero gradients for next iteration
-x.grad.zero_()
-y.grad.zero_()
+# Access computed gradients
+print(f"df/dx: {x.grad}")  # 2 * x * y = 12.0
+print(f"df/dy: {y.grad}")  # x^2 + 3 * y^2 = 31.0
 `}
       />
-
-      <Alert 
-        icon={<AlertCircle size={16} />} 
-        title="Best Practices" 
-        color="blue"
-        className="mt-4"
-      >
-        <List>
-          <List.Item>Always check tensor device location before operations</List.Item>
-          <List.Item>Use in-place operations (methods with trailing underscore) carefully</List.Item>
-          <List.Item>Remember to zero gradients before each backward pass in training loops</List.Item>
-          <List.Item>Use torch.no_grad() for inference to save memory</List.Item>
-        </List>
-      </Alert>
-
-      <Table className="mt-6">
-        <thead>
-          <tr>
-            <th>Operation Category</th>
-            <th>Common Methods</th>
-            <th>Use Cases</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Creation</td>
-            <td>zeros(), ones(), randn(), arange()</td>
-            <td>Initializing tensors, creating masks</td>
-          </tr>
-          <tr>
-            <td>Manipulation</td>
-            <td>view(), reshape(), permute(), transpose()</td>
-            <td>Changing tensor dimensions, preparing data</td>
-          </tr>
-          <tr>
-            <td>Math Operations</td>
-            <td>add(), mul(), matmul(), sum()</td>
-            <td>Neural network computations</td>
-          </tr>
-          <tr>
-            <td>Indexing</td>
-            <td>index_select(), masked_select()</td>
-            <td>Batch processing, attention mechanisms</td>
-          </tr>
-        </tbody>
-      </Table>
-
-
+              </Grid.Col>
+      </Grid>
     </Stack>
   );
 };

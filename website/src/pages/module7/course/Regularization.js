@@ -1,26 +1,54 @@
 import React from 'react';
-import { Title, Text, Stack, Group, Table } from '@mantine/core';
+import { Title, Text, Stack, Alert } from '@mantine/core';
 import { InlineMath, BlockMath } from 'react-katex';
 import CodeBlock from 'components/CodeBlock';
 import 'katex/dist/katex.min.css';
 
 const Regularization = () => {
-  const L2RegExample = `
+  return (
+    <Stack spacing="xl" w="100%">
+      <Title order={2} id="regularization-overview" mb="md">
+        Regularization Techniques in Deep Learning
+      </Title>
+      
+      <Text size="lg" mb="xl">
+        Regularization techniques help prevent overfitting by adding constraints or modifications to the learning process. Here are the main techniques used in modern deep learning:
+      </Text>
+
+      {/* L2 Regularization Section */}
+      <Stack spacing="md">
+        <Title order={3} id="l2-regularization">L2 Regularization (Weight Decay)</Title>
+        
+        <Text>
+          L2 regularization adds a penalty term to the loss function proportional to the square of weights.
+          This encourages the model to use smaller weights and distribute the importance across features.
+        </Text>
+        
+        <Alert variant="light" title="Mathematical Definition">
+          <BlockMath>
+            {`L_{total} = L_{original} + \\lambda \\sum_{w} w^2`}
+          </BlockMath>
+          where <InlineMath>{`\\lambda`}</InlineMath> is the regularization strength hyperparameter.
+        </Alert>
+
+        <Title order={4} mt="sm">Implementation</Title>
+        <CodeBlock 
+          language="python" 
+          code={`
 # Define model with L2 regularization
 model = nn.Linear(10, 1)
-optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
-criterion = nn.MSELoss()
+optimizer = torch.optim.SGD(model.parameters(), lr=0.01, weight_decay=0.01)  # weight_decay is L2 regularization
 
-# Training loop with L2 regularization
-for epoch in range(num_epochs):
+# Alternative manual implementation
+def train_step(model, inputs, targets, optimizer, l2_lambda=0.01):
     # Forward pass
     outputs = model(inputs)
+    criterion = nn.MSELoss()
     
     # Calculate primary loss
     loss = criterion(outputs, targets)
     
     # Add L2 regularization term
-    l2_lambda = 0.01
     l2_norm = sum(p.pow(2.0).sum() for p in model.parameters())
     loss = loss + l2_lambda * l2_norm
     
@@ -28,167 +56,116 @@ for epoch in range(num_epochs):
     optimizer.zero_grad()
     loss.backward()
     optimizer.step()
-`;
+    
+    return loss.item()`}
+        />
+      </Stack>
 
-  const dropoutExample = `
+      {/* Dropout Section */}
+      <Stack spacing="md" mt="xl">
+        <Title order={3} id="dropout">Dropout</Title>
+        
+        <Text>
+          Dropout is a powerful regularization technique that randomly deactivates neurons during training,
+          forcing the network to learn redundant representations and preventing co-adaptation of features.
+        </Text>
+        
+        <Alert variant="light" title="Key Properties">
+          • Training: Each neuron has a probability p of being dropped (set to 0)
+          • Inference: All neurons are active, but outputs are scaled by (1-p)
+          • Common dropout rates: 0.2 to 0.5 (20% to 50% of neurons dropped)
+        </Alert>
+
+        <Title order={4} mt="sm">Implementation</Title>
+        <CodeBlock 
+          language="python"
+          code={`
 import torch.nn as nn
 
 class NetworkWithDropout(nn.Module):
-    def __init__(self):
+    def __init__(self, input_size=784, hidden_size=256, output_size=10, dropout_rate=0.5):
         super().__init__()
-        self.linear1 = nn.Linear(784, 256)
-        self.dropout1 = nn.Dropout(p=0.5)  # 50% dropout rate
-        self.linear2 = nn.Linear(256, 10)
+        self.layers = nn.Sequential(
+            nn.Linear(input_size, hidden_size),
+            nn.ReLU(),
+            nn.Dropout(p=dropout_rate),  # Add dropout after activation
+            nn.Linear(hidden_size, output_size)
+        )
     
     def forward(self, x):
-        x = torch.relu(self.linear1(x))
-        x = self.dropout1(x)  # Apply dropout after activation
-        x = self.linear2(x)
-        return x
+        return self.layers(x)
 
-# Note: Dropout is automatically disabled during model.eval()
-`;
+# Usage
+model = NetworkWithDropout()
+model.train()  # Enable dropout during training
+# ... training loop ...
+model.eval()   # Disable dropout during evaluation`}
+        />
+      </Stack>
 
-  const earlyStoppingExample = `
+      {/* Early Stopping Section */}
+      <Stack spacing="md" mt="xl">
+        <Title order={3} id="early-stopping">Early Stopping</Title>
+        
+        <Text>
+          Early stopping prevents overfitting by monitoring the validation performance and stopping
+          training when the model begins to overfit, saving the best model weights.
+        </Text>
+        
+        <Alert variant="light" title="Parameters">
+          • patience: Number of epochs to wait for improvement
+          • min_delta: Minimum change in validation loss to qualify as an improvement
+          • restore_best_weights: Whether to restore model to best weights after stopping
+        </Alert>
+
+        <Title order={4} mt="sm">Implementation</Title>
+        <CodeBlock 
+          language="python"
+          code={`
 class EarlyStopping:
-    def __init__(self, patience=7, min_delta=0):
+    def __init__(self, patience=7, min_delta=0, restore_best_weights=True):
         self.patience = patience
         self.min_delta = min_delta
+        self.restore_best_weights = restore_best_weights
+        self.best_weights = None
         self.counter = 0
         self.best_loss = None
         self.early_stop = False
         
-    def __call__(self, val_loss):
+    def __call__(self, model, val_loss):
         if self.best_loss is None:
             self.best_loss = val_loss
+            if self.restore_best_weights:
+                self.best_weights = {k: v.cpu().clone() for k, v in model.state_dict().items()}
         elif val_loss > self.best_loss - self.min_delta:
             self.counter += 1
             if self.counter >= self.patience:
                 self.early_stop = True
         else:
             self.best_loss = val_loss
+            if self.restore_best_weights:
+                self.best_weights = {k: v.cpu().clone() for k, v in model.state_dict().items()}
             self.counter = 0
+            
+    def restore_weights(self, model):
+        if self.restore_best_weights and self.best_weights is not None:
+            model.load_state_dict(self.best_weights)
 
 # Usage in training loop
 early_stopping = EarlyStopping(patience=5)
+best_val_loss = float('inf')
+
 for epoch in range(num_epochs):
     train_loss = train(model, train_loader)
     val_loss = validate(model, val_loader)
     
-    early_stopping(val_loss)
+    early_stopping(model, val_loss)
     if early_stopping.early_stop:
-        print("Early stopping triggered")
-        break
-`;
-
-  return (
-    <Stack spacing="xl" w="100%">
-      {/* Understanding Overfitting Section */}
-      <div>
-        <Title order={2} id="overfitting" mb="md">Understanding Overfitting</Title>
-        <Text>
-          Overfitting occurs when a model learns the training data too well, including noise and outliers, leading to poor generalization on unseen data. Signs of overfitting include:
-        </Text>
-        <Table striped highlightOnHover mt="md">
-          <thead>
-            <tr>
-              <th>Indicator</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Training vs Validation Gap</td>
-              <td>Large difference between training and validation performance</td>
-            </tr>
-            <tr>
-              <td>Perfect Training Accuracy</td>
-              <td>Model achieves near 100% accuracy on training data</td>
-            </tr>
-            <tr>
-              <td>Poor Generalization</td>
-              <td>Model performs significantly worse on new, unseen data</td>
-            </tr>
-          </tbody>
-        </Table>
-      </div>
-
-      {/* Regularization Techniques Section */}
-      <div>
-        <Title order={2} id="techniques" mb="md">Regularization Techniques</Title>
-        
-        {/* L2 Regularization */}
-        <Title order={3} mb="sm">L2 Regularization (Weight Decay)</Title>
-        <Text mb="md">
-          L2 regularization adds a penalty term to the loss function proportional to the square of weights:
-        </Text>
-        <BlockMath>
-          {`L_{total} = L_{original} + \\lambda \\sum_{w} w^2`}
-        </BlockMath>
-        <Text mb="lg">
-          where <InlineMath>{`\\lambda`}</InlineMath> is the regularization strength hyperparameter.
-        </Text>
-
-        {/* Dropout */}
-        <Title order={3} mb="sm">Dropout</Title>
-        <Text mb="md">
-          Dropout randomly deactivates neurons during training with probability p, preventing co-adaptation of features. During inference, all neurons are active but their outputs are scaled by (1-p).
-        </Text>
-
-        {/* Early Stopping */}
-        <Title order={3} mb="sm">Early Stopping</Title>
-        <Text mb="md">
-          Early stopping monitors validation performance and stops training when the model begins to overfit, saving the best model weights.
-        </Text>
-      </div>
-
-      {/* PyTorch Implementation Section */}
-      <div>
-        <Title order={2} id="implementation" mb="md">PyTorch Implementation</Title>
-        
-        {/* L2 Regularization Implementation */}
-        <Title order={3} mb="sm">L2 Regularization Example</Title>
-        <CodeBlock language="python" code={L2RegExample} />
-
-        {/* Dropout Implementation */}
-        <Title order={3} mt="lg" mb="sm">Dropout Implementation</Title>
-        <CodeBlock language="python" code={dropoutExample} />
-
-        {/* Early Stopping Implementation */}
-        <Title order={3} mt="lg" mb="sm">Early Stopping Implementation</Title>
-        <CodeBlock language="python" code={earlyStoppingExample} />
-      </div>
-
-      {/* Summary Table */}
-      <div>
-        <Title order={2} mb="md">Quick Reference Guide</Title>
-        <Table striped highlightOnHover>
-          <thead>
-            <tr>
-              <th>Technique</th>
-              <th>Best Used When</th>
-              <th>Key Parameters</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>L2 Regularization</td>
-              <td>Large weights are causing overfitting</td>
-              <td>λ (regularization strength)</td>
-            </tr>
-            <tr>
-              <td>Dropout</td>
-              <td>Network is large and prone to co-adaptation</td>
-              <td>p (dropout probability)</td>
-            </tr>
-            <tr>
-              <td>Early Stopping</td>
-              <td>Validation loss starts increasing</td>
-              <td>patience, min_delta</td>
-            </tr>
-          </tbody>
-        </Table>
-      </div>
+        print(f"Early stopping triggered at epoch {epoch}")
+        early_stopping.restore_weights(model)  # Restore best weights
+        break`}
+        />
+      </Stack>
     </Stack>
   );
 };

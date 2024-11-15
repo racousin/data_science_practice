@@ -8,14 +8,7 @@ const Advanced = () => {
     <Stack spacing="xl" className="w-full">
       <section id="hyperparameter-opt">
         <Title order={2} mb="md">Hyperparameter Optimization</Title>
-        <Text mb="md">
-          Hyperparameter optimization is crucial for achieving optimal model performance. We'll explore several systematic approaches:
-        </Text>
-        
-        <Title order={3} mb="sm">Grid Search vs Random Search</Title>
-        <Text mb="md">
-          While grid search exhaustively searches through a predefined parameter space, random search often finds better parameters in less time by sampling from parameter distributions.
-        </Text>
+        <Title order={3} mb="sm">Grid Search</Title>
 
         <CodeBlock
           language="python"
@@ -53,50 +46,6 @@ for _ in range(20):  # Number of trials
         best_params = params`}
         />
 
-        <Title order={3} mt="lg" mb="sm">Bayesian Optimization</Title>
-        <Text mb="md">
-          Bayesian optimization uses probabilistic models to guide the search for optimal hyperparameters, making it more efficient than random or grid search.
-        </Text>
-
-        <CodeBlock
-          language="python"
-          code={`
-from bayes_opt import BayesianOptimization
-
-# Define the objective function
-def objective(learning_rate, hidden_size):
-    # Convert to appropriate types
-    hidden_size = int(hidden_size)
-    
-    # Create and train model
-    model = nn.Sequential(
-        nn.Linear(input_size, hidden_size),
-        nn.ReLU(),
-        nn.Linear(hidden_size, output_size)
-    )
-    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-    # Training loop
-    return validation_score
-
-# Define parameter bounds
-pbounds = {
-    'learning_rate': (1e-4, 1e-2),
-    'hidden_size': (32, 256)
-}
-
-# Initialize optimizer
-optimizer = BayesianOptimization(
-    f=objective,
-    pbounds=pbounds,
-    random_state=1
-)
-
-# Optimize
-optimizer.maximize(
-    init_points=5,    # Number of initial random explorations
-    n_iter=20         # Number of optimization iterations
-)`}
-        />
       </section>
 
       <section id="custom-loss">

@@ -59,12 +59,15 @@ const ActivationPlot = ({ data, title, equation }) => {
         />
 
         {/* Origin point */}
-        <circle 
-          cx={margin + 5 * xScale} 
-          cy={height - margin - yScale} 
-          r="2" 
-          fill="#228be6" 
-        />
+        {title !== 'Sigmoid' && (
+  <circle 
+    cx={margin + 5 * xScale} 
+    cy={height - margin - yScale} 
+    r="2" 
+    fill="#228be6" 
+  />
+)}
+
       </svg>
     </div>
   );
@@ -219,7 +222,7 @@ model = nn.Sequential(
       </section>
 
       {/* Usage Guidelines Section */}
-      <section>
+      {/* <section>
         <Title order={2} id="usage-guidelines" mb="md">Usage Guidelines</Title>
         
         <Table mb="lg">
@@ -282,7 +285,7 @@ x = torch.randn(32, 784)  # Batch of 32 samples
 output = model(x)
 print(f"Output shape: {output.shape}")  # Should be (32, 10)`}
         />
-      </section>
+      </section> */}
     </Stack>
   );
 };

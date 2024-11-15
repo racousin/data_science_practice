@@ -8,7 +8,7 @@ const CourseDeepLearningFundamentals = () => {
   const courseLinks = [
     {
       to: "/introduction",
-      label: "Introduction to Deep Learning",
+      label: "Introduction",
       component: lazy(() => import("pages/module7/course/Introduction")),
       subLinks: [
         {
@@ -31,8 +31,8 @@ const CourseDeepLearningFundamentals = () => {
     },
     {
       to: "/architecture",
-      label: "Neural Network Architecture and backpropagation",
-      component: lazy(() => import("pages/module7/course/ArchitectureAndBackpropagation")),
+      label: "Neural Network Architecture",
+      component: lazy(() => import("pages/module7/course/Architecture")),
       subLinks: [
         {
           id: "network-structure",
@@ -53,25 +53,48 @@ const CourseDeepLearningFundamentals = () => {
       ]
     },
     {
-      to: "/activation",
-      label: "Activation Functions",
-      component: lazy(() => import("pages/module7/course/Activation")),
+      to: "/backpropagation",
+      label: "Backpropagation the learning Algorithm",
+      component: lazy(() => import("pages/module7/course/Backpropagation")),
       subLinks: [
         {
-          id: "purpose",
-          label: "Role of Activation Functions"
+          id: "historical-context",
+          label: "Historical Context and Evolution"
         },
         {
-          id: "common-functions",
-          label: "Common Activation Functions"
+          id: "frameworks",
+          label: "Deep Learning Frameworks"
         },
         {
-          id: "properties",
-          label: "Mathematical Properties"
+          id: "backpropagation",
+          label: "Backpropagation and AutoDiff"
         },
         {
-          id: "usage-guidelines",
-          label: "Usage Guidelines"
+          id: "basic-example",
+          label: "Simple Neural Network Example"
+        }
+      ]
+    },
+    {
+      to: "/LearningIssues",
+      label: "NNLearningIssues",
+      component: lazy(() => import("pages/module7/course/NNLearningIssues")),
+      subLinks: [
+        {
+          id: "historical-context",
+          label: "Historical Context and Evolution"
+        },
+        {
+          id: "frameworks",
+          label: "Deep Learning Frameworks"
+        },
+        {
+          id: "backpropagation",
+          label: "Backpropagation and AutoDiff"
+        },
+        {
+          id: "basic-example",
+          label: "Simple Neural Network Example"
         }
       ]
     },
@@ -99,9 +122,33 @@ const CourseDeepLearningFundamentals = () => {
       ]
     },
     {
-      to: "/initialization",
+      to: "/activation",
+      label: "Activation Functions",
+      component: lazy(() => import("pages/module7/course/Activation")),
+      subLinks: [
+        {
+          id: "purpose",
+          label: "Role of Activation Functions"
+        },
+        {
+          id: "common-functions",
+          label: "Common Activation Functions"
+        },
+        {
+          id: "properties",
+          label: "Mathematical Properties"
+        },
+        {
+          id: "usage-guidelines",
+          label: "Usage Guidelines"
+        }
+      ]
+    },
+
+    {
+      to: "/weight-initialization",
       label: "Weight Initialization",
-      component: lazy(() => import("pages/module7/course/Initialization")),
+      component: lazy(() => import("pages/module7/course/WeightInitialization")),
       subLinks: [
         {
           id: "importance",
@@ -160,6 +207,29 @@ const CourseDeepLearningFundamentals = () => {
       ]
     },
     {
+      to: "/nn-workflow",
+      label: "NNWorkflow",
+      component: lazy(() => import("pages/module7/course/NNWorkflow")),
+      subLinks: [
+        {
+          id: "historical-context",
+          label: "Historical Context and Evolution"
+        },
+        {
+          id: "frameworks",
+          label: "Deep Learning Frameworks"
+        },
+        {
+          id: "backpropagation",
+          label: "Backpropagation and AutoDiff"
+        },
+        {
+          id: "basic-example",
+          label: "Simple Neural Network Example"
+        }
+      ]
+    },
+    {
       to: "/case-study",
       label: "Case Study",
       component: lazy(() => import("pages/module7/course/CaseStudy")),
@@ -181,7 +251,8 @@ const CourseDeepLearningFundamentals = () => {
           label: "Results and Visualization"
         }
       ]
-    }
+    },
+
   ];
 
   const location = useLocation();
