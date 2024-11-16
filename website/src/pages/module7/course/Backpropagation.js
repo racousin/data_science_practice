@@ -1,5 +1,5 @@
 import React from 'react';
-import { Title, Text, Stack, Grid, Box, List, Table } from '@mantine/core';
+import { Title, Text, Stack, Grid, Box, List, Table, Divider, Accordion } from '@mantine/core';
 import { InlineMath, BlockMath } from 'react-katex';
 import CodeBlock from 'components/CodeBlock';
 
@@ -36,7 +36,6 @@ const Backpropagation = () => {
   
   <Text>
     To train neural networks, we need to compute gradients of the loss with respect to parameters. 
-    Let's explore different approaches and understand why automatic differentiation is preferred.
   </Text>
 
   <Table withTableBorder withColumnBorders>
@@ -141,162 +140,414 @@ const Backpropagation = () => {
         <Text>
           Backpropagation efficiently computes gradients by decomposing the computation graph and applying the chain rule backward from the output to inputs.
         </Text>
-  <Title order={2} id="notation">Mathematical Notation</Title>
   
-  <Table withTableBorder withColumnBorders>
-    <Table.Thead>
-      <Table.Tr>
-        <Table.Th>Symbol</Table.Th>
-        <Table.Th>Description</Table.Th>
-        <Table.Th>Dimension</Table.Th>
-      </Table.Tr>
-    </Table.Thead>
-    <Table.Tbody>
-      <Table.Tr>
-        <Table.Td>
-          <InlineMath>{`l`}</InlineMath>
-        </Table.Td>
-        <Table.Td>Layer index</Table.Td>
-        <Table.Td>Scalar</Table.Td>
-      </Table.Tr>
-      <Table.Tr>
-        <Table.Td>
-          <InlineMath>{`n_l`}</InlineMath>
-        </Table.Td>
-        <Table.Td>Number of neurons in layer l</Table.Td>
-        <Table.Td>Scalar</Table.Td>
-      </Table.Tr>
-      <Table.Tr>
-        <Table.Td>
-          <InlineMath>{`W^{(l)} \\in \\mathbb{R}^{n_l \\times n_{l-1}}`}</InlineMath>
-        </Table.Td>
-        <Table.Td>Weight matrix for layer l</Table.Td>
-        <Table.Td>Matrix</Table.Td>
-      </Table.Tr>
-      <Table.Tr>
-        <Table.Td>
-          <InlineMath>{`b^{(l)} \\in \\mathbb{R}^{n_l}`}</InlineMath>
-        </Table.Td>
-        <Table.Td>Bias vector for layer l</Table.Td>
-        <Table.Td>Vector</Table.Td>
-      </Table.Tr>
-      <Table.Tr>
-        <Table.Td>
-          <InlineMath>{`z^{(l)} \\in \\mathbb{R}^{n_l}`}</InlineMath>
-        </Table.Td>
-        <Table.Td>Pre-activation vector in layer l</Table.Td>
-        <Table.Td>Vector</Table.Td>
-      </Table.Tr>
-      <Table.Tr>
-        <Table.Td>
-          <InlineMath>{`a^{(l)} \\in \\mathbb{R}^{n_l}`}</InlineMath>
-        </Table.Td>
-        <Table.Td>Activation vector in layer l</Table.Td>
-        <Table.Td>Vector</Table.Td>
-      </Table.Tr>
-      <Table.Tr>
-        <Table.Td>
-          <InlineMath>{`f`}</InlineMath>
-        </Table.Td>
-        <Table.Td>Activation function</Table.Td>
-        <Table.Td>Scalar function</Table.Td>
-      </Table.Tr>
-      <Table.Tr>
-        <Table.Td>
-          <InlineMath>{`\\delta^{(l)} \\in \\mathbb{R}^{n_l}`}</InlineMath>
-        </Table.Td>
-        <Table.Td>Error term vector for layer l</Table.Td>
-        <Table.Td>Vector</Table.Td>
-      </Table.Tr>
-      <Table.Tr>
-        <Table.Td>
-          <InlineMath>{`L`}</InlineMath>
-        </Table.Td>
-        <Table.Td>Loss function</Table.Td>
-        <Table.Td>Scalar</Table.Td>
-      </Table.Tr>
-    </Table.Tbody>
-  </Table>
+        <Table withTableBorder withColumnBorders>
+      <Table.Thead>
+        <Table.Tr>
+          <Table.Th>Symbol</Table.Th>
+          <Table.Th>Description</Table.Th>
+          <Table.Th>Formula</Table.Th>
+        </Table.Tr>
+      </Table.Thead>
+      <Table.Tbody>
+        <Table.Tr>
+          <Table.Td>
+            <InlineMath>{`w_{ij}^k`}</InlineMath>
+          </Table.Td>
+          <Table.Td>Weight for node j in layer k receiving input from node i</Table.Td>
+          <Table.Td>
+            <InlineMath>{`w_{ij}^k \\in \\mathbb{R}`}</InlineMath>
+          </Table.Td>
+        </Table.Tr>
+        <Table.Tr>
+          <Table.Td>
+            <InlineMath>{`b_i^k`}</InlineMath>
+          </Table.Td>
+          <Table.Td>Bias for node i in layer k</Table.Td>
+          <Table.Td>
+            <InlineMath>{`b_i^k \\in \\mathbb{R}`}</InlineMath>
+          </Table.Td>
+        </Table.Tr>
+        <Table.Tr>
+          <Table.Td>
+            <InlineMath>{`a_i^k`}</InlineMath>
+          </Table.Td>
+          <Table.Td>Product sum plus bias (pre-activation) for node i in layer k</Table.Td>
+          <Table.Td>
+            <InlineMath>{`a_i^k = \\sum_{j=1}^{r_{k-1}} w_{ij}^k o_j^{k-1} + b_i^k = \\sum_{j=0}^{r_{k-1}} w_{ij}^k o_j^{k-1} (o_0^{k-1}=1)`}</InlineMath>
+          </Table.Td>
+        </Table.Tr>
+        <Table.Tr>
+          <Table.Td>
+            <InlineMath>{`o_i^k`}</InlineMath>
+          </Table.Td>
+          <Table.Td>Output (post-activation) for node i in layer k</Table.Td>
+          <Table.Td>
+            <InlineMath>{`o_i^k = g_k(a_i^k)`}</InlineMath>
+          </Table.Td>
+        </Table.Tr>
+        <Table.Tr>
+          <Table.Td>
+            <InlineMath>{`r_k`}</InlineMath>
+          </Table.Td>
+          <Table.Td>Number of nodes in layer k</Table.Td>
+          <Table.Td>
+            <InlineMath>{`r_k \\in \\mathbb{N}`}</InlineMath>
+          </Table.Td>
+        </Table.Tr>
+        <Table.Tr>
+          <Table.Td>
+            <InlineMath>{`g_k`}</InlineMath>
+          </Table.Td>
+          <Table.Td>Activation function for layer k</Table.Td>
+          <Table.Td>
+            <InlineMath>{`g_k: \\mathbb{R} \\rightarrow \\mathbb{R}`}</InlineMath>
+          </Table.Td>
+        </Table.Tr>
+        <Table.Tr>
+          <Table.Td>
+            <InlineMath>{`E(X,\\theta)`}</InlineMath>
+          </Table.Td>
+          <Table.Td>Error function</Table.Td>
+          <Table.Td>
+            <InlineMath>{`E(X,\\theta) = Loss(\\hat{y}, y)`}</InlineMath>
+          </Table.Td>
+        </Table.Tr>
+      </Table.Tbody>
+    </Table>
 
-  <Title order={3} mt="lg">Key Equations</Title>
-  <Grid gutter="xl">
-    <Grid.Col span={6}>
-      <Box className="p-4 bg-gray-50 rounded">
-        <Title order={4}>Layer Operations</Title>
+    <Accordion variant="separated">
+        {/* Weight Gradient Proof */}
+        <Accordion.Item value="weight-gradient">
+          <Accordion.Control>
+            Proof
+          </Accordion.Control>
+          <Accordion.Panel>
+    <Title order={3} id="error-derivatives" className="mb-4">
+        Error Function Derivatives
+      </Title>
+
+      {/* Initial Chain Rule */}
+      <Text>
+        The derivation of the backpropagation algorithm begins by applying the chain rule to the error function partial derivative:
+      </Text>
+
+      <Box className="my-4">
         <BlockMath>{`
-          \\begin{aligned}
-          z^{(l)} &= W^{(l)}a^{(l-1)} + b^{(l)} \\\\
-          a^{(l)} &= f(z^{(l)})
-          \\end{aligned}
+          \\frac{\\partial E}{\\partial w_{ij}^k} = 
+          \\frac{\\partial E}{\\partial a_j^k}
+          \\frac{\\partial a_j^k}{\\partial w_{ij}^k}
         `}</BlockMath>
       </Box>
-    </Grid.Col>
-    <Grid.Col span={6}>
-      <Box className="p-4 bg-gray-50 rounded">
-        <Title order={4}>Gradient Flow</Title>
+
+      {/* Error Term Definition */}
+      <Text>
+        The first term is usually called the <strong>error</strong>, for reasons discussed below. It is denoted:
+      </Text>
+
+      <Box className="my-4">
         <BlockMath>{`
-          \\begin{aligned}
-          \\frac{\\partial L}{\\partial W^{(l)}} &= \\frac{\\partial L}{\\partial z^{(l)}}\\frac{\\partial z^{(l)}}{\\partial W^{(l)}} \\\\
-          \\frac{\\partial L}{\\partial b^{(l)}} &= \\frac{\\partial L}{\\partial z^{(l)}}
-          \\end{aligned}
+          \\delta_j^k \\equiv \\frac{\\partial E}{\\partial a_j^k}
         `}</BlockMath>
       </Box>
-    </Grid.Col>
-  </Grid>
-        <Box className="p-4 border rounded">
-          <Title order={4}>Forward Pass</Title>
-          <BlockMath>{`
-            \\begin{aligned}
-            z^{(l)}_j &= \\sum_i w^{(l)}_{ij} a^{(l-1)}_i + b^{(l)}_j \\\\
-            a^{(l)}_j &= f(z^{(l)}_j)
-            \\end{aligned}
-          `}</BlockMath>
-        </Box>
 
-        <Box className="p-4 border rounded">
-          <Title order={4}>Backward Pass</Title>
-          <Text>Define the error term δ for each layer:</Text>
-          <BlockMath>{`
-            \\begin{aligned}
-            \\delta^{(L)}_j &= \\frac{\\partial L}{\\partial z^{(L)}_j} = \\frac{\\partial L}{\\partial a^{(L)}_j}f'(z^{(L)}_j) \\\\
-            \\delta^{(l)}_j &= \\sum_k \\delta^{(l+1)}_k w^{(l+1)}_{jk} f'(z^{(l)}_j)
-            \\end{aligned}
-          `}</BlockMath>
+      {/* Second Term Calculation */}
+      <Text>
+        The second term can be calculated from the equation for <InlineMath>{`a_j^k`}</InlineMath> above:
+      </Text>
 
-          <Text mt="md">Gradient computations:</Text>
-          <BlockMath>{`
-            \\begin{aligned}
-            \\frac{\\partial L}{\\partial w^{(l)}_{ij}} &= a^{(l-1)}_i \\delta^{(l)}_j \\\\
-            \\frac{\\partial L}{\\partial b^{(l)}_j} &= \\delta^{(l)}_j
-            \\end{aligned}
-          `}</BlockMath>
-        </Box>
+      <Box className="my-4">
+        <BlockMath>{`
+          \\frac{\\partial a_j^k}{\\partial w_{ij}^k} = 
+          \\frac{\\partial}{\\partial w_{ij}^k}
+          \\left(\\sum_{l=0}^{r_k-1} w_{lj}^k o_l^{k-1}\\right) = 
+          o_i^{k-1}
+        `}</BlockMath>
+      </Box>
 
-        <Box className="p-4 border rounded">
-          <Title order={4}>Computational Graph Example</Title>
-          <Text>Consider a two-layer network with MSE loss:</Text>
-          <BlockMath>{`
-            \\begin{aligned}
-            &\\text{Forward:} \\\\
-            &z^{(1)} = W^{(1)}x + b^{(1)} \\\\
-            &a^{(1)} = f(z^{(1)}) \\\\
-            &z^{(2)} = W^{(2)}a^{(1)} + b^{(2)} \\\\
-            &\\hat{y} = a^{(2)} = f(z^{(2)}) \\\\
-            &L = \\frac{1}{2}(\\hat{y} - y)^2
-            \\end{aligned}
-          `}</BlockMath>
-          
-          <Text mt="md">Backward flow of gradients:</Text>
-          <BlockMath>{`
-            \\begin{aligned}
-            &\\frac{\\partial L}{\\partial \\hat{y}} = \\hat{y} - y \\\\
-            &\\frac{\\partial L}{\\partial z^{(2)}} = \\frac{\\partial L}{\\partial \\hat{y}}f'(z^{(2)}) \\\\
-            &\\frac{\\partial L}{\\partial W^{(2)}} = \\frac{\\partial L}{\\partial z^{(2)}}(a^{(1)})^T \\\\
-            &\\frac{\\partial L}{\\partial a^{(1)}} = (W^{(2)})^T\\frac{\\partial L}{\\partial z^{(2)}} \\\\
-            &\\frac{\\partial L}{\\partial z^{(1)}} = \\frac{\\partial L}{\\partial a^{(1)}}f'(z^{(1)})
-            \\end{aligned}
-          `}</BlockMath>
-        </Box>
+      {/* Final Derivative Form */}
+      <Text>
+        Thus, the partial derivative of the error function <InlineMath>E</InlineMath> with respect to a weight <InlineMath>{`w_{ij}^k`}</InlineMath> is:
+      </Text>
+
+      <Box className="my-4">
+        <BlockMath>{`
+          \\frac{\\partial E}{\\partial w_{ij}^k} = \\delta_j^k o_i^{k-1}
+        `}</BlockMath>
+      </Box>
+
+      {/* Intuitive Explanation */}
+      <Text>
+        Thus, the partial derivative of a weight is a product of the error term <InlineMath>{`\\delta_j^k`}</InlineMath> at node j in layer k, 
+        and the output <InlineMath>{`o_i^{k-1}`}</InlineMath> of node i in layer k−1. This makes intuitive sense since the 
+        weight <InlineMath>{`w_{ij}^k`}</InlineMath> connects the output of node i in layer k−1 to the input of node j in layer k 
+        in the computation graph.
+      </Text>
+      <Title order={3} id="output-layer" className="mb-4">
+        The Output Layer
+      </Title>
+
+      {/* Introduction */}
+      <Text>
+        Starting from the final layer, backpropagation attempts to define the value <InlineMath>{`\\delta_1^m`}</InlineMath>, 
+        where <InlineMath>m</InlineMath> is the final layer (the subscript is 1 and not j because this derivation concerns 
+        a one-output neural network, so there is only one output node <InlineMath>j=1</InlineMath>).
+      </Text>
+
+      {/* Error Function Expression */}
+      <Text>
+        Expressing the error function <InlineMath>E</InlineMath> in terms of the value <InlineMath>{`a_1^m`}</InlineMath> 
+        (since <InlineMath>{`\\delta_1^m`}</InlineMath> is a partial derivative with respect to <InlineMath>{`a_1^m`}</InlineMath>) gives:
+      </Text>
+
+      <Box className="my-4">
+        <BlockMath>{`
+          E = \\frac{1}{2}(\\hat{y} - y)^2 = \\frac{1}{2}(g_m(a_1^m) - y)^2
+        `}</BlockMath>
+      </Box>
+
+      <Text>
+        where <InlineMath>{`g_m(x)`}</InlineMath> is the activation function for the output layer.
+      </Text>
+
+      {/* Delta Calculation */}
+      <Text>
+        Thus, applying the partial derivative and using the chain rule gives:
+      </Text>
+
+      <Box className="my-4">
+        <BlockMath>{`
+          \\begin{align}
+          \\delta_1^m &= (g_m(a_1^m) - y)g_m'(a_1^m) \\\\
+          &= (\\hat{y} - y)g_m'(a_1^m)
+          \\end{align}
+        `}</BlockMath>
+      </Box>
+
+      {/* Final Formula */}
+      <Text>
+        Putting it all together, the partial derivative of the error function <InlineMath>E</InlineMath> with respect to 
+        a weight in the final layer <InlineMath>{`w_{i1}^m`}</InlineMath> is:
+      </Text>
+
+      <Box className="my-4">
+        <BlockMath>{`
+          \\begin{align}
+          \\frac{\\partial E}{\\partial w_{i1}^m} &= \\delta_1^m o_i^{m-1} \\\\
+          &= (\\hat{y} - y)g_m'(a_1^m) o_i^{m-1}
+          \\end{align}
+        `}</BlockMath>
+      </Box>
+
+      <Title order={3} id="hidden-layers" className="mb-4">
+        The Hidden Layers
+      </Title>
+
+      {/* Introduction */}
+      <Text>
+        Now the question arises of how to calculate the partial derivatives of layers other than the output layer. 
+        Luckily, the chain rule for multivariate functions comes to the rescue again. Observe the following equation 
+        for the error term <InlineMath>{`\\delta_j^k`}</InlineMath> in layer <InlineMath>{`1 \\leq k < m`}</InlineMath>:
+      </Text>
+
+      {/* Initial Error Term Expression */}
+      <Box className="my-4">
+        <BlockMath>{`
+          \\delta_j^k = \\frac{\\partial E}{\\partial a_j^k} = 
+          \\sum_{l=1}^{r_{k+1}} \\frac{\\partial E}{\\partial a_l^{k+1}}
+          \\frac{\\partial a_l^{k+1}}{\\partial a_j^k}
+        `}</BlockMath>
+      </Box>
+
+      <Text>
+        where <InlineMath>l</InlineMath> ranges from 1 to <InlineMath>{`r_{k+1}`}</InlineMath> (the number of nodes in the next layer). 
+        Note that, because the bias input <InlineMath>{`o_0^k`}</InlineMath> corresponding to <InlineMath>{`w_{0j}^{k+1}`}</InlineMath> is 
+        fixed, its value is not dependent on the outputs of previous layers, and thus <InlineMath>l</InlineMath> does not take on the value 0.
+      </Text>
+
+      {/* Substitution of Error Term */}
+      <Text>
+        Plugging in the error term <InlineMath>{`\\delta_l^{k+1}`}</InlineMath> gives:
+      </Text>
+
+      <Box className="my-4">
+        <BlockMath>{`
+          \\delta_j^k = \\sum_{l=1}^{r_{k+1}} \\delta_l^{k+1}
+          \\frac{\\partial a_l^{k+1}}{\\partial a_j^k}
+        `}</BlockMath>
+      </Box>
+
+      {/* Definition of Next Layer Activation */}
+      <Text>
+        Remembering the definition of <InlineMath>{`a_l^{k+1}`}</InlineMath>:
+      </Text>
+
+      <Box className="my-4">
+        <BlockMath>{`
+          a_l^{k+1} = \\sum_{j=1}^{r_k} w_{jl}^{k+1} g(a_j^k)
+        `}</BlockMath>
+      </Box>
+
+      <Text>
+        where <InlineMath>g(x)</InlineMath> is the activation function for the hidden layers:
+      </Text>
+
+      <Box className="my-4">
+        <BlockMath>{`
+          \\frac{\\partial a_l^{k+1}}{\\partial a_j^k} = 
+          w_{jl}^{k+1} g'(a_j^k)
+        `}</BlockMath>
+      </Box>
+
+      {/* Backpropagation Formula */}
+      <Text>
+        Plugging this into the above equation yields the final equation for the error term <InlineMath>{`\\delta_j^k`}</InlineMath> in 
+        the hidden layers, called the <strong>backpropagation formula</strong>:
+      </Text>
+
+      <Box className="my-4">
+        <BlockMath>{`
+          \\begin{align}
+          \\delta_j^k &= \\sum_{l=1}^{r_{k+1}} \\delta_l^{k+1} w_{jl}^{k+1} g'(a_j^k) \\\\
+          &= g'(a_j^k) \\sum_{l=1}^{r_{k+1}} w_{jl}^{k+1} \\delta_l^{k+1}
+          \\end{align}
+        `}</BlockMath>
+      </Box>
+
+      {/* Final Weight Update Formula */}
+      <Text>
+        Putting it all together, the partial derivative of the error function <InlineMath>E</InlineMath> with respect to a weight in 
+        the hidden layers <InlineMath>{`w_{ij}^k`}</InlineMath> for <InlineMath>{`1 \\leq k < m`}</InlineMath> is:
+      </Text>
+
+      <Box className="my-4">
+        <BlockMath>{`
+          \\begin{align}
+          \\frac{\\partial E}{\\partial w_{ij}^k} &= \\delta_j^k o_i^{k-1} \\\\
+          &= g'(a_j^k) o_i^{k-1} \\sum_{l=1}^{r_{k+1}} w_{jl}^{k+1} \\delta_l^{k+1}
+          \\end{align}
+        `}</BlockMath>
+      </Box>
+      </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
+      <Title order={2} id="backpropagation-algorithm" className="mb-4">
+        The Backpropagation Algorithm
+      </Title>
+
+      {/* Forward Pass */}
+      <Title order={3} id="forward-pass">
+        Step 1: Forward Pass
+      </Title>
+
+      <Text>
+        For each layer k, compute the pre-activation and activation values:
+      </Text>
+
+      {/* Pre-activation computation */}
+      <Box className="my-4">
+        <BlockMath>{`
+          a_j^k = \\sum_{i=1}^{r_{k-1}} w_{ij}^k o_i^{k-1} + b_j^k
+        `}</BlockMath>
+      </Box>
+
+      {/* Activation computation */}
+      <Box className="my-4">
+        <BlockMath>{`
+          o_j^k = \\begin{cases}
+            g_k(a_j^k) & \\text{for hidden layers} \\\\
+            g_m(a_j^k) & \\text{for output layer}
+          \\end{cases}
+        `}</BlockMath>
+      </Box>
+
+      <Divider my="lg" />
+
+      {/* Backward Pass */}
+      <Title order={3} id="backward-pass">
+        Step 2: Backward Pass
+      </Title>
+
+      <Text>
+        Using the terms defined earlier, the backpropagation algorithm relies on the following key equations:
+      </Text>
+
+      {/* Weight Gradients */}
+      <Box className="mt-4">
+        <Text weight={500}>1. Partial Derivatives for Weights:</Text>
+        <BlockMath>{`
+          \\frac{\\partial E_d}{\\partial w_{ij}^k} = \\delta_j^k o_i^{k-1}
+        `}</BlockMath>
+      </Box>
+
+      {/* Output Layer Error */}
+      <Box className="mt-4">
+        <Text weight={500}>2. Output Layer Error Term:</Text>
+        <BlockMath>{`
+          \\delta_1^m = g_m'(a_1^m)(\\hat{y}_d - y_d)
+        `}</BlockMath>
+      </Box>
+
+      {/* Hidden Layer Error */}
+      <Box className="mt-4">
+        <Text weight={500}>3. Hidden Layers Error Terms:</Text>
+        <BlockMath>{`
+          \\delta_j^k = g'(a_j^k) \\sum_{l=1}^{r_{k+1}} w_{jl}^{k+1} \\delta_l^{k+1}
+        `}</BlockMath>
+      </Box>
+
+      {/* Batch Gradients */}
+      <Box className="mt-4">
+        <Text weight={500}>4. Combining Gradients Across Batch:</Text>
+        <BlockMath>{`
+          \\frac{\\partial E(X,\\theta)}{\\partial w_{ij}^k} = 
+          \\frac{1}{N} \\sum_{d=1}^N \\frac{\\partial}{\\partial w_{ij}^k}
+          (\\frac{1}{2}(\\hat{y}_d - y_d)^2) = 
+          \\frac{1}{N} \\sum_{d=1}^N \\frac{\\partial E_d}{\\partial w_{ij}^k}
+        `}</BlockMath>
+      </Box>
+
+      {/* Weight Updates */}
+      <Box className="mt-4">
+        <Text weight={500}>5. Weight Update Rule:</Text>
+        <BlockMath>{`
+          \\Delta w_{ij}^k = -\\alpha \\frac{\\partial E(X,\\theta)}{\\partial w_{ij}^k}
+        `}</BlockMath>
+      </Box>
+
+      {/* Algorithm Summary */}
+      <Box className="mt-6">
+        <Title order={4} className="mb-3">Algorithm Steps:</Title>
+        <ol className="list-decimal ml-6">
+          <li className="mb-2">
+            Forward Pass:
+            <ul className="list-disc ml-6 mt-1">
+              <li>Compute pre-activations <InlineMath>{`a_j^k`}</InlineMath> for each layer</li>
+              <li>Apply activation functions to get outputs <InlineMath>{`o_j^k`}</InlineMath></li>
+            </ul>
+          </li>
+          <li className="mb-2">
+            Backward Pass:
+            <ul className="list-disc ml-6 mt-1">
+              <li>Compute output layer error <InlineMath>{`\\delta_1^m`}</InlineMath></li>
+              <li>Propagate error backwards through hidden layers</li>
+              <li>Compute weight gradients for each layer</li>
+            </ul>
+          </li>
+          <li className="mb-2">
+            Gradient Accumulation:
+            <ul className="list-disc ml-6 mt-1">
+              <li>Average gradients across all training examples in batch</li>
+            </ul>
+          </li>
+          <li>
+            Weight Update:
+            <ul className="list-disc ml-6 mt-1">
+              <li>Apply gradient descent update with learning rate <InlineMath>\\alpha</InlineMath></li>
+            </ul>
+          </li>
+        </ol>
+      </Box>
 
         {/* PyTorch Implementation */}
         <Title order={2} id="implementation">Implementation in PyTorch</Title>

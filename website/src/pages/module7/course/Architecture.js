@@ -2,18 +2,16 @@ import React from 'react';
 import { Title, Text, Stack, List, Grid, Box, Paper } from '@mantine/core';
 import { InlineMath, BlockMath } from 'react-katex';
 import CodeBlock from 'components/CodeBlock';
-
-
 import ArchitectureSvg from './ArchitectureSvg';
-import SingleNeuronSvg from './SingleNeuronSvg'
+import SingleNeuronSvg from './SingleNeuronSvg';
 
 const NeuralNetworkArchitecture = () => {
   return (
-    <Stack spacing="xl" className="w-full">
+    <Stack gap="xl" w="100%">
       <Title order={1} id="network-structure">Neural Network Architecture</Title>
       
       {/* Single Neuron Section */}
-      <Stack spacing="md">
+      <Stack gap="md">
         <Title order={2} id="artificial-neuron">The Artificial Neuron</Title>
         <SingleNeuronSvg />
         <Text>
@@ -34,7 +32,9 @@ const NeuralNetworkArchitecture = () => {
 
         <CodeBlock
           language="python"
-          code={`
+          code={`import torch.nn as nn
+input_size = 3 # number of features
+
 # Define a single neuron with Linear activation function (this is a linear regression function)
 class Neuron(nn.Module):
     def __init__(self, input_size):
@@ -47,17 +47,12 @@ class Neuron(nn.Module):
         # Perform the linear transformation manually: y = xW + b
         return x @ self.weights + self.bias  # Using matrix multiplication
 
-# Same as
-class Neuron(nn.Module):
-    def __init__(self, input_size):
-        super().__init__()
-        self.linear = nn.Linear(input_size, 1)  # Single neuron with weights and bias
-        
-    def forward(self, x):
-        return self.linear(x)
+# We can define it even more simply using nn.Sequential
+neuron = nn.Sequential(
+    nn.Linear(input_size, 1)
+)
 
 # Example usage
-input_size = 3
 neuron = Neuron(input_size)
 x = torch.randn(1, input_size)  # Sample input
 output = neuron(x)
@@ -66,9 +61,12 @@ print(f"Output shape: {output.shape}")
 `}
         />
 
-<CodeBlock
+        <CodeBlock
           language="python"
-          code={`
+          code={`import torch.nn as nn
+
+input_size = 3 # number of features
+
 # Define a single neuron with Sigmoid activation function (this is a logistic regression function)
 class Neuron(nn.Module):
     def __init__(self, input_size):
@@ -80,21 +78,16 @@ class Neuron(nn.Module):
 
     def forward(self, x):
         # Perform the linear transformation manually: y= 1/(1+e**−(xW+b))
-
         return self.sigmoid(x @ self.weights + self.bias)
 
-# Same as
-class Neuron(nn.Module):
-    def __init__(self, input_size):
-        super().__init__()
-        self.linear = nn.Linear(input_size, 1)  # Single neuron with weights and bias
-        self.sigmoid = nn.Sigmoid()  # Sigmoid activation function
-
-    def forward(self, x):
-        return self.sigmoid(self.linear(x)) 
+# We can define it even more simply using nn.Sequential
+neuron = nn.Sequential(
+    nn.Linear(input_size, 1),
+    nn.Sigmoid()
+)
 
 # Example usage
-input_size = 3
+
 neuron = Neuron(input_size)
 x = torch.randn(1, input_size)  # Sample input
 output = neuron(x)
@@ -105,29 +98,29 @@ print(f"Output shape: {output.shape}")
       </Stack>
 
       {/* Network Structure Section */}
-      <Stack spacing="md">
+      <Stack gap="md">
         <Title order={2} id="network-structure">Network Structure</Title>
         <Text>
           A fully connected neural network consists of multiple layers where each neuron is connected to all neurons in the adjacent layers.
         </Text>
-        <ArchitectureSvg/>
-        <Paper p="md" className="bg-gray-50">
+        <ArchitectureSvg />
+        <Paper p="md" bg="gray.0">
           <Title order={3}>Layer Types</Title>
-          <List spacing="sm">
+          <List>
             <List.Item>
               <strong>Input Layer:</strong> Receives raw features 
               (<InlineMath>{`x \\in \\mathbb{R}^{n_{input}}`}</InlineMath>)
             </List.Item>
             <List.Item>
-      <strong>Hidden Layers:</strong> Transform features where each neuron i in layer l computes: 
-      (<InlineMath>{`h_i^{(l)} = f(\\sum_{j} W_{ij}^{(l)}h_j^{(l-1)} + b_i^{(l)})`}</InlineMath>)
-      
-      <List withPadding listStyleType="none" spacing={0}>
-        <List.Item>• l = 1,...,L is the layer index</List.Item>
-        <List.Item>• i indexes neurons in layer l</List.Item>
-        <List.Item>• j indexes neurons in layer l-1</List.Item>
-      </List>
-    </List.Item>
+              <strong>Hidden Layers:</strong> Transform features where each neuron i in layer l computes: 
+              (<InlineMath>{`h_i^{(l)} = f(\\sum_{j} W_{ij}^{(l)}h_j^{(l-1)} + b_i^{(l)})`}</InlineMath>)
+              
+              <List withPadding listStyleType="none">
+                <List.Item>• l = 1,...,L is the layer index</List.Item>
+                <List.Item>• i indexes neurons in layer l</List.Item>
+                <List.Item>• j indexes neurons in layer l-1</List.Item>
+              </List>
+            </List.Item>
             <List.Item>
               <strong>Output Layer:</strong> Produces final predictions 
               (<InlineMath>{`y \\in \\mathbb{R}^{n_{output}}`}</InlineMath>)
@@ -179,7 +172,7 @@ print(model)
       </Stack>
 
       {/* Model Capacity Section */}
-      <Stack spacing="md">
+      <Stack gap="md">
         <Title order={2} id="model-capacity">Model Capacity and Depth</Title>
         <Text>
           The capacity of a neural network is determined by its architecture:
@@ -193,11 +186,11 @@ print(model)
           </List.Item>
         </List>
 
-        <Paper p="md" className="bg-gray-50">
+        <Paper p="md" bg="gray.0">
           <Title order={3}>Architectural Considerations</Title>
           <Grid>
             <Grid.Col span={6}>
-              <Text weight={700}>Wider Networks</Text>
+              <Text fw={700}>Wider Networks</Text>
               <List size="sm">
                 <List.Item>Better at memorization</List.Item>
                 <List.Item>Easier to train</List.Item>
@@ -205,10 +198,10 @@ print(model)
               </List>
             </Grid.Col>
             <Grid.Col span={6}>
-              <Text weight={700}>Deeper Networks</Text>
+              <Text fw={700}>Deeper Networks</Text>
               <List size="sm">
                 <List.Item>Better at generalization</List.Item>
-                <List.Item>Can be harder to train</List.Item>
+                <List.Item>Harder to train</List.Item>
                 <List.Item>More efficient parameter usage</List.Item>
               </List>
             </Grid.Col>
@@ -247,6 +240,10 @@ print(f"Deep model parameters: {count_parameters(deep_model):,}")
 `}
         />
       </Stack>
+      <Text>
+        For more flexibility and customization: Use nn.Module with a defined forward method.
+        For simplicity and quick prototyping: Use nn.Sequential.
+      </Text>
     </Stack>
   );
 };
