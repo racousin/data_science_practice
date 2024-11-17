@@ -7,15 +7,6 @@ import { BlockMath } from 'react-katex';
 const Optimization = () => {
   return (
     <Stack spacing="lg" w="100%">
-      <Title order={1} id="optimization-techniques">Optimization Techniques</Title>
-      <Text>
-        Optimization in deep learning involves adjusting network weights to minimize the error between predictions 
-        and actual values through gradient-based methods.
-      </Text>
-
-      {/* Core Optimizers */}
-      <Title order={2} id="optimizers">Core Optimization Algorithms</Title>
-      
       <Stack spacing="md">
         {/* SGD */}
         <div>
@@ -58,10 +49,6 @@ loss = criterion(outputs, targets)
 loss.backward()
 optimizer.step()`}
       />
-
-      {/* Key Parameters */}
-      <Title order={2} id="parameters" mt="xl">Key Parameters</Title>
-      
       <Group grow align="flex-start">
         <Stack spacing="xs">
           <Title order={3}>Learning Rate (η)</Title>
@@ -70,16 +57,6 @@ optimizer.step()`}
             • High: Faster learning, risk of divergence
             • Low: Stable but slow convergence
             • Typical: 1e-4 to 1e-1
-          </Text>
-        </Stack>
-
-        <Stack spacing="xs">
-          <Title order={3}>Batch Size</Title>
-          <Text size="sm">Number of samples per gradient update</Text>
-          <Text size="sm" c="dimmed">
-            • Large: Better gradient estimates
-            • Small: More updates, regularization effect
-            • Typical: 32 to 256
           </Text>
         </Stack>
 

@@ -35,11 +35,11 @@ const SingleNeuronSvg = () => {
       {/* Activation function */}
       <path d="M 300 150 Q 350 150 350 100 Q 350 50 400 50" 
             fill="none" stroke="#FFA500" strokeWidth="2"/>
-      <text x="340" y="40" fontSize="14" fill="#666">f(z)</text>
+      <text x="340" y="40" fontSize="14" fill="#666">g(z)</text>
       
       {/* Output */}
       <circle cx="450" cy="150" r="15" fill="#FFA500"/>
-      <text x="480" y="155" fontSize="14" fill="#666">y = f(Σwᵢxᵢ + b)</text>
+      <text x="480" y="155" fontSize="14" fill="#666">y = g(Σwᵢxᵢ + b)</text>
       
       {/* Bias */}
       <line x1="250" y1="80" x2="250" y2="125" stroke="#999" strokeWidth="1.5" opacity="0.6"/>
@@ -50,8 +50,8 @@ const SingleNeuronSvg = () => {
 
       {/* Mathematical expressions */}
       <text x="100" y="270" fontSize="14" fill="#666">Input: xᵢ ∈ ℝⁿ</text>
-      <text x="250" y="270" fontSize="14" fill="#666">z = Σwᵢxᵢ + b</text>
-      <text x="400" y="270" fontSize="14" fill="#666">Output: y = f(z)</text>
+      <text x="250" y="270" fontSize="14" fill="#666">a = Σwᵢxᵢ + b</text>
+      <text x="400" y="270" fontSize="14" fill="#666">Output: y = g(a)</text>
     </svg>
   );
 };

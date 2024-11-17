@@ -20,35 +20,16 @@ const CourseDeepLearningFundamentals = () => {
           label: "Deep Learning Frameworks"
         },
         {
-          id: "backpropagation",
-          label: "Backpropagation and AutoDiff"
+          id: "artificial-neuron",
+          label: "The Artificial Neuron"
         },
-        {
-          id: "basic-example",
-          label: "Simple Neural Network Example"
-        }
-      ]
-    },
-    {
-      to: "/architecture",
-      label: "Neural Network Architecture",
-      component: lazy(() => import("pages/module7/course/Architecture")),
-      subLinks: [
         {
           id: "network-structure",
-          label: "Network Structure and Components"
-        },
-        {
-          id: "layers",
-          label: "Understanding Layers"
+          label: "Network Structure"
         },
         {
           id: "model-capacity",
           label: "Model Capacity and Depth"
-        },
-        {
-          id: "computations",
-          label: "Forward and Backward Computations"
         }
       ]
     },
@@ -76,134 +57,47 @@ const CourseDeepLearningFundamentals = () => {
       ]
     },
     {
-      to: "/LearningIssues",
-      label: "NNLearningIssues",
-      component: lazy(() => import("pages/module7/course/NNLearningIssues")),
+      to: "/EssentialComponents",
+      label: "Essential Components",
+      component: lazy(() => import("pages/module7/course/EssentialComponents")),
       subLinks: [
         {
-          id: "historical-context",
-          label: "Historical Context and Evolution"
+          id: "common-issues",
+          label: "Common Learning Issues"
         },
         {
-          id: "frameworks",
-          label: "Deep Learning Frameworks"
+          id: "basics",
+          label: "Training Basics"
         },
         {
-          id: "backpropagation",
-          label: "Backpropagation and AutoDiff"
+          id: "activation",
+          label: "Activation Functions"
         },
         {
-          id: "basic-example",
-          label: "Simple Neural Network Example"
-        }
-      ]
-    },
-    {
-      to: "/optimization",
-      label: "Optimization Techniques",
-      component: lazy(() => import("pages/module7/course/Optimization")),
-      subLinks: [
-        {
-          id: "loss-functions",
-          label: "Loss Functions"
+          id: "weight-initialization",
+          label: "Weight Initialization"
         },
         {
-          id: "optimizers",
-          label: "Common Optimizers"
+          id: "optimization",
+          label: "Optimization Techniques"
         },
         {
-          id: "math-formulations",
-          label: "Mathematical Foundations"
+          id: "dropout",
+          label: "Dropout"
         },
         {
-          id: "hyperparameters",
-          label: "Hyperparameter Impact"
-        }
-      ]
-    },
-    {
-      to: "/activation",
-      label: "Activation Functions",
-      component: lazy(() => import("pages/module7/course/Activation")),
-      subLinks: [
-        {
-          id: "purpose",
-          label: "Role of Activation Functions"
-        },
-        {
-          id: "common-functions",
-          label: "Common Activation Functions"
-        },
-        {
-          id: "properties",
-          label: "Mathematical Properties"
-        },
-        {
-          id: "usage-guidelines",
-          label: "Usage Guidelines"
-        }
-      ]
-    },
-
-    {
-      to: "/weight-initialization",
-      label: "Weight Initialization",
-      component: lazy(() => import("pages/module7/course/WeightInitialization")),
-      subLinks: [
-        {
-          id: "importance",
-          label: "Importance of Initialization"
-        },
-        {
-          id: "methods",
-          label: "Initialization Methods"
-        },
-        {
-          id: "guidelines",
-          label: "Selection Guidelines"
-        }
-      ]
-    },
-    {
-      to: "/regularization",
-      label: "Regularization Methods",
-      component: lazy(() => import("pages/module7/course/Regularization")),
-      subLinks: [
-        {
-          id: "overfitting",
-          label: "Understanding Overfitting"
-        },
-        {
-          id: "techniques",
-          label: "Regularization Techniques"
-        },
-        {
-          id: "implementation",
-          label: "PyTorch Implementation"
-        }
-      ]
-    },
-    {
-      to: "/advanced",
-      label: "Advanced Topics",
-      component: lazy(() => import("pages/module7/course/Advanced")),
-      subLinks: [
-        {
-          id: "hyperparameter-opt",
-          label: "Hyperparameter Optimization"
+          id: "early-stopping",
+          label: "Early Stopping"
         },
         {
           id: "custom-loss",
           label: "Custom Loss Functions"
         },
         {
-          id: "advanced-reg",
-          label: "Advanced Regularization"
-        },
-        {
-          id: "batch-norm",
+          id: "batch-normalization",
           label: "Batch Normalization"
-        }
+        },
+
       ]
     },
     {
@@ -212,20 +106,32 @@ const CourseDeepLearningFundamentals = () => {
       component: lazy(() => import("pages/module7/course/NNWorkflow")),
       subLinks: [
         {
-          id: "historical-context",
-          label: "Historical Context and Evolution"
+          id: "nn-workflow",
+          label: "Neural Network Training Workflow"
         },
         {
-          id: "frameworks",
-          label: "Deep Learning Frameworks"
+          id: "example-data",
+          label: "Example Regression Problem"
         },
         {
-          id: "backpropagation",
-          label: "Backpropagation and AutoDiff"
+          id: "data-preparation",
+          label: "Data Preparation"
         },
         {
-          id: "basic-example",
-          label: "Simple Neural Network Example"
+          id: "device-setup",
+          label: "Device Setup"
+        },
+        {
+          id: "training-evaluation",
+          label: "Training and Evaluation"
+        },
+        {
+          id: "save-load-model",
+          label: "Save and Load Model"
+        },
+        {
+          id: "hyperparameter-optimization",
+          label: "Hyperparameter Optimization"
         }
       ]
     },

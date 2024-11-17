@@ -18,7 +18,7 @@ const NeuralNetworkArchitecture = () => {
           An artificial neuron is the fundamental building block of neural networks. It performs the following computation:
         </Text>
         <BlockMath>
-          {`y = f(\\sum_{i=1}^n w_ix_i + b)`}
+          {`y = g(\\sum_{i=1}^n w_ix_i + b)`}
         </BlockMath>
         <Text>
           where:
@@ -27,7 +27,7 @@ const NeuralNetworkArchitecture = () => {
           <List.Item><InlineMath>{`x_i`}</InlineMath>: input values</List.Item>
           <List.Item><InlineMath>{`w_i`}</InlineMath>: weights (learnable parameters)</List.Item>
           <List.Item><InlineMath>{`b`}</InlineMath>: bias term (learnable parameter)</List.Item>
-          <List.Item><InlineMath>{`f`}</InlineMath>: activation function</List.Item>
+          <List.Item><InlineMath>{`g`}</InlineMath>: activation function</List.Item>
         </List>
 
         <CodeBlock
@@ -95,6 +95,10 @@ print(f"Input shape: {x.shape}")
 print(f"Output shape: {output.shape}")
 `}
         />
+              <Text>
+        For more flexibility and customization: Use nn.Module with a defined forward method.
+        For simplicity and quick prototyping: Use nn.Sequential.
+      </Text>
       </Stack>
 
       {/* Network Structure Section */}
@@ -208,42 +212,8 @@ print(model)
           </Grid>
         </Paper>
 
-        <CodeBlock
-          language="python"
-          code={`
-# Example: Comparing different network capacities
-import torch.nn as nn
-
-# Shallow and wide network
-wide_model = nn.Sequential(
-    nn.Linear(784, 1024),
-    nn.ReLU(),
-    nn.Linear(1024, 10)
-)
-
-# Deep and narrow network
-deep_model = nn.Sequential(
-    nn.Linear(784, 128),
-    nn.ReLU(),
-    nn.Linear(128, 64),
-    nn.ReLU(),
-    nn.Linear(64, 32),
-    nn.ReLU(),
-    nn.Linear(32, 10)
-)
-
-def count_parameters(model):
-    return sum(p.numel() for p in model.parameters() if p.requires_grad)
-
-print(f"Wide model parameters: {count_parameters(wide_model):,}")
-print(f"Deep model parameters: {count_parameters(deep_model):,}")
-`}
-        />
       </Stack>
-      <Text>
-        For more flexibility and customization: Use nn.Module with a defined forward method.
-        For simplicity and quick prototyping: Use nn.Sequential.
-      </Text>
+
     </Stack>
   );
 };

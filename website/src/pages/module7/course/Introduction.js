@@ -3,7 +3,7 @@ import { Title, Text, Stack, Grid, Timeline, Box, List, Table, Alert } from '@ma
 import { InlineMath, BlockMath } from 'react-katex';
 import CodeBlock from 'components/CodeBlock';
 import { BookOpen, Cpu, Network, Brain, AlertCircle } from 'lucide-react';
-
+import Architecture from './Introduction/Architecture';
 
 const Introduction = () => {
   return (
@@ -189,7 +189,9 @@ print(f"df/dy: {y.grad}")  # x^2 + 3 * y^2 = 31.0
       />
               </Grid.Col>
       </Grid>
+      <Architecture/>
     </Stack>
+    
   );
 };
 

@@ -91,42 +91,10 @@ const Activation = () => {
 
   return (
     <Stack spacing="xl" className="w-full">
-      <Title order={1} id="activation-functions">Activation Functions in Deep Learning</Title>
       
-      {/* Purpose Section */}
-      <section>
-        <Title order={2} id="purpose" mb="md">Role of Activation Functions</Title>
-        <Text mb="lg">
-          Activation functions introduce non-linearity into neural networks, enabling them to learn complex patterns and relationships in data. Without activation functions, neural networks would be limited to learning linear transformations, regardless of their depth.
-        </Text>
-        
-        <CodeBlock
-          language="python"
-          code={`
-import torch
-import torch.nn as nn
-
-# Example of how activation functions introduce non-linearity
-x = torch.tensor([-2.0, -1.0, 0.0, 1.0, 2.0])
-
-# Linear transformation only
-linear = nn.Linear(1, 1, bias=False)
-linear.weight.data = torch.tensor([[1.0]])
-print("Linear output:", linear(x))
-
-# With ReLU activation
-relu = nn.ReLU()
-print("After ReLU:", relu(linear(x)))
-
-# Output:
-# Linear output: tensor([-2., -1.,  0.,  1.,  2.])
-# After ReLU:    tensor([0., 0.,  0.,  1.,  2.])`}
-        />
-      </section>
 
       {/* Common Functions Section */}
       <section>
-        <Title order={2} id="common-functions" mb="md">Common Activation Functions</Title>
         
         <Grid mb="lg">
           <Grid.Col span={{ base: 12, md: 6 }}>
@@ -174,14 +142,13 @@ model = nn.Sequential(
     nn.Linear(20, 20),
     nn.LeakyReLU(0.01),  # Alternative to ReLU
     nn.Linear(20, 10),
-    nn.Sigmoid()         # Often used for binary classification
+    nn.Tanh()         # Alternative to ReLU
 )`}
         />
       </section>
 
       {/* Mathematical Properties Section */}
       <section>
-        <Title order={2} id="properties" mb="md">Mathematical Properties</Title>
         
         <Table>
           <thead>

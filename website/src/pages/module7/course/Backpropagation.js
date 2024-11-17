@@ -10,7 +10,6 @@ const Backpropagation = () => {
       <Title order={1} id="backpropagation">Backpropagation: The Learning Algorithm</Title>
       
       <Stack spacing="md">
-        <Title order={2} id="loss-function">Loss Function and Parameter Updates</Title>
         <Text>
           Neural networks learn by minimizing a loss function L that measures the discrepancy between predictions and desired outputs. The objective is to find parameters θ (weights and biases) that minimize this loss.
         </Text>
@@ -33,10 +32,7 @@ const Backpropagation = () => {
       {/* Gradient Computation Methods */}
       <Stack spacing="md">
   <Title order={2} id="gradient-methods">Gradient Computation Methods</Title>
-  
-  <Text>
-    To train neural networks, we need to compute gradients of the loss with respect to parameters. 
-  </Text>
+
 
   <Table withTableBorder withColumnBorders>
     <Table.Thead>
@@ -183,7 +179,7 @@ const Backpropagation = () => {
           </Table.Td>
           <Table.Td>Output (post-activation) for node i in layer k</Table.Td>
           <Table.Td>
-            <InlineMath>{`o_i^k = g_k(a_i^k)`}</InlineMath>
+            <InlineMath>{`o_i^k = g^k(a_i^k)`}</InlineMath>
           </Table.Td>
         </Table.Tr>
         <Table.Tr>
@@ -197,11 +193,11 @@ const Backpropagation = () => {
         </Table.Tr>
         <Table.Tr>
           <Table.Td>
-            <InlineMath>{`g_k`}</InlineMath>
+            <InlineMath>{`g^k`}</InlineMath>
           </Table.Td>
           <Table.Td>Activation function for layer k</Table.Td>
           <Table.Td>
-            <InlineMath>{`g_k: \\mathbb{R} \\rightarrow \\mathbb{R}`}</InlineMath>
+            <InlineMath>{`g^k: \\mathbb{R} \\rightarrow \\mathbb{R}`}</InlineMath>
           </Table.Td>
         </Table.Tr>
         <Table.Tr>
@@ -302,12 +298,12 @@ const Backpropagation = () => {
 
       <Box className="my-4">
         <BlockMath>{`
-          E = \\frac{1}{2}(\\hat{y} - y)^2 = \\frac{1}{2}(g_m(a_1^m) - y)^2
+          E = \\frac{1}{2}(\\hat{y} - y)^2 = \\frac{1}{2}(g^m(a_1^m) - y)^2
         `}</BlockMath>
       </Box>
 
       <Text>
-        where <InlineMath>{`g_m(x)`}</InlineMath> is the activation function for the output layer.
+        where <InlineMath>{`g^m(x)`}</InlineMath> is the activation function for the output layer.
       </Text>
 
       {/* Delta Calculation */}
@@ -318,8 +314,8 @@ const Backpropagation = () => {
       <Box className="my-4">
         <BlockMath>{`
           \\begin{align}
-          \\delta_1^m &= (g_m(a_1^m) - y)g_m'(a_1^m) \\\\
-          &= (\\hat{y} - y)g_m'(a_1^m)
+          \\delta_1^m &= (g^m(a_1^m) - y)g^{m\\prime}(a_1^m) \\
+          &= (\\hat{y} - y)g^{m\\prime}(a_1^m)
           \\end{align}
         `}</BlockMath>
       </Box>
@@ -334,7 +330,7 @@ const Backpropagation = () => {
         <BlockMath>{`
           \\begin{align}
           \\frac{\\partial E}{\\partial w_{i1}^m} &= \\delta_1^m o_i^{m-1} \\\\
-          &= (\\hat{y} - y)g_m'(a_1^m) o_i^{m-1}
+          &= (\\hat{y} - y)g^{m\\prime}(a_1^m) o_i^{m-1}
           \\end{align}
         `}</BlockMath>
       </Box>
@@ -384,7 +380,7 @@ const Backpropagation = () => {
 
       <Box className="my-4">
         <BlockMath>{`
-          a_l^{k+1} = \\sum_{j=1}^{r_k} w_{jl}^{k+1} g(a_j^k)
+          a_l^{k+1} = \\sum_{j=1}^{r_k} w_{jl}^{k+1} g^k(a_j^k)
         `}</BlockMath>
       </Box>
 
@@ -395,7 +391,7 @@ const Backpropagation = () => {
       <Box className="my-4">
         <BlockMath>{`
           \\frac{\\partial a_l^{k+1}}{\\partial a_j^k} = 
-          w_{jl}^{k+1} g'(a_j^k)
+          w_{jl}^{k+1} g^{k\\prime}(a_j^k)
         `}</BlockMath>
       </Box>
 
@@ -408,8 +404,8 @@ const Backpropagation = () => {
       <Box className="my-4">
         <BlockMath>{`
           \\begin{align}
-          \\delta_j^k &= \\sum_{l=1}^{r_{k+1}} \\delta_l^{k+1} w_{jl}^{k+1} g'(a_j^k) \\\\
-          &= g'(a_j^k) \\sum_{l=1}^{r_{k+1}} w_{jl}^{k+1} \\delta_l^{k+1}
+          \\delta_j^k &= \\sum_{l=1}^{r_{k+1}} \\delta_l^{k+1} w_{jl}^{k+1} g^{k\\prime}(a_j^k) \\\\
+          &= g^{k\\prime}(a_j^k) \\sum_{l=1}^{r_{k+1}} w_{jl}^{k+1} \\delta_l^{k+1}
           \\end{align}
         `}</BlockMath>
       </Box>
@@ -424,7 +420,7 @@ const Backpropagation = () => {
         <BlockMath>{`
           \\begin{align}
           \\frac{\\partial E}{\\partial w_{ij}^k} &= \\delta_j^k o_i^{k-1} \\\\
-          &= g'(a_j^k) o_i^{k-1} \\sum_{l=1}^{r_{k+1}} w_{jl}^{k+1} \\delta_l^{k+1}
+          &= g^{k\\prime}(a_j^k) o_i^{k-1} \\sum_{l=1}^{r_{k+1}} w_{jl}^{k+1} \\delta_l^{k+1}
           \\end{align}
         `}</BlockMath>
       </Box>
@@ -454,10 +450,7 @@ const Backpropagation = () => {
       {/* Activation computation */}
       <Box className="my-4">
         <BlockMath>{`
-          o_j^k = \\begin{cases}
-            g_k(a_j^k) & \\text{for hidden layers} \\\\
-            g_m(a_j^k) & \\text{for output layer}
-          \\end{cases}
+          o_j^k = g^k(a_j^k)
         `}</BlockMath>
       </Box>
 
@@ -484,69 +477,18 @@ const Backpropagation = () => {
       <Box className="mt-4">
         <Text weight={500}>2. Output Layer Error Term:</Text>
         <BlockMath>{`
-          \\delta_1^m = g_m'(a_1^m)(\\hat{y}_d - y_d)
+          \\delta_1^m = g^{m\\prime}(a_1^m)(\\hat{y}_d - y_d)
         `}</BlockMath>
       </Box>
-
-      {/* Hidden Layer Error */}
-      <Box className="mt-4">
-        <Text weight={500}>3. Hidden Layers Error Terms:</Text>
-        <BlockMath>{`
-          \\delta_j^k = g'(a_j^k) \\sum_{l=1}^{r_{k+1}} w_{jl}^{k+1} \\delta_l^{k+1}
-        `}</BlockMath>
-      </Box>
-
-      {/* Batch Gradients */}
-      <Box className="mt-4">
-        <Text weight={500}>4. Combining Gradients Across Batch:</Text>
-        <BlockMath>{`
-          \\frac{\\partial E(X,\\theta)}{\\partial w_{ij}^k} = 
-          \\frac{1}{N} \\sum_{d=1}^N \\frac{\\partial}{\\partial w_{ij}^k}
-          (\\frac{1}{2}(\\hat{y}_d - y_d)^2) = 
-          \\frac{1}{N} \\sum_{d=1}^N \\frac{\\partial E_d}{\\partial w_{ij}^k}
-        `}</BlockMath>
-      </Box>
-
       {/* Weight Updates */}
+      <Title order={3} id="backward-pass">
+        Step 3: Weight Update
+      </Title>
+      
       <Box className="mt-4">
-        <Text weight={500}>5. Weight Update Rule:</Text>
         <BlockMath>{`
           \\Delta w_{ij}^k = -\\alpha \\frac{\\partial E(X,\\theta)}{\\partial w_{ij}^k}
         `}</BlockMath>
-      </Box>
-
-      {/* Algorithm Summary */}
-      <Box className="mt-6">
-        <Title order={4} className="mb-3">Algorithm Steps:</Title>
-        <ol className="list-decimal ml-6">
-          <li className="mb-2">
-            Forward Pass:
-            <ul className="list-disc ml-6 mt-1">
-              <li>Compute pre-activations <InlineMath>{`a_j^k`}</InlineMath> for each layer</li>
-              <li>Apply activation functions to get outputs <InlineMath>{`o_j^k`}</InlineMath></li>
-            </ul>
-          </li>
-          <li className="mb-2">
-            Backward Pass:
-            <ul className="list-disc ml-6 mt-1">
-              <li>Compute output layer error <InlineMath>{`\\delta_1^m`}</InlineMath></li>
-              <li>Propagate error backwards through hidden layers</li>
-              <li>Compute weight gradients for each layer</li>
-            </ul>
-          </li>
-          <li className="mb-2">
-            Gradient Accumulation:
-            <ul className="list-disc ml-6 mt-1">
-              <li>Average gradients across all training examples in batch</li>
-            </ul>
-          </li>
-          <li>
-            Weight Update:
-            <ul className="list-disc ml-6 mt-1">
-              <li>Apply gradient descent update with learning rate <InlineMath>\\alpha</InlineMath></li>
-            </ul>
-          </li>
-        </ol>
       </Box>
 
         {/* PyTorch Implementation */}
