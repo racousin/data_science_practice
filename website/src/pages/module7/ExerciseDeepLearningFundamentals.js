@@ -6,11 +6,16 @@ import { useLocation } from "react-router-dom";
 
 const ExerciseDeepLearningFundamentals = () => {
   const exerciseLinks = [
-    // {
-    //   to: "/exercise1",
-    //   label: <>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></>,
-    //   component: lazy(() => import("pages/module7/exercise/Exercise1")),
-    // },
+    {
+      to: "/exercise0",
+      label: "Exercise 0",
+      component: lazy(() => import("pages/module7/exercise/Exercise0")),
+    },
+    {
+      to: "/exercise1",
+      label: <>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></>,
+      component: lazy(() => import("pages/module7/exercise/Exercise1")),
+    },
     // Add links to other exercises as needed
   ];
 
@@ -26,14 +31,8 @@ const ExerciseDeepLearningFundamentals = () => {
       {location.pathname === `/module${module}/exercise` && (
         <>
           <Row>
-            <p>
-              In this module, you will practice building and training neural
-              networks using PyTorch.
-            </p>
-          </Row>
-          <Row>
             <Col>
-              <p>Last Updated: {"2024-09-20"}</p>
+              <p>Last Updated: {"2024-11-18"}</p>
             </Col>
           </Row>
         </>

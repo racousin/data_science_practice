@@ -4,8 +4,10 @@ students.json
 website/public/modules/sandbox/
 
 **/*.pt
+**/data_save/**
 
 **/module7/**/*_features.csv
+**/module7/**/*.zip
 
 racousin/
 

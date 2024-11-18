@@ -5,12 +5,11 @@ import DataInteractionPanel from "components/DataInteractionPanel";
 
 const CaseStudy = () => {
   // URLs for data and notebook files
-  const trainDataUrl = process.env.PUBLIC_URL + "/modules/deep-learning/course/mnist_train_sample.csv";
-  const testDataUrl = process.env.PUBLIC_URL + "/modules/deep-learning/course/mnist_test_sample.csv";
-  const requirementsUrl = process.env.PUBLIC_URL + "/modules/deep-learning/course/requirements.txt";
-  const notebookUrl = process.env.PUBLIC_URL + "/modules/deep-learning/course/mnist_classification.ipynb";
-  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/deep-learning/course/mnist_classification.html";
-  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/deep-learning/course/mnist_classification.ipynb";
+  const trainDataUrl = process.env.PUBLIC_URL + "/modules/module7/course/module7_course_train.zip";
+  const requirementsUrl = process.env.PUBLIC_URL + "/modules/module7/course/module7_requirements.txt";
+  const notebookUrl = process.env.PUBLIC_URL + "/modules/module7/course/module7_course.ipynb";
+  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/module7/course/module7_course.html";
+  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/module7/course/module7_course.ipynb";
 
 
   // Dataset metadata
@@ -32,7 +31,6 @@ const CaseStudy = () => {
 
         <DataInteractionPanel
           trainDataUrl={trainDataUrl}
-          testDataUrl={testDataUrl}
           notebookUrl={notebookUrl}
           notebookHtmlUrl={notebookHtmlUrl}
           notebookColabUrl={notebookColabUrl}
