@@ -20,26 +20,22 @@ const Dropout = () => {
       <CodeBlock 
         language="python"
         code={`
+import torch
 import torch.nn as nn
 
-class NetworkWithDropout(nn.Module):
-    def __init__(self, input_size=784, hidden_size=256, output_size=10, dropout_rate=0.5):
-        super().__init__()
-        self.layers = nn.Sequential(
-            nn.Linear(input_size, hidden_size),
-            nn.ReLU(),
-            nn.Dropout(p=dropout_rate),  # Add dropout after activation
-            nn.Linear(hidden_size, output_size)
-        )
-    
-    def forward(self, x):
-        return self.layers(x)
+# Define the sequential model with dropout
+model = nn.Sequential(
+    nn.Linear(784, 256),
+    nn.ReLU(),
+    nn.Dropout(p=0.5),  # Dropout after ReLU
+    nn.Linear(256, 10)
+)
 
-# Usage
-model = NetworkWithDropout()
+# Set model to training or evaluation mode as needed
 model.train()  # Enable dropout during training
 # ... training loop ...
-model.eval()   # Disable dropout during evaluation`}
+model.eval()  # Disable dropout for evaluation
+`}
       />
     </Stack>
   );

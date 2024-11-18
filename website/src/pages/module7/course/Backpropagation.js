@@ -285,7 +285,7 @@ const Backpropagation = () => {
 
       {/* Introduction */}
       <Text>
-        Starting from the final layer, backpropagation attempts to define the value <InlineMath>{`\\delta_1^m`}</InlineMath>, 
+        Starting from the final layer (with for example MSE loss), backpropagation attempts to define the value <InlineMath>{`\\delta_1^m`}</InlineMath>, 
         where <InlineMath>m</InlineMath> is the final layer (the subscript is 1 and not j because this derivation concerns 
         a one-output neural network, so there is only one output node <InlineMath>j=1</InlineMath>).
       </Text>

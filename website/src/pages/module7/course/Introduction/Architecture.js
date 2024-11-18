@@ -117,7 +117,7 @@ print(f"Output shape: {output.shape}")
             </List.Item>
             <List.Item>
               <strong>Hidden Layers:</strong> Transform features where each neuron i in layer l computes: 
-              (<InlineMath>{`h_i^{(l)} = f(\\sum_{j} W_{ij}^{(l)}h_j^{(l-1)} + b_i^{(l)})`}</InlineMath>)
+              (<InlineMath>{`o_i^{(l)} = g(\\sum_{j} w_{ij}^{(l)}o_j^{(l-1)} + b_i^{(l)})`}</InlineMath>)
               
               <List withPadding listStyleType="none">
                 <List.Item>• l = 1,...,L is the layer index</List.Item>

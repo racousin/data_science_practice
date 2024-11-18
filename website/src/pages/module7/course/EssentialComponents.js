@@ -12,7 +12,9 @@ import TrainingBasics from './EssentialComponents/TrainingBasics';
 import Dropout from './EssentialComponents/Dropout';
 import EarlyStopping from './EssentialComponents/EarlyStopping';
 import CustomLoss from './EssentialComponents/CustomLoss';
+import CategoricalEmbeddings from './EssentialComponents/CategoricalEmbeddings';
 import BatchNormalization from './EssentialComponents/BatchNormalization';
+import ReduceLROnPlateau from './EssentialComponents/ReduceLROnPlateau';
 
 const EssentialComponents = () => {
   return (
@@ -77,7 +79,14 @@ const EssentialComponents = () => {
               <EarlyStopping />
             </Accordion.Panel>
           </Accordion.Item>
-
+          <Accordion.Item value="categorical-embeddings">
+          <Accordion.Control>
+            <Title order={3} id="categorical-embeddings">Categorical Variables & Embeddings</Title>
+          </Accordion.Control>
+          <Accordion.Panel>
+            <CategoricalEmbeddings />
+          </Accordion.Panel>
+        </Accordion.Item>
           <Accordion.Item value="custom-loss">
             <Accordion.Control>
               <Title order={3} id="custom-loss">Custom Loss Functions</Title>
@@ -95,7 +104,14 @@ const EssentialComponents = () => {
               <BatchNormalization />
             </Accordion.Panel>
           </Accordion.Item>
-
+          <Accordion.Item value="reduce-lr">
+          <Accordion.Control>
+            <Title order={3} id="reduce-lr">Learning Rate Scheduling</Title>
+          </Accordion.Control>
+          <Accordion.Panel>
+            <ReduceLROnPlateau />
+          </Accordion.Panel>
+        </Accordion.Item>
         </Accordion>
       </Stack>
     </Container>

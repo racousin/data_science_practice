@@ -62,7 +62,7 @@ const ArchitectureSvg = () => {
   
   {/* <!-- Layer Annotations --> */}
   <text x="60" y="350" font-size="12" fill="#666">x₁, x₂, x₃</text>
-  <text x="320" y="350" font-size="12" fill="#666">h₁, h₂, h₃, h₄</text>
+  <text x="320" y="350" font-size="12" fill="#666">o₁, o₂, o₃, o₄</text>
   <text x="580" y="350" font-size="12" fill="#666">y₁, y₂</text>
   
   {/* <!-- Weight Annotation Example -->
@@ -70,7 +70,7 @@ const ArchitectureSvg = () => {
   <text x="450" y="130" font-size="12" fill="#666">w²ᵢⱼ</text>
    */}
   {/* <!-- Mathematical Expression Examples --> */}
-  <text x="350" y="50" font-size="12" fill="#666">h = g(W¹x + b¹)</text>
+  <text x="350" y="50" font-size="12" fill="#666">o = g(W¹x + b¹)</text>
   <text x="600" y="50" font-size="12" fill="#666">y = g(W²h + b²)</text>
 </svg>
   )

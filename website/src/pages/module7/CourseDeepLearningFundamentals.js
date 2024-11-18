@@ -90,12 +90,20 @@ const CourseDeepLearningFundamentals = () => {
           label: "Early Stopping"
         },
         {
+          id: "categorical-embeddings",
+          label: "Categorical Variables & Embeddings"
+        },
+        {
           id: "custom-loss",
           label: "Custom Loss Functions"
         },
         {
           id: "batch-normalization",
           label: "Batch Normalization"
+        },
+        {
+          id: "reduce-lr",
+          label: "Learning Rate Scheduling"
         },
 
       ]
@@ -140,22 +148,6 @@ const CourseDeepLearningFundamentals = () => {
       label: "Case Study",
       component: lazy(() => import("pages/module7/course/CaseStudy")),
       subLinks: [
-        {
-          id: "dataset",
-          label: "Dataset Analysis"
-        },
-        {
-          id: "model-building",
-          label: "Model Architecture"
-        },
-        {
-          id: "training",
-          label: "Training Process"
-        },
-        {
-          id: "evaluation",
-          label: "Results and Visualization"
-        }
       ]
     },
 

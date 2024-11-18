@@ -3,6 +3,10 @@ tests/students.json
 students.json
 website/public/modules/sandbox/
 
+**/*.pt
+
+**/module7/**/*_features.csv
+
 racousin/
 
 venv/

@@ -48,7 +48,6 @@ def train_with_checkpoints(model, train_loader, val_loader, criterion,
         train_loss = 0.0
         
         for inputs, targets in train_loader:
-            inputs, targets = inputs.to(device), targets.to(device)
             
             optimizer.zero_grad()
             outputs = model(inputs)
@@ -65,7 +64,6 @@ def train_with_checkpoints(model, train_loader, val_loader, criterion,
         val_loss = 0.0
         with torch.no_grad():
             for inputs, targets in val_loader:
-                inputs, targets = inputs.to(device), targets.to(device)
                 outputs = model(inputs)
                 loss = criterion(outputs, targets)
                 val_loss += loss.item()

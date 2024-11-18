@@ -42,27 +42,17 @@ const BatchNormalization = () => {
         code={`
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
-class BatchNormNet(nn.Module):
-    def __init__(self, input_size, hidden_size, output_size):
-        super().__init__()
-        self.fc1 = nn.Linear(input_size, hidden_size)
-        self.bn1 = nn.BatchNorm1d(hidden_size)
-        self.fc2 = nn.Linear(hidden_size, hidden_size)
-        self.bn2 = nn.BatchNorm1d(hidden_size)
-        self.fc3 = nn.Linear(hidden_size, output_size)
-        
-    def forward(self, x):
-        x = F.relu(self.bn1(self.fc1(x)))
-        x = F.relu(self.bn2(self.fc2(x)))
-        x = self.fc3(x)
-        return x
-
-# Create model and move to device
-model = BatchNormNet(input_size=784, hidden_size=256, output_size=10)
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model = model.to(device)`}
+# Define the sequential model
+model = nn.Sequential(
+    nn.Linear(784, 256),
+    nn.BatchNorm1d(256),
+    nn.ReLU(),
+    nn.Linear(256, 256),
+    nn.BatchNorm1d(256),
+    nn.ReLU(),
+    nn.Linear(256, 10)
+)`}
       />
 
       <Title order={3} mt="md">Training vs. Inference Behavior</Title>

@@ -76,3 +76,5 @@ optimizer.step()`}
 };
 
 export default Optimization;
+
+// TODO ReduceLROnPlateau

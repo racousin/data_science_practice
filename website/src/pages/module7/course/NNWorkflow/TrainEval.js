@@ -21,8 +21,6 @@ def train_epoch(model, train_loader, criterion, optimizer, device):
     running_loss = 0.0
     
     for inputs, targets in train_loader:
-        # Move data to device
-        inputs, targets = inputs.to(device), targets.to(device)
         
         # Forward pass
         optimizer.zero_grad()
@@ -43,7 +41,6 @@ def validate(model, val_loader, criterion, device):
     
     with torch.no_grad():  # No gradients needed for validation
         for inputs, targets in val_loader:
-            inputs, targets = inputs.to(device), targets.to(device)
             outputs = model(inputs)
             loss = criterion(outputs, targets)
             running_loss += loss.item()
@@ -105,7 +102,7 @@ def evaluate_model(model, test_loader, criterion, device):
     
     with torch.no_grad():
         for inputs, targets in test_loader:
-            inputs, targets = inputs.to(device), targets.to(device)
+
             outputs = model(inputs)
             
             # Compute loss

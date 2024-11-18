@@ -12,14 +12,6 @@ const CaseStudy = () => {
   const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/deep-learning/course/mnist_classification.html";
   const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/deep-learning/course/mnist_classification.ipynb";
 
-  // Sample training metrics for visualization
-  const trainingMetrics = [
-    { epoch: 1, trainLoss: 2.3, valLoss: 2.4, trainAcc: 0.45, valAcc: 0.44 },
-    { epoch: 2, trainLoss: 1.8, valLoss: 1.9, trainAcc: 0.65, valAcc: 0.63 },
-    { epoch: 3, trainLoss: 1.4, valLoss: 1.5, trainAcc: 0.78, valAcc: 0.75 },
-    { epoch: 4, trainLoss: 1.1, valLoss: 1.3, trainAcc: 0.85, valAcc: 0.82 },
-    { epoch: 5, trainLoss: 0.9, valLoss: 1.2, trainAcc: 0.89, valAcc: 0.85 }
-  ];
 
   // Dataset metadata
   const metadata = {
@@ -35,21 +27,6 @@ const CaseStudy = () => {
   return (
     <Container fluid>
       <Stack spacing="xl">
-
-        <Title order={2} id="case-objectives">Learning Objectives</Title>
-        <Group>
-          {[
-            "Build a multi-layer neural network",
-            "Implement proper data preprocessing",
-            "Apply regularization techniques",
-            "Perform hyperparameter tuning",
-            "Evaluate model performance"
-          ].map((objective, index) => (
-            <Badge key={index} size="lg" variant="light" color="blue">
-              {objective}
-            </Badge>
-          ))}
-        </Group>
 
 
 

@@ -22,56 +22,51 @@ const DataPrep = () => {
       </Text>
       <Title order={4}>1. Split the Data</Title>
       <Text>
-        First, we split our data into training, validation, and test sets using a 70-15-15 split ratio.
+        First, we split our data into training, validation, and test sets.
       </Text>
 
       <CodeBlock
         language="python"
         code={`
 # Split data
-train_size = int(0.7 * len(X))
-val_size = int(0.15 * len(X))
-test_size = len(X) - train_size - val_size
+from sklearn.model_selection import train_test_split
 
-X_train, X_val, X_test = X[:train_size], X[train_size:train_size+val_size], X[train_size+val_size:]
-y_train, y_val, y_test = y[:train_size], y[train_size:train_size+val_size], y[train_size+val_size:]`}
+# Split data into train and remaining (val + test) sets
+X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# Split the remaining data into validation and test sets
+X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42)
+`}
       />
 
-      <Grid gutter="lg">
-        <Grid.Col span={12}>
-          <Box p="md" className="border rounded">
-            <Title order={4}>2. Feature Scaling</Title>
-            <Text>
-              Scale input features to have zero mean and unit variance using StandardScaler:
-            </Text>
-            <InlineMath>{`x_{scaled} = \\frac{x - \\mu}{\\sigma}`}</InlineMath>
-          </Box>
-        </Grid.Col>
-      </Grid>
+<Grid gutter="lg">
+  <Grid.Col span={12}>
+    <Box p="md" className="border rounded">
+      <Title order={4}>2. Feature Scaling</Title>
+      <Text>
+        Neural networks are particularly sensitive to unscaled data due to how they learn weights through gradient descent. If input features have vastly different scales, the model's convergence can be slow or unstable. This is because the gradients of large-scale features may dominate, causing the model to make uneven updates, leading to slower learning and potentially suboptimal results.
+      </Text>
+      <Text>
+        To mitigate this issue, scale input features for example with <strong>StandardScaler</strong>.
+      </Text>
+      <InlineMath>{`x_{scaled} = \\frac{x - \\mu}{\\sigma}`}</InlineMath>
+    </Box>
+  </Grid.Col>
+</Grid>
 
-      <CodeBlock
-        language="python"
-        code={`
-from torch.utils.data import Dataset, DataLoader
+<CodeBlock
+  language="python"
+  code={`
 from sklearn.preprocessing import StandardScaler
-
-class RegressionDataset(Dataset):
-    def __init__(self, X, y):
-        self.X = torch.FloatTensor(X)
-        self.y = torch.FloatTensor(y)
-    
-    def __len__(self):
-        return len(self.X)
-    
-    def __getitem__(self, idx):
-        return self.X[idx], self.y[idx]
 
 # Scale features
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_val_scaled = scaler.transform(X_val)
-X_test_scaled = scaler.transform(X_test)`}
-      />
+X_test_scaled = scaler.transform(X_test)
+  `}
+/>
+
 
       <Title order={4}>3. Create DataLoaders</Title>
       <Text>
