@@ -44,7 +44,7 @@ const Exercise1 = () => {
           <CodeBlock
             code={`index,label\n0,4\n1,7\n2,2\n3,1\n...`}
           />
-          <Text>Target accuracy threshold: 96%</Text>
+          <Text>Target accuracy threshold: 75%</Text>
         </Stack>
 
         <DataInteractionPanel

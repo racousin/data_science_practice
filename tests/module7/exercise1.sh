@@ -12,8 +12,8 @@ CURRENT_UTC_TIME=$2
 AWS_ACCESS_KEY_ID=$3
 AWS_SECRET_ACCESS_KEY=$4
 AWS_DEFAULT_REGION=$5
-MODULE_NUMBER="6"
-TARGET_PATH="module${MODULE_NUMBER}/module${MODULE_NUMBER}_exercise_test_target.csv"
+MODULE_NUMBER="7"
+TARGET_PATH="module${MODULE_NUMBER}/module${MODULE_NUMBER}_exercise_test_labels.csv"
 PREDICTIONS_PATH="${USERNAME}/module${MODULE_NUMBER}/submission.csv"
 RESULTS_PATH="module${MODULE_NUMBER}_exercise_test_labels.csv"
 RESULTS_DIR="./results"  # Directory to store results
@@ -31,7 +31,7 @@ python tests/utils/download_from_s3.py $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
 
 # Run comparison using a provided Python script
 set +e
-ERROR_THRESHOLD=0.53
+ERROR_THRESHOLD=0.75
 METRIC="accuracy"
 TARGET_COL="label"
 ID_COL="index"
