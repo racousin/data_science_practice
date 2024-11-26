@@ -48,13 +48,19 @@ const Exercise1 = () => {
           A Jupyter Notebook named <Code>exercise1.ipynb</Code> containing your data exploration, model implementation, fine-tuning process, and evaluation.
         </List.Item>
         <List.Item>
-          A CSV file named <Code>submission.csv</Code> with your predictions.
+          A CSV file named <Code>submission.csv</Code> with your predictions with two columns:
+          <List withPadding>
+            <List.Item><Code>index</Code></List.Item>
+            <List.Item><Code>end_of_day_return</Code></List.Item>
+          </List>
         </List.Item>
         <List.Item>
           Save both files in the <Code>module6</Code> directory under your username folder.
         </List.Item>
       </List>
+      <List>
 
+      </List>
       <Space h="xl" />
 
       <DataInteractionPanel

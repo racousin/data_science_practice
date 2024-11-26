@@ -1,38 +1,126 @@
 import React from 'react';
-import { Text, Stack, Code } from '@mantine/core';
+import { Text, Stack, Code, Image, Table, Title, Accordion } from '@mantine/core';
 import CodeBlock from 'components/CodeBlock';
 import { BlockMath, InlineMath } from 'react-katex';
 
+
+const ConvolutionExample = ({ title, image, params, code }) => (
+  <Accordion.Item value={title}>
+    <Accordion.Control>
+      <Title order={5}>{title}</Title>
+    </Accordion.Control>
+    <Accordion.Panel>
+      <Stack spacing="md">
+        <Image src={image.src} alt={image.alt} />
+        <Table className="mb-4">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Object.entries(params).map(([key, value]) => (
+              <tr key={key}>
+                <td>{key}</td>
+                <td>{value}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+        <Code block className="mb-2">
+          {code}
+        </Code>
+      </Stack>
+    </Accordion.Panel>
+  </Accordion.Item>
+);
+
+const ConvolutionExamples = () => {
+  const examples = [
+    {
+      title: "Basic 2x2 Convolution",
+      image: { src: "/assets/module8/conv_kern1.png", alt: "conv_kern1" },
+      params: {
+        "Kernel Size": "2 × 2",
+        "Input Size": "6 × 6",
+        "Channels (in/out)": "1/1",
+        "Stride": "1",
+        "Padding": "0",
+        "Output Size": "5 × 5 (⌊(6 - 2 + 0)/1⌋ + 1 = 5)",
+        "Parameters": "4 weights + 1 bias = 5 parameters"
+      },
+      code: "nn.Conv2d(in_channels=1, out_channels=1, kernel_size=2, stride=1, padding=0)"
+    },
+    {
+      title: "Strided Convolution",
+      image: { src: "/assets/module8/conv_kern2.png", alt: "conv_kern2" },
+      params: {
+        "Kernel Size": "2 × 2",
+        "Input Size": "6 × 6",
+        "Channels (in/out)": "1/1",
+        "Stride": "2",
+        "Padding": "0",
+        "Output Size": "3 × 3 (⌊(6 - 2 + 0)/2⌋ + 1 = 3)",
+        "Parameters": "4 weights + 1 bias = 5 parameters"
+      },
+      code: "nn.Conv2d(in_channels=1, out_channels=1, kernel_size=2, stride=2, padding=0)"
+    },
+    {
+      title: "Padded Strided Convolution",
+      image: { src: "/assets/module8/conv_kern3.png", alt: "conv_kern3" },
+      params: {
+        "Kernel Size": "2 × 2",
+        "Input Size": "6 × 6",
+        "Channels (in/out)": "1/1",
+        "Stride": "2",
+        "Padding": "1",
+        "Output Size": "4 × 4 (⌊(6 - 2 + 2)/2⌋ + 1 = 4)",
+        "Parameters": "4 weights + 1 bias = 5 parameters"
+      },
+      code: "nn.Conv2d(in_channels=1, out_channels=1, kernel_size=2, stride=2, padding=1)"
+    },
+    {
+      title: "Multi-channel Output Convolution",
+      image: { src: "/assets/module8/conv_c1.gif", alt: "conv_c1" },
+      params: {
+        "Kernel Size": "3 × 3",
+        "Input Size": "7 × 7",
+        "Channels (in/out)": "1/4",
+        "Stride": "1",
+        "Padding": "0",
+        "Output Size": "5 × 5 (⌊(7 - 3 + 0)/1⌋ + 1 = 5)",
+        "Parameters": "(9 weights × 4 filters) + 4 biases = 40 parameters"
+      },
+      code: "nn.Conv2d(in_channels=1, out_channels=4, kernel_size=3, stride=1, padding=0)"
+    },
+    {
+      title: "Multi-channel Input/Output Convolution",
+      image: { src: "/assets/module8/conv_c2.gif", alt: "conv_c2" },
+      params: {
+        "Kernel Size": "3 × 3",
+        "Input Size": "7 × 7",
+        "Channels (in/out)": "3/4",
+        "Stride": "1",
+        "Padding": "0",
+        "Output Size": "5 × 5 (⌊(7 - 3 + 0)/1⌋ + 1 = 5)",
+        "Parameters": "(9 weights × 3 channels × 4 filters) + 4 biases = 112 parameters"
+      },
+      code: "nn.Conv2d(in_channels=3, out_channels=4, kernel_size=3, stride=1, padding=0)"
+    }
+  ];
+  return (
+    <Stack spacing="xl">
+      <Accordion variant="contained">
+        {examples.map((example) => (
+          <ConvolutionExample key={example.title} {...example} />
+        ))}
+      </Accordion>
+    </Stack>
+  );
+};
+
 const ConvolutionBasics = () => {
-  const convolutionCode = `
-import torch
-import torch.nn as nn
-
-class ConvolutionExample(nn.Module):
-    def __init__(self):
-        super().__init__()
-        # Basic convolution with batch normalization
-        self.conv1 = nn.Sequential(
-            nn.Conv2d(
-                in_channels=3,          # RGB input
-                out_channels=64,        # Number of filters
-                kernel_size=3,          # 3x3 kernel
-                stride=1,               # Standard stride
-                padding=1               # Same padding
-            ),
-            nn.BatchNorm2d(64),        # Batch normalization
-            nn.ReLU()                  # Activation function
-        )
-        
-    def forward(self, x):
-        return self.conv1(x)
-
-# Example usage
-model = ConvolutionExample()
-x = torch.randn(1, 3, 32, 32)  # Single RGB image 32x32
-output = model(x)
-print(f"Input shape: {x.shape}")
-print(f"Output shape: {output.shape}")`;
 
   return (
     <Stack spacing="md">
@@ -85,24 +173,17 @@ print(f"Output shape: {output.shape}")`;
         <li><InlineMath>S</InlineMath>: Stride</li>
       </ul>
 
-      <Text>
-        Here's a practical implementation using PyTorch 2.5:
-      </Text>
 
-      <CodeBlock
-        language="python"
-        code={convolutionCode}
-      />
-
-      <Text>
-        Common practices for convolution layers:
-      </Text>
-      <ul>
-        <li>Use small kernels (3×3) with multiple layers instead of large kernels</li>
-        <li>Maintain spatial dimensions with appropriate padding</li>
-        <li>Use batch normalization after convolution</li>
-        <li>Apply non-linear activation (ReLU) after batch normalization</li>
-      </ul>
+<ConvolutionExamples/>
+<Title order={5} className="mb-2">Note about Bias:</Title>
+          <Text>
+            In PyTorch's Conv2d layers, each output channel has one learnable bias term that's added after the convolution operation. The bias is added to every spatial position of the output feature map for that channel. This means:
+          </Text>
+          <ul className="list-disc ml-6 mt-2">
+            <li>The number of bias terms equals the number of output channels</li>
+            <li>Bias is applied uniformly across spatial dimensions</li>
+            <li>Bias can be disabled using bias=False in the Conv2d constructor if needed</li>
+          </ul>
     </Stack>
   );
 };

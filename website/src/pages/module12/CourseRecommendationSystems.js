@@ -144,12 +144,6 @@ const CourseRecommendationSystems = () => {
       {location.pathname === `/module${module}/course` && (
         <>
           <Row>
-            <p>
-              This module covers the fundamentals and advanced topics in
-              recommendation systems.
-            </p>
-          </Row>
-          <Row>
             <Col>
               <p>Last Updated: {"2024-09-20"}</p>
             </Col>

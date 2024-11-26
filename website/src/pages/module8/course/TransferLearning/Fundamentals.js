@@ -13,9 +13,6 @@ const Fundamentals = () => {
           The process involves:
         </Text>
         
-        <BlockMath>
-          {`P(Y_{target}|X) = \\frac{P(X|Y_{source})P(Y_{target})}{P(X)}`}
-        </BlockMath>
   
         <CodeBlock
           language="python"

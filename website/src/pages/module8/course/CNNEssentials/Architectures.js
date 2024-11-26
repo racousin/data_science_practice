@@ -78,53 +78,6 @@ class ResidualBlock(nn.Module):
         
         return out`;
 
-  const modernArchitectureCode = `
-class ModernCNN(nn.Module):
-    def __init__(self, num_classes=1000):
-        super().__init__()
-        
-        # Initial convolution
-        self.stem = nn.Sequential(
-            nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3),
-            nn.BatchNorm2d(64),
-            nn.ReLU(inplace=True),
-            nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
-        )
-        
-        # Residual blocks
-        self.layer1 = self._make_layer(64, 64, blocks=2)
-        self.layer2 = self._make_layer(64, 128, blocks=2, stride=2)
-        self.layer3 = self._make_layer(128, 256, blocks=2, stride=2)
-        
-        # Global pooling and classifier
-        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-        self.fc = nn.Linear(256, num_classes)
-        
-        # Optional dropout for regularization
-        self.dropout = nn.Dropout(0.5)
-        
-    def _make_layer(self, in_channels, out_channels, blocks, stride=1):
-        layers = []
-        layers.append(ResidualBlock(in_channels, out_channels, stride))
-        for _ in range(1, blocks):
-            layers.append(ResidualBlock(out_channels, out_channels))
-        return nn.Sequential(*layers)
-    
-    def forward(self, x):
-        # Feature extraction
-        x = self.stem(x)
-        x = self.layer1(x)
-        x = self.layer2(x)
-        x = self.layer3(x)
-        
-        # Classification
-        x = self.avgpool(x)
-        x = torch.flatten(x, 1)
-        x = self.dropout(x)
-        x = self.fc(x)
-        
-        return x`;
-
   return (
     <Stack spacing="md">
       <Text>
@@ -213,69 +166,6 @@ class ModernCNN(nn.Module):
             <List.Item>Employ skip connections for gradient flow</List.Item>
             <List.Item>Use batch normalization for stable training</List.Item>
           </List>
-        </List.Item>
-        <List.Item>
-          <strong>Computational Efficiency:</strong>
-          <List withPadding>
-            <List.Item>Bottleneck designs to reduce parameters</List.Item>
-            <List.Item>Depthwise separable convolutions</List.Item>
-            <List.Item>Channel attention mechanisms</List.Item>
-          </List>
-        </List.Item>
-      </List>
-
-      <Text>Here's an example of a modern CNN implementation incorporating these principles:</Text>
-
-      <CodeBlock
-        language="python"
-        code={modernArchitectureCode}
-      />
-
-      <Text weight={700}>5. Architecture Selection Guidelines</Text>
-
-      <Grid>
-        <Grid.Col span={12} md={6}>
-          <Text weight={600}>Choose Simple Architectures When:</Text>
-          <List>
-            <List.Item>Dataset is small ({`< 50k images`})</List.Item>
-            <List.Item>Computing resources are limited</List.Item>
-            <List.Item>Real-time inference is required</List.Item>
-            <List.Item>Problem is relatively simple</List.Item>
-          </List>
-        </Grid.Col>
-
-        <Grid.Col span={12} md={6}>
-          <Text weight={600}>Choose Complex Architectures When:</Text>
-          <List>
-            <List.Item>Large dataset available ({"> 1M images"})</List.Item>
-            <List.Item>High accuracy is critical</List.Item>
-            <List.Item>Complex feature hierarchies needed</List.Item>
-            <List.Item>Transfer learning from similar domain</List.Item>
-          </List>
-        </Grid.Col>
-      </Grid>
-
-      <Text weight={700}>6. Performance Considerations</Text>
-
-      <Text>
-        When implementing CNN architectures, consider:
-      </Text>
-
-      <List>
-        <List.Item>
-          <strong>Memory Usage:</strong>
-          <BlockMath>
-            {`Memory \\approx \\sum_{l} (F_l \\times H_l \\times W_l \\times B)`}
-          </BlockMath>
-          Where <InlineMath>F_l</InlineMath> is features, <InlineMath>H_l</InlineMath> and <InlineMath>W_l</InlineMath> are 
-          spatial dimensions, and <InlineMath>B</InlineMath> is batch size.
-        </List.Item>
-        <List.Item>
-          <strong>Computational Cost:</strong>
-          <BlockMath>
-            {`FLOPs \\approx \\sum_{l} (K_l^2 \\times C_{in} \\times C_{out} \\times H_l \\times W_l)`}
-          </BlockMath>
-          Where <InlineMath>K_l</InlineMath> is kernel size, <InlineMath>{`C_{in}`}</InlineMath> and <InlineMath>{`C_{out}`}</InlineMath> are input/output channels.
         </List.Item>
       </List>
     </Stack>

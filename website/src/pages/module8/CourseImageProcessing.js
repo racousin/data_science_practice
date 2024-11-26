@@ -11,9 +11,12 @@ const ImageProcessingCourse = () => {
       label: "Introduction",
       component: lazy(() => import("pages/module8/course/Introduction")),
       subLinks: [
-        { id: "fundamentals", label: "Core Concepts and Fundamentals" },
-        { id: "digital-images", label: "Digital Image Representation" },
-        { id: "preprocessing", label: "Image Preprocessing Techniques" }
+        { id: "introduction", label: "Understanding Images in Deep Learning" },
+        { id: "digital-representation", label: "Digital Image Representation" },
+        { id: "ml-tasks", label: "Machine Learning Tasks with Images" },
+        { id: "convolutions", label: "Understanding Convolutions" },
+        {id: "cnn-architecture", label:"Convolutional Neural Networks"},
+        { id: "efficiency", label: "Convolutional Layer Efficiency" }
       ]
     },
     {
@@ -22,7 +25,7 @@ const ImageProcessingCourse = () => {
       component: lazy(() => import("pages/module8/course/CNNEssentials")),
       subLinks: [
         { id: "convolution", label: "Convolution Operations" },
-        { id: "pooling", label: "Pooling and Downsampling" },
+        { id: "pooling", label: "Pooling" },
         { id: "architectures", label: "Popular CNN Architectures" }
       ]
     },
@@ -84,7 +87,7 @@ const ImageProcessingCourse = () => {
     <ModuleFrame
       module={8}
       isCourse={true}
-      title="Image Processing with Deep Learning"
+      title="Image Processing"
       courseLinks={courseLinks}
     >
       <Container size="xl" px="md">
