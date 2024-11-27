@@ -31,7 +31,7 @@ const CNNEssentials = () => {
 
           <Accordion.Item value="pooling">
             <Accordion.Control>
-              <Title order={3} id="pooling">Pooling and Downsampling</Title>
+              <Title order={3} id="pooling">Pooling</Title>
             </Accordion.Control>
             <Accordion.Panel>
               <Pooling />

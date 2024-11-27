@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Stack, List, Grid, Table, Code } from '@mantine/core';
+import { Text, Stack, List, Grid, Table, Code, Title } from '@mantine/core';
 import CodeBlock from 'components/CodeBlock';
 import { BlockMath, InlineMath } from 'react-katex';
 
@@ -85,8 +85,7 @@ class ResidualBlock(nn.Module):
         introducing innovative concepts to address specific challenges in computer vision.
       </Text>
 
-      <Text weight={700}>1. Basic CNN Architecture</Text>
-
+      <Title order={5} className="mb-2">Basic CNN Architecture:</Title>
       <Text>
         A fundamental CNN architecture typically consists of:
       </Text>
@@ -96,8 +95,7 @@ class ResidualBlock(nn.Module):
         code={basicCNNCode}
       />
 
-      <Text weight={700}>2. Evolution of CNN Architectures</Text>
-
+      <Title order={5} className="mb-2">Evolution of CNN Architectures:</Title>
       <Table>
         <thead>
           <tr>
@@ -140,8 +138,7 @@ class ResidualBlock(nn.Module):
         </tbody>
       </Table>
 
-      <Text weight={700}>3. Residual Blocks</Text>
-
+      <Title order={5} className="mb-2">Residual Blocks:</Title>
       <Text>
         Residual connections are a key innovation that enabled very deep architectures:
       </Text>
@@ -155,8 +152,7 @@ class ResidualBlock(nn.Module):
         code={resNetBlockCode}
       />
 
-      <Text weight={700}>4. Modern Architecture Principles</Text>
-
+      <Title order={5} className="mb-2">Modern Architecture Principles:</Title>
       <List>
         <List.Item>
           <strong>Network Design:</strong>

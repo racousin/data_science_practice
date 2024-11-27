@@ -1,5 +1,5 @@
 import React, { lazy } from 'react';
-import { Box, Container, Stack, Text } from '@mantine/core';
+import { Box, Container, Stack, Text, Image } from '@mantine/core';
 import { useLocation } from 'react-router-dom';
 import DynamicRoutes from 'components/DynamicRoutes';
 import ModuleFrame from 'components/ModuleFrame';
@@ -49,26 +49,26 @@ const ImageProcessingCourse = () => {
         { id: "noise-reduction", label: "Noise Reduction Methods" }
       ]
     },
-    {
-      to: "/object-detection",
-      label: "Object Detection",
-      component: lazy(() => import("pages/module8/course/ObjectDetection")),
-      subLinks: [
-        { id: "rcnn-family", label: "R-CNN Family" },
-        { id: "yolo", label: "YOLO Architecture" },
-        { id: "metrics", label: "Evaluation Metrics" }
-      ]
-    },
-    {
-      to: "/segmentation",
-      label: "Segmentation",
-      component: lazy(() => import("pages/module8/course/Segmentation")),
-      subLinks: [
-        { id: "semantic", label: "Semantic Segmentation" },
-        { id: "instance", label: "Instance Segmentation" },
-        { id: "evaluation", label: "Performance Evaluation" }
-      ]
-    },
+    // {
+    //   to: "/object-detection",
+    //   label: "Object Detection",
+    //   component: lazy(() => import("pages/module8/course/ObjectDetection")),
+    //   subLinks: [
+    //     { id: "rcnn-family", label: "R-CNN Family" },
+    //     { id: "yolo", label: "YOLO Architecture" },
+    //     { id: "metrics", label: "Evaluation Metrics" }
+    //   ]
+    // },
+    // {
+    //   to: "/segmentation",
+    //   label: "Segmentation",
+    //   component: lazy(() => import("pages/module8/course/Segmentation")),
+    //   subLinks: [
+    //     { id: "semantic", label: "Semantic Segmentation" },
+    //     { id: "instance", label: "Instance Segmentation" },
+    //     { id: "evaluation", label: "Performance Evaluation" }
+    //   ]
+    // },
     {
       to: "/case-study",
       label: "Case Study",

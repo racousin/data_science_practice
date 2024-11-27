@@ -139,8 +139,29 @@ const Pooling = () => {
         and <InlineMath>S</InlineMath> is stride. Unlike convolution, pooling typically doesn't
         use padding as we want to reduce spatial dimensions.
       </Text>
+      <Title order={5} className="mb-2">Note about Adaptive Pooling:</Title>
+      <Text>
+  In PyTorch's AdaptiveAvgPool2d/AdaptiveMaxPool2d:
+</Text>
+<List>
+  <List.Item>
+    Unlike traditional pooling, you specify the desired output size directly instead of kernel size and stride
+  </List.Item>
+  <List.Item>
+    The layer automatically calculates the necessary parameters to achieve the target output dimensions
+  </List.Item>
+  <List.Item>
+    Particularly useful when dealing with varying input sizes or when you need a specific output dimension for downstream tasks
+  </List.Item>
+  <List.Item>
+    Common use case: adapting feature maps to a fixed size before feeding them into fully connected layers
+  </List.Item>
+</List>
 
-      
+<Text mt="md">
+  For example, using <Code>nn.AdaptiveAvgPool2d((1, 1))</Code> will reduce any input feature map to a single value per channel, regardless of the input dimensions.
+</Text>
+
     </Stack>
   );
 };
