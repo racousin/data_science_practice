@@ -6,11 +6,16 @@ import { useLocation } from "react-router-dom";
 
 const ExerciseImageProcessing = () => {
   const exerciseLinks = [
-    // {
-    //   to: "/exercise1",
-    //   label: <>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></>,
-    //   component: lazy(() => import("pages/module8/exercise/Exercise1")),
-    // },
+    {
+      to: "/exercise0",
+      label: "Exercise 0",
+      component: lazy(() => import("pages/module8/exercise/Exercise0")),
+    },
+    {
+      to: "/exercise1",
+      label: <>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></>,
+      component: lazy(() => import("pages/module8/exercise/Exercise1")),
+    },
     // Add links to other exercises as needed
   ];
 

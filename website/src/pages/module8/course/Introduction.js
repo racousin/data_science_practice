@@ -150,24 +150,6 @@ def apply_convolution(image_tensor):
             />
           </Group>
         </div>
-
-        {/* Value to Image Tasks */}
-        <div>
-          <Title order={3} className="mb-3">Value/Sequence to Image Tasks</Title>
-          <Group grow>
-            <TaskBox
-              title="Image Generation from Description"
-              formula={`f: \\mathcal{S} \\rightarrow \\mathbb{R}^{H \\times W \\times C}`}
-              description="Generates images from text descriptions or other sequential inputs. Examples: text-to-image generation, DALL-E, Stable Diffusion."
-            />
-            <TaskBox
-              title="Noise to Image (GANs/Diffusion)"
-              formula={`f: \\mathbb{R}^d \\rightarrow \\mathbb{R}^{H \\times W \\times C}`}
-              description="Generates images from random noise using generative models. Examples: StyleGAN, DDPM."
-            />
-          </Group>
-        </div>
-
         {/* Image to Structured Output */}
         <div>
           <Title order={3} className="mb-3">Image to Structured Output</Title>
@@ -201,7 +183,22 @@ def apply_convolution(image_tensor):
             />
           </Group>
         </div>
-
+        {/* Value to Image Tasks */}
+        <div>
+          <Title order={3} className="mb-3">Value/Sequence to Image Tasks</Title>
+          <Group grow>
+            <TaskBox
+              title="Image Generation from Description"
+              formula={`f: \\mathcal{S} \\rightarrow \\mathbb{R}^{H \\times W \\times C}`}
+              description="Generates images from text descriptions or other sequential inputs. Examples: text-to-image generation, DALL-E, Stable Diffusion."
+            />
+            <TaskBox
+              title="Noise to Image (GANs/Diffusion)"
+              formula={`f: \\mathbb{R}^d \\rightarrow \\mathbb{R}^{H \\times W \\times C}`}
+              description="Generates images from random noise using generative models. Examples: StyleGAN, DDPM."
+            />
+          </Group>
+        </div>
 
       </Stack>
 

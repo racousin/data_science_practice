@@ -172,7 +172,24 @@ const ConvolutionBasics = () => {
         <li><InlineMath>P</InlineMath>: Padding</li>
         <li><InlineMath>S</InlineMath>: Stride</li>
       </ul>
-
+      <Text>
+      The operation is defined as:
+          </Text>
+          
+          <div className="p-4 bg-white rounded-md">
+            <Text className="font-mono text-sm">
+              {`G[i,j] = ∑∑ F[i+k,j+l] * K[k,l]`}
+            </Text>
+            <Text className="text-sm text-gray-600 mt-2">
+              where:
+            </Text>
+            <ul className="list-disc ml-6 text-sm text-gray-600">
+              <li>G[i,j] is the output at position (i,j)</li>
+              <li>F is the input matrix</li>
+              <li>K is the kernel matrix</li>
+              <li>k,l iterate over kernel dimensions</li>
+            </ul>
+          </div>
 
 <ConvolutionExamples/>
 <Title order={5} className="mb-2">Note about Bias:</Title>
