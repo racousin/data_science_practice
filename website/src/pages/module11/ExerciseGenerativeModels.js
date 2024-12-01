@@ -4,7 +4,7 @@ import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
 import { useLocation } from "react-router-dom";
 import DataInteractionPanel from "components/DataInteractionPanel";
-
+import { Text } from '@mantine/core';
 const ExerciseGenerativeModels = () => {
   const exerciseLinks = [
     // Add links to other exercises as needed
@@ -24,6 +24,9 @@ const ExerciseGenerativeModels = () => {
       title="Module 11: Exercise Generative Models"
       courseLinks={exerciseLinks}
     >
+                    <Text mt="md" c="dimmed" size="sm">
+          Author: Alessandro Bucci
+        </Text>
       {location.pathname === `/module${module}/exercise` && (
         <>
           <DataInteractionPanel

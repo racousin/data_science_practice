@@ -6,7 +6,7 @@ import rehypeKatex from 'rehype-katex';
 import CodeBlock from "components/CodeBlock";
 import 'katex/dist/katex.min.css';
 import ModuleFrame from 'components/ModuleFrame';
-
+import { Text } from '@mantine/core';
 const convertLatexDelimiters = (content) => {
   content = content.replace(/\\\[([\s\S]*?)\\\]/g, (_, match) => `$$${match}$$`);
   content = content.replace(/\\\(([\s\S]*?)\\\)/g, (_, match) => `$${match}$`);
@@ -43,7 +43,9 @@ const CourseGenerativeModels = () => {
       module={11}
       isCourse={true}
       title="Module 11: Generative Models"
-    >
+    >              <Text mt="md" c="dimmed" size="sm">
+    Author: Alessandro Bucci
+  </Text>
       {/* Add a container with max-width and center alignment */}
       <div className="max-w-6xl mx-auto px-4">
         {/* Add responsive container for markdown content */}

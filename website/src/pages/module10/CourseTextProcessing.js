@@ -164,7 +164,7 @@ const CourseTextProcessing = () => {
   const module = 10;
   return (
     <ModuleFrame
-      module={9}
+      module={10}
       isCourse={true}
       title="Module 10: Text Processing"
       courseLinks={courseLinks}
