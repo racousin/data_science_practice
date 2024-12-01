@@ -7606,14 +7606,14 @@ Downloaded X_test.pth from https://www.raphaelcousin.com/modules/module8/exercis
 
 <span class="c1"># Print shapes to verify the data</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"Dataset shapes:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"X_train: </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>  <span class="c1"># Should be torch.Size([60000, 28, 28])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"y_train: </span><span class="si">{</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>  <span class="c1"># Should be torch.Size([60000])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"X_train: </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>  <span class="c1"># Should be torch.Size([50000, 28, 28])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"y_train: </span><span class="si">{</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>  <span class="c1"># Should be torch.Size([50000])</span>
 
 <span class="c1"># Example: access the first image and its label</span>
 <span class="n">first_image</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">first_label</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">First image shape: </span><span class="si">{</span><span class="n">first_image</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>  <span class="c1"># Should be torch.Size([28, 28])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">First image shape: </span><span class="si">{</span><span class="n">first_image</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>  <span class="c1"># Should be torch.Size([3, 32, 32])</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"First image label: </span><span class="si">{</span><span class="n">first_label</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>         <span class="c1"># Should be a number between 0-9</span>
 </pre></div>
 </div>

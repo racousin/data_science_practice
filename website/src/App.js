@@ -38,6 +38,7 @@ import CourseDocker from "pages/module14/CourseDocker";
 import ExerciseDocker from "pages/module14/ExerciseDocker";
 import CourseCloudIntegration from "pages/module15/CourseCloudIntegration";
 import ExerciseCloudIntegration from "pages/module15/ExerciseCloudIntegration";
+import CourseTimeSeriesProcessing from "pages/module9/CourseTimeSeriesProcessing"
 
 import ApiDoc from './pages/module4/ApiDoc';
 import ScrapableData from './pages/module4/ScrapableData';
@@ -186,6 +187,7 @@ function App() {
             path="module8/exercise/*"
             element={<ExerciseImageProcessing />}
           />
+                    <Route path="module9/course/*" element={<CourseTimeSeriesProcessing />} />
 
           <Route path="module10/course/*" element={<CourseTextProcessing />} />
           <Route
