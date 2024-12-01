@@ -9,10 +9,11 @@ const ModuleFrame = ({ module, isCourse, title, children, courseLinks }) => {
     <Row>
       <ModuleNavigation module={module} isCourse={isCourse} title={title} />
       <Col md={3}>
+      {courseLinks && (
         <NavigationMenu
           links={courseLinks}
           prefix={`/module${module}/${isCourse ? "course" : "exercise"}`}
-        />
+        />)}
       </Col>
       <Col md={9} className="module-content">
         {children}

@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>module8_exercise0</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>TP_gen</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7509,62 +7509,44 @@ a.anchor-link {
 </style>
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<main><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=81a8b527-7487-478a-85fc-b9fe29c814ad">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
-
-<span class="c1"># URLs of the files</span>
-<span class="n">sample_image_cat</span> <span class="o">=</span> <span class="s1">'https://www.raphaelcousin.com/modules/module8/exercise/cat.jpg'</span>
-<span class="n">sample_image_dog</span> <span class="o">=</span> <span class="s1">'https://www.raphaelcousin.com/modules/module8/exercise/dog.jpg'</span>
-
-<span class="c1"># Function to download a file</span>
-<span class="k">def</span> <span class="nf">download_file</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">file_name</span><span class="p">):</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>  <span class="c1"># Ensure we notice bad responses</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s1">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Downloaded </span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s1"> from </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-
-<span class="c1"># Downloading the files</span>
-<span class="n">download_file</span><span class="p">(</span><span class="n">sample_image_cat</span><span class="p">,</span> <span class="s1">'cat.jpg'</span><span class="p">)</span>
-<span class="n">download_file</span><span class="p">(</span><span class="n">sample_image_dog</span><span class="p">,</span> <span class="s1">'dog.jpg'</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Downloaded cat.jpg from https://www.raphaelcousin.com/modules/module8/exercise/cat.jpg
-Downloaded dog.jpg from https://www.raphaelcousin.com/modules/module8/exercise/dog.jpg
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a747ec72-35a6-4df5-ba42-e34d696b0660">
+<main>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="PartA:-Image-Processing-Warm-up">PartA: Image Processing Warm-up<a class="anchor-link" href="#PartA:-Image-Processing-Warm-up">¶</a></h1>
+<h1 id="Generative-AI-Exercise:-Variational-Autoencoder-(VAE)-on-MNIST">Generative AI Exercise: Variational Autoencoder (VAE) on MNIST<a class="anchor-link" href="#Generative-AI-Exercise:-Variational-Autoencoder-(VAE)-on-MNIST">¶</a></h1><p>In this exercise, you will explore the implementation and training of a Variational Autoencoder (VAE) on the MNIST dataset. The goal is to understand the fundamental principles of generative modeling and latent space representation using a VAE.</p>
+<h3 id="Objectives:">Objectives:<a class="anchor-link" href="#Objectives:">¶</a></h3><ol>
+<li><p><strong>Build a VAE</strong>:</p>
+<ul>
+<li>Define the encoder and decoder modules.</li>
+<li>Train the VAE using the MNIST dataset with a customizable beta hyperparameter to control the KL divergence.</li>
+</ul>
+</li>
+<li><p><strong>Latent Space Exploration</strong>:</p>
+<ul>
+<li>Visualize and interpolate between digits in the latent space.</li>
+<li>Generate smooth transitions between samples using latent space interpolation.</li>
+</ul>
+</li>
+<li><p><strong>Conditional VAE</strong>:</p>
+<ul>
+<li>Extend the VAE to a Conditional VAE (CVAE) by incorporating class labels.</li>
+<li>Generate digits by conditioning on specific labels.</li>
+</ul>
+</li>
+<li><p><strong>Image Generation</strong>:</p>
+<ul>
+<li>Generate new MNIST-like samples by sampling from the latent space of the VAE and CVAE.</li>
+</ul>
+</li>
+</ol>
+<p>By the end of this exercise, you will gain hands-on experience in implementing generative models and applying them to meaningful tasks like image synthesis and conditional generation.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=7bb11dbc-d30b-497f-9917-a470b2251871">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7572,51 +7554,51 @@ Downloaded dog.jpg from https://www.raphaelcousin.com/modules/module8/exercise/d
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Import the necessary libraries</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.optim</span> <span class="k">as</span> <span class="nn">optim</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">random_split</span>
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">cv2</span> <span class="c1"># !pip install opencv-python</span>
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">random</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6e658dd7-be8d-4ce8-abd9-f27fe1d2a064">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Utility function to display images side by side</span>
-<span class="k">def</span> <span class="nf">display_images</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">titles</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">)):</span>
-<span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    Display multiple images in a row</span>
-<span class="sd">    Args:</span>
-<span class="sd">        images: List of images to display</span>
-<span class="sd">        titles: List of titles for each image</span>
-<span class="sd">        figsize: Figure size (width, height)</span>
-<span class="sd">    """</span>
-    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">),</span> <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">axes</span> <span class="o">=</span> <span class="p">[</span><span class="n">axes</span><span class="p">]</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Download and preprocess the MNIST dataset</span>
+<span class="k">def</span> <span class="nf">load_mnist</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">128</span><span class="p">):</span>
+    <span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.5</span><span class="p">,),</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,))</span>  <span class="c1"># Normalize to [-1, 1]</span>
+    <span class="p">])</span>
+    <span class="c1"># Download MNIST dataset</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s2">"./data"</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">test_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s2">"./data"</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     
-    <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">titles</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># Grayscale image</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'gray'</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>  <span class="c1"># Color image</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">))</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">'off'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="c1"># Train/Test split</span>
+    <span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">test_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">test_loader</span>
+
+<span class="n">train_loader</span><span class="p">,</span> <span class="n">test_loader</span> <span class="o">=</span> <span class="n">load_mnist</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=7a72b489-9b98-4f20-84ff-2e7f445b1e8e">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7624,26 +7606,44 @@ Downloaded dog.jpg from https://www.raphaelcousin.com/modules/module8/exercise/d
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Choose your cat or dog team process one of the image</span>
-<span class="n">path</span> <span class="o">=</span> <span class="s2">"cat.jpg"</span>
-<span class="n">path</span> <span class="o">=</span> <span class="s2">"dog.jpg"</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Define the VAE model with encoder and decoder modules</span>
+<span class="k">class</span> <span class="nc">VAE</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">latent_dim</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">VAE</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        
+        <span class="c1"># Encoder: Input -&gt; Latent Parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="o">...</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mu_layer</span> <span class="o">=</span> <span class="o">...</span>  <span class="c1"># Mean</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_var_layer</span> <span class="o">=</span> <span class="o">...</span>  <span class="c1"># Log variance</span>
+        
+        <span class="c1"># Decoder: Latent -&gt; Output</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span> <span class="o">=</span> <span class="o">...</span> <span class="c1"># remember the output is normalized between [-1,1]</span>
+        
+    <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">hidden</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu_layer</span><span class="p">(</span><span class="n">hidden</span><span class="p">)</span>
+        <span class="n">log_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_var_layer</span><span class="p">(</span><span class="n">hidden</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span>
+    
+    <span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">reparameterize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span><span class="p">):</span>
+        <span class="n">std</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">log_var</span><span class="p">)</span>
+        <span class="n">eps</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">std</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">std</span>
+    
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reparameterize</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span><span class="p">)</span>
+        <span class="n">recon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">recon</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d7b7a710-34f6-4d12-a76a-1b06b5dd07d1">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="1.-Reading-Images">1. Reading Images<a class="anchor-link" href="#1.-Reading-Images">¶</a></h1>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=4e30488b-25bc-4e25-9722-9751b6599d3c">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7651,18 +7651,43 @@ Downloaded dog.jpg from https://www.raphaelcousin.com/modules/module8/exercise/d
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Read image using OpenCV (BGR format)</span>
-<span class="n">img_cv</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Define the loss function</span>
+<span class="k">def</span> <span class="nf">vae_loss</span><span class="p">(</span><span class="n">recon</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">recon_loss</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">binary_cross_entropy</span><span class="p">(</span><span class="n">recon</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">"sum"</span><span class="p">)</span>
+    <span class="n">kl_divergence</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">log_var</span> <span class="o">-</span> <span class="n">mu</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">log_var</span><span class="o">.</span><span class="n">exp</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">recon_loss</span> <span class="o">+</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">kl_divergence</span>
 
-<span class="c1"># Read image using PIL (RGB format)</span>
-<span class="n">img_pil</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-<span class="n">img_pil_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img_pil</span><span class="p">)</span>
+<span class="c1"># Train the VAE</span>
+<span class="k">def</span> <span class="nf">train_vae</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">"cuda"</span><span class="p">):</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">):</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+        <span class="n">train_loss</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">train_loader</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">recon</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">vae_loss</span><span class="p">(</span><span class="n">recon</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">beta</span><span class="p">)</span>
+            
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+            
+            <span class="n">train_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">num_epochs</span><span class="si">}</span><span class="s2">, Loss: </span><span class="si">{</span><span class="n">train_loss</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">model</span> 
+
+<span class="n">vae</span> <span class="o">=</span> <span class="n">VAE</span><span class="p">(</span><span class="n">latent_dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">train_vae</span><span class="p">(</span><span class="n">vae</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#Explore the effect of beta!</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">vae</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="s2">"vae_mnist.pth"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=e07de622-890b-4b29-a887-5cac8c014d92">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7670,19 +7695,50 @@ Downloaded dog.jpg from https://www.raphaelcousin.com/modules/module8/exercise/d
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># What the size of the image (How many channels)? On how many bits are encodded the pixel?</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Image Dimensions:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Height: </span><span class="si">{</span><span class="n">height</span><span class="si">}</span><span class="s2"> pixels"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Width: </span><span class="si">{</span><span class="n">width</span><span class="si">}</span><span class="s2"> pixels"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Channels: </span><span class="si">{</span><span class="n">channels</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total pixels: </span><span class="si">{</span><span class="n">height</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">width</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"bits depth:"</span><span class="p">,</span> <span class="n">img_cv</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Function for latent space interpolation</span>
+<span class="k">def</span> <span class="nf">interpolate_latent</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">"cuda"</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">x1</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">x2</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">mu1</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span>
+        <span class="n">mu2</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span>
+        
+        <span class="c1"># Linear interpolation</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">mu1</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">mu2</span>
+        <span class="n">recon</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">recon</span>
+
+<span class="n">vae</span> <span class="o">=</span> <span class="n">VAE</span><span class="p">(</span><span class="n">latent_dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">vae</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"vae_mnist.pth"</span><span class="p">))</span>
+
+<span class="c1"># Sample two random data points (x1, x2) from the training dataset</span>
+<span class="n">x1</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">train_loader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
+<span class="n">x2</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">train_loader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
+
+<span class="c1"># Add batch dimension and move to the appropriate device</span>
+<span class="n">x1</span> <span class="o">=</span> <span class="n">x1</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"cuda"</span><span class="p">)</span>  <span class="c1"># Assuming the model is on CUDA</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="n">x2</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"cuda"</span><span class="p">)</span>
+
+<span class="c1"># Sample alpha from a uniform distribution [0, 1]</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>  <span class="c1"># Random scalar between 0 and 1</span>
+
+<span class="c1"># Interpolate in the latent space</span>
+<span class="n">interpolated_image</span> <span class="o">=</span> <span class="n">interpolate_latent</span><span class="p">(</span><span class="n">vae</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">"cuda"</span><span class="p">)</span>
+
+<span class="c1"># Visualize the interpolated image</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">interpolated_image</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Interpolated Image (alpha=</span><span class="si">{</span><span class="n">alpha</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=61906cf3-5a9e-46a4-8a92-951c248ed481">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7690,122 +7746,40 @@ Downloaded dog.jpg from https://www.raphaelcousin.com/modules/module8/exercise/d
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># What the average of Red, of Green, of Blue?</span>
+<div class="highlight hl-python"><pre><span></span><span class="k">def</span> <span class="nf">plot_latent_grid</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">latent_bounds</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">"cuda"</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Plots a 2D grid of digits decoded from the latent space.</span>
 
-<span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
-    <span class="n">channel_data</span> <span class="o">=</span> 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Mean: </span><span class="si">{</span><span class="n">channel_data</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6b9d4635-9118-4352-9c9d-eb86d1a99071">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">display_images</span><span class="p">([</span><span class="n">img_cv</span><span class="p">],</span> <span class="p">[</span><span class="n">path</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1d6a50ac-927d-4cdb-8199-3ae9f93afba5">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="2.-Basic-Image-Manipulations">2. Basic Image Manipulations<a class="anchor-link" href="#2.-Basic-Image-Manipulations">¶</a></h1>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6cd70165-24e2-4aa2-95c4-be0df2d7adfe">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">channels</span> <span class="o">=</span> <span class="n">img_cv</span><span class="o">.</span><span class="n">shape</span>
+<span class="sd">    Args:</span>
+<span class="sd">        model (VAE): The trained VAE model.</span>
+<span class="sd">        latent_bounds (list): Bounds of the latent space as [min, max] for each dimension.</span>
+<span class="sd">        grid_size (int): Number of points to discretize the grid along each axis.</span>
+<span class="sd">        device (str): Device for computation (e.g., "cuda" or "cpu").</span>
+<span class="sd">    """</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    
+    <span class="c1"># Define the grid points</span>
+    <span class="n">grid_x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">latent_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">latent_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">grid_size</span><span class="p">)</span>
+    <span class="n">grid_y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">latent_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">latent_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">grid_size</span><span class="p">)</span>
+    <span class="n">grid_points</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cartesian_prod</span><span class="p">(</span><span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    
+    <span class="c1"># Decode the latent points</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">decoded_images</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">grid_points</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">decoded_images</span>
 
-<span class="c1"># Convert to grayscale</span>
-<span class="n">img_gray</span> <span class="o">=</span> 
+<span class="n">vae</span> <span class="o">=</span> <span class="n">VAE</span><span class="p">(</span><span class="n">latent_dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">vae</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"vae_mnist.pth"</span><span class="p">))</span>    
+<span class="n">grid_size</span><span class="o">=</span><span class="mi">10</span>
+<span class="n">decoded_images</span> <span class="o">=</span> <span class="n">plot_latent_grid</span><span class="p">(</span><span class="n">vae</span><span class="p">,</span> <span class="n">latent_bounds</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">grid_size</span><span class="o">=</span><span class="n">grid_size</span><span class="p">)</span>
 
-<span class="c1"># Rotate image 45deg</span>
-<span class="c1"># Get the image center and create the rotation matrix</span>
-<span class="n">img_rotated</span> <span class="o">=</span> 
-
-<span class="c1"># Flip image horizontally</span>
-<span class="n">img_flipped</span> <span class="o">=</span> 
-
-<span class="c1"># Display original and manipulated images</span>
-<span class="n">display_images</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">img_cv</span><span class="p">,</span> <span class="n">img_gray</span><span class="p">,</span> <span class="n">img_rotated</span><span class="p">,</span> <span class="n">img_flipped</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">'Original'</span><span class="p">,</span> <span class="s1">'Grayscale'</span><span class="p">,</span> <span class="s1">'Rotated 45°'</span><span class="p">,</span> <span class="s1">'Flipped'</span><span class="p">]</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8af1da6b-a97f-42d5-b201-07ac91f59f48">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="3.-Channel-Splitting-and-Histograms">3. Channel Splitting and Histograms<a class="anchor-link" href="#3.-Channel-Splitting-and-Histograms">¶</a></h1>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6c0b200a-f023-4494-a638-4b9dc8358a77">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">img_cv</span><span class="p">)</span>
-
-<span class="c1"># Display individual channels</span>
-<span class="n">display_images</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">r</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">'Blue Channel'</span><span class="p">,</span> <span class="s1">'Green Channel'</span><span class="p">,</span> <span class="s1">'Red Channel'</span><span class="p">]</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=03a2e9de-05e3-4188-888b-b4e75a90250a">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Plot histograms for each channel</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'b'</span><span class="p">,</span> <span class="s1">'g'</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">]</span>
-<span class="n">channels</span> <span class="o">=</span> <span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">r</span><span class="p">]</span>
-<span class="n">titles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Blue'</span><span class="p">,</span> <span class="s1">'Green'</span><span class="p">,</span> <span class="s1">'Red'</span><span class="p">]</span>
-
-<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">channels</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">titles</span><span class="p">)):</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">channel</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s1"> Channel Histogram'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Pixel Value'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Frequency'</span><span class="p">)</span>
+<span class="c1"># Reshape and plot the grid</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">grid_size</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">decoded_images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -7813,18 +7787,7 @@ Downloaded dog.jpg from https://www.raphaelcousin.com/modules/module8/exercise/d
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=99d083ff-c407-4630-8b0f-1f1cf3b218b3">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="4.-Basic-Image-Transformations">4. Basic Image Transformations<a class="anchor-link" href="#4.-Basic-Image-Transformations">¶</a></h1>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=79dd50b0-c608-4fa7-95be-33b160647431">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7832,148 +7795,188 @@ Downloaded dog.jpg from https://www.raphaelcousin.com/modules/module8/exercise/d
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Resize image to width//2, height//2</span>
-<span class="n">img_resized</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">img_cv</span><span class="p">,</span> <span class="p">(</span><span class="n">width</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="n">height</span><span class="o">//</span><span class="mi">2</span><span class="p">))</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Define the Conditional VAE model</span>
+<span class="k">class</span> <span class="nc">ConditionalVAE</span><span class="p">(</span><span class="n">VAE</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">latent_dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ConditionalVAE</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">latent_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">num_classes</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="o">...</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mu_layer</span> <span class="o">=</span> <span class="o">...</span>  <span class="c1"># Mean</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_var_layer</span> <span class="o">=</span> <span class="o">...</span>  <span class="c1"># Log variance</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span> <span class="o">=</span> <span class="o">...</span>
+    
+    <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+        <span class="n">labels_embedded</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_embedding</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">labels_embedded</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">hidden</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu_layer</span><span class="p">(</span><span class="n">hidden</span><span class="p">)</span>
+        <span class="n">log_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_var_layer</span><span class="p">(</span><span class="n">hidden</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span>
+    
+    <span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+        <span class="n">labels_embedded</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_embedding</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">z</span><span class="p">,</span> <span class="n">labels_embedded</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+        <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reparameterize</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span><span class="p">)</span>
+        <span class="n">recon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">recon</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1">#Train the conditional model</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Function to generate samples from Conditional VAE</span>
+<span class="k">def</span> <span class="nf">generate_samples</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">"cuda"</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_samples</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">latent_dim</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">num_samples</span><span class="p">,),</span> <span class="n">label</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">generated</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="p">[</span><span class="n">generated</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_samples</span><span class="p">)]</span>
 
-<span class="c1"># Apply Gaussian blur</span>
-<span class="n">img_blurred</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">GaussianBlur</span><span class="p">(</span><span class="n">img_cv</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+<span class="c1"># Example: Generate samples of digit "3"</span>
+<span class="n">cond_vae</span> <span class="o">=</span> <span class="n">ConditionalVAE</span><span class="p">(</span><span class="n">latent_dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">generate_samples</span><span class="p">(</span><span class="n">cond_vae</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 
-<span class="c1"># Apply edge detection</span>
-<span class="n">img_edges</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">Canny</span><span class="p">(</span><span class="n">img_cv</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
-
-<span class="c1"># Display transformations</span>
-<span class="n">display_images</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">img_resized</span><span class="p">,</span> <span class="n">img_blurred</span><span class="p">,</span> <span class="n">img_edges</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">'Resized (50%)'</span><span class="p">,</span> <span class="s1">'Gaussian Blur'</span><span class="p">,</span> <span class="s1">'Edge Detection'</span><span class="p">]</span>
-<span class="p">)</span>
+<span class="c1"># Visualize the generated samples</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">img</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">samples</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">samples</span><span class="p">),</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=36f365f0-e6c6-443b-8dcc-d83262f57c05">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Part-B:-Convolution-Warm-up">Part B: Convolution Warm-up<a class="anchor-link" href="#Part-B:-Convolution-Warm-up">¶</a></h1>
+<h3 id="Evaluating-the-Quality-of-Trained-Generative-Models">Evaluating the Quality of Trained Generative Models<a class="anchor-link" href="#Evaluating-the-Quality-of-Trained-Generative-Models">¶</a></h3><p>To assess the quality of a trained generative model, we use metrics that compare the distribution of generated samples with the real data distribution. In this exercise, we use the <strong>Maximum Mean Discrepancy (MMD)</strong>, a statistical measure to quantify the difference between two distributions. Below, we describe two evaluation methods:</p>
+<hr/>
+<h4 id="1.-Latent-Space-Interpolation-Evaluation"><strong>1. Latent Space Interpolation Evaluation</strong><a class="anchor-link" href="#1.-Latent-Space-Interpolation-Evaluation">¶</a></h4><p>Using the <code>interpolate_latent</code> function, we generate new digits by:</p>
+<ol>
+<li>Sampling two random data points ((x_1) and (x_2)) from the training dataset.</li>
+<li>Interpolating between these points in the latent space using a randomly sampled ( \alpha \in [0, 1] ).</li>
+<li>Decoding the interpolated latent representations to create new digit images.</li>
+</ol>
+<p>We then calculate the MMD between these generated samples and the test dataset to evaluate how well the interpolated samples align with the real data distribution.</p>
+<hr/>
+<h4 id="2.-Label-Conditioned-Sample-Evaluation"><strong>2. Label-Conditioned Sample Evaluation</strong><a class="anchor-link" href="#2.-Label-Conditioned-Sample-Evaluation">¶</a></h4><p>Using the <code>generate_samples</code> function, we generate new samples conditioned on a specific label. For each label:</p>
+<ol>
+<li>Generate a set of synthetic samples using the trained model.</li>
+<li>Compare the generated samples with the test dataset samples that share the same label using MMD.</li>
+</ol>
+<p>This approach evaluates the model's ability to generate realistic and diverse samples for specific classes, ensuring the model captures the conditional data distribution effectively.</p>
+<hr/>
+<h4 id="Why-MMD?"><strong>Why MMD?</strong><a class="anchor-link" href="#Why-MMD?">¶</a></h4><p>The Maximum Mean Discrepancy (MMD) measures the distance between two distributions by comparing their representations in a reproducing kernel Hilbert space (RKHS). It is defined as:</p>
+<p>$$
+\mathrm{MMD}^2(p, q) = \mathbb{E}_{x, x' \sim p} [k(x, x')] + \mathbb{E}_{y, y' \sim q} [k(y, y')] - 2 \mathbb{E}_{x \sim p, y \sim q} [k(x, y)],
+$$</p>
+<p>where ( k ) is a kernel function (e.g., Gaussian kernel). MMD is particularly well-suited for generative model evaluation as it provides a numerical measure of how closely the generated and real data distributions align.</p>
+<hr/>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=cec93bee-a324-4d27-81c0-675ed8b7fb08">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">convolve2d</span>
-<span class="kn">import</span> <span class="nn">cv2</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=285f5b91-eb65-4c0e-8a92-6a3310eec951">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">apply_kernel</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">kernel</span><span class="p">):</span>
+<div class="highlight hl-python"><pre><span></span><span class="k">def</span> <span class="nf">get_samples_by_label</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    Apply convolution with given kernel and return result</span>
+<span class="sd">    Selects all samples of a specific label from the dataset.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        loader (DataLoader): The DataLoader containing the dataset.</span>
+<span class="sd">        label (int): The label for which to retrieve samples (0-9).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        torch.Tensor: Tensor of images corresponding to the specified label.</span>
 <span class="sd">    """</span>
-    <span class="k">return</span> <span class="n">convolve2d</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'same'</span><span class="p">,</span> <span class="n">boundary</span><span class="o">=</span><span class="s1">'wrap'</span><span class="p">)</span>
+    <span class="n">images</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Iterate through the DataLoader</span>
+    <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">loader</span><span class="p">:</span>
+        <span class="c1"># Find indices where the label matches</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="n">label</span><span class="p">)</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">as_tuple</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Append the matching images</span>
+            <span class="n">images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">indices</span><span class="p">])</span>
+
+    <span class="c1"># Concatenate all matching images into a single tensor</span>
+    <span class="k">if</span> <span class="n">images</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Return an empty tensor if no matches are found</span>
+
+<span class="c1"># Example usage:</span>
+<span class="c1"># Assuming `test_loader` is the test DataLoader</span>
+<span class="n">label</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">get_samples_by_label</span><span class="p">(</span><span class="n">test_loader</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Number of samples with label </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">samples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Visualize a few examples</span>
+<span class="k">if</span> <span class="n">samples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">samples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">"off"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=353e147d-43de-4d81-9424-aee46ae9a6c2">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Simple-geometric-image-forms">Simple geometric image forms<a class="anchor-link" href="#Simple-geometric-image-forms">¶</a></h3>
+<p>From <a href="https://jejjohnson.github.io/research_journal/appendix/similarity/mmd/">this tutorial</a> on the MMD</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=bb77f432-b6b4-4531-87d8-88613df8fc17">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">size</span> <span class="o">=</span> <span class="mi">20</span>
-<span class="c1"># Create a simple cross pattern</span>
-<span class="n">cross</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
-<span class="n">cross</span><span class="p">[</span><span class="n">size</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">cross</span><span class="p">[:,</span> <span class="n">size</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-
-<span class="c1"># Create a diagonal line</span>
-<span class="n">diagonal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
-
-<span class="c1"># Create a box</span>
-<span class="n">box</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
-<span class="n">box</span><span class="p">[</span><span class="n">size</span><span class="o">//</span><span class="mi">4</span><span class="p">:</span><span class="mi">3</span><span class="o">*</span><span class="n">size</span><span class="o">//</span><span class="mi">4</span><span class="p">,</span> <span class="n">size</span><span class="o">//</span><span class="mi">4</span><span class="p">:</span><span class="mi">3</span><span class="o">*</span><span class="n">size</span><span class="o">//</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-
-<span class="c1"># Display original patterns</span>
-<span class="n">display_images</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">cross</span><span class="p">,</span> <span class="n">diagonal</span><span class="p">,</span> <span class="n">box</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">'Cross Pattern'</span><span class="p">,</span> <span class="s1">'Diagonal Pattern'</span><span class="p">,</span> <span class="s1">'Box Pattern'</span><span class="p">]</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[3], line 15</span>
-<span class="ansi-green-intense-fg ansi-bold">     12</span> box[size<span style="color: rgb(98,98,98)">/</span><span style="color: rgb(98,98,98)">/</span><span style="color: rgb(98,98,98)">4</span>:<span style="color: rgb(98,98,98)">3</span><span style="color: rgb(98,98,98)">*</span>size<span style="color: rgb(98,98,98)">/</span><span style="color: rgb(98,98,98)">/</span><span style="color: rgb(98,98,98)">4</span>, size<span style="color: rgb(98,98,98)">/</span><span style="color: rgb(98,98,98)">/</span><span style="color: rgb(98,98,98)">4</span>:<span style="color: rgb(98,98,98)">3</span><span style="color: rgb(98,98,98)">*</span>size<span style="color: rgb(98,98,98)">/</span><span style="color: rgb(98,98,98)">/</span><span style="color: rgb(98,98,98)">4</span>] <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(98,98,98)">1</span>
-<span class="ansi-green-intense-fg ansi-bold">     14</span> <span style="color: rgb(95,135,135)"># Display original patterns</span>
-<span class="ansi-green-fg">---&gt; 15</span> <span class="ansi-yellow-bg">display_images</span>(
-<span class="ansi-green-intense-fg ansi-bold">     16</span>     [cross, diagonal, box],
-<span class="ansi-green-intense-fg ansi-bold">     17</span>     [<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">Cross Pattern</span><span style="color: rgb(175,0,0)">'</span>, <span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">Diagonal Pattern</span><span style="color: rgb(175,0,0)">'</span>, <span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">Box Pattern</span><span style="color: rgb(175,0,0)">'</span>]
-<span class="ansi-green-intense-fg ansi-bold">     18</span> )
-
-<span class="ansi-red-fg">NameError</span>: name 'display_images' is not defined</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=864de37f-4640-428d-8b25-89538118ed63">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Common-convolution-kernels">Common convolution kernels<a class="anchor-link" href="#Common-convolution-kernels">¶</a></h3>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a36db00b-94bb-464c-bec1-75beb9828060">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7981,541 +7984,46 @@ Cell <span class="ansi-green-fg">In[3], line 15</span>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Edge detection kernels</span>
-<span class="n">sobel_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-    <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-    <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
-    <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="p">])</span>
+<div class="highlight hl-python"><pre><span></span><span class="k">def</span> <span class="nf">MMD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">kernel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Emprical maximum mean discrepancy. The lower the result</span>
+<span class="sd">       the more evidence that distributions are the same.</span>
 
-<span class="n">sobel_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-    <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
-    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="p">])</span>
+<span class="sd">    Args:</span>
+<span class="sd">        x: first sample, distribution P</span>
+<span class="sd">        y: second sample, distribution Q</span>
+<span class="sd">        kernel: kernel type such as "multiscale" or "rbf"</span>
+<span class="sd">    """</span>
+    <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">zz</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">t</span><span class="p">()),</span> <span class="n">torch</span><span class="o">.</span><span class="n">mm</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">t</span><span class="p">()),</span> <span class="n">torch</span><span class="o">.</span><span class="n">mm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>
+    <span class="n">rx</span> <span class="o">=</span> <span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">diag</span><span class="p">()</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">expand_as</span><span class="p">(</span><span class="n">xx</span><span class="p">))</span>
+    <span class="n">ry</span> <span class="o">=</span> <span class="p">(</span><span class="n">yy</span><span class="o">.</span><span class="n">diag</span><span class="p">()</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">expand_as</span><span class="p">(</span><span class="n">yy</span><span class="p">))</span>
 
-<span class="c1"># Sharpening kernel</span>
-<span class="n">sharpen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-    <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
-    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="p">])</span>
+    <span class="n">dxx</span> <span class="o">=</span> <span class="n">rx</span><span class="o">.</span><span class="n">t</span><span class="p">()</span> <span class="o">+</span> <span class="n">rx</span> <span class="o">-</span> <span class="mf">2.</span> <span class="o">*</span> <span class="n">xx</span> <span class="c1"># Used for A in (1)</span>
+    <span class="n">dyy</span> <span class="o">=</span> <span class="n">ry</span><span class="o">.</span><span class="n">t</span><span class="p">()</span> <span class="o">+</span> <span class="n">ry</span> <span class="o">-</span> <span class="mf">2.</span> <span class="o">*</span> <span class="n">yy</span> <span class="c1"># Used for B in (1)</span>
+    <span class="n">dxy</span> <span class="o">=</span> <span class="n">rx</span><span class="o">.</span><span class="n">t</span><span class="p">()</span> <span class="o">+</span> <span class="n">ry</span> <span class="o">-</span> <span class="mf">2.</span> <span class="o">*</span> <span class="n">zz</span> <span class="c1"># Used for C in (1)</span>
 
-<span class="c1"># Gaussian blur kernel (3x3)</span>
-<span class="n">gaussian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-    <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mi">16</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">16</span><span class="p">],</span>
-    <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">8</span><span class="p">],</span>
-    <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mi">16</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">16</span><span class="p">]</span>
-<span class="p">])</span>
+    <span class="n">XX</span><span class="p">,</span> <span class="n">YY</span><span class="p">,</span> <span class="n">XY</span> <span class="o">=</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span>
+                  <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span>
+                  <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
 
-<span class="c1"># Display kernels</span>
-<span class="n">display_images</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">sobel_x</span><span class="p">,</span> <span class="n">sobel_y</span><span class="p">,</span> <span class="n">sharpen</span><span class="p">,</span> <span class="n">gaussian</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">'Sobel X'</span><span class="p">,</span> <span class="s1">'Sobel Y'</span><span class="p">,</span> <span class="s1">'Sharpen'</span><span class="p">,</span> <span class="s1">'Gaussian'</span><span class="p">],</span>
-    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a2a51644-ecf7-46c4-849a-41e45505dda0">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Apply convolutions to cross pattern</span>
-<span class="c1"># ----------------------------------</span>
-<span class="c1"># Apply each kernel to the cross pattern</span>
-<span class="n">cross_sobel_x</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">cross</span><span class="p">,</span> <span class="n">sobel_x</span><span class="p">)</span>
-<span class="n">cross_sobel_y</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">cross</span><span class="p">,</span> <span class="n">sobel_y</span><span class="p">)</span>
-<span class="n">cross_sharpen</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">cross</span><span class="p">,</span> <span class="n">sharpen</span><span class="p">)</span>
-<span class="n">cross_gaussian</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">cross</span><span class="p">,</span> <span class="n">gaussian</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">kernel</span> <span class="o">==</span> <span class="s2">"multiscale"</span><span class="p">:</span>
 
-<span class="n">display_images</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">cross</span><span class="p">,</span> <span class="n">cross_sobel_x</span><span class="p">,</span> <span class="n">cross_sobel_y</span><span class="p">,</span> <span class="n">cross_sharpen</span><span class="p">,</span> <span class="n">cross_gaussian</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">'Original Cross'</span><span class="p">,</span> <span class="s1">'Sobel X'</span><span class="p">,</span> <span class="s1">'Sobel Y'</span><span class="p">,</span> <span class="s1">'Sharpened'</span><span class="p">,</span> <span class="s1">'Gaussian Blur'</span><span class="p">],</span>
-    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=398e4cd4-4784-411c-8ffe-460f971b13ed">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Apply convolutions to diagonal pattern</span>
-<span class="c1"># -------------------------------------</span>
-<span class="n">diag_sobel_x</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">diagonal</span><span class="p">,</span> <span class="n">sobel_x</span><span class="p">)</span>
-<span class="n">diag_sobel_y</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">diagonal</span><span class="p">,</span> <span class="n">sobel_y</span><span class="p">)</span>
-<span class="n">diag_sharpen</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">diagonal</span><span class="p">,</span> <span class="n">sharpen</span><span class="p">)</span>
-<span class="n">diag_gaussian</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">diagonal</span><span class="p">,</span> <span class="n">gaussian</span><span class="p">)</span>
+        <span class="n">bandwidth_range</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">bandwidth_range</span><span class="p">:</span>
+            <span class="n">XX</span> <span class="o">+=</span> <span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">dxx</span><span class="p">)</span><span class="o">**-</span><span class="mi">1</span>
+            <span class="n">YY</span> <span class="o">+=</span> <span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">dyy</span><span class="p">)</span><span class="o">**-</span><span class="mi">1</span>
+            <span class="n">XY</span> <span class="o">+=</span> <span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">dxy</span><span class="p">)</span><span class="o">**-</span><span class="mi">1</span>
 
-<span class="n">display_images</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">diagonal</span><span class="p">,</span> <span class="n">diag_sobel_x</span><span class="p">,</span> <span class="n">diag_sobel_y</span><span class="p">,</span> <span class="n">diag_sharpen</span><span class="p">,</span> <span class="n">diag_gaussian</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">'Original Diagonal'</span><span class="p">,</span> <span class="s1">'Sobel X'</span><span class="p">,</span> <span class="s1">'Sobel Y'</span><span class="p">,</span> <span class="s1">'Sharpened'</span><span class="p">,</span> <span class="s1">'Gaussian Blur'</span><span class="p">],</span>
-    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=2f292a6b-17a7-461b-b6bb-e8549dc09734">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Apply convolutions to box pattern</span>
-<span class="c1"># --------------------------------</span>
-<span class="n">box_sobel_x</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">sobel_x</span><span class="p">)</span>
-<span class="n">box_sobel_y</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">sobel_y</span><span class="p">)</span>
-<span class="n">box_sharpen</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">sharpen</span><span class="p">)</span>
-<span class="n">box_gaussian</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">gaussian</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">kernel</span> <span class="o">==</span> <span class="s2">"rbf"</span><span class="p">:</span>
 
-<span class="n">display_images</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">box</span><span class="p">,</span> <span class="n">box_sobel_x</span><span class="p">,</span> <span class="n">box_sobel_y</span><span class="p">,</span> <span class="n">box_sharpen</span><span class="p">,</span> <span class="n">box_gaussian</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">'Original Box'</span><span class="p">,</span> <span class="s1">'Sobel X'</span><span class="p">,</span> <span class="s1">'Sobel Y'</span><span class="p">,</span> <span class="s1">'Sharpened'</span><span class="p">,</span> <span class="s1">'Gaussian Blur'</span><span class="p">],</span>
-    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=73e3686a-4cd1-4df5-9224-f61b525258bb">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Now Apply convolutions to your gray image (cat or dog)</span>
+        <span class="n">bandwidth_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">bandwidth_range</span><span class="p">:</span>
+            <span class="n">XX</span> <span class="o">+=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="n">dxx</span><span class="o">/</span><span class="n">a</span><span class="p">)</span>
+            <span class="n">YY</span> <span class="o">+=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="n">dyy</span><span class="o">/</span><span class="n">a</span><span class="p">)</span>
+            <span class="n">XY</span> <span class="o">+=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="n">dxy</span><span class="o">/</span><span class="n">a</span><span class="p">)</span>
 
-<span class="n">catodog_sobel_x</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">img_gray</span><span class="p">,</span> <span class="n">sobel_x</span><span class="p">)</span>
-<span class="n">catodog_sobel_y</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">img_gray</span><span class="p">,</span> <span class="n">sobel_y</span><span class="p">)</span>
-<span class="n">catodog_sharpen</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">img_gray</span><span class="p">,</span> <span class="n">sharpen</span><span class="p">)</span>
-<span class="n">catodog_gaussian</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">img_gray</span><span class="p">,</span> <span class="n">gaussian</span><span class="p">)</span>
 
-<span class="n">display_images</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">img_gray</span><span class="p">,</span> <span class="n">catodog_sobel_x</span><span class="p">,</span> <span class="n">catodog_sobel_y</span><span class="p">,</span> <span class="n">catodog_sharpen</span><span class="p">,</span> <span class="n">catodog_gaussian</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">'Original Box'</span><span class="p">,</span> <span class="s1">'Sobel X'</span><span class="p">,</span> <span class="s1">'Sobel Y'</span><span class="p">,</span> <span class="s1">'Sharpened'</span><span class="p">,</span> <span class="s1">'Gaussian Blur'</span><span class="p">],</span>
-    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=007cc399-fac1-4a5c-88a4-c01c139d4870">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Part-C:-Torch-Cnn-Warm-up">Part C: Torch Cnn Warm up<a class="anchor-link" href="#Part-C:-Torch-Cnn-Warm-up">¶</a></h1>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=27825ae3-dd28-4c11-95d8-c137fda3cf65">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># get another image</span>
-<span class="kn">import</span> <span class="nn">requests</span>
 
-<span class="c1"># URLs of the files</span>
-<span class="n">sample_image_catanddog</span> <span class="o">=</span> <span class="s1">'https://www.raphaelcousin.com/modules/module8/exercise/catanddog.jpg'</span>
-
-<span class="c1"># Function to download a file</span>
-<span class="k">def</span> <span class="nf">download_file</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">file_name</span><span class="p">):</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>  <span class="c1"># Ensure we notice bad responses</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s1">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Downloaded </span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s1"> from </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-
-<span class="c1"># Downloading the files</span>
-<span class="n">download_file</span><span class="p">(</span><span class="n">sample_image_catanddog</span><span class="p">,</span> <span class="s1">'catanddog.jpg'</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Downloaded catanddog.jpg from https://www.raphaelcousin.com/modules/module8/exercise/catanddog.jpg
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=befad088-9084-4e26-9907-cc30c56b7b42">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=228cb00e-6dd1-4ede-b091-0fa6d5ab7f0a">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># read image</span>
-<span class="n">image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">"catanddog.jpg"</span><span class="p">)</span>
-<span class="n">gray_image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
-<span class="c1"># Get dimensions of the image</span>
-<span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">channels</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span>
-
-<span class="c1"># Print the dimensions</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Width: </span><span class="si">{</span><span class="n">width</span><span class="si">}</span><span class="s2">, Height: </span><span class="si">{</span><span class="n">height</span><span class="si">}</span><span class="s2">, Channels: </span><span class="si">{</span><span class="n">channels</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Get dimensions of the image</span>
-<span class="n">height</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">gray_image</span><span class="o">.</span><span class="n">shape</span>
-
-<span class="c1"># Print the dimensions</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Width: </span><span class="si">{</span><span class="n">width</span><span class="si">}</span><span class="s2">, Height: </span><span class="si">{</span><span class="n">height</span><span class="si">}</span><span class="s2">, Channels: 1"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b2b36730-c78e-485f-8443-2f4f218534c6">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">display_images</span><span class="p">([</span><span class="n">image</span><span class="p">,</span> <span class="n">gray_image</span><span class="p">],</span> <span class="p">[</span><span class="s1">'image'</span><span class="p">,</span> <span class="s1">'gray_image'</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4ad835de-7520-42b5-890b-8e9fd6c4a454">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Complete-the-function-to-get-the-output-size-after-a-conv-layer-and-after-a-pool-layer-and-define-it-in-torch-to-validate-the-size">Complete the function to get the output size after a conv layer and after a pool layer and define it in torch to validate the size<a class="anchor-link" href="#Complete-the-function-to-get-the-output-size-after-a-conv-layer-and-after-a-pool-layer-and-define-it-in-torch-to-validate-the-size">¶</a></h3>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=f531cd4b-fccf-4713-ae06-d58c32bc8f20">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span>
-<span class="kn">import</span> <span class="nn">torch</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=9ee920b2-3e4e-4277-a643-58dfe5a9ab09">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Make the image tensors</span>
-<span class="n">x_rgb</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-<span class="n">x_gray</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">gray_image</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7a7554b5-fe5a-431e-abfd-dc521931abcf">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Conv-Layers">Conv Layers<a class="anchor-link" href="#Conv-Layers">¶</a></h3>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=308a26cd-a119-439c-84e6-de054f1e7e4d">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">calculate_conv_output_size</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">padding</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Calculate output size of convolution layer"""</span>
-    <span class="k">return</span> <span class="n">TODO</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=3fdad82b-272b-4e0a-9f7a-58d1835fd60a">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># A. Configuration RGB : Small kernel (3), no padding, stride 1, 1 filter</span>
-<span class="n">conv1_rgb</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="p">)</span>
-<span class="n">out_size_a</span> <span class="o">=</span> <span class="n">calculate_conv_output_size</span><span class="p">(</span><span class="n">input_size</span><span class="o">=</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Config A - Small kernel (3x3), no padding, stride 1:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Output size: </span><span class="si">{</span><span class="n">out_size_a</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Verification with torch:"</span><span class="p">)</span>
-<span class="n">y_a</span> <span class="o">=</span> <span class="n">conv1_rgb</span><span class="p">(</span><span class="n">x_rgb</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Actual output shape: </span><span class="si">{</span><span class="n">y_a</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=1d476038-7e3d-4ef6-ba61-61dd48298d4f">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># B. Configuration RGB : Larger kernel, padding, stride 2</span>
-<span class="n">conv2_rgb</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="p">)</span>
-<span class="n">out_size_b</span> <span class="o">=</span> <span class="n">calculate_conv_output_size</span><span class="p">(</span><span class="n">input_size</span><span class="o">=</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Config B - Larger kernel (5x5), padding 2, stride 2:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Output size: </span><span class="si">{</span><span class="n">out_size_b</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Verification with torch:"</span><span class="p">)</span>
-<span class="n">y_b</span> <span class="o">=</span> <span class="n">conv2_rgb</span><span class="p">(</span><span class="n">x_rgb</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Actual output shape: </span><span class="si">{</span><span class="n">y_b</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=3153b27f-ccf9-450b-a1bf-cd3c37ef7cde">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># C. Configuration gray : Medium kernel, small padding, stride 1</span>
-<span class="n">conv1_gray</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="p">)</span>
-<span class="n">out_size_c</span> <span class="o">=</span> <span class="n">calculate_conv_output_size</span><span class="p">(</span><span class="n">input_size</span><span class="o">=</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Config C - Medium kernel (4x4), padding 1, stride 1:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Output size: </span><span class="si">{</span><span class="n">out_size_c</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Verification with torch:"</span><span class="p">)</span>
-<span class="n">y_c</span> <span class="o">=</span> <span class="n">conv1_gray</span><span class="p">(</span><span class="n">x_gray</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Actual output shape: </span><span class="si">{</span><span class="n">y_c</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4e42dc19-3e7e-4a8b-bd84-07149bd4d9f5">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Pool-Layers">Pool Layers<a class="anchor-link" href="#Pool-Layers">¶</a></h3>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=36c8c5e6-38a3-4a4b-94ce-7698f8ae6dae">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">calculate_pool_output_size</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">stride</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Calculate output size of pooling layer"""</span>
-    <span class="k">return</span> <span class="n">TODO</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=fbe3b05a-a698-42bc-8252-f3dc81cf29ba">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Max Pooling after Conv Layer A (RGB)</span>
-<span class="n">pool_a</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="n">kernel_size</span><span class="o">=</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="p">)</span>
-<span class="n">pool_size_a</span> <span class="o">=</span> <span class="n">calculate_pool_output_size</span><span class="p">(</span><span class="n">input_size</span><span class="o">=</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Pooling after Config A:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Output size: </span><span class="si">{</span><span class="n">pool_size_a</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="n">y_pool_a</span> <span class="o">=</span> <span class="n">pool_a</span><span class="p">(</span><span class="n">y_a</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Actual output shape: </span><span class="si">{</span><span class="n">y_pool_a</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Max Pooling after Conv Layer C (Grayscale)</span>
-<span class="n">pool_c</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="n">kernel_size</span><span class="o">=</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="p">)</span>
-<span class="n">pool_size_c</span> <span class="o">=</span> <span class="n">calculate_pool_output_size</span><span class="p">(</span><span class="n">input_size</span><span class="o">=</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Pooling after Config C:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Output size: </span><span class="si">{</span><span class="n">pool_size_c</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="n">y_pool_c</span> <span class="o">=</span> <span class="n">pool_c</span><span class="p">(</span><span class="n">y_c</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Actual output shape: </span><span class="si">{</span><span class="n">y_pool_c</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c2952f1d-e19d-471c-bd08-41d3008d7086">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Now-get-the-flaten-size-after-the-pooling-in-order-to-add-the-fully-connected-layer">Now get the flaten size after the pooling in order to add the fully connected layer<a class="anchor-link" href="#Now-get-the-flaten-size-after-the-pooling-in-order-to-add-the-fully-connected-layer">¶</a></h3>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=948f34c0-d68b-40a0-bf67-2ab26fa3922d">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 4. Flattening Layer</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== Flattening Layer Outputs ==="</span><span class="p">)</span>
-
-<span class="c1"># Flatten pooled output from RGB configuration</span>
-<span class="n">flat_size_rgb</span> <span class="o">=</span> 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Flattened size after RGB conv+pool:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Output size: </span><span class="si">{</span><span class="n">flat_size_rgb</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="n">y_flat_rgb</span> <span class="o">=</span> <span class="n">y_pool_a</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">y_pool_a</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Actual output shape: </span><span class="si">{</span><span class="n">y_flat_rgb</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Flatten pooled output from Grayscale configuration</span>
-<span class="n">flat_size_gray</span> <span class="o">=</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Flattened size after Grayscale conv+pool:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Output size: </span><span class="si">{</span><span class="n">flat_size_gray</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="n">y_flat_gray</span> <span class="o">=</span> <span class="n">y_pool_c</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">y_pool_c</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Actual output shape: </span><span class="si">{</span><span class="n">y_flat_gray</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=07701cb7-2981-49f9-8ae7-b1d2b87a04b6">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 5. Fully Connected Layer with 1 Output</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== Final Fully Connected Layer ==="</span><span class="p">)</span>
-
-<span class="c1"># FC Layer for RGB path</span>
-<span class="n">fc_rgb</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">flat_size_rgb</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">y_final_rgb</span> <span class="o">=</span> <span class="n">fc_rgb</span><span class="p">(</span><span class="n">y_flat_rgb</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Final output shape (RGB path): </span><span class="si">{</span><span class="n">y_final_rgb</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># FC Layer for Grayscale path</span>
-<span class="n">fc_gray</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">flat_size_gray</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">y_final_gray</span> <span class="o">=</span> <span class="n">fc_gray</span><span class="p">(</span><span class="n">y_flat_gray</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Final output shape (Grayscale path): </span><span class="si">{</span><span class="n">y_final_gray</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=9454ec83-af4c-46f7-9feb-d5fac98b1693">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Complete network architectures</span>
-<span class="k">class</span> <span class="nc">RGBNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">RGBNet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">conv</span> <span class="o">=</span> <span class="n">conv1_rgb</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pool</span> <span class="o">=</span> <span class="n">pool_a</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">fc_rgb</span>
-        
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">x</span>
-
-<span class="k">class</span> <span class="nc">GrayscaleNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">GrayscaleNet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">conv</span> <span class="o">=</span> <span class="n">conv1_gray</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pool</span> <span class="o">=</span> <span class="n">pool_c</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">fc_gray</span>
-        
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">XX</span> <span class="o">+</span> <span class="n">YY</span> <span class="o">-</span> <span class="mf">2.</span> <span class="o">*</span> <span class="n">XY</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

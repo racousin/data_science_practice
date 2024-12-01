@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>module9_course</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>TP_ts</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7509,42 +7509,249 @@ a.anchor-link {
 </style>
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<main><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=41682251-1775-4a4a-991c-c06839c94e5c">
+<main>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="The-R%C3%B6ssler-System">The Rössler System<a class="anchor-link" href="#The-R%C3%B6ssler-System">¶</a></h3><p>The <strong>Rössler system</strong> is a set of three coupled ordinary differential equations that describe a chaotic dynamical system. Introduced by Otto Rössler in 1976, it is widely studied as a simple model of chaos. The equations are:</p>
+<p>[
+\begin{aligned}
+    \frac{dx}{dt} &amp;= -y - z, \\
+    \frac{dy}{dt} &amp;= x + ay, \\
+    \frac{dz}{dt} &amp;= b + z(x - c),
+\end{aligned}
+]</p>
+<p>where:</p>
+<ul>
+<li>( x, y, z ) are the system's state variables,</li>
+<li>( a, b, c ) are parameters that control the system's behavior.</li>
+</ul>
+<hr/>
+<h4 id="Properties-of-the-R%C3%B6ssler-System">Properties of the Rössler System<a class="anchor-link" href="#Properties-of-the-R%C3%B6ssler-System">¶</a></h4><ol>
+<li><p><strong>Chaotic System</strong>:</p>
+<ul>
+<li>For certain parameter values, the system exhibits chaotic behavior characterized by sensitivity to initial conditions and the presence of a strange attractor.</li>
+<li>Common parameter values for chaos are ( a = 0.2, b = 0.2, c = 5.7 ).</li>
+</ul>
+</li>
+<li><p><strong>Lyapunov Exponent</strong>:</p>
+<ul>
+<li>The largest <strong>Lyapunov exponent</strong> quantifies the rate at which nearby trajectories diverge, a hallmark of chaos. A positive Lyapunov exponent indicates chaos. ($\lambda_1$ =0.0714)</li>
+</ul>
+</li>
+<li><p><strong>Dissipative System</strong>:</p>
+<ul>
+<li>A system is <strong>dissipative</strong> if the volume of its state space contracts over time. For the Rössler system, this can be shown by computing the divergence of the vector field:
+$$
+\nabla \cdot \mathbf{F} = \frac{\partial f_x}{\partial x} + \frac{\partial f_y}{\partial y} + \frac{\partial f_z}{\partial z} = -a.
+$$
+Since ( a &gt; 0 ), the system is dissipative, leading to the formation of an attractor.</li>
+</ul>
+</li>
+<li><p><strong>Applications</strong>:</p>
+<ul>
+<li>The Rössler system is used in modeling chaotic circuits, understanding turbulence, and exploring the fundamental properties of chaos.</li>
+</ul>
+</li>
+</ol>
+<hr/>
+<h4 id="Generating-Time-Series">Generating Time Series<a class="anchor-link" href="#Generating-Time-Series">¶</a></h4><p>Given an initial condition ( (x_0, y_0, z_0) ), the Rössler system can be integrated numerically to generate time series data. The output provides insight into the system's dynamics and serves as a benchmark for analyzing chaotic time series.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight hl-python"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">solve_ivp</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="k">def</span> <span class="nf">rossler_time_series</span><span class="p">(</span><span class="n">initial_condition</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">num_iterations</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">5.7</span><span class="p">)):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Generates a time series from the Rössler system.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        initial_condition (tuple): Initial state (x0, y0, z0).</span>
+<span class="sd">        dt (float): Time step for integration.</span>
+<span class="sd">        num_iterations (int): Number of time steps.</span>
+<span class="sd">        params (tuple): Parameters of the Rössler system (a, b, c).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.ndarray: Time series as a numpy array of shape (num_iterations, 3).</span>
+<span class="sd">    """</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">params</span>
+
+    <span class="k">def</span> <span class="nf">rossler_equations</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">state</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="o">-</span><span class="n">y</span> <span class="o">-</span> <span class="n">z</span>
+        <span class="n">dy</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="n">y</span>
+        <span class="n">dz</span> <span class="o">=</span> <span class="n">b</span> <span class="o">+</span> <span class="n">z</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dz</span><span class="p">]</span>
+
+    <span class="c1"># Time span for integration</span>
+    <span class="n">t_span</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_iterations</span> <span class="o">*</span> <span class="n">dt</span><span class="p">)</span>
+    <span class="n">t_eval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_iterations</span> <span class="o">*</span> <span class="n">dt</span><span class="p">,</span> <span class="n">num_iterations</span><span class="p">)</span>
+
+    <span class="c1"># Solve the system using an ODE solver</span>
+    <span class="n">solution</span> <span class="o">=</span> <span class="n">solve_ivp</span><span class="p">(</span>
+        <span class="n">rossler_equations</span><span class="p">,</span>
+        <span class="n">t_span</span><span class="o">=</span><span class="n">t_span</span><span class="p">,</span>
+        <span class="n">y0</span><span class="o">=</span><span class="n">initial_condition</span><span class="p">,</span>
+        <span class="n">t_eval</span><span class="o">=</span><span class="n">t_eval</span><span class="p">,</span>
+        <span class="n">method</span><span class="o">=</span><span class="s1">'RK45'</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">solution</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">T</span>  <span class="c1"># Transpose to shape (num_iterations, 3)</span>
+
+<span class="c1"># Example usage</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+    <span class="c1"># Initial condition and parameters</span>
+    <span class="n">initial_condition</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="mf">0.01</span>
+    <span class="n">num_iterations</span> <span class="o">=</span> <span class="mi">10000</span>
+
+    <span class="c1"># Generate time series</span>
+    <span class="n">time_series</span> <span class="o">=</span> <span class="n">rossler_time_series</span><span class="p">(</span><span class="n">initial_condition</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">num_iterations</span><span class="p">)</span>
+
+    <span class="c1"># Plot the time series</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_series</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">"x(t)"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"blue"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_series</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">"y(t)"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"orange"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_series</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">"z(t)"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"green"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">ax</span><span class="p">:</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Time Step"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="c1"># 3D Plot of the Rössler attractor</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">'3d'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_series</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">time_series</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">time_series</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Rössler Attractor"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"x(t)"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"y(t)"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">"z(t)"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8297b940-a08e-4e5e-bae9-7c6d33db0303">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Data-Collection">Data Collection<a class="anchor-link" href="#Data-Collection">¶</a></h3>
+<h3 id="Student-Exercise:-Modeling-the-R%C3%B6ssler-System">Student Exercise: Modeling the Rössler System<a class="anchor-link" href="#Student-Exercise:-Modeling-the-R%C3%B6ssler-System">¶</a></h3><p>In this exercise, your task is to design, train, and evaluate a model capable of generating a time series resembling the dynamics of the <strong>Rössler system</strong>. Follow the steps outlined below to complete the assignment.</p>
+<hr/>
+<h4 id="Tasks">Tasks<a class="anchor-link" href="#Tasks">¶</a></h4><ol>
+<li><p><strong>Generate the Dataset</strong>:</p>
+<ul>
+<li>Use the provided <code>rossler_time_series</code> function to create a dataset representing the Rössler system's dynamics.</li>
+<li>Prepare the dataset for training a machine learning model by splitting it into input-output pairs suitable for sequence modeling.</li>
+</ul>
+</li>
+<li><p><strong>Train a Meta-Model</strong>:</p>
+<ul>
+<li>Develop a model (e.g., an RNN, LSTM, Transformer, or State-Space Model) that learns the underlying dynamics of the Rössler system.</li>
+<li>Train the model to predict the next state ( x_{k+1}, y_{k+1}, z_{k+1} ) given the current and or previous states.</li>
+</ul>
+</li>
+<li><p><strong>Generate a New Time Series</strong>:</p>
+<ul>
+<li>Using the trained model, generate a new time series with:<ul>
+<li>( dt = 0.01 ),</li>
+<li>Initial condition: NumPy array of shape ( 1000 \times 3 ) with ( dt = 0.01 ).</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="k">def</span> <span class="nf">generate_time_series</span><span class="p">(</span><span class="n">initial_series</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">model_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Generates a time series of N iterations using a pre-trained model.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        initial_series (np.ndarray): Initial series of shape (1000, 3).</span>
+<span class="sd">        N (int): Number of iterations to generate.</span>
+<span class="sd">        model_path (str): Path to the pre-trained model file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.ndarray: Generated time series of shape (N, 3).</span>
+<span class="sd">    """</span>
+    <span class="c1"># Load the pre-trained model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>  <span class="c1"># Set the model to evaluation mode</span>
+
+    <span class="c1"># Initialize the time series with the first state</span>
+    <span class="n">generated_series</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">current_state</span> <span class="o">=</span> <span class="n">initial_series</span> <span class="c1">#reshape/slice the initial_series as needed by your model</span>
+
+    <span class="c1"># Generate the time series iteratively</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="c1"># Predict the next state</span>
+            <span class="n">next_state</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">current_state</span><span class="p">)</span>  <span class="c1"># Assuming model outputs shape (1, 3)</span>
+        
+        <span class="c1"># Append to the generated series</span>
+        <span class="n">generated_series</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_state</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+        
+        <span class="c1"># Update the current state</span>
+        <span class="n">current_state</span> <span class="o">=</span> <span class="n">next_state</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">generated_series</span><span class="p">)</span>
+</pre></div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0db7ad30-d97c-4878-8a42-5f95cd8520c4">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Data-Analysis">Data Analysis<a class="anchor-link" href="#Data-Analysis">¶</a></h2>
+<h3 id="Evaluation-of-the-Exercise">Evaluation of the Exercise<a class="anchor-link" href="#Evaluation-of-the-Exercise">¶</a></h3><p>To evaluate your submission, I will use the <strong><code>generate_time_series</code></strong> function with your trained model to generate a new time series. Starting from an initial condition, your model will be tasked with producing a time series of ( N ) iterations that reflects the dynamics of the Rössler system.</p>
+<h4 id="Evaluation-Metrics">Evaluation Metrics<a class="anchor-link" href="#Evaluation-Metrics">¶</a></h4><p>The generated time series will be assessed using the following metrics derived from dynamical systems theory:</p>
+<ol>
+<li><p><strong>Lyapunov Exponent</strong>:</p>
+<ul>
+<li>I will compute the largest Lyapunov exponent from your generated time series and compare it with the theoretical value for the Rössler system.</li>
+</ul>
+</li>
+<li><p><strong>Correlation Dimension</strong>:</p>
+<ul>
+<li>The <strong>correlation dimension</strong> quantifies the fractal structure of the system's attractor. It is calculated based on the scaling of pairwise distances between points in the state space.</li>
+<li>The correlation dimension provides insight into the complexity of the attractor and whether your model captures the chaotic dynamics of the Rössler system.</li>
+</ul>
+</li>
+</ol>
 </div>
 </div>
 </div>

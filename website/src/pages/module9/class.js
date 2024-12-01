@@ -12,6 +12,8 @@ export const timeSeriesContent = `# Deep Learning for Time Series
 8. [State Space Models](#state-space-models)
 9. [Evaluation Metrics](#evaluation-metrics)
 
+
+
 Time series analysis is a critical area of research and application in machine learning, where the goal is to understand, model, and predict temporal data. Deep learning offers a robust toolkit for tackling these problems, enabling the modeling of complex patterns and dependencies over time.
 
 This course provides a comprehensive introduction to deep learning methods for time series, focusing on two major paradigms: **Markovian methods** and **Non-Markovian methods**. Each paradigm is suited to different scenarios depending on the nature of the underlying dynamics and data observability.
@@ -34,10 +36,10 @@ Time series problems can be approached with two primary frameworks:
 Markovian methods assume that the system can be fully described by its current state, such that:
 
 \[
-P(s_{t+1} \mid s_t, s_{t-1}, \ldots, s_0) = P(s_{t+1} \mid s_t)
+P(s_{t+1} \mid s_t, s_{t-1}, \ldots, s_0) = P(s_{t+1} \mid s_t),
 \]
 
-where \(s\_t\) represents the state at time \(t\).
+where \( s_t \) represents the state at time \( t \).
 
 ### When is a Markovian Approach Applicable?
 
@@ -46,7 +48,7 @@ where \(s\_t\) represents the state at time \(t\).
    - Example: Modeling the dynamics of a physical system with full state information, such as position and velocity.
 
 2. **Partial Observability**:
-   - If the system is only partially observed, the observables must meet specific criteria to enable Markovian modeling. This often involves ensuring that the **Gramian of Observability** is non-singular, indicating that the current observable contains sufficient information about the system\'s dynamics.
+   - If the system is only partially observed, the observables must meet specific criteria to enable Markovian modeling. This often involves ensuring that the **Gramian of Observability** is non-singular, indicating that the current observable contains sufficient information about the system's dynamics.
 
 ### Challenges with Markovian Assumptions
 
@@ -57,21 +59,23 @@ where \(s\_t\) represents the state at time \(t\).
 
 ## Non-Markovian Methods
 
-Non-Markovian methods address scenarios where the Markovian assumption fails, either due to partial observability or the presence of long-term dependencies. These methods draw from theories like **Takens\'s Theorem** and the **Mori-Zwanzig Formalism**, which provide tools to reconstruct missing information in partially observed systems.
+Non-Markovian methods address scenarios where the Markovian assumption fails, either due to partial observability or the presence of long-term dependencies. These methods draw from theories like **Takens's Theorem** and the **Mori-Zwanzig Formalism**, which provide tools to reconstruct missing information in partially observed systems.
 
 ### Theoretical Foundations
 
-1. **Takens\'s Theorem**:
+1. **Takens's Theorem**:
    - Provides a framework for reconstructing the dynamics of a system using time-delayed embeddings of observed variables.
-   - If \(x(t)\) is an observable, a state space can be reconstructed as:
-     \[\\mathbf{X}\_t = [x(t), x(t-\\tau), x(t-2\\tau), \\ldots],\]
-     where \(\\tau\) is a time delay.
+   - If \( x(t) \) is an observable, a state space can be reconstructed as:
+     \[
+     \mathbf{X}_t = [x(t), x(t-\tau), x(t-2\tau), \ldots],
+     \]
+     where \( \tau \) is a time delay.
 
 ![taken](/images/taken.png)
 
 2. **The Mori-Zwanzig Formalism**
 
-    The Mori-Zwanzig formalism provides a theoretical framework to describe the dynamics of partially observed systems. It is particularly useful when the system\'s full state \(\\mathbf{s}(t)\) evolves in a high-dimensional space, but only a subset of the variables, the **observables** \(\\mathbf{y}(t)\), is available.
+    The Mori-Zwanzig formalism provides a theoretical framework to describe the dynamics of partially observed systems. It is particularly useful when the system's full state \( \mathbf{s}(t) \) evolves in a high-dimensional space, but only a subset of the variables, the **observables** \( \mathbf{y}(t) \), is available.
 
     The key idea is to project the full dynamics onto the space of observables, separating the contributions of the observed and unobserved components. This separation introduces **memory effects** and noise-like terms that capture the influence of the unobserved dynamics.
 
@@ -79,48 +83,56 @@ Non-Markovian methods address scenarios where the Markovian assumption fails, ei
 
     Consider the full state of the system evolving according to:
 
-    \[\\frac{d\\mathbf{s}(t)}{dt} = \\mathcal{L}\\mathbf{s}(t),\]
+    \[
+    \frac{d\mathbf{s}(t)}{dt} = \mathcal{L}\mathbf{s}(t),
+    \]
 
     where:
-    - \(\\mathbf{s}(t)\) is the state vector of the full system,
-    - \(\\mathcal{L}\) is the generator of the dynamics (e.g., a differential operator or a matrix).
+    - \( \mathbf{s}(t) \) is the state vector of the full system,
+    - \( \mathcal{L} \) is the generator of the dynamics (e.g., a differential operator or a matrix).
 
-    Using a projection operator \(\\mathcal{P}\) that maps the full state space onto the space of observables \(\\mathbf{y}(t) = \\mathcal{P} \\mathbf{s}(t)\), the dynamics can be decomposed as:
+    Using a projection operator \( \mathcal{P} \) that maps the full state space onto the space of observables \( \mathbf{y}(t) = \mathcal{P} \mathbf{s}(t) \), the dynamics can be decomposed as:
 
-    \[\\frac{d\\mathbf{y}(t)}{dt} = \\underbrace{\\mathcal{PL}\\mathbf{y}(t)}\_{\_\_TEXT\_MARKER\_21\_\_} + \\underbrace{\\int\_0^t K(t - \\tau) \\mathbf{y}(\\tau) \\, d\\tau}\_{\_\_TEXT\_MARKER\_32\_\_} + \\underbrace{\\mathcal{Q} \\mathbf{L} e^{t \\mathcal{QL}} \\mathcal{Q}\\mathbf{s}(0)}\_{\_\_TEXT\_MARKER\_18\_\_}.\]
+    \[\frac{d\mathbf{y}(t)}{dt} = \underbrace{\mathcal{PL}\mathbf{y}(t)}_{\text{Markovian term}} + \underbrace{\int_0^t K(t - \tau) \mathbf{y}(\tau) \, d\tau}_{\text{Non-Markovian memory term}} + \underbrace{\mathcal{Q} \mathbf{L} e^{t \mathcal{QL}} \mathcal{Q}\mathbf{s}(0)}_{\text{Source term}}.\]
 
     This equation consists of three terms:
 
     **1. Markovian Term**
-    \[\\mathcal{PL}\\mathbf{y}(t)\]
+    \[
+    \mathcal{PL}\mathbf{y}(t)
+    \]
 
     - **Description**:
-    - This term depends only on the observable \(\\mathbf{y}(t)\) and describes the Markovian dynamics in the observable space.
+    - This term depends only on the observable \( \mathbf{y}(t) \) and describes the Markovian dynamics in the observable space.
     - It represents the part of the dynamics that can be directly explained by the current state of the observed variables, assuming no influence from hidden states or memory.
 
     **2. Non-Markovian Memory Term**
-    \[\\int\_0^t K(t - \\tau) \\mathbf{y}(\\tau) \\, d\\tau\]
+    \[
+    \int_0^t K(t - \tau) \mathbf{y}(\tau) \, d\tau
+    \]
 
     - **Description**:
-    - This term describes how the history of the observable \(\\mathbf{y}(\\tau)\) affects its current dynamics. 
-    - The **memory kernel** \(K(t - \\tau)\) encapsulates the influence of the unobserved dynamics projected onto the observable space.
+    - This term describes how the history of the observable \( \mathbf{y}(\tau) \) affects its current dynamics. 
+    - The **memory kernel** \( K(t - \tau) \) encapsulates the influence of the unobserved dynamics projected onto the observable space.
 
     **3. Source Term**
-    \[\\mathcal{Q} \\mathbf{L} e^{t \\mathcal{QL}} \\mathcal{Q}\\mathbf{s}(0)\]
+    \[
+    \mathcal{Q} \mathbf{L} e^{t \mathcal{QL}} \mathcal{Q}\mathbf{s}(0)
+    \]
 
     - **Description**:
-    - This term represents the residual dynamics within the unobserved space (orthogonal to the observable space), introduced by the projection operator \(\\mathcal{Q} = \\mathcal{I} - \\mathcal{P}\).
+    - This term represents the residual dynamics within the unobserved space (orthogonal to the observable space), introduced by the projection operator \( \mathcal{Q} = \mathcal{I} - \mathcal{P} \).
     - It captures noise-like contributions and stochastic effects resulting from the unobserved dynamics of the initial condition.
 
 **Take home message** : do not use markovian model with time series if you do not know the governing equation generating the time series.
 
 ### Non-Markovian Approaches: Capturing Past Information
 
-In a **non-Markovian approach**, the goal is to recover the necessary information to predict the solution at time \(t\) by looking at the past. This is critical when the system dynamics depend not only on the current state but also on previous states. 
+In a **non-Markovian approach**, the goal is to recover the necessary information to predict the solution at time \( t \) by looking at the past. This is critical when the system dynamics depend not only on the current state but also on previous states. 
 
 The missing past information can be incorporated in several ways:
 1. **Explicitly Adding Past Inputs**:
-   - Include \(N\) past inputs (\(x(t), x(t - \\Delta t), \\ldots, x(t - N \\cdot \\Delta t)\)) as part of the input to predict the solution at \(t + \\Delta t\).
+   - Include \( N \) past inputs (\( x(t), x(t - \Delta t), \ldots, x(t - N \cdot \Delta t) \)) as part of the input to predict the solution at \( t + \Delta t \).
 
 2. **Learning a Convolution Filter**:
    - Use a convolutional filter to aggregate past information over a defined time window, enabling the model to automatically extract relevant temporal features.
@@ -132,20 +144,27 @@ The missing past information can be incorporated in several ways:
 
 1. **Discrete Delay**:
    - The system dynamics depend explicitly on discrete delays:
-     \[\\frac{dx}{dt} = f(x(t), x(t-\\tau), x(t-2\\tau), \\ldots),\]
-     where \(\\tau\) is the delay. This type of model is useful for systems where the influence of the past occurs at specific intervals.
+     \[
+     \frac{dx}{dt} = f(x(t), x(t-\tau), x(t-2\tau), \ldots),
+     \]
+     where \( \tau \) is the delay. This type of model is useful for systems where the influence of the past occurs at specific intervals.
 
 2. **Convolutional Delay**:
    - The system dynamics depend on a continuous convolution of past states:
-     \[\\frac{dx}{dt} = f\\left(x(t), \\int\_{-\\infty}^0 x(t + \\tau) e^{\\lambda \\tau} \\, d\\tau\\right),\]
-     where the term \(e^{\\lambda \\tau}\) is a weighting function that determines how past states contribute to the current dynamics.
+     \[
+     \frac{dx}{dt} = f\left(x(t), \int_{-\infty}^0 x(t + \tau) e^{\lambda \tau} \, d\tau\right),
+     \]
+     where the term \( e^{\lambda \tau} \) is a weighting function that determines how past states contribute to the current dynamics.
 
 3. **Augmented ODE**:
-   - The dynamics are augmented by introducing an auxiliary state \(y\) to store delayed information:
-     \[\\frac{dx}{dt} = f(x, y), \\quad \\frac{dy}{dt} = x - \\lambda y.\]
-     Here, \(y\) serves as a memory term that smooths and integrates past information.
+   - The dynamics are augmented by introducing an auxiliary state \( y \) to store delayed information:
+     \[
+     \frac{dx}{dt} = f(x, y), \quad \frac{dy}{dt} = x - \lambda y.
+     \]
+     Here, \( y \) serves as a memory term that smooths and integrates past information.
 
 These approaches illustrate how non-Markovian models aim to reconstruct and leverage the hidden structure of past information, enabling them to handle systems with memory effects, delays, or long-term dependencies effectively.
+
 
 ### Non-Markovian Deep Learning Models
 
@@ -168,8 +187,10 @@ These approaches illustrate how non-Markovian models aim to reconstruct and leve
 
 5. **State Space Models** (convolution and memory based):
    - Represent systems as a combination of state and observation equations:
-     \[s\_{t+1} = f(s\_t, u\_t), \\quad y\_t = g(s\_t) + \\epsilon,\]
-     where \(s\_t\) is the state, \(u\_t\) is the input, and \(y\_t\) is the observation.
+     \[
+     s_{t+1} = f(s_t, u_t), \quad y_t = g(s_t) + \epsilon,
+     \]
+     where \( s_t \) is the state, \( u_t \) is the input, and \( y_t \) is the observation.
    - Neural extensions of state space models integrate deep learning to enhance flexibility and scalability.
 
 The models discussed earlier represent some of the most popular and effective architectures for time series analysis. However, these are not the only models available. Many other models exist, often tailored to specific applications such as rare event prediction, long-horizon forecasting, or probabilistic predictions. For instance:
@@ -187,14 +208,14 @@ WaveNet is a deep learning architecture initially designed for audio generation,
 ### Core Idea
 
 The primary goal of WaveNet is to model temporal dependencies across different scales by employing a stack of **causal dilated convolutions**. These convolutions:
-- Ensure that predictions for a given time step \(t\) depend only on past inputs (\(t-k, t-k-1, \\dots\)), preserving the causality of the time series.
+- Ensure that predictions for a given time step \( t \) depend only on past inputs (\( t-k, t-k-1, \dots \)), preserving the causality of the time series.
 - Expand the receptive field of the model exponentially with depth, allowing it to capture both short-term and long-term dependencies efficiently.
 
 The model can be summarized as follows:
 1. **Input Representation**:
    - The time series is passed through causal convolution layers where each layer is responsible for capturing dependencies over a specific scale.
 2. **Dilations**:
-   - Each convolution layer uses a dilation factor \(d\), which determines the spacing between the input elements the kernel operates on. 
+   - Each convolution layer uses a dilation factor \( d \), which determines the spacing between the input elements the kernel operates on. 
 3. **Stacking**:
    - By stacking dilated convolutions with exponentially increasing dilation factors, WaveNet achieves a large receptive field without a significant increase in computational cost.
 
@@ -203,37 +224,41 @@ The model can be summarized as follows:
 ### Motivation for Multi-Scale Convolutions
 
 1. **Causality**:
-   - In time series, future predictions should not depend on future inputs. Causal convolutions enforce this constraint naturally by ensuring that the output at time \(t\) depends only on inputs up to time \(t\).
+   - In time series, future predictions should not depend on future inputs. Causal convolutions enforce this constraint naturally by ensuring that the output at time \( t \) depends only on inputs up to time \( t \).
 
 2. **Efficient Long-Term Dependency Modeling**:
    - Sequential models like RNNs often struggle with capturing long-term dependencies due to vanishing gradients and sequential processing.
-   - WaveNet\'s dilated convolutions allow the model to capture dependencies across multiple scales (short-term to long-term) in a computationally efficient manner.
+   - WaveNet's dilated convolutions allow the model to capture dependencies across multiple scales (short-term to long-term) in a computationally efficient manner.
 
 3. **Exponential Growth of Receptive Field**:
-   - Stacking \(L\) convolutional layers with dilation factors doubling at each layer results in a receptive field of size:
-     \[\_\_TEXT\_MARKER\_22\_\_ = 2^L - 1.\]
-     For example, with \(L=10\) layers, the receptive field covers 1023 time steps.
+   - Stacking \( L \) convolutional layers with dilation factors doubling at each layer results in a receptive field of size:
+     \[
+     \text{Receptive Field} = 2^L - 1.
+     \]
+     For example, with \( L=10 \) layers, the receptive field covers 1023 time steps.
 
 4. **Parallelizability**:
-   - Unlike RNNs, which process data sequentially, WaveNet\'s convolutional structure allows parallel processing across all time steps, leading to significant computational speedups during training.
+   - Unlike RNNs, which process data sequentially, WaveNet's convolutional structure allows parallel processing across all time steps, leading to significant computational speedups during training.
 
 ### Mathematical Formulation
 
-Let \(x\_t\) denote the input at time \(t\), and \(h^{(l)}\_t\) be the output of the \(l\)-th convolutional layer at time \(t\). The dilated convolution operation can be expressed as:
+Let \( x_t \) denote the input at time \( t \), and \( h^{(l)}_t \) be the output of the \( l \)-th convolutional layer at time \( t \). The dilated convolution operation can be expressed as:
 
-\[h^{(l)}\_t = \\sum\_{i=0}^{k-1} w^{(l)}\_i \\cdot h^{(l-1)}\_{t - i \\cdot d^{(l)}},\]
+\[
+h^{(l)}_t = \sum_{i=0}^{k-1} w^{(l)}_i \cdot h^{(l-1)}_{t - i \cdot d^{(l)}},
+\]
 
 where:
-- \(w^{(l)}\_i\): Filter weights for the \(l\)-th layer.
-- \(k\): Kernel size.
-- \(d^{(l)}\): Dilation factor for the \(l\)-th layer.
-- \(h^{(l-1)}\_{t - i \\cdot d^{(l)}}\): Input to the \(l\)-th layer from the previous layer at time \(t - i \\cdot d^{(l)}\).
+- \( w^{(l)}_i \): Filter weights for the \( l \)-th layer.
+- \( k \): Kernel size.
+- \( d^{(l)} \): Dilation factor for the \( l \)-th layer.
+- \( h^{(l-1)}_{t - i \cdot d^{(l)}} \): Input to the \( l \)-th layer from the previous layer at time \( t - i \cdot d^{(l)} \).
 
-By varying \(d^{(l)}\), the model captures dependencies across different temporal scales.
+By varying \( d^{(l)} \), the model captures dependencies across different temporal scales.
 
 ### Wavenet code snippets 
 
-\`\`\`python 
+```python 
 import torch
 import torch.nn as nn
 
@@ -310,14 +335,14 @@ if __name__ == "__main__":
     # Forward pass
     output = model(dummy_input)
 
-\`\`\`
+```
 
 Diagram of the wavenet layer
 
-\`\`\`
+```
 Input --> Causal Conv --> Dilated Conv --> Gated Activation --> Residual Conv --> [Residual Connection]
                                  |--> Skip Conv --> [Skip Connection]
-\`\`\`
+```
 
 #### Advantages of WaveNet
 
@@ -328,28 +353,33 @@ Input --> Causal Conv --> Dilated Conv --> Gated Activation --> Residual Conv --
 3. **Causal Structure**:
    - Ensures that predictions respect the temporal order of the data.
 
+
 ## Recurrent Neural Networks
 
 Recurrent Neural Networks (RNNs) are a foundational deep learning architecture for modeling sequential data, including time series. They are designed to process data step-by-step while maintaining an internal state that evolves over time, making them suitable for capturing temporal dependencies.
 
 #### Core Idea
 
-The central idea of RNNs is the concept of **memory**, which allows the network to retain information about previous inputs. At each time step \(t\), the network takes an input \(x\_t\), updates its hidden state \(h\_t\), and produces an output \(y\_t\). The hidden state \(h\_t\) serves as a form of memory, summarizing the information from all prior time steps. This process can be expressed as:
+The central idea of RNNs is the concept of **memory**, which allows the network to retain information about previous inputs. At each time step \( t \), the network takes an input \( x_t \), updates its hidden state \( h_t \), and produces an output \( y_t \). The hidden state \( h_t \) serves as a form of memory, summarizing the information from all prior time steps. This process can be expressed as:
 
-\[h\_t = f(W\_h h\_{t-1} + W\_x x\_t + b\_h),\]
-\[y\_t = g(W\_y h\_t + b\_y),\]
+\[
+h_t = f(W_h h_{t-1} + W_x x_t + b_h),
+\]
+\[
+y_t = g(W_y h_t + b_y),
+\]
 
 where:
-- \(W\_h, W\_x, W\_y\): Weight matrices,
-- \(b\_h, b\_y\): Bias terms,
-- \(f\): Non-linear activation function (e.g., \(\\tanh\) or \(\\text{ReLU}\)),
-- \(g\): Output activation function (e.g., softmax for classification).
+- \( W_h, W_x, W_y \): Weight matrices,
+- \( b_h, b_y \): Bias terms,
+- \( f \): Non-linear activation function (e.g., \( \tanh \) or \( \text{ReLU} \)),
+- \( g \): Output activation function (e.g., softmax for classification).
 
 ![rnn](/images/rnn.png)
 
 #### Memory in RNNs
 
-The hidden state \(h\_t\) acts as a memory that is updated at each time step. This enables RNNs to model dependencies in sequences, but the quality of memory depends on the ability to propagate gradients through time during training.
+The hidden state \( h_t \) acts as a memory that is updated at each time step. This enables RNNs to model dependencies in sequences, but the quality of memory depends on the ability to propagate gradients through time during training.
 
 ---
 
@@ -357,19 +387,24 @@ The hidden state \(h\_t\) acts as a memory that is updated at each time step. Th
 
 Backpropagation Through Time (BPTT) is an extension of the backpropagation algorithm, specifically designed for training recurrent neural networks (RNNs). RNNs process sequential data by maintaining a hidden state that evolves over time, which introduces dependencies between parameters at different time steps. BPTT handles this temporal dependency by unrolling the network across time steps and applying backpropagation to compute gradients.
 
+
 #### How BPTT Works
 
 1. **Unrolling the RNN**:
-   - The RNN is unrolled across a sequence of \(T\) time steps, creating a computational graph where each layer corresponds to the RNN\'s operations at a specific time step.
-   - The parameters \(W\_h, W\_x, W\_y\) are shared across all time steps, reflecting the recurrent nature of the model.
+   - The RNN is unrolled across a sequence of \( T \) time steps, creating a computational graph where each layer corresponds to the RNN's operations at a specific time step.
+   - The parameters \( W_h, W_x, W_y \) are shared across all time steps, reflecting the recurrent nature of the model.
 
 2. **Forward Pass**:
-   - Compute the outputs and hidden states for each time step, starting from the initial state \(h\_0\):
-     \[h\_t = f(W\_h h\_{t-1} + W\_x x\_t + b\_h), \\quad y\_t = g(W\_y h\_t + b\_y).\]
+   - Compute the outputs and hidden states for each time step, starting from the initial state \( h_0 \):
+     \[
+     h_t = f(W_h h_{t-1} + W_x x_t + b_h), \quad y_t = g(W_y h_t + b_y).
+     \]
 
 3. **Backward Pass**:
-   - Compute the gradients of the loss with respect to the parameters by backpropagating errors through the unrolled network. The gradient of the loss \(\\mathcal{L}\) with respect to the hidden state at time \(t\) is:
-     \[\\frac{\\partial \\mathcal{L}}{\\partial h\_t} = \\frac{\\partial \\mathcal{L}}{\\partial y\_t} \\frac{\\partial y\_t}{\\partial h\_t} + \\frac{\\partial \\mathcal{L}}{\\partial h\_{t+1}} \\frac{\\partial h\_{t+1}}{\\partial h\_t}.\]
+   - Compute the gradients of the loss with respect to the parameters by backpropagating errors through the unrolled network. The gradient of the loss \( \mathcal{L} \) with respect to the hidden state at time \( t \) is:
+     \[
+     \frac{\partial \mathcal{L}}{\partial h_t} = \frac{\partial \mathcal{L}}{\partial y_t} \frac{\partial y_t}{\partial h_t} + \frac{\partial \mathcal{L}}{\partial h_{t+1}} \frac{\partial h_{t+1}}{\partial h_t}.
+     \]
 
 4. **Gradient Accumulation**:
    - The temporal dependencies result in gradients that accumulate over time. This makes the training process computationally intensive, especially for long sequences.
@@ -407,38 +442,52 @@ To address the computational inefficiency of full BPTT, **truncated BPTT** is co
 3. **Short-Term Memory**:
    - Due to vanishing gradients, vanilla RNNs are primarily limited to capturing short-term dependencies.
 
+
 ### Long Short-Term Memory (LSTM)
 
 To address the limitations of vanilla RNNs, **Long Short-Term Memory (LSTM)** networks were introduced. LSTMs enhance the memory capability of RNNs by introducing a more sophisticated structure for controlling information flow. The key innovation is the **cell state**, which acts as a long-term memory and is explicitly designed to mitigate vanishing gradients.
 
+
 ##### LSTM Architecture
 
-At each time step \(t\), an LSTM has three gates (input, forget, output) and a cell state \(C\_t\), which is updated as follows:
+At each time step \( t \), an LSTM has three gates (input, forget, output) and a cell state \( C_t \), which is updated as follows:
 
 1. **Forget Gate**:
    - Determines what information to discard from the previous cell state:
-     \[f\_t = \\sigma(W\_f [h\_{t-1}, x\_t] + b\_f),\]
-     where \(\\sigma\) is the sigmoid activation.
+     \[
+     f_t = \sigma(W_f [h_{t-1}, x_t] + b_f),
+     \]
+     where \( \sigma \) is the sigmoid activation.
 
 2. **Input Gate**:
    - Determines what new information to add to the cell state:
-     \[i\_t = \\sigma(W\_i [h\_{t-1}, x\_t] + b\_i),\]
-     \[\\tilde{C}\_t = \\tanh(W\_C [h\_{t-1}, x\_t] + b\_C),\]
-     \[C\_t = f\_t \\odot C\_{t-1} + i\_t \\odot \\tilde{C}\_t,\]
-     where \(\\odot\) denotes element-wise multiplication.
+     \[
+     i_t = \sigma(W_i [h_{t-1}, x_t] + b_i),
+     \]
+     \[
+     \tilde{C}_t = \tanh(W_C [h_{t-1}, x_t] + b_C),
+     \]
+     \[
+     C_t = f_t \odot C_{t-1} + i_t \odot \tilde{C}_t,
+     \]
+     where \( \odot \) denotes element-wise multiplication.
 
 3. **Output Gate**:
    - Determines what information to output from the cell state:
-     \[o\_t = \\sigma(W\_o [h\_{t-1}, x\_t] + b\_o),\]
-     \[h\_t = o\_t \\odot \\tanh(C\_t).\]
+     \[
+     o_t = \sigma(W_o [h_{t-1}, x_t] + b_o),
+     \]
+     \[
+     h_t = o_t \odot \tanh(C_t).
+     \]
 
-By separating the cell state \(C\_t\) from the hidden state \(h\_t\), LSTMs enable gradients to flow more effectively through time, thereby addressing the vanishing gradient problem.
+By separating the cell state \( C_t \) from the hidden state \( h_t \), LSTMs enable gradients to flow more effectively through time, thereby addressing the vanishing gradient problem.
 
 ![lstm](/images/lstm.png)
 
 ### LSTM snippet code
 
-\`\`\`python 
+```python 
 import torch
 import torch.nn as nn
 
@@ -484,21 +533,30 @@ if __name__ == "__main__":
     # Forward pass
     output = model(x)
 
-\`\`\`
+```
+
 
 ### Gated Recurrent Units (GRU)
 
 **Gated Recurrent Units (GRUs)** are a simplified variant of LSTMs that retain much of their effectiveness while reducing computational complexity. GRUs merge the forget and input gates into a single **update gate** and simplify the cell state management.
 
 1. **Update Gate**:
-   \[z\_t = \\sigma(W\_z [h\_{t-1}, x\_t] + b\_z).\]
+   \[
+   z_t = \sigma(W_z [h_{t-1}, x_t] + b_z).
+   \]
 
 2. **Reset Gate**:
-   \[r\_t = \\sigma(W\_r [h\_{t-1}, x\_t] + b\_r).\]
+   \[
+   r_t = \sigma(W_r [h_{t-1}, x_t] + b_r).
+   \]
 
 3. **Hidden State Update**:
-   \[\\tilde{h}\_t = \\tanh(W\_h [r\_t \\odot h\_{t-1}, x\_t] + b\_h),\]
-   \[h\_t = (1 - z\_t) \\odot h\_{t-1} + z\_t \\odot \\tilde{h}\_t.\]
+   \[
+   \tilde{h}_t = \tanh(W_h [r_t \odot h_{t-1}, x_t] + b_h),
+   \]
+   \[
+   h_t = (1 - z_t) \odot h_{t-1} + z_t \odot \tilde{h}_t.
+   \]
 
 GRUs are computationally more efficient than LSTMs, making them a popular choice for time series tasks with limited resources.
 
@@ -524,100 +582,134 @@ Both LSTMs and GRUs have become standard tools in deep learning for time series 
 
 Latent Neural Ordinary Differential Equations (Latent Neural ODEs) extend the concept of Neural ODEs to model continuous-time dynamics in latent spaces. This allows for powerful representations of sequential data, particularly when the observed dynamics are complex or partially observable.
 
+
 ### Neural ODEs and the Augmented Lagrangian
 
-In Neural ODEs, the dynamics of the state \(h(t)\) are described by:
+In Neural ODEs, the dynamics of the state \( h(t) \) are described by:
 
-\[\\frac{dh(t)}{dt} = f\_\\theta(h(t), t),\]
+\[
+\frac{dh(t)}{dt} = f_\theta(h(t), t),
+\]
 
-where \(f\_\\theta\) is a neural network parameterized by \(\\theta\). To compute gradients efficiently during training, we use the **augmented Lagrangian** formulation to derive the equations governing the forward and adjoint dynamics.
+where \( f_\theta \) is a neural network parameterized by \( \theta \). To compute gradients efficiently during training, we use the **augmented Lagrangian** formulation to derive the equations governing the forward and adjoint dynamics.
 
 #### Augmented Lagrangian
 
-The augmented Lagrangian \(\\mathcal{L}\) is defined as:
+The augmented Lagrangian \( \mathcal{L} \) is defined as:
 
-\[\\mathcal{L} = J(h(T)) + \\int\_0^T a^T \\left( \\frac{dh}{dt} - f\_\\theta(h(t), t) \\right) dt,\]
+\[
+\mathcal{L} = J(h(T)) + \int_0^T a^T \left( \frac{dh}{dt} - f_\theta(h(t), t) \right) dt,
+\]
 
 where:
-- \(J(h(T))\): Loss function evaluated at the final time \(T\),
-- \(a(t)\): Adjoint variable (Lagrange multiplier) enforcing the ODE constraint \(\\frac{dh}{dt} = f\_\\theta(h(t), t)\).
+- \( J(h(T)) \): Loss function evaluated at the final time \( T \),
+- \( a(t) \): Adjoint variable (Lagrange multiplier) enforcing the ODE constraint \( \frac{dh}{dt} = f_\theta(h(t), t) \).
 
 #### Derivation of the Forward Equation
 
-To derive the **forward dynamics**, we take the variation of \(\\mathcal{L}\) with respect to the adjoint variable \(a(t)\):
+To derive the **forward dynamics**, we take the variation of \( \mathcal{L} \) with respect to the adjoint variable \( a(t) \):
 
-\[\\frac{\\delta \\mathcal{L}}{\\delta a} = \\frac{dh}{dt} - f\_\\theta(h(t), t).\]
+\[
+\frac{\delta \mathcal{L}}{\delta a} = \frac{dh}{dt} - f_\theta(h(t), t).
+\]
 
 Setting this to zero yields the **forward equation**:
 
-\[\\frac{dh}{dt} = f\_\\theta(h(t), t).\]
+\[
+\frac{dh}{dt} = f_\theta(h(t), t).
+\]
 
-This is the original Neural ODE governing the evolution of \(h(t)\).
+This is the original Neural ODE governing the evolution of \( h(t) \).
+
 
 #### Derivation of the Adjoint Equation
 
-Next, we derive the **adjoint dynamics** by taking the variation of \(\\mathcal{L}\) with respect to \(h(t)\). Using the augmented Lagrangian:
+Next, we derive the **adjoint dynamics** by taking the variation of \( \mathcal{L} \) with respect to \( h(t) \). Using the augmented Lagrangian:
 
-\[\\frac{\\delta \\mathcal{L}}{\\delta h} = \\int\_0^T \\frac{\\partial}{\\partial h} \\left[ a^T \\left( \\frac{dh}{dt} - f\_\\theta(h(t), t) \\right) \\right] dt.\]
+\[
+\frac{\delta \mathcal{L}}{\delta h} = \int_0^T \frac{\partial}{\partial h} \left[ a^T \left( \frac{dh}{dt} - f_\theta(h(t), t) \right) \right] dt.
+\]
 
 Breaking this down step-by-step:
 
 1. **Separate terms**:
-   \[\\frac{\\delta \\mathcal{L}}{\\delta h} = \\int\_0^T \\frac{\\partial}{\\partial h} \\left[ a^T \\frac{dh}{dt} \\right] dt - \\int\_0^T a^T \\frac{\\partial f\_\\theta(h(t), t)}{\\partial h} dt.\]
+   \[
+   \frac{\delta \mathcal{L}}{\delta h} = \int_0^T \frac{\partial}{\partial h} \left[ a^T \frac{dh}{dt} \right] dt - \int_0^T a^T \frac{\partial f_\theta(h(t), t)}{\partial h} dt.
+   \]
 
 2. **First term integration by parts**:
-   \[\\int\_0^T \\frac{\\partial}{\\partial h} \\left[ a^T \\frac{dh}{dt} \\right] dt = \\int\_0^T -\\frac{d a^T}{dt} \\, dt + \\frac{\\partial}{\\partial h(t)}\\left[ a^T h \\right]\_0^T.\]
+   \[
+   \int_0^T \frac{\partial}{\partial h} \left[ a^T \frac{dh}{dt} \right] dt = \int_0^T -\frac{d a^T}{dt} \, dt + \frac{\partial}{\partial h(t)}\left[ a^T h \right]_0^T.
+   \]
 
-   The boundary term \([a^T h]\_0^T\) adds a compatibility condition to the final state, and the remaining term contributes to the adjoint equation.
+   The boundary term \( [a^T h]_0^T \) adds a compatibility condition to the final state, and the remaining term contributes to the adjoint equation.
 
 3. **Combine terms**:
    Substituting back:
-   \[\\frac{\\delta \\mathcal{L}}{\\delta h} = \\int\_0^T \\left[ -\\frac{d a^T}{dt} h \\right] dt - \\int\_0^T a^T \\frac{\\partial f\_\\theta(h(t), t)}{\\partial h} dt.\]
+   \[
+   \frac{\delta \mathcal{L}}{\delta h} = \int_0^T \left[ -\frac{d a^T}{dt} h \right] dt - \int_0^T a^T \frac{\partial f_\theta(h(t), t)}{\partial h} dt.
+   \]
 
 From this, we derive the **adjoint equation**:
 
-\[\\frac{d a(t)}{dt} = -a^T \\frac{\\partial f\_\\theta(h(t), t)}{\\partial h}.\]
+\[
+\frac{d a(t)}{dt} = -a^T \frac{\partial f_\theta(h(t), t)}{\partial h}.
+\]
 
 #### Boundary Conditions and Compatibility
 
-To solve the adjoint equation, we also need the **boundary condition** for \(a(T)\), which is derived from the terminal loss \(J(h(T))\):
+To solve the adjoint equation, we also need the **boundary condition** for \( a(T) \), which is derived from the terminal loss \( J(h(T)) \):
 
-\[a(T) = \\frac{\\partial J(h(T))}{\\partial h}.\]
+\[
+a(T) = \frac{\partial J(h(T))}{\partial h}.
+\]
 
 This boundary condition ensures that the adjoint equation integrates backward in time correctly.
 
 #### Summary of Dynamics
 
 1. **Forward Equation** (integrate forward in time):
-   \[\\frac{dh}{dt} = f\_\\theta(h(t), t).\]
+   \[
+   \frac{dh}{dt} = f_\theta(h(t), t).
+   \]
 
 2. **Adjoint Equation** (integrate backward in time):
-   \[\\frac{d a(t)}{dt} = -a^T \\frac{\\partial f\_\\theta(h(t), t)}{\\partial h}.\]
+   \[
+   \frac{d a(t)}{dt} = -a^T \frac{\partial f_\theta(h(t), t)}{\partial h}.
+   \]
 
 3. **Boundary Condition for Adjoint**:
-   \[a(T) = \\frac{\\partial J(h(T))}{\\partial h}.\]
+   \[
+   a(T) = \frac{\partial J(h(T))}{\partial h}.
+   \]
 
 4. **Gradient with Respect to Parameters**:
-   Finally, the gradient of the loss with respect to the parameters \(\\theta\) is given by:
-   \[\\frac{d\\mathcal{L}}{d\\theta} = \\int\_0^T a(t) \\frac{\\partial f\_\\theta(h(t), t)}{\\partial \\theta} dt.\]
+   Finally, the gradient of the loss with respect to the parameters \( \theta \) is given by:
+   \[
+   \frac{d\mathcal{L}}{d\theta} = \int_0^T a(t) \frac{\partial f_\theta(h(t), t)}{\partial \theta} dt.
+   \]
 
 #### Latent Neural ODE (Latent ODE)
 
-Latent Neural ODEs (Latent ODEs) extend Neural ODEs by evolving a **latent state** instead of the observed state. This is particularly useful for partially observed systems, irregularly sampled data, or systems with hidden dynamics. The latent state \(z(t)\) evolves continuously in time, and the observations \(x(t)\) are reconstructed from the latent dynamics.
+Latent Neural ODEs (Latent ODEs) extend Neural ODEs by evolving a **latent state** instead of the observed state. This is particularly useful for partially observed systems, irregularly sampled data, or systems with hidden dynamics. The latent state \( z(t) \) evolves continuously in time, and the observations \( x(t) \) are reconstructed from the latent dynamics.
 
 ##### Workflow of a Latent ODE
 
 1. **Latent State Initialization**:
-   - The initial latent state \(z\_0\) must be inferred from the data points \(\\{x\_i, t\_i\\}\_{i=1}^N\) and their timestamps.
-   - An **ODE-RNN Encoder** is used to estimate \(z\_0\) in a way that captures temporal dependencies and irregular sampling.
+   - The initial latent state \( z_0 \) must be inferred from the data points \( \{x_i, t_i\}_{i=1}^N \) and their timestamps.
+   - An **ODE-RNN Encoder** is used to estimate \( z_0 \) in a way that captures temporal dependencies and irregular sampling.
 
 2. **Latent State Evolution**:
-   - Starting from \(z\_0\), the latent state evolves continuously over time using an ODE defined by a neural network \(f\_\\theta\):
-     \[\\frac{dz(t)}{dt} = f\_\\theta(z(t), t).\]
+   - Starting from \( z_0 \), the latent state evolves continuously over time using an ODE defined by a neural network \( f_\theta \):
+     \[
+     \frac{dz(t)}{dt} = f_\theta(z(t), t).
+     \]
 
 3. **Reconstruction**:
-   - At each timestamp \(t\_i\), the latent state \(z(t\_i)\) is decoded into the observation space via a neural network \(\\text{DecoderNN}\):
-     \[x(t\_i) \\approx \_\_TEXT\_MARKER\_16\_\_(z(t\_i)).\]
+   - At each timestamp \( t_i \), the latent state \( z(t_i) \) is decoded into the observation space via a neural network \( \text{DecoderNN} \):
+     \[
+     x(t_i) \approx \text{DecoderNN}(z(t_i)).
+     \]
 
 #### ODE-RNN Encoder
 
@@ -625,48 +717,60 @@ The ODE-RNN Encoder is designed to handle irregularly sampled data points and th
 
 ##### Structure of ODE-RNN Encoder:
 1. **Input**:
-   - Observed data points \(\\{x\_i\\}\_{i=1}^N\) and their timestamps \(\\{t\_i\\}\_{i=1}^N\).
+   - Observed data points \( \{x_i\}_{i=1}^N \) and their timestamps \( \{t_i\}_{i=1}^N \).
 
 2. **Initialization**:
-   - Start with an initial hidden state \(h\_0 = 0\).
+   - Start with an initial hidden state \( h_0 = 0 \).
 
 3. **Iterative Updates**:
-   - For each data point \((x\_i, t\_i)\), perform the following steps:
+   - For each data point \( (x_i, t_i) \), perform the following steps:
      1. **Continuous Evolution**:
-        - Use an ODE solver to evolve the hidden state from \(t\_{i-1}\) to \(t\_i\):
-          \[h\_i\' = \_\_TEXT\_MARKER\_15\_\_(f\_\\theta, h\_{i-1}, (t\_{i-1}, t\_i)).\]
+        - Use an ODE solver to evolve the hidden state from \( t_{i-1} \) to \( t_i \):
+          \[
+          h_i' = \text{ODESolve}(f_\theta, h_{i-1}, (t_{i-1}, t_i)).
+          \]
      2. **Discrete Update**:
-        - Update the hidden state using the current observation \(x\_i\):
-          \[h\_i = \_\_TEXT\_MARKER\_14\_\_(h\_i\', x\_i).\]
+        - Update the hidden state using the current observation \( x_i \):
+          \[
+          h_i = \text{RNNCell}(h_i', x_i).
+          \]
      3. **Output**:
-        - Optionally, compute an output \(o\_i = \\text{OutputNN}(h\_i)\).
+        - Optionally, compute an output \( o_i = \text{OutputNN}(h_i) \).
 
 4. **Return**:
-   - The final hidden state \(h\_N\) is used to estimate a posterior Gaussian distribution \(p(z\_0 \\mid x\_1, x\_2, \\ldots, x\_N)\) for the initial latent state \(z\_0\).
+   - The final hidden state \( h_N \) is used to estimate a posterior Gaussian distribution \( p(z_0 \mid x_1, x_2, \ldots, x_N) \) for the initial latent state \( z_0 \).
 
-#### Variational Posterior for \(z\_0\)
 
-The ODE-RNN Encoder runs **backward in time** from \(t\_N\) to \(t\_0\), constructing a posterior Gaussian distribution \(p(z\_0 \\mid x\_1, x\_2, \\ldots, x\_N)\), parameterized by:
-- Mean \(\\mu(z\_0)\),
-- Variance \(\\sigma^2(z\_0)\).
+#### Variational Posterior for \( z_0 \)
 
-Using the **reparameterization trick**, a sample of \(z\_0\) is drawn as:
-\[z\_0 = \\mu(z\_0) + \\sigma(z\_0) \\odot \\epsilon, \\quad \\epsilon \\sim \\mathcal{N}(0, I).\]
+The ODE-RNN Encoder runs **backward in time** from \( t_N \) to \( t_0 \), constructing a posterior Gaussian distribution \( p(z_0 \mid x_1, x_2, \ldots, x_N) \), parameterized by:
+- Mean \( \mu(z_0) \),
+- Variance \( \sigma^2(z_0) \).
+
+Using the **reparameterization trick**, a sample of \( z_0 \) is drawn as:
+\[
+z_0 = \mu(z_0) + \sigma(z_0) \odot \epsilon, \quad \epsilon \sim \mathcal{N}(0, I).
+\]
+
 
 #### Latent Dynamics with Neural ODE
 
-Once \(z\_0\) is sampled, the latent state evolves forward in time using a Neural ODE:
+Once \( z_0 \) is sampled, the latent state evolves forward in time using a Neural ODE:
 
-\[z(t) = z\_0 + \\int\_{0}^{t} f\_\\theta(z(\\tau), \\tau) \\, d\\tau.\]
+\[
+z(t) = z_0 + \int_{0}^{t} f_\theta(z(\tau), \tau) \, d\tau.
+\]
 
-At each timestamp \(t\_i\), the latent state \(z(t\_i)\) is passed through a decoder network to produce the corresponding observation \(x\_i\):
-\[x\_i \\approx \_\_TEXT\_MARKER\_16\_\_(z(t\_i)).\]
+At each timestamp \( t_i \), the latent state \( z(t_i) \) is passed through a decoder network to produce the corresponding observation \( x_i \):
+\[
+x_i \approx \text{DecoderNN}(z(t_i)).
+\]
 
 ![latentODE](/images/LatentODE.png)
 
 #### NeuralODE snippet code 
 
-\`\`\`python
+```python
 import torch
 import torch.nn as nn
 from torchdyn.core import NeuralODE
@@ -689,7 +793,7 @@ class SimpleDynamics(nn.Module):
 
 # Create a Neural ODE instance with the dynamics
 vector_field = SimpleDynamics()
-neural_ode = NeuralODE(vector_field, solver=\'rk4\', sensitivity=\'autograd\')
+neural_ode = NeuralODE(vector_field, solver='rk4', sensitivity='autograd')
 
 # Generate toy data
 dataset = ToyDataset()
@@ -716,7 +820,7 @@ for epoch in range(epochs):
     
     if epoch % 10 == 0:
         print(f"Epoch {epoch}: Loss = {loss.item():.4f}")
-\`\`\`
+```
 ---
 
 ## Transformers
@@ -737,16 +841,19 @@ For example, in translation tasks:
 
 The transformer consists of several key components, which are explained below.
 
+
 #### 1. **Positional Encoding**
 
 Unlike RNNs or CNNs, transformers do not have a natural notion of order in sequences. To encode the order of elements in a sequence, a **positional encoding** is added to the input embeddings.
 
 The positional encoding is defined as:
-\[PE\_{(pos, 2i)} = \\sin\\left(\\frac{pos}{10000^{2i/d}}\\right), \\quad PE\_{(pos, 2i+1)} = \\cos\\left(\\frac{pos}{10000^{2i/d}}\\right),\]
+\[
+PE_{(pos, 2i)} = \sin\left(\frac{pos}{10000^{2i/d}}\right), \quad PE_{(pos, 2i+1)} = \cos\left(\frac{pos}{10000^{2i/d}}\right),
+\]
 where:
-- \(pos\): Position in the sequence.
-- \(i\): Dimension index.
-- \(d\): Embedding dimension.
+- \( pos \): Position in the sequence.
+- \( i \): Dimension index.
+- \( d \): Embedding dimension.
 
 This adds unique positional information to each input token, enabling the transformer to distinguish their order.
 
@@ -764,22 +871,26 @@ Each input token is mapped to three vectors:
 - **Value (V)**: The information content of the token.
 
 These are computed using learned linear transformations:
-\[Q = XW\_Q, \\quad K = XW\_K, \\quad V = XW\_V,\]
-where \(X\) is the input sequence and \(W\_Q, W\_K, W\_V\) are learnable weight matrices.
+\[
+Q = XW_Q, \quad K = XW_K, \quad V = XW_V,
+\]
+where \( X \) is the input sequence and \( W_Q, W_K, W_V \) are learnable weight matrices.
 
 ##### Attention Scores
 
 The relevance between tokens is computed as:
-\[\_\_TEXT\_MARKER\_16\_\_(Q, K, V) = \_\_TEXT\_MARKER\_14\_\_\\left(\\frac{QK^T}{\\sqrt{d\_k}}\\right)V,\]
+\[
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V,
+\]
 where:
-- \(QK^T\): Computes the similarity between queries and keys.
-- \(\\sqrt{d\_k}\): Rescales the dot product to prevent large gradients as \(d\_k\) grows.
+- \( QK^T \): Computes the similarity between queries and keys.
+- \( \sqrt{d_k} \): Rescales the dot product to prevent large gradients as \( d_k \) grows.
 - **Softmax**: Converts raw scores into a probability distribution, emphasizing the most relevant tokens.
 
 ##### Effect of Softmax and Rescaling
 
-- The **softmax** ensures that attention weights are normalized, focusing the model\'s attention on the most relevant tokens.
-- The rescaling by \(\\sqrt{d\_k}\) prevents overly large dot products when the embedding dimension \(d\_k\) is large, stabilizing training.
+- The **softmax** ensures that attention weights are normalized, focusing the model's attention on the most relevant tokens.
+- The rescaling by \( \sqrt{d_k} \) prevents overly large dot products when the embedding dimension \( d_k \) is large, stabilizing training.
 
 ![sdp](/images/scaled-dot-product.png)
 
@@ -788,22 +899,30 @@ where:
 Instead of computing attention once, transformers use **multi-head attention** to capture different aspects of relationships between tokens.
 
 Each head independently computes:
-\[\_\_TEXT\_MARKER\_11\_\_\_i = \_\_TEXT\_MARKER\_16\_\_(QW\_Q^i, KW\_K^i, VW\_V^i),\]
-where \(W\_Q^i, W\_K^i, W\_V^i\) are projection matrices for the \(i\)-th head.
+\[
+\text{head}_i = \text{Attention}(QW_Q^i, KW_K^i, VW_V^i),
+\]
+where \( W_Q^i, W_K^i, W_V^i \) are projection matrices for the \( i \)-th head.
 
 The outputs of all heads are concatenated and passed through a linear transformation:
-\[\_\_TEXT\_MARKER\_16\_\_(Q, K, V) = \_\_TEXT\_MARKER\_13\_\_(\_\_TEXT\_MARKER\_11\_\_\_1, \\ldots, \_\_TEXT\_MARKER\_11\_\_\_h)W\_O,\]
-where \(W\_O\) is a learnable weight matrix.
+\[
+\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \ldots, \text{head}_h)W_O,
+\]
+where \( W_O \) is a learnable weight matrix.
 
 ![mha](/images/multi-head-attention.png)
+
 
 #### 4. **Feedforward Network**
 
 Each transformer layer contains a position-wise feedforward network, applied independently to each token:
-\[FFN(x) = \_\_TEXT\_MARKER\_11\_\_(xW\_1 + b\_1)W\_2 + b\_2,\]
-where \(W\_1, W\_2\) are learnable weight matrices.
+\[
+FFN(x) = \text{ReLU}(xW_1 + b_1)W_2 + b_2,
+\]
+where \( W_1, W_2 \) are learnable weight matrices.
 
 This adds non-linearity and further transforms the token embeddings.
+
 
 #### 5. **Decoder and Cross-Attention**
 
@@ -811,25 +930,37 @@ The decoder generates the output sequence by attending to both:
 - The output of the encoder (cross-attention).
 - Its own previous outputs (self-attention).
 
-In **cross-attention**, the queries \(Q\) come from the decoder, while the keys \(K\) and values \(V\) come from the encoder:
-\[\_\_TEXT\_MARKER\_21\_\_(Q, K, V) = \_\_TEXT\_MARKER\_14\_\_\\left(\\frac{QK^T}{\\sqrt{d\_k}}\\right)V.\]
+In **cross-attention**, the queries \( Q \) come from the decoder, while the keys \( K \) and values \( V \) come from the encoder:
+\[
+\text{CrossAttention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V.
+\]
 
 This allows the decoder to condition its generation on the encoded representation of the input sequence.
+
 
 ### Transformers for Time Series
 
 Transformers have been successfully adapted for time series applications due to their ability to capture long-range dependencies and handle irregularly sampled data. In time series, the main challenge lies in incorporating the sequential nature of the data while ensuring that the model respects causality. To address this, **causal masking** is introduced, along with other adaptations to tailor transformers for time series tasks.
 
+
 #### Key Adaptations for Time Series
 
 1. **Causal Masking**:
-   - In time series, predictions at time \(t\) should depend only on observations from \(t\) and earlier. To enforce this causality in the transformer, a **causal mask** is applied to the self-attention mechanism.
-   - The causal mask ensures that when computing the attention for a token at time \(t\), only tokens at times \(\\leq t\) are considered.
+   - In time series, predictions at time \( t \) should depend only on observations from \( t \) and earlier. To enforce this causality in the transformer, a **causal mask** is applied to the self-attention mechanism.
+   - The causal mask ensures that when computing the attention for a token at time \( t \), only tokens at times \( \leq t \) are considered.
 
-   Mathematically, let \(A\) denote the raw attention scores \(QK^T\). The causal mask is implemented as:
-   \[A\_{ij} =    \\begin{cases}        A\_{ij} & \_\_TEXT\_MARKER\_10\_\_ i \\geq j \\\\       -\\infty & \_\_TEXT\_MARKER\_10\_\_ i < j    \\end{cases}\]
-   - The attention scores for future tokens (\(i < j\)) are set to \(-\\infty\), effectively masking them out after applying the softmax:
-     \[\_\_TEXT\_MARKER\_14\_\_(A)\_{ij} = \\frac{\\exp(A\_{ij})}{\\sum\_{k \\leq j} \\exp(A\_{ik})}.\]
+   Mathematically, let \( A \) denote the raw attention scores \( QK^T \). The causal mask is implemented as:
+   \[
+   A_{ij} =
+   \begin{cases} 
+      A_{ij} & \text{if } i \geq j \\
+      -\infty & \text{if } i < j
+   \end{cases}
+   \]
+   - The attention scores for future tokens (\( i < j \)) are set to \( -\infty \), effectively masking them out after applying the softmax:
+     \[
+     \text{softmax}(A)_{ij} = \frac{\exp(A_{ij})}{\sum_{k \leq j} \exp(A_{ik})}.
+     \]
 
 2. **Position Encoding**:
    - As in NLP, transformers for time series require a mechanism to encode the temporal order of data points. **Positional encoding** or learnable embeddings are added to the input embeddings to provide a sense of time.
@@ -843,10 +974,10 @@ Transformers have been successfully adapted for time series applications due to 
 #### Workflow of a Transformer for Time Series
 
 1. **Input Embedding**:
-   - The raw time series \(x(t)\) is mapped to embeddings using a combination of learnable embeddings and positional encodings.
+   - The raw time series \( x(t) \) is mapped to embeddings using a combination of learnable embeddings and positional encodings.
 
 2. **Causal Masking in Self-Attention**:
-   - The self-attention layer applies the causal mask to ensure predictions at time \(t\) depend only on past observations.
+   - The self-attention layer applies the causal mask to ensure predictions at time \( t \) depend only on past observations.
 
 3. **Multi-Head Self-Attention**:
    - Captures relationships across different time points and features, enabling the model to focus on relevant parts of the sequence.
@@ -867,7 +998,7 @@ Transformers have been successfully adapted for time series applications due to 
 
 ### Transformer snippet code
 
-\`\`\`python
+```python
 import torch
 import torch.nn as nn
 
@@ -915,7 +1046,7 @@ class PositionalEncoding(nn.Module):
         pe[:, 0::2] = torch.sin(position * div_term)
         pe[:, 1::2] = torch.cos(position * div_term)
         pe = pe.unsqueeze(1)  # Add batch dimension
-        self.register_buffer(\'pe\', pe)
+        self.register_buffer('pe', pe)
 
     def forward(self, x):
         x = x + self.pe[:x.size(0), :]
@@ -937,62 +1068,71 @@ if __name__ == "__main__":
 
     # Forward pass
     output = model(src, tgt)
-\`\`\`
+```
 ---
 
 ## State Space Models
 
-State Space Models (SSMs) provide a mathematical framework to describe dynamical systems using a set of internal states. These states evolve over time and are influenced by inputs and noise. SSMs are widely used in fields such as control theory, signal processing, and time series modeling due to their ability to represent both the system\'s internal dynamics and its relationship with external inputs.
+State Space Models (SSMs) provide a mathematical framework to describe dynamical systems using a set of internal states. These states evolve over time and are influenced by inputs and noise. SSMs are widely used in fields such as control theory, signal processing, and time series modeling due to their ability to represent both the system's internal dynamics and its relationship with external inputs.
+
 
 ### Mathematical Formulation
 
 An SSM represents a dynamical system using two key equations:
 
 1. **State Dynamics**:
-   \[x\'(t) = \\mathbf{A}x(t) + \\mathbf{B}u(t),\]
+   \[
+   x'(t) = \mathbf{A}x(t) + \mathbf{B}u(t),
+   \]
    where:
-   - \(x(t)\): The state vector at time \(t\),
-   - \(\\mathbf{A}\): State transition matrix, governing how the state evolves,
-   - \(\\mathbf{B}\): Input matrix, describing how inputs affect the state,
-   - \(u(t)\): Input vector at time \(t\).
+   - \( x(t) \): The state vector at time \( t \),
+   - \( \mathbf{A} \): State transition matrix, governing how the state evolves,
+   - \( \mathbf{B} \): Input matrix, describing how inputs affect the state,
+   - \( u(t) \): Input vector at time \( t \).
 
 2. **Output Equation**:
-   \[y(t) = \\mathbf{C}x(t) + \\mathbf{D}u(t),\]
+   \[
+   y(t) = \mathbf{C}x(t) + \mathbf{D}u(t),
+   \]
    where:
-   - \(y(t)\): Output vector at time \(t\),
-   - \(\\mathbf{C}\): Output matrix, mapping the state to the output,
-   - \(\\mathbf{D}\): Feedthrough matrix, directly relating inputs to the output.
+   - \( y(t) \): Output vector at time \( t \),
+   - \( \mathbf{C} \): Output matrix, mapping the state to the output,
+   - \( \mathbf{D} \): Feedthrough matrix, directly relating inputs to the output.
 
-In practice, the feedthrough matrix \(\\mathbf{D}\) is often omitted because its behavior can be easily replicated in deep learning models through a skip connection. This simplification helps focus on the dynamics governed by \(\\mathbf{A}, \\mathbf{B},\) and \(\\mathbf{C}\).
+In practice, the feedthrough matrix \( \mathbf{D} \) is often omitted because its behavior can be easily replicated in deep learning models through a skip connection. This simplification helps focus on the dynamics governed by \( \mathbf{A}, \mathbf{B}, \) and \( \mathbf{C} \).
 
 ![ssm](/images/SSM.png)
 
 ### Control System Perspective
 
 In control systems, the components of an SSM have intuitive interpretations:
-- **State (\(x\))**: Represents the system\'s memory, storing information about past inputs and outputs.
-- **Input (\(u\))**: External signals or commands that influence the system\'s behavior.
-- **Output (\(y\))**: Observed quantities generated by the system.
+- **State (\( x \))**: Represents the system's memory, storing information about past inputs and outputs.
+- **Input (\( u \))**: External signals or commands that influence the system's behavior.
+- **Output (\( y \))**: Observed quantities generated by the system.
 
 Key concepts in control theory align with SSMs:
-- **Control Law**: Determines the inputs (\(u(t)\)) needed to drive the system to a desired state.
-- **Observation**: Uses the output (\(y(t)\)) to infer the internal state (\(x(t)\)).
+- **Control Law**: Determines the inputs (\( u(t) \)) needed to drive the system to a desired state.
+- **Observation**: Uses the output (\( y(t) \)) to infer the internal state (\( x(t) \)).
 
 ### Convolutional Solution
 
-The output \(y\_k\) at a given time \(k\) can be expressed as a convolution of the system\'s input \(u\_k\) with a kernel \(\\bar{K}\):
+The output \( y_k \) at a given time \( k \) can be expressed as a convolution of the system's input \( u_k \) with a kernel \( \bar{K} \):
 
-\[y\_k = K * u,\]
+\[
+y_k = K * u,
+\]
 
-where the kernel \(\\bar{K}\) is defined as:
-\[\\mathbf{\\bar{K}}\_k = (\\mathbf{\\bar{C}} \\mathbf{\\bar{B}}, \\mathbf{\\bar{C}} \\mathbf{\\bar{A}} \\mathbf{\\bar{B}}, \\dots, \\mathbf{\\bar{C}} \\mathbf{\\bar{A}}^k \\mathbf{\\bar{B}}),\]
-with \(\\mathbf{\\bar{A}}, \\mathbf{\\bar{B}}, \\mathbf{\\bar{C}}\) being discretized versions of \(\\mathbf{A}, \\mathbf{B}, \\mathbf{C}\).
+where the kernel \( \bar{K} \) is defined as:
+\[
+\mathbf{\bar{K}}_k = (\mathbf{\bar{C}} \mathbf{\bar{B}}, \mathbf{\bar{C}} \mathbf{\bar{A}} \mathbf{\bar{B}}, \dots, \mathbf{\bar{C}} \mathbf{\bar{A}}^k \mathbf{\bar{B}}),
+\]
+with \( \mathbf{\bar{A}}, \mathbf{\bar{B}}, \mathbf{\bar{C}} \) being discretized versions of \( \mathbf{A}, \mathbf{B}, \mathbf{C} \).
 
 ![sketch](/images/sketch-SSM.png)
 
 ### Stabilizing the Convolution Kernel
 
-To ensure the system remains stable during training, the matrix \(\\mathbf{A}\) is designed such that its eigenvalues lie within a stable region. A notable example is the **HiPPO matrix**, which enforces stability while maintaining the capacity to represent long-term dependencies. Stability guarantees that the convolution kernel has a **compact support**, preventing gradients from exploding or vanishing.
+To ensure the system remains stable during training, the matrix \( \mathbf{A} \) is designed such that its eigenvalues lie within a stable region. A notable example is the **HiPPO matrix**, which enforces stability while maintaining the capacity to represent long-term dependencies. Stability guarantees that the convolution kernel has a **compact support**, preventing gradients from exploding or vanishing.
 
 ### Advantages of SSMs
 
@@ -1002,9 +1142,13 @@ To ensure the system remains stable during training, the matrix \(\\mathbf{A}\) 
 
 2. **Fast Inference with Temporal Iteration**:
    - In inference, the linear recurrence formulation is used:
-     \[x\_{k+1} = \\mathbf{A}x\_k + \\mathbf{B}u\_k,\]
-     \[y\_k = \\mathbf{C}x\_k + \\mathbf{D}u\_k.\]
-     This approach is computationally cheaper and requires minimal memory, as only the current state \(x\_k\) needs to be stored.
+     \[
+     x_{k+1} = \mathbf{A}x_k + \mathbf{B}u_k,
+     \]
+     \[
+     y_k = \mathbf{C}x_k + \mathbf{D}u_k.
+     \]
+     This approach is computationally cheaper and requires minimal memory, as only the current state \( x_k \) needs to be stored.
 
 ![train-vs-inference](/images/train-inference-SSM.png)
 
@@ -1024,7 +1168,7 @@ Currently, there is no direct implementation of a state-space model (SSM) layer 
 
 A more user-friendly implementation of mamba is in the transformers lib of Huggingface: 
 
-\`\`\`python 
+```python 
 from transformers.models.mamba import MambaConfig, MambaModel
 import torch
 
@@ -1048,24 +1192,27 @@ input_data = torch.randn(batch_size, seq_len, feature_dim)  # Shape: (batch_size
 # Step 4: Pass the data through the MAMBA model
 output = model(input_data)
 
-\`\`\`
+```
 
 Both S4 and MAMBA are excellent examples of modern adaptations of SSMs in deep learning and are available in open-source repositories for experimentation and integration into custom pipelines.
 
 ## Evaluation Metrics
 
-Evaluating time series models requires metrics that align with the nature of the task, whether it\'s forecasting, classification, or similarity measurement. Here, we discuss two common metrics: **Mean Squared Error (MSE)** for prediction and **Dynamic Time Warping (DTW)** for aligning time series.
+Evaluating time series models requires metrics that align with the nature of the task, whether it's forecasting, classification, or similarity measurement. Here, we discuss two common metrics: **Mean Squared Error (MSE)** for prediction and **Dynamic Time Warping (DTW)** for aligning time series.
+
 
 #### **1. Mean Squared Error (MSE)**
 
-The **Mean Squared Error** measures the average squared difference between predicted and actual values. It is a widely used metric for time series forecasting tasks, providing a sense of how closely the model\'s predictions match the ground truth.
+The **Mean Squared Error** measures the average squared difference between predicted and actual values. It is a widely used metric for time series forecasting tasks, providing a sense of how closely the model's predictions match the ground truth.
 
-\[\_\_TEXT\_MARKER\_10\_\_ = \\frac{1}{n} \\sum\_{i=1}^n (y\_i - \\hat{y}\_i)^2,\]
+\[
+\text{MSE} = \frac{1}{n} \sum_{i=1}^n (y_i - \hat{y}_i)^2,
+\]
 
 where:
-- \(y\_i\): Actual value at time \(i\),
-- \(\\hat{y}\_i\): Predicted value at time \(i\),
-- \(n\): Number of time steps.
+- \( y_i \): Actual value at time \( i \),
+- \( \hat{y}_i \): Predicted value at time \( i \),
+- \( n \): Number of time steps.
 
 **Key Features**:
 - Penalizes large errors more than small ones, making it sensitive to outliers.
@@ -1076,13 +1223,15 @@ where:
 **Dynamic Time Warping** is a distance metric used to measure the similarity between two time series. Unlike point-wise metrics like MSE, DTW aligns sequences by warping their time dimensions to minimize the distance between them.
 
 **Alignment Objective**:
-DTW finds an optimal alignment path \(P\) that minimizes the cumulative distance between two sequences \(A\) and \(B\):
+DTW finds an optimal alignment path \( P \) that minimizes the cumulative distance between two sequences \( A \) and \( B \):
 
-\[\_\_TEXT\_MARKER\_10\_\_(A, B) = \\min\_P \\sum\_{(i,j) \\in P} d(A\_i, B\_j),\]
+\[
+\text{DTW}(A, B) = \min_P \sum_{(i,j) \in P} d(A_i, B_j),
+\]
 
 where:
-- \(d(A\_i, B\_j)\): Distance between points \(A\_i\) and \(B\_j\),
-- \(P\): Alignment path that allows for non-linear time warping.
+- \( d(A_i, B_j) \): Distance between points \( A_i \) and \( B_j \),
+- \( P \): Alignment path that allows for non-linear time warping.
 
 **Key Features**:
 - Handles sequences of different lengths or those with temporal shifts.

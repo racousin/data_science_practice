@@ -3,6 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
 import { useLocation } from "react-router-dom";
+import DataInteractionPanel from "components/DataInteractionPanel";
 
 const ExerciseGenerativeModels = () => {
   const exerciseLinks = [
@@ -11,6 +12,11 @@ const ExerciseGenerativeModels = () => {
 
   const location = useLocation();
   const module = 11;
+
+  const notebookUrl = process.env.PUBLIC_URL + "/modules/module11/TP_gen.ipynb";
+  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/module11/TP_gen.html";
+  const notebookColabUrl = process.env.PUBLIC_URL + "/website/public/modules/module11/TP_gen.ipynb";
+
   return (
     <ModuleFrame
       module={module}
@@ -20,17 +26,11 @@ const ExerciseGenerativeModels = () => {
     >
       {location.pathname === `/module${module}/exercise` && (
         <>
-          <Row>
-            <p>
-              In this module, you will practice building and applying generative
-              models in AI.
-            </p>
-          </Row>
-          <Row>
-            <Col>
-              <p>Last Updated: {"2024-09-20"}</p>
-            </Col>
-          </Row>
+          <DataInteractionPanel
+            notebookUrl={notebookUrl}
+            notebookHtmlUrl={notebookHtmlUrl}
+            notebookColabUrl={notebookColabUrl}
+          />
         </>
       )}
       <Row>
