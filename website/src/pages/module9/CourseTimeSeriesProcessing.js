@@ -62,7 +62,7 @@ const TimeSeriesProcessing = () => {
                     {...props}
                     className="max-w-full h-auto object-contain my-4 mx-auto rounded-lg shadow-md"
                     style={{
-                      maxHeight: '80vh' // Limit maximum height to 80% of viewport height
+                      maxWidth: '100vh' // Limit maximum height to 80% of viewport height
                     }}
                     loading="lazy"
                     onError={(e) => {

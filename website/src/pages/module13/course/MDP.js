@@ -56,7 +56,7 @@ const MDP = () => {
 
       <Row className="mt-4">
         <Col>
-          <h3>Simple Grid World Problem</h3>
+          <h3>Example of Simple Grid World Problem</h3>
           <p>
             Our environment is a 4x4 grid where an agent aims to reach a goal.
           </p>
