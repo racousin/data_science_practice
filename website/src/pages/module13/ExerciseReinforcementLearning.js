@@ -6,14 +6,28 @@ import { useLocation } from "react-router-dom";
 
 const ExerciseReinforcementLearning = () => {
   const exerciseLinks = [
-    // Add links to other exercises as needed
+    {
+      to: "/exercise0",
+      label: "Exercise 0",
+      component: lazy(() => import("pages/module13/exercise/Exercise0")),
+    },
+    {
+      to: "/exercise1",
+      label: <>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></>,
+      component: lazy(() => import("pages/module13/exercise/Exercise1")),
+    },
+    {
+      to: "/exercise2",
+      label: <>Exercise 2<span style={{color: 'red', fontWeight: 'bold'}}>*</span></>,
+      component: lazy(() => import("pages/module13/exercise/Exercise2")),
+    },
   ];
 
   const location = useLocation();
   const module = 13;
   return (
     <ModuleFrame
-      module={12}
+      module={13}
       isCourse={false}
       title="Module 13: Exercise Reinforcement Learning"
       courseLinks={exerciseLinks}

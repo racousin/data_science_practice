@@ -136,7 +136,7 @@ const CourseRecommendationSystems = () => {
   const module = 12;
   return (
     <ModuleFrame
-      module={11}
+      module={12}
       isCourse={true}
       title="Module 12: Recommendation Systems"
       courseLinks={courseLinks}
