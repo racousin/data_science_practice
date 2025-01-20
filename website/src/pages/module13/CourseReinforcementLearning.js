@@ -7,6 +7,17 @@ import { useLocation } from "react-router-dom";
 const CourseReinforcementLearning = () => {
   const courseLinks = [
     {
+      to: "/introduction",
+      label: "Introduction",
+      component: lazy(() => import("pages/module13/course/Introduction")),
+      subLinks: [
+        { id: "ml-paradigms", label: "Machine Learning Paradigms" },
+        { id: "rl-framework", label: "RL Framework" },
+        { id: "applications", label: "Applications" },
+        { id: "limitations", label: "Limitations and Challenges" }
+      ],
+    },
+    {
       to: "/mdp",
       label: "Markov Decision Processes",
       component: lazy(() => import("pages/module13/course/MDP")),

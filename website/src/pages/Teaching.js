@@ -2,6 +2,67 @@ import React, { useState } from 'react';
 import { Container, Grid, Card, Button, Select, Title, Text } from '@mantine/core';
 
 
+const ModuleGrid = ({ filteredModules }) => {
+  const getButtonConfig = (moduleId) => {
+    // Handle main button text
+    const mainButtonText = (() => {
+      if (moduleId === 0) return "Getting Started";
+      if (moduleId === 16) return "Go to Project";
+      return "Go to Course";
+    })();
+
+    // Handle whether to show exercise button
+    const showExerciseButton = moduleId !== 0 && moduleId !== 16;
+
+    return {
+      mainButtonText,
+      showExerciseButton
+    };
+  };
+
+  return (
+    <Grid>
+      {filteredModules.map((module) => {
+        const { mainButtonText, showExerciseButton } = getButtonConfig(module.id);
+        
+        return (
+          <Grid.Col key={module.id} span={{ base: 12, sm: 6, md: 4 }}>
+            <Card shadow="sm" padding="lg" radius="md" withBorder>
+              <Text fw={500} size="lg" mb="md">
+                {`Module ${module.id}: ${module.title}`}
+              </Text>
+              
+              <Button
+                variant="light"
+                color="blue"
+                fullWidth
+                mb="sm"
+                component="a"
+                href={module.linkCourse}
+              >
+                {mainButtonText}
+              </Button>
+              
+              {showExerciseButton && (
+                <Button
+                  variant="outline"
+                  color="gray"
+                  fullWidth
+                  component="a"
+                  href={module.linkExercise}
+                >
+                  Go to Exercise
+                </Button>
+              )}
+            </Card>
+          </Grid.Col>
+        );
+      })}
+    </Grid>
+  );
+};
+
+
 const modules = [
   {
     id: 0,
@@ -115,6 +176,12 @@ const modules = [
     linkExercise: "/module15/exercise",
     tags: ["Cloud"],
   },
+  {
+    id: 16,
+    title: "Project",
+    linkCourse: "/project-page",
+    tags: ["Machine Learning", "Deep Learning"],
+  },
 ];
 const tags = ["All", "Version Control", "Programming", "Machine Learning", "Cloud", "Deep Learning"];
 
@@ -138,36 +205,7 @@ export default function Teaching() {
         mb="xl"
       />
 
-      <Grid>
-        {filteredModules.map((module) => (
-          <Grid.Col key={module.id} span={{ base: 12, sm: 6, md: 4 }}>
-            <Card shadow="sm" padding="lg" radius="md" withBorder>
-              <Text fw={500} size="lg" mb="md">{`Module ${module.id}: ${module.title}`}</Text>
-              <Button
-                variant="light"
-                color="blue"
-                fullWidth
-                mb="sm"
-                component="a"
-                href={module.linkCourse}
-              >
-                {module.id === 0 ? "Getting Started" : "Go to Course"}
-              </Button>
-              {module.id !== 0 && (
-                <Button
-                  variant="outline"
-                  color="gray"
-                  fullWidth
-                  component="a"
-                  href={module.linkExercise}
-                >
-                  Go to Exercise
-                </Button>
-              )}
-            </Card>
-          </Grid.Col>
-        ))}
-      </Grid>
+      <ModuleGrid filteredModules={filteredModules} />
     </Container>
   );
 }

@@ -40,6 +40,7 @@ import CourseCloudIntegration from "pages/module15/CourseCloudIntegration";
 import ExerciseCloudIntegration from "pages/module15/ExerciseCloudIntegration";
 import CourseTimeSeriesProcessing from "pages/module9/CourseTimeSeriesProcessing"
 import ExerciseTimeSeriesProcessing from "pages/module9/ExerciseTimeSeriesProcessing"
+import ProjectPage from "pages/ProjectPage"
 
 import ApiDoc from './pages/module4/ApiDoc';
 import ScrapableData from './pages/module4/ScrapableData';
@@ -229,6 +230,10 @@ function App() {
           <Route
             path="module15/exercise/*"
             element={<CourseCloudIntegration />}
+          />
+                    <Route
+            path="project-page"
+            element={<ProjectPage />}
           />
 
           <Route path="*" element={<Navigate to="/" replace />} />
