@@ -36,10 +36,24 @@ const CourseReinforcementLearning = () => {
       label: "Dynamic Programming",
       component: lazy(() => import("pages/module13/course/DynamicProgramming")),
       subLinks: [
+        { id: "bellman-equations", label: "Bellman Equations" },
+        { id: "optimal-policy", label: "Optimal Policy" },
+        { id: "mdp-solution", label: "MDP Solution" },
         { id: "policy-evaluation", label: "Policy Evaluation" },
         { id: "policy-improvement", label: "Policy Improvement" },
-        { id: "policy-iteration", label: "Policy Iteration" },
-        { id: "value-iteration", label: "Value Iteration" },
+        { id: "implementation", label: "Implementation" }
+      ],
+    },
+    {
+      to: "/rl-paradigms",
+      label: "RL Paradigms",
+      component: lazy(() => import("pages/module13/course/RLParadigms")),
+      subLinks: [
+        { id: "mdp-connection", label: "From MDP to RL" },
+        { id: "exploration-exploitation", label: "Exploration vs Exploitation" },
+        { id: "bandit-vs-rl", label: "From Bandits to RL" },
+        { id: "model-based-vs-free", label: "Model-Based vs Model-Free" },
+        { id: "epsilon-greedy", label: "ε-Greedy Strategy" }
       ],
     },
     {
@@ -47,14 +61,14 @@ const CourseReinforcementLearning = () => {
       label: "Model-Free Methods",
       component: lazy(() => import("pages/module13/course/ModelFreeMethods")),
       subLinks: [
-        { id: "monte-carlo", label: "Monte Carlo Methods" },
+        { id: "monte-carlo-algorithm", label: "Monte Carlo Algorithm" },
         { id: "td-learning", label: "Temporal Difference Learning" },
         { id: "sarsa", label: "SARSA" },
         { id: "q-learning", label: "Q-Learning" },
       ],
     },
     {
-      to: "/deep-rl",
+      to: "/deep-model-free",
       label: "Deep Reinforcement Learning",
       component: lazy(() => import("pages/module13/course/DeepRL")),
       subLinks: [
@@ -63,39 +77,22 @@ const CourseReinforcementLearning = () => {
         { id: "actor-critic", label: "Actor-Critic Methods" },
       ],
     },
-    {
-      to: "/exploration-exploitation",
-      label: "Exploration vs. Exploitation",
-      component: lazy(() =>
-        import("pages/module13/course/ExplorationExploitation")
-      ),
-      subLinks: [
-        { id: "epsilon-greedy", label: "Epsilon-Greedy Strategy" },
-        { id: "ucb", label: "Upper Confidence Bound" },
-        { id: "thompson-sampling", label: "Thompson Sampling" },
-      ],
-    },
-    {
-      to: "/advanced-topics",
-      label: "Advanced Topics",
-      component: lazy(() => import("pages/module13/course/AdvancedTopics")),
-      subLinks: [
-        { id: "multi-agent-rl", label: "Multi-Agent RL" },
-        { id: "inverse-rl", label: "Inverse Reinforcement Learning" },
-        { id: "hierarchical-rl", label: "Hierarchical RL" },
-      ],
-    },
-    {
-      to: "/RL frameworks",
-      label: "RL frameworks",
-      component: lazy(() => import("pages/module13/course/RL_frameworks")),
-      subLinks: [],
-    },
     // {
-    //   to: "/case-study",
-    //   label: "Case Study",
-    //   component: lazy(() => import("pages/module13/course/CaseStudy")),
+    //   to: "/model-based",
+    //   label: "Model-Based Methods",
+    //   component: lazy(() => import("pages/module13/course/ModelBasedMethods")),
     // },
+    {
+      to: "/rl-training-efficiency",
+      label: "RL Training Efficiency",
+      component: lazy(() => import("pages/module13/course/RLTrainingEfficiency")),
+      subLinks: [
+        { id: "gymnasium-basics", label: "Training with Gymnasium" },
+        { id: "pettingzoo-basics", label: "Multi-Agent Training" },
+        { id: "vectorized-training", label: "Vectorized Training" },
+        { id: "monitoring", label: "Monitoring and Optimization" }
+      ],
+    }
   ];
 
   const location = useLocation();

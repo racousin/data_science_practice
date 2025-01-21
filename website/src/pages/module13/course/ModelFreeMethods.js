@@ -1,21 +1,98 @@
 import React from "react";
-import { Container, Row, Col, Image } from "react-bootstrap";
+import {  Row, Col, Image } from "react-bootstrap";
+import { Title, Text, Stack, Container, Accordion } from '@mantine/core';
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 import CodeBlock from "components/CodeBlock";
+import { Link } from 'react-router-dom';
+import QLearningConvergence from './QLearningConvergence';
 
-const ModelFreeMethods = () => {
+const QLearning = () => {
   return (
-    <Container fluid>
-      <h2>Model-Free Reinforcement Learning Methods</h2>
+    <Stack className="mt-4 space-y-4">
+      <Title order={3}>Q-learning Estimation</Title>
+      
+      <Stack className="space-y-3">
+        <Text>
+          Remember the optimal Q-function:
+        </Text>
+        <BlockMath
+          math="Q_{\pi^*}(S_t,A_t) = \mathbb{E} [R_{t+1} + \gamma \max_{a'} Q_*(S_{t+1}, a') \vert S_t = s, A_t = a]"
+        />
+        
+        <Text>
+          So <InlineMath math="R_{t+1} + \gamma \max_{a'} Q(S_{t+1}, a')" /> is an unbiased estimate for the optimal Q function policy <InlineMath math="Q_{\pi^*}(S_t, A_t)" />
+        </Text>
+        
+        <Text>
+          <InlineMath math="R_{t+1} + \gamma \max_{a'} Q(S_{t+1}, a')" /> is called the Q target.
+        </Text>
 
-      <Row className="mt-4">
-        <Col>
-          <h3>Reinforcement Learning Objective</h3>
-          <p>
+        <Text>
+          <InlineMath math="\alpha" /> improvement:
+        </Text>
+        <BlockMath
+          math="Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha (R_{t+1} + \gamma \max_{a \in \mathcal{A}} Q(S_{t+1}, a) - Q(S_t, A_t))"
+        />
+        
+        <Text className="mt-2 text-gray-700">
+          This is called an off-policy update, because we update the Q function not from real environment feedback, but from theoretical policy information 
+          (i.e., instead of using <InlineMath math="Q(S_{t+1}, A_{t+1})" /> like in SARSA, we use <InlineMath math="\max_{a} Q(S_{t+1}, a)" />).
+        </Text>
+      </Stack>
+    </Stack>
+  );
+};
+
+
+
+const SarsaAlgorithm = () => {
+  return (
+    <Stack className="p-4">
+      <Title order={3} id="sarsa">SARSA Algorithm</Title>
+      
+      <Text>
+        Initialize <InlineMath math="Q(s,a)" /> for all states and actions <InlineMath math="s,a" />
+      </Text>
+      
+      <Text>
+        <InlineMath math="S_t = \text{initial state}" />, act with <InlineMath math="\pi" /> 
+        (extract from <InlineMath math="Q" /> <InlineMath math="\epsilon" />-greedy) 
+        to get <InlineMath math="A_t,R_{t+1},S_{t+1}" />
+      </Text>
+
+      <ol className="list-decimal pl-6 space-y-2">
+        <li>
+          Act with <InlineMath math="\pi" /> (extract from <InlineMath math="Q" /> {" "}
+          <InlineMath math="\epsilon" />-greedy) to get <InlineMath math="A_{t+1}, R_{t+2},S_{t+2}" />
+        </li>
+        
+        <li>
+          Update Q using the observation step:{" "}
+          <BlockMath math="Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha (R_{t+1} + \gamma Q(S_{t+1}, A_{t+1}) - Q(S_t, A_t))" />
+        </li>
+        
+        <li>
+          Iterate
+        </li>
+      </ol>
+    </Stack>
+  );
+};
+
+
+const RLObjectiveSection = () => {
+
+
+  return (
+
+      <Stack fluid>
+        <div>
+          <Title order={3} className="mb-4">Reinforcement Learning Objective</Title>
+          <Text className="mb-4">
             RL aims to optimize decision-making in environments without a known
             transition model <InlineMath math="P" />.
-          </p>
+          </Text>
           <BlockMath
             math={`
               \\begin{align*}
@@ -24,131 +101,63 @@ const ModelFreeMethods = () => {
               \\end{align*}
             `}
           />
-        </Col>
-      </Row>
+        </div>
 
-      <Row className="mt-4">
-        <Col>
-          <h3>First Glossary of RL</h3>
-          <ul>
-            <li>Model free / Model based</li>
-            <li>Q-learning / Policy Optimization</li>
-            <li>On-policy / Off-policy</li>
-            <li>
-              <InlineMath math="\epsilon" />
-              -Greedy
-            </li>
-          </ul>
-        </Col>
-      </Row>
+        <Stack fluid>
+          <Text>
+            As shown in <Link to="/module13/course/dynamic-programming" className="text-blue-600 hover:text-blue-800">
+            dynamic programming</Link>, we can start with a random policy and evaluate its V/Q function 
+            to iteratively build better policies until we reach the optimal policy.
+          </Text>
+          
+          <Text>
+            However, in reinforcement learning, we don't have access to the transition model, 
+            so we cannot compute V and Q exactly.
+          </Text>
+          
+          <Text>
+            Instead, we can estimate these values, which is what we'll explore next.
+          </Text>
+        </Stack>
+      </Stack>
+  );
+};
 
-      <Row className="mt-4">
-        <Col>
-          <h3>Overview of RL Algorithms</h3>
-          <Image
-            src="/assets/module13/tikz_images_2/tax.png"
-            alt="RL Algorithms Taxonomy"
-            fluid
-          />
-          <ul>
-            <li>
-              <strong>Model free:</strong> learn the policy{" "}
-              <InlineMath math="\pi^*" /> directly
-            </li>
-            <li>
-              <strong>Model based:</strong> use an environment model{" "}
-              <InlineMath math="P^*" /> to learn <InlineMath math="\pi^*" />
-            </li>
-          </ul>
-        </Col>
-      </Row>
 
-      <Row className="mt-4">
-        <Col>
-          <h3>Key Strategies in Model-Free RL</h3>
-          <ul>
-            <li>
-              <strong>Q-learning:</strong> Learn the action-value function{" "}
-              <InlineMath math="Q" /> to determine the best action given a
-              state:
-              <BlockMath math="\pi(s) = \arg\max_{a \in \mathcal{A}} Q_\pi(s, a)" />
-            </li>
-            <li>
-              <strong>Policy Optimization:</strong> Directly learn the policy{" "}
-              <InlineMath math="\pi" /> that maximizes the expected return.
-            </li>
-          </ul>
-        </Col>
-      </Row>
 
-      <Row className="mt-4">
-        <Col>
-          <h3>Exploration-Exploitation</h3>
-          <p>
-            Knowledge of the environment comes from interaction. There are
-            trade-offs to be made between using what we know and further
-            exploration.
-          </p>
-          <Image
-            src="/assets/module13/tikz_images_2/explore_vs_exploit.jpeg"
-            alt="Explore vs Exploit"
-            fluid
-          />
-        </Col>
-      </Row>
+const ModelFreeMethods = () => {
+  const agentCode = `
+import numpy as np
+import random
 
-      <Row className="mt-4">
-        <Col>
-          <h3>
-            The <InlineMath math="\epsilon" />
-            -Greedy Strategy
-          </h3>
-          <p>
-            The <InlineMath math="\epsilon" />
-            -greedy strategy is a simple yet effective method for balancing
-            exploration and exploitation by choosing:
-          </p>
-          <ul>
-            <li>
-              With probability <InlineMath math="\epsilon" />, choose an action
-              at random (exploration).
-            </li>
-            <li>
-              With probability <InlineMath math="1 - \epsilon" />, choose the
-              action with the highest estimated value (exploitation).
-            </li>
-          </ul>
-        </Col>
-      </Row>
+class Agent:
+    def __init__(self, state_size, action_size):
+        self.state_size = state_size
+        self.action_size = action_size
+        self.epsilon = 0.1  # Exploration rate
+        self.Q = np.zeros((state_size, action_size))  # Q-table initialization
+        
+    def select_action(self, state):
+        """Choose action based on epsilon-greedy strategy"""
+        if random.random() > self.epsilon:  # With probability 1-ε, choose best action
+            return np.argmax(self.Q[state, :])
+        else:  # With probability ε, choose random action
+            return random.randint(0, self.action_size - 1)`;
 
-      <Row className="mt-4">
-        <Col>
-          <h3>On-policy vs Off-policy</h3>
-          <ul>
-            <li>
-              <strong>On-policy:</strong> Directly learns from and improves the
-              policy it executes.
-            </li>
-            <li>
-              <strong>Off-policy:</strong> Learns a different policy from the
-              executed one, allowing for learning from observations.
-            </li>
-          </ul>
-        </Col>
-      </Row>
+  return (
+    <Container fluid>
+      <h2>Model-Free Reinforcement Learning Methods</h2>
 
-      <Row className="mt-4">
-        <Col>
-          <h3>Model-Free RL Methods</h3>
-          <ul>
-            <li>Monte-Carlo</li>
-            <li>Temporal difference</li>
-            <li>SARSA</li>
-            <li>Q-learning</li>
-          </ul>
-        </Col>
-      </Row>
+      <RLObjectiveSection />
+      <section>
+        <Title order={2} className="mb-4" id="epsilon-greedy">
+          Implementation Q ε-Greedy Policy
+        </Title>
 
+
+<CodeBlock code={agentCode} language="python" />
+
+</section>
       <Row className="mt-4">
         <Col>
           <h3>Monte-Carlo Method</h3>
@@ -159,14 +168,14 @@ const ModelFreeMethods = () => {
           </p>
           <ol>
             <li>
-              Generate an episode with the policy <InlineMath math="\pi" />
+              Generate an episode (<InlineMath math={"s_1,a_1,r_2,…,s_T"}/>)  with the policy <InlineMath math="\pi" />
             </li>
             <li>
               Compute{" "}
               <InlineMath math="G_t = \sum_{k=0}^{T-t-1} \gamma^k R_{t+k+1}" />
             </li>
             <li>
-              Update the value function:
+              Evaluate the value function:
               <BlockMath math="V_\pi(s) = \frac{\sum_{t=1}^T \mathbb{1}[S_t = s] G_t}{\sum_{t=1}^T \mathbb{1}[S_t = s]}" />
             </li>
           </ol>
@@ -177,8 +186,9 @@ const ModelFreeMethods = () => {
 
       <Row className="mt-4">
         <Col>
-          <h3>Monte-Carlo Algorithm</h3>
+          <h3 id="monte-carlo-algorithm">Monte-Carlo Algorithm</h3>
           <ol>
+            Initialise <InlineMath math="Q(s,a) \forall s, a" />
             <li>
               Generate an episode with the policy <InlineMath math="\pi" />{" "}
               (extract from <InlineMath math="Q" />{" "}
@@ -186,8 +196,8 @@ const ModelFreeMethods = () => {
               -greedy)
             </li>
             <li>
-              Update Q using the episode:
-              <BlockMath math="q_\pi(s, a) = \frac{\sum_{t=1}^T \big( \mathbb{1}[S_t = s, A_t = a] \sum_{k=0}^{T-t-1} \gamma^k R_{t+k+1} \big)}{\sum_{t=1}^T \mathbb{1}[S_t = s, A_t = a]}" />
+              Evaluate Q using the episode:
+              <BlockMath math="Q_\pi(s, a) = \frac{\sum_{t=1}^T \big( \mathbb{1}[S_t = s, A_t = a] \sum_{k=0}^{T-t-1} \gamma^k R_{t+k+1} \big)}{\sum_{t=1}^T \mathbb{1}[S_t = s, A_t = a]}" />
             </li>
             <li>Iterate</li>
           </ol>
@@ -229,7 +239,7 @@ const ModelFreeMethods = () => {
       </Row>
       <Row className="mt-4">
         <Col>
-          <h3>Temporal Difference (TD) Learning</h3>
+          <h3 id="td-learning">Temporal Difference (TD) Learning</h3>
           <p>
             TD Learning combines Monte Carlo and dynamic programming ideas,
             using bootstrapping for value updates.
@@ -253,67 +263,24 @@ const ModelFreeMethods = () => {
 
       <Row className="mt-4">
         <Col>
-          <h3>TD Learning - Value Function Estimation</h3>
+          <h3>TD Learning - V/Q Estimation</h3>
           <h4>
             TD Error (<InlineMath math="\delta_t" />
             ):
           </h4>
           <BlockMath math="\delta_t = R_{t+1} + \gamma V(S_{t+1}) - V(S_t)" />
+          Or
+          <BlockMath math="\delta_t = R_{t+1} + \gamma Q(S_{t+1}, A_{t+1}) - \gamma Q(S_{t}, A_{t})" />
           <h4>Update Rule:</h4>
           <BlockMath math="V(S_t) \leftarrow V(S_t) + \alpha \delta_t" />
+          Or
+          <BlockMath math="Q(S_{t}, A_{t}) \leftarrow Q(S_{t}, A_{t}) + \alpha \delta_t" />
           <p>
             Where <InlineMath math="\alpha" /> is the learning rate.
           </p>
         </Col>
       </Row>
-
-      <Row className="mt-4">
-        <Col>
-          <h3>SARSA Algorithm</h3>
-          <ol>
-            <li>
-              Initialize <InlineMath math="Q(s,a)" /> for all{" "}
-              <InlineMath math="s,a" />
-            </li>
-            <li>
-              For each episode:
-              <ul>
-                <li>
-                  Initialize <InlineMath math="S_t" />
-                </li>
-                <li>
-                  Choose <InlineMath math="A_t" /> from{" "}
-                  <InlineMath math="S_t" /> using policy derived from{" "}
-                  <InlineMath math="Q" /> (e.g., <InlineMath math="\epsilon" />
-                  -greedy)
-                </li>
-                <li>
-                  For each step of episode:
-                  <ul>
-                    <li>
-                      Take action <InlineMath math="A_t" />, observe{" "}
-                      <InlineMath math="R_{t+1}" /> and{" "}
-                      <InlineMath math="S_{t+1}" />
-                    </li>
-                    <li>
-                      Choose <InlineMath math="A_{t+1}" /> from{" "}
-                      <InlineMath math="S_{t+1}" /> using policy derived from{" "}
-                      <InlineMath math="Q" />
-                    </li>
-                    <li>
-                      Update <InlineMath math="Q" />:
-                      <BlockMath math="Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha [R_{t+1} + \gamma Q(S_{t+1}, A_{t+1}) - Q(S_t, A_t)]" />
-                    </li>
-                    <li>
-                      <InlineMath math="S_t \leftarrow S_{t+1}; A_t \leftarrow A_{t+1}" />
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-          </ol>
-        </Col>
-      </Row>
+      <SarsaAlgorithm/>
       <Row className="mt-4">
         <Col>
           <h3>Visual Steps in SARSA</h3>
@@ -363,49 +330,33 @@ const ModelFreeMethods = () => {
           </Row>
         </Col>
       </Row>
-      <Row className="mt-4">
-        <Col>
-          <h3>Q-learning Algorithm</h3>
-          <ol>
-            <li>
-              Initialize <InlineMath math="Q(s,a)" /> for all{" "}
-              <InlineMath math="s,a" />
-            </li>
-            <li>
-              For each episode:
-              <ul>
-                <li>
-                  Initialize <InlineMath math="S_t" />
-                </li>
-                <li>
-                  For each step of episode:
-                  <ul>
-                    <li>
-                      Choose <InlineMath math="A_t" /> from{" "}
-                      <InlineMath math="S_t" /> using policy derived from{" "}
-                      <InlineMath math="Q" /> (e.g.,{" "}
-                      <InlineMath math="\epsilon" />
-                      -greedy)
-                    </li>
-                    <li>
-                      Take action <InlineMath math="A_t" />, observe{" "}
-                      <InlineMath math="R_{t+1}" /> and{" "}
-                      <InlineMath math="S_{t+1}" />
-                    </li>
-                    <li>
-                      Update <InlineMath math="Q" />:
-                      <BlockMath math="Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha [R_{t+1} + \gamma \max_a Q(S_{t+1}, a) - Q(S_t, A_t)]" />
-                    </li>
-                    <li>
-                      <InlineMath math="S_t \leftarrow S_{t+1}" />
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-          </ol>
-        </Col>
-      </Row>
+      <QLearning/>
+      <Stack className="space-y-4">
+        <Title order={3} id="q-learning">Q-learning Algorithm</Title>
+        
+        <Text>
+          Initialize <InlineMath math="Q(s,a)" /> for all states and actions <InlineMath math="s,a" />
+        </Text>
+        <Text>
+          <InlineMath math="S_t = \text{initial state}" />
+        </Text>
+        
+        <ol className="list-decimal pl-6 space-y-3">
+          <li>
+            Act with <InlineMath math="\pi" /> (extract from <InlineMath math="Q" /> {' '}
+            <InlineMath math="\epsilon" />-greedy) to get <InlineMath math="A_t, R_{t+1}, S_{t+1}" />
+          </li>
+          <li>
+            Update <InlineMath math="Q" /> using the observation step:{' '}
+            <BlockMath
+              math="Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha (R_{t+1} + \gamma \max Q(S_{t+1}, a) - Q(S_t, A_t))"
+            />
+          </li>
+          <li>
+            Iterate
+          </li>
+        </ol>
+      </Stack>
       <Row className="mt-4">
         <Col>
           <h3>Visual Steps in Q-Learning</h3>
@@ -455,42 +406,36 @@ const ModelFreeMethods = () => {
           </Row>
         </Col>
       </Row>
-      <Row className="mt-4">
-        <Col>
-          <h2>Code: Temporal Difference</h2>
-          <CodeBlock
-            code={`
-# Example implementation of Q-learning
-import numpy as np
-
-def q_learning(env, num_episodes, alpha=0.1, gamma=0.99, epsilon=0.1):
-    Q = np.zeros((env.observation_space.n, env.action_space.n))
-    
-    for episode in range(num_episodes):
-        state = env.reset()
-        done = False
-        
-        while not done:
-            if np.random.random() < epsilon:
-                action = env.action_space.sample()  # Explore
-            else:
-                action = np.argmax(Q[state, :])  # Exploit
-            
-            next_state, reward, done, _ = env.step(action)
-            
-            # Q-learning update
-            Q[state, action] += alpha * (reward + gamma * np.max(Q[next_state, :]) - Q[state, action])
-            
-            state = next_state
-    
-    return Q
-
-# Usage
-# Q = q_learning(env, num_episodes=1000)
-            `}
-          />
-        </Col>
-      </Row>
+      <div className="mt-8 mb-12">
+        <Accordion 
+          variant="separated"
+          styles={{
+            item: {
+              marginBottom: '2rem',
+              border: '1px solid var(--mantine-color-gray-3)',
+              borderRadius: 'var(--mantine-radius-md)',
+            },
+            control: {
+              padding: '1rem',
+              '&:hover': {
+                backgroundColor: 'var(--mantine-color-gray-0)',
+              },
+            },
+            content: {
+              padding: '1.5rem',
+            },
+          }}
+        >
+          <Accordion.Item value="weight-gradient">
+            <Accordion.Control>
+              <div className="text-lg font-medium">Q Learning Convergence Proof</div>
+            </Accordion.Control>
+            <Accordion.Panel>
+              <QLearningConvergence />
+            </Accordion.Panel>
+          </Accordion.Item>
+        </Accordion>
+      </div>
     </Container>
   );
 };

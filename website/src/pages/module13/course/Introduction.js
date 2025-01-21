@@ -87,6 +87,69 @@ const MLParadigmsComparison = () => {
   );
 };
 
+const applications = [
+  {
+    title: "Autonomous Systems",
+    description: "Robotics, self-driving vehicles, drone navigation"
+  },
+  {
+    title: "Industrial Control",
+    description: "Process optimization, energy management"
+  },
+  {
+    title: "Natural Language",
+    description: "Dialogue systems, chatbot policies"
+  },
+  {
+    title: "Financial Markets",
+    description: "Trading strategies, risk management"
+  }
+];
+
+const RLApplications = () => {
+  return (
+    <section className="w-full">
+      <Title order={2} id="applications" className="mb-6">
+        Applications of RL
+      </Title>
+      
+      <Text className="mb-6">
+        Reinforcement Learning has revolutionized numerous fields with its ability to learn complex decision-making strategies:
+      </Text>
+
+      <Grid>
+        <Grid.Col span={{ base: 12, md: 5 }}>
+          <div className="grid grid-cols-1 gap-4">
+            {applications.map((app, index) => (
+              <div key={index} className="p-4 bg-gray-50 rounded-lg">
+                <Title order={4} className="mb-2" style={{ color: '#0096FF' }}>
+                  {app.title}
+                </Title>
+                <Text size="sm">
+                  {app.description}
+                </Text>
+              </div>
+            ))}
+          </div>
+        </Grid.Col>
+
+        <Grid.Col span={{ base: 12, md: 7 }} className="flex items-stretch">
+          <div className="bg-gray-100 w-full p-8 rounded-lg flex items-center justify-center min-h-[400px]">
+            <div className="w-full relative">
+              <Image
+                src="/assets/module13/game.png"
+                alt="RL in Gaming"
+                className="w-full h-full object-contain"
+                fit="contain"
+              />
+            </div>
+          </div>
+        </Grid.Col>
+      </Grid>
+    </section>
+  );
+};
+
 const Introduction = () => {
   return (
     <Container size="xl" className="py-6">
@@ -150,48 +213,7 @@ const Introduction = () => {
           </Grid>
         </section>
 
-        {/* Applications */}
-        <section>
-          <Title order={2} className="mb-6" id="applications">
-            Applications of RL
-          </Title>
-          <Grid gutter="lg">
-            <Grid.Col span={7}>
-              <Stack spacing="md">
-                <Text>
-                  Reinforcement Learning has revolutionized numerous fields with its ability to learn complex decision-making strategies:
-                </Text>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 bg-gray-50 rounded-lg">
-                    <Title order={4} className="mb-2">Autonomous Systems</Title>
-                    <Text size="sm">Robotics, self-driving vehicles, drone navigation</Text>
-                  </div>
-                  <div className="p-4 bg-gray-50 rounded-lg">
-                    <Title order={4} className="mb-2">Industrial Control</Title>
-                    <Text size="sm">Process optimization, energy management</Text>
-                  </div>
-                  <div className="p-4 bg-gray-50 rounded-lg">
-                    <Title order={4} className="mb-2">Natural Language</Title>
-                    <Text size="sm">Dialogue systems, chatbot policies</Text>
-                  </div>
-                  <div className="p-4 bg-gray-50 rounded-lg">
-                    <Title order={4} className="mb-2">Financial Markets</Title>
-                    <Text size="sm">Trading strategies, risk management</Text>
-                  </div>
-                </div>
-              </Stack>
-            </Grid.Col>
-            <Grid.Col span={5}>
-              <div className="bg-gray-100 p-6 rounded-lg h-full flex items-center justify-center">
-                <Image
-                  src="/assets/module13/game.png"
-                  alt="RL in Gaming"
-                  className="max-w-full h-auto"
-                />
-              </div>
-            </Grid.Col>
-          </Grid>
-        </section>
+<RLApplications/>
 
 {/* Limitations and Challenges */}
 <section>
