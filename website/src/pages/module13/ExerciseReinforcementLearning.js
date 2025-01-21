@@ -13,7 +13,7 @@ const ExerciseReinforcementLearning = () => {
     },
     {
       to: "/exercise1",
-      label: <>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></>,
+      label: "Exercise 1",
       component: lazy(() => import("pages/module13/exercise/Exercise1")),
     },
     {

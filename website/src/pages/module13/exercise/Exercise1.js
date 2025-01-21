@@ -1,57 +1,70 @@
-import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import React from 'react';
+import { Container, Text, Title, Stack, List } from '@mantine/core';
+import DataInteractionPanel from 'components/DataInteractionPanel';
 
 const Exercise1 = () => {
+  const notebookUrl = process.env.PUBLIC_URL + "/modules/module13/exercise/module13_exercise1.ipynb";
+  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/module13/exercise/module13_exercise1.html";
+  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/module13/exercise/module13_exercise1.ipynb";
+
   return (
     <Container fluid>
-      <h1 className="my-4">
-        Exercise 1: Data Exploration with Jupyter Notebook
-      </h1>
-      <p>
-        In this exercise, you will use a Jupyter Notebook to perform exploratory
-        data analysis (EDA) on a provided dataset.
-      </p>
-      <Row>
-        <Col>
-          <h2>Requirements</h2>
-          <h3>Load and Inspect the Data</h3>
-          <ul>
-            <li>
-              Load the dataset into a DataFrame and display the first few rows.
-            </li>
-            <li>
-              Describe the dataset, showing statistics, types, and missing
-              values.
-            </li>
-          </ul>
-          <h3>Visualizations</h3>
-          <ul>
-            <li>
-              Generate histograms for all numerical features to understand
-              distributions.
-            </li>
-            <li>Create box plots to identify outliers.</li>
-            <li>
-              Use scatter plots to explore relationships between features.
-            </li>
-          </ul>
-          <h3>Data Cleaning (if needed based on the dataset)</h3>
-          <ul>
-            <li>Handle missing values by imputation or removal.</li>
-            <li>
-              Convert categorical data to numeric using encoding techniques.
-            </li>
-          </ul>
-          <h3>Summary of Findings</h3>
-          <ul>
-            <li>
-              Summarize key insights from the exploratory data analysis,
-              including any potential issues, interesting correlations, or
-              hypotheses about the data.
-            </li>
-          </ul>
-        </Col>
-      </Row>
+      <Stack spacing="xl" className="p-6">
+        <div className="flex items-center gap-3">
+          <Title order={1} className="text-2xl font-bold">Exercise 1: Q-Learning with FrozenLake</Title>
+        </div>
+
+        <Stack spacing="lg">
+          {/* Implementation Section */}
+          <div>
+            <Title order={2} className="text-xl font-semibold mb-4">Part A: Q-Learning Implementation</Title>
+            <Text className="text-gray-700 mb-4">
+              Implement the core components of a Q-Learning agent:
+            </Text>
+            <List spacing="sm" className="ml-6">
+              <List.Item>Q-table initialization and management</List.Item>
+              <List.Item>Epsilon-greedy action selection strategy</List.Item>
+              <List.Item>Q-value updates using the Q-Learning algorithm</List.Item>
+              <List.Item>Learning rate and discount factor implementation</List.Item>
+            </List>
+          </div>
+
+          {/* Environment Section */}
+          <div>
+            <Title order={2} className="text-xl font-semibold mb-4">Part B: FrozenLake Environment</Title>
+            <Text className="text-gray-700 mb-4">
+              Work with the FrozenLake-v1 environment from Gymnasium:
+            </Text>
+            <List spacing="sm" className="ml-6">
+              <List.Item>Understanding the state and action spaces</List.Item>
+              <List.Item>Handling environment dynamics and transitions</List.Item>
+              <List.Item>Managing episode termination conditions</List.Item>
+              <List.Item>Implementing reward collection and processing</List.Item>
+            </List>
+          </div>
+
+          {/* Training Section */}
+          <div>
+            <Title order={2} className="text-xl font-semibold mb-4">Part C: Training and Analysis</Title>
+            <Text className="text-gray-700 mb-4">
+              Train and evaluate the Q-Learning agent:
+            </Text>
+            <List spacing="sm" className="ml-6">
+              <List.Item>Setting up the training loop and hyperparameters</List.Item>
+              <List.Item>Implementing exploration vs exploitation balance</List.Item>
+              <List.Item>Tracking learning progress and performance metrics</List.Item>
+              <List.Item>Visualizing Q-value convergence and policy behavior</List.Item>
+            </List>
+          </div>
+        </Stack>
+
+        <DataInteractionPanel
+          notebookUrl={notebookUrl}
+          notebookHtmlUrl={notebookHtmlUrl}
+          notebookColabUrl={notebookColabUrl}
+          className="mt-6"
+        />
+      </Stack>
     </Container>
   );
 };

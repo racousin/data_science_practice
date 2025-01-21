@@ -12,14 +12,13 @@ const Exercise0 = () => {
     <>
       <Container fluid>
         <Stack spacing="xl" className="p-6">
-          <div className="flex items-center gap-3">
-            <Brain size={32} className="text-blue-600" />
+          <div className="flex items-center gap-3"> 
             <Title order={1} className="text-2xl font-bold">Exercise 0: Introduction to Reinforcement Learning</Title>
           </div>
 
           <Stack spacing="lg">
             {/* Environment Section */}
-            <div className="border rounded-lg p-6 bg-gray-50">
+            <div>
               <Title order={2} className="text-xl font-semibold mb-4">Part A: Understanding RL Environments</Title>
               <Text className="text-gray-700 mb-4">
                 Learn the fundamentals of reinforcement learning environments and their implementation:
@@ -33,7 +32,7 @@ const Exercise0 = () => {
             </div>
 
             {/* Agent Section */}
-            <div className="border rounded-lg p-6 bg-gray-50">
+            <div >
               <Title order={2} className="text-xl font-semibold mb-4">Part B: Building RL Agents</Title>
               <Text className="text-gray-700 mb-4">
                 Implement and understand the core components of reinforcement learning agents:
@@ -47,7 +46,7 @@ const Exercise0 = () => {
             </div>
 
             {/* Experimentation Section */}
-            <div className="border rounded-lg p-6 bg-gray-50">
+            <div>
               <Title order={2} className="text-xl font-semibold mb-4">Part C: Running RL Experiments</Title>
               <Text className="text-gray-700 mb-4">
                 Learn to conduct and analyze reinforcement learning experiments:
@@ -60,28 +59,16 @@ const Exercise0 = () => {
               </List>
             </div>
 
-            {/* Dynamic Programming Preview */}
-            <div className="border rounded-lg p-6 bg-gray-50">
-              <Title order={2} className="text-xl font-semibold mb-4">Part D: Introduction to Dynamic Programming</Title>
-              <Text className="text-gray-700 mb-4">
-                Preview fundamental dynamic programming concepts in reinforcement learning:
-              </Text>
-              <List spacing="sm" className="ml-6">
-                <List.Item>Understanding value functions and policies</List.Item>
-                <List.Item>Basic policy evaluation techniques</List.Item>
-                <List.Item>Introduction to policy improvement</List.Item>
-                <List.Item>Simple grid world examples and solutions</List.Item>
-              </List>
-            </div>
           </Stack>
 
-          <DataInteractionPanel
+
+        </Stack>
+        <DataInteractionPanel
             notebookUrl={notebookUrl}
             notebookHtmlUrl={notebookHtmlUrl}
             notebookColabUrl={notebookColabUrl}
             className="mt-6"
           />
-        </Stack>
       </Container>
     </>
   );

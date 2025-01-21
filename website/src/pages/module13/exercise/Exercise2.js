@@ -1,73 +1,80 @@
-import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import React from 'react';
+import { Container, Text, Title, Stack, List, Alert } from '@mantine/core';
+import { AlertTriangle } from 'lucide-react';
+import DataInteractionPanel from 'components/DataInteractionPanel';
 
 const Exercise2 = () => {
+  const notebookUrl = process.env.PUBLIC_URL + "/modules/module13/exercise/module13_exercise2.ipynb";
+  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/module13/exercise/module13_exercise2.html";
+  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/module13/exercise/module13_exercise2.ipynb";
+
   return (
     <Container fluid>
-      <h1 className="my-4">
-        Exercise 2: Building a Machine Learning Baseline Pipeline
-      </h1>
-      <p>
-        In this exercise, you will develop a simple machine learning pipeline
-        using scikit-learn to model the data explored in Exercise 1.
-      </p>
-      <Row>
-        <Col>
-          <h2>Requirements</h2>
-          <h3>Feature Selection and Preprocessing</h3>
-          <ul>
-            <li>
-              Select features to be used for modeling based on the EDA findings.
-            </li>
-            <li>Apply appropriate preprocessing steps (scaling, encoding).</li>
-          </ul>
-          <h3>Model Selection</h3>
-          <ul>
-            <li>
-              Choose a simple model as a baseline (e.g., Logistic Regression,
-              Decision Tree, or Linear Regression).
-            </li>
-            <li>
-              Explain why this model is chosen based on the characteristics of
-              the data.
-            </li>
-          </ul>
-          <h3>Model Training and Evaluation</h3>
-          <ul>
-            <li>Split the data into training and test sets.</li>
-            <li>Train the model on the training data.</li>
-            <li>
-              Evaluate the model on the test data using appropriate metrics
-              (accuracy, RMSE, etc.).
-            </li>
-            <li>
-              Display the confusion matrix or regression plots, depending on the
-              type of problem.
-            </li>
-          </ul>
-          <h3>Baseline Results</h3>
-          <ul>
-            <li>Discuss the baseline model’s performance.</li>
-            <li>
-              Suggest potential improvements or next steps for enhancing the
-              model.
-            </li>
-          </ul>
-          <h3>Deliverables</h3>
-          <ul>
-            <li>
-              Jupyter Notebook for Exercise 1: This should include all codes,
-              plots, and analyses along with descriptive text explaining each
-              step.
-            </li>
-            <li>
-              Jupyter Notebook for Exercise 2: This should detail the process of
-              setting up the machine learning pipeline, including code and
-              commentary on each decision made in the process.
-            </li>
-          </ul>
-        </Col>
-      </Row>
+      <Stack spacing="xl" className="p-6">
+        <div className="flex items-center gap-3">
+          <Title order={1} className="text-2xl font-bold">Exercise 2: FrozenLake Competition Challenge</Title>
+        </div>
+
+        <Text className="text-gray-700">
+          In this exercise, you'll train an agent for the 8x8 FrozenLake environment and submit it to the ml-arena.com platform
+          for evaluation. Your agent will need to achieve a mean reward of at least 0.6 over 1000 runs to be validated.
+        </Text>
+
+        <Stack spacing="lg">
+          {/* Training Section */}
+          <div>
+            <Title order={2} className="text-xl font-semibold mb-4">Part A: Agent Development</Title>
+            <Text className="text-gray-700 mb-4">
+              Train your agent on the FrozenLake-v1 8x8 environment:
+            </Text>
+            <List spacing="sm" className="ml-6">
+              <List.Item>Implement and optimize a Q-Learning agent for the larger state space</List.Item>
+              <List.Item>Test your agent's performance locally</List.Item>
+              <List.Item>Ensure consistent performance across multiple episodes</List.Item>
+              <List.Item>Optimize hyperparameters for better stability</List.Item>
+            </List>
+          </div>
+
+          {/* Submission Process */}
+          <div>
+            <Title order={2} className="text-xl font-semibold mb-4">Part B: Competition Submission</Title>
+            <Text className="text-gray-700 mb-4">
+              Follow these steps to submit your agent:
+            </Text>
+            <List spacing="sm" className="ml-6">
+              <List.Item>Create an account on ml-arena.com using your GitHub credentials</List.Item>
+              <List.Item>Navigate to the FrozenLake competition page: https://ml-arena.com/viewcompetition/5</List.Item>
+              <List.Item>Name and upload your agent following the platform guidelines</List.Item>
+              <List.Item>Deploy your submission and verify it appears on the leaderboard</List.Item>
+            </List>
+          </div>
+
+          {/* Requirements Section */}
+          <div>
+            <Alert 
+              icon={<AlertTriangle className="w-5 h-5" />}
+              title="Validation Requirements"
+              className="bg-blue-50 text-blue-900 border-blue-200"
+            >
+              <Text className="text-sm">
+                Your agent must achieve a mean reward of at least 0.6 over 1000 runs to be validated. 
+                The platform will automatically evaluate your agent's performance.
+              </Text>
+              <Text className="text-sm mt-2">
+                If you're using a different username than your GitHub account, please email: 
+                raphael.cousin.teaching@gmail.com
+              </Text>
+            </Alert>
+          </div>
+        </Stack>
+
+        <DataInteractionPanel
+          notebookUrl={notebookUrl}
+          notebookHtmlUrl={notebookHtmlUrl}
+          notebookColabUrl={notebookColabUrl}
+          className="mt-6"
+        />
+      </Stack>
     </Container>
   );
 };
