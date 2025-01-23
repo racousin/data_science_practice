@@ -38,7 +38,7 @@ class Agent:
         self.action_size = action_size
         self.epsilon = 0.1  # Exploration rate
         
-    def select_action(self, state):
+    def choose_action(self, state):
         """Choose action using knowledge"""
         return random.randint(0, self.action_size - 1)
     
@@ -58,7 +58,7 @@ for episode in range(100):
     
     while not done:
         # Agent selects action
-        action = agent.select_action(state)
+        action = agent.choose_action(state)
         
         # Environment step
         next_state, reward, done = env.step(action)
@@ -90,7 +90,7 @@ for episode in range(100):
           <Code>done</Code>: Boolean flag indicating if the episode has ended (goal reached or failure).
         </li>
         <li>
-          <Code>state</Code>: Current position/configuration of the environment.
+          <Code>state</Code> or <Code>observation</Code>: Current position/configuration of the environment.
         </li>
       </ul>
       <pre className="bg-gray-100 p-4 rounded-lg overflow-x-auto mb-6">
@@ -103,7 +103,7 @@ for episode in range(100):
       </Text>
       <ul className="list-disc pl-6 mb-4">
         <li>
-          <Code>select_action(state)</Code>: Chooses an action based on the current state using an exploration strategy.
+          <Code>choose_action(state)</Code>: Chooses an action based on the current state using an exploration strategy.
         </li>
         <li>
           <Code>learn(state, action, reward, next_state)</Code>: Updates the agent's knowledge based on experience.

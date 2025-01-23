@@ -84,7 +84,7 @@ class Agent:
         self.action_size = action_size
         self.epsilon = 0.1  # Exploration rate
         
-    def select_action(self, state):
+    def choose_action(self, state):
         """Choose action based on epsilon-greedy strategy"""
         rand = random.random()  # Generate a random float in [0, 1)
         if rand < self.epsilon:
@@ -207,6 +207,15 @@ class Agent:
           <CodeBlock code={agentCode} language="python" />
 
         </section>
+        {/* <section>
+        <Title order={2} className="mb-4" id="epsilon-greedy">
+          Implementation Q ε-Greedy Policy
+        </Title>
+
+
+<CodeBlock code={agentCode} language="python" />
+
+</section> */}
       </Stack>
     </Container>
   );

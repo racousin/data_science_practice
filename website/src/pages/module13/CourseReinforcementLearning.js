@@ -107,15 +107,8 @@ const CourseReinforcementLearning = () => {
       {location.pathname === `/module${module}/course` && (
         <>
           <Row>
-            <p>
-              In this module, you will learn about reinforcement learning, its
-              fundamental concepts, algorithms, and applications in artificial
-              intelligence and decision-making processes.
-            </p>
-          </Row>
-          <Row>
             <Col>
-              <p>Last Updated: {"2024-09-20"}</p>
+              <p>Last Updated: {"2025-01-23"}</p>
             </Col>
           </Row>
         </>

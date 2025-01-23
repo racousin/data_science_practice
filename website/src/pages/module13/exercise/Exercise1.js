@@ -58,13 +58,14 @@ const Exercise1 = () => {
           </div>
         </Stack>
 
-        <DataInteractionPanel
+
+      </Stack>
+      <DataInteractionPanel
           notebookUrl={notebookUrl}
           notebookHtmlUrl={notebookHtmlUrl}
           notebookColabUrl={notebookColabUrl}
           className="mt-6"
         />
-      </Stack>
     </Container>
   );
 };

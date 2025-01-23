@@ -137,7 +137,7 @@ class Agent:
         self.epsilon = 0.1  # Exploration rate
         self.Q = np.zeros((state_size, action_size))  # Q-table initialization
         
-    def select_action(self, state):
+    def choose_action(self, state):
         """Choose action based on epsilon-greedy strategy"""
         if random.random() > self.epsilon:  # With probability 1-ε, choose best action
             return np.argmax(self.Q[state, :])
@@ -149,15 +149,7 @@ class Agent:
       <h2>Model-Free Reinforcement Learning Methods</h2>
 
       <RLObjectiveSection />
-      <section>
-        <Title order={2} className="mb-4" id="epsilon-greedy">
-          Implementation Q ε-Greedy Policy
-        </Title>
 
-
-<CodeBlock code={agentCode} language="python" />
-
-</section>
       <Row className="mt-4">
         <Col>
           <h3>Monte-Carlo Method</h3>
@@ -193,7 +185,7 @@ class Agent:
               Generate an episode with the policy <InlineMath math="\pi" />{" "}
               (extract from <InlineMath math="Q" />{" "}
               <InlineMath math="\epsilon" />
-              -greedy)
+              -greedy, i.e: <InlineMath math="a = \arg\max Q(s, a)"/> or random action)
             </li>
             <li>
               Evaluate Q using the episode:

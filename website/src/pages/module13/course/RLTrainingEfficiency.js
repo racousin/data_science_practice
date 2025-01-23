@@ -6,6 +6,11 @@ import PettingZooGuide from './PettingZooGuide';
 import RLFrameworks from './RLFrameworks';
 
 const RLTrainingEfficiency = () => {
+
+  // import scipy.signal
+  // def discount_cumsum(x, discount):
+  //     return scipy.signal.lfilter([1], [1, float(-discount)], x[::-1], axis=0)[::-1]
+
   return (
     <Container size="xl" className="py-6">
       <Stack spacing="xl">
