@@ -176,12 +176,12 @@ const modules = [
     linkExercise: "/module15/exercise",
     tags: ["Cloud"],
   },
-  {
-    id: 16,
-    title: "Project",
-    linkCourse: "/project-page",
-    tags: ["Machine Learning", "Deep Learning"],
-  },
+  // {
+  //   id: 16,
+  //   title: "Project",
+  //   linkCourse: "/project-page",
+  //   tags: ["Machine Learning", "Deep Learning"],
+  // },
 ];
 const tags = ["All", "Version Control", "Programming", "Machine Learning", "Cloud", "Deep Learning"];
 
