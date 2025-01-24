@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Text, Title, Stack, List, Alert } from '@mantine/core';
+import { Container, Text, Title, Stack, List, Alert, Code } from '@mantine/core';
 import { AlertTriangle } from 'lucide-react';
 import DataInteractionPanel from 'components/DataInteractionPanel';
 
@@ -17,7 +17,7 @@ const Exercise2 = () => {
 
         <Text className="text-gray-700">
           In this exercise, you'll train an agent for the 8x8 FrozenLake environment and submit it to the ml-arena.com platform
-          for evaluation. Your agent will need to achieve a mean reward of at least 0.6 over runs to be validated.
+          for evaluation. Your agent will need to achieve a mean reward of at least 0.4 over runs to be validated.
         </Text>
 
         <Stack spacing="lg">
@@ -48,7 +48,13 @@ const Exercise2 = () => {
               <List.Item>Deploy your submission and verify it appears on the leaderboard</List.Item>
             </List>
           </div>
-
+          <div>
+          <Title order={2} id="expected-output">Save your training notebook in github</Title>
+          <Text>Create a pull request with your Jupyter Notebook (<Code>exercise2.ipynb</Code>) containing:</Text>
+          <List>
+            <List.Item>Implementation and training</List.Item>
+          </List>
+          </div>
           {/* Requirements Section */}
           <div>
             <Alert 
@@ -57,12 +63,12 @@ const Exercise2 = () => {
               className="bg-blue-50 text-blue-900 border-blue-200"
             >
               <Text className="text-sm">
-                Your agent must achieve a mean reward of at least 0.6 over runs to be validated. 
+                Your agent must achieve a mean reward of at least 0.4 over runs to be validated. 
                 The platform will automatically evaluate your agent's performance.
               </Text>
               <Text className="text-sm mt-2">
                 If you're using a different username than your GitHub account, please email: 
-                raphael.cousin.teaching@gmail.com
+                raphaelcousin.teaching@gmail.com
               </Text>
             </Alert>
           </div>

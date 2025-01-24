@@ -395,36 +395,6 @@ const DynamicProgramming = () => {
         </Col>
       </Row>
 
-      <Row className="mt-4">
-        <Col>
-          <h2>Code: Dynamic Programming</h2>
-          <CodeBlock
-            code={`
-# Example implementation of Policy Iteration
-def policy_evaluation(policy, V, P, R, gamma, theta):
-    # ... implementation ...
-
-def policy_improvement(V, P, R, gamma):
-    # ... implementation ...
-
-def policy_iteration(P, R, gamma, theta):
-    V = {s: 0 for s in P.keys()}
-    policy = {s: np.random.choice(len(P[s])) for s in P.keys()}
-    
-    while True:
-        V = policy_evaluation(policy, V, P, R, gamma, theta)
-        new_policy = policy_improvement(V, P, R, gamma)
-        
-        if new_policy == policy:
-            break
-        policy = new_policy
-    
-    return policy, V
-            `}
-          />
-        </Col>
-      </Row>
-
       <DynamicProgrammingSection/>
     </Container>
   );
