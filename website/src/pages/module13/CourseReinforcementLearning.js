@@ -68,9 +68,9 @@ const CourseReinforcementLearning = () => {
       ],
     },
     {
-      to: "/deep-model-free",
-      label: "Deep Reinforcement Learning",
-      component: lazy(() => import("pages/module13/course/DeepRL")),
+      to: "/deep-q-learning",
+      label: "Deep Q Learning",
+      component: lazy(() => import("pages/module13/course/DeepQLearning")),
       subLinks: [
         { id: "deep-q-learning", label: "Deep Q-Learning" },
         { id: "policy-gradient", label: "Policy Gradient Methods" },
