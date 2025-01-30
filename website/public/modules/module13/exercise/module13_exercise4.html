@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>module13_exercise2</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>module13_exercise4</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7516,7 +7516,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Run-in-collab">Run in collab<a class="anchor-link" href="#Run-in-collab">¶</a></h3><p><a href="https://colab.research.google.com/github/racousin/data_science_practice/blob/master/website/public/modules/module13/exercise/module13_exercise2.ipynb" target="_parent"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg"/></a></p>
+<h3 id="Run-in-collab">Run in collab<a class="anchor-link" href="#Run-in-collab">¶</a></h3><p><a href="https://colab.research.google.com/github/racousin/data_science_practice/blob/master/website/public/modules/module13/exercise/module13_exercise4.ipynb" target="_parent"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg"/></a></p>
 </div>
 </div>
 </div>
@@ -7561,7 +7561,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="module13_exercise2-:-ML---Arena--FrozenLake-Competition">module13_exercise2 : ML - Arena <a href="https://ml-arena.com/viewcompetition/5" target="_blank"> FrozenLake Competition</a><a class="anchor-link" href="#module13_exercise2-:-ML---Arena--FrozenLake-Competition">¶</a></h1>
+<h1 id="module13_exercise4-:-ML---Arena--LunarLander">module13_exercise4 : ML - Arena <a href="https://ml-arena.com/viewcompetition/1" target="_blank"> LunarLander</a><a class="anchor-link" href="#module13_exercise4-:-ML---Arena--LunarLander">¶</a></h1>
 </div>
 </div>
 </div>
@@ -7572,7 +7572,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Objective">Objective<a class="anchor-link" href="#Objective">¶</a></h3><p>Get at list an agent running on ML-Arena <a href="https://ml-arena.com/viewcompetition/5" target="_blank"> FrozenLake Competition</a> with mean reward upper than 0.35 (ie 35%)</p>
+<h3 id="Objective">Objective<a class="anchor-link" href="#Objective">¶</a></h3><p>Get at list an agent running on ML-Arena <a href="https://ml-arena.com/viewcompetition/1" target="_blank"> LunarLander</a> with mean reward upper than 50</p>
 </div>
 </div>
 </div>
@@ -7614,11 +7614,35 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Description">Description<a class="anchor-link" href="#Description">¶</a></h3><p>The game starts with the player at location [0,0] of the frozen lake grid world with the goal located at far extent of the world [7,7].</p>
-<p>Holes in the ice are distributed in set locations.</p>
-<p>The player makes moves until they reach the goal or fall in a hole.</p>
-<p>Each run will consist of 10 attempts to cross the ice. The reward will be the total amount accumulated during those trips. For example, if your agent reaches the goal 3 times out of 10, its reward will be 3.</p>
-<p>The environment is based on :</p>
+<h3 id="Description">Description<a class="anchor-link" href="#Description">¶</a></h3><p>This environment is a classic rocket trajectory optimization problem. According to Pontryagin’s maximum principle, it is optimal to fire the engine at full throttle or turn it off. This is the reason why this environment has discrete actions: engine on or off.
+There are two environment versions: discrete or continuous. The landing pad is always at coordinates (0,0). The coordinates are the first two numbers in the state vector. Landing outside of the landing pad is possible. Fuel is infinite, so an agent can learn to fly and then land on its first attempt.</p>
+<h3 id="Action-Space">Action Space<a class="anchor-link" href="#Action-Space">¶</a></h3><p>There are four discrete actions available:</p>
+<ul>
+<li>0: do nothing</li>
+<li>1: fire left orientation engine</li>
+<li>2: fire main engine</li>
+<li>3: fire right orientation engine</li>
+</ul>
+<h3 id="Observation-Space">Observation Space<a class="anchor-link" href="#Observation-Space">¶</a></h3><p>The state is an 8-dimensional vector: the coordinates of the lander in x &amp; y, its linear velocities in x &amp; y, its angle, its angular velocity, and two booleans that represent whether each leg is in contact with the ground or not.</p>
+<h3 id="Rewards">Rewards<a class="anchor-link" href="#Rewards">¶</a></h3><p>After every step a reward is granted. The total reward of an episode is the sum of the rewards for all the steps within that episode.
+For each step, the reward:</p>
+<ul>
+<li>is increased/decreased the closer/further the lander is to the landing pad.</li>
+<li>is increased/decreased the slower/faster the lander is moving.</li>
+<li>is decreased the more the lander is tilted (angle not horizontal).</li>
+<li>is increased by 10 points for each leg that is in contact with the ground.</li>
+<li>is decreased by 0.03 points each frame a side engine is firing.</li>
+<li>is decreased by 0.3 points each frame the main engine is firing.</li>
+</ul>
+<p>The episode receive an additional reward of -100 or +100 points for crashing or landing safely respectively.
+An episode is considered a solution if it scores at least 200 points.</p>
+<h3 id="Starting-State">Starting State<a class="anchor-link" href="#Starting-State">¶</a></h3><p>The lander starts at the top center of the viewport with a random initial force applied to its center of mass.</p>
+<h3 id="Episode-Termination">Episode Termination<a class="anchor-link" href="#Episode-Termination">¶</a></h3><p>The episode finishes if:</p>
+<ul>
+<li>the lander crashes (the lander body gets in contact with the moon);</li>
+<li>the lander gets outside of the viewport (x coordinate is greater than 1);</li>
+<li>the lander is not awake. From the Box2D docs, a body which is not awake is a body which doesn’t move and doesn’t collide with any other body.</li>
+</ul>
 </div>
 </div>
 </div>
@@ -7630,7 +7654,7 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">'FrozenLake-v1'</span><span class="p">,</span> <span class="n">map_name</span><span class="o">=</span><span class="s2">"8x8"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">"LunarLander-v2"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7683,7 +7707,7 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">'FrozenLake-v1'</span><span class="p">,</span> <span class="n">map_name</span><span class="o">=</span><span class="s2">"8x8"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">"LunarLander-v2"</span><span class="p">)</span>
 <span class="n">agent</span> <span class="o">=</span> <span class="n">Agent</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
 
 <span class="n">observation</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>

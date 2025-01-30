@@ -7,11 +7,11 @@ import CodeBlock from "components/CodeBlock";
 const DeepRL = () => {
   return (
     <Container fluid>
-      <h2>Deep Reinforcement Learning</h2>
+      <h2>Deep Model Free</h2>
 
       <Row className="mt-4">
         <Col>
-          <h3>Third Glossary of RL</h3>
+          <h3>Glossary</h3>
           <ul>
             <li>Reinforce/VPG</li>
             <li>Deep Q-learning</li>
@@ -22,7 +22,7 @@ const DeepRL = () => {
 
       <Row className="mt-4">
         <Col>
-          <h3>Limitations of Traditional Q Learning</h3>
+          <h3 id="deep-q-learning">Limitations of Traditional Q Learning</h3>
           <p>Q Learning faces challenges when scaling to complex problems:</p>
           <ul>
             <li>High-dimensional state spaces lead to slow convergence.</li>
@@ -110,7 +110,7 @@ const DeepRL = () => {
 
       <Row className="mt-4">
         <Col>
-          <h3>Policy Optimization</h3>
+          <h3 id="policy-gradient">Policy Optimization</h3>
           <ul>
             <li>
               Parametrization of policy, <InlineMath math="\pi_{\theta}" />.
@@ -170,7 +170,7 @@ const DeepRL = () => {
 
       <Row className="mt-4">
         <Col>
-          <h3>Introduction to Actor-Critic Models</h3>
+          <h3 id="actor-critic">Introduction to Actor-Critic Models</h3>
           <p>
             Actor-Critic models combine the benefits of policy-based and
             value-based approaches:

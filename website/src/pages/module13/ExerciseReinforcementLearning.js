@@ -21,6 +21,21 @@ const ExerciseReinforcementLearning = () => {
       label: <>Exercise 2<span style={{color: 'red', fontWeight: 'bold'}}>*</span></>,
       component: lazy(() => import("pages/module13/exercise/Exercise2")),
     },
+    {
+      to: "/exercise3",
+      label: "Exercise 3",
+      component: lazy(() => import("pages/module13/exercise/Exercise3")),
+    },
+    {
+      to: "/exercise4",
+      label: <>Exercise 4<span style={{color: 'red', fontWeight: 'bold'}}>*</span></>,
+      component: lazy(() => import("pages/module13/exercise/Exercise4")),
+    },
+    {
+      to: "/exercise5",
+      label: "Exercise 5",
+      component: lazy(() => import("pages/module13/exercise/Exercise5")),
+    },
   ];
 
   const location = useLocation();
@@ -37,7 +52,7 @@ const ExerciseReinforcementLearning = () => {
           <Row>
             <p>
               In this module, you will practice building and applying
-              reinforcement learning algorithms in AI.
+              reinforcement learning algorithms.
             </p>
           </Row>
           <Row>
