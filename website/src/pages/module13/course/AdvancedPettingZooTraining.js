@@ -7,280 +7,255 @@ const AdvancedPettingZooTraining = () => {
 <>
       <Title order={1} className="mb-6">Advanced Multi-Opponent Training in PettingZoo</Title>
       
-      <Text className="mb-6 text-lg">
-        This guide covers advanced techniques for training agents against multiple opponents
-        in parallel using PettingZoo. We'll explore environment wrapping, parallel execution,
-        and curriculum learning strategies.
-      </Text>
-
-      <Title order={2} id="environment-wrapper" className="mb-4 mt-8">MultiOpponentEnv Wrapper</Title>
       
       <Text className="mb-4">
-        The MultiOpponentEnv wrapper manages multiple opponents and their interactions within
-        a single environment instance. It handles policy selection, execution order, and
-        state management.
+      Train one main agent against multiple opponent agents sequentially
       </Text>
 
       <CodeBlock language="python" code={`
-from pettingzoo import AECEnv
-from typing import Dict, List, Callable
-import numpy as np
 
-class MultiOpponentEnv:
-    """Environment wrapper for managing multiple opponents"""
-    def __init__(self, 
-                 env_creator: Callable[[], AECEnv],
-                 opponent_policies: Dict[str, Callable],
-                 our_agent_id: str = "player_0"):
-        self.env = env_creator()
-        self.opponent_policies = opponent_policies
-        self.our_agent_id = our_agent_id
-        self.opponent_rewards = {opponent: 0 for opponent in opponent_policies.keys()}
-        
-    def reset(self):
-        """Reset environment and all opponent states"""
-        observations = self.env.reset()
-        self.opponent_rewards = {opponent: 0 for opponent in self.opponent_policies.keys()}
-        return observations[self.our_agent_id]
-        
-    def step(self, our_action):
-        """Execute one step of the environment"""
-        current_rewards = {}
-        
-        # Complete one full cycle of the environment
-        for agent in self.env.agent_iter():
-            if agent == self.our_agent_id:
-                # Execute our agent's action
-                obs, rew, term, trunc, info = self.env.step(our_action)
-                current_rewards[agent] = rew
-            else:
-                # Get observation and execute opponent policy
-                obs, rew, term, trunc, info = self.env.last()
-                
-                if term or trunc:
-                    action = None
-                else:
-                    # Get appropriate opponent policy and execute
-                    policy = self.opponent_policies[agent]
-                    action = policy(obs)
-                    
-                obs, rew, term, trunc, info = self.env.step(action)
-                current_rewards[agent] = rew
-                self.opponent_rewards[agent] += rew
-        
-        # Return state from our agent's perspective
-        final_obs = self.env.observe(self.our_agent_id)
-        return final_obs, current_rewards[self.our_agent_id], term, trunc, info`} />
-
-      <Alert className="my-6 bg-blue-50">
-        <div className="flex items-start">
-          <Info className="w-5 h-5 mt-1 mr-2" />
-          <div>
-            <Text className="font-medium mb-2">Key Features</Text>
-            <Text>
-              - Maintains separate reward tracking for each opponent
-              - Handles proper turn ordering in the AEC environment
-              - Provides clean interface for policy execution
-            </Text>
-          </div>
-        </div>
-      </Alert>
-
-      <Title order={2} id="parallel-setup" className="mb-4 mt-8">Parallel Environment Setup</Title>
-      
-      <CodeBlock language="python" code={`
-from gymnasium.vector import AsyncVectorEnv
-import torch
-
-def create_parallel_environments(
-    num_envs: int,
-    env_creator: Callable,
-    opponent_policies: Dict[str, List[Callable]]
-) -> AsyncVectorEnv:
-    """Create multiple environments with different opponent combinations"""
+def train_sequential(
+    make_env,
+    main_agent_class: Type[Agent],
+    opponent_classes: List[Type[Agent]],
+    n_total_episodes: int = 10000,
+    eval_frequency: int = 100,
+    max_cycles: int = 3000,
+    opponent_probs: List[float] = None,
+    seed: int = None
+) -> Dict:
+    """
+    Train one main agent against multiple opponent agents sequentially.
     
-    def make_env(idx: int):
-        def _init():
-            # Select subset of opponents for this environment
-            env_opponents = {
-                f"opponent_{i}": opponent_policies[i % len(opponent_policies)]
-                for i in range(idx, idx + 3)  # Each env has 3 opponents
-            }
-            
-            return MultiOpponentEnv(
-                env_creator=env_creator,
-                opponent_policies=env_opponents
-            )
-        return _init
+    Args:
+        make_env: Function that creates a new environment instance
+        main_agent_class: The primary agent class to train
+        opponent_classes: List of opponent agent classes to train against
+        n_total_episodes: Total number of training episodes across all opponents
+        eval_frequency: Number of episodes between metric computations
+        max_cycles: Maximum number of cycles per episode
+        opponent_probs: List of probabilities for selecting each opponent. Must sum to 1.
+                       If None, uniform distribution is used.
+        seed: Random seed for reproducibility
     
-    # Create vector of environments
-    return AsyncVectorEnv([make_env(i) for i in range(num_envs)])
-
-# Example usage with different opponent types
-def create_diverse_opponent_set():
-    return {
-        "random": lambda obs: np.random.randint(4),
-        "heuristic": lambda obs: simple_heuristic_policy(obs),
-        "defensive": lambda obs: defensive_policy(obs),
-        "aggressive": lambda obs: aggressive_policy(obs),
-        "champion": lambda obs: pretrained_champion_policy(obs)
-    }`} />
-
-      <Title order={2} id="curriculum-learning" className="mb-4 mt-8">Advanced Training Features</Title>
-
-      <CodeBlock language="python" code={`
-class CurriculumTrainer:
-    """Manages curriculum-based training against multiple opponents"""
-    def __init__(self, 
-                 agent,
-                 env_creator,
-                 opponent_policies,
-                 num_envs=4):
-        self.agent = agent
-        self.env_creator = env_creator
-        self.base_policies = opponent_policies
-        self.num_envs = num_envs
-        self.current_stage = 0
-        self.stages = self._create_curriculum_stages()
-        
-    def _create_curriculum_stages(self):
-        """Create progressively harder training stages"""
-        return [
-            {  # Stage 1: Basic opponents
-                "policies": {
-                    "random": self.base_policies["random"],
-                    "simple": self.base_policies["heuristic"]
-                },
-                "threshold": 0.6  # Win rate to progress
-            },
-            {  # Stage 2: Intermediate opponents
-                "policies": {
-                    "defensive": self.base_policies["defensive"],
-                    "aggressive": self.base_policies["aggressive"]
-                },
-                "threshold": 0.5
-            },
-            {  # Stage 3: Advanced opponents
-                "policies": {
-                    "champion": self.base_policies["champion"],
-                    "mixed": self._create_mixed_policy()
-                },
-                "threshold": 0.4
-            }
-        ]
+    Returns:
+        Dictionary containing training results and metrics
+    """
+    if seed is not None:
+        np.random.seed(seed)
+        random.seed(seed)
     
-    def _create_mixed_policy(self):
-        """Create a policy that randomly selects from other policies"""
-        policies = list(self.base_policies.values())
-        return lambda obs: np.random.choice(policies)(obs)
-        
-    def train_epoch(self, num_steps=1000):
-        """Train for one epoch at current curriculum stage"""
-        stage = self.stages[self.current_stage]
-        envs = create_parallel_environments(
-            self.num_envs,
-            self.env_creator,
-            stage["policies"]
-        )
-        
-        observations = envs.reset()
-        episode_rewards = np.zeros(self.num_envs)
-        
-        for step in range(num_steps):
-            actions = self.agent.get_actions(observations)
-            next_obs, rewards, terms, truncs, infos = envs.step(actions)
-            
-            # Update episodes
-            episode_rewards += rewards
-            
-            # Handle episode termination
-            for i, (term, trunc) in enumerate(zip(terms, truncs)):
-                if term or trunc:
-                    self.log_episode(episode_rewards[i])
-                    episode_rewards[i] = 0
-            
-            # Update agent
-            self.agent.update(observations, actions, rewards, next_obs, terms)
-            observations = next_obs
-        
-        # Check for curriculum progression
-        self.check_progression()
+    # Initialize opponent probabilities
+    if opponent_probs is None:
+        opponent_probs = [1.0 / len(opponent_classes)] * len(opponent_classes)
+    assert len(opponent_probs) == len(opponent_classes)
+    assert abs(sum(opponent_probs) - 1.0) < 1e-6
     
-    def check_progression(self):
-        """Check if agent is ready to progress to next stage"""
-        if self.get_win_rate() > self.stages[self.current_stage]["threshold"]:
-            self.current_stage = min(self.current_stage + 1, len(self.stages) - 1)
-            print(f"Progressing to curriculum stage {self.current_stage + 1}")
-`} />
-
-      <Alert className="my-6 bg-yellow-50">
-        <div className="flex items-start">
-          <AlertTriangle className="w-5 h-5 mt-1 mr-2" />
-          <div>
-            <Text className="font-medium mb-2">Training Considerations</Text>
-            <Text>
-              - Monitor win rates against each opponent type separately
-              - Adjust curriculum thresholds based on task difficulty
-              - Consider implementing early stopping for efficient training
-            </Text>
-          </div>
-        </div>
-      </Alert>
-
-      <Title order={2} id="best-practices" className="mb-4 mt-8">Best Practices and Configuration</Title>
-
-      <CodeBlock language="python" code={`
-class TrainingConfig:
-    """Configuration for multi-opponent training"""
-    def __init__(self):
-        self.num_envs = 4
-        self.batch_size = 256
-        self.learning_rate = 3e-4
-        self.gamma = 0.99
-        self.update_interval = 100
-        self.eval_interval = 1000
-        
-        # Curriculum settings
-        self.curriculum_stages = [
-            {"opponent_count": 2, "min_win_rate": 0.6},
-            {"opponent_count": 4, "min_win_rate": 0.5},
-            {"opponent_count": 6, "min_win_rate": 0.4}
-        ]
-        
-        # Opponent mixing probabilities
-        self.opponent_probs = {
-            "random": 0.2,
-            "heuristic": 0.3,
-            "defensive": 0.2,
-            "aggressive": 0.2,
-            "champion": 0.1
+    # Initialize training results dictionary
+    training_results = {
+        'opponents': [{
+            'opponent_id': idx,
+            'opponent_class': opponent_class.__name__,
+            'episodes': [],
+            'metrics_history': [],
+            'win_rate_history': [],
+            'draw_rate_history': [],
+            'lose_rate_history': []
+        } for idx, opponent_class in enumerate(opponent_classes, 1)],
+        'summary': {
+            'total_episodes': 0,
+            'total_training_time': 0
         }
-
-def create_training_session(config: TrainingConfig):
-    """Set up a complete training session with best practices"""
-    # Initialize environments with proper error handling
-    try:
-        trainer = CurriculumTrainer(
-            agent=create_agent(config),
-            env_creator=create_env_with_monitoring,
-            opponent_policies=create_diverse_opponent_set(),
-            num_envs=config.num_envs
-        )
-    except Exception as e:
-        print(f"Error setting up training: {e}")
-        return None
-        
-    # Set up logging and monitoring
-    setup_tensorboard_logging(trainer)
-    setup_opponent_tracking(trainer)
+    }
     
-    return trainer`} />
+    # Create environment and agents
+    env = make_env()
+    main_agent = main_agent_class(env)
+    opponent_instances = {
+        opponent_class.__name__: opponent_class(env)
+        for opponent_class in opponent_classes
+    }
+    
+    start_time = time.time()
+    metrics_window = []
+    current_window_start = 0
+    
+    def select_opponent() -> Type[Agent]:
+        """Select opponent based on provided probabilities"""
+        return np.random.choice(opponent_classes, p=opponent_probs)
+    
+    # Main training loop
+    for episode in range(n_total_episodes):
+        # Select opponent for this episode
+        opponent_class = select_opponent()
+        opponent = opponent_instances[opponent_class.__name__]
+        
+        env.reset()
+        
+        # Randomly assign roles
+        possible_players = list(env.possible_agents)
+        random.shuffle(possible_players)
+        main_agent.player_name = possible_players[0]
+        opponent.player_name = possible_players[1]
+        
+        agent_mapping = {
+            main_agent.player_name: (main_agent, "main_agent"),
+            opponent.player_name: (opponent, "opponent")
+        }
+        
+        # Run single episode
+        episode_rewards = {"main_agent": 0, "opponent": 0}
+        step_count = 0
+        episode_active = True
+        
+        for agent_id in env.agent_iter():
+            observation, reward, termination, truncation, info = env.last()
+            agent, agent_name = agent_mapping[agent_id]
+            episode_rewards[agent_name] += reward
+            
+            if termination or truncation:
+                action = None
+                episode_active = False
+            else:
+                action = agent.choose_action(
+                    observation, reward, termination, truncation, info
+                )
+                if agent_name == "main_agent":
+                    agent.learn()
+            
+            env.step(action)
+            step_count += 1
+            
+            if not episode_active or step_count >= max_cycles:
+                break
+        
+        # Record episode results
+        main_score = episode_rewards["main_agent"]
+        opponent_score = episode_rewards["opponent"]
+        episode_data = {
+            "episode": episode + 1,
+            "opponent_class": opponent_class.__name__,
+            "main_agent_role": main_agent.player_name,
+            "main_agent_score": main_score,
+            "opponent_score": opponent_score,
+            "steps": step_count,
+            "win": main_score > opponent_score,
+            "draw": main_score == opponent_score,
+            "lose": main_score < opponent_score
+        }
+        
+        # Store episode data
+        opponent_idx = next(
+            i for i, res in enumerate(training_results['opponents'])
+            if res['opponent_class'] == opponent_class.__name__
+        )
+        training_results['opponents'][opponent_idx]['episodes'].append(episode_data)
+        metrics_window.append(episode_data)
+        
+        # Compute and display metrics periodically
+        if (episode + 1) % eval_frequency == 0 or episode == n_total_episodes - 1:
+            window_episodes = metrics_window[current_window_start:]
+            current_window_start = len(metrics_window)
+            
+            if window_episodes:
+                print(f"\nEpisode {episode + 1}/{n_total_episodes}")
+                print("=" * 50)
+                
+                total_games = len(window_episodes)
+                
+                for opponent_results in training_results['opponents']:
+                    recent_episodes = [
+                        ep for ep in window_episodes
+                        if ep['opponent_class'] == opponent_results['opponent_class']
+                    ]
+                    
+                    if recent_episodes:
+                        metrics = {
+                            "episode": episode + 1,
+                            "games": len(recent_episodes),
+                            "win_rate": sum(ep['win'] for ep in recent_episodes) / len(recent_episodes),
+                            "draw_rate": sum(ep['draw'] for ep in recent_episodes) / len(recent_episodes),
+                            "lose_rate": sum(ep['lose'] for ep in recent_episodes) / len(recent_episodes),
+                            "avg_score": sum(ep['main_agent_score'] for ep in recent_episodes) / len(recent_episodes),
+                            "avg_opponent_score": sum(ep['opponent_score'] for ep in recent_episodes) / len(recent_episodes),
+                            "avg_steps": sum(ep['steps'] for ep in recent_episodes) / len(recent_episodes)
+                        }
+                        
+                        opponent_results['metrics_history'].append(metrics)
+                        opponent_results['win_rate_history'].append(metrics['win_rate'])
+                        opponent_results['draw_rate_history'].append(metrics['draw_rate'])
+                        opponent_results['lose_rate_history'].append(metrics['lose_rate'])
+                        
+                        print(f"\n{opponent_results['opponent_class']}:")
+                        print(f"Games: {metrics['games']} ({metrics['games']/total_games:.1%} of total)")
+                        print(f"Win Rate: {metrics['win_rate']:.1%}")
+                        print(f"Draw Rate: {metrics['draw_rate']:.1%}")
+                        print(f"Lose Rate: {metrics['lose_rate']:.1%}")
+                        print(f"Avg Score: {metrics['avg_score']:.1f} vs {metrics['avg_opponent_score']:.1f}")
+    
+    training_results['summary'].update({
+        'total_episodes': n_total_episodes,
+        'total_training_time': time.time() - start_time,
+        'final_metrics': {
+            opponent_results['opponent_class']: opponent_results['metrics_history'][-1]
+            if opponent_results['metrics_history'] else None
+            for opponent_results in training_results['opponents']
+        }
+    })
+    
+    print("\nTraining Complete!")
+    print("=" * 50)
+    print(f"Total Training Time: {training_results['summary']['total_training_time']:.1f} seconds")
+    
+    return training_results
 
-      <Text className="mt-6 mb-4">
-        Following these practices ensures robust training while maintaining code clarity and
-        debugging capabilities. The modular structure allows for easy experimentation with
-        different opponent combinations and training strategies.
-      </Text>
+if __name__ == "__main__":
+    class YourAgent:
+        """Base Agent class for Pong competition."""
+        def __init__(self, env, player_name = None):
+            self.env = env
+            self.player_name = player_name
+            
+        def choose_action(self, observation, reward=0.0, terminated=False, truncated=False, info=None):
+            """Choose an action based on the current game state."""
+            return self.env.action_space(self.player_name).sample()
+        def learn(self):
+            pass
+    class AlwaysLeftAgent:
+        """Base Agent class for Pong competition."""
+        def __init__(self, env, player_name = None):
+            self.env = env
+            self.player_name = player_name
+            
+        def choose_action(self, observation, reward=0.0, terminated=False, truncated=False, info=None):
+            """Choose an action based on the current game state."""
+            return 1
+    class AlwaysRightAgent:
+        """Base Agent class for Pong competition."""
+        def __init__(self, env, player_name = None):
+            self.env = env
+            self.player_name = player_name
+            
+        def choose_action(self, observation, reward=0.0, terminated=False, truncated=False, info=None):
+            """Choose an action based on the current game state."""
+            return 1
+
+    def make_env():
+        return pong_v3.env()
+    opponent_agents = [AlwaysLeftAgent, AlwaysRightAgent]
+    opponent_probs = [0.9, 0.1] 
+
+    # Train the agent
+    results = train_sequential(
+        make_env=make_env,
+        main_agent_class=YourAgent,
+        opponent_classes=opponent_agents,
+        opponent_probs=opponent_probs,
+        n_total_episodes=100,
+        eval_frequency=10,
+        max_cycles=5000 
+    )`} />
+
       </>
   );
 };

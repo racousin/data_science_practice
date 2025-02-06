@@ -1,7 +1,88 @@
 import React from 'react';
-import { Title, Text, Container, Paper, Alert  } from '@mantine/core';
+import { Title, Text, Container, Paper, Alert,List, Grid  } from '@mantine/core';
 import { Info } from 'lucide-react';
 import CodeBlock from 'components/CodeBlock';
+
+const ParallelTrainingSection = () => {
+  return (
+    <div style={{ maxWidth: '64rem', margin: '0 auto' }}>
+      <Title order={1} mb="md">Parallel Environment Training</Title>
+      
+      <section>
+        <Title order={2} mb="sm">Asynchronous Environment Execution</Title>
+        <Text size="lg" mb="lg">
+          In parallel RL training, environments operate independently with different termination times. 
+          AsyncVectorEnv manages this through non-blocking execution, while SyncVectorEnv waits for all 
+          environments to complete their steps.
+        </Text>
+      </section>
+
+      <Alert icon={<Info size={16} />} mb="lg">
+        Vector environments return batched observations (num_envs × obs_dim) and expect batched actions,
+        enabling parallel policy evaluation and environment stepping.
+      </Alert>
+
+      <section>
+        <Title order={2} mb="md">Episode Length Management</Title>
+        <Paper p="md" radius="md" withBorder mb="lg">
+          <Title order={3} mb="md">Handling Variable Lengths</Title>
+          <List spacing="sm">
+            <List.Item icon={
+              <Text component="span" px="xs" bg="blue.1" style={{ fontFamily: 'monospace' }}>
+                Masking
+              </Text>
+            }>
+              Use boolean masks to track active episodes and filter terminated environments
+            </List.Item>
+            <List.Item icon={
+              <Text component="span" px="xs" bg="blue.1" style={{ fontFamily: 'monospace' }}>
+                Padding
+              </Text>
+            }>
+              Fill terminated episodes with zero rewards and forward-pass last observation
+            </List.Item>
+            <List.Item icon={
+              <Text component="span" px="xs" bg="blue.1" style={{ fontFamily: 'monospace' }}>
+                Bootstrapping
+              </Text>
+            }>
+              Estimate value functions for truncated episodes using current policy
+            </List.Item>
+          </List>
+        </Paper>
+      </section>
+
+      <section>
+        <Title order={2} mb="md">Memory Management</Title>
+        <Grid>
+          <Grid.Col span={6}>
+            <Paper p="md" radius="md" withBorder>
+              <Title order={3} size="h4" mb="sm">Buffer Structure</Title>
+              <Text mb="xs">Pre-allocated numpy arrays for:</Text>
+              <List>
+                <List.Item>Observations: (num_envs × obs_dim)</List.Item>
+                <List.Item>Actions: (num_envs × action_dim)</List.Item>
+                <List.Item>Rewards: (num_envs,)</List.Item>
+                <List.Item>Done flags: (num_envs,)</List.Item>
+              </List>
+            </Paper>
+          </Grid.Col>
+          <Grid.Col span={6}>
+            <Paper p="md" radius="md" withBorder>
+              <Title order={3} size="h4" mb="sm">Optimization</Title>
+              <List>
+                <List.Item>Circular buffers for trajectory storage</List.Item>
+                <List.Item>Vectorized operations for batch processing</List.Item>
+                <List.Item>Shared memory for multi-process communication</List.Item>
+              </List>
+            </Paper>
+          </Grid.Col>
+        </Grid>
+      </section>
+    </div>
+  );
+};
+
 
 const VectorizedEnvironmentsPage = () => {
   return (
@@ -62,19 +143,6 @@ envs = make("CartPole-v1", num_envs=4)
             return torch.argmax(logits, dim=1).numpy()`}
       />
 
-      <Alert className="my-6 bg-blue-50">
-        <div className="flex items-start">
-          <Info className="w-5 h-5 mt-1 mr-2" />
-          <div>
-            <Text className="font-medium mb-2">Pro Tip</Text>
-            <Text>
-              When implementing vectorized environments, pay special attention to tensor shapes
-              and batch processing. The key is to process all environment interactions simultaneously
-              for maximum efficiency.
-            </Text>
-          </div>
-        </div>
-      </Alert>
 
       <Title order={2} id="key-advantages" className="mb-4 mt-8">Key Advantages</Title>
 
@@ -106,81 +174,7 @@ for _ in range(250):  # 4x fewer iterations needed
     return loss.mean()  # Average across environments`}
       />
 
-      <Title order={2} id="common-challenges" className="mb-4 mt-8">Common Challenges and Solutions</Title>
-
-      <Title order={3} className="mb-4">1. Handling Different Episode Lengths</Title>
-      <CodeBlock 
-        language="python" 
-        code={`class EpisodeManager:
-    def __init__(self, num_envs):
-        self.episode_rewards = np.zeros(num_envs)
-        self.episode_lengths = np.zeros(num_envs)
-        
-    def update(self, rewards, dones):
-        self.episode_rewards += rewards
-        self.episode_lengths += 1
-        
-        # Reset stats for completed episodes
-        completed = []
-        for env_idx in range(len(dones)):
-            if dones[env_idx]:
-                completed.append({
-                    'reward': self.episode_rewards[env_idx],
-                    'length': self.episode_lengths[env_idx]
-                })
-                self.episode_rewards[env_idx] = 0
-                self.episode_lengths[env_idx] = 0
-        
-        return completed`}
-      />
-
-      <Title order={3} className="mb-4 mt-6">2. Resource Management</Title>
-      <CodeBlock 
-        language="python" 
-        code={`def configure_vectorized_training(available_memory_gb=4):
-    # Calculate optimal number of environments
-    env_memory_estimate = 0.1  # GB per environment (example)
-    optimal_num_envs = max(1, int(available_memory_gb / env_memory_estimate))
-    
-    # Create environments with resource constraints
-    envs = make("CartPole-v1", 
-                num_envs=optimal_num_envs,
-                asynchronous=True,  # Better CPU utilization
-                max_episode_steps=1000)  # Prevent infinite episodes
-    
-    return envs`}
-      />
-
-      <Title order={3} className="mb-4 mt-6">3. Synchronization and Determinism</Title>
-      <CodeBlock 
-        language="python" 
-        code={`def create_deterministic_envs(num_envs, seed=42):
-    def make_env(idx):
-        def _init():
-            env = gym.make("CartPole-v1")
-            env.reset(seed=seed + idx)
-            return env
-        return _init
-    
-    # Create vectorized environment with different seeds
-    return gym.vector.AsyncVectorEnv(
-        [make_env(i) for i in range(num_envs)]
-    )`}
-      />
-
-      <Alert className="my-6 bg-yellow-50">
-        <div className="flex items-start">
-          <Info className="w-5 h-5 mt-1 mr-2" />
-          <div>
-            <Text className="font-medium mb-2">Important Note</Text>
-            <Text>
-              When using vectorized environments in production, always monitor memory usage
-              and CPU utilization. Start with a smaller number of environments and scale up
-              based on your hardware capabilities.
-            </Text>
-          </div>
-        </div>
-      </Alert>
+<ParallelTrainingSection/>
       </>
   );
 };

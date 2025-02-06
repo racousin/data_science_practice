@@ -11,7 +11,7 @@ const DeepRL = () => {
 
       <Row className="mt-4">
         <Col>
-          <h3>Third Glossary of RL</h3>
+          <h3>Glossary</h3>
           <ul>
             <li>Reinforce/VPG</li>
             <li>Deep Q-learning</li>

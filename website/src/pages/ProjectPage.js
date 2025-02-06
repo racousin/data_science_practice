@@ -74,7 +74,7 @@ const ProjectPage = () => {
         <List>
           <List.Item><strong>Below benchmark:</strong> 0 points - Failing to surpass the baseline agent "Mark Bench"</List.Item>
           <List.Item><strong>Above benchmark:</strong> Score between 5 and 10</List.Item>
-          <List.Item><strong>Special Bonus:</strong> Additional 2 points for outperforming all "giom" reference agents</List.Item>
+          <List.Item><strong>Special Bonus:</strong> Additional 2 points for finishing top-ranked</List.Item>
         </List>
       </Paper>
 
@@ -110,8 +110,8 @@ const ProjectPage = () => {
             <Paper className="p-4 h-full">
               <Title order={3} className="text-xl mb-2">Evaluation Criteria</Title>
               <List>
-                <List.Item><strong>Reproducibility (0 to 5):</strong> Clear documentation, easy setup process, and reliable execution</List.Item>
-                <List.Item><strong>Implementation Complexity (0 to 5):</strong> Sophisticated algorithms, clean code structure, and best practices</List.Item>
+                <List.Item><strong>Reproducibility (0 to 4):</strong> Clear documentation, easy setup process, and reliable execution</List.Item>
+                <List.Item><strong>Implementation of robust technics(0 to 6):</strong> example RL algorithm (PPO, SAC), RL parallele training, transfer learning</List.Item>
                 <List.Item><strong>Git Workflow Bonus (+2):</strong> Demonstrate proper version control:
                   <List withPadding className="mt-2">
                     <List.Item>Minimum 2 feature branches</List.Item>
@@ -141,19 +141,21 @@ const ProjectPage = () => {
             <Paper className="p-4 h-full">
               <Title order={3} className="text-xl mb-2">Format & Requirements</Title>
               <List>
-                <List.Item><strong>Duration:</strong> 10-minute presentation + 5-minute Q&A session</List.Item>
+                <List.Item><strong>Duration:</strong> 15-minute presentation + 5-minute Q&A session</List.Item>
                 <List.Item><strong>Format Freedom:</strong> Choose your preferred style:
                   <List withPadding className="mt-2">
-                    <List.Item>PowerPoint/Slides presentation</List.Item>
-                    <List.Item>Live coding demonstration</List.Item>
-                    <List.Item>Interactive visualization</List.Item>
-                    <List.Item>Hybrid approach</List.Item>
+                  <List.Item>PowerPoint/Slides presentation</List.Item>
+                <List.Item>Live coding demonstration</List.Item>
+                <List.Item>Interactive visualization</List.Item>
+                <List.Item>Blackboard demonstration</List.Item>
+                <List.Item>Hybrid approach</List.Item>
                   </List>
                 </List.Item>
                 <List.Item><strong>Content Coverage:</strong> Include:
                   <List withPadding className="mt-2">
                     <List.Item>Problem approach and methodology</List.Item>
-                    <List.Item>Key challenges and solutions</List.Item>
+                    <List.Item>Theorical support</List.Item>
+                    <List.Item>Key challenges</List.Item>
                     <List.Item>Performance analysis</List.Item>
                     <List.Item>Future improvements</List.Item>
                   </List>
@@ -169,19 +171,19 @@ const ProjectPage = () => {
                   <List withPadding className="mt-2">
                     <List.Item>Well-structured presentation flow</List.Item>
                     <List.Item>Clear technical explanations</List.Item>
-                    <List.Item>Effective use of visuals</List.Item>
+                    <List.Item>Pedagogic Content</List.Item>
                   </List>
                 </List.Item>
                 <List.Item><strong>Creativity & Theoretical Approach (0 to 5):</strong>
                   <List withPadding className="mt-2">
                     <List.Item>Innovation in solution approach</List.Item>
-                    <List.Item>Depth of technical understanding</List.Item>
+                    <List.Item>Depth of technical and theoretical understanding</List.Item>
                     <List.Item>Quality of analysis and insights</List.Item>
                   </List>
                 </List.Item>
                 <List.Item><strong>Bonus: "Wow" Factor (+2):</strong>
                   <List withPadding className="mt-2">
-                    <List.Item>Show a wow Demo (that works!)</List.Item>
+                    <List.Item>Show a wow live Demo (that works!)</List.Item>
                   </List>
                 </List.Item>
               </List>
@@ -212,7 +214,7 @@ const ProjectPage = () => {
               <Table.Td>5 - 10</Table.Td>
             </Table.Tr>
             <Table.Tr>
-              <Table.Td>Bonus: Above all "giom" agents</Table.Td>
+              <Table.Td>Bonus: finish top-ranked</Table.Td>
               <Table.Td>+2</Table.Td>
             </Table.Tr>
             <Table.Tr>
@@ -269,7 +271,7 @@ const ProjectPage = () => {
           <List.Item><strong>Development:</strong> Begin your agent development:
             <List withPadding className="mt-2">
               <List.Item>Grab some info from <a href="https://github.com/ml-arena/pong2024" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">Pong2024 repository</a></List.Item>
-              <List.Item>Follow the <a href="https://github.com/ml-arena/pong2024" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">Getting Started colab guide</a></List.Item>
+              <List.Item>Follow the <a href="https://colab.research.google.com/github/racousin/rl_introduction/blob/master/notebooks/5_policy_gradient-reinforce.ipynb" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">Getting Started colab guide</a></List.Item>
               <List.Item>Implement initial agent version</List.Item>
               <List.Item>Test and iterate based on performance</List.Item>
             </List>

@@ -163,7 +163,7 @@ const MDP = () => {
 
       <Grid>
         <Grid.Col>
-          <h3>First Glossary of MDPs</h3>
+          <h3>Glossary</h3>
           <ul>
             <li>
               State Space (<InlineMath math="S" />)
@@ -374,7 +374,7 @@ const MDP = () => {
 
       <Grid mt="xl">
         <Grid.Col>
-          <h3>Second Glossary of MDPs</h3>
+          <h3>Glossary</h3>
           <ul>
             <li>
                 Value Function (<InlineMath math="V" />)
