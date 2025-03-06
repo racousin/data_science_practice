@@ -1,6 +1,6 @@
 import React from 'react';
-import { Title, Text, Paper, Grid, List, Alert, Table, Badge, Divider } from '@mantine/core';
-import { Trophy, GitBranch, FileText, AlertCircle } from 'lucide-react';
+import { Title, Text, Paper, Grid, List, Alert, Table, Badge, Divider, Anchor } from '@mantine/core';
+import { Trophy, GitBranch, FileText, AlertCircle, Info } from 'lucide-react';
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
@@ -8,17 +8,36 @@ const ProjectPage = () => {
   return (
     <div className="max-w-6xl mx-auto p-6">
       <Title order={1} className="text-4xl font-bold mb-6" id="main-title">
-        Project Pong2024 Competition
+        Project 2024 DeepRL Competition
       </Title>
 
       {/* Overview Section */}
       <Paper className="p-6 mb-8 bg-blue-50">
         <Text className="mb-6">
-          Welcome to the Pong2024 Competition! This project challenges you to apply what your learned during the data science course. Working in teams of 2-3 members, you'll develop an AI agent 
+          Welcome to the Pong2024 Competition! This project challenges you to apply what your learned during the data science course. Working in teams of 1-3 members, you'll develop an AI agent 
           capable of playing Pong against other agents. This project emphasizes both theoretical understanding 
           and practical implementation of Machine Learning.
         </Text>
-        
+        <Alert 
+      icon={<Info />}
+      title="Note About Competition Choice"
+      color="blue"
+      radius="md"
+    >
+      <Text size="sm" mb="xs">
+        If you found{' '}
+        <Anchor href="https://www.raphaelcousin.com/module13/exercise/exercise4">
+          Exercise 4 of Module 13
+        </Anchor>{' '}
+        particularly challenging, we encourage you to consider participating in the{' '}
+        <Anchor href="https://ml-arena.com/viewcompetition/1">
+          LunarLander competition
+        </Anchor>{' '}
+        instead of the Pong competition for your final project. LunarLander offers an excellent opportunity to demonstrate your reinforcement learning skills while being more approachable.
+      </Text>
+      <Text size="sm">
+        The grading criteria and 30% performance metric will be adjusted proportionally based on the participation in each competition track.      </Text>
+    </Alert>
         <Grid className="mb-4">
           <Grid.Col span={{ base: 12, md: 6 }}>
             <Paper className="p-4 h-full">
@@ -271,7 +290,7 @@ const ProjectPage = () => {
           <List.Item><strong>Development:</strong> Begin your agent development:
             <List withPadding className="mt-2">
               <List.Item>Grab some info from <a href="https://github.com/ml-arena/pong2024" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">Pong2024 repository</a></List.Item>
-              <List.Item>Follow the <a href="https://colab.research.google.com/github/racousin/rl_introduction/blob/master/notebooks/5_policy_gradient-reinforce.ipynb" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">Getting Started colab guide</a></List.Item>
+              <List.Item>Follow the <a href="https://colab.research.google.com/github/ml-arena/pong2024/blob/main/notebook/getting_started.ipynb" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">Getting Started colab guide</a></List.Item>
               <List.Item>Implement initial agent version</List.Item>
               <List.Item>Test and iterate based on performance</List.Item>
             </List>
