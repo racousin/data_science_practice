@@ -7,6 +7,7 @@ import 'katex/dist/katex.min.css';
 import ConvolutionBasics from './CNNEssentials/ConvolutionBasics';
 import Pooling from './CNNEssentials/Pooling';
 import Architectures from './CNNEssentials/Architectures';
+import CNNBackpropagation from './CNNEssentials/CNNBackpropagation';
 
 const CNNEssentials = () => {
   return (
@@ -44,6 +45,14 @@ const CNNEssentials = () => {
             </Accordion.Control>
             <Accordion.Panel>
               <Architectures />
+            </Accordion.Panel>
+          </Accordion.Item>
+          <Accordion.Item value="cnn-backpropagation">
+            <Accordion.Control>
+              <Title order={3} id="cnn-backpropagation">CNN Backpropagation</Title>
+            </Accordion.Control>
+            <Accordion.Panel>
+              <CNNBackpropagation />
             </Accordion.Panel>
           </Accordion.Item>
         </Accordion>

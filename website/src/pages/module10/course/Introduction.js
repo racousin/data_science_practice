@@ -1,147 +1,359 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Card, Table } from "react-bootstrap";
+import { Text, Title, Group, Image, Stack } from "@mantine/core";
 import CodeBlock from "components/CodeBlock";
+import 'katex/dist/katex.min.css';
+import { InlineMath, BlockMath } from 'react-katex';
+import DataInteractionPanel from "components/DataInteractionPanel";
+
+// TaskBox component for displaying NLP tasks with mathematical formulation
+const TaskBox = ({ title, formula, description }) => (
+  <Card className="h-100">
+    <Card.Body>
+      <Title order={4}>{title}</Title>
+      <div className="my-2">
+        <BlockMath math={formula} />
+      </div>
+      <Text size="sm">{description}</Text>
+    </Card.Body>
+  </Card>
+);
 
 const Introduction = () => {
   return (
     <Container fluid>
-      <h2 id="what-is-nlp">What is NLP?</h2>
-      <p>
-        Natural Language Processing (NLP) is a subfield of artificial
-        intelligence that focuses on the interaction between computers and
-        humans using natural language. The ultimate objective of NLP is to read,
-        decipher, understand, and make sense of human languages in a valuable
-        way.
-      </p>
-      <p>
-        NLP combines computational linguistics—rule-based modeling of human
-        language—with statistical, machine learning, and deep learning models.
-        These technologies enable computers to process human language in the
-        form of text or voice data and to 'understand' its full meaning,
-        complete with the speaker or writer's intent and sentiment.
-      </p>
+      <Title order={1} mb="md" id="introduction">Introduction to Natural Language Processing</Title>
+      
+      <Stack spacing="xl">
+        <Text mb="lg">
+          Natural Language Processing (NLP) sits at the intersection of linguistics, computer science, and artificial intelligence, 
+          focused on enabling computers to understand, interpret, and generate human language. This field has evolved dramatically 
+          from rule-based systems to sophisticated deep learning models that can translate languages, answer questions, 
+          summarize documents, and generate human-like text.
+        </Text>
+        
+        {/* Text Data Representation */}
+        <div>
+          <Title order={2} id="text-representation">Text Data Representation</Title>
+          
+          
+          <Text className="mt-3">
+            At its core, text is sequential, discrete, and highly structured data that requires transformation into numerical 
+            representations before it can be processed by machine learning algorithms.
+          </Text>
 
-      <h2 id="applications">Applications of NLP</h2>
-      <p>NLP has a wide range of applications across various domains:</p>
-      <ul>
-        <li>
-          <strong>Machine Translation:</strong> Automatically translating text
-          or speech from one language to another (e.g., Google Translate).
-        </li>
-        <li>
-          <strong>Sentiment Analysis:</strong> Determining the sentiment
-          (positive, negative, neutral) of a piece of text (e.g., social media
-          monitoring).
-        </li>
-        <li>
-          <strong>Chatbots and Virtual Assistants:</strong> Creating
-          conversational agents that can interact with humans (e.g., Siri,
-          Alexa).
-        </li>
-        <li>
-          <strong>Text Summarization:</strong> Automatically generating concise
-          summaries of longer texts.
-        </li>
-        <li>
-          <strong>Named Entity Recognition (NER):</strong> Identifying and
-          classifying named entities (e.g., person names, organizations) in
-          text.
-        </li>
-        <li>
-          <strong>Question Answering Systems:</strong> Building systems that can
-          automatically answer questions posed in natural language.
-        </li>
-        <li>
-          <strong>Speech Recognition:</strong> Converting spoken language into
-          text.
-        </li>
-        <li>
-          <strong>Text Generation:</strong> Generating human-like text for
-          various applications (e.g., content creation, chatbots).
-        </li>
-      </ul>
+          {/* Levels of Text Structure */}
+          <Title order={3} className="mt-3">Levels of Text Structure</Title>
+          <Card className="mb-3">
+            <Card.Body>
+              <Row>
+                <Col md={6}>
+                  <ul>
+                    <li><strong>Characters:</strong> Individual letters, numbers, punctuation (e.g., 'a', '5', '!')</li>
+                    <li><strong>Subwords:</strong> Character sequences that form meaningful units (e.g., 'ing', 'pre-', 'un-')</li>
+                    <li><strong>Words:</strong> Complete lexical units (e.g., 'language', 'processing')</li>
+                  </ul>
+                </Col>
+                <Col md={6}>
+                  <ul>
+                    <li><strong>Sentences:</strong> Sequences of words with complete meaning</li>
+                    <li><strong>Paragraphs:</strong> Related sentences grouped together</li>
+                    <li><strong>Documents:</strong> Complete texts with overall structure and context</li>
+                  </ul>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
 
-      <h2 id="challenges">Challenges in NLP</h2>
-      <p>
-        Despite significant advancements, NLP still faces several challenges:
-      </p>
-      <ul>
-        <li>
-          <strong>Ambiguity:</strong> Words and sentences can have multiple
-          meanings depending on context.
-        </li>
-        <li>
-          <strong>Language Diversity:</strong> There are thousands of languages
-          and dialects worldwide, each with its own rules and nuances.
-        </li>
-        <li>
-          <strong>Contextual Understanding:</strong> Understanding context,
-          sarcasm, and implicit meaning in text.
-        </li>
-        <li>
-          <strong>Multimodal Integration:</strong> Combining text with other
-          modalities like images or video for comprehensive understanding.
-        </li>
-        <li>
-          <strong>Low-Resource Languages:</strong> Lack of data and resources
-          for many languages.
-        </li>
-        <li>
-          <strong>Common Sense Reasoning:</strong> Incorporating common sense
-          knowledge into NLP systems.
-        </li>
-        <li>
-          <strong>Bias and Fairness:</strong> Ensuring NLP systems are unbiased
-          and fair across different demographics.
-        </li>
-        <li>
-          <strong>Interpretability:</strong> Understanding and explaining the
-          decisions made by complex NLP models.
-        </li>
-      </ul>
+          {/* Text Structure Types */}
+          <Title order={3}>Text Structure Types</Title>
+          <Group spacing="xs" className="bg-gray-100 p-4 rounded-lg mb-3">
+            <Stack spacing={0} style={{ width: '100%' }}>
+              <Row>
+                <Col md={4}>
+                  <Title order={5}>Structured Text</Title>
+                  <Text size="sm">
+                    Follows consistent format and organization:
+                    • Database records
+                    • XML/JSON documents
+                    • Forms and templates
+                    • Tables and CSV files
+                  </Text>
+                </Col>
+                <Col md={4}>
+                  <Title order={5}>Semi-structured Text</Title>
+                  <Text size="sm">
+                    Contains some organizational elements:
+                    • Email (headers + body)
+                    • Social media posts (metadata + content)
+                    • HTML web pages
+                    • Academic papers with sections
+                  </Text>
+                </Col>
+                <Col md={4}>
+                  <Title order={5}>Unstructured Text</Title>
+                  <Text size="sm">
+                    Free-form with minimal explicit organization:
+                    • Conversational text
+                    • Novels and stories
+                    • Customer reviews
+                    • Transcribed speech
+                  </Text>
+                </Col>
+              </Row>
+            </Stack>
+          </Group>
 
-      <h3>Example: Simple Text Processing with NLTK</h3>
-      <p>
-        Here's a basic example of text processing using the Natural Language
-        Toolkit (NLTK) in Python:
-      </p>
-      <CodeBlock
-        language="python"
-        code={`
-import nltk
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
-from nltk.stem import PorterStemmer
+          {/* Sequential Nature */}
+          <Title order={3}>Sequential Nature of Text</Title>
+          <Card className="mb-3">
+            <Card.Body>
+              <Text>
+                Unlike images, text is inherently sequential, with meaning derived from the order of elements:
+              </Text>
+              <ul>
+                <li>Word order impacts meaning: "Dog bites man" ≠ "Man bites dog"</li>
+                <li>Dependencies can span across long distances in a sequence</li>
+                <li>Context is critical for disambiguation (e.g., "bank" can mean financial institution or river edge)</li>
+              </ul>
+              <Text>
+                Mathematically, text sequences can be represented as:
+              </Text>
+              <BlockMath>
+                {`\\mathcal{S} = (w_1, w_2, \\ldots, w_n) \\quad \\text{where } w_i \\in \\mathcal{V}`}
+              </BlockMath>
+              <Text>
+                Where <InlineMath math="\mathcal{S}" /> is a sequence and <InlineMath math="\mathcal{V}" /> is the vocabulary.
+              </Text>
+            </Card.Body>
+          </Card>
 
-# Download necessary NLTK data
-nltk.download('punkt')
-nltk.download('stopwords')
+        </div>
+      </Stack>
 
-def process_text(text):
-    # Tokenization
-    tokens = word_tokenize(text.lower())
-    
-    # Remove stopwords
-    stop_words = set(stopwords.words('english'))
-    filtered_tokens = [token for token in tokens if token not in stop_words]
-    
-    # Stemming
-    stemmer = PorterStemmer()
-    stemmed_tokens = [stemmer.stem(token) for token in filtered_tokens]
-    
-    return stemmed_tokens
+      <Title order={2} mb="sm" id="history">Historical Context of NLP</Title>
+      <Card className="mb-4">
+        <Card.Body>
+          <Text>
+            NLP development has progressed through several distinct paradigms over the decades:
+          </Text>
+          <Table striped bordered hover className="mt-3">
+            <thead>
+              <tr>
+                <th>Era</th>
+                <th>Period</th>
+                <th>Key Characteristics</th>
+                <th>Notable Systems/Approaches</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Rule-based Era</td>
+                <td>1950s-1980s</td>
+                <td>Hard-coded linguistic rules and pattern matching</td>
+                <td>ELIZA, SHRDLU, expert systems</td>
+              </tr>
+              <tr>
+                <td>Statistical Era</td>
+                <td>1990s-2000s</td>
+                <td>Statistical models and machine learning</td>
+                <td>N-gram models, Hidden Markov Models, IBM Translation Models</td>
+              </tr>
+              <tr>
+                <td>Neural Network Era</td>
+                <td>2010s-2018</td>
+                <td>Word embeddings and recurrent neural architectures</td>
+                <td>Word2Vec, GloVe, LSTM, GRU, Seq2Seq models</td>
+              </tr>
+              <tr>
+                <td>Transformer Era</td>
+                <td>2018-Present</td>
+                <td>Self-attention and large pre-trained models</td>
+                <td>BERT, GPT, T5, Transformer-based architectures</td>
+              </tr>
+            </tbody>
+          </Table>
+        </Card.Body>
+      </Card>
 
-# Example usage
-text = "Natural language processing is a subfield of linguistics, computer science, and artificial intelligence."
-processed_text = process_text(text)
-print(processed_text)
-        `}
-      />
-      <p>
-        This example demonstrates basic text processing steps including
-        tokenization, stopword removal, and stemming. These are fundamental
-        operations in many NLP tasks.
-      </p>
+      <Text mb="lg">
+        The 2017 introduction of the Transformer architecture in "Attention Is All You Need" by Vaswani et al. marked a 
+        pivotal moment in NLP, enabling models to process text in parallel rather than sequentially, leading to unprecedented 
+        capabilities and scale.
+      </Text>
+
+      <Title order={2} mb="sm" id="applications">NLP Applications and Tasks</Title>
+      
+      <Stack spacing="xl" className="mt-4">
+        <Text>
+          Natural language data can serve as both input and output across diverse machine learning tasks,
+          each with distinct formulations and applications.
+        </Text>
+
+        {/* Text to Value Tasks */}
+        <div>
+          <Title order={3} className="mb-3">Text to Value Tasks</Title>
+          <Group grow>
+            <TaskBox
+              title="Text Classification"
+              formula={`f: \\mathcal{S} \\rightarrow \\{1,\\ldots,K\\}`}
+              description="Maps text sequences to K discrete categories. Examples: sentiment analysis, topic classification, spam detection, intent recognition."
+            />
+            <TaskBox
+              title="Regression from Text"
+              formula={`f: \\mathcal{S} \\rightarrow \\mathbb{R}^n`}
+              description="Predicts continuous values from text. Examples: price prediction, readability scores, emotion intensity estimation."
+            />
+          </Group>
+        </div>
+
+        {/* Sequence Labeling Tasks */}
+        <div>
+          <Title order={3} className="mb-3">Sequence Labeling Tasks</Title>
+          <Group grow>
+            <TaskBox
+              title="Token Classification"
+              formula={`f: \\{w_1,\\ldots,w_n\\} \\rightarrow \\{c_1,\\ldots,c_n\\}`}
+              description="Assigns a label to each token in a sequence. Examples: Named Entity Recognition (NER), Part-of-Speech (POS) tagging."
+            />
+            <TaskBox
+              title="Span Detection"
+              formula={`f: \\mathcal{S} \\rightarrow \\{(s_i, e_i, c_i)\\}_{i=1}^N`}
+              description="Identifies spans of text with start positions (s), end positions (e), and classes (c). Examples: chunking, aspect extraction, mention detection."
+            />
+          </Group>
+        </div>
+
+        {/* Text to Text Tasks */}
+        <div>
+          <Title order={3} className="mb-3">Text to Text Tasks</Title>
+          <Group grow>
+            <TaskBox
+              title="Machine Translation"
+              formula={`f: \\mathcal{S}_{L1} \\rightarrow \\mathcal{S}_{L2}`}
+              description="Converts text from source language L1 to target language L2. Examples: English-to-French translation, code translation."
+            />
+            <TaskBox
+              title="Text Summarization"
+              formula={`f: \\mathcal{S}_{long} \\rightarrow \\mathcal{S}_{short}`}
+              description="Generates concise representation of longer text. Subtypes: extractive summarization (selects key sentences) and abstractive summarization (generates novel text)."
+            />
+          </Group>
+        </div>
+
+        {/* Complex Language Understanding */}
+        <div>
+          <Title order={3} className="mb-3">Complex Language Understanding</Title>
+          <Group grow>
+            <TaskBox
+              title="Question Answering"
+              formula={`f: (\\mathcal{S}_{context}, \\mathcal{S}_{question}) \\rightarrow \\mathcal{S}_{answer}`}
+              description="Finds or generates answers from context. Types: extractive QA (find span in context), generative QA (synthesize answer), open-domain QA (retrieve + answer)."
+            />
+            <TaskBox
+              title="Natural Language Inference"
+              formula={`f: (\\mathcal{S}_{premise}, \\mathcal{S}_{hypothesis}) \\rightarrow \\{entailment, contradiction, neutral\\}`}
+              description="Determines logical relationship between premise and hypothesis sentences. Critical for reasoning tasks."
+            />
+          </Group>
+        </div>
+
+        {/* Generative Tasks */}
+        <div>
+          <Title order={3} className="mb-3">Generative Language Tasks</Title>
+          <Group grow>
+            <TaskBox
+              title="Conditional Text Generation"
+              formula={`f: \\mathcal{C} \\rightarrow \\mathcal{S}`}
+              description="Generates text based on a conditioning input. Examples: text completion, dialogue systems, code generation, style transfer, prompt-based generation."
+            />
+            <TaskBox
+              title="Language Modeling"
+              formula={`P(w_t | w_1, w_2, \\ldots, w_{t-1})`}
+              description="Models probability distribution over sequences by predicting next token given previous tokens. Foundation for many generative tasks."
+            />
+          </Group>
+        </div>
+
+        {/* Multimodal Tasks */}
+        <div>
+          <Title order={3} className="mb-3">Multimodal NLP Tasks</Title>
+          <Group grow>
+            <TaskBox
+              title="Vision-Language Tasks"
+              formula={`f: (\\mathbb{R}^{H \\times W \\times C}, \\mathcal{S}) \\rightarrow \\mathcal{Y}`}
+              description="Combines image and text processing. Examples: image captioning, visual question answering, visual reasoning, text-to-image generation."
+            />
+            <TaskBox
+              title="Speech-Text Processing"
+              formula={`f: (\\mathcal{A}, \\mathcal{S}) \\rightarrow \\mathcal{Y}`}
+              description="Processes both audio and text. Examples: speech recognition, text-to-speech, speech translation, voice assistants."
+            />
+          </Group>
+        </div>
+      </Stack>
+
+      <Title order={2} mb="sm" id="challenges">Fundamental NLP Challenges</Title>
+      
+      <Card className="mb-4">
+        <Card.Body>
+          <Row>
+            <Col md={6}>
+              <Title order={4} id="ambiguity">Linguistic Ambiguity</Title>
+              <ul>
+                <li><strong>Lexical ambiguity:</strong> Words with multiple meanings</li>
+                <li><strong>Syntactic ambiguity:</strong> Sentences with multiple parse trees</li>
+                <li><strong>Semantic ambiguity:</strong> Multiple possible interpretations</li>
+                <li><strong>Pragmatic ambiguity:</strong> Context-dependent meaning</li>
+              </ul>
+              <Text className="mb-3">
+                Example: "She saw the man with the telescope"
+                <ul>
+                  <li>She used a telescope to see the man</li>
+                  <li>She saw a man who had a telescope</li>
+                </ul>
+              </Text>
+              
+              <Title order={4} id="context">Context Dependence</Title>
+              <Text className="mb-3">
+                Understanding language often requires:
+                <ul>
+                  <li>Previous context within the discourse</li>
+                  <li>World knowledge and common sense</li>
+                  <li>Speaker/writer intentions and beliefs</li>
+                </ul>
+              </Text>
+            </Col>
+            
+            <Col md={6}>
+              <Title order={4} id="variability">Linguistic Variability</Title>
+              <Text className="mb-3">
+                Language varies across:
+                <ul>
+                  <li>Dialects and sociolects</li>
+                  <li>Formal vs. informal registers</li>
+                  <li>Domain-specific vocabularies</li>
+                  <li>Creative and non-standard usage</li>
+                </ul>
+              </Text>
+              
+              <Title order={4} id="computational">Computational Challenges</Title>
+              <Text className="mb-3">
+                <ul>
+                  <li><strong>Long-range dependencies:</strong> Relationships between distant words</li>
+                  <li><strong>Data sparsity:</strong> Rare words and constructions</li>
+                  <li><strong>Multimodality:</strong> Integrating text with other modalities</li>
+                  <li><strong>Computational efficiency:</strong> Balancing model size and performance</li>
+                  <li><strong>Bias and fairness:</strong> Avoiding harmful stereotypes in language models</li>
+                </ul>
+              </Text>
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
+      
+      <Title order={2} mb="sm" id="libraries">NLP Libraries and Frameworks</Title>
+      
     </Container>
   );
 };

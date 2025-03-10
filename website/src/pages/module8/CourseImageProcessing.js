@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import DynamicRoutes from 'components/DynamicRoutes';
 import ModuleFrame from 'components/ModuleFrame';
 
+
 const ImageProcessingCourse = () => {
   const courseLinks = [
     {
@@ -26,7 +27,8 @@ const ImageProcessingCourse = () => {
       subLinks: [
         { id: "convolution", label: "Convolution Operations" },
         { id: "pooling", label: "Pooling" },
-        { id: "architectures", label: "Popular CNN Architectures" }
+        { id: "architectures", label: "Popular CNN Architectures" },
+        { id: "cnn-backpropagation", label: "CNN Backpropagation" }
       ]
     },
     {

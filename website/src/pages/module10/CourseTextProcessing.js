@@ -6,156 +6,149 @@ import { useLocation } from "react-router-dom";
 
 const CourseTextProcessing = () => {
   const courseLinks = [
+    {
+      to: "/introduction",
+      label: "Introduction to NLP",
+      component: lazy(() => import("pages/module10/course/Introduction")),
+      subLinks: [
+        { id: "history", label: "Historical Context" },
+        { id: "applications", label: "NLP Applications and Tasks" },
+        { id: "challenges", label: "NLP Challenges" },
+        { id: "libraries", label: "NLP Libraries" },
+      ],
+    },
+    {
+      to: "/preprocessing",
+      label: "TextNumericalRepresentation",
+      component: lazy(() => import("pages/module10/course/TextNumericalRepresentation")),
+      subLinks: [
+        { id: "cleaning", label: "Text Cleaning Techniques" },
+        { id: "tokenization", label: "Tokenization Approaches" },
+        { id: "tokenizers", label: "Tokenizer Comparison" },
+        { id: "special-tokens", label: "Special Tokens" },
+        { id: "sequence-length", label: "Sequence Length Handling" },
+      ],
+    },
+    {
+      to: "/rnn",
+      label: "Recurrent Neural Networks for NLP",
+      component: lazy(() => import("pages/module10/course/RNN")),
+      subLinks: [
+        { id: "sequential-data", label: "Sequential Nature of Text Data" },
+        { id: "basic-rnn", label: "Basic RNN Architecture" },
+        { id: "lstm-gru", label: "LSTM and GRU Architectures" },
+        { id: "vanishing-gradient", label: "Vanishing/Exploding Gradient Problem" },
+        { id: "bidirectional", label: "Bidirectional RNNs" },
+        { id: "implementations", label: "PyTorch Implementations" },
+        { id: "comparison", label: "Comparison with Transformers" },
+      ],
+    },
     // {
-    //   to: "/introduction",
-    //   label: "Introduction to Natural Language Processing",
-    //   component: lazy(() => import("pages/module9/course/Introduction")),
+    //   to: "/word-embeddings",
+    //   label: "Word Embeddings",
+    //   component: lazy(() => import("pages/module10/course/WordEmbeddings")),
     //   subLinks: [
-    //     { id: "what-is-nlp", label: "What is NLP?" },
-    //     { id: "applications", label: "Applications of NLP" },
-    //     { id: "challenges", label: "Challenges in NLP" },
+    //     { id: "distributional-semantics", label: "Distributional Semantics" },
+    //     { id: "traditional-embeddings", label: "Traditional Embeddings" },
+    //     { id: "pretrained-embeddings", label: "Pre-trained Embeddings" },
+    //     { id: "visualization", label: "Embedding Visualization" },
+    //     { id: "semantic-operations", label: "Semantic Operations" },
+    //     { id: "static-vs-contextual", label: "Static vs. Contextual Embeddings" },
     //   ],
     // },
-    // {
-    //   to: "/preprocessing",
-    //   label: "Text Preprocessing",
-    //   component: lazy(() => import("pages/module9/course/Preprocessing")),
-    //   subLinks: [
-    //     { id: "tokenization", label: "Tokenization" },
-    //     { id: "lowercasing", label: "Lowercasing and Normalization" },
-    //     { id: "stemming", label: "Stemming and Lemmatization" },
-    //     { id: "stop-words", label: "Stop Words Removal" },
-    //     { id: "regex", label: "Regular Expressions in NLP" },
-    //   ],
-    // },
-    // {
-    //   to: "/representation",
-    //   label: "Text Representation",
-    //   component: lazy(() => import("pages/module9/course/Representation")),
-    //   subLinks: [
-    //     { id: "bow", label: "Bag of Words (BoW)" },
-    //     {
-    //       id: "tfidf",
-    //       label: "Term Frequency-Inverse Document Frequency (TF-IDF)",
-    //     },
-    //     { id: "word-embeddings", label: "Word Embeddings (Word2Vec, GloVe)" },
-    //     { id: "subword-embeddings", label: "Subword Embeddings (FastText)" },
-    //   ],
-    // },
-    // {
-    //   to: "/rnn",
-    //   label: "Recurrent Neural Networks for NLP",
-    //   component: lazy(() => import("pages/module9/course/RNN")),
-    //   subLinks: [
-    //     { id: "basic-rnn", label: "Basic RNN Architecture" },
-    //     { id: "lstm", label: "Long Short-Term Memory (LSTM)" },
-    //     { id: "gru", label: "Gated Recurrent Unit (GRU)" },
-    //     { id: "bidirectional", label: "Bidirectional RNNs" },
-    //   ],
-    // },
-    // {
-    //   to: "/seq2seq",
-    //   label: "Sequence-to-Sequence Models",
-    //   component: lazy(() => import("pages/module9/course/Seq2Seq")),
-    //   subLinks: [
-    //     { id: "encoder-decoder", label: "Encoder-Decoder Architecture" },
-    //     { id: "attention", label: "Attention Mechanism" },
-    //     {
-    //       id: "applications",
-    //       label: "Applications (Machine Translation, Text Summarization)",
-    //     },
-    //   ],
-    // },
-    // {
-    //   to: "/transformer",
-    //   label: "Transformer Architecture",
-    //   component: lazy(() => import("pages/module9/course/Transformer")),
-    //   subLinks: [
-    //     {
-    //       id: "self-attention",
-    //       label: "Self-Attention and Multi-Head Attention",
-    //     },
-    //     { id: "positional-encoding", label: "Positional Encoding" },
-    //     { id: "encoder-decoder", label: "Transformer Encoder and Decoder" },
-    //     { id: "bert", label: "BERT and its Variants" },
-    //   ],
-    // },
+    {
+      to: "/transformer",
+      label: "Transformer Architecture",
+      component: lazy(() => import("pages/module10/course/Transformer")),
+      subLinks: [
+        { id: "architecture", label: "Transformer Model Architecture" },
+        { id: "self-attention", label: "Self-Attention Mechanism" },
+        { id: "multi-head-attention", label: "Multi-Head Attention" },
+        { id: "positional-encodings", label: "Positional Encodings" },
+        { id: "encoder-decoder", label: "Encoder and Decoder Components" },
+        { id: "attention-math", label: "Mathematical Formulation of Attention" },
+        { id: "information-flow", label: "Information Flow" },
+      ],
+    },
     // {
     //   to: "/transfer-learning",
     //   label: "Transfer Learning in NLP",
-    //   component: lazy(() => import("pages/module9/course/TransferLearning")),
+    //   component: lazy(() => import("pages/module10/course/TransferLearning")),
     //   subLinks: [
-    //     { id: "fine-tuning", label: "Fine-tuning Pre-trained Models" },
-    //     { id: "bert-tasks", label: "BERT for Various NLP Tasks" },
-    //     {
-    //       id: "other-models",
-    //       label: "Other Transfer Learning Models (GPT, XLNet, RoBERTa)",
-    //     },
+    //     { id: "concept", label: "Concept and Importance" },
+    //     { id: "pre-training", label: "Pre-training and Fine-tuning" },
+    //     { id: "strategies", label: "Transfer Learning Strategies" },
+    //     { id: "domain-adaptation", label: "Domain Adaptation" },
+    //     { id: "low-resource", label: "Low-Resource Fine-tuning" },
+    //     { id: "parameter-efficient", label: "Parameter-Efficient Methods" },
+    //     { id: "frozen-vs-trainable", label: "Frozen vs. Trainable Parameters" },
+    //     { id: "guidelines", label: "When to Use Different Methods" },
     //   ],
     // },
     // {
-    //   to: "/classification",
-    //   label: "Text Classification",
-    //   component: lazy(() => import("pages/module9/course/Classification")),
+    //   to: "/bert",
+    //   label: "BERT Models",
+    //   component: lazy(() => import("pages/module10/course/BERT")),
     //   subLinks: [
-    //     { id: "sentiment-analysis", label: "Sentiment Analysis" },
-    //     { id: "topic-classification", label: "Topic Classification" },
-    //     { id: "spam-detection", label: "Spam Detection" },
+    //     { id: "architecture", label: "BERT Architecture and Innovations" },
+    //     { id: "pretraining", label: "Masked Language Modeling and NSP" },
+    //     { id: "classification", label: "Classification and Token-level Tasks" },
+    //     { id: "variants", label: "BERT Variants" },
+    //     { id: "fine-tuning", label: "Fine-tuning Techniques" },
+    //     { id: "bidirectional-context", label: "Bidirectional Context" },
     //   ],
     // },
     // {
-    //   to: "/CaseStudy9",
-    //   label: "CaseStudy",
-    //   component: lazy(() => import("pages/module9/course/CaseStudy")),
-    // },
-    // {
-    //   to: "/ner",
-    //   label: "Named Entity Recognition (NER)",
-    //   component: lazy(() => import("pages/module9/course/NER")),
+    //   to: "/gpt",
+    //   label: "GPT and Generative Models",
+    //   component: lazy(() => import("pages/module10/course/GPT")),
     //   subLinks: [
-    //     { id: "iob-tagging", label: "IOB Tagging" },
-    //     { id: "crf", label: "CRF for NER" },
-    //     { id: "bert-ner", label: "BERT for NER" },
+    //     { id: "autoregressive", label: "Autoregressive Language Models" },
+    //     { id: "architecture", label: "GPT Architecture and Training" },
+    //     { id: "generation-strategies", label: "Text Generation Strategies" },
+    //     { id: "prompt-engineering", label: "Prompt Engineering" },
+    //     { id: "parameters", label: "Generation Parameters" },
+    //     { id: "versions", label: "GPT Versions and Capabilities" },
     //   ],
     // },
     // {
-    //   to: "/machine-translation",
-    //   label: "Machine Translation",
-    //   component: lazy(() => import("pages/module9/course/MachineTranslation")),
+    //   to: "/huggingface",
+    //   label: "Hugging Face Ecosystem",
+    //   component: lazy(() => import("pages/module10/course/HuggingFace")),
     //   subLinks: [
-    //     { id: "statistical-mt", label: "Statistical Machine Translation" },
-    //     { id: "neural-mt", label: "Neural Machine Translation" },
-    //     { id: "bleu", label: "Evaluation Metrics (BLEU Score)" },
+    //     { id: "hub", label: "Hugging Face Hub" },
+    //     { id: "transformers", label: "Transformers Library" },
+    //     { id: "models-tokenizers", label: "Loading Models and Tokenizers" },
+    //     { id: "trainer", label: "Fine-tuning with Trainer API" },
+    //     { id: "datasets", label: "Datasets and Evaluation" },
+    //     { id: "sharing", label: "Model Sharing and Collaboration" },
     //   ],
     // },
+    {
+      to: "/rag",
+      label: "Retrieval-Augmented Generation (RAG)",
+      component: lazy(() => import("pages/module10/course/RAG")),
+      subLinks: [
+        { id: "architecture", label: "RAG Architecture and Workflow" },
+        { id: "vector-databases", label: "Vector Databases" },
+        { id: "chunking", label: "Document Chunking and Indexing" },
+        { id: "similarity-search", label: "Similarity Search Algorithms" },
+        { id: "pipeline", label: "Complete RAG Pipeline" },
+        { id: "evaluation", label: "RAG System Evaluation" },
+        { id: "prompt-techniques", label: "Prompt Techniques" },
+      ],
+    },
     // {
-    //   to: "/text-generation",
-    //   label: "Text Generation",
-    //   component: lazy(() => import("pages/module9/course/TextGeneration")),
+    //   to: "/casestudy",
+    //   label: "Case Study",
+    //   component: lazy(() => import("pages/module10/course/CaseStudy")),
     //   subLinks: [
-    //     { id: "language-modeling", label: "Language Modeling" },
-    //     { id: "conditional-generation", label: "Conditional Text Generation" },
-    //     { id: "beam-search", label: "Beam Search and Sampling Strategies" },
-    //   ],
-    // },
-    // {
-    //   to: "/qa-systems",
-    //   label: "Question Answering Systems",
-    //   component: lazy(() => import("pages/module9/course/QASystems")),
-    //   subLinks: [
-    //     { id: "types", label: "Types of QA Systems" },
-    //     { id: "bert-qa", label: "BERT for QA" },
-    //     { id: "evaluation", label: "Evaluating QA Systems" },
-    //   ],
-    // },
-    // {
-    //   to: "/summarization",
-    //   label: "Text Summarization",
-    //   component: lazy(() => import("pages/module9/course/Summarization")),
-    //   subLinks: [
-    //     { id: "extractive", label: "Extractive Summarization" },
-    //     { id: "abstractive", label: "Abstractive Summarization" },
-    //     { id: "rouge", label: "Evaluation Metrics (ROUGE Score)" },
+    //     { id: "problem", label: "Problem Definition" },
+    //     { id: "pipeline", label: "NLP Pipeline" },
+    //     { id: "model-selection", label: "Model Selection" },
+    //     { id: "hyperparameter", label: "Hyperparameter Optimization" },
+    //     { id: "error-analysis", label: "Error Analysis" },
+    //     { id: "visualization", label: "Model Outputs and Performance" },
     //   ],
     // },
   ];
@@ -166,7 +159,7 @@ const CourseTextProcessing = () => {
     <ModuleFrame
       module={10}
       isCourse={true}
-      title="Module 10: Text Processing"
+      title="Module 10: Text Processing and Natural Language Processing"
       courseLinks={courseLinks}
     >
       {location.pathname === `/module${module}/course` && (
@@ -174,12 +167,17 @@ const CourseTextProcessing = () => {
           <Row>
             <p>
               This module covers advanced topics in Natural Language Processing
-              (NLP) using Deep Learning techniques.
+              (NLP) using deep learning techniques. You'll learn about modern NLP
+              architectures, from RNNs to Transformers, and gain hands-on experience
+              with state-of-the-art models like BERT and GPT. We'll explore text
+              preprocessing, word embeddings, transfer learning, and retrieval-augmented
+              generation while developing practical skills with PyTorch and the
+              Hugging Face ecosystem.
             </p>
           </Row>
           <Row>
             <Col>
-              <p>Last Updated: {"2024-09-20"}</p>
+              <p>Last Updated: {"2025-03-06"}</p>
             </Col>
           </Row>
         </>

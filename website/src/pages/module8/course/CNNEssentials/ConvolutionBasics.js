@@ -177,17 +177,22 @@ const ConvolutionBasics = () => {
           </Text>
           
           <div className="p-4 bg-white rounded-md">
-            <Text className="font-mono text-sm">
-              {`G[i,j] = ∑∑ F[i+k,j+l] * K[k,l]`}
-            </Text>
+            <BlockMath>
+              {`G[i, j, c_{out}] = \\sigma\\left(\\sum_{c_{in}=0}^{C_{in}-1} \\sum_{k=0}^{K_h-1} \\sum_{l=0}^{K_w-1} F[s_h \\cdot i + k - p_h, s_w \\cdot j + l - p_w, c_{in}] \\cdot K[k, l, c_{in}, c_{out}] + b[c_{out}]\\right)`}
+            </BlockMath>
             <Text className="text-sm text-gray-600 mt-2">
               where:
             </Text>
             <ul className="list-disc ml-6 text-sm text-gray-600">
-              <li>G[i,j] is the output at position (i,j)</li>
-              <li>F is the input matrix</li>
-              <li>K is the kernel matrix</li>
-              <li>k,l iterate over kernel dimensions</li>
+              <li><InlineMath>{"G[i,j,c_{out}]"}</InlineMath> is the output at position <InlineMath>{"(i,j)"}</InlineMath> for output channel <InlineMath>{"c_{out}"}</InlineMath></li>
+              <li><InlineMath>{"F"}</InlineMath> is the input tensor (with padding applied)</li>
+              <li><InlineMath>K</InlineMath> is the kernel/filter tensor</li>
+              <li><InlineMath>\sigma</InlineMath> is the activation function (e.g., ReLU, sigmoid)</li>
+              <li><InlineMath>{"C_{in}"}</InlineMath> is the number of input channels</li>
+              <li><InlineMath>K_h, K_w</InlineMath> are kernel height and width</li>
+              <li><InlineMath>s_h, s_w</InlineMath> are stride values for height and width directions</li>
+              <li><InlineMath>{"p_h, p_w"}</InlineMath> are padding values for height and width</li>
+              <li><InlineMath>{"b[c_{out}]"}</InlineMath> is the bias term for output channel <InlineMath>{"c_{out}"}</InlineMath></li>
             </ul>
           </div>
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Title, Text, Stack, Alert } from '@mantine/core';
 import CodeBlock from 'components/CodeBlock';
+import { BlockMath, InlineMath } from 'react-katex';
 
 const Dropout = () => {
   return (
@@ -11,11 +12,23 @@ const Dropout = () => {
         representations and preventing co-adaptation of features.
       </Text>
       
-      <Alert variant="light" title="Key Properties">
-        • Training: Each neuron has a probability p of being dropped (set to 0)
-        • Inference: All neurons are active, but outputs are scaled by (1-p)
-        • Common dropout rates: 0.2 to 0.5 (20% to 50% of neurons dropped)
-      </Alert>
+      <div>
+        <Title order={4} mb="md">Key Properties</Title>
+        <Text>
+          <strong>Training:</strong> Each neuron has a probability p of being dropped (set to 0), remaining neurons are scaled by <InlineMath math="1/(1-p)" />.
+        </Text>
+        <BlockMath math="y_{train} = \frac{x \odot m}{1-p}" />
+        <Text size="sm" mb="md" color="dimmed">where m is a binary mask with m_i ~ Bernoulli(1-p)</Text>
+        
+        <Text>
+          <strong>Inference:</strong> All neurons are active, no scaling is applied.
+        </Text>
+        <BlockMath math="y_{eval} = x" />
+        
+        <Text>
+          <strong>Common dropout rates:</strong> 0.2 to 0.5 (20% to 50% of neurons dropped)
+        </Text>
+      </div>
 
       <CodeBlock 
         language="python"
@@ -31,10 +44,14 @@ model = nn.Sequential(
     nn.Linear(256, 10)
 )
 
-# Set model to training or evaluation mode as needed
-model.train()  # Enable dropout during training
-# ... training loop ...
-model.eval()  # Disable dropout for evaluation
+# Training mode example - dropout active with scaling by 1/(1-p)
+model.train()
+x = torch.ones((1, 784))
+output = model(x)  # Some neurons randomly dropped, others scaled by 2.0
+
+# Evaluation mode example - all neurons active, no scaling
+model.eval()
+output = model(x)  # All neurons active, no scaling applied
 `}
       />
     </Stack>

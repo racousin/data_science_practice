@@ -1,6 +1,7 @@
 import React from 'react';
 import { Title, Text, Stack, Alert } from '@mantine/core';
 import CodeBlock from 'components/CodeBlock';
+import { BlockMath, InlineMath } from 'react-katex';
 
 const EarlyStopping = () => {
   return (
@@ -11,11 +12,14 @@ const EarlyStopping = () => {
         training when the model begins to overfit, saving the best model weights.
       </Text>
       
-      <Alert variant="light" title="Parameters">
-        • patience: Number of epochs to wait for improvement
-        • min_delta: Minimum change in validation loss to qualify as an improvement
-        • restore_best_weights: Whether to restore model to best weights after stopping
-      </Alert>
+      <Text>
+        Let <InlineMath math="f_\theta(x)" /> be a model with parameters <InlineMath math="\theta" /> at epoch <InlineMath math="t" />. The validation loss is:
+        <BlockMath math="L_{val}(\theta_t) = \frac{1}{n_{val}} \sum_{i=1}^{n_{val}} L(f_{\theta_t}(x_i), y_i)" />
+        Given patience <InlineMath math="p" /> and minimum improvement threshold <InlineMath math="\delta" />, training stops at epoch <InlineMath math="T" /> when:
+        <BlockMath math="L_{val}(\theta_{T-j}) > L_{val}(\theta_{best}) - \delta \quad \forall j \in \{0,1,...,p-1\}" />
+        The optimal model parameters are:
+        <BlockMath math="\theta_{best} = \arg\min_{\theta_t} L_{val}(\theta_t) \quad \text{for } t \leq T" />
+      </Text>
 
       <CodeBlock 
         language="python"
