@@ -43,19 +43,6 @@ const CourseTextProcessing = () => {
         { id: "comparison", label: "Comparison with Transformers" },
       ],
     },
-    // {
-    //   to: "/word-embeddings",
-    //   label: "Word Embeddings",
-    //   component: lazy(() => import("pages/module10/course/WordEmbeddings")),
-    //   subLinks: [
-    //     { id: "distributional-semantics", label: "Distributional Semantics" },
-    //     { id: "traditional-embeddings", label: "Traditional Embeddings" },
-    //     { id: "pretrained-embeddings", label: "Pre-trained Embeddings" },
-    //     { id: "visualization", label: "Embedding Visualization" },
-    //     { id: "semantic-operations", label: "Semantic Operations" },
-    //     { id: "static-vs-contextual", label: "Static vs. Contextual Embeddings" },
-    //   ],
-    // },
     {
       to: "/transformer",
       label: "Transformer Architecture",
@@ -68,6 +55,19 @@ const CourseTextProcessing = () => {
         { id: "encoder-decoder", label: "Encoder and Decoder Components" },
         { id: "attention-math", label: "Mathematical Formulation of Attention" },
         { id: "information-flow", label: "Information Flow" },
+      ],
+    },
+    {
+      to: "/TransformerArchitectures",
+      label: "TransformerArchitectures",
+      component: lazy(() => import("pages/module10/course/TransformerArchitectures")),
+      subLinks: [
+        { id: "architecture", label: "BERT Architecture and Innovations" },
+        { id: "pretraining", label: "Masked Language Modeling and NSP" },
+        { id: "classification", label: "Classification and Token-level Tasks" },
+        { id: "variants", label: "BERT Variants" },
+        { id: "fine-tuning", label: "Fine-tuning Techniques" },
+        { id: "bidirectional-context", label: "Bidirectional Context" },
       ],
     },
     // {
@@ -85,32 +85,7 @@ const CourseTextProcessing = () => {
     //     { id: "guidelines", label: "When to Use Different Methods" },
     //   ],
     // },
-    // {
-    //   to: "/bert",
-    //   label: "BERT Models",
-    //   component: lazy(() => import("pages/module10/course/BERT")),
-    //   subLinks: [
-    //     { id: "architecture", label: "BERT Architecture and Innovations" },
-    //     { id: "pretraining", label: "Masked Language Modeling and NSP" },
-    //     { id: "classification", label: "Classification and Token-level Tasks" },
-    //     { id: "variants", label: "BERT Variants" },
-    //     { id: "fine-tuning", label: "Fine-tuning Techniques" },
-    //     { id: "bidirectional-context", label: "Bidirectional Context" },
-    //   ],
-    // },
-    // {
-    //   to: "/gpt",
-    //   label: "GPT and Generative Models",
-    //   component: lazy(() => import("pages/module10/course/GPT")),
-    //   subLinks: [
-    //     { id: "autoregressive", label: "Autoregressive Language Models" },
-    //     { id: "architecture", label: "GPT Architecture and Training" },
-    //     { id: "generation-strategies", label: "Text Generation Strategies" },
-    //     { id: "prompt-engineering", label: "Prompt Engineering" },
-    //     { id: "parameters", label: "Generation Parameters" },
-    //     { id: "versions", label: "GPT Versions and Capabilities" },
-    //   ],
-    // },
+
     // {
     //   to: "/huggingface",
     //   label: "Hugging Face Ecosystem",

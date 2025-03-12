@@ -100,23 +100,60 @@ const Pooling = () => {
         <List.Item>Control of overfitting</List.Item>
       </List>
 
-      <Text weight={700}>1. Common Pooling Operations</Text>
+      <Title order={3}>1. Common Pooling Operations</Title>
+
+      <Text>
+        Pooling operations reduce the spatial dimensions of feature maps while preserving important information.
+        The two most common types are max pooling and average pooling.
+      </Text>
 
       <Grid>
         <Grid.Col span={12} md={6}>
-          <Text>Max Pooling:</Text>
+          <Title order={4}>Max Pooling:</Title>
+          <Text>
+            Takes the maximum value from each pooling region:
+          </Text>
           <BlockMath>
-            {`MaxPool(X)_{i,j} = \\max_{(m,n) \\in R_{i,j}} x_{m,n}`}
+            {`a_{i,j,k}^l = \\max_{0 \\leq p < k_h, 0 \\leq q < k_w} \\{a_{s_h \\cdot i+p, s_w \\cdot j+q, k}^{l-1}\\}`}
           </BlockMath>
+          <Text size="sm">
+            Where <InlineMath>{`k_h, k_w`}</InlineMath> are the pooling window dimensions and <InlineMath>{`s_h, s_w`}</InlineMath> are the stride values.
+          </Text>
         </Grid.Col>
         
         <Grid.Col span={12} md={6}>
-          <Text>Average Pooling:</Text>
+          <Title order={4}>Average Pooling:</Title>
+          <Text>
+            Computes the average value across each pooling region:
+          </Text>
           <BlockMath>
-            {`AvgPool(X)_{i,j} = \\frac{1}{|R_{i,j}|} \\sum_{(m,n) \\in R_{i,j}} x_{m,n}`}
+            {`a_{i,j,k}^l = \\frac{1}{k_h \\cdot k_w} \\sum_{p=0}^{k_h-1} \\sum_{q=0}^{k_w-1} a_{s_h \\cdot i+p, s_w \\cdot j+q, k}^{l-1}`}
           </BlockMath>
+          <Text size="sm">
+            This smooths the feature maps and can be less sensitive to small translations.
+          </Text>
         </Grid.Col>
       </Grid>
+
+      <div className="p-4 bg-white rounded-md mt-3">
+        <Title order={4}>Formal Definition of Pooling Operation</Title>
+        <Text>
+          For an input tensor <InlineMath>F</InlineMath> with dimensions <InlineMath>H \times W \times C</InlineMath>:
+        </Text>
+        <BlockMath>
+          {`G[i, j, c] = Pool\\left(\\{F[s_h \\cdot i + p, s_w \\cdot j + q, c] \\mid 0 \\leq p < k_h, 0 \\leq q < k_w\\}\\right)`}
+        </BlockMath>
+        <Text className="text-sm text-gray-600 mt-2">
+          where:
+        </Text>
+        <ul className="list-disc ml-6 text-sm text-gray-600">
+          <li><InlineMath>{"G[i,j,c]"}</InlineMath> is the output at position <InlineMath>{"(i,j)"}</InlineMath> for channel <InlineMath>{"c"}</InlineMath></li>
+          <li><InlineMath>{"Pool"}</InlineMath> is either the max or average function</li>
+          <li><InlineMath>{"k_h, k_w"}</InlineMath> are the pooling window height and width</li>
+          <li><InlineMath>{"s_h, s_w"}</InlineMath> are the stride values for height and width</li>
+          <li>Unlike convolution, pooling operates independently on each channel</li>
+        </ul>
+      </div>
 
       <Text>
         Where <InlineMath>{`R_{i,j}`}</InlineMath> represents the pooling region centered

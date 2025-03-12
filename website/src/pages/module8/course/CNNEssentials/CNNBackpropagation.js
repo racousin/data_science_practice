@@ -29,7 +29,9 @@ const CNNBackpropagation = () => {
       {/* CNN Operation Notation */}
       <Stack spacing="md">
         <Title order={2} id="cnn-notation">CNN Mathematical Notation</Title>
-        
+        <Text>
+          To simplify the formulation of CNN backpropagation while preserving the core logic, we will consider convolutions with zero padding and a stride of 1. The same principles apply to other padding and stride configurations, but with more complex indexing.
+        </Text>
         <Table withTableBorder withColumnBorders>
           <Table.Thead>
             <Table.Tr>
@@ -150,19 +152,19 @@ const CNNBackpropagation = () => {
         
         <Title order={3} mt="lg">Pooling Layer</Title>
         <Text>
-          For max pooling with a 2×2 filter and stride 2:
+          For max pooling with a filter of size k_h × k_w and stride 1:
         </Text>
         
         <BlockMath>{`
-          a_{i,j,k}^l = \\max\\{a_{2i,2j,k}^{l-1}, a_{2i,2j+1,k}^{l-1}, a_{2i+1,2j,k}^{l-1}, a_{2i+1,2j+1,k}^{l-1}\\}
+          a_{i,j,k}^l = \\max_{0 \\leq p < k_h, 0 \\leq q < k_w} \\{a_{i+p,j+q,k}^{l-1}\\}
         `}</BlockMath>
         
         <Text>
-          For average pooling with a 2×2 filter and stride 2:
+          For average pooling with a filter of size k_h × k_w and stride 1:
         </Text>
         
         <BlockMath>{`
-          a_{i,j,k}^l = \\frac{1}{4}(a_{2i,2j,k}^{l-1} + a_{2i,2j+1,k}^{l-1} + a_{2i+1,2j,k}^{l-1} + a_{2i+1,2j+1,k}^{l-1})
+          a_{i,j,k}^l = \\frac{1}{k_h \\cdot k_w} \\sum_{p=0}^{k_h-1} \\sum_{q=0}^{k_w-1} a_{i+p,j+q,k}^{l-1}
         `}</BlockMath>
       </Stack>
 
@@ -315,7 +317,7 @@ const CNNBackpropagation = () => {
                 <BlockMath>{`
                   \\frac{\\partial L}{\\partial a_{i,j,k}^{l-1}} = 
                   \\begin{cases} 
-                  \\frac{\\partial L}{\\partial a_{\\lfloor i/2 \\rfloor, \\lfloor j/2 \\rfloor, k}^{l}} & \\text{if } a_{i,j,k}^{l-1} = \\max\\text{ in its pooling region} \\\\
+                  \\frac{\\partial L}{\\partial a_{\\lfloor i/k_h \\rfloor, \\lfloor j/k_w \\rfloor, k}^{l}} & \\text{if } a_{i,j,k}^{l-1} = \\max\\text{ in its pooling region} \\\\
                   0 & \\text{otherwise}
                   \\end{cases}
                 `}</BlockMath>
@@ -331,19 +333,13 @@ const CNNBackpropagation = () => {
                 </Text>
                 
                 <BlockMath>{`
-                  \\frac{\\partial L}{\\partial a_{i,j,k}^{l-1}} = \\frac{1}{\\text{pool size}} \\frac{\\partial L}{\\partial a_{\\lfloor i/2 \\rfloor, \\lfloor j/2 \\rfloor, k}^{l}}
+                  \\frac{\\partial L}{\\partial a_{i,j,k}^{l-1}} = \\frac{1}{k_h \\times k_w} \\frac{\\partial L}{\\partial a_{\\lfloor i/k_h \\rfloor, \\lfloor j/k_w \\rfloor, k}^{l}}
                 `}</BlockMath>
                 
                 <Text>
-                  For a 2×2 pooling window, each input receives 1/4 of the gradient from the output.
+                  For a pooling window of size k_h×k_w, each input receives 1/(k_h×k_w) of the gradient from the output.
                 </Text>
-                
-                <Box className="p-4 bg-blue-50 rounded mt-4">
-                  <Title order={4}>Key Insight: Pooling Layers Have No Parameters</Title>
-                  <Text>
-                    Pooling layers do not have learnable parameters (weights and biases). They only affect how gradients flow backward through the network.
-                  </Text>
-                </Box>
+  
               </Stack>
             </Accordion.Panel>
           </Accordion.Item>

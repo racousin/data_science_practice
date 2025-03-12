@@ -3,7 +3,7 @@ import { Title, Text, Stack, Grid, Box, List, Table, Divider, Accordion } from '
 import { InlineMath, BlockMath } from 'react-katex';
 import CodeBlock from 'components/CodeBlock';
 
-const Transformer = () => {
+const TransformerBackpropagation = () => {
   return (
     <Stack spacing="xl" className="w-full">
       {/* Introduction to Transformers */}
@@ -919,4 +919,4 @@ const Transformer = () => {
   );
 };
 
-export default Transformer;
+export default TransformerBackpropagation;

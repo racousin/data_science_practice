@@ -4,6 +4,7 @@ import { InlineMath, BlockMath } from "react-katex";
 import "katex/dist/katex.min.css";
 import CodeBlock from "components/CodeBlock";
 import { IconAlertCircle } from "@tabler/icons-react";
+import RNNBackpropagation from "./RNNBackpropagation"
 
 const RNN = () => {
   return (
@@ -1373,7 +1374,11 @@ for batch_texts, batch_labels in dataloader:
           <List.Item>Linear attention mechanisms to reduce the quadratic complexity of Transformers</List.Item>
         </List>
       </Alert>
+      <div>
+    <RNNBackpropagation/>
     </div>
+    </div>
+
   );
 };
 
