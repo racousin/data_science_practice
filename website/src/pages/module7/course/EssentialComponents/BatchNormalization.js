@@ -84,7 +84,7 @@ const BatchNormalization = () => {
       <List>
         <List.Item>We calculate and use that batch's mean and variance for normalization</List.Item>
         <List.Item>We update running estimates of the global statistics:</List.Item>
-      </List>
+
       <BlockMath>
         {`E[x] \\leftarrow \\alpha \\cdot E[x] + (1 - \\alpha) \\cdot \\mu_\\mathcal{B}`}
       </BlockMath>
@@ -94,6 +94,15 @@ const BatchNormalization = () => {
       <Text>
         Where <InlineMath>{`\\alpha`}</InlineMath> is the momentum (typically 0.9 or 0.99).
       </Text>
+      <List.Item>We update the scale <InlineMath>{`\\gamma`}</InlineMath> and shift <InlineMath>{`\\beta`}</InlineMath> parameters using gradients:</List.Item>
+      <BlockMath>
+        {`\\frac{\\partial \\mathcal{L}}{\\partial \\gamma} = \\sum_{i=1}^m \\frac{\\partial \\mathcal{L}}{\\partial y_i} \\cdot \\hat{x}_i`}
+      </BlockMath>
+      <BlockMath>
+        {`\\frac{\\partial \\mathcal{L}}{\\partial \\beta} = \\sum_{i=1}^m \\frac{\\partial \\mathcal{L}}{\\partial y_i}`}
+      </BlockMath>
+      </List>
+
       <Alert color="green">
         <strong>Key point:</strong> During training, the mini-batch statistics are used for normalization, while running 
         statistics are only updated for later use during inference.

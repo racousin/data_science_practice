@@ -19,7 +19,7 @@ const CourseTextProcessing = () => {
     },
     {
       to: "/preprocessing",
-      label: "TextNumericalRepresentation",
+      label: "Text Numerical Representation",
       component: lazy(() => import("pages/module10/course/TextNumericalRepresentation")),
       subLinks: [
         { id: "cleaning", label: "Text Cleaning Techniques" },
@@ -31,74 +31,43 @@ const CourseTextProcessing = () => {
     },
     {
       to: "/rnn",
-      label: "Recurrent Neural Networks for NLP",
+      label: "Recurrent Neural Networks",
       component: lazy(() => import("pages/module10/course/RNN")),
       subLinks: [
-        { id: "sequential-data", label: "Sequential Nature of Text Data" },
-        { id: "basic-rnn", label: "Basic RNN Architecture" },
-        { id: "lstm-gru", label: "LSTM and GRU Architectures" },
-        { id: "vanishing-gradient", label: "Vanishing/Exploding Gradient Problem" },
-        { id: "bidirectional", label: "Bidirectional RNNs" },
-        { id: "implementations", label: "PyTorch Implementations" },
-        { id: "comparison", label: "Comparison with Transformers" },
       ],
     },
     {
-      to: "/transformer",
-      label: "Transformer Architecture",
-      component: lazy(() => import("pages/module10/course/Transformer")),
+      to: "/transformer-components",
+      label: "Transformer Components",
+      component: lazy(() => import("pages/module10/course/TransformerComponents")),
       subLinks: [
-        { id: "architecture", label: "Transformer Model Architecture" },
-        { id: "self-attention", label: "Self-Attention Mechanism" },
-        { id: "multi-head-attention", label: "Multi-Head Attention" },
-        { id: "positional-encodings", label: "Positional Encodings" },
-        { id: "encoder-decoder", label: "Encoder and Decoder Components" },
-        { id: "attention-math", label: "Mathematical Formulation of Attention" },
-        { id: "information-flow", label: "Information Flow" },
+
       ],
     },
     {
-      to: "/TransformerArchitectures",
-      label: "TransformerArchitectures",
+      to: "/transformer-architectures",
+      label: "Transformer Architectures",
       component: lazy(() => import("pages/module10/course/TransformerArchitectures")),
       subLinks: [
-        { id: "architecture", label: "BERT Architecture and Innovations" },
-        { id: "pretraining", label: "Masked Language Modeling and NSP" },
-        { id: "classification", label: "Classification and Token-level Tasks" },
-        { id: "variants", label: "BERT Variants" },
-        { id: "fine-tuning", label: "Fine-tuning Techniques" },
-        { id: "bidirectional-context", label: "Bidirectional Context" },
       ],
     },
-    // {
-    //   to: "/transfer-learning",
-    //   label: "Transfer Learning in NLP",
-    //   component: lazy(() => import("pages/module10/course/TransferLearning")),
-    //   subLinks: [
-    //     { id: "concept", label: "Concept and Importance" },
-    //     { id: "pre-training", label: "Pre-training and Fine-tuning" },
-    //     { id: "strategies", label: "Transfer Learning Strategies" },
-    //     { id: "domain-adaptation", label: "Domain Adaptation" },
-    //     { id: "low-resource", label: "Low-Resource Fine-tuning" },
-    //     { id: "parameter-efficient", label: "Parameter-Efficient Methods" },
-    //     { id: "frozen-vs-trainable", label: "Frozen vs. Trainable Parameters" },
-    //     { id: "guidelines", label: "When to Use Different Methods" },
-    //   ],
-    // },
+    {
+      to: "/transfer-learning",
+      label: "Transfer Learning in NLP",
+      component: lazy(() => import("pages/module10/course/TransferLearning")),
+      subLinks: [
 
-    // {
-    //   to: "/huggingface",
-    //   label: "Hugging Face Ecosystem",
-    //   component: lazy(() => import("pages/module10/course/HuggingFace")),
-    //   subLinks: [
-    //     { id: "hub", label: "Hugging Face Hub" },
-    //     { id: "transformers", label: "Transformers Library" },
-    //     { id: "models-tokenizers", label: "Loading Models and Tokenizers" },
-    //     { id: "trainer", label: "Fine-tuning with Trainer API" },
-    //     { id: "datasets", label: "Datasets and Evaluation" },
-    //     { id: "sharing", label: "Model Sharing and Collaboration" },
-    //   ],
-    // },
+      ],
+    },
+    {
+      to: "/nlp-evaluation",
+      label: "NLP Evaluation",
+      component: lazy(() => import("pages/module10/course/NLPEvaluation")),
+      subLinks: [
+
+      ],
+    },
+
     {
       to: "/rag",
       label: "Retrieval-Augmented Generation (RAG)",

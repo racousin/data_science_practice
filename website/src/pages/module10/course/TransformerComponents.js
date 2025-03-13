@@ -3,11 +3,11 @@ import { Title, Text, Stack, Grid, Box, List, Table, Divider, Accordion } from '
 import { InlineMath, BlockMath } from 'react-katex';
 import CodeBlock from 'components/CodeBlock';
 
-const TransformerBackpropagation = () => {
+const TransformerComponents = () => {
   return (
     <Stack spacing="xl" className="w-full">
       {/* Introduction to Transformers */}
-      <Title order={1} id="transformer-introduction">Transformers: Architecture and Backpropagation</Title>
+      <Title order={1} id="transformer-introduction">Transformers: Components</Title>
       
       <Stack spacing="md">
         <Text>
@@ -27,42 +27,6 @@ const TransformerBackpropagation = () => {
           
           <Text mt="md">The transformer consists of an encoder and a decoder stack, though many modern implementations use encoder-only (BERT), decoder-only (GPT), or encoder-decoder (T5) architectures.</Text>
         </Box>
-      </Stack>
-
-      {/* Transformer Architecture */}
-      <Stack spacing="md">
-        <Title order={2} id="transformer-architecture">Transformer Architecture</Title>
-        
-        <Grid>
-          <Grid.Col span={12}>
-            <Stack spacing="md">
-              <Title order={3}>Encoder</Title>
-              <Text>
-                The encoder processes the input sequence and builds representations. Each encoder layer has two main sublayers:
-              </Text>
-              <List>
-                <List.Item><strong>Multi-Head Self-Attention:</strong> Allows each position to attend to all positions in the previous layer</List.Item>
-                <List.Item><strong>Position-wise Feed-Forward Network:</strong> Applies the same feed-forward network to each position separately</List.Item>
-              </List>
-              <Text>
-                Each sublayer is followed by layer normalization and includes a residual connection.
-              </Text>
-
-              <Title order={3} mt="lg">Decoder</Title>
-              <Text>
-                The decoder generates the output sequence. Each decoder layer has three main sublayers:
-              </Text>
-              <List>
-                <List.Item><strong>Masked Multi-Head Self-Attention:</strong> Processes the output sequence, preventing positions from attending to future positions</List.Item>
-                <List.Item><strong>Multi-Head Cross-Attention:</strong> Attends to the encoder output</List.Item>
-                <List.Item><strong>Position-wise Feed-Forward Network:</strong> Same as in the encoder</List.Item>
-              </List>
-              <Text>
-                Each sublayer also uses residual connections and layer normalization.
-              </Text>
-            </Stack>
-          </Grid.Col>
-        </Grid>
       </Stack>
 
       {/* Transformer Mathematical Notation */}
@@ -437,34 +401,6 @@ const TransformerBackpropagation = () => {
         </Box>
         
         <Accordion variant="separated">
-          <Accordion.Item value="general-backprop">
-            <Accordion.Control>
-              <Title order={3}>General Backpropagation Algorithm</Title>
-            </Accordion.Control>
-            <Accordion.Panel>
-              <Stack spacing="md">
-                <Text>
-                  The general steps for backpropagation in transformers are:
-                </Text>
-                
-                <List ordered>
-                  <List.Item>Perform forward propagation through all layers</List.Item>
-                  <List.Item>Compute the loss L</List.Item>
-                  <List.Item>Initialize gradients for all parameters to zero</List.Item>
-                  <List.Item>For each layer from the last to the first:
-                    <List withPadding>
-                      <List.Item>Compute gradients through the output layer (if applicable)</List.Item>
-                      <List.Item>Compute gradients through layer normalization and residual connections</List.Item>
-                      <List.Item>Compute gradients through feed-forward networks</List.Item>
-                      <List.Item>Compute gradients through attention mechanisms</List.Item>
-                      <List.Item>Accumulate gradients for all parameters in the layer</List.Item>
-                    </List>
-                  </List.Item>
-                  <List.Item>Update parameters using accumulated gradients</List.Item>
-                </List>
-              </Stack>
-            </Accordion.Panel>
-          </Accordion.Item>
           
           <Accordion.Item value="attention-backprop">
             <Accordion.Control>
@@ -574,153 +510,7 @@ const TransformerBackpropagation = () => {
               </Stack>
             </Accordion.Panel>
           </Accordion.Item>
-          
-          <Accordion.Item value="layer-norm-backprop">
-            <Accordion.Control>
-              <Title order={3}>Backpropagation Through Layer Normalization</Title>
-            </Accordion.Control>
-            <Accordion.Panel>
-              <Stack spacing="md">
-                <Text>
-                  Layer normalization computes:
-                </Text>
-                
-                <BlockMath>{`
-                  \\mu = \\frac{1}{d_{model}} \\sum_{i=1}^{d_{model}} x_i
-                `}</BlockMath>
-                
-                <BlockMath>{`
-                  \\sigma^2 = \\frac{1}{d_{model}} \\sum_{i=1}^{d_{model}} (x_i - \\mu)^2
-                `}</BlockMath>
-                
-                <BlockMath>{`
-                  \\hat{x} = \\frac{x - \\mu}{\\sqrt{\\sigma^2 + \\epsilon}}
-                `}</BlockMath>
-                
-                <BlockMath>{`
-                  y = \\gamma \\odot \\hat{x} + \\beta
-                `}</BlockMath>
-                
-                <Text>
-                  Given <InlineMath>{`\\frac{\\partial L}{\\partial y}`}</InlineMath>, we compute:
-                </Text>
-                
-                <BlockMath>{`
-                  \\frac{\\partial L}{\\partial \\gamma} = \\sum_{i=1}^{d_{model}} \\frac{\\partial L}{\\partial y_i} \\hat{x}_i
-                `}</BlockMath>
-                
-                <BlockMath>{`
-                  \\frac{\\partial L}{\\partial \\beta} = \\sum_{i=1}^{d_{model}} \\frac{\\partial L}{\\partial y_i}
-                `}</BlockMath>
-                
-                <BlockMath>{`
-                  \\frac{\\partial L}{\\partial \\hat{x}} = \\frac{\\partial L}{\\partial y} \\odot \\gamma
-                `}</BlockMath>
-                
-                <Text>
-                  The gradient with respect to the input x is more complex due to the normalization:
-                </Text>
-                
-                <BlockMath>{`
-                  \\frac{\\partial L}{\\partial x} = \\frac{1}{N\\sqrt{\\sigma^2 + \\epsilon}} \\left( N\\frac{\\partial L}{\\partial \\hat{x}} - \\sum_{j=1}^{N}\\frac{\\partial L}{\\partial \\hat{x}_j} - \\hat{x} \\odot \\sum_{j=1}^{N}\\frac{\\partial L}{\\partial \\hat{x}_j}\\hat{x}_j \\right)
-                `}</BlockMath>
-                
-                <Text>
-                  This gradient ensures proper backpropagation through the normalization operation.
-                </Text>
-              </Stack>
-            </Accordion.Panel>
-          </Accordion.Item>
-          
-          <Accordion.Item value="feed-forward-backprop">
-            <Accordion.Control>
-              <Title order={3}>Backpropagation Through Feed-Forward Networks</Title>
-            </Accordion.Control>
-            <Accordion.Panel>
-              <Stack spacing="md">
-                <Text>
-                  The feed-forward network computes:
-                </Text>
-                
-                <BlockMath>{`
-                  h = \\max(0, xW^{FF}_1 + b_1)
-                `}</BlockMath>
-                
-                <BlockMath>{`
-                  y = hW^{FF}_2 + b_2
-                `}</BlockMath>
-                
-                <Text>
-                  Given <InlineMath>{`\\frac{\\partial L}{\\partial y}`}</InlineMath>, we compute:
-                </Text>
-                
-                <BlockMath>{`
-                  \\frac{\\partial L}{\\partial W^{FF}_2} = h^T \\frac{\\partial L}{\\partial y}
-                `}</BlockMath>
-                
-                <BlockMath>{`
-                  \\frac{\\partial L}{\\partial b_2} = \\sum_{i=1}^{N} \\frac{\\partial L}{\\partial y_i}
-                `}</BlockMath>
-                
-                <BlockMath>{`
-                  \\frac{\\partial L}{\\partial h} = \\frac{\\partial L}{\\partial y} W^{FF^T}_2
-                `}</BlockMath>
-                
-                <Text>
-                  Backpropagating through the ReLU activation:
-                </Text>
-                
-                <BlockMath>{`
-                  \\frac{\\partial L}{\\partial (xW^{FF}_1 + b_1)} = \\frac{\\partial L}{\\partial h} \\odot I_{[xW^{FF}_1 + b_1 > 0]}
-                `}</BlockMath>
-                
-                <Text>
-                  Where <InlineMath>{`I_{[xW^{FF}_1 + b_1 > 0]}`}</InlineMath> is an indicator function that is 1 for positive inputs and 0 otherwise.
-                </Text>
-                
-                <BlockMath>{`
-                  \\frac{\\partial L}{\\partial W^{FF}_1} = x^T \\frac{\\partial L}{\\partial (xW^{FF}_1 + b_1)}
-                `}</BlockMath>
-                
-                <BlockMath>{`
-                  \\frac{\\partial L}{\\partial b_1} = \\sum_{i=1}^{N} \\frac{\\partial L}{\\partial (xW^{FF}_1 + b_1)_i}
-                `}</BlockMath>
-                
-                <BlockMath>{`
-                  \\frac{\\partial L}{\\partial x} = \\frac{\\partial L}{\\partial (xW^{FF}_1 + b_1)} W^{FF^T}_1
-                `}</BlockMath>
-              </Stack>
-            </Accordion.Panel>
-          </Accordion.Item>
-          
-          <Accordion.Item value="residual-backprop">
-            <Accordion.Control>
-              <Title order={3}>Backpropagation Through Residual Connections</Title>
-            </Accordion.Control>
-            <Accordion.Panel>
-              <Stack spacing="md">
-                <Text>
-                  Residual connections simply add the input to the output of a sublayer:
-                </Text>
-                
-                <BlockMath>{`
-                  y = x + F(x)
-                `}</BlockMath>
-                
-                <Text>
-                  The gradient flows through both paths:
-                </Text>
-                
-                <BlockMath>{`
-                  \\frac{\\partial L}{\\partial x} = \\frac{\\partial L}{\\partial y} + \\frac{\\partial L}{\\partial F(x)} \\frac{\\partial F(x)}{\\partial x}
-                `}</BlockMath>
-                
-                <Text>
-                  This direct path (<InlineMath>{`\\frac{\\partial L}{\\partial y}`}</InlineMath>) alleviates the vanishing gradient problem by allowing gradients to flow directly back, even if <InlineMath>{`\\frac{\\partial F(x)}{\\partial x}`}</InlineMath> becomes small.
-                </Text>
-              </Stack>
-            </Accordion.Panel>
-          </Accordion.Item>
+
         </Accordion>
       </Stack>
 
@@ -842,81 +632,8 @@ const TransformerBackpropagation = () => {
         </Text>
       </Stack>
 
-      {/* Optimization Techniques */}
-      <Stack spacing="md">
-        <Title order={2} id="optimization-techniques">Optimization Techniques for Transformer Training</Title>
-        
-        <Title order={3}>Learning Rate Scheduling</Title>
-        <Text>
-          The original transformer paper used a learning rate schedule with a warm-up period:
-        </Text>
-        
-        <BlockMath>{`
-          \\text{lr} = d_{model}^{-0.5} \\cdot \\min(\\text{step\_num}^{-0.5}, \\text{step\_num} \\cdot \\text{warmup\_steps}^{-1.5})
-        `}</BlockMath>
-        
-        <Text>
-          This schedule increases the learning rate linearly for the first warmup_steps, then decreases it proportionally to the inverse square root of the step number.
-        </Text>
-        
-        <Title order={3} mt="lg">Adam Optimizer with β₁ = 0.9, β₂ = 0.98, ε = 10⁻⁹</Title>
-        <Text>
-          The Adam optimizer is commonly used for training transformers with slightly modified hyperparameters:
-        </Text>
-        
-        <BlockMath>{`
-          m_t = \\beta_1 m_{t-1} + (1 - \\beta_1) g_t
-        `}</BlockMath>
-        
-        <BlockMath>{`
-          v_t = \\beta_2 v_{t-1} + (1 - \\beta_2) g_t^2
-        `}</BlockMath>
-        
-        <BlockMath>{`
-          \\hat{m}_t = \\frac{m_t}{1 - \\beta_1^t}
-        `}</BlockMath>
-        
-        <BlockMath>{`
-          \\hat{v}_t = \\frac{v_t}{1 - \\beta_2^t}
-        `}</BlockMath>
-        
-        <BlockMath>{`
-          W_{t+1} = W_t - \\eta \\frac{\\hat{m}_t}{\\sqrt{\\hat{v}_t} + \\epsilon}
-        `}</BlockMath>
-        
-        <Title order={3} mt="lg">Regularization Techniques</Title>
-        <List>
-          <List.Item><strong>Dropout:</strong> Applied after each attention layer and feed-forward network, typically with a rate of 0.1</List.Item>
-          <List.Item><strong>Label Smoothing:</strong> Often set to 0.1, to prevent the model from becoming overly confident</List.Item>
-          <List.Item><strong>Weight Decay:</strong> Typically set to 0.01 to prevent weights from growing too large</List.Item>
-        </List>
-        
-        <Title order={3} mt="lg">Gradient Accumulation</Title>
-        <Text>
-          For large models that don't fit in memory, gradients can be accumulated across multiple forward and backward passes before updating:
-        </Text>
-        
-        <BlockMath>{`
-          \\frac{\\partial L_{accumulated}}{\\partial W} = \\sum_{i=1}^{n} \\frac{\\partial L_i}{\\partial W}
-        `}</BlockMath>
-        
-        <Text>
-          The parameters are then updated using the accumulated gradients.
-        </Text>
-        
-        <Title order={3} mt="lg">Mixed Precision Training</Title>
-        <Text>
-          To accelerate training and reduce memory usage, some calculations can be performed in lower precision (FP16) while maintaining a master copy of weights in higher precision (FP32):
-        </Text>
-        <List>
-          <List.Item>Forward and backward passes use FP16 for faster computation</List.Item>
-          <List.Item>Gradients are scaled to prevent underflow in FP16</List.Item>
-          <List.Item>Updates are performed in FP32 to maintain numerical stability</List.Item>
-        </List>
-      </Stack>
-
     </Stack>
   );
 };
 
-export default TransformerBackpropagation;
+export default TransformerComponents;

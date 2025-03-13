@@ -77,9 +77,9 @@ const TransformerArchitectures = () => {
                 BERT uses a specific input format for both pre-training and fine-tuning:
               </Text>
               
-              <CodeBlock language="text">
-                [CLS] Sentence A [SEP] Sentence B [SEP]
-              </CodeBlock>
+              <CodeBlock language="text"
+                code={`[CLS] Sentence A [SEP] Sentence B [SEP]`}
+              />
               
               <List>
                 <List.Item><strong>[CLS]:</strong> Classification token, its final representation is used for classification tasks</List.Item>
@@ -297,10 +297,9 @@ const TransformerArchitectures = () => {
                 <List.Item>The model is trained to predict the original text of all corrupted spans, given the corrupted text</List.Item>
               </List>
               
-              <CodeBlock language="text">
-Input: "The quick brown fox jumps &lt;X&gt; the lazy dog."
-Target: "&lt;X&gt; over"
-              </CodeBlock>
+              <CodeBlock language="text" code={`Input: "The quick brown fox jumps &lt;X&gt; the lazy dog."
+Target: "&lt;X&gt; over"`}
+              />
               
               <Title order={3} mt="lg">Text-to-Text Framework</Title>
               <Text>
@@ -526,95 +525,6 @@ Target: "&lt;X&gt; over"
             </Box>
           </Grid.Col>
         </Grid>
-        
-        <Title order={3} mt="lg">Practical Applications</Title>
-        <Text>
-          The choice of transformer architecture depends on the specific requirements of the application:
-        </Text>
-        
-        <List>
-          <List.Item><strong>BERT:</strong> Ideal for tasks requiring deep language understanding like sentiment analysis, named entity recognition, and question answering with fixed contexts.</List.Item>
-          <List.Item><strong>GPT:</strong> Best suited for creative text generation, conversational agents, content creation, and tasks benefiting from autoregressive generation.</List.Item>
-          <List.Item><strong>T5:</strong> Excels in scenarios requiring both understanding and generation, like translation, summarization, and structured text transformations.</List.Item>
-        </List>
-        
-        <Box className="p-4 border rounded mt-4">
-          <Title order={4}>Emerging Hybrid Architectures</Title>
-          <Text>
-            Recent research has led to hybrid models that combine strengths of different architectures:
-          </Text>
-          <List>
-            <List.Item><strong>BART:</strong> Combines BERT-style bidirectional encoder with GPT-style autoregressive decoder</List.Item>
-            <List.Item><strong>PaLM:</strong> Uses a decoder-only architecture but with specialized training objectives and techniques</List.Item>
-            <List.Item><strong>GLaM:</strong> Uses mixture-of-experts architecture for more efficient parameter usage</List.Item>
-            <List.Item><strong>Switch Transformers:</strong> Sparse mixture-of-experts models that activate only relevant parts of the network</List.Item>
-          </List>
-        </Box>
-      </Stack>
-
-      {/* Future Directions */}
-      <Stack spacing="md">
-        <Title order={2} id="future-directions">Future Directions in Transformer Architectures</Title>
-        
-        <Text>
-          Transformer architectures continue to evolve with research focusing on several key areas:
-        </Text>
-        
-        <Grid>
-          <Grid.Col span={6}>
-            <Box className="p-4 border rounded h-full">
-              <Title order={4}>Efficiency Improvements</Title>
-              <List>
-                <List.Item><strong>Sparse Attention Mechanisms:</strong> Reducing computational complexity from O(n²) to O(n log n) or O(n)</List.Item>
-                <List.Item><strong>Parameter Efficiency:</strong> Techniques like adapters, prompt tuning, and LoRA for efficient fine-tuning</List.Item>
-                <List.Item><strong>Quantization:</strong> Reducing precision requirements while maintaining performance</List.Item>
-                <List.Item><strong>Knowledge Distillation:</strong> Transferring knowledge from large to smaller models</List.Item>
-              </List>
-            </Box>
-          </Grid.Col>
-          
-          <Grid.Col span={6}>
-            <Box className="p-4 border rounded h-full">
-              <Title order={4}>Capability Extensions</Title>
-              <List>
-                <List.Item><strong>Multimodal Integration:</strong> Combining text with images, audio, and other modalities</List.Item>
-                <List.Item><strong>Long-Context Handling:</strong> Extending beyond current token limits to process book-length contexts</List.Item>
-                <List.Item><strong>Tool Use:</strong> Enabling models to effectively use external tools and APIs</List.Item>
-                <List.Item><strong>Reasoning Capabilities:</strong> Improving logical reasoning and multi-step problem solving</List.Item>
-              </List>
-            </Box>
-          </Grid.Col>
-        </Grid>
-        
-        <Box className="p-4 border rounded mt-4">
-          <Title order={4}>Trends in Model Development</Title>
-          <Grid>
-            <Grid.Col span={4}>
-              <Box className="p-2 border-b">
-                <Title order={5}>Scaling Laws & Efficiency</Title>
-                <Text size="sm">
-                  Balancing model size, training data, and computational resources for optimal performance with minimal environmental impact.
-                </Text>
-              </Box>
-            </Grid.Col>
-            <Grid.Col span={4}>
-              <Box className="p-2 border-b">
-                <Title order={5}>Alignment & Safety</Title>
-                <Text size="sm">
-                  Ensuring models adhere to human values, preferences, and ethical considerations through techniques like RLHF and constitutional AI.
-                </Text>
-              </Box>
-            </Grid.Col>
-            <Grid.Col span={4}>
-              <Box className="p-2 border-b">
-                <Title order={5}>Interpretability</Title>
-                <Text size="sm">
-                  Developing methods to understand model behavior, identify emergent capabilities, and trace decision-making processes.
-                </Text>
-              </Box>
-            </Grid.Col>
-          </Grid>
-        </Box>
       </Stack>
     </Stack>
   );

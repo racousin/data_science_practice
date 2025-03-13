@@ -1,1384 +1,651 @@
-import React from "react";
-import { Title, Text, Space, Table, Alert, List, Tabs, Grid, Card } from "@mantine/core";
-import { InlineMath, BlockMath } from "react-katex";
-import "katex/dist/katex.min.css";
-import CodeBlock from "components/CodeBlock";
-import { IconAlertCircle } from "@tabler/icons-react";
-import RNNBackpropagation from "./RNNBackpropagation"
+import React from 'react';
+import { Title, Text, Stack, Grid, Box, List, Table, Divider, Accordion } from '@mantine/core';
+import { InlineMath, BlockMath } from 'react-katex';
+import CodeBlock from 'components/CodeBlock';
 
 const RNN = () => {
   return (
-    <div>
-      <Title order={1} mb="lg">
-        Recurrent Neural Networks for NLP
-      </Title>
-
-      <Text>
-        Recurrent Neural Networks (RNNs) were the dominant architecture for
-        sequence modeling tasks before the rise of Transformers. This section
-        covers the theory, implementation, and practical considerations of RNNs
-        and their variants for NLP tasks.
-      </Text>
-
-      <Space h="md" />
-
-      {/* Sequential Nature of Text Data */}
-      <Title order={2} id="sequential-data" mb="sm">
-        Sequential Nature of Text Data
-      </Title>
+    <Stack spacing="xl" className="w-full">
+      {/* Introduction to RNN Backpropagation */}
+      <Title order={1} id="rnn-backpropagation">RNN Backpropagation: Backpropagation Through Time (BPTT)</Title>
       
-      <Text>
-        Text data is inherently sequential - words derive meaning from their
-        context and position within a sentence. Traditional feedforward neural
-        networks don't naturally handle this sequential structure as they:
-      </Text>
-      
-      <List withPadding>
-        <List.Item>Expect fixed-size inputs</List.Item>
-        <List.Item>Don't share parameters across different positions</List.Item>
-        <List.Item>Can't naturally model dependencies between positions</List.Item>
-      </List>
-      
-      <Text mt="md">
-        RNNs address these limitations by maintaining a hidden state that captures
-        information about previous inputs, enabling them to process variable-length
-        sequences and model dependencies between tokens.
-      </Text>
-
-      <Card withBorder shadow="sm" mt="md" mb="md">
-        <Text fw={700}>Key Insight</Text>
+      <Stack spacing="md">
         <Text>
-          The core innovation of RNNs is processing tokens sequentially while maintaining 
-          a state vector that carries information forward, creating an implicit "memory" 
-          of the sequence seen so far.
+          Recurrent Neural Networks (RNNs) learn from sequential data through a process called Backpropagation Through Time (BPTT). Unlike feedforward networks, RNNs share parameters across different time steps, creating unique challenges for gradient computation.
         </Text>
-      </Card>
 
-      {/* Basic RNN Architecture */}
-      <Title order={2} id="basic-rnn" mt="lg" mb="sm">
-        Basic RNN Architecture
-      </Title>
-      
-      <Text>
-        The vanilla RNN processes input sequences one element at a time, updating
-        its hidden state at each step.
-      </Text>
-
-      <Grid>
-        <Grid.Col span={{ base: 12, md: 6 }}>
-          <Title order={3} mt="md" mb="sm">
-            Mathematical Formulation
-          </Title>
-          
-          <Text>
-            At each time step <InlineMath>t</InlineMath>, the RNN computes:
-          </Text>
-          
-          <BlockMath>
-            {`h_t = \\sigma(W_{xh} x_t + W_{hh} h_{t-1} + b_h)`}
-          </BlockMath>
-          
-          <BlockMath>
-            {`y_t = W_{hy} h_t + b_y`}
-          </BlockMath>
-          
-          <Text mt="md">
-            Where:
-          </Text>
-          
-          <List withPadding>
-            <List.Item>
-              <InlineMath>x_t</InlineMath> is the input at time step <InlineMath>t</InlineMath>
-            </List.Item>
-            <List.Item>
-              <InlineMath>h_t</InlineMath> is the hidden state at time step <InlineMath>t</InlineMath>
-            </List.Item>
-            <List.Item>
-              <InlineMath>{"h_{t-1}"}</InlineMath> is the previous hidden state
-            </List.Item>
-            <List.Item>
-              <InlineMath>{"W_{xh}"}</InlineMath> is the input-to-hidden weight matrix
-            </List.Item>
-            <List.Item>
-              <InlineMath>{"W_{hh}"}</InlineMath> is the hidden-to-hidden weight matrix
-            </List.Item>
-            <List.Item>
-              <InlineMath>{"W_{hy}"}</InlineMath> is the hidden-to-output weight matrix
-            </List.Item>
-            <List.Item>
-              <InlineMath>b_h</InlineMath> and <InlineMath>b_y</InlineMath> are bias vectors
-            </List.Item>
-            <List.Item>
-              <InlineMath>\sigma</InlineMath> is a non-linear activation function, typically tanh or ReLU
-            </List.Item>
+        <Box className="p-4 border rounded">
+          <Title order={4}>RNN Architecture Components</Title>
+          <List>
+            <List.Item><strong>Standard RNN:</strong> Simple recurrent cells with a single state</List.Item>
+            <List.Item><strong>LSTM (Long Short-Term Memory):</strong> Complex units with gates to control information flow</List.Item>
+            <List.Item><strong>GRU (Gated Recurrent Unit):</strong> Simplified gating mechanism compared to LSTM</List.Item>
           </List>
           
-          <Title order={3} mt="md" mb="sm">
-            Backpropagation Through Time (BPTT)
-          </Title>
-          
-          <Text>
-            RNNs are trained using Backpropagation Through Time, which unrolls the RNN
-            and treats each time step as a layer in a deep network.
-          </Text>
-          
-          <BlockMath>
-            {`\\frac{\\partial L}{\\partial W} = \\sum_{t=1}^{T} \\frac{\\partial L_t}{\\partial W}`}
-          </BlockMath>
-          
-          <Text>
-            For each parameter, gradients are accumulated across all time steps:
-          </Text>
-          
-          <BlockMath>
-            {`\\frac{\\partial L_t}{\\partial W_{hh}} = \\sum_{k=1}^{t} \\frac{\\partial L_t}{\\partial y_t} \\frac{\\partial y_t}{\\partial h_t} \\frac{\\partial h_t}{\\partial h_k} \\frac{\\partial h_k}{\\partial W_{hh}}`}
-          </BlockMath>
-          
-          <Text>
-            The chain rule term <InlineMath>{"\\frac{\\partial h_t}{\\partial h_k}"}</InlineMath> involves multiplying
-            many Jacobian matrices, which can lead to vanishing or exploding gradients.
-          </Text>
-        </Grid.Col>
-        
-        <Grid.Col span={{ base: 12, md: 6 }}>
-          <Title order={3} mt="md" mb="sm">
-            PyTorch Implementation
-          </Title>
-          
-          <CodeBlock
-            language="python"
-            code={`import torch
-import torch.nn as nn
+          <Text mt="md">Backpropagation must account for the temporal dependencies across time steps.</Text>
+        </Box>
+      </Stack>
 
-class SimpleRNN(nn.Module):
-    def __init__(self, input_size, hidden_size, output_size):
-        super(SimpleRNN, self).__init__()
+      {/* RNN Operation Notation */}
+      <Stack spacing="md">
+        <Title order={2} id="rnn-notation">RNN Mathematical Notation</Title>
+        <Text>
+          The following notation will be used consistently across all RNN variants to describe forward and backward passes.
+        </Text>
+        <Table withTableBorder withColumnBorders>
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>Symbol</Table.Th>
+              <Table.Th>Description</Table.Th>
+              <Table.Th>Formula</Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
+            <Table.Tr>
+              <Table.Td>
+                <InlineMath>{`x^{(t)}`}</InlineMath>
+              </Table.Td>
+              <Table.Td>Input vector at time step t</Table.Td>
+              <Table.Td>
+                <InlineMath>{`x^{(t)} \\in \\mathbb{R}^{d_x}`}</InlineMath>
+              </Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td>
+                <InlineMath>{`h^{(t)}`}</InlineMath>
+              </Table.Td>
+              <Table.Td>Hidden state at time step t</Table.Td>
+              <Table.Td>
+                <InlineMath>{`h^{(t)} \\in \\mathbb{R}^{d_h}`}</InlineMath>
+              </Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td>
+                <InlineMath>{`c^{(t)}`}</InlineMath>
+              </Table.Td>
+              <Table.Td>Cell state at time step t (for LSTM)</Table.Td>
+              <Table.Td>
+                <InlineMath>{`c^{(t)} \\in \\mathbb{R}^{d_h}`}</InlineMath>
+              </Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td>
+                <InlineMath>{`y^{(t)}`}</InlineMath>
+              </Table.Td>
+              <Table.Td>Output at time step t</Table.Td>
+              <Table.Td>
+                <InlineMath>{`y^{(t)} \\in \\mathbb{R}^{d_y}`}</InlineMath>
+              </Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td>
+                <InlineMath>{`W_{xh}`}</InlineMath>
+              </Table.Td>
+              <Table.Td>Weight matrix connecting input to hidden state</Table.Td>
+              <Table.Td>
+                <InlineMath>{`W_{xh} \\in \\mathbb{R}^{d_h \\times d_x}`}</InlineMath>
+              </Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td>
+                <InlineMath>{`W_{hh}`}</InlineMath>
+              </Table.Td>
+              <Table.Td>Weight matrix connecting previous hidden state to current hidden state</Table.Td>
+              <Table.Td>
+                <InlineMath>{`W_{hh} \\in \\mathbb{R}^{d_h \\times d_h}`}</InlineMath>
+              </Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td>
+                <InlineMath>{`W_{hy}`}</InlineMath>
+              </Table.Td>
+              <Table.Td>Weight matrix connecting hidden state to output</Table.Td>
+              <Table.Td>
+                <InlineMath>{`W_{hy} \\in \\mathbb{R}^{d_y \\times d_h}`}</InlineMath>
+              </Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td>
+                <InlineMath>{`b_h`}</InlineMath>
+              </Table.Td>
+              <Table.Td>Bias vector for hidden state</Table.Td>
+              <Table.Td>
+                <InlineMath>{`b_h \\in \\mathbb{R}^{d_h}`}</InlineMath>
+              </Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td>
+                <InlineMath>{`b_y`}</InlineMath>
+              </Table.Td>
+              <Table.Td>Bias vector for output</Table.Td>
+              <Table.Td>
+                <InlineMath>{`b_y \\in \\mathbb{R}^{d_y}`}</InlineMath>
+              </Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td>
+                <InlineMath>{`\\sigma`}</InlineMath>
+              </Table.Td>
+              <Table.Td>Sigmoid activation function</Table.Td>
+              <Table.Td>
+                <InlineMath>{`\\sigma(x) = \\frac{1}{1+e^{-x}}`}</InlineMath>
+              </Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td>
+                <InlineMath>{`\\tanh`}</InlineMath>
+              </Table.Td>
+              <Table.Td>Hyperbolic tangent activation function</Table.Td>
+              <Table.Td>
+                <InlineMath>{`\\tanh(x) = \\frac{e^x - e^{-x}}{e^x + e^{-x}}`}</InlineMath>
+              </Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td>
+                <InlineMath>{`L`}</InlineMath>
+              </Table.Td>
+              <Table.Td>Loss function (typically averaged over time steps)</Table.Td>
+              <Table.Td>
+                <InlineMath>{`L = \\frac{1}{T}\\sum_{t=1}^{T}L^{(t)}`}</InlineMath>
+              </Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td>
+                <InlineMath>{`\\odot`}</InlineMath>
+              </Table.Td>
+              <Table.Td>Element-wise (Hadamard) product</Table.Td>
+              <Table.Td>
+                <InlineMath>{`(a \\odot b)_i = a_i \\cdot b_i`}</InlineMath>
+              </Table.Td>
+            </Table.Tr>
+          </Table.Tbody>
+        </Table>
         
-        # Model hyperparameters
-        self.hidden_size = hidden_size
-        
-        # RNN cell: handles input-to-hidden and hidden-to-hidden transformations
-        self.rnn_cell = nn.RNNCell(
-            input_size=input_size,    # Dimension of input features
-            hidden_size=hidden_size,  # Dimension of hidden state
-            nonlinearity='tanh'       # Activation: 'tanh' or 'relu'
-        )
-        
-        # Output layer
-        self.output_layer = nn.Linear(hidden_size, output_size)
-    
-    def forward(self, x, hidden=None):
-        # x shape: (batch_size, seq_length, input_size)
-        batch_size, seq_length, _ = x.size()
-        
-        # Initialize hidden state if not provided
-        if hidden is None:
-            hidden = torch.zeros(batch_size, self.hidden_size, 
-                                 device=x.device)
-        
-        outputs = []
-        
-        # Process sequence step by step
-        for t in range(seq_length):
-            # Update hidden state with current input
-            hidden = self.rnn_cell(x[:, t, :], hidden)
-            # Compute output for current step
-            output = self.output_layer(hidden)
-            outputs.append(output)
-        
-        # Stack outputs along sequence dimension
-        outputs = torch.stack(outputs, dim=1)
-        return outputs, hidden`}
-          />
-          
-          <Title order={4} mt="md" mb="sm">
-            Key Hyperparameters
-          </Title>
-          
-          <Table striped withColumnBorders>
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th>Parameter</Table.Th>
-                <Table.Th>Description</Table.Th>
-                <Table.Th>Typical Values</Table.Th>
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>
-              <Table.Tr>
-                <Table.Td>input_size</Table.Td>
-                <Table.Td>Dimension of input features</Table.Td>
-                <Table.Td>Embedding dim (e.g., 300)</Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>hidden_size</Table.Td>
-                <Table.Td>Dimension of hidden state</Table.Td>
-                <Table.Td>128-512 for NLP tasks</Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>nonlinearity</Table.Td>
-                <Table.Td>Activation function</Table.Td>
-                <Table.Td>'tanh' (default) or 'relu'</Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>batch_first</Table.Td>
-                <Table.Td>Input/output tensor format</Table.Td>
-                <Table.Td>True (batch, seq, features)</Table.Td>
-              </Table.Tr>
-            </Table.Tbody>
-          </Table>
-        </Grid.Col>
-      </Grid>
-      
-      <Title order={3} mt="md" mb="sm">
-        Pros and Cons of Basic RNNs
-      </Title>
-      
-      <Grid>
-        <Grid.Col span={6}>
-          <Card withBorder p="xs">
-            <Title order={4} mb="xs">Advantages</Title>
-            <List withPadding>
-              <List.Item>Can process variable-length sequences</List.Item>
-              <List.Item>Parameter sharing across time steps</List.Item>
-              <List.Item>Maintains sequential information</List.Item>
-              <List.Item>Relatively simple architecture</List.Item>
-            </List>
-          </Card>
-        </Grid.Col>
-        <Grid.Col span={6}>
-          <Card withBorder p="xs">
-            <Title order={4} mb="xs">Limitations</Title>
-            <List withPadding>
-              <List.Item>Suffers from vanishing/exploding gradients</List.Item>
-              <List.Item>Difficulty modeling long-range dependencies</List.Item>
-              <List.Item>Limited memory capacity</List.Item>
-              <List.Item>Slow sequential processing (not parallelizable)</List.Item>
-            </List>
-          </Card>
-        </Grid.Col>
-      </Grid>
+        <Text>
+          Note: For LSTM and GRU, we will introduce additional notation for the gating mechanisms when discussing their specific implementations.
+        </Text>
+      </Stack>
 
-      {/* LSTM and GRU Architectures */}
-      <Title order={2} id="lstm-gru" mt="lg" mb="sm">
-        LSTM and GRU Architectures
-      </Title>
-      
-      <Text>
-        Long Short-Term Memory (LSTM) and Gated Recurrent Unit (GRU) networks were
-        designed to address the limitations of vanilla RNNs, particularly for modeling
-        long-range dependencies.
-      </Text>
-
-      <Tabs defaultValue="lstm">
-        <Tabs.List>
-          <Tabs.Tab value="lstm">LSTM</Tabs.Tab>
-          <Tabs.Tab value="gru">GRU</Tabs.Tab>
-        </Tabs.List>
-
-        <Tabs.Panel value="lstm" pt="xs">
-          <Grid>
-            <Grid.Col span={{ base: 12, md: 6 }}>
-              <Title order={3} mt="md" mb="sm">
-                LSTM Mathematical Formulation
-              </Title>
-              
-              <Text>
-                LSTMs introduce a cell state <InlineMath>C_t</InlineMath> and three gates:
-                forget gate, input gate, and output gate.
-              </Text>
-              
-              <BlockMath>{`
-                f_t = \\sigma(W_f \\cdot [h_{t-1}, x_t] + b_f)
-              `}</BlockMath>
-              <Text size="sm">Forget gate: decides what information to discard from the cell state</Text>
-              
-              <BlockMath>{`
-                i_t = \\sigma(W_i \\cdot [h_{t-1}, x_t] + b_i)
-              `}</BlockMath>
-              <Text size="sm">Input gate: decides which values to update</Text>
-              
-              <BlockMath>{`
-                \\tilde{C}_t = \\tanh(W_C \\cdot [h_{t-1}, x_t] + b_C)
-              `}</BlockMath>
-              <Text size="sm">Candidate cell state: new candidate values</Text>
-              
-              <BlockMath>{`
-                C_t = f_t \\odot C_{t-1} + i_t \\odot \\tilde{C}_t
-              `}</BlockMath>
-              <Text size="sm">Cell state update: combines old state and new candidates</Text>
-              
-              <BlockMath>{`
-                o_t = \\sigma(W_o \\cdot [h_{t-1}, x_t] + b_o)
-              `}</BlockMath>
-              <Text size="sm">Output gate: decides what to output based on cell state</Text>
-              
-              <BlockMath>{`
-                h_t = o_t \\odot \\tanh(C_t)
-              `}</BlockMath>
-              <Text size="sm">Hidden state: filtered version of cell state</Text>
-              
-              <Text mt="md">
-                Where <InlineMath>\sigma</InlineMath> is the sigmoid function,
-                <InlineMath>\odot</InlineMath> is element-wise multiplication,
-                and <InlineMath>{"[h_{t-1}, x_t]"}</InlineMath> is the concatenation
-                of the previous hidden state and current input.
-              </Text>
-              
-              <Title order={4} mt="md" mb="sm">
-                LSTM Backpropagation
-              </Title>
-              
-              <Text>
-                The gradient flow in LSTMs is improved through the cell state, which
-                acts as a "highway" for gradient propagation:
-              </Text>
-              
-              <BlockMath>{`
-                \\frac{\\partial C_t}{\\partial C_{t-1}} = f_t
-              `}</BlockMath>
-              
-              <Text>
-                When the forget gate <InlineMath>f_t</InlineMath> is close to 1,
-                gradients can flow backwards without significant scaling, mitigating
-                the vanishing gradient problem.
-              </Text>
-            </Grid.Col>
-            
-            <Grid.Col span={{ base: 12, md: 6 }}>
-              <Title order={3} mt="md" mb="sm">
-                LSTM PyTorch Implementation
-              </Title>
-              
-              <CodeBlock
-                language="python"
-                code={`import torch
-import torch.nn as nn
-
-class LSTMModel(nn.Module):
-    def __init__(self, input_size, hidden_size, output_size, num_layers=1, 
-                 dropout=0.0, bidirectional=False):
-        super(LSTMModel, self).__init__()
+      {/* Forward Propagation in RNNs */}
+      <Stack spacing="md">
+        <Title order={2} id="forward-propagation">Forward Propagation in RNNs</Title>
         
-        # Model hyperparameters
-        self.hidden_size = hidden_size
-        self.num_layers = num_layers
-        self.bidirectional = bidirectional
-        self.num_directions = 2 if bidirectional else 1
+        <Title order={3}>Standard RNN</Title>
+        <Text>
+          The forward pass in a standard RNN cell is defined as:
+        </Text>
         
-        # LSTM layer
-        self.lstm = nn.LSTM(
-            input_size=input_size,        # Input feature dimension
-            hidden_size=hidden_size,      # Hidden state dimension
-            num_layers=num_layers,        # Number of stacked LSTM layers
-            batch_first=True,             # Input/output: (batch, seq, feature)
-            dropout=dropout if num_layers > 1 else 0, # Dropout between layers
-            bidirectional=bidirectional   # Whether bidirectional
-        )
+        <BlockMath>{`
+          h^{(t)} = \\tanh(W_{xh}x^{(t)} + W_{hh}h^{(t-1)} + b_h)
+        `}</BlockMath>
         
-        # Output layer with adjustment for bidirectional case
-        self.output_layer = nn.Linear(
-            hidden_size * self.num_directions,
-            output_size
-        )
-    
-    def forward(self, x, hidden=None):
-        # x shape: (batch_size, seq_length, input_size)
+        <BlockMath>{`
+          y^{(t)} = f(W_{hy}h^{(t)} + b_y)
+        `}</BlockMath>
         
-        # Initialize hidden and cell states if not provided
-        if hidden is None:
-            # (num_layers * num_directions, batch_size, hidden_size)
-            h0 = torch.zeros(
-                self.num_layers * self.num_directions,
-                x.size(0),
-                self.hidden_size,
-                device=x.device
-            )
-            
-            c0 = torch.zeros(
-                self.num_layers * self.num_directions,
-                x.size(0),
-                self.hidden_size,
-                device=x.device
-            )
-            
-            hidden = (h0, c0)
+        <Text>
+          Where f is the output activation function (often softmax for classification or identity for regression).
+        </Text>
         
-        # Forward pass through LSTM
-        # outputs: (batch_size, seq_length, hidden_size * num_directions)
-        # h_n, c_n: (num_layers * num_directions, batch_size, hidden_size)
-        outputs, (h_n, c_n) = self.lstm(x, hidden)
+        <Title order={3} mt="lg">LSTM (Long Short-Term Memory)</Title>
+        <Text>
+          LSTM introduces a cell state <InlineMath>{`c^{(t)}`}</InlineMath> and three gates to control information flow:
+        </Text>
         
-        # Apply output layer to all timestamps
-        predictions = self.output_layer(outputs)
-        
-        return predictions, (h_n, c_n)`}
-              />
-              
-              <Title order={4} mt="md" mb="sm">
-                Key Hyperparameters
-              </Title>
-              
-              <Table striped withColumnBorders>
-                <Table.Thead>
-                  <Table.Tr>
-                    <Table.Th>Parameter</Table.Th>
-                    <Table.Th>Description</Table.Th>
-                    <Table.Th>Typical Values</Table.Th>
-                  </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>
-                  <Table.Tr>
-                    <Table.Td>hidden_size</Table.Td>
-                    <Table.Td>Dimension of hidden/cell states</Table.Td>
-                    <Table.Td>256-1024 for NLP tasks</Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td>num_layers</Table.Td>
-                    <Table.Td>Number of stacked LSTM layers</Table.Td>
-                    <Table.Td>1-3 typically</Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td>dropout</Table.Td>
-                    <Table.Td>Dropout probability between layers</Table.Td>
-                    <Table.Td>0.1-0.5</Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td>bidirectional</Table.Td>
-                    <Table.Td>Process sequence in both directions</Table.Td>
-                    <Table.Td>True/False</Table.Td>
-                  </Table.Tr>
-                </Table.Tbody>
-              </Table>
-            </Grid.Col>
-          </Grid>
-          
-          <Title order={3} mt="md" mb="sm">
-            Pros and Cons of LSTMs
-          </Title>
-          
-          <Grid>
-            <Grid.Col span={6}>
-              <Card withBorder p="xs">
-                <Title order={4} mb="xs">Advantages</Title>
-                <List withPadding>
-                  <List.Item>Effective at capturing long-range dependencies</List.Item>
-                  <List.Item>Mitigates vanishing gradient problem through gating mechanisms</List.Item>
-                  <List.Item>Separate cell state allows for better information flow</List.Item>
-                  <List.Item>More stable training compared to vanilla RNNs</List.Item>
-                </List>
-              </Card>
-            </Grid.Col>
-            <Grid.Col span={6}>
-              <Card withBorder p="xs">
-                <Title order={4} mb="xs">Limitations</Title>
-                <List withPadding>
-                  <List.Item>More complex architecture with more parameters</List.Item>
-                  <List.Item>Computationally expensive</List.Item>
-                  <List.Item>Still processes sequences sequentially</List.Item>
-                  <List.Item>Can still struggle with very long sequences (>100 tokens)</List.Item>
-                </List>
-              </Card>
-            </Grid.Col>
-          </Grid>
-        </Tabs.Panel>
-
-        <Tabs.Panel value="gru" pt="xs">
-          <Grid>
-            <Grid.Col span={{ base: 12, md: 6 }}>
-              <Title order={3} mt="md" mb="sm">
-                GRU Mathematical Formulation
-              </Title>
-              
-              <Text>
-                GRUs simplify the LSTM architecture by combining the forget gate and
-                input gate into a single "update gate", and merging the cell state and
-                hidden state.
-              </Text>
-              
-              <BlockMath>{`
-                z_t = \\sigma(W_z \\cdot [h_{t-1}, x_t] + b_z)
-              `}</BlockMath>
-              <Text size="sm">Update gate: determines how much of the previous state to keep</Text>
-              
-              <BlockMath>{`
-                r_t = \\sigma(W_r \\cdot [h_{t-1}, x_t] + b_r)
-              `}</BlockMath>
-              <Text size="sm">Reset gate: determines how much of the previous state to forget</Text>
-              
-              <BlockMath>{`
-                \\tilde{h}_t = \\tanh(W \\cdot [r_t \\odot h_{t-1}, x_t] + b)
-              `}</BlockMath>
-              <Text size="sm">Candidate hidden state: potential new values</Text>
-              
-              <BlockMath>{`
-                h_t = (1 - z_t) \\odot h_{t-1} + z_t \\odot \\tilde{h}_t
-              `}</BlockMath>
-              <Text size="sm">Hidden state update: interpolation between previous state and candidate</Text>
-              
-              <Text mt="md">
-                Where <InlineMath>\sigma</InlineMath> is the sigmoid function,
-                <InlineMath>\odot</InlineMath> is element-wise multiplication,
-                and <InlineMath>{"[h_{t-1}, x_t]"}</InlineMath> is the concatenation
-                of the previous hidden state and current input.
-              </Text>
-              
-              <Title order={4} mt="md" mb="sm">
-                GRU Backpropagation
-              </Title>
-              
-              <Text>
-                The gradient flow in GRUs is controlled by the update gate:
-              </Text>
-              
-              <BlockMath>{`
-                \\frac{\\partial h_t}{\\partial h_{t-1}} = (1 - z_t) + z_t \\cdot \\frac{\\partial \\tilde{h}_t}{\\partial h_{t-1}}
-              `}</BlockMath>
-              
-              <Text>
-                When the update gate <InlineMath>z_t</InlineMath> is close to 0,
-                the gradient flows directly through <InlineMath>(1 - z_t)</InlineMath>,
-                creating a path for gradient propagation similar to LSTM's cell state.
-              </Text>
-            </Grid.Col>
-            
-            <Grid.Col span={{ base: 12, md: 6 }}>
-              <Title order={3} mt="md" mb="sm">
-                GRU PyTorch Implementation
-              </Title>
-              
-              <CodeBlock
-                language="python"
-                code={`import torch
-import torch.nn as nn
-
-class GRUModel(nn.Module):
-    def __init__(self, input_size, hidden_size, output_size, num_layers=1,
-                 dropout=0.0, bidirectional=False):
-        super(GRUModel, self).__init__()
-        
-        # Model hyperparameters
-        self.hidden_size = hidden_size
-        self.num_layers = num_layers
-        self.bidirectional = bidirectional
-        self.num_directions = 2 if bidirectional else 1
-        
-        # GRU layer
-        self.gru = nn.GRU(
-            input_size=input_size,        # Input feature dimension
-            hidden_size=hidden_size,      # Hidden state dimension
-            num_layers=num_layers,        # Number of stacked GRU layers
-            batch_first=True,             # Input/output: (batch, seq, feature)
-            dropout=dropout if num_layers > 1 else 0, # Dropout between layers
-            bidirectional=bidirectional   # Whether bidirectional
-        )
-        
-        # Output layer with adjustment for bidirectional case
-        self.output_layer = nn.Linear(
-            hidden_size * self.num_directions,
-            output_size
-        )
-    
-    def forward(self, x, hidden=None):
-        # x shape: (batch_size, seq_length, input_size)
-        
-        # Initialize hidden state if not provided
-        if hidden is None:
-            # (num_layers * num_directions, batch_size, hidden_size)
-            hidden = torch.zeros(
-                self.num_layers * self.num_directions,
-                x.size(0),
-                self.hidden_size,
-                device=x.device
-            )
-        
-        # Forward pass through GRU
-        # outputs: (batch_size, seq_length, hidden_size * num_directions)
-        # h_n: (num_layers * num_directions, batch_size, hidden_size)
-        outputs, h_n = self.gru(x, hidden)
-        
-        # Apply output layer to all timestamps
-        predictions = self.output_layer(outputs)
-        
-        return predictions, h_n`}
-              />
-              
-              <Title order={4} mt="md" mb="sm">
-                Key Hyperparameters
-              </Title>
-              
-              <Table striped withColumnBorders>
-                <Table.Thead>
-                  <Table.Tr>
-                    <Table.Th>Parameter</Table.Th>
-                    <Table.Th>Description</Table.Th>
-                    <Table.Th>Typical Values</Table.Th>
-                  </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>
-                  <Table.Tr>
-                    <Table.Td>hidden_size</Table.Td>
-                    <Table.Td>Dimension of hidden state</Table.Td>
-                    <Table.Td>256-1024 for NLP tasks</Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td>num_layers</Table.Td>
-                    <Table.Td>Number of stacked GRU layers</Table.Td>
-                    <Table.Td>1-3 typically</Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td>dropout</Table.Td>
-                    <Table.Td>Dropout probability between layers</Table.Td>
-                    <Table.Td>0.1-0.5</Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td>bidirectional</Table.Td>
-                    <Table.Td>Process sequence in both directions</Table.Td>
-                    <Table.Td>True/False</Table.Td>
-                  </Table.Tr>
-                </Table.Tbody>
-              </Table>
-            </Grid.Col>
-          </Grid>
-          
-          <Title order={3} mt="md" mb="sm">
-            Pros and Cons of GRUs
-          </Title>
-          
-          <Grid>
-            <Grid.Col span={6}>
-              <Card withBorder p="xs">
-                <Title order={4} mb="xs">Advantages</Title>
-                <List withPadding>
-                  <List.Item>Simpler architecture than LSTM (fewer parameters)</List.Item>
-                  <List.Item>Computationally more efficient than LSTM</List.Item>
-                  <List.Item>Similar performance to LSTM on many tasks</List.Item>
-                  <List.Item>Effective at capturing medium-range dependencies</List.Item>
-                </List>
-              </Card>
-            </Grid.Col>
-            <Grid.Col span={6}>
-              <Card withBorder p="xs">
-                <Title order={4} mb="xs">Limitations</Title>
-                <List withPadding>
-                  <List.Item>May perform worse than LSTM on certain tasks</List.Item>
-                  <List.Item>Still sequential (not parallelizable)</List.Item>
-                  <List.Item>Less expressive than LSTM in some contexts</List.Item>
-                  <List.Item>Can struggle with very long sequences</List.Item>
-                </List>
-              </Card>
-            </Grid.Col>
-          </Grid>
-        </Tabs.Panel>
-      </Tabs>
-
-      {/* Vanishing/Exploding Gradient Problem */}
-      <Title order={2} id="vanishing-gradient" mt="lg" mb="sm">
-        Vanishing/Exploding Gradient Problem
-      </Title>
-      
-      <Text>
-        One of the main challenges with training RNNs is the vanishing or exploding
-        gradient problem, which is particularly severe in recurrent architectures due
-        to the repeated application of the same weights.
-      </Text>
-      
-      <Grid>
-        <Grid.Col span={{ base: 12, md: 6 }}>
-          <Title order={3} mt="md" mb="sm">
-            Mathematical Explanation
-          </Title>
-          
-          <Text>
-            During backpropagation through time, the gradient for a particular weight
-            depends on the product of gradients across multiple time steps:
-          </Text>
-          
-          <BlockMath>{`
-            \\frac{\\partial L}{\\partial W} = \\sum_{t=1}^{T} \\frac{\\partial L_t}{\\partial W}
-          `}</BlockMath>
-          
-          <Text>
-            The gradient at any time step <InlineMath>t</InlineMath> with respect to an
-            earlier time step <InlineMath>k</InlineMath> involves a product of Jacobians:
-          </Text>
-          
-          <BlockMath>{`
-            \\frac{\\partial h_t}{\\partial h_k} = \\prod_{i=k+1}^{t} \\frac{\\partial h_i}{\\partial h_{i-1}}
-          `}</BlockMath>
-          
-          <Text>
-            For a vanilla RNN with <InlineMath>{"h_t = \\tanh(W h_{t-1} + U x_t)"}</InlineMath>:
-          </Text>
-          
-          <BlockMath>{`
-            \\frac{\\partial h_t}{\\partial h_{t-1}} = \\text{diag}(1 - \\tanh^2(Wh_{t-1} + Ux_t)) \\cdot W
-          `}</BlockMath>
-          
-          <Text>
-            If the eigenvalues of this Jacobian matrix are less than 1, gradients
-            will vanish exponentially with sequence length. If greater than 1, they
-            will explode.
-          </Text>
-          
-          <Alert icon={<IconAlertCircle size="1rem" />} title="Key Insight" color="blue" mt="md">
-            For vanilla RNNs, the maximum eigenvalue of <InlineMath>W</InlineMath> is crucial:
-            <List withPadding>
-              <List.Item>If <InlineMath>{"|\\lambda_{\\text{max}}(W)| < 1"}</InlineMath>: vanishing gradients</List.Item>
-              <List.Item>If <InlineMath>{"|\\lambda_{\\text{max}}(W)| > 1"}</InlineMath>: exploding gradients</List.Item>
-            </List>
-          </Alert>
-        </Grid.Col>
-        
-        <Grid.Col span={{ base: 12, md: 6 }}>
-          <Title order={3} mt="md" mb="sm">
-            Mitigation Strategies
-          </Title>
-          
-          <Table striped withColumnBorders>
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th>Problem</Table.Th>
-                <Table.Th>Solution</Table.Th>
-                <Table.Th>Implementation</Table.Th>
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>
-              <Table.Tr>
-                <Table.Td>Vanishing Gradients</Table.Td>
-                <Table.Td>LSTM/GRU architectures</Table.Td>
-                <Table.Td>Use gating mechanisms to control gradient flow</Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>Vanishing Gradients</Table.Td>
-                <Table.Td>Identity initialization</Table.Td>
-                <Table.Td>Initialize recurrent weights close to identity matrix</Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>Vanishing Gradients</Table.Td>
-                <Table.Td>Skip connections</Table.Td>
-                <Table.Td>Add residual connections between layers</Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>Exploding Gradients</Table.Td>
-                <Table.Td>Gradient clipping</Table.Td>
-                <Table.Td>Scale gradients when norm exceeds threshold</Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>Both</Table.Td>
-                <Table.Td>Proper initialization</Table.Td>
-                <Table.Td>Use orthogonal initialization for weights</Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>Both</Table.Td>
-                <Table.Td>Truncated BPTT</Table.Td>
-                <Table.Td>Limit the number of timesteps for backpropagation</Table.Td>
-              </Table.Tr>
-            </Table.Tbody>
-          </Table>
-          
-          <CodeBlock
-            language="python"
-            code={`# Gradient clipping example in PyTorch
-import torch.nn as nn
-import torch.optim as optim
-
-# Define model, loss function, and optimizer
-model = LSTMModel(input_size, hidden_size, output_size)
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.001)
-
-# Training loop
-for epoch in range(num_epochs):
-    for batch_x, batch_y in data_loader:
-        # Forward pass
-        outputs, _ = model(batch_x)
-        loss = criterion(outputs.view(-1, output_size), batch_y.view(-1))
-        
-        # Backward pass
-        optimizer.zero_grad()
-        loss.backward()
-        
-        # Gradient clipping
-        torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=5.0)
-        
-        # Update weights
-        optimizer.step()`}
-          />
-        </Grid.Col>
-      </Grid>
-
-      {/* Bidirectional RNNs */}
-      <Title order={2} id="bidirectional" mt="lg" mb="sm">
-        Bidirectional RNNs
-      </Title>
-      
-      <Text>
-        Bidirectional RNNs process sequences from both directions, enabling the model
-        to capture context from both past and future tokens, which is especially
-        useful for many NLP tasks.
-      </Text>
-      
-      <Grid>
-        <Grid.Col span={{ base: 12, md: 6 }}>
-          <Title order={3} mt="md" mb="sm">
-            Architecture and Mathematical Formulation
-          </Title>
-          
-          <Text>
-            A bidirectional RNN maintains two separate hidden states:
-          </Text>
-          
-          <BlockMath>{`
-            \\overrightarrow{h}_t = f(\\overrightarrow{h}_{t-1}, x_t)
-          `}</BlockMath>
-          <Text size="sm">Forward hidden state (processing left-to-right)</Text>
-          
-          <BlockMath>{`
-            \\overleftarrow{h}_t = f(\\overleftarrow{h}_{t+1}, x_t)
-          `}</BlockMath>
-          <Text size="sm">Backward hidden state (processing right-to-left)</Text>
-          
-          <Text>
-            The final output combines information from both directions:
-          </Text>
-          
-          <BlockMath>{`
-            y_t = g(\\overrightarrow{h}_t, \\overleftarrow{h}_t)
-          `}</BlockMath>
-          
-          <Text>
-            Where <InlineMath>g</InlineMath> is typically a concatenation followed by
-            a linear transformation:
-          </Text>
-          
-          <BlockMath>{`
-            y_t = W_y [\\overrightarrow{h}_t; \\overleftarrow{h}_t] + b_y
-          `}</BlockMath>
-          
-          <Alert icon={<IconAlertCircle size="1rem" />} title="Important Consideration" color="orange" mt="md">
-            Bidirectional RNNs cannot be used for autoregressive generation tasks
-            because they require access to future tokens, which are unavailable
-            during generation.
-          </Alert>
-        </Grid.Col>
-        
-        <Grid.Col span={{ base: 12, md: 6 }}>
-          <Title order={3} mt="md" mb="sm">
-            PyTorch Implementation
-          </Title>
-          
-          <CodeBlock
-            language="python"
-            code={`import torch
-import torch.nn as nn
-
-class BidirectionalLSTM(nn.Module):
-    def __init__(self, input_size, hidden_size, output_size, num_layers=1, dropout=0.0):
-        super(BidirectionalLSTM, self).__init__()
-        
-        # Bidirectional LSTM
-        self.lstm = nn.LSTM(
-            input_size=input_size,
-            hidden_size=hidden_size,
-            num_layers=num_layers,
-            batch_first=True,
-            dropout=dropout if num_layers > 1 else 0,
-            bidirectional=True  # Enable bidirectional processing
-        )
-        
-        # Output layer (note the *2 for bidirectional)
-        self.output_layer = nn.Linear(hidden_size * 2, output_size)
-    
-    def forward(self, x):
-        # x shape: (batch_size, seq_length, input_size)
-        
-        # Process in both directions
-        # outputs: (batch_size, seq_length, hidden_size * 2)
-        outputs, _ = self.lstm(x)
-        
-        # Apply output layer
-        predictions = self.output_layer(outputs)
-        
-        return predictions
-
-# Example usage for NER task
-class BiLSTM_NER(nn.Module):
-    def __init__(self, vocab_size, embedding_dim, hidden_size, num_tags, 
-                 num_layers=1, dropout=0.5):
-        super(BiLSTM_NER, self).__init__()
-        
-        self.embedding = nn.Embedding(vocab_size, embedding_dim)
-        self.dropout = nn.Dropout(dropout)
-        
-        self.bilstm = BidirectionalLSTM(
-            input_size=embedding_dim,
-            hidden_size=hidden_size,
-            output_size=num_tags,
-            num_layers=num_layers,
-            dropout=dropout
-        )
-    
-    def forward(self, x):
-        # x: (batch_size, seq_length) integer tensor
-        
-        # Get embeddings
-        embedded = self.embedding(x)  # (batch_size, seq_length, embedding_dim)
-        embedded = self.dropout(embedded)
-        
-        # Pass through BiLSTM
-        tag_scores = self.bilstm(embedded)  # (batch_size, seq_length, num_tags)
-        
-        return tag_scores`}
-          />
-          
-          <Title order={3} mt="md" mb="sm">
-            Applications in NLP
-          </Title>
-          
-          <Table striped withColumnBorders>
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th>Task</Table.Th>
-                <Table.Th>Suitability</Table.Th>
-                <Table.Th>Explanation</Table.Th>
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>
-              <Table.Tr>
-                <Table.Td>Named Entity Recognition</Table.Td>
-                <Table.Td>Excellent</Table.Td>
-                <Table.Td>Entity classification benefits from both left and right context</Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>Part-of-Speech Tagging</Table.Td>
-                <Table.Td>Excellent</Table.Td>
-                <Table.Td>Word role often depends on surrounding context</Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>Sentiment Analysis</Table.Td>
-                <Table.Td>Good</Table.Td>
-                <Table.Td>Sentence-level classification benefits from full context</Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>Machine Translation</Table.Td>
-                <Table.Td>Limited</Table.Td>
-                <Table.Td>Encoder can be bidirectional, but decoder usually cannot</Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>Text Generation</Table.Td>
-                <Table.Td>Poor</Table.Td>
-                <Table.Td>Future tokens unavailable during autoregressive generation</Table.Td>
-              </Table.Tr>
-            </Table.Tbody>
-          </Table>
-        </Grid.Col>
-      </Grid>
-
-      {/* PyTorch Implementations */}
-      <Title order={2} id="implementations" mt="lg" mb="sm">
-        PyTorch Implementations
-      </Title>
-      
-      <Text>
-        Here we provide a systematic comparison of the different RNN variants in
-        PyTorch with a focus on practical implementation details.
-      </Text>
-      
-      <Title order={3} mt="md" mb="sm">
-        Comprehensive Example: Sequence Classification
-      </Title>
-      
-      <CodeBlock
-        language="python"
-        code={`import torch
-import torch.nn as nn
-import torch.optim as optim
-from torch.utils.data import DataLoader, Dataset
-
-# Define a generic RNN-based sequence classifier
-class RNNClassifier(nn.Module):
-    def __init__(self, vocab_size, embedding_dim, hidden_size, output_size, 
-                 rnn_type='lstm', num_layers=1, bidirectional=False, 
-                 dropout=0.5):
-        super(RNNClassifier, self).__init__()
-        
-        # Configuration
-        self.hidden_size = hidden_size
-        self.num_layers = num_layers
-        self.bidirectional = bidirectional
-        self.rnn_type = rnn_type.lower()
-        self.num_directions = 2 if bidirectional else 1
-        
-        # Embedding layer
-        self.embedding = nn.Embedding(vocab_size, embedding_dim)
-        
-        # RNN layer
-        if self.rnn_type == 'rnn':
-            self.rnn = nn.RNN(
-                input_size=embedding_dim,
-                hidden_size=hidden_size,
-                num_layers=num_layers,
-                batch_first=True,
-                dropout=dropout if num_layers > 1 else 0,
-                bidirectional=bidirectional
-            )
-        elif self.rnn_type == 'lstm':
-            self.rnn = nn.LSTM(
-                input_size=embedding_dim,
-                hidden_size=hidden_size,
-                num_layers=num_layers,
-                batch_first=True,
-                dropout=dropout if num_layers > 1 else 0,
-                bidirectional=bidirectional
-            )
-        elif self.rnn_type == 'gru':
-            self.rnn = nn.GRU(
-                input_size=embedding_dim,
-                hidden_size=hidden_size,
-                num_layers=num_layers,
-                batch_first=True,
-                dropout=dropout if num_layers > 1 else 0,
-                bidirectional=bidirectional
-            )
-        else:
-            raise ValueError("rnn_type must be one of ['rnn', 'lstm', 'gru']")
-        
-        # Dropout for regularization
-        self.dropout = nn.Dropout(dropout)
-        
-        # Classification head
-        self.fc = nn.Linear(hidden_size * self.num_directions, output_size)
-    
-    def forward(self, x, lengths=None):
-        # x: (batch_size, seq_length) integer tensor of token indices
-        # lengths: (batch_size,) tensor of sequence lengths
-        
-        # Embed tokens
-        embedded = self.embedding(x)  # (batch_size, seq_length, embedding_dim)
-        
-        # If we have variable length sequences, use pack_padded_sequence
-        if lengths is not None:
-            # Sort by length for packing
-            lengths, sort_idx = lengths.sort(descending=True)
-            embedded = embedded[sort_idx]
-            
-            # Pack sequence
-            packed_embedded = nn.utils.rnn.pack_padded_sequence(
-                embedded, lengths.cpu(), batch_first=True
-            )
-            
-            # Process with RNN
-            if self.rnn_type == 'lstm':
-                packed_output, (hidden, _) = self.rnn(packed_embedded)
-            else:
-                packed_output, hidden = self.rnn(packed_embedded)
-            
-            # Unpack output
-            output, _ = nn.utils.rnn.pad_packed_sequence(
-                packed_output, batch_first=True
-            )
-            
-            # Unsort
-            _, unsort_idx = sort_idx.sort()
-            output = output[unsort_idx]
-            
-            # Get the relevant hidden state
-            if self.bidirectional:
-                # For bidirectional, concatenate the last hidden state from both directions
-                if self.rnn_type == 'lstm':
-                    # Take the last layer's hidden state
-                    hidden = hidden.view(self.num_layers, self.num_directions, 
-                                        hidden.size(1), self.hidden_size)
-                    last_layer_hidden = hidden[-1]
-                    
-                    # Concatenate forward and backward
-                    h_forward = last_layer_hidden[0]
-                    h_backward = last_layer_hidden[1]
-                    final_hidden = torch.cat([h_forward, h_backward], dim=1)
-                else:
-                    # For GRU/RNN, similar procedure
-                    hidden = hidden.view(self.num_layers, self.num_directions, 
-                                        hidden.size(1), self.hidden_size)
-                    last_layer_hidden = hidden[-1]
-                    final_hidden = torch.cat([last_layer_hidden[0], last_layer_hidden[1]], dim=1)
-            else:
-                # For unidirectional, just take the last hidden state
-                if self.rnn_type == 'lstm':
-                    final_hidden = hidden[-1]
-                else:
-                    final_hidden = hidden[-1]
-        
-        else:
-            # For fixed-length sequences, simpler processing
-            if self.rnn_type == 'lstm':
-                _, (hidden, _) = self.rnn(embedded)
-                final_hidden = hidden[-1]
-            else:
-                _, hidden = self.rnn(embedded)
-                final_hidden = hidden[-1]
-            
-            # For bidirectional, reshape and concatenate
-            if self.bidirectional:
-                final_hidden = final_hidden.view(self.num_layers, self.num_directions, 
-                                               x.size(0), self.hidden_size)[-1]
-                final_hidden = torch.cat([final_hidden[0], final_hidden[1]], dim=1)
-        
-        # Apply dropout
-        final_hidden = self.dropout(final_hidden)
-        
-        # Apply classification layer
-        output = self.fc(final_hidden)
-        
-        return output
-
-# Example usage
-def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs):
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model = model.to(device)
-    
-    for epoch in range(num_epochs):
-        model.train()
-        train_loss = 0
-        
-        for batch_x, batch_lengths, batch_y in train_loader:
-            batch_x = batch_x.to(device)
-            batch_lengths = batch_lengths.to(device)
-            batch_y = batch_y.to(device)
-            
-            # Forward pass
-            outputs = model(batch_x, batch_lengths)
-            loss = criterion(outputs, batch_y)
-            
-            # Backward pass and optimize
-            optimizer.zero_grad()
-            loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=5.0)  # Gradient clipping
-            optimizer.step()
-            
-            train_loss += loss.item()
-        
-        # Validation
-        model.eval()
-        val_loss = 0
-        correct = 0
-        total = 0
-        
-        with torch.no_grad():
-            for batch_x, batch_lengths, batch_y in val_loader:
-                batch_x = batch_x.to(device)
-                batch_lengths = batch_lengths.to(device)
-                batch_y = batch_y.to(device)
-                
-                outputs = model(batch_x, batch_lengths)
-                loss = criterion(outputs, batch_y)
-                
-                val_loss += loss.item()
-                _, predicted = torch.max(outputs, 1)
-                total += batch_y.size(0)
-                correct += (predicted == batch_y).sum().item()
-        
-        print(f'Epoch {epoch+1}/{num_epochs}, Train Loss: {train_loss/len(train_loader):.4f}, '
-              f'Val Loss: {val_loss/len(val_loader):.4f}, Accuracy: {100*correct/total:.2f}%')
-    
-    return model`}
-      />
-      
-      <Title order={3} mt="md" mb="sm">
-        Key Configuration Options
-      </Title>
-      
-      <Table striped withColumnBorders>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>Setting</Table.Th>
-            <Table.Th>Options</Table.Th>
-            <Table.Th>Impact</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
-          <Table.Tr>
-            <Table.Td>batch_first</Table.Td>
-            <Table.Td>True/False</Table.Td>
-            <Table.Td>Input/output tensor format: (batch, seq, feature) vs (seq, batch, feature)</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td>bidirectional</Table.Td>
-            <Table.Td>True/False</Table.Td>
-            <Table.Td>Process sequence in both directions, doubles output dimension</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td>num_layers</Table.Td>
-            <Table.Td>Integer ≥ 1</Table.Td>
-            <Table.Td>Number of stacked RNN layers, increases capacity but risk of overfitting</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td>dropout</Table.Td>
-            <Table.Td>Float [0, 1]</Table.Td>
-            <Table.Td>Dropout between layers (only applied if num_layers > 1)</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td>proj_size</Table.Td>
-            <Table.Td>Integer ≥ 0</Table.Td>
-            <Table.Td>Dimension of projected hidden state (LSTM only, PyTorch 1.8+)</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td>nonlinearity (RNN)</Table.Td>
-            <Table.Td>'tanh'/'relu'</Table.Td>
-            <Table.Td>Activation function for vanilla RNN</Table.Td>
-          </Table.Tr>
-        </Table.Tbody>
-      </Table>
-
-      <Title order={3} mt="md" mb="sm">
-        Handling Variable-Length Sequences
-      </Title>
-      
-      <CodeBlock
-        language="python"
-        code={`# Example of using PackedSequence for efficient processing
-def prepare_sequence_batch(sequences, tokenizer):
-    """
-    Prepare a batch of variable-length sequences for RNN processing.
-    Returns padded sequences and their lengths.
-    """
-    # Tokenize and convert to indices
-    indexed_seqs = [tokenizer.convert_tokens_to_ids(tokenizer.tokenize(seq)) for seq in sequences]
-    
-    # Get sequence lengths
-    seq_lengths = torch.LongTensor([len(s) for s in indexed_seqs])
-    
-    # Pad sequences to max length in batch
-    max_len = max(seq_lengths)
-    padded_seqs = torch.zeros(len(sequences), max_len, dtype=torch.long)
-    
-    # Fill padded tensor
-    for i, seq in enumerate(indexed_seqs):
-        end = seq_lengths[i]
-        padded_seqs[i, :end] = torch.LongTensor(seq[:end])
-    
-    return padded_seqs, seq_lengths
-
-# In DataLoader:
-for batch_texts, batch_labels in dataloader:
-    # Prepare variable-length sequences
-    padded_seqs, seq_lengths = prepare_sequence_batch(batch_texts, tokenizer)
-    
-    # Forward pass with lengths for proper packing
-    outputs = model(padded_seqs, seq_lengths)
-`}
-      />
-
-      {/* Comparison with Transformers */}
-      <Title order={2} id="comparison" mt="lg" mb="sm">
-        Comparison with Transformers
-      </Title>
-      
-      <Text>
-        RNNs dominated sequence modeling in NLP before the introduction of Transformers.
-        Here's a comparison of their relative strengths and weaknesses.
-      </Text>
-      
-      <Table striped withColumnBorders>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>Aspect</Table.Th>
-            <Table.Th>RNNs (LSTM/GRU)</Table.Th>
-            <Table.Th>Transformers</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
-          <Table.Tr>
-            <Table.Td>Parallelization</Table.Td>
-            <Table.Td>Sequential processing, cannot parallelize</Table.Td>
-            <Table.Td>Fully parallelizable across sequence length</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td>Long-range Dependencies</Table.Td>
-            <Table.Td>Difficulty with very long sequences</Table.Td>
-            <Table.Td>Direct connections between any positions</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td>Computational Complexity</Table.Td>
-            <Table.Td>O(n) with sequence length</Table.Td>
-            <Table.Td>O(n²) with sequence length (self-attention)</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td>Memory Usage</Table.Td>
-            <Table.Td>Lower, state size independent of sequence length</Table.Td>
-            <Table.Td>Higher, attention maps grow quadratically</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td>Positional Information</Table.Td>
-            <Table.Td>Inherent in sequential processing</Table.Td>
-            <Table.Td>Requires explicit positional encodings</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td>Variable Length Handling</Table.Td>
-            <Table.Td>Natural, maintains state regardless of length</Table.Td>
-            <Table.Td>Requires padding or truncation to fixed length</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td>Performance on NLP Tasks</Table.Td>
-            <Table.Td>Good, but generally inferior to Transformers</Table.Td>
-            <Table.Td>State-of-the-art on most NLP tasks</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td>Training Stability</Table.Td>
-            <Table.Td>Can be unstable due to vanishing/exploding gradients</Table.Td>
-            <Table.Td>Generally more stable with layer normalization</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td>Streaming/Online Processing</Table.Td>
-            <Table.Td>Well-suited for incremental processing</Table.Td>
-            <Table.Td>Challenging due to need for full context</Table.Td>
-          </Table.Tr>
-        </Table.Tbody>
-      </Table>
-      
-      <Title order={3} mt="lg" mb="sm">
-        When to Use RNNs vs. Transformers
-      </Title>
-      
-      <Grid>
-        <Grid.Col span={6}>
-          <Card withBorder p="xs">
-            <Title order={4} mb="xs">Consider RNNs When:</Title>
-            <List withPadding>
-              <List.Item>Working with limited computational resources</List.Item>
-              <List.Item>Processing very long sequences (> 1000 tokens)</List.Item>
-              <List.Item>Implementing streaming/online processing</List.Item>
-              <List.Item>Model size and inference speed are critical</List.Item>
-              <List.Item>The task involves explicit sequence modeling where order is critical</List.Item>
-            </List>
-          </Card>
-        </Grid.Col>
-        <Grid.Col span={6}>
-          <Card withBorder p="xs">
-            <Title order={4} mb="xs">Consider Transformers When:</Title>
-            <List withPadding>
-              <List.Item>Maximum accuracy is the primary goal</List.Item>
-              <List.Item>Parallel processing is available (GPUs)</List.Item>
-              <List.Item>Tasks involve complex linguistic understanding</List.Item>
-              <List.Item>Training data is abundant</List.Item>
-              <List.Item>Long-range dependencies are critical</List.Item>
-            </List>
-          </Card>
-        </Grid.Col>
-      </Grid>
-      
-      <Alert icon={<IconAlertCircle size="1rem" />} title="Hybrid Approaches" color="blue" mt="md">
-        Some recent work explores combining RNNs and Transformers to get the best of both worlds:
-        <List withPadding>
-          <List.Item>RNN-enhanced Transformers for streaming applications</List.Item>
-          <List.Item>Transformer-enhanced RNNs for improved expressivity</List.Item>
-          <List.Item>Linear attention mechanisms to reduce the quadratic complexity of Transformers</List.Item>
+        <List>
+          <List.Item><strong>Forget gate</strong> <InlineMath>{`f^{(t)}`}</InlineMath>: Controls what information to discard from cell state</List.Item>
+          <List.Item><strong>Input gate</strong> <InlineMath>{`i^{(t)}`}</InlineMath>: Controls what new information to store in cell state</List.Item>
+          <List.Item><strong>Output gate</strong> <InlineMath>{`o^{(t)}`}</InlineMath>: Controls what information to output based on cell state</List.Item>
         </List>
-      </Alert>
-      <div>
-    <RNNBackpropagation/>
-    </div>
-    </div>
+        
+        <Text>
+          The forward pass in an LSTM is defined as:
+        </Text>
+        
+        <BlockMath>{`
+          f^{(t)} = \\sigma(W_{xf}x^{(t)} + W_{hf}h^{(t-1)} + b_f)
+        `}</BlockMath>
+        
+        <BlockMath>{`
+          i^{(t)} = \\sigma(W_{xi}x^{(t)} + W_{hi}h^{(t-1)} + b_i)
+        `}</BlockMath>
+        
+        <BlockMath>{`
+          \\tilde{c}^{(t)} = \\tanh(W_{xc}x^{(t)} + W_{hc}h^{(t-1)} + b_c)
+        `}</BlockMath>
+        
+        <BlockMath>{`
+          c^{(t)} = f^{(t)} \\odot c^{(t-1)} + i^{(t)} \\odot \\tilde{c}^{(t)}
+        `}</BlockMath>
+        
+        <BlockMath>{`
+          o^{(t)} = \\sigma(W_{xo}x^{(t)} + W_{ho}h^{(t-1)} + b_o)
+        `}</BlockMath>
+        
+        <BlockMath>{`
+          h^{(t)} = o^{(t)} \\odot \\tanh(c^{(t)})
+        `}</BlockMath>
+        
+        <BlockMath>{`
+          y^{(t)} = f(W_{hy}h^{(t)} + b_y)
+        `}</BlockMath>
+        
+        <Title order={3} mt="lg">GRU (Gated Recurrent Unit)</Title>
+        <Text>
+          GRU simplifies the LSTM architecture by combining the forget and input gates into a single "update gate" and merging the cell state and hidden state:
+        </Text>
+        
+        <List>
+          <List.Item><strong>Reset gate</strong> <InlineMath>{`r^{(t)}`}</InlineMath>: Controls how much of the previous state to forget</List.Item>
+          <List.Item><strong>Update gate</strong> <InlineMath>{`z^{(t)}`}</InlineMath>: Controls how much of the new candidate state to use</List.Item>
+        </List>
+        
+        <Text>
+          The forward pass in a GRU is defined as:
+        </Text>
+        
+        <BlockMath>{`
+          z^{(t)} = \\sigma(W_{xz}x^{(t)} + W_{hz}h^{(t-1)} + b_z)
+        `}</BlockMath>
+        
+        <BlockMath>{`
+          r^{(t)} = \\sigma(W_{xr}x^{(t)} + W_{hr}h^{(t-1)} + b_r)
+        `}</BlockMath>
+        
+        <BlockMath>{`
+          \\tilde{h}^{(t)} = \\tanh(W_{xh}x^{(t)} + W_{hh}(r^{(t)} \\odot h^{(t-1)}) + b_h)
+        `}</BlockMath>
+        
+        <BlockMath>{`
+          h^{(t)} = (1 - z^{(t)}) \\odot h^{(t-1)} + z^{(t)} \\odot \\tilde{h}^{(t)}
+        `}</BlockMath>
+        
+        <BlockMath>{`
+          y^{(t)} = f(W_{hy}h^{(t)} + b_y)
+        `}</BlockMath>
+      </Stack>
 
+      {/* Backpropagation Through Time */}
+      <Stack spacing="md">
+        <Title order={2} id="backprop-through-time">Backpropagation Through Time (BPTT)</Title>
+        
+        <Text>
+          BPTT is the algorithm used for training RNNs. It extends standard backpropagation by unfolding the network through time and propagating gradients backward through the temporal dimension.
+        </Text>
+        
+        <Box className="p-4 border rounded">
+          <Title order={4}>Key Challenges in BPTT</Title>
+          <List>
+            <List.Item><strong>Vanishing gradients:</strong> Gradients can become extremely small when backpropagated through many time steps</List.Item>
+            <List.Item><strong>Exploding gradients:</strong> Gradients can become extremely large when backpropagated through many time steps</List.Item>
+            <List.Item><strong>Shared parameters:</strong> The same weights are used at each time step, requiring gradient accumulation</List.Item>
+          </List>
+        </Box>
+        
+        <Accordion variant="separated">
+          <Accordion.Item value="general-bptt">
+            <Accordion.Control>
+              <Title order={3}>General BPTT Algorithm</Title>
+            </Accordion.Control>
+            <Accordion.Panel>
+              <Stack spacing="md">
+                <Text>
+                  The general steps for BPTT are:
+                </Text>
+                
+                <List ordered>
+                  <List.Item>Perform forward propagation for all time steps t = 1 to T</List.Item>
+                  <List.Item>Compute the loss L</List.Item>
+                  <List.Item>Initialize gradients for all parameters to zero</List.Item>
+                  <List.Item>For each time step t = T down to 1:
+                    <List withPadding>
+                      <List.Item>Compute gradients of loss with respect to output: <InlineMath>{`\\frac{\\partial L}{\\partial y^{(t)}}`}</InlineMath></List.Item>
+                      <List.Item>Compute gradients of loss with respect to hidden state: <InlineMath>{`\\frac{\\partial L}{\\partial h^{(t)}}`}</InlineMath></List.Item>
+                      <List.Item>Compute gradients for all parameters</List.Item>
+                      <List.Item>Accumulate gradients across time steps</List.Item>
+                    </List>
+                  </List.Item>
+                  <List.Item>Update parameters using accumulated gradients</List.Item>
+                </List>
+                
+                <Text>
+                  A key insight in BPTT is that we need to account for how the hidden state at time step t affects all future time steps:
+                </Text>
+                
+                <BlockMath>{`
+                  \\frac{\\partial L}{\\partial h^{(t)}} = \\frac{\\partial L^{(t)}}{\\partial h^{(t)}} + \\frac{\\partial L}{\\partial h^{(t+1)}} \\frac{\\partial h^{(t+1)}}{\\partial h^{(t)}}
+                `}</BlockMath>
+                
+                <Text>
+                  Where <InlineMath>{`\\frac{\\partial L^{(t)}}{\\partial h^{(t)}}`}</InlineMath> is the direct impact on the current time step and the second term represents the impact on future time steps.
+                </Text>
+              </Stack>
+            </Accordion.Panel>
+          </Accordion.Item>
+          
+          <Accordion.Item value="standard-rnn-backprop">
+            <Accordion.Control>
+              <Title order={3}>BPTT for Standard RNN</Title>
+            </Accordion.Control>
+            <Accordion.Panel>
+              <Stack spacing="md">
+                <Title order={4}>Computing Gradients</Title>
+                
+                <Text>
+                  Let's define the error term at time step t as:
+                </Text>
+                
+                <BlockMath>{`
+                  \\delta^{(t)} = \\frac{\\partial L}{\\partial h^{(t)}}
+                `}</BlockMath>
+                
+                <Text>
+                  For the output layer:
+                </Text>
+                
+                <BlockMath>{`
+                  \\frac{\\partial L}{\\partial W_{hy}} = \\sum_{t=1}^{T} \\frac{\\partial L}{\\partial y^{(t)}} \\frac{\\partial y^{(t)}}{\\partial W_{hy}} = \\sum_{t=1}^{T} \\frac{\\partial L}{\\partial y^{(t)}} h^{(t)}
+                `}</BlockMath>
+                {/* #h^{(t)T  the T is for transpose but it was not clear */}
+                <Accordion variant="separated" mb="md">
+                  <Accordion.Item value="output-weight-derivation">
+                    <Accordion.Control>
+                      <Text size="sm" fw={500}>Detailed Proof of Output Weight Gradient</Text>
+                    </Accordion.Control>
+                    <Accordion.Panel>
+                      <Stack spacing="md">
+                        <Title order={5}>Step 1: Applying the Chain Rule</Title>
+                        <Text>
+                          The total loss L for a sequence is the sum of losses at each time step:
+                        </Text>
+                        <BlockMath>{`L = \\sum_{t=1}^{T} L^{(t)}`}</BlockMath>
+                        
+                        <Text>
+                          Since the same weight matrix W_hy is shared across all time steps, we apply the chain rule:
+                        </Text>
+                        <BlockMath>{`\\frac{\\partial L}{\\partial W_{hy}} = \\frac{\\partial}{\\partial W_{hy}}\\left(\\sum_{t=1}^{T} L^{(t)}\\right)`}</BlockMath>
+                        
+                        <Text>
+                          Since differentiation is a linear operation, we can move the derivative inside:
+                        </Text>
+                        <BlockMath>{`\\frac{\\partial L}{\\partial W_{hy}} = \\sum_{t=1}^{T} \\frac{\\partial L^{(t)}}{\\partial W_{hy}}`}</BlockMath>
+                        
+                        <Text>
+                          For each time step t, W_hy affects L^(t) only through y^(t), so we apply the chain rule again:
+                        </Text>
+                        <BlockMath>{`\\frac{\\partial L^{(t)}}{\\partial W_{hy}} = \\frac{\\partial L^{(t)}}{\\partial y^{(t)}} \\frac{\\partial y^{(t)}}{\\partial W_{hy}}`}</BlockMath>
+                        
+                        <Text>
+                          Since L = ∑L^(t), we have ∂L/∂y^(t) = ∂L^(t)/∂y^(t), giving us:
+                        </Text>
+                        <BlockMath>{`\\frac{\\partial L}{\\partial W_{hy}} = \\sum_{t=1}^{T} \\frac{\\partial L}{\\partial y^{(t)}} \\frac{\\partial y^{(t)}}{\\partial W_{hy}}`}</BlockMath>
+                        
+                        <Title order={5} mt="md">Step 2: Calculating the Derivative of Output</Title>
+                        <Text>
+                          The output at time step t is:
+                        </Text>
+                        <BlockMath>{`y^{(t)} = f(W_{hy}h^{(t)} + b_y)`}</BlockMath>
+                        
+                        <Text>
+                          When we calculate the derivative of y^(t) with respect to any element W_hy[i,j]:
+                        </Text>
+                        <BlockMath>{`\\frac{\\partial y^{(t)}[i]}{\\partial W_{hy}[i,j]} = \\frac{\\partial f}{\\partial z^{(t)}[i]} \\cdot h^{(t)}[j]`}</BlockMath>
+                        
+                        <Text>
+                          When organized into matrix form, and typically incorporating the activation function's derivative into the ∂L/∂y^(t) term:
+                        </Text>
+                        <BlockMath>{`\\frac{\\partial y^{(t)}}{\\partial W_{hy}} = h^{(t)T}`}</BlockMath>
+                        
+                        <Text>
+                          Therefore:
+                        </Text>
+                        <BlockMath>{`\\frac{\\partial L}{\\partial W_{hy}} = \\sum_{t=1}^{T} \\frac{\\partial L}{\\partial y^{(t)}} h^{(t)T}`}</BlockMath>
+                        
+                        <Text>
+                          This represents a sum of outer products between the output error vectors and the hidden state vectors across all time steps.
+                        </Text>
+                      </Stack>
+                    </Accordion.Panel>
+                  </Accordion.Item>
+                </Accordion>
+                <BlockMath>{`
+                  \\frac{\\partial L}{\\partial b_y} = \\sum_{t=1}^{T} \\frac{\\partial L}{\\partial y^{(t)}}
+                `}</BlockMath>
+                
+                <Text>
+                  For the hidden layer, we need to backpropagate through time. For each time step t, we compute:
+                </Text>
+                
+                <BlockMath>{`
+                  \\delta^{(t)} = \\frac{\\partial L}{\\partial y^{(t)}} \\frac{\\partial y^{(t)}}{\\partial h^{(t)}} + \\delta^{(t+1)} \\frac{\\partial h^{(t+1)}}{\\partial h^{(t)}}
+                `}</BlockMath>
+                
+                <Text>
+                  Where <InlineMath>{`\\frac{\\partial y^{(t)}}{\\partial h^{(t)}} = W_{hy}^T`}</InlineMath> and <InlineMath>{`\\frac{\\partial h^{(t+1)}}{\\partial h^{(t)}} = W_{hh}^T \\text{diag}(1 - (h^{(t+1)})^2)`}</InlineMath> for tanh activation.
+                </Text>
+                
+                <Text>
+                  For the recurrent weights:
+                </Text>
+                
+                <BlockMath>{`
+                  \\frac{\\partial L}{\\partial W_{xh}} = \\sum_{t=1}^{T} \\delta^{(t)} \\text{diag}(1 - (h^{(t)})^2) x^{(t)T}
+                `}</BlockMath>
+                
+                <BlockMath>{`
+                  \\frac{\\partial L}{\\partial W_{hh}} = \\sum_{t=1}^{T} \\delta^{(t)} \\text{diag}(1 - (h^{(t)})^2) h^{(t-1)T}
+                `}</BlockMath>
+                
+                <BlockMath>{`
+                  \\frac{\\partial L}{\\partial b_h} = \\sum_{t=1}^{T} \\delta^{(t)} \\text{diag}(1 - (h^{(t)})^2)
+                `}</BlockMath>
+                
+                <Title order={4} mt="lg">Vanishing and Exploding Gradient Problem</Title>
+                
+                <Text>
+                  In standard RNNs, as we backpropagate through time, the gradient contribution from earlier time steps can become exponentially small or large:
+                </Text>
+                
+                <BlockMath>{`
+                  \\frac{\\partial h^{(t)}}{\\partial h^{(t-k)}} = \\prod_{i=t-k+1}^{t} \\frac{\\partial h^{(i)}}{\\partial h^{(i-1)}} = \\prod_{i=t-k+1}^{t} W_{hh}^T \\text{diag}(1 - (h^{(i)})^2)
+                `}</BlockMath>
+                
+                <Text>
+                  This product of matrices can have eigenvalues greater than 1 (causing exploding gradients) or less than 1 (causing vanishing gradients). This is the primary motivation for developing architectures like LSTM and GRU.
+                </Text>
+              </Stack>
+            </Accordion.Panel>
+          </Accordion.Item>
+          
+          <Accordion.Item value="lstm-backprop">
+            <Accordion.Control>
+              <Title order={3}>BPTT for LSTM</Title>
+            </Accordion.Control>
+            <Accordion.Panel>
+              <Stack spacing="md">
+                <Title order={4}>LSTM Gradient Flow</Title>
+                
+                <Text>
+                  LSTM addresses the vanishing gradient problem through its cell state, which creates a highway for gradient flow. During backpropagation, we need to compute gradients for all gates and states.
+                </Text>
+                
+                <Text>
+                  Let's define the error terms:
+                </Text>
+                
+                <BlockMath>{`
+                  \\delta_h^{(t)} = \\frac{\\partial L}{\\partial h^{(t)}}
+                `}</BlockMath>
+                
+                <BlockMath>{`
+                  \\delta_c^{(t)} = \\frac{\\partial L}{\\partial c^{(t)}}
+                `}</BlockMath>
+                
+                <Text>
+                  Starting with the output, we backpropagate to the hidden state:
+                </Text>
+                
+                <BlockMath>{`
+                  \\delta_h^{(t)} = \\frac{\\partial L}{\\partial y^{(t)}} \\frac{\\partial y^{(t)}}{\\partial h^{(t)}} + \\delta_h^{(t+1)} \\frac{\\partial h^{(t+1)}}{\\partial h^{(t)}} + \\delta_c^{(t+1)} \\frac{\\partial c^{(t+1)}}{\\partial h^{(t)}}
+                `}</BlockMath>
+                
+                <Text>
+                  The gradient flow to the cell state is:
+                </Text>
+                
+                <BlockMath>{`
+                  \\delta_c^{(t)} = \\delta_h^{(t)} \\frac{\\partial h^{(t)}}{\\partial c^{(t)}} + \\delta_c^{(t+1)} \\frac{\\partial c^{(t+1)}}{\\partial c^{(t)}}
+                `}</BlockMath>
+                
+                <Text>
+                  Where <InlineMath>{`\\frac{\\partial h^{(t)}}{\\partial c^{(t)}} = o^{(t)} \\odot (1 - \\tanh^2(c^{(t)}))`}</InlineMath> and <InlineMath>{`\\frac{\\partial c^{(t+1)}}{\\partial c^{(t)}} = f^{(t+1)}`}</InlineMath>.
+                </Text>
+                
+                <Text>
+                  For the forget gate:
+                </Text>
+                
+                <BlockMath>{`
+                  \\frac{\\partial L}{\\partial f^{(t)}} = \\delta_c^{(t)} \\odot c^{(t-1)}
+                `}</BlockMath>
+                
+                <Text>
+                  For the input gate:
+                </Text>
+                
+                <BlockMath>{`
+                  \\frac{\\partial L}{\\partial i^{(t)}} = \\delta_c^{(t)} \\odot \\tilde{c}^{(t)}
+                `}</BlockMath>
+                
+                <Text>
+                  For the cell candidate:
+                </Text>
+                
+                <BlockMath>{`
+                  \\frac{\\partial L}{\\partial \\tilde{c}^{(t)}} = \\delta_c^{(t)} \\odot i^{(t)}
+                `}</BlockMath>
+                
+                <Text>
+                  For the output gate:
+                </Text>
+                
+                <BlockMath>{`
+                  \\frac{\\partial L}{\\partial o^{(t)}} = \\delta_h^{(t)} \\odot \\tanh(c^{(t)})
+                `}</BlockMath>
+                
+                <Text>
+                  These gradients are then backpropagated to the weights for each gate. For example, for the forget gate weights:
+                </Text>
+                
+                <BlockMath>{`
+                  \\frac{\\partial L}{\\partial W_{xf}} = \\sum_{t=1}^{T} \\frac{\\partial L}{\\partial f^{(t)}} \\frac{\\partial f^{(t)}}{\\partial W_{xf}} = \\sum_{t=1}^{T} (\\delta_c^{(t)} \\odot c^{(t-1)}) \\odot (f^{(t)} \\odot (1 - f^{(t)})) x^{(t)T}
+                `}</BlockMath>
+                
+                <Title order={4} mt="lg">Constant Error Carousel</Title>
+                
+                <Text>
+                  A key insight of the LSTM is the "constant error carousel" formed by the cell state. As we backpropagate through time:
+                </Text>
+                
+                <BlockMath>{`
+                  \\frac{\\partial c^{(t)}}{\\partial c^{(t-k)}} = \\prod_{i=t-k+1}^{t} \\frac{\\partial c^{(i)}}{\\partial c^{(i-1)}} = \\prod_{i=t-k+1}^{t} f^{(i)}
+                `}</BlockMath>
+                
+                <Text>
+                  If the forget gates <InlineMath>{`f^{(i)}`}</InlineMath> are close to 1, this product doesn't vanish, allowing gradients to flow through many time steps.
+                </Text>
+              </Stack>
+            </Accordion.Panel>
+          </Accordion.Item>
+          
+          <Accordion.Item value="gru-backprop">
+            <Accordion.Control>
+              <Title order={3}>BPTT for GRU</Title>
+            </Accordion.Control>
+            <Accordion.Panel>
+              <Stack spacing="md">
+                <Title order={4}>GRU Gradient Flow</Title>
+                
+                <Text>
+                  The GRU uses a simpler architecture than the LSTM but still effectively mitigates the vanishing gradient problem. During backpropagation, we need to compute gradients for the reset and update gates.
+                </Text>
+                
+                <Text>
+                  Let's define the error term:
+                </Text>
+                
+                <BlockMath>{`
+                  \\delta_h^{(t)} = \\frac{\\partial L}{\\partial h^{(t)}}
+                `}</BlockMath>
+                
+                <Text>
+                  The backpropagation through time follows:
+                </Text>
+                
+                <BlockMath>{`
+                  \\delta_h^{(t)} = \\frac{\\partial L}{\\partial y^{(t)}} \\frac{\\partial y^{(t)}}{\\partial h^{(t)}} + \\delta_h^{(t+1)} \\frac{\\partial h^{(t+1)}}{\\partial h^{(t)}}
+                `}</BlockMath>
+                
+                <Text>
+                  For the GRU, the term <InlineMath>{`\\frac{\\partial h^{(t+1)}}{\\partial h^{(t)}}`}</InlineMath> includes both the direct path through <InlineMath>{`(1 - z^{(t+1)})`}</InlineMath> and the path through <InlineMath>{`\\tilde{h}^{(t+1)}`}</InlineMath>:
+                </Text>
+                
+                <BlockMath>{`
+                  \\frac{\\partial h^{(t+1)}}{\\partial h^{(t)}} = (1 - z^{(t+1)}) + z^{(t+1)} \\frac{\\partial \\tilde{h}^{(t+1)}}{\\partial h^{(t)}}
+                `}</BlockMath>
+                
+                <Text>
+                  For the update gate:
+                </Text>
+                
+                <BlockMath>{`
+                  \\frac{\\partial L}{\\partial z^{(t)}} = \\delta_h^{(t)} \\odot (\\tilde{h}^{(t)} - h^{(t-1)})
+                `}</BlockMath>
+                
+                <Text>
+                  For the reset gate:
+                </Text>
+                
+                <BlockMath>{`
+                  \\frac{\\partial L}{\\partial r^{(t)}} = \\delta_h^{(t)} \\odot z^{(t)} \\odot (1 - \\tilde{h}^{(t)2}) \\odot (W_{hh} h^{(t-1)})
+                `}</BlockMath>
+                
+                <Text>
+                  For the candidate hidden state:
+                </Text>
+                
+                <BlockMath>{`
+                  \\frac{\\partial L}{\\partial \\tilde{h}^{(t)}} = \\delta_h^{(t)} \\odot z^{(t)}
+                `}</BlockMath>
+                
+                <Text>
+                  These gradients are then backpropagated to the corresponding weights. For example, for the update gate weights:
+                </Text>
+                
+                <BlockMath>{`
+                  \\frac{\\partial L}{\\partial W_{xz}} = \\sum_{t=1}^{T} \\frac{\\partial L}{\\partial z^{(t)}} \\frac{\\partial z^{(t)}}{\\partial W_{xz}} = \\sum_{t=1}^{T} (\\delta_h^{(t)} \\odot (\\tilde{h}^{(t)} - h^{(t-1)})) \\odot (z^{(t)} \\odot (1 - z^{(t)})) x^{(t)T}
+                `}</BlockMath>
+                
+                <Title order={4} mt="lg">Vanishing Gradient Mitigation in GRU</Title>
+                
+                <Text>
+                  Similar to LSTM, GRU mitigates the vanishing gradient problem through its update gate:
+                </Text>
+                
+                <BlockMath>{`
+                  \\frac{\\partial h^{(t)}}{\\partial h^{(t-k)}} = \\prod_{i=t-k+1}^{t} \\frac{\\partial h^{(i)}}{\\partial h^{(i-1)}}
+                `}</BlockMath>
+                
+                <Text>
+                  When the update gates <InlineMath>{`z^{(i)}`}</InlineMath> are close to 0, this product includes terms close to 1, creating a highway for gradient flow through time. This mechanism allows GRU to capture long-term dependencies effectively while using fewer parameters than LSTM.
+                </Text>
+              </Stack>
+            </Accordion.Panel>
+          </Accordion.Item>
+        </Accordion>
+      </Stack>
+
+    </Stack>
   );
 };
 

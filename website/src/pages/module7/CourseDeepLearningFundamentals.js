@@ -105,6 +105,10 @@ const CourseDeepLearningFundamentals = () => {
           id: "reduce-lr",
           label: "Learning Rate Scheduling"
         },
+        {
+          id: "residual-connections",
+          label: "Residual Connections"
+        }
 
       ]
     },
