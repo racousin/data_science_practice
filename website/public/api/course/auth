@@ -1,0 +1,8 @@
+{
+  "status": "success",
+  "message": "Authentication successful",
+  "data": {
+    "description": "This data is for the authenticated course access.",
+    "password": "jpyq6ouAjqu74A0"
+  }
+}

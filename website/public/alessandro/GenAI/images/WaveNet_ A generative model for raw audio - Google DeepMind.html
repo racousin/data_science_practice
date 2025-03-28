@@ -1,0 +1,3066 @@
+<!DOCTYPE html>
+<!-- saved from url=(0079)https://deepmind.google/discover/blog/wavenet-a-generative-model-for-raw-audio/ -->
+<html lang="en" data-glue="glue@28.2.0" style="--scrollbar-width: 15px;" class="gdm--interacted"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta content="initial-scale=1, minimum-scale=1, width=device-width" name="viewport">
+    <title>WaveNet: A generative model for raw audio - Google DeepMind</title>
+    
+  <meta name="description" content="This post presents WaveNet, a deep generative model of raw audio waveforms. We show that WaveNets are able to generate speech which mimics any human voice and which sounds more natural than the...">
+  <link rel="canonical" href="https://deepmind.google/discover/blog/wavenet-a-generative-model-for-raw-audio/">
+
+  <meta property="og:title" content="WaveNet: A generative model for raw audio">
+  <meta property="og:description" content="This post presents WaveNet, a deep generative model of raw audio waveforms. We show that WaveNets are able to generate speech which mimics any human voice and which sounds more natural than the...">
+  <meta property="og:image" content="https://lh3.googleusercontent.com/E2UU4A-zCZ9b_oZyE_xQIeAZpDbjpcmw99-QVYVXs81UpJKnBzTo4O81rWapIqIfOAr39WSFMo336ekSH4_Z25BHiDamvwtQEKlSteg260fZhCwJ=w1200-h630-n-nu">
+  <meta property="og:url" content="https://deepmind.google/discover/blog/wavenet-a-generative-model-for-raw-audio/">
+  <meta property="og:site_name" content="Google DeepMind">
+  <meta property="og:type" content="article">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="WaveNet: A generative model for raw audio">
+  <meta name="twitter:description" content="This post presents WaveNet, a deep generative model of raw audio waveforms. We show that WaveNets are able to generate speech which mimics any human voice and which sounds more natural than the...">
+  <meta property="twitter:image:src" content="https://lh3.googleusercontent.com/E2UU4A-zCZ9b_oZyE_xQIeAZpDbjpcmw99-QVYVXs81UpJKnBzTo4O81rWapIqIfOAr39WSFMo336ekSH4_Z25BHiDamvwtQEKlSteg260fZhCwJ=w1600-h900-n-nu">
+  <meta name="twitter:url" content="https://deepmind.google/discover/blog/wavenet-a-generative-model-for-raw-audio/">
+  <meta name="twitter:site" content="@GoogleDeepMind">
+
+  
+
+  <link rel="alternate" type="application/rss+xml" title="Google DeepMind Blog" href="https://deepmind.google/blog/rss.xml">
+
+
+    <link rel="apple-touch-icon" href="https://www.gstatic.com/images/branding/productlogos/google_deepmind/v3/web-96dp/logo_google_deepmind_color_2x_web_96dp.png">
+    <link rel="icon" type="image/x-icon" sizes="32x32" href="https://deepmind.google/static/icons/google_deepmind_32dp.c67bb05568f4.ico">
+    <link rel="icon" type="image/x-icon" sizes="16x16" href="https://deepmind.google/static/icons/google_deepmind_16dp.52cc3dfbfeb1.ico">
+    <link rel="icon" type="image/x-icon" sizes="any" href="https://deepmind.google/static/icons/google_deepmind_alldp.63e20eacc8f4.ico">
+    <link rel="icon" type="image/svg+xml" href="https://deepmind.google/static/icons/google_deepmind_48dp.5b470587fe7d.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link rel="preload" href="./WaveNet_ A generative model for raw audio - Google DeepMind_files/css2" as="style">
+    <link rel="stylesheet" href="./WaveNet_ A generative model for raw audio - Google DeepMind_files/css2">
+    <link href="./WaveNet_ A generative model for raw audio - Google DeepMind_files/cookienotificationbar.min.css" rel="stylesheet">
+    <link href="./WaveNet_ A generative model for raw audio - Google DeepMind_files/main.min.967260dae836.css" rel="stylesheet">
+    
+  <link href="./WaveNet_ A generative model for raw audio - Google DeepMind_files/gemini.min.545f21a94c76.css" rel="stylesheet">
+  
+
+  </head>
+  <body class="glue-body gdm no-in-view gdm--light js" style=""><div class="glue-cookie-notification-bar" id="glue-cookie-notification-bar-1" aria-labelledby="glue-cookie-notification-bar-1-label" role="region" data-nosnippet="" tabindex="-1" style="font-size: 1rem;"><p class="glue-cookie-notification-bar__text"><span id="glue-cookie-notification-bar-1-label">deepmind.google uses cookies from Google to deliver and enhance the quality of its services and to analyze traffic. </span><a href="https://policies.google.com/technologies/cookies?hl=en" class="glue-cookie-notification-bar__more" rel="noopener" aria-describedby="glue-cookie-notification-bar-1-label" target="_blank" aria-label="Learn more about how Google uses cookies. Opens in a new tab.">Learn more</a>.</p><button class="glue-cookie-notification-bar__accept">Understood</button></div>
+    
+  
+  
+
+  <header class="glue-header glue-header--no-cta gdm-header glue-header-stepped-nav-enabled gdm-header--scrolled" aria-expanded="false">
+    <a href="https://deepmind.google/discover/blog/wavenet-a-generative-model-for-raw-audio/#content" class="glue-header__link glue-header__skip-content">
+      Jump to Content
+    </a>
+    <div class="glue-header__bar glue-header__bar--mobile">
+      <div class="glue-header__tier">
+        <div class="glue-header__container">
+          <div class="glue-header__lock-up">
+            <div class="glue-header__hamburger">
+              <button class="glue-header__drawer-toggle-btn" aria-label="Open the navigation drawer" aria-controls="glue-drawer-4afb712" aria-expanded="false" aria-haspopup="true">
+                <svg aria-hidden="true" class="glue-icon glue-icon--24px" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#menu"></use>
+  </svg>
+              </button>
+            </div>
+            <div class="gdm-header__search-wrapper gdm-header__search-wrapper--mobile">
+              <div class="glue-header__logo">
+    <a class="glue-header__logo-link" data-gtm-tag="header-selection" href="https://deepmind.google/">
+      <div class="glue-header__logo-container">
+        <span class="glue-visually-hidden">Google</span>
+        <svg aria-hidden="true" class="glue-icon glue-header__logo-svg" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#google-logo-adjustable"></use>
+  </svg>
+      </div>
+      <span class="glue-header__logo--product">DeepMind</span>
+    </a>
+  </div>
+              
+                <div class="gdm-header__search-container">
+                  <form action="https://deepmind.google/search/" method="get" role="search" class="gdm-header__search-form">
+    <div class="glue-form__element">
+      <label class="mdc-text-field mdc-text-field--outlined glue-text-field mdc-text-field--with-leading-icon mdc-text-field--no-label" data-mdc-auto-init="MDCTextField" data-mdc-auto-init-state="initialized">
+        <span class="gdm-header__search-label" id="search-mobile-label">Search...</span>
+        <svg aria-hidden="true" class="glue-icon material-icons mdc-text-field__icon mdc-text-field__icon--leading gdm-header__icon" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#search"></use>
+  </svg>
+        <input class="mdc-text-field__input" name="query" type="text" id="search-mobile" autocomplete="off" maxlength="320" placeholder="Search..." aria-haspopup="listbox" aria-controls="search-mobile-autocomplete" aria-labelledby="search-mobile-label">
+        <span class="mdc-notched-outline mdc-notched-outline--no-label">
+          <span class="mdc-notched-outline__leading"></span>
+          <span class="mdc-notched-outline__trailing"></span>
+        </span>
+      </label>
+    </div>
+    <div class="gdm-header__autocomplete">
+      <ul class="gdm-autocomplete__list" id="search-mobile-autocomplete" aria-labelledby="search-mobile" aria-live="polite"></ul>
+      
+      <!-- input type="submit" value="Show More" class="glue-button glue-button--low-emphasis gdm-autocomplete__show-more" -->
+    </div>
+  </form>
+                  <a aria-controls="search-mobile" class="glue-header__link gdm-header__icon-button gdm-header__toggle-button" data-hide-label="Close search" data-show-label="Open search" href="https://deepmind.google/search" role="button" aria-label="Open search">
+    <span class="glue-visually-hidden gdm-header__search-text">Search</span>
+    <span class="glue-visually-hidden gdm-header__close-text">Close</span>
+    <svg aria-hidden="true" class="glue-icon glue-icon--24px gdm-header__search-icon" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#search"></use>
+  </svg>
+    <svg aria-hidden="true" class="glue-icon glue-icon--24px gdm-header__close-icon" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#close"></use>
+  </svg>
+  </a>
+                </div>
+              
+            </div>
+            <div class="gdm-header__gemini gdm-header__gemini--mobile">
+    <a aria-label="Chat with Gemini" class="glue-header__link gdm-header__icon-button" href="https://gemini.google.com/?utm_source=deepmind.google&amp;utm_medium=referral&amp;utm_campaign=gdm&amp;utm_content=" rel="noopener" target="_blank">
+      <svg aria-hidden="true" class="glue-icon glue-icon--24px" role="presentation">
+    <use href="/static/icons/icons.4f32e13e021e.svg#gemini"></use>
+  </svg>
+    </a>
+  </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="glue-header__bar glue-header__bar--desktop glue-header__drawer glue-header-is-wholly-scrolled glue-header--rewind-box-shadow" id="glue-drawer-4afb712" style="position: fixed; top: 0px;">
+      <div class="glue-header__tier">
+        <div class="glue-header__container">
+          <div class="glue-header__lock-up">
+            <div class="glue-header__logo">
+    <a class="glue-header__logo-link" data-gtm-tag="header-selection" href="https://deepmind.google/">
+      <div class="glue-header__logo-container">
+        <span class="glue-visually-hidden">Google</span>
+        <svg aria-hidden="true" class="glue-icon glue-header__logo-svg" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#google-logo-adjustable"></use>
+  </svg>
+      </div>
+      <span class="glue-header__logo--product">DeepMind</span>
+    </a>
+  </div>
+          </div>
+        </div>
+        <div class="glue-header__container glue-header__stepped-nav" role="navigation" tabindex="0">
+          <div class="glue-header__stepped-nav-controls-container">
+            
+          <div class="glue-header__stepped-nav-controls glue-stepped-page glue-header__link glue-stepped-page-1 glue-header__stepped-nav-parent-position" data-glue-steppednav-label="$glue_steppednav_label$, Navigate back to parent menu, $glue_steppednav_label$ opened" tabindex="-1" id="glue-stepped-page-84477214" aria-hidden="true">
+              <div class="glue-header__stepped-nav-controls-arrow">
+                <svg aria-hidden="true" class="glue-icon glue-icon--18px" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#chevron-left"></use>
+  </svg>
+                
+              </div>
+              <div class="glue-header__stepped-nav-controls-title glue-header__link"></div>
+            </div><div class="glue-header__stepped-nav-controls glue-stepped-page glue-header__link glue-stepped-page-2" data-glue-steppednav-label="$glue_steppednav_label$, Navigate back to parent menu, $glue_steppednav_label$ opened" data-glue-stepped-nav-parent-index="1" tabindex="-1" aria-label="About, Navigate back to parent menu, About opened" role="button" id="glue-stepped-page-82596416" aria-hidden="true">
+              <div class="glue-header__stepped-nav-controls-arrow">
+                <svg aria-hidden="true" class="glue-icon glue-icon--18px" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#chevron-left"></use>
+  </svg>
+                
+              </div>
+              <div class="glue-header__stepped-nav-controls-title glue-header__link">About</div>
+            </div><div class="glue-header__stepped-nav-controls glue-stepped-page glue-header__link glue-stepped-page-3" data-glue-steppednav-label="$glue_steppednav_label$, Navigate back to parent menu, $glue_steppednav_label$ opened" data-glue-stepped-nav-parent-index="1" tabindex="-1" aria-label="Research, Navigate back to parent menu, Research opened" role="button" id="glue-stepped-page-57553989" aria-hidden="true">
+              <div class="glue-header__stepped-nav-controls-arrow">
+                <svg aria-hidden="true" class="glue-icon glue-icon--18px" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#chevron-left"></use>
+  </svg>
+                
+              </div>
+              <div class="glue-header__stepped-nav-controls-title glue-header__link">Research</div>
+            </div><div class="glue-header__stepped-nav-controls glue-stepped-page glue-header__link glue-stepped-page-4" data-glue-steppednav-label="$glue_steppednav_label$, Navigate back to parent menu, $glue_steppednav_label$ opened" data-glue-stepped-nav-parent-index="1" tabindex="-1" aria-label="Technologies, Navigate back to parent menu, Technologies opened" role="button" id="glue-stepped-page-97787877" aria-hidden="true">
+              <div class="glue-header__stepped-nav-controls-arrow">
+                <svg aria-hidden="true" class="glue-icon glue-icon--18px" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#chevron-left"></use>
+  </svg>
+                
+              </div>
+              <div class="glue-header__stepped-nav-controls-title glue-header__link">Technologies</div>
+            </div><div class="glue-header__stepped-nav-controls glue-stepped-page glue-header__link glue-stepped-page-5" data-glue-steppednav-label="$glue_steppednav_label$, Navigate back to parent menu, $glue_steppednav_label$ opened" data-glue-stepped-nav-parent-index="4" tabindex="-1" aria-label="Gemini, Navigate back to parent menu, Gemini opened" role="button" id="glue-stepped-page-39721763" aria-hidden="true">
+              <div class="glue-header__stepped-nav-controls-arrow">
+                <svg aria-hidden="true" class="glue-icon glue-icon--18px" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#chevron-left"></use>
+  </svg>
+                
+              </div>
+              <div class="glue-header__stepped-nav-controls-title glue-header__link">Gemini</div>
+            </div><div class="glue-header__stepped-nav-controls glue-stepped-page glue-header__link glue-stepped-page-6" data-glue-steppednav-label="$glue_steppednav_label$, Navigate back to parent menu, $glue_steppednav_label$ opened" data-glue-stepped-nav-parent-index="4" tabindex="-1" aria-label="AlphaFold, Navigate back to parent menu, AlphaFold opened" role="button" id="glue-stepped-page-13944789" aria-hidden="true">
+              <div class="glue-header__stepped-nav-controls-arrow">
+                <svg aria-hidden="true" class="glue-icon glue-icon--18px" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#chevron-left"></use>
+  </svg>
+                
+              </div>
+              <div class="glue-header__stepped-nav-controls-title glue-header__link">AlphaFold</div>
+            </div><div class="glue-header__stepped-nav-controls glue-stepped-page glue-header__link glue-stepped-page-7 glue-is-shown" data-glue-steppednav-label="$glue_steppednav_label$, Navigate back to parent menu, $glue_steppednav_label$ opened" data-glue-stepped-nav-parent-index="1" tabindex="-1" aria-label="Discover, Navigate back to parent menu, Discover opened" role="button" id="glue-stepped-page-25067914">
+              <div class="glue-header__stepped-nav-controls-arrow">
+                <svg aria-hidden="true" class="glue-icon glue-icon--18px" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#chevron-left"></use>
+  </svg>
+                
+              </div>
+              <div class="glue-header__stepped-nav-controls-title glue-header__link">Discover</div>
+            </div></div>
+          <div class="glue-header__stepped-nav-menus glue-stepped-pages"><ul class="glue-header__list glue-stepped-page glue-stepped-page-1 glue-header__stepped-nav-parent-position" id="glue-stepped-page-41761387" aria-hidden="true">
+              
+                <li class="glue-header__item" data-glue-stepped-page="2" aria-haspopup="true" aria-selected="false" aria-controls="glue-stepped-page-38982102">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/about/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          About
+          
+          <svg aria-hidden="true" class="glue-icon glue-icon--18px gdm-header__expand" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#expand-more"></use>
+  </svg>
+        </strong>
+        
+      </span>
+    <svg aria-hidden="true" class="glue-icon glue-icon--arrow-forward glue-icon--18px glue-header__stepped-nav-subnav-icon" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#chevron-right"></use>
+  </svg></a>
+
+    
+      
+    
+  </li>
+              
+                <li class="glue-header__item" data-glue-stepped-page="3" aria-haspopup="true" aria-selected="false" aria-controls="glue-stepped-page-51152080">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/research/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Research
+          
+          <svg aria-hidden="true" class="glue-icon glue-icon--18px gdm-header__expand" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#expand-more"></use>
+  </svg>
+        </strong>
+        
+      </span>
+    <svg aria-hidden="true" class="glue-icon glue-icon--arrow-forward glue-icon--18px glue-header__stepped-nav-subnav-icon" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#chevron-right"></use>
+  </svg></a>
+
+    
+      
+    
+  </li>
+              
+                <li class="glue-header__item" data-glue-stepped-page="4" aria-haspopup="true" aria-selected="false" aria-controls="glue-stepped-page-39274782">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Technologies
+          
+          <svg aria-hidden="true" class="glue-icon glue-icon--18px gdm-header__expand" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#expand-more"></use>
+  </svg>
+        </strong>
+        
+      </span>
+    <svg aria-hidden="true" class="glue-icon glue-icon--arrow-forward glue-icon--18px glue-header__stepped-nav-subnav-icon" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#chevron-right"></use>
+  </svg></a>
+
+    
+      
+    
+  </li>
+              
+                <li class="glue-header__item glue-header--is-active" data-glue-stepped-page="7" aria-haspopup="true" aria-selected="false" aria-controls="glue-stepped-page-62764352">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/discover/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Discover
+          
+          <svg aria-hidden="true" class="glue-icon glue-icon--18px gdm-header__expand" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#expand-more"></use>
+  </svg>
+        </strong>
+        
+      </span>
+    <svg aria-hidden="true" class="glue-icon glue-icon--arrow-forward glue-icon--18px glue-header__stepped-nav-subnav-icon" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#chevron-right"></use>
+  </svg></a>
+
+    
+      
+    
+  </li>
+              
+            </ul><ul class="glue-header__list glue-header__list--nested glue-stepped-page glue-stepped-page-2" data-glue-stepped-nav-parent-index="1" id="glue-stepped-page-38982102" aria-hidden="true">
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/about/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Learn about Google DeepMind
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Our mission is to build AI responsibly to benefit humanity
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/about/responsibility-safety/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Responsibility &amp; Safety
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>We want AI to benefit the world, so we must be thoughtful about how it’s built and used
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/about/education/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Education
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Our vision is to help make the AI ecosystem more representative of society
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/about/careers/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Careers
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Many disciplines, one common goal
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+        
+      </ul><ul class="glue-header__list glue-header__list--nested glue-stepped-page glue-stepped-page-3" data-glue-stepped-nav-parent-index="1" id="glue-stepped-page-51152080" aria-hidden="true">
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/research/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          View Research
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>We work on some of the most complex and interesting challenges in AI.
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/research/breakthroughs/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Breakthroughs
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Explore some of the biggest innovations in AI
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/research/publications/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Publications
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Explore a selection of our recent research
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+        
+      </ul><ul class="glue-header__list glue-header__list--nested glue-stepped-page glue-stepped-page-4" data-glue-stepped-nav-parent-index="1" id="glue-stepped-page-39274782" aria-hidden="true">
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          View Technologies
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Solving the world’s most complex challenges
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item" data-glue-stepped-page="5" aria-haspopup="true" aria-selected="false" aria-controls="glue-stepped-page-21170542">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/gemini/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Gemini
+          
+          <svg aria-hidden="true" class="glue-icon glue-icon--18px gdm-header__expand" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#expand-more"></use>
+  </svg>
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>The most general and capable AI models we've ever built
+          </span>
+      </span>
+    <svg aria-hidden="true" class="glue-icon glue-icon--arrow-forward glue-icon--18px glue-header__stepped-nav-subnav-icon" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#chevron-right"></use>
+  </svg></a>
+
+    
+      
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/gemini/project-astra/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Project Astra
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>A universal AI agent that is helpful in everyday life
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/imagen-3/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Imagen
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Our highest quality text-to-image model
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/veo/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Veo
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Our most capable generative video model
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item" data-glue-stepped-page="6" aria-haspopup="true" aria-selected="false" aria-controls="glue-stepped-page-6509104">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/alphafold/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          AlphaFold
+          
+          <svg aria-hidden="true" class="glue-icon glue-icon--18px gdm-header__expand" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#expand-more"></use>
+  </svg>
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Accelerating breakthroughs in biology with AI
+          </span>
+      </span>
+    <svg aria-hidden="true" class="glue-icon glue-icon--arrow-forward glue-icon--18px glue-header__stepped-nav-subnav-icon" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#chevron-right"></use>
+  </svg></a>
+
+    
+      
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/synthid/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          SynthID
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Identifying AI-generated content
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+        
+      </ul><ul class="glue-header__list glue-header__list--nested glue-stepped-page glue-stepped-page-5" data-glue-stepped-nav-parent-index="4" id="glue-stepped-page-21170542" aria-hidden="true">
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/gemini/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Gemini models
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>The Gemini family of models are the most general and capable AI models we've ever built.
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/gemini/ultra/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Ultra
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Our largest model for highly complex tasks.
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/gemini/pro/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Pro
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Our best model for general performance across a wide range of tasks.
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/gemini/flash/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Flash
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Our lightweight model, optimized for speed and efficiency.
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/gemini/nano/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Nano
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Our most efficient model for on-device tasks.
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+        
+      </ul><ul class="glue-header__list glue-header__list--nested glue-stepped-page glue-stepped-page-6" data-glue-stepped-nav-parent-index="4" id="glue-stepped-page-6509104" aria-hidden="true">
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/alphafold/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Overview
+          
+          
+        </strong>
+        
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/alphafold/impact-stories/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Impact stories
+          
+          
+        </strong>
+        
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://alphafold.ebi.ac.uk/" rel="noopener" target="_blank" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          AlphaFold Database
+          <svg aria-hidden="true" class="glue-icon glue-icon--18px" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#open-in-new"></use>
+  </svg>
+          
+        </strong>
+        
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/alphafold/alphafold-server/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          AlphaFold Server
+          
+          
+        </strong>
+        
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+        
+      </ul><ul class="glue-header__list glue-header__list--nested glue-stepped-page glue-stepped-page-7 glue-is-shown" data-glue-stepped-nav-parent-index="1" id="glue-stepped-page-62764352">
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/discover/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          View Discover
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Discover our latest breakthroughs and see how we’re shaping the future
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item glue-header__item--active">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/discover/blog/" aria-current="page" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Blog
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Discover our latest AI breakthroughs, projects, and updates
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/discover/events/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Events
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Meet our team and learn more about our research
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/discover/the-podcast/" tabindex="-1">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          The Podcast
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Uncover the extraordinary ways AI is transforming our world
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+        
+      </ul></div>
+        </div>
+        <div class="glue-header__container glue-header__container--linkbar gdm-header__search-wrapper gdm-header__search-wrapper--desktop">
+          <nav class="glue-header__link-bar">
+            <ul class="glue-header__list">
+              
+                <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/about/" aria-controls="" aria-expanded="false" aria-haspopup="true" role="button">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          About
+          
+          <svg aria-hidden="true" class="glue-icon glue-icon--18px gdm-header__expand" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#expand-more"></use>
+  </svg>
+        </strong>
+        
+      </span>
+    </a><nav aria-hidden="true" aria-label="About" class="gdm-header__dropdown" data-toggle-href="/about/" tabindex="-1">
+    <div class="gdm-header__dropdown-inner">
+      <ul class="glue-header__list">
+        <li class="glue-header__item gdm-header__dropdown-view-all">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/about/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Learn about Google DeepMind
+          <svg aria-hidden="true" class="glue-icon glue-icon--arrow-forward glue-icon--18px" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#chevron-right"></use>
+  </svg>
+          
+        </strong>
+        
+      </span>
+    </a>
+
+    
+  </li><li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/about/responsibility-safety/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Responsibility &amp; Safety
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>We want AI to benefit the world, so we must be thoughtful about how it’s built and used
+          </span>
+      </span>
+    </a>
+
+    
+  </li><li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/about/education/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Education
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Our vision is to help make the AI ecosystem more representative of society
+          </span>
+      </span>
+    </a>
+
+    
+  </li><li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/about/careers/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Careers
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Many disciplines, one common goal
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+      </ul>
+      <div class="gdm-header__featured">
+        <p class="gdm-header__featured-title glue-label">Latest posts</p>
+        <ul class="gdm-header__featured-items glue-no-bullet">
+            
+              
+    <li>
+      <a class="glue-header__link gdm-header__featured-item" data-gtm-tag="header-selection" href="https://blog.google/technology/ai/ai-science-forum-2024/" rel="noopener" target="_blank">
+        
+    
+    
+    <picture class="picture gdm-header__featured-image">
+      <source type="image/webp" width="264" height="156" srcset="https://lh3.googleusercontent.com/013uzey1mkIgSCsLZ_PieJORMUI5F6yviXI7baiAmkEf8FF1-TC8TMVNY7GY67dejQ8sKtPDJTEbCb_KSaSgdknavAHiqRnd3V1i9fkE4yzBS1R-IA=w264-h156-n-nu-rw 1x, https://lh3.googleusercontent.com/013uzey1mkIgSCsLZ_PieJORMUI5F6yviXI7baiAmkEf8FF1-TC8TMVNY7GY67dejQ8sKtPDJTEbCb_KSaSgdknavAHiqRnd3V1i9fkE4yzBS1R-IA=w528-h312-n-nu-rw 2x">
+      <img alt="" class="picture__image" height="156" loading="lazy" role="presentation" src="./WaveNet_ A generative model for raw audio - Google DeepMind_files/unnamed.png" width="264">
+    </picture>
+    
+  
+        <strong class="gdm-header__title">The AI for Science Forum: A new era of discovery</strong>
+        <time datetime="2024-11-18" class="glue-label gdm-header__featured-date">18 November 2024</time>
+        <svg aria-hidden="true" class="glue-icon glue-icon--18px gdm-header__featured-icon" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#open-in-new"></use>
+  </svg>
+      </a>
+    </li>
+  
+            
+              
+    <li>
+      <a class="glue-header__link gdm-header__featured-item" data-gtm-tag="header-selection" href="https://deepmind.google/discover/blog/pushing-the-frontiers-of-audio-generation/">
+        
+    
+    
+    <picture class="picture gdm-header__featured-image">
+      <source type="image/webp" width="264" height="156" srcset="https://lh3.googleusercontent.com/DRHQSDQtYAEPTDVRAH3gkibfEPdd3JpphY4SLLqk5chpiqzR5nLmAL7GkXkTRPXwoSVLSfhj3FQoLjgELpAflJ3CDEU-XtbTl7_MelbnghTkzC3n=w264-h156-n-nu-rw 1x, https://lh3.googleusercontent.com/DRHQSDQtYAEPTDVRAH3gkibfEPdd3JpphY4SLLqk5chpiqzR5nLmAL7GkXkTRPXwoSVLSfhj3FQoLjgELpAflJ3CDEU-XtbTl7_MelbnghTkzC3n=w528-h312-n-nu-rw 2x">
+      <img alt="" class="picture__image" height="156" loading="lazy" role="presentation" src="./WaveNet_ A generative model for raw audio - Google DeepMind_files/unnamed.jpg" width="264">
+    </picture>
+    
+  
+        <strong class="gdm-header__title">Pushing the frontiers of audio generation</strong>
+        <time datetime="2024-10-30" class="glue-label gdm-header__featured-date">30 October 2024</time>
+        
+      </a>
+    </li>
+  
+            
+          </ul>
+      </div>
+    </div>
+  </nav>
+
+    
+      <ul class="glue-header__list glue-header__list--nested">
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/about/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Learn about Google DeepMind
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Our mission is to build AI responsibly to benefit humanity
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/about/responsibility-safety/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Responsibility &amp; Safety
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>We want AI to benefit the world, so we must be thoughtful about how it’s built and used
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/about/education/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Education
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Our vision is to help make the AI ecosystem more representative of society
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/about/careers/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Careers
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Many disciplines, one common goal
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+        
+      </ul>
+    
+  </li>
+              
+                <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/research/" aria-controls="" aria-expanded="false" aria-haspopup="true" role="button">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Research
+          
+          <svg aria-hidden="true" class="glue-icon glue-icon--18px gdm-header__expand" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#expand-more"></use>
+  </svg>
+        </strong>
+        
+      </span>
+    </a><nav aria-hidden="true" aria-label="Research" class="gdm-header__dropdown" data-toggle-href="/research/" tabindex="-1">
+    <div class="gdm-header__dropdown-inner">
+      <ul class="glue-header__list">
+        <li class="glue-header__item gdm-header__dropdown-view-all">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/research/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          View Research
+          <svg aria-hidden="true" class="glue-icon glue-icon--arrow-forward glue-icon--18px" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#chevron-right"></use>
+  </svg>
+          
+        </strong>
+        
+      </span>
+    </a>
+
+    
+  </li><li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/research/breakthroughs/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Breakthroughs
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Explore some of the biggest innovations in AI
+          </span>
+      </span>
+    </a>
+
+    
+  </li><li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/research/publications/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Publications
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Explore a selection of our recent research
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+      </ul>
+      <div class="gdm-header__featured">
+        <p class="gdm-header__featured-title glue-label">Latest research posts</p>
+        <ul class="gdm-header__featured-items glue-no-bullet">
+            
+              
+    <li>
+      <a class="glue-header__link gdm-header__featured-item" data-gtm-tag="header-selection" href="https://deepmind.google/discover/blog/how-alphachip-transformed-computer-chip-design/">
+        
+    
+    
+    <picture class="picture gdm-header__featured-image">
+      <source type="image/webp" width="264" height="156" srcset="https://lh3.googleusercontent.com/Y_xdq8eqcQlZXYk-MZ2OWPpppmWG6LAQ8DZ-LZFUh8TV5s2TBb3RK_VkMUe-skRzIop5aP6Ot9xPMWFaWmenz55EwxVFCMszpTg2EzsyOd6ftlllGyE=w264-h156-n-nu-rw 1x, https://lh3.googleusercontent.com/Y_xdq8eqcQlZXYk-MZ2OWPpppmWG6LAQ8DZ-LZFUh8TV5s2TBb3RK_VkMUe-skRzIop5aP6Ot9xPMWFaWmenz55EwxVFCMszpTg2EzsyOd6ftlllGyE=w528-h312-n-nu-rw 2x">
+      <img alt="" class="picture__image" height="156" loading="lazy" role="presentation" src="./WaveNet_ A generative model for raw audio - Google DeepMind_files/unnamed(1).jpg" width="264">
+    </picture>
+    
+  
+        <strong class="gdm-header__title">How AlphaChip transformed computer chip design</strong>
+        <time datetime="2024-09-26" class="glue-label gdm-header__featured-date">26 September 2024</time>
+        
+      </a>
+    </li>
+  
+            
+              
+    <li>
+      <a class="glue-header__link gdm-header__featured-item" data-gtm-tag="header-selection" href="https://deepmind.google/discover/blog/advances-in-robot-dexterity/">
+        
+    
+    
+    <picture class="picture gdm-header__featured-image">
+      <source type="image/webp" width="264" height="156" srcset="https://lh3.googleusercontent.com/63ROjLq4VNqk3RDA5vl1mYS1i5xvcgU8-augVWQY5OZCtVsm_e4YX8rR4_DLUlQiTmMHT6qx3p9shUtPGUHy_4SA64RDeMghvk0eDKT6Fqh6-P3d4A=w264-h156-n-nu-rw 1x, https://lh3.googleusercontent.com/63ROjLq4VNqk3RDA5vl1mYS1i5xvcgU8-augVWQY5OZCtVsm_e4YX8rR4_DLUlQiTmMHT6qx3p9shUtPGUHy_4SA64RDeMghvk0eDKT6Fqh6-P3d4A=w528-h312-n-nu-rw 2x">
+      <img alt="" class="picture__image" height="156" loading="lazy" role="presentation" src="./WaveNet_ A generative model for raw audio - Google DeepMind_files/unnamed(2).jpg" width="264">
+    </picture>
+    
+  
+        <strong class="gdm-header__title">Our latest advances in robot dexterity</strong>
+        <time datetime="2024-09-12" class="glue-label gdm-header__featured-date">12 September 2024</time>
+        
+      </a>
+    </li>
+  
+            
+          </ul>
+      </div>
+    </div>
+  </nav>
+
+    
+      <ul class="glue-header__list glue-header__list--nested">
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/research/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          View Research
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>We work on some of the most complex and interesting challenges in AI.
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/research/breakthroughs/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Breakthroughs
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Explore some of the biggest innovations in AI
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/research/publications/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Publications
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Explore a selection of our recent research
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+        
+      </ul>
+    
+  </li>
+              
+                <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/" aria-controls="" aria-expanded="false" aria-haspopup="true" role="button">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Technologies
+          
+          <svg aria-hidden="true" class="glue-icon glue-icon--18px gdm-header__expand" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#expand-more"></use>
+  </svg>
+        </strong>
+        
+      </span>
+    </a><nav aria-hidden="true" aria-label="Technologies" class="gdm-header__dropdown" data-toggle-href="/technologies/" tabindex="-1">
+    <div class="gdm-header__dropdown-inner">
+      <ul class="glue-header__list">
+        <li class="glue-header__item gdm-header__dropdown-view-all">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          View Technologies
+          <svg aria-hidden="true" class="glue-icon glue-icon--arrow-forward glue-icon--18px" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#chevron-right"></use>
+  </svg>
+          
+        </strong>
+        
+      </span>
+    </a>
+
+    
+  </li><li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/gemini/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Gemini
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>The most general and capable AI models we've ever built
+          </span>
+      </span>
+    </a>
+
+    
+  </li><li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/gemini/project-astra/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Project Astra
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>A universal AI agent that is helpful in everyday life
+          </span>
+      </span>
+    </a>
+
+    
+  </li><li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/imagen-3/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Imagen
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Our highest quality text-to-image model
+          </span>
+      </span>
+    </a>
+
+    
+  </li><li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/veo/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Veo
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Our most capable generative video model
+          </span>
+      </span>
+    </a>
+
+    
+  </li><li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/alphafold/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          AlphaFold
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Accelerating breakthroughs in biology with AI
+          </span>
+      </span>
+    </a>
+
+    
+  </li><li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/synthid/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          SynthID
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Identifying AI-generated content
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+      </ul>
+      <div class="gdm-header__featured">
+        <p class="gdm-header__featured-title glue-label">Latest technology posts</p>
+        <ul class="gdm-header__featured-items glue-no-bullet">
+            
+              
+    <li>
+      <a class="glue-header__link gdm-header__featured-item" data-gtm-tag="header-selection" href="https://deepmind.google/discover/blog/pushing-the-frontiers-of-audio-generation/">
+        
+    
+    
+    <picture class="picture gdm-header__featured-image">
+      <source type="image/webp" width="264" height="156" srcset="https://lh3.googleusercontent.com/DRHQSDQtYAEPTDVRAH3gkibfEPdd3JpphY4SLLqk5chpiqzR5nLmAL7GkXkTRPXwoSVLSfhj3FQoLjgELpAflJ3CDEU-XtbTl7_MelbnghTkzC3n=w264-h156-n-nu-rw 1x, https://lh3.googleusercontent.com/DRHQSDQtYAEPTDVRAH3gkibfEPdd3JpphY4SLLqk5chpiqzR5nLmAL7GkXkTRPXwoSVLSfhj3FQoLjgELpAflJ3CDEU-XtbTl7_MelbnghTkzC3n=w528-h312-n-nu-rw 2x">
+      <img alt="" class="picture__image" height="156" loading="lazy" role="presentation" src="./WaveNet_ A generative model for raw audio - Google DeepMind_files/unnamed.jpg" width="264">
+    </picture>
+    
+  
+        <strong class="gdm-header__title">Pushing the frontiers of audio generation</strong>
+        <time datetime="2024-10-30" class="glue-label gdm-header__featured-date">30 October 2024</time>
+        
+      </a>
+    </li>
+  
+            
+              
+    <li>
+      <a class="glue-header__link gdm-header__featured-item" data-gtm-tag="header-selection" href="https://deepmind.google/discover/blog/new-generative-ai-tools-open-the-doors-of-music-creation/">
+        
+    
+    
+    <picture class="picture gdm-header__featured-image">
+      <source type="image/webp" width="264" height="156" srcset="https://lh3.googleusercontent.com/7CWJ9fVeC97FrWgcispxyms9gTL_1PIDMIwBYTQNnU8S56JaxGB2Z4ThqZ-1vBTO-u-UBZg_cYhG8PtZjYP0rPabUbg5x2cCUnNJuiZAZBsE8u7Kvig=w264-h156-n-nu-rw 1x, https://lh3.googleusercontent.com/7CWJ9fVeC97FrWgcispxyms9gTL_1PIDMIwBYTQNnU8S56JaxGB2Z4ThqZ-1vBTO-u-UBZg_cYhG8PtZjYP0rPabUbg5x2cCUnNJuiZAZBsE8u7Kvig=w528-h312-n-nu-rw 2x">
+      <img alt="" class="picture__image" height="156" loading="lazy" role="presentation" src="./WaveNet_ A generative model for raw audio - Google DeepMind_files/unnamed(3).jpg" width="264">
+    </picture>
+    
+  
+        <strong class="gdm-header__title">New generative AI tools open the doors of music creation</strong>
+        <time datetime="2024-10-23" class="glue-label gdm-header__featured-date">23 October 2024</time>
+        
+      </a>
+    </li>
+  
+            
+          </ul>
+      </div>
+    </div>
+  </nav>
+
+    
+      <ul class="glue-header__list glue-header__list--nested">
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          View Technologies
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Solving the world’s most complex challenges
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/gemini/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Gemini
+          
+          <svg aria-hidden="true" class="glue-icon glue-icon--18px gdm-header__expand" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#expand-more"></use>
+  </svg>
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>The most general and capable AI models we've ever built
+          </span>
+      </span>
+    </a>
+
+    
+      <ul class="glue-header__list glue-header__list--nested">
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/gemini/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Gemini models
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>The Gemini family of models are the most general and capable AI models we've ever built.
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/gemini/ultra/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Ultra
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Our largest model for highly complex tasks.
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/gemini/pro/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Pro
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Our best model for general performance across a wide range of tasks.
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/gemini/flash/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Flash
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Our lightweight model, optimized for speed and efficiency.
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/gemini/nano/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Nano
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Our most efficient model for on-device tasks.
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+        
+      </ul>
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/gemini/project-astra/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Project Astra
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>A universal AI agent that is helpful in everyday life
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/imagen-3/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Imagen
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Our highest quality text-to-image model
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/veo/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Veo
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Our most capable generative video model
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/alphafold/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          AlphaFold
+          
+          <svg aria-hidden="true" class="glue-icon glue-icon--18px gdm-header__expand" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#expand-more"></use>
+  </svg>
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Accelerating breakthroughs in biology with AI
+          </span>
+      </span>
+    </a>
+
+    
+      <ul class="glue-header__list glue-header__list--nested">
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/alphafold/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Overview
+          
+          
+        </strong>
+        
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/alphafold/impact-stories/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Impact stories
+          
+          
+        </strong>
+        
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://alphafold.ebi.ac.uk/" rel="noopener" target="_blank">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          AlphaFold Database
+          <svg aria-hidden="true" class="glue-icon glue-icon--18px" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#open-in-new"></use>
+  </svg>
+          
+        </strong>
+        
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/alphafold/alphafold-server/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          AlphaFold Server
+          
+          
+        </strong>
+        
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+        
+      </ul>
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/technologies/synthid/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          SynthID
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Identifying AI-generated content
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+        
+      </ul>
+    
+  </li>
+              
+                <li class="glue-header__item glue-header__item--active">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/discover/" aria-current="page" aria-controls="" aria-expanded="false" aria-haspopup="true" role="button">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Discover
+          
+          <svg aria-hidden="true" class="glue-icon glue-icon--18px gdm-header__expand" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#expand-more"></use>
+  </svg>
+        </strong>
+        
+      </span>
+    </a><nav aria-hidden="true" aria-label="Discover" class="gdm-header__dropdown" data-toggle-href="/discover/" tabindex="-1">
+    <div class="gdm-header__dropdown-inner">
+      <ul class="glue-header__list">
+        <li class="glue-header__item gdm-header__dropdown-view-all">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/discover/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          View Discover
+          <svg aria-hidden="true" class="glue-icon glue-icon--arrow-forward glue-icon--18px" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#chevron-right"></use>
+  </svg>
+          
+        </strong>
+        
+      </span>
+    </a>
+
+    
+  </li><li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/discover/blog/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Blog
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Discover our latest AI breakthroughs, projects, and updates
+          </span>
+      </span>
+    </a>
+
+    
+  </li><li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/discover/events/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Events
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Meet our team and learn more about our research
+          </span>
+      </span>
+    </a>
+
+    
+  </li><li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/discover/the-podcast/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          The Podcast
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Uncover the extraordinary ways AI is transforming our world
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+      </ul>
+      <div class="gdm-header__featured">
+        <p class="gdm-header__featured-title glue-label">Latest posts</p>
+        <ul class="gdm-header__featured-items glue-no-bullet">
+            
+              
+    <li>
+      <a class="glue-header__link gdm-header__featured-item" data-gtm-tag="header-selection" href="https://blog.google/technology/ai/ai-science-forum-2024/" rel="noopener" target="_blank">
+        
+    
+    
+    <picture class="picture gdm-header__featured-image">
+      <source type="image/webp" width="264" height="156" srcset="https://lh3.googleusercontent.com/013uzey1mkIgSCsLZ_PieJORMUI5F6yviXI7baiAmkEf8FF1-TC8TMVNY7GY67dejQ8sKtPDJTEbCb_KSaSgdknavAHiqRnd3V1i9fkE4yzBS1R-IA=w264-h156-n-nu-rw 1x, https://lh3.googleusercontent.com/013uzey1mkIgSCsLZ_PieJORMUI5F6yviXI7baiAmkEf8FF1-TC8TMVNY7GY67dejQ8sKtPDJTEbCb_KSaSgdknavAHiqRnd3V1i9fkE4yzBS1R-IA=w528-h312-n-nu-rw 2x">
+      <img alt="" class="picture__image" height="156" loading="lazy" role="presentation" src="./WaveNet_ A generative model for raw audio - Google DeepMind_files/unnamed.png" width="264">
+    </picture>
+    
+  
+        <strong class="gdm-header__title">The AI for Science Forum: A new era of discovery</strong>
+        <time datetime="2024-11-18" class="glue-label gdm-header__featured-date">18 November 2024</time>
+        <svg aria-hidden="true" class="glue-icon glue-icon--18px gdm-header__featured-icon" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#open-in-new"></use>
+  </svg>
+      </a>
+    </li>
+  
+            
+              
+    <li>
+      <a class="glue-header__link gdm-header__featured-item" data-gtm-tag="header-selection" href="https://deepmind.google/discover/blog/pushing-the-frontiers-of-audio-generation/">
+        
+    
+    
+    <picture class="picture gdm-header__featured-image">
+      <source type="image/webp" width="264" height="156" srcset="https://lh3.googleusercontent.com/DRHQSDQtYAEPTDVRAH3gkibfEPdd3JpphY4SLLqk5chpiqzR5nLmAL7GkXkTRPXwoSVLSfhj3FQoLjgELpAflJ3CDEU-XtbTl7_MelbnghTkzC3n=w264-h156-n-nu-rw 1x, https://lh3.googleusercontent.com/DRHQSDQtYAEPTDVRAH3gkibfEPdd3JpphY4SLLqk5chpiqzR5nLmAL7GkXkTRPXwoSVLSfhj3FQoLjgELpAflJ3CDEU-XtbTl7_MelbnghTkzC3n=w528-h312-n-nu-rw 2x">
+      <img alt="" class="picture__image" height="156" loading="lazy" role="presentation" src="./WaveNet_ A generative model for raw audio - Google DeepMind_files/unnamed.jpg" width="264">
+    </picture>
+    
+  
+        <strong class="gdm-header__title">Pushing the frontiers of audio generation</strong>
+        <time datetime="2024-10-30" class="glue-label gdm-header__featured-date">30 October 2024</time>
+        
+      </a>
+    </li>
+  
+            
+          </ul>
+      </div>
+    </div>
+  </nav>
+
+    
+      <ul class="glue-header__list glue-header__list--nested">
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/discover/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          View Discover
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Discover our latest breakthroughs and see how we’re shaping the future
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item glue-header__item--active">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/discover/blog/" aria-current="page">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Blog
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Discover our latest AI breakthroughs, projects, and updates
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/discover/events/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          Events
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Meet our team and learn more about our research
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+          
+          
+            <li class="glue-header__item">
+    <a class="glue-header__link" data-gtm-tag="header-selection" href="https://deepmind.google/discover/the-podcast/">
+      <span class="gdm-header__link-inner">
+        <strong class="gdm-header__title">
+          The Podcast
+          
+          
+        </strong>
+        <span class="gdm-header__description">
+            <span class="glue-visually-hidden"> — </span>Uncover the extraordinary ways AI is transforming our world
+          </span>
+      </span>
+    </a>
+
+    
+  </li>
+          
+        
+        
+      </ul>
+    
+  </li>
+              
+            </ul>
+          </nav>
+          
+            <div class="gdm-header__search-container">
+              <form action="https://deepmind.google/search/" method="get" role="search" class="gdm-header__search-form">
+    <div class="glue-form__element">
+      <label class="mdc-text-field mdc-text-field--outlined glue-text-field mdc-text-field--with-leading-icon mdc-text-field--no-label" data-mdc-auto-init="MDCTextField" data-mdc-auto-init-state="initialized">
+        <span class="gdm-header__search-label" id="search-desktop-label">Search...</span>
+        <svg aria-hidden="true" class="glue-icon material-icons mdc-text-field__icon mdc-text-field__icon--leading gdm-header__icon" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#search"></use>
+  </svg>
+        <input class="mdc-text-field__input" name="query" type="text" id="search-desktop" autocomplete="off" maxlength="320" placeholder="Search..." aria-haspopup="listbox" aria-controls="search-desktop-autocomplete" aria-labelledby="search-desktop-label">
+        <span class="mdc-notched-outline mdc-notched-outline--no-label">
+          <span class="mdc-notched-outline__leading"></span>
+          <span class="mdc-notched-outline__trailing"></span>
+        </span>
+      </label>
+    </div>
+    <div class="gdm-header__autocomplete">
+      <ul class="gdm-autocomplete__list" id="search-desktop-autocomplete" aria-labelledby="search-desktop" aria-live="polite"></ul>
+      
+      <!-- input type="submit" value="Show More" class="glue-button glue-button--low-emphasis gdm-autocomplete__show-more" -->
+    </div>
+  </form>
+              <div class="glue-header__supplemental">
+                <a aria-controls="search-desktop" class="glue-header__link gdm-header__icon-button gdm-header__toggle-button" data-hide-label="Close search" data-show-label="Open search" href="https://deepmind.google/search" role="button" aria-label="Open search">
+    <span class="glue-visually-hidden gdm-header__search-text">Search</span>
+    <span class="glue-visually-hidden gdm-header__close-text">Close</span>
+    <svg aria-hidden="true" class="glue-icon glue-icon--24px gdm-header__search-icon" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#search"></use>
+  </svg>
+    <svg aria-hidden="true" class="glue-icon glue-icon--24px gdm-header__close-icon" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#close"></use>
+  </svg>
+  </a>
+              </div>
+            </div>
+          
+        </div>
+        <div class="gdm-header__gemini gdm-header__gemini--desktop">
+    <a aria-label="Chat with Gemini" class="glue-header__link gdm-header__icon-button" href="https://gemini.google.com/?utm_source=deepmind.google&amp;utm_medium=referral&amp;utm_campaign=gdm&amp;utm_content=" rel="noopener" target="_blank">
+      <svg aria-hidden="true" class="glue-icon glue-icon--24px" role="presentation">
+    <use href="/static/icons/icons.4f32e13e021e.svg#gemini"></use>
+  </svg>
+    </a>
+  </div>
+        
+          
+            
+
+            
+          
+        
+          
+            
+
+            
+          
+        
+          
+            
+
+            
+          
+        
+          
+            
+
+            
+          
+        
+      </div>
+    </div>
+    <div class="glue-header__drawer-backdrop gdm-header__backdrop" data-label="Close the navigation drawer"></div>
+  </header>
+  <div class="gdm-header-scrolling"></div>
+
+
+    <main id="content" class="">
+      
+  <article>
+    
+    
+  
+  
+  
+    
+      
+
+      
+      
+        
+          
+            <div class="glue-page bookmark">
+              
+                
+                
+                  
+                  
+<div class="article-cover article-cover--centered">
+    <div class="article-cover__header">
+      <p class="article-cover__eyebrow glue-label">Research</p>
+      <h1 class="article-cover__title glue-headline glue-headline--headline-2">WaveNet: A generative model for raw audio</h1>
+
+      
+    <dl class="article-cover__meta">
+      
+        <dt class="glue-visually-hidden">Published</dt>
+        <dd class="article-cover__date glue-label"><time datetime="2016-09-08">8 September 2016</time></dd>
+      
+      
+        <dt class="glue-visually-hidden">Authors</dt>
+        <dd class="article-cover__authors"><p data-block-key="ltdr7">Aäron van den Oord, Sander Dieleman</p></dd>
+      
+    </dl>
+  
+
+      <div class="article-cover__ctas">
+        
+        <section class="glue-social glue-social--zippy share share--centered glue-expansion-panels glue-is-collapsed" data-glue-expansion-panel-expand-tooltip="Share: Expand to see social channels" data-glue-expansion-panel-collapse-tooltip="Share: Hide social channels" id="share-4389aa7d-92e4-4dc7-ad30-a0a07af08a23" data-glue-expansion-panels-key="share-4389aa7d-92e4-4dc7-ad30-a0a07af08a23">
+    <div class="glue-social__group glue-expansion-panel glue-is-collapsed">
+      <h2 class="glue-expansion-panel__toggle"><button class="glue-social__title glue-social__title--zippy glue-social__title--inline glue-expansion-panel__button" id="share-4389aa7d-92e4-4dc7-ad30-a0a07af08a23-toggle" data-glue-expansion-panel-toggle-for="share-4389aa7d-92e4-4dc7-ad30-a0a07af08a23-content" title="Share: Expand to see social channels" aria-expanded="false" aria-controls="share-4389aa7d-92e4-4dc7-ad30-a0a07af08a23-content" role="button" tabindex="0">
+        <svg aria-hidden="true" class="glue-icon glue-icon--social glue-social__share-icon glue-icon--24px" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#share"></use>
+  </svg>
+        Share
+      </button></h2>
+
+      
+    <div class="glue-expansion-panel__content" id="share-4389aa7d-92e4-4dc7-ad30-a0a07af08a23-content" hidden="" aria-hidden="true" aria-labelledby="share-4389aa7d-92e4-4dc7-ad30-a0a07af08a23-toggle" role="region" style="height: 0px;"><ul class="glue-social__list" role="list">
+        <li class="glue-social__item">
+          <a class="glue-social__link" href="https://www.facebook.com/sharer/sharer.php?u=https%3A//deepmind.google/discover/blog/wavenet-a-generative-model-for-raw-audio/" title="Share on Facebook" target="_blank" rel="noopener" tabindex="-1">
+            <svg aria-hidden="true" class="glue-icon glue-icon--social glue-icon--color-facebook glue-icon--24px" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#post-facebook"></use>
+  </svg>
+          </a>
+        </li>
+        <li class="glue-social__item">
+          <a class="glue-social__link" href="https://x.com/intent/tweet?text=https%3A//deepmind.google/discover/blog/wavenet-a-generative-model-for-raw-audio/" title="Share on X" target="_blank" rel="noopener" tabindex="-1">
+            <svg aria-hidden="true" class="glue-icon glue-icon--social glue-icon--color-x glue-icon--24px" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#x"></use>
+  </svg>
+          </a>
+        </li>
+        <li class="glue-social__item">
+          <a class="glue-social__link" href="https://www.linkedin.com/shareArticle?url=https%3A//deepmind.google/discover/blog/wavenet-a-generative-model-for-raw-audio/&amp;mini=true" title="Share on LinkedIn" target="_blank" rel="noopener" tabindex="-1">
+            <svg aria-hidden="true" class="glue-icon glue-icon--social glue-icon--color-linkedin glue-icon--24px" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#post-linkedin"></use>
+  </svg>
+          </a>
+        </li>
+        <li class="glue-social__item">
+          <a class="glue-social__link" href="mailto:?subject=WaveNet%3A%20A%20generative%20model%20for%20raw%20audio&amp;body=https%3A//deepmind.google/discover/blog/wavenet-a-generative-model-for-raw-audio/" title="Share via Email" target="_blank" rel="noopener" tabindex="-1">
+            <svg aria-hidden="true" class="glue-icon glue-icon--color-sharemail glue-icon--24px" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#email"></use>
+  </svg>
+          </a>
+        </li>
+        <li class="glue-social__item">
+          <div class="glue-social__popover glue-popover" data-glue-popover-trigger="click">
+            <div class="glue-social__icon-trigger glue-popover__trigger" aria-label="Get shareable link" title="Get shareable link" id="share-4389aa7d-92e4-4dc7-ad30-a0a07af08a23-trigger" role="button" tabindex="-1" aria-expanded="false" aria-controls="share-4389aa7d-92e4-4dc7-ad30-a0a07af08a23-dialog">
+              <svg aria-hidden="true" class="glue-icon glue-icon--social glue-icon--color-sharelink glue-icon--24px" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#link"></use>
+  </svg>
+            </div>
+
+            <div class="glue-social__dialog glue-popover__dialog" id="share-4389aa7d-92e4-4dc7-ad30-a0a07af08a23-dialog" role="dialog" tabindex="-1" aria-hidden="true">
+              <svg aria-hidden="true" class="glue-icon glue-icon--social glue-icon--color-sharelink glue-icon--24px" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#link"></use>
+  </svg>
+              <div class="glue-social__copy glue-copy" glue-copy-success="Copied to clipboard" glue-copy-fail="Press Ctrl+C or ⌘+C to copy">
+                <input class="glue-social__copy-input glue-copy-value" readonly="" type="text" value="https://deepmind.google/discover/blog/wavenet-a-generative-model-for-raw-audio/" aria-label="URL" tabindex="-1">
+                <button class="glue-social__copy-btn glue-copy-button" id="share-4389aa7d-92e4-4dc7-ad30-a0a07af08a23-copy" aria-live="polite" tabindex="-1">Copy link</button>
+              </div>
+              <div aria-label="Close" class="glue-social__close-btn glue-popover__close-btn" role="button" tabindex="-1">
+                ×
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul></div></div>
+  </section>
+      </div>
+    </div>
+
+    
+      
+    
+  </div>
+                
+              
+                
+                
+                  
+                  <div class="gdm-rich-text rich-text">
+  <p data-block-key="nk2sx">This post presents <a href="https://arxiv.org/pdf/1609.03499.pdf" rel="noopener" target="_blank">WaveNet</a>, a deep generative model of raw audio waveforms. We show that WaveNets are able to generate speech which mimics any human voice and which sounds more natural than the best existing Text-to-Speech systems, reducing the gap with human performance by over 50%.</p><p data-block-key="l17lr">We also demonstrate that the same network can be used to synthesize other audio signals such as music, and present some striking samples of automatically generated piano pieces.</p><h2 data-block-key="4e3ov">Talking Machines</h2><p data-block-key="e5a2n">Allowing people to converse with machines is a long-standing dream of human-computer interaction. The ability of computers to understand natural speech has been revolutionised in the last few years by the application of deep neural networks (e.g., <a href="https://ai.googleblog.com/2015/09/google-voice-search-faster-and-more.html" rel="noopener" target="_blank">Google Voice Search</a>). However, generating speech with computers — a process usually referred to as <a href="https://en.wikipedia.org/wiki/Speech_synthesis" rel="noopener" target="_blank">speech synthesis</a> or text-to-speech (TTS) — is still largely based on so-called <a href="https://scholar.google.com/citations?view_op=view_citation&amp;hl=en&amp;user=Es-YRKMAAAAJ&amp;citation_for_view=Es-YRKMAAAAJ:u5HHmVD_uO8C" rel="noopener" target="_blank">concatenative TTS</a>, where a very large database of short speech fragments are recorded from a single speaker and then recombined to form complete utterances. This makes it difficult to modify the voice (for example switching to a different speaker, or altering the emphasis or emotion of their speech) without recording a whole new database.</p><p data-block-key="slsx1">This has led to a great demand for <a href="https://scholar.google.com/citations?view_op=view_citation&amp;hl=en&amp;user=z3IRvDwAAAAJ&amp;citation_for_view=z3IRvDwAAAAJ:d1gkVwhDpl0C" rel="noopener" target="_blank">parametric TTS</a>, where all the information required to generate the data is stored in the parameters of the model, and the contents and characteristics of the speech can be controlled via the inputs to the model. So far, however, parametric TTS has tended to sound less natural than concatenative. Existing parametric models typically generate audio signals by passing their outputs through signal processing algorithms known as <a href="https://en.wikipedia.org/wiki/Vocoder" rel="noopener" target="_blank">vocoders</a>.</p><p data-block-key="w4phl">WaveNet changes this paradigm by directly modelling the raw waveform of the audio signal, one sample at a time. As well as yielding more natural-sounding speech, using raw waveforms means that WaveNet can model any kind of audio, including music.</p><h2 data-block-key="sfr8e">WaveNets</h2>
+</div>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media">
+    
+    
+    <picture class="picture">
+      <source media="(min-width: 600px)" type="image/webp" width="570" height="289" srcset="https://lh3.googleusercontent.com/y2PopYGhfPs_PfPLcMpmmiiZ4DiDbYGTmM5OxvLyuYoDWyRe6g5JjaPx3o_nnyzMCwDrbcYuQk5oMmS2n6rrjDLTjGDtKyFy0Ks7tdwpbSAywfNt=w616-rw 1x, https://lh3.googleusercontent.com/y2PopYGhfPs_PfPLcMpmmiiZ4DiDbYGTmM5OxvLyuYoDWyRe6g5JjaPx3o_nnyzMCwDrbcYuQk5oMmS2n6rrjDLTjGDtKyFy0Ks7tdwpbSAywfNt=w1232-rw 2x"><source type="image/webp" width="528" height="267" srcset="https://lh3.googleusercontent.com/y2PopYGhfPs_PfPLcMpmmiiZ4DiDbYGTmM5OxvLyuYoDWyRe6g5JjaPx3o_nnyzMCwDrbcYuQk5oMmS2n6rrjDLTjGDtKyFy0Ks7tdwpbSAywfNt=w528-rw 1x, https://lh3.googleusercontent.com/y2PopYGhfPs_PfPLcMpmmiiZ4DiDbYGTmM5OxvLyuYoDWyRe6g5JjaPx3o_nnyzMCwDrbcYuQk5oMmS2n6rrjDLTjGDtKyFy0Ks7tdwpbSAywfNt=w1056-rw 2x">
+      <img alt="A soundwave being zoomed into from the scale of one second to one millisecond, displaying the detail of the wave at that minute level." class="picture__image" height="289" src="./WaveNet_ A generative model for raw audio - Google DeepMind_files/unnamed.gif" width="570">
+    </picture>
+    
+  </div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  <div class="gdm-rich-text rich-text">
+  <p data-block-key="7xeku">Researchers usually avoid modelling raw audio because it ticks so quickly: typically 16,000 samples per second or more, with important structure at many time-scales. Building a completely autoregressive model, in which the prediction for every one of those samples is influenced by all previous ones (in statistics-speak, each predictive distribution is conditioned on all previous observations), is clearly a challenging task.</p><p data-block-key="ki61y">However, our <a href="https://arxiv.org/abs/1601.06759" rel="noopener" target="_blank">PixelRNN</a> and <a href="https://arxiv.org/abs/1606.05328" rel="noopener" target="_blank">PixelCNN</a> models, published earlier this year, showed that it was possible to generate complex natural images not only one pixel at a time, but one colour-channel at a time, requiring thousands of predictions per image. This inspired us to adapt our two-dimensional PixelNets to a one-dimensional WaveNet.</p>
+</div>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media">
+    
+    
+    <picture class="picture">
+      <source media="(min-width: 600px)" type="image/webp" width="570" height="262" srcset="https://lh3.googleusercontent.com/AjY4_VKcnFaDEvHUVapAqLT_YUhoTt04WK0NNA-pNHAfSdDQr-PmyEUNiVuitogTiWN7EEWn8pci9hTwKX_qlokNXkPOB-J7FU6kzW2s5Fcm-LibCA=w616-rw 1x, https://lh3.googleusercontent.com/AjY4_VKcnFaDEvHUVapAqLT_YUhoTt04WK0NNA-pNHAfSdDQr-PmyEUNiVuitogTiWN7EEWn8pci9hTwKX_qlokNXkPOB-J7FU6kzW2s5Fcm-LibCA=w1232-rw 2x"><source type="image/webp" width="528" height="242" srcset="https://lh3.googleusercontent.com/AjY4_VKcnFaDEvHUVapAqLT_YUhoTt04WK0NNA-pNHAfSdDQr-PmyEUNiVuitogTiWN7EEWn8pci9hTwKX_qlokNXkPOB-J7FU6kzW2s5Fcm-LibCA=w528-rw 1x, https://lh3.googleusercontent.com/AjY4_VKcnFaDEvHUVapAqLT_YUhoTt04WK0NNA-pNHAfSdDQr-PmyEUNiVuitogTiWN7EEWn8pci9hTwKX_qlokNXkPOB-J7FU6kzW2s5Fcm-LibCA=w1056-rw 2x">
+      <img alt="" class="picture__image" height="262" loading="lazy" src="./WaveNet_ A generative model for raw audio - Google DeepMind_files/unnamed(4).gif" width="570">
+    </picture>
+    
+  </div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  <div class="gdm-rich-text rich-text">
+  <p data-block-key="v9dks">The above animation shows how a WaveNet is structured. It is a fully convolutional neural network, where the convolutional layers have various dilation factors that allow its receptive field to grow exponentially with depth and cover thousands of timesteps.</p><p data-block-key="ymrom">At training time, the input sequences are real waveforms recorded from human speakers. After training, we can sample the network to generate synthetic utterances. At each step during sampling a value is drawn from the probability distribution computed by the network. This value is then fed back into the input and a new prediction for the next step is made. Building up samples one step at a time like this is computationally expensive, but we have found it essential for generating complex, realistic-sounding audio.</p><h2 data-block-key="u3sw6">Improving the State of the Art</h2><p data-block-key="5txd5">We trained WaveNet using some of Google’s TTS datasets so we could evaluate its performance. The following figure shows the quality of WaveNets on a scale from 1 to 5, compared with Google’s current best TTS systems (<a href="http://research.google.com/pubs/pub45379.html" rel="noopener" target="_blank">parametric</a> and <a href="http://research.google.com/pubs/pub45564.html" rel="noopener" target="_blank">concatenative</a>), and with human speech using <a href="https://en.wikipedia.org/wiki/Mean_opinion_score" rel="noopener" target="_blank">Mean Opinion Scores (MOS)</a>. MOS are a standard measure for subjective sound quality tests, and were obtained in blind tests with human subjects (from over 500 ratings on 100 test sentences). As we can see, WaveNets reduce the gap between the state of the art and human-level performance by over 50% for both US English and Mandarin Chinese.</p><p data-block-key="v5adf">For both Chinese and English, Google’s current TTS systems are considered among the best worldwide, so improving on both with a single model is a major achievement.</p>
+</div>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media">
+    
+    
+    <picture class="picture">
+      <source media="(min-width: 600px)" type="image/webp" width="616" height="289" srcset="https://lh3.googleusercontent.com/I0hZ6vypIJH3TixPSUtoQd2JpovscKmQRrWdCrMNG22IJsVrNEesOq38PPJvuiqK79hMtaoRoJiBWmLsxSMQSje-RxthI6IwU8br7EfRX8vA8LYe=w616-rw 1x, https://lh3.googleusercontent.com/I0hZ6vypIJH3TixPSUtoQd2JpovscKmQRrWdCrMNG22IJsVrNEesOq38PPJvuiqK79hMtaoRoJiBWmLsxSMQSje-RxthI6IwU8br7EfRX8vA8LYe=w1232-rw 2x"><source type="image/webp" width="528" height="248" srcset="https://lh3.googleusercontent.com/I0hZ6vypIJH3TixPSUtoQd2JpovscKmQRrWdCrMNG22IJsVrNEesOq38PPJvuiqK79hMtaoRoJiBWmLsxSMQSje-RxthI6IwU8br7EfRX8vA8LYe=w528-rw 1x, https://lh3.googleusercontent.com/I0hZ6vypIJH3TixPSUtoQd2JpovscKmQRrWdCrMNG22IJsVrNEesOq38PPJvuiqK79hMtaoRoJiBWmLsxSMQSje-RxthI6IwU8br7EfRX8vA8LYe=w1056-rw 2x">
+      <img alt="" class="picture__image" height="289" loading="lazy" src="./WaveNet_ A generative model for raw audio - Google DeepMind_files/unnamed(5).jpg" width="616">
+    </picture>
+    
+  </div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  <div class="gdm-rich-text rich-text">
+  <p data-block-key="1wj7k">Here are some samples from all three systems so you can listen and compare yourself:</p><h3 data-block-key="fe7kr">US English</h3><h4 data-block-key="8gbmd">Parametric</h4>
+</div>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/us-english-parametric-1.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/us-english-parametric-1.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/us-english-parametric-2.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/us-english-parametric-2.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  <div class="gdm-rich-text rich-text">
+  <h4 data-block-key="1wj7k">Concatenative</h4>
+</div>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/us-english-concatenative-1.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/us-english-concatenative-1.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/us-english-concatenative-2.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/us-english-concatenative-2.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  <div class="gdm-rich-text rich-text">
+  <h4 data-block-key="1wj7k">WaveNet</h4>
+</div>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/us-english-wavenet-1.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/us-english-wavenet-1.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/us-english-wavenet-2.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/us-english-wavenet-2.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  <div class="gdm-rich-text rich-text">
+  <h3 data-block-key="1wj7k">Mandarin Chinese</h3><h4 data-block-key="2baen">Parametric</h4>
+</div>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/mandarin-chinese-parametric-1.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/mandarin-chinese-parametric-1.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/mandarin-chinese-parametric-2.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/mandarin-chinese-parametric-2.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  <div class="gdm-rich-text rich-text">
+  <h4 data-block-key="1wj7k">Concatenative</h4>
+</div>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/mandarin-chinese-concatenative-1.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/mandarin-chinese-concatenative-1.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/mandarin-chinese-concatenative-2.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/mandarin-chinese-concatenative-2.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  <div class="gdm-rich-text rich-text">
+  <h4 data-block-key="1wj7k">WaveNet</h4>
+</div>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/mandarin-chinese-wavenet-1.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/mandarin-chinese-wavenet-1.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/mandarin-chinese-wavenet-2.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/mandarin-chinese-wavenet-2.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  <div class="gdm-rich-text rich-text">
+  <h2 data-block-key="z0twe">Knowing What to Say</h2><p data-block-key="ic35b">In order to use WaveNet to turn text into speech, we have to tell it what the text is. We do this by transforming the text into a sequence of linguistic and phonetic features (which contain information about the current phoneme, syllable, word, etc.) and by feeding it into WaveNet. This means the network’s predictions are conditioned not only on the previous audio samples, but also on the text we want it to say.</p><p data-block-key="2bcww">If we train the network without the text sequence, it still generates speech, but now it has to make up what to say. As you can hear from the samples below, this results in a kind of babbling, where real words are interspersed with made-up word-like sounds:</p>
+</div>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/speaker-1.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/speaker-1.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/speaker-2.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/speaker-2.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/speaker-3.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/speaker-3.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/speaker-4.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/speaker-4.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/speaker-5.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/speaker-5.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/speaker-6.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/speaker-6.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  <div class="gdm-rich-text rich-text">
+  <p data-block-key="ut58u">Notice that non-speech sounds, such as breathing and mouth movements, are also sometimes generated by WaveNet; this reflects the greater flexibility of a raw-audio model.</p><p data-block-key="8grmc">As you can hear from these samples, a single WaveNet is able to learn the characteristics of many different voices, male and female. To make sure it knew which voice to use for any given utterance, we conditioned the network on the identity of the speaker. Interestingly, we found that training on many speakers made it better at modelling a single speaker than training on that speaker alone, suggesting a form of transfer learning.</p><p data-block-key="1qdq0">By changing the speaker identity, we can use WaveNet to say the same thing in different voices:</p>
+</div>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/speaker-7.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/speaker-7.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/speaker-8.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/speaker-8.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/speaker-9.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/speaker-9.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/speaker-10.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/speaker-10.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  <div class="gdm-rich-text rich-text">
+  <p data-block-key="ut58u">Similarly, we could provide additional inputs to the model, such as emotions or accents, to make the speech even more diverse and interesting.</p><h2 data-block-key="e7dmv">Making Music</h2><p data-block-key="bqkto">Since WaveNets can be used to model any audio signal, we thought it would also be fun to try to generate music. Unlike the TTS experiments, we didn’t condition the networks on an input sequence telling it what to play (such as a musical score); instead, we simply let it generate whatever it wanted to. When we trained it on a dataset of classical piano music, it produced fascinating samples like the ones below:</p>
+</div>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/sample_1.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/sample_1.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/sample_2.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/sample_2.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/sample_3.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/sample_3.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/sample_4.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/sample_4.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/sample_5.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/sample_5.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  
+
+
+
+
+<figure class="single-media single-media--inline">
+  <div class="single-media__media"><audio controls="" class="gdm-audio">
+      <source src="/api/blob/website/media/sample_6.wav" type="audio/x-wav">
+      <a href="https://deepmind.google/api/blob/website/media/sample_6.wav">Download audio</a>
+    </audio></div>
+  
+</figure>
+                
+              
+                
+                
+                  
+                  <div class="gdm-rich-text rich-text">
+  <p data-block-key="ut58u">WaveNets open up a lot of possibilities for TTS, music generation and audio modelling in general. The fact that directly generating timestep per timestep with deep neural networks works at all for 16kHz audio is really surprising, let alone that it outperforms state-of-the-art TTS systems. We are excited to see what we can do with them next.</p>
+</div>
+                
+              
+                
+                
+                  
+                  <aside class="notes">
+  <div class="glue-page">
+    <div class="gdm-rich-text notes__inner">
+      <h2 data-block-key="jzspo">Notes</h2><p data-block-key="c3u7d">Read the paper: <a href="https://arxiv.org/pdf/1609.03499.pdf" rel="noopener" target="_blank">WaveNet: A Generative Model for Raw Audio</a></p>
+    </div>
+  </div>
+</aside>
+                
+              
+            </div>
+          
+        
+      
+
+      
+    
+  
+  
+
+  
+
+  </article>
+
+    </main>
+
+    
+  <footer class="gdm-footer glue-footer" data-column-count="3" style="margin-bottom: 66px;">
+    <h2 class="glue-visually-hidden">Footer links</h2>
+
+    <section class="glue-grid glue-footer__upper">
+      <section class="glue-grid__col glue-grid__col--span-6 glue-social">
+        <div class="glue-social__group">
+          <h3 class="glue-social__title glue-social__title--inline">Follow us</h3>
+          <ul class="glue-social__list" role="list">
+            <li class="glue-social__item">
+              <a class="glue-social__link" data-gtm-tag="footer-selection" href="https://x.com/googledeepmind" title="Follow us on X" target="_blank" rel="noopener">
+                <svg aria-hidden="true" class="glue-icon glue-icon--24px glue-icon--social" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#x"></use>
+  </svg>
+              </a>
+            </li>
+            <li class="glue-social__item">
+              <a class="glue-social__link" data-gtm-tag="footer-selection" href="https://www.instagram.com/googledeepmind" title="Follow us on Instagram" target="_blank" rel="noopener">
+                <svg aria-hidden="true" class="glue-icon glue-icon--24px glue-icon--social" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#instagram"></use>
+  </svg>
+              </a>
+            </li>
+            <li class="glue-social__item">
+              <a class="glue-social__link" data-gtm-tag="footer-selection" href="https://www.linkedin.com/company/googledeepmind/" title="Follow us on LinkedIn" target="_blank" rel="noopener">
+                <svg aria-hidden="true" class="glue-icon glue-icon--24px glue-icon--social" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#post-linkedin"></use>
+  </svg>
+              </a>
+            </li>
+            <li class="glue-social__item">
+              <a class="glue-social__link" data-gtm-tag="footer-selection" href="https://www.youtube.com/@google_deepmind" title="Follow us on YouTube" target="_blank" rel="noopener">
+                <svg aria-hidden="true" class="glue-icon glue-icon--24px glue-icon--social" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#video-youtube"></use>
+  </svg>
+              </a>
+            </li>
+            <li class="glue-social__item">
+              <a class="glue-social__link" data-gtm-tag="footer-selection" href="https://github.com/google-deepmind" title="Follow us on GitHub" target="_blank" rel="noopener">
+                <svg aria-hidden="true" class="glue-icon glue-icon--24px glue-icon--social" role="presentation">
+    <use href="/static/icons/icons.4f32e13e021e.svg#github"></use>
+  </svg>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </section>
+
+    
+      <div class="glue-footer__site-links">
+        <div class="glue-footer__site-links-grid glue-footer__site-links-grid--3-col">
+          
+            
+              <div class="glue-footer__site-links-column">
+                <h3 class="glue-footer__site-links-header">
+                  <span class="glue-footer__site-links-header-button" id="column-1-toggle">
+                    <span class="glue-footer__site-links-header-text">About</span>
+                    <svg aria-hidden="true" class="glue-icon glue-icon--footer glue-expansion-panel__header-arrow" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#expand-more"></use>
+  </svg>
+                  </span>
+                </h3>
+                <div class="glue-footer__site-links-list" id="column-1-content">
+                  <ul class="glue-no-bullet" role="list">
+                    
+                      <li class="glue-footer__site-links-list-item">
+    <a class="glue-footer__link" data-gtm-tag="footer-selection" href="https://deepmind.google/about/">About Google DeepMind</a>
+  </li>
+                    
+                      <li class="glue-footer__site-links-list-item">
+    <a class="glue-footer__link" data-gtm-tag="footer-selection" href="https://deepmind.google/about/responsibility-safety/">Responsibility &amp; Safety</a>
+  </li>
+                    
+                      <li class="glue-footer__site-links-list-item">
+    <a class="glue-footer__link" data-gtm-tag="footer-selection" href="https://deepmind.google/research/">Research</a>
+  </li>
+                    
+                      <li class="glue-footer__site-links-list-item">
+    <a class="glue-footer__link" data-gtm-tag="footer-selection" href="https://deepmind.google/technologies/">Technologies</a>
+  </li>
+                    
+                      <li class="glue-footer__site-links-list-item">
+    <a class="glue-footer__link" data-gtm-tag="footer-selection" href="https://deepmind.google/discover/blog/">Blog</a>
+  </li>
+                    
+                      <li class="glue-footer__site-links-list-item">
+    <a class="glue-footer__link" data-gtm-tag="footer-selection" href="https://deepmind.google/about/careers/">Careers</a>
+  </li>
+                    
+                  </ul>
+                </div>
+              </div>
+            
+          
+            
+              <div class="glue-footer__site-links-column">
+                <h3 class="glue-footer__site-links-header">
+                  <span class="glue-footer__site-links-header-button" id="column-2-toggle">
+                    <span class="glue-footer__site-links-header-text">Learn more</span>
+                    <svg aria-hidden="true" class="glue-icon glue-icon--footer glue-expansion-panel__header-arrow" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#expand-more"></use>
+  </svg>
+                  </span>
+                </h3>
+                <div class="glue-footer__site-links-list" id="column-2-content">
+                  <ul class="glue-no-bullet" role="list">
+                    
+                      <li class="glue-footer__site-links-list-item">
+    <a class="glue-footer__link" data-gtm-tag="footer-selection" href="https://deepmind.google/technologies/gemini/">Gemini</a>
+  </li>
+                    
+                      <li class="glue-footer__site-links-list-item">
+    <a class="glue-footer__link" data-gtm-tag="footer-selection" href="https://deepmind.google/technologies/veo/">Veo</a>
+  </li>
+                    
+                      <li class="glue-footer__site-links-list-item">
+    <a class="glue-footer__link" data-gtm-tag="footer-selection" href="https://deepmind.google/technologies/imagen-3/">Imagen 3</a>
+  </li>
+                    
+                      <li class="glue-footer__site-links-list-item">
+    <a class="glue-footer__link" data-gtm-tag="footer-selection" href="https://deepmind.google/technologies/synthid/">SynthID</a>
+  </li>
+                    
+                  </ul>
+                </div>
+              </div>
+            
+          
+            
+              <div class="glue-footer__site-links-column">
+                
+                  <h3 class="glue-footer__site-links-header gdm-footer__form-title">
+                    Sign up for updates on our latest innovations
+                  </h3>
+                
+                <gdm-newsletter>
+    <form action="https://services.google.com/fb/submissions/deepmindgoogle/" class="gdm-sign-up gdm-footer__form" data-gdm-gtm-method="Footer" method="post">
+      <div class="glue-form__element">
+        <label class="mdc-text-field mdc-text-field--outlined glue-text-field mdc-text-field--with-leading-icon mdc-text-field--no-label" id="footer-newsletter-3-text-field">
+          <span class="gdm-sign-up__label" id="footer-newsletter-3-label">Email address</span>
+          <svg aria-hidden="true" class="glue-icon material-icons mdc-text-field__icon mdc-text-field__icon--leading" role="presentation">
+    <use href="/static/glue-icons.87e996bc684c.svg#email"></use>
+  </svg>
+          <input autocomplete="email" class="mdc-text-field__input" name="EmailAddress" type="email" aria-controls="footer-newsletter-3-validation, footer-newsletter-3-response" aria-labelledby="footer-newsletter-3-label" maxlength="320" placeholder="Email address">
+          <span class="mdc-notched-outline mdc-notched-outline--no-label">
+            <span class="mdc-notched-outline__leading"></span>
+            <span class="mdc-notched-outline__trailing"></span>
+          </span>
+        </label>
+        <div class="mdc-text-field-helper-line">
+          <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" id="footer-newsletter-3-validation" aria-hidden="true">Please enter a valid email (e.g., "name@example.com")</div>
+          <div aria-hidden="true" class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent gdm-sign-up__response" data-error="Something went wrong, please try again." data-invalid="Please enter a valid email (e.g., &quot;name@example.com&quot;)" data-success="Thank you for signing up" id="footer-newsletter-3-response" role="alert">
+          </div>
+        </div>
+      </div>
+      <input type="hidden" name="LanguagePreference" value="en"><input data-gdm-optin="" type="hidden" name="DeepmindGcmNewsletter" value="unconfirmed"><div class="gdm-sign-up__disclaimer"><p data-block-key="hunvr">I accept Google's Terms and Conditions and acknowledge that my information will be used in accordance with <a href="https://policies.google.com/privacy" rel="noopener" target="_blank">Google's Privacy Policy</a>.</p></div><button type="submit" class="glue-button glue-button--medium-emphasis gdm-sign-up__submit">
+          <span class="button__text">Sign up</span>
+        </button></form>
+  </gdm-newsletter>
+              </div>
+            
+          
+        </div>
+      </div>
+    
+
+    <section class="glue-footer__global">
+      <div class="glue-footer__logo">
+        <a data-gtm-tag="footer-selection" href="https://www.google.com/" title="Google" target="_blank" rel="noopener">
+          <svg role="presentation" aria-hidden="true" class="glue-footer__logo-img">
+            <use href="/static/glue-icons.87e996bc684c.svg#google-solid-logo"></use>
+          </svg>
+        </a>
+      </div>
+      <ul class="glue-footer__global-links glue-no-bullet" role="list">
+        <li class="glue-footer__global-links-list-item">
+    <a class="glue-footer__link" data-gtm-tag="footer-selection" href="https://about.google/" rel="noopener" target="_blank">About Google</a>
+  </li>
+        <li class="glue-footer__global-links-list-item">
+    <a class="glue-footer__link" data-gtm-tag="footer-selection" href="https://about.google/products/" rel="noopener" target="_blank">Google products</a>
+  </li>
+        <li class="glue-footer__global-links-list-item">
+    <a class="glue-footer__link" data-gtm-tag="footer-selection" href="https://policies.google.com/privacy" rel="noopener" target="_blank">Privacy</a>
+  </li>
+        <li class="glue-footer__global-links-list-item">
+    <a class="glue-footer__link" data-gtm-tag="footer-selection" href="https://policies.google.com/terms" rel="noopener" target="_blank">Terms</a>
+  </li>
+
+        <li aria-hidden="true" class="glue-footer__global-links-list-item">
+          <button aria-hidden="true" class="glue-footer__link glue-cookie-notification-bar-control">Cookies management controls</button>
+        </li>
+      </ul>
+    </section>
+  </footer>
+
+
+    
+      <div class="gdm-modal-container">
+    <div class="gdm-modal-container__backdrop"></div>
+    <div class="gdm-modal-container__loader">
+      <svg class="loader-spinner" width="24px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+  <circle class="loader-spinner__path" fill="none" stroke-width="7" cx="33" cy="33" r="25"></circle>
+</svg>
+    </div>
+    
+  </div>
+    
+
+    <script type="text/javascript" async="" src="./WaveNet_ A generative model for raw audio - Google DeepMind_files/js"></script><script async="" src="./WaveNet_ A generative model for raw audio - Google DeepMind_files/gtm.js"></script><script type="text/javascript" id="www-widgetapi-script" src="./WaveNet_ A generative model for raw audio - Google DeepMind_files/www-widgetapi.js" async=""></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      function glueCookieNotificationBarLoaded(){(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NRDHXJGK');}
+      function setScrollbarWidth() {
+        const element = document.createElement('div');
+        element.style = "overflow:scroll;position:absolute;visibility:hidden;";
+        document.body.appendChild(element);
+        const width = element.getBoundingClientRect().width;
+        document.documentElement.style.setProperty('--scrollbar-width', `${width}px`);
+        element.remove();
+      }
+
+      window.addEventListener('resize', setScrollbarWidth);
+      setScrollbarWidth();
+    </script>
+    <script src="./WaveNet_ A generative model for raw audio - Google DeepMind_files/cookienotificationbar.min.js" data-glue-cookie-notification-bar-category="2A"></script>
+    <script src="./WaveNet_ A generative model for raw audio - Google DeepMind_files/player_api"></script>
+    <script src="./WaveNet_ A generative model for raw audio - Google DeepMind_files/main.min.eac5b4e00f7e.js"></script>
+    
+  <script src="./WaveNet_ A generative model for raw audio - Google DeepMind_files/gemini.min.0f81ce049fa4.js"></script><iframe height="0" width="0" style="display: none; visibility: hidden;" data-gtm-yt-inspected-165349997_50="true" src="./WaveNet_ A generative model for raw audio - Google DeepMind_files/saved_resource.html"></iframe>
+  
+
+  
+<iframe id="TnYLnB0N" frameborder="0" src="./WaveNet_ A generative model for raw audio - Google DeepMind_files/translateSandbox(1).html" style="width: 0px; height: 0px; display: none;" data-gtm-yt-inspected-165349997_50="true"></iframe></body></html>
