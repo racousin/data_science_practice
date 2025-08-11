@@ -1,21 +1,12 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import ModuleNavigation from "components/ModuleNavigation";
-import NavigationMenu from "components/NavigationMenu";
-import DynamicRoutes from "./DynamicRoutes";
 
-const ModuleFrame = ({ module, isCourse, title, children, courseLinks }) => {
+const ModuleFrame = ({ module, isCourse, title, children }) => {
   return (
     <Row>
       <ModuleNavigation module={module} isCourse={isCourse} title={title} />
-      <Col md={3}>
-      {courseLinks && (
-        <NavigationMenu
-          links={courseLinks}
-          prefix={`/module${module}/${isCourse ? "course" : "exercise"}`}
-        />)}
-      </Col>
-      <Col md={9} className="module-content">
+      <Col md={12} className="module-content">
         {children}
       </Col>
     </Row>

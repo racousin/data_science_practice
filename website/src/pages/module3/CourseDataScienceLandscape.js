@@ -108,7 +108,6 @@ const CourseDataScienceLandscape = () => {
       module={3}
       isCourse={true}
       title={title}
-      courseLinks={courseLinks}
     >
       {location.pathname === `/module${module}/course` && (
         <>
@@ -120,7 +119,7 @@ const CourseDataScienceLandscape = () => {
         </>
       )}
       <Row>
-        <Col md={11}>
+        <Col md={12}>
           <DynamicRoutes routes={courseLinks} />
         </Col>
       </Row>

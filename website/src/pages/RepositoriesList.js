@@ -58,7 +58,7 @@ const RepositoriesList = () => {
               </Anchor>
               <Button
                 component={Link}
-                to={`/students/${repo.name}`}
+                to={`/courses/data-science-practice/students/${repo.name}`}
                 variant="light"
                 color="blue"
                 fullWidth

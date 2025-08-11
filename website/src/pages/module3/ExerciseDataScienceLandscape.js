@@ -30,7 +30,6 @@ const ExerciseMLPipelineAndExploratoryDataAnalysis = () => {
       module={3}
       isCourse={false}
       title="Module 3"
-      courseLinks={exerciseLinks}
     >
       {location.pathname === `/module${module}/exercise` && (
         <>
@@ -41,7 +40,7 @@ const ExerciseMLPipelineAndExploratoryDataAnalysis = () => {
         </>
       )}
       <Row>
-        <Col md={11}>
+        <Col md={12}>
           <DynamicRoutes routes={exerciseLinks} />
         </Col>
       </Row>
