@@ -169,24 +169,24 @@ const CourseGit = () => {
     >
       {location.pathname === `/module${module}/course` && (
         <>
-          <Row>
+          <Grid>
             <p>
               Learn how to use Git for version control and GitHub for
               collaboration.
             </p>
-          </Row>
-          <Row>
-            <Col>
+          </Grid>
+          <Grid>
+            <Grid.Col>
               <p>Last Updated: {"2024-09-20"}</p>
-            </Col>
-          </Row>
+            </Grid.Col>
+          </Grid>
         </>
       )}
-      <Row>
-        <Col md={11}>
+      <Grid>
+        <Grid.Col span={{ md: 11 }}>
           <DynamicRoutes routes={courseLinks} />
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </ModuleFrame>
   );
 };
