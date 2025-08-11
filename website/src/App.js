@@ -11,6 +11,7 @@ import GoogleAnalyticsRouteTracker from "./components/GoogleAnalyticsRouteTracke
 // Main pages
 import Home from "./pages/Home";
 import CoursesList from "./pages/CoursesList";
+import Projects from "./pages/Projects";
 
 // Course containers
 import DataSciencePractice from "./courses/DataSciencePractice";
@@ -65,6 +66,7 @@ function App() {
           <Route element={<SimpleLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/courses" element={<CoursesList />} />
+            <Route path="/projects" element={<Projects />} />
           </Route>
           
           {/* Routes with sidebar */}
