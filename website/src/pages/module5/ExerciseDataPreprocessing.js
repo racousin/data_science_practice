@@ -23,18 +23,18 @@ const ExerciseDataPreprocessing = () => {
     >
       {location.pathname === `/module${module}/exercise` && (
         <>
-          <Row>
-            <Col>
+          <Grid>
+            <Grid.Col>
               <p>Last Updated: {"2024-09-20"}</p>
-            </Col>
-          </Row>
+            </Grid.Col>
+          </Grid>
         </>
       )}
-      <Row>
-        <Col md={11}>
+      <Grid>
+        <Grid.Col span={{ md: 11 }}>
           <DynamicRoutes routes={exerciseLinks} />
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </ModuleFrame>
   );
 };

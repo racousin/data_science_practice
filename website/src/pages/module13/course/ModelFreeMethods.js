@@ -1,6 +1,6 @@
 import React from "react";
 import {  Row, Col, Image } from "react-bootstrap";
-import { Title, Text, Stack, Container, Accordion } from '@mantine/core';
+import { Title, Text, Stack, Container, Accordion, Grid } from '@mantine/core';
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 import CodeBlock from "components/CodeBlock";
@@ -150,8 +150,8 @@ class Agent:
 
       <RLObjectiveSection />
 
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Monte-Carlo Method</h3>
           <p>
             To evaluate{" "}
@@ -173,11 +173,11 @@ class Agent:
           </ol>
           <p>Similarly, for the action-value function:</p>
           <BlockMath math="Q_\pi(s, a) = \frac{\sum_{t=1}^T \mathbb{1}[S_t = s, A_t = a] G_t}{\sum_{t=1}^T \mathbb{1}[S_t = s, A_t = a]}" />
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
 
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3 id="monte-carlo-algorithm">Monte-Carlo Algorithm</h3>
           <ol>
             Initialise <InlineMath math="Q(s,a) \forall s, a" />
@@ -193,13 +193,13 @@ class Agent:
             </li>
             <li>Iterate</li>
           </ol>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Visual Steps in Monte Carlo</h3>
-          <Row>
-            <Col md={4}>
+          <Grid>
+            <Grid.Col span={{ md: 4 }}>
               <Image
                 src="/assets/module13/tikz_images_2/tikz_picture_1.png"
                 alt="Generate Episode"
@@ -209,28 +209,28 @@ class Agent:
                 1. Generate episode following{" "}
                 <InlineMath math="\arg\max Q(s, a)" />
               </p>
-            </Col>
-            <Col md={4}>
+            </Grid.Col>
+            <Grid.Col span={{ md: 4 }}>
               <Image
                 src="/assets/module13/tikz_images_2/tikz_picture_2.png"
                 alt="Evaluate Q"
                 fluid
               />
               <p className="text-center">2. Evaluate Q</p>
-            </Col>
-            <Col md={4}>
+            </Grid.Col>
+            <Grid.Col span={{ md: 4 }}>
               <Image
                 src="/assets/module13/tikz_images_2/tikz_picture_3.png"
                 alt="Iterate"
                 fluid
               />
               <p className="text-center">3. Iterate</p>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+            </Grid.Col>
+          </Grid>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3 id="td-learning">Temporal Difference (TD) Learning</h3>
           <p>
             TD Learning combines Monte Carlo and dynamic programming ideas,
@@ -250,11 +250,11 @@ class Agent:
               <InlineMath math="R_{t+1} + \gamma Q(S_{t+1}, A_{t+1})" />
             </li>
           </ul>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
 
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>TD Learning - V/Q Estimation</h3>
           <h4>
             TD Error (<InlineMath math="\delta_t" />
@@ -270,14 +270,14 @@ class Agent:
           <p>
             Where <InlineMath math="\alpha" /> is the learning rate.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       <SarsaAlgorithm/>
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Visual Steps in SARSA</h3>
-          <Row>
-            <Col md={3}>
+          <Grid>
+            <Grid.Col span={{ md: 3 }}>
               <Image
                 src="/assets/module13/tikz_images_2/tikz_picture_4.png"
                 alt="SARSA Step 1"
@@ -286,8 +286,8 @@ class Agent:
               <p className="text-center">
                 1. Choose action <InlineMath math="a_3=\arg \max Q(s_3,a)" />
               </p>
-            </Col>
-            <Col md={3}>
+            </Grid.Col>
+            <Grid.Col span={{ md: 3 }}>
               <Image
                 src="/assets/module13/tikz_images_2/tikz_picture_5.png"
                 alt="SARSA Step 2"
@@ -297,8 +297,8 @@ class Agent:
                 2. Update <InlineMath math="Q(s_2, a_2)" /> with{" "}
                 <InlineMath math="r_3 + \gamma Q(s_3, a_3)" />
               </p>
-            </Col>
-            <Col md={3}>
+            </Grid.Col>
+            <Grid.Col span={{ md: 3 }}>
               <Image
                 src="/assets/module13/tikz_images_2/tikz_picture_6.png"
                 alt="SARSA Step 3"
@@ -307,8 +307,8 @@ class Agent:
               <p className="text-center">
                 3. Choose action <InlineMath math="a_4=\arg \max Q(s_4,a)" />
               </p>
-            </Col>
-            <Col md={3}>
+            </Grid.Col>
+            <Grid.Col span={{ md: 3 }}>
               <Image
                 src="/assets/module13/tikz_images_2/tikz_picture_7.png"
                 alt="SARSA Step 4"
@@ -318,10 +318,10 @@ class Agent:
                 4. Update <InlineMath math="Q(s_3, a_3)" /> with{" "}
                 <InlineMath math="r_4 + \gamma Q(s_4, a_4)" />
               </p>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
+            </Grid.Col>
+          </Grid>
+        </Grid.Col>
+      </Grid>
       <QLearning/>
       <Stack className="space-y-4">
         <Title order={3} id="q-learning">Q-learning Algorithm</Title>
@@ -349,11 +349,11 @@ class Agent:
           </li>
         </ol>
       </Stack>
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Visual Steps in Q-Learning</h3>
-          <Row>
-            <Col md={3}>
+          <Grid>
+            <Grid.Col span={{ md: 3 }}>
               <Image
                 src="/assets/module13/tikz_images_2/tikz_picture_8.png"
                 alt="Q-Learning Step 1"
@@ -362,8 +362,8 @@ class Agent:
               <p className="text-center">
                 1. Choose action <InlineMath math="a_3=\arg \max Q(s_3,a)" />
               </p>
-            </Col>
-            <Col md={3}>
+            </Grid.Col>
+            <Grid.Col span={{ md: 3 }}>
               <Image
                 src="/assets/module13/tikz_images_2/tikz_picture_9.png"
                 alt="Q-Learning Step 2"
@@ -373,8 +373,8 @@ class Agent:
                 2. Update <InlineMath math="Q(s_3, a_3)" /> with{" "}
                 <InlineMath math="r_4 + \gamma \max Q(s_4, a)" />
               </p>
-            </Col>
-            <Col md={3}>
+            </Grid.Col>
+            <Grid.Col span={{ md: 3 }}>
               <Image
                 src="/assets/module13/tikz_images_2/tikz_picture_10.png"
                 alt="Q-Learning Step 3"
@@ -383,8 +383,8 @@ class Agent:
               <p className="text-center">
                 3. Choose action <InlineMath math="a_4=\arg \max Q(s_4,a)" />
               </p>
-            </Col>
-            <Col md={3}>
+            </Grid.Col>
+            <Grid.Col span={{ md: 3 }}>
               <Image
                 src="/assets/module13/tikz_images_2/tikz_picture_11.png"
                 alt="Q-Learning Step 4"
@@ -394,10 +394,10 @@ class Agent:
                 4. Update <InlineMath math="Q(s_4, a_4)" /> with{" "}
                 <InlineMath math="r_5 + \gamma \max Q(s_4, a)" />
               </p>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
+            </Grid.Col>
+          </Grid>
+        </Grid.Col>
+      </Grid>
       <div className="mt-8 mb-12">
         <Accordion 
           variant="separated"

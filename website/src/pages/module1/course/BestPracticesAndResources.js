@@ -12,8 +12,8 @@ const BestPracticesAndResources = () => {
         insights into some critical aspects of using Git effectively.
       </p>
       {/* Good Practices in Software Development */}
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3 id="good-practices">Good Practices in Software Development</h3>
           <p>
             Adopting good software development practices is crucial for the
@@ -44,11 +44,11 @@ const BestPracticesAndResources = () => {
               production.
             </li>
           </ul>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       {/* Merge vs. Rebase */}
-      {/* <Row>
-        <Col>
+      {/* <Grid>
+        <Grid.Col>
           <h3 id="merge-vs-rebase">Merge vs. Rebase</h3>
           <p>
             Both `git merge` and `git rebase` are used to integrate changes from
@@ -71,11 +71,11 @@ const BestPracticesAndResources = () => {
             Use merging to avoid altering the project history and rebase for a
             cleaner and linear history.
           </p>
-        </Col>
-      </Row> */}
+        </Grid.Col>
+      </Grid> */}
       {/* Git Tagging */}
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3 id="git-tagging">Using Git Tags</h3>
           <p>
             Tags in Git are used to create stable releases or to mark a specific
@@ -106,11 +106,11 @@ git push origin v1.1`}
             Tags can help you and your team to refer to specific releases
             without having to remember commit hashes.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       {/* Using Git Stash */}
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3 id="using-git-stash">Using Git Stash</h3>
           <p>
             Git stash temporarily shelves (or stashes) changes you've made to
@@ -125,11 +125,11 @@ git stash apply`}
             Stashing is handy if you need to quickly switch context and work on
             something else, but you're not ready to commit.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       {/* CI/CD and GitHub Actions */}
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3 id="ci-cd-github-actions">CI/CD and GitHub Actions</h3>
           <p>
             Continuous Integration (CI) and Continuous Deployment (CD) are
@@ -154,8 +154,8 @@ git stash apply`}
             language=""
             code={`name: CI\n on: push\n jobs: build\n runs-on: ubuntu-latest\n steps:\n - uses: actions/checkout@v2\n - name: Run a one-line script\n run: python tests.py`}
           />
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

@@ -10,8 +10,8 @@ const ScalabilityAndChallenges = () => {
         In this section, you will learn how to address scalability issues and
         other real-world challenges in recommendation systems.
       </p>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h2>Scaling to Large Datasets</h2>
           <p>
             As the size of the user and item datasets grows, it can become
@@ -82,8 +82,8 @@ function updateRecommendationModel(user, item, rating, model) {
 }
 `}
           />
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

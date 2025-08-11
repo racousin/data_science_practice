@@ -5,8 +5,8 @@ const Introduction = () => {
   return (
     <Container fluid>
       <h2>Introduction</h2>
-      <Row>
-        <Col md={12}>
+      <Grid>
+        <Grid.Col span={{ md: 12 }}>
           <p>
             Git is a distributed version control system widely used to
             coordinate work among programmers. It tracks changes in source code
@@ -59,8 +59,8 @@ const Introduction = () => {
               </a>
             </li>
           </ul>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

@@ -10,8 +10,8 @@ const AdvancedTechniques = () => {
         In this section, you will learn about more complex Docker
         functionalities.
       </p>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h2>Building Optimized Docker Images for Applications</h2>
           <p>
             Building optimized Docker images for applications can improve
@@ -45,8 +45,8 @@ COPY --from=builder /app/ /app/`}
             service, such as Amazon Elastic Container Service (ECS) or Azure
             Kubernetes Service (AKS).
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

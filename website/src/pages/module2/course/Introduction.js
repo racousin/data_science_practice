@@ -5,8 +5,8 @@ const Introduction = () => {
   return (
     <Container fluid>
       <h2>Introduction</h2>
-      <Row>
-        <Col md={12}>
+      <Grid>
+        <Grid.Col span={{ md: 12 }}>
           <h4>Why Use Python Environments?</h4>
           <p>
             Python environments are isolated contexts where Python packages and
@@ -49,10 +49,10 @@ const Introduction = () => {
               and environment management system.
             </li>
           </ul>
-        </Col>
-      </Row>
-      {/* <Row>
-        <Col md={10}>
+        </Grid.Col>
+      </Grid>
+      {/* <Grid>
+        <Grid.Col span={{ md: 10 }}>
           <Image
             src="/assets/python-environments.png"
             alt="Python Environments and Package Management"
@@ -61,8 +61,8 @@ const Introduction = () => {
           <p className="text-center">
             Fig.1 - Python Environments and Package Management
           </p>
-        </Col>
-      </Row> */}
+        </Grid.Col>
+      </Grid> */}
     </Container>
   );
 };

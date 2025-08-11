@@ -11,8 +11,8 @@ const Exercise2 = () => {
         In this exercise, you will extend the `mysupertools` package from Exercise 1 by adding more functionality, 
         implementing unit tests with pytest, and creating a command-line interface (CLI) for your package.
       </p>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h2>Instructions</h2>
           <ol>
             <li>Your final directory structure should look like this:</li>
@@ -182,10 +182,10 @@ from mysupertools2.math_operations import multiply, fibonacci`}
               including examples of using the CLI.
             </li>
           </ol>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col>
           <h2>Testing Your Code</h2>
           <p>
             To ensure your package is working correctly, follow these steps to test your code:
@@ -209,8 +209,8 @@ print(f"8th Fibonacci number: {fib_number}")
               language="python"
             />
           </ol>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

@@ -32,17 +32,17 @@ const ExerciseMLPipelineAndExploratoryDataAnalysis = () => {
     >
       {location.pathname === `/module${module}/exercise` && (
         <>
-          <Row>
+          <Grid>
             Exercises to perform exploratory data analysis and model
             baseline,using Python and Jupyter Notebooks.
-          </Row>
+          </Grid>
         </>
       )}
-      <Row>
-        <Col md={12}>
+      <Grid>
+        <Grid.Col span={{ md: 12 }}>
           <DynamicRoutes routes={exerciseLinks} />
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </ModuleFrame>
   );
 };

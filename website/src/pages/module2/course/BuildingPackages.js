@@ -6,8 +6,8 @@ const BuildingPackages = () => {
   return (
     <Container fluid>
       <h1 className="my-4">Building Python Packages</h1>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h3 id="package-structure">Package Project Structure</h3>
           <p>Here's what the directory structure should look like:</p>
           <pre>
@@ -54,19 +54,19 @@ mypackage/
               the package, installation instructions, and usage examples.
             </li>
           </ul>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col>
           <h3 id="create-directory">Create a New Directory for Your Package</h3>
           <p>First, create a new directory where your package will reside:</p>
           <CodeBlock code={`mkdir mypackage`} />
           <p>Navigate into the newly created directory:</p>
           <CodeBlock code={`cd mypackage`} />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col>
           <h3 id="setup-file">Create the `setup.py` File</h3>
           <p>
             The `setup.py` file is the center of a Python project. It contains
@@ -112,10 +112,10 @@ setup(
               that should be included in the distribution package.
             </li>
           </ul>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col>
           <h3 id="package-directory">Create the Package Directory</h3>
           <p>Create a new directory with the same name as your package:</p>
           <CodeBlock code={`mkdir mypackage`} />
@@ -130,10 +130,10 @@ setup(
             directory should be treated as a package, allowing you to import
             modules from it.
           </p>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col>
           <h3 id="add-modules">Add Modules to Your Package</h3>
           <p>
             Create Python modules within the `mypackage` directory. For example:
@@ -154,10 +154,10 @@ setup(
     print("Goodbye from functions2!")`}
             language={"python"}
           />
-        </Col>
-      </Row>
-      <Row>
-  <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+  <Grid.Col>
     <h3 id="install-your-pkg">Install Your Package</h3>
     <p>
       To install your package locally, use the following command:
@@ -186,10 +186,10 @@ fct1.hello()
 fct2.goodbye()`}
             language={"python"}
           />
-  </Col>
-</Row>
-      <Row>
-        <Col>
+  </Grid.Col>
+</Grid>
+      <Grid>
+        <Grid.Col>
           <h3 id="build-package">Build the Package</h3>
           <p>Use the following command to build your package:</p>
           <CodeBlock code={`python setup.py sdist`} />
@@ -197,10 +197,10 @@ fct2.goodbye()`}
             This command creates a source distribution (sdist) containing your
             package. The distribution file is stored in the `dist` directory.
           </p>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col>
           <h3 id="install-package-built">Install the built Package</h3>
           <p>Install the newly created package using pip:</p>
           <CodeBlock code={`pip install dist/mypackage-1.0.tar.gz`} />
@@ -218,10 +218,10 @@ fct1.hello()
 fct2.goodbye()`}
             language={"python"}
           />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col>
           <h3 id="publishing-package">Publishing Your Package</h3>
           <p>
             Once your package is ready, you might want to share it with the
@@ -249,8 +249,8 @@ fct2.goodbye()`}
             </a>
             .
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

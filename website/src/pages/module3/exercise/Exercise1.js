@@ -39,8 +39,8 @@ const Exercise1 = () => {
       <p>
         In this exercise, you will develop a baseline model and make predictions on the test dataset.
       </p>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h2>Overview</h2>
           <ul>
             <li>Load the dataset and explore its structure and statistics.</li>
@@ -49,10 +49,10 @@ const Exercise1 = () => {
             <li>Evaluate the model's performance using appropriate metrics.</li>
             <li>Generate predictions for the test dataset.</li>
           </ul>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col>
           <h2>Expected Output</h2>
           <p>
             You are expected to submit two files:
@@ -61,10 +61,10 @@ const Exercise1 = () => {
             <li>A Jupyter Notebook named <code>exercise1.ipynb</code> containing your baseline model development and evaluation.</li>
             <li>A CSV file named <code>submission.csv</code> with your predictions.</li>
           </ol>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col>
           <h2>Submission Requirements</h2>
           <ol>
             <li>
@@ -81,18 +81,18 @@ const Exercise1 = () => {
               Save both the <code>exercise1.ipynb</code> notebook and the <code>submission.csv</code> file in the <code>module3</code> directory under your username folder.
             </li>
           </ol>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col>
           <h2>Evaluation</h2>
           <p>Your baseline model and predictions will be evaluated based on the following criteria:</p>
           <p>
             The error threshold for this exercise is a Mean Absolute Error (MAE) of 36000. Ensure your predictions are accurate enough to meet this threshold.
           </p>
-        </Col>
-      </Row>
-      <Row>
+        </Grid.Col>
+      </Grid>
+      <Grid>
         <DataInteractionPanel
           trainDataUrl={trainDataUrl}
           testDataUrl={testDataUrl}
@@ -101,7 +101,7 @@ const Exercise1 = () => {
           notebookColabUrl={notebookColabUrl}
           metadata={metadata}
         />
-      </Row>
+      </Grid>
     </Container>
   );
 };

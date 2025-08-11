@@ -114,18 +114,18 @@ const CourseTextProcessing = () => {
     >
       {location.pathname === `/module${module}/course` && (
         <>
-          <Row>
-            <Col>
+          <Grid>
+            <Grid.Col>
               <p>Last Updated: {"2025-03-27"}</p>
-            </Col>
-          </Row>
+            </Grid.Col>
+          </Grid>
         </>
       )}
-      <Row>
-        <Col md={11}>
+      <Grid>
+        <Grid.Col span={{ md: 11 }}>
           <DynamicRoutes routes={courseLinks} />
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </ModuleFrame>
   );
 };

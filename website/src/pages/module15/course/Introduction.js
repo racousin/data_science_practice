@@ -9,8 +9,8 @@ const Introduction = () => {
         In this section, you will learn about the basics of cloud computing and
         the specific offerings of Google Cloud Platform (GCP).
       </p>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h2>
             Overview of Cloud Computing: Benefits and Models (IaaS, PaaS, SaaS)
           </h2>
@@ -31,8 +31,8 @@ const Introduction = () => {
             machines, App Engine for building and deploying web applications,
             and Kubernetes Engine for managing containerized applications.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

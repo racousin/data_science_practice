@@ -24,24 +24,24 @@ const ExerciseTabularModels = () => {
     >
       {location.pathname === `/module${module}/exercise` && (
         <>
-          <Row>
+          <Grid>
             <p>
               In this module, you will practice building and evaluating machine
               learning models.
             </p>
-          </Row>
-          <Row>
-            <Col>
+          </Grid>
+          <Grid>
+            <Grid.Col>
               <p>Last Updated: {"2024-09-20"}</p>
-            </Col>
-          </Row>
+            </Grid.Col>
+          </Grid>
         </>
       )}
-      <Row>
-        <Col md={11}>
+      <Grid>
+        <Grid.Col span={{ md: 11 }}>
           <DynamicRoutes routes={exerciseLinks} />
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </ModuleFrame>
   );
 };

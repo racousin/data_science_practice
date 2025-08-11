@@ -10,8 +10,8 @@ const AdvancedTechniques = () => {
         In this section, you will explore advanced algorithms and techniques for
         building recommendation systems.
       </p>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h2>Deep Learning for Recommendation Systems</h2>
           <p>
             Deep learning techniques, such as neural collaborative filtering,
@@ -109,8 +109,8 @@ function recommendItemsUsingReinforcementLearning(user, data, users, k, model) {
 }
 `}
           />
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

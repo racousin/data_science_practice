@@ -3,7 +3,7 @@ import { Container, Row, Col, Image } from "react-bootstrap";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 import CodeBlock from "components/CodeBlock";
-import { Paper, Alert, Text, Title, Code } from '@mantine/core';
+import { Paper, Alert, Text, Title, Code, Grid } from '@mantine/core';
 import { AlertTriangle } from 'lucide-react';
 
 const DynamicProgrammingSection = () => {
@@ -182,8 +182,8 @@ const DynamicProgramming = () => {
   return (
     <Container fluid>
       <h2>Dynamic Programming in MDPs</h2>
-      <Col>
-      <Row className="mt-4">
+      <Grid.Col>
+      <Grid className="mt-4">
           <h3 id="bellman-equations">Bellman Equations Development</h3>
           <BlockMath
             math={`
@@ -195,10 +195,10 @@ const DynamicProgramming = () => {
       \\end{aligned}
     `}
           />
-        </Row>
-      </Col>
-      <Row className="mt-4">
-  <Col>
+        </Grid>
+      </Grid.Col>
+      <Grid className="mt-4">
+  <Grid.Col>
     <h3 id="optimal-policy" >Equivalence Between Optimal Policy, Maximum Value, and Q-Functions</h3>
     <p>
       The best policy: {" "} 
@@ -232,15 +232,15 @@ const DynamicProgramming = () => {
     <p>
       Thus, solving for <InlineMath math="V^*(s)" /> or <InlineMath math="Q^*(s, a)" /> fully characterizes the optimal policy <InlineMath math={`\\pi^*`}/>, which achieves the maximum expected reward.
     </p>
-  </Col>
-</Row>
+  </Grid.Col>
+</Grid>
 
 
 
 
 
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3 id="mdp-solution" >The MDP Solution</h3>
           <p>
             Dynamic Programming allows to resolve the MDP optimization problem{" "}
@@ -252,11 +252,11 @@ const DynamicProgramming = () => {
             <li>Policy evaluation</li>
             <li>Policy improvement</li>
           </ul>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
 
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3 id="policy-evaluation">Policy Evaluation</h3>
           <p>
             Policy Evaluation: compute the state-value{" "}
@@ -277,11 +277,11 @@ const DynamicProgramming = () => {
             so if <InlineMath math="(V_k)_{k\in \mathbb{N}}" /> converges, it
             converges to <InlineMath math="V_\pi" />.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
 
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3 id="policy-improvement" >Policy Improvement</h3>
           <p>
             Policy Improvement generates a better policy{" "}
@@ -303,25 +303,25 @@ const DynamicProgramming = () => {
             <InlineMath math="\pi'(s) = \arg\max_{a \in \mathcal{A}} Q_\pi(s, a)" />{" "}
             (<InlineMath math="\forall s" />)
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
 
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Policy Improvement Visualization</h3>
           <p>
             <InlineMath math="\pi' (s) = \arg\max_{a \in A} Q_{\pi}(s, a)" />
           </p>
-          <Row>
-            <Col md={4}>
+          <Grid>
+            <Grid.Col span={{ md: 4 }}>
               <Image
                 src="/assets/module13/tikz_picture_16.png"
                 alt="Initial Policy"
                 fluid
               />
               <p className="text-center">Initial Policy (π)</p>
-            </Col>
-            <Col md={4}>
+            </Grid.Col>
+            <Grid.Col span={{ md: 4 }}>
               <Image
                 src="/assets/module13/tikz_picture_17.png"
                 alt="Q-values"
@@ -330,25 +330,25 @@ const DynamicProgramming = () => {
               <p className="text-center">
                 Q-values (Q<sub>π</sub>)
               </p>
-            </Col>
-            <Col md={4}>
+            </Grid.Col>
+            <Grid.Col span={{ md: 4 }}>
               <Image
                 src="/assets/module13/tikz_picture_18.png"
                 alt="Improved Policy"
                 fluid
               />
               <p className="text-center">Improved Policy (π')</p>
-            </Col>
-          </Row>
+            </Grid.Col>
+          </Grid>
           <p className="text-center mt-3">
             Policy Improvement Process: Initial Policy → Q-values → Improved
             Policy
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
 
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3 id="implementation">Dynamic Programming</h3>
           <p>
             Policy Iteration: iterative procedure to improve the policy when
@@ -361,12 +361,12 @@ const DynamicProgramming = () => {
             \\pi_* \\xrightarrow[]{\\text{evaluation}} V_*
           `}
           />
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
 
 
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Take Home Message</h3>
           <p>
             Initialize <InlineMath math="\pi(s), \forall s" />
@@ -392,8 +392,8 @@ const DynamicProgramming = () => {
           <p>
             Result: <InlineMath math="\pi = \arg \max_{\pi} E[G]" />
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
 
       <DynamicProgrammingSection/>
     </Container>

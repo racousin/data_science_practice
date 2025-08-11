@@ -13,8 +13,8 @@ const Exercise1 = () => {
         function will return the product if both arguments are numbers, and the
         string "error" otherwise.
       </p>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h2>Instructions</h2>
           <ol>
             <li>Your final directory structure should look like this:</li>
@@ -48,10 +48,10 @@ setup(
               make them Python packages:
             </li>
           </ol>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col>
           <h2>Testing Your Code</h2>
           <p>
             To ensure your package is working correctly, follow these steps to
@@ -80,13 +80,13 @@ setup(
               language={"python"}
             />
           </ol>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col>
           <EvaluationModal module={2} />
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

@@ -10,8 +10,8 @@ const MachineLearningPipeline = () => {
         deploying ML models. It consists of several interconnected stages, each
         crucial for creating effective and reliable models.
       </p>
-      <Row>
-        <Col md={12}>
+      <Grid>
+        <Grid.Col span={{ md: 12 }}>
         <h2 id="problem-definition">0. Problem Definition</h2>
           <p>
             <strong>Objective:</strong> Clearly define the problem and set project goals
@@ -305,8 +305,8 @@ const MachineLearningPipeline = () => {
       <p>
         <strong>Tools:</strong> Version control systems (e.g., Git), experiment tracking tools (e.g., MLflow), collaboration platforms, in addition to stage-specific tools
       </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

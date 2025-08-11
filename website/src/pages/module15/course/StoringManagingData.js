@@ -7,8 +7,8 @@ const StoringManagingData = () => {
     <Container fluid>
       <h1 className="my-4">Storing and Managing Data</h1>
       <p>In this section, you will explore data storage options within GCP.</p>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h2>Introduction to Cloud Storage, Datastore, and Bigtable</h2>
           <p>
             Cloud Storage is a service for storing and retrieving objects, such
@@ -32,8 +32,8 @@ const StoringManagingData = () => {
             PostgreSQL, and SQL Server. Cloud Spanner is a globally distributed,
             multi-version, synchronously replicated database.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

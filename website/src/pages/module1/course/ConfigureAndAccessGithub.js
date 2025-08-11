@@ -20,8 +20,8 @@ const ConfigureAndAccessGithub = () => {
         step towards managing your projects online, contributing to other
         projects, and collaborating with other developers.
       </p>
-      <Row>
-        <Col md={12}>
+      <Grid>
+        <Grid.Col span={{ md: 12 }}>
           <ol>
             <li>
               Visit the GitHub homepage:{" "}
@@ -40,10 +40,10 @@ const ConfigureAndAccessGithub = () => {
             </li>
             <li>Follow the steps!</li>
           </ol>
-        </Col>
-      </Row>
-      <Row>
-        <Col md={12}>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col span={{ md: 12 }}>
           <h3 id="configure-git">Configure Git with Your Information</h3>
           <p>
             Now that you have a GitHub account and Git installed, it’s time to
@@ -138,8 +138,8 @@ Hi username! You've successfully authenticated, but GitHub does not provide shel
             If the connection is successful, you'll see a message confirming you
             are authenticated.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

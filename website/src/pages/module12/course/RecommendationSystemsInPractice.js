@@ -10,8 +10,8 @@ const RecommendationSystemsInPractice = () => {
         In this section, you will learn how to apply your knowledge of
         recommendation systems to practical scenarios.
       </p>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h2>Case Studies</h2>
           <p>
             Recommendation systems are used in a variety of industries,
@@ -62,8 +62,8 @@ function anonymizeUserData(data) {
 }
 `}
           />
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

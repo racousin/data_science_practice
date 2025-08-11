@@ -112,18 +112,18 @@ const CourseDataScienceLandscape = () => {
     >
       {location.pathname === `/module${module}/course` && (
         <>
-          <Row>
-            <Col>
+          <Grid>
+            <Grid.Col>
               <p>Last Updated: {"2024-09-20"}</p>
-            </Col>
-          </Row>
+            </Grid.Col>
+          </Grid>
         </>
       )}
-      <Row>
-        <Col md={12}>
+      <Grid>
+        <Grid.Col span={{ md: 12 }}>
           <DynamicRoutes routes={courseLinks} />
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </ModuleFrame>
   );
 };

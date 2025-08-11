@@ -10,8 +10,8 @@ const ManagingComputeResources = () => {
         In this section, you will learn how to manage and scale compute
         resources using GCP.
       </p>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h2>Setting up and Managing Compute Engine Instances</h2>
           <p>
             Compute Engine is a service that provides virtual machines on
@@ -35,8 +35,8 @@ gcloud compute instances create my-instance --machine-type=n1-standard-1 --image
             discounted price. They can be terminated by Google at any time, so
             they are suitable for workloads that can tolerate interruptions.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

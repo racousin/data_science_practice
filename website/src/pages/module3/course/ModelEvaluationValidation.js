@@ -97,8 +97,8 @@ test_error = mean_squared_error(y_test, model.predict(X_test))
         `}
       />
       <h2 id="overfitting-underfitting">Overfitting and Underfitting</h2>
-      <Row>
-        <Col md={6}>
+      <Grid>
+        <Grid.Col span={{ md: 6 }}>
           <h3>Overfitting</h3>
           <ul>
             <li>Model learns noise in training data</li>
@@ -130,8 +130,8 @@ train_error = np.mean((y_train - y_train_pred)**2)
 test_error = np.mean((y_test - y_test_pred)**2)
         `}
       />
-        </Col>
-        <Col md={6}>
+        </Grid.Col>
+        <Grid.Col span={{ md: 6 }}>
           <h3>Underfitting</h3>
           <ul>
             <li>Model is too simple to capture patterns</li>
@@ -164,8 +164,8 @@ train_error = np.mean((y_train - y_train_pred)**2)
 test_error = np.mean((y_test - y_test_pred)**2)
         `}
       />       
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       <h2 id="bias-variance">Bias-Variance Tradeoff</h2>
       <p>
         The generalization error can be decomposed into:

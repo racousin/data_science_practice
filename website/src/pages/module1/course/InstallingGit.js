@@ -26,8 +26,8 @@ const InstallingGit = () => {
         </a>
         .
       </p>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h3 id="mac">Mac</h3>
           <p>
             If you have{" "}
@@ -53,10 +53,10 @@ const InstallingGit = () => {
             </a>
             .
           </p>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3 id="windows">Windows</h3>
           <p>
             For Windows users,{" "}
@@ -92,10 +92,10 @@ const InstallingGit = () => {
             </a>
             .
           </p>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3 id="linux">Linux</h3>
           <p>
             If you are using a Debian-based Linux distribution, such as Ubuntu,
@@ -114,10 +114,10 @@ const InstallingGit = () => {
             </a>
             .
           </p>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Validate Your Installation</h3>
           <p>
             To verify that Git has been installed correctly, open a terminal or
@@ -134,10 +134,10 @@ git version 2.34.1`}
             This command should display the installed version of Git, confirming
             that the software is ready for use.
           </p>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Troubleshooting</h3>
           <p>
             If you encounter any issues during installation, consult the{" "}
@@ -149,8 +149,8 @@ git version 2.34.1`}
               Git installation guide
             </a>
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

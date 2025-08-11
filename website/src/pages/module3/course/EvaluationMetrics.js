@@ -117,14 +117,14 @@ from sklearn.metrics import roc_auc_score
 roc_auc = roc_auc_score(y_true, y_pred_proba)
         `}
       />
-      <Row className="justify-content-center">
-        <Col xs={12} md={10} lg={8}>
+      <Grid className="justify-content-center">
+        <Grid.Col span={{ xs: 12 }} md={10} lg={8}>
           <div className="text-center">
             <Image src="/assets/module3/roc_auc.png" alt="roc_auc" fluid />
             <p>ROC AUC Curve</p>
           </div>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       <h2 id="multi-class-classification-metrics">Multi-class Classification Metrics</h2>
         <p>
           Multi-class classification involves predicting one of three or more possible outcomes. Key metrics include:

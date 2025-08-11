@@ -46,8 +46,8 @@ const Introduction = () => {
           While both containers and virtual machines (VMs) are used for
           virtualization, they have key differences:
         </p>
-        <Row>
-          <Col md={6}>
+        <Grid>
+          <Grid.Col span={{ md: 6 }}>
             <h3>Containers</h3>
             <ul>
               <li>Share the host OS kernel</li>
@@ -55,8 +55,8 @@ const Introduction = () => {
               <li>Start up in seconds</li>
               <li>Less resource-intensive</li>
             </ul>
-          </Col>
-          <Col md={6}>
+          </Grid.Col>
+          <Grid.Col span={{ md: 6 }}>
             <h3>Virtual Machines</h3>
             <ul>
               <li>Run a full copy of an OS</li>
@@ -64,8 +64,8 @@ const Introduction = () => {
               <li>Take minutes to start</li>
               <li>More resource-intensive</li>
             </ul>
-          </Col>
-        </Row>
+          </Grid.Col>
+        </Grid>
       </section>
       <section id="docker-overview">
         <h2>Docker Overview</h2>

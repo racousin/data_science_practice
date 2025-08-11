@@ -10,8 +10,8 @@ const NetworkingSecurity = () => {
         In this section, you will learn about the networking capabilities and
         security protocols within GCP.
       </p>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h2>Configuring Virtual Private Cloud (VPC) and Firewalls</h2>
           <p>
             Virtual Private Cloud (VPC) is a service that allows you to create a
@@ -39,8 +39,8 @@ gcloud projects add-iam-policy-binding my-project --member="user:john@example.co
             control network traffic, using IAM to manage access to resources,
             and using encryption to protect data at rest and in transit.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

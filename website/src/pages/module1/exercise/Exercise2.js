@@ -8,8 +8,8 @@ const Exercise2 = () => {
       <h1 className="my-4">
         Exercise 2: Managing Branches and Correcting Errors
       </h1>
-      <Row>
-        <Col md={12}>
+      <Grid>
+        <Grid.Col span={{ md: 12 }}>
           <h2>Context</h2>
           <p>
             You are writing technical documentation for a mathematics library. You've started with a document explaining basic arithmetic operations, but you accidentally made an error in one of the examples. As you continue working, you'll discover this error and need to fix it while managing your ongoing work.
@@ -104,8 +104,8 @@ $ git push origin advanced-operations`}
             <li>The correct multiplication example (2 * 3 = 6)</li>
             <li>The new section on advanced operations, including exponentiation</li>
           </ul>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

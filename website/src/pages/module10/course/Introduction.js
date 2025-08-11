@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, Col, Card, Table } from "react-bootstrap";
-import { Text, Title, Group, Image, Stack, Container } from '@mantine/core';
+import { Text, Title, Group, Image, Stack, Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
@@ -46,22 +46,22 @@ const Introduction = () => {
           <Title order={3} className="mt-3">Levels of Text Structure</Title>
           <Card className="mb-3">
             <Card.Body>
-              <Row>
-                <Col md={6}>
+              <Grid>
+                <Grid.Col span={{ md: 6 }}>
                   <ul>
                     <li><strong>Characters:</strong> Individual letters, numbers, punctuation (e.g., 'a', '5', '!')</li>
                     <li><strong>Subwords:</strong> Character sequences that form meaningful units (e.g., 'ing', 'pre-', 'un-')</li>
                     <li><strong>Words:</strong> Complete lexical units (e.g., 'language', 'processing')</li>
                   </ul>
-                </Col>
-                <Col md={6}>
+                </Grid.Col>
+                <Grid.Col span={{ md: 6 }}>
                   <ul>
                     <li><strong>Sentences:</strong> Sequences of words with complete meaning</li>
                     <li><strong>Paragraphs:</strong> Related sentences grouped together</li>
                     <li><strong>Documents:</strong> Complete texts with overall structure and context</li>
                   </ul>
-                </Col>
-              </Row>
+                </Grid.Col>
+              </Grid>
             </Card.Body>
           </Card>
 
@@ -69,8 +69,8 @@ const Introduction = () => {
           <Title order={3}>Text Structure Types</Title>
           <Group spacing="xs" className="bg-gray-100 p-4 rounded-lg mb-3">
             <Stack spacing={0} style={{ width: '100%' }}>
-              <Row>
-                <Col md={4}>
+              <Grid>
+                <Grid.Col span={{ md: 4 }}>
                   <Title order={5}>Structured Text</Title>
                   <Text size="sm">
                     Follows consistent format and organization:
@@ -79,8 +79,8 @@ const Introduction = () => {
                     • Forms and templates
                     • Tables and CSV files
                   </Text>
-                </Col>
-                <Col md={4}>
+                </Grid.Col>
+                <Grid.Col span={{ md: 4 }}>
                   <Title order={5}>Semi-structured Text</Title>
                   <Text size="sm">
                     Contains some organizational elements:
@@ -89,8 +89,8 @@ const Introduction = () => {
                     • HTML web pages
                     • Academic papers with sections
                   </Text>
-                </Col>
-                <Col md={4}>
+                </Grid.Col>
+                <Grid.Col span={{ md: 4 }}>
                   <Title order={5}>Unstructured Text</Title>
                   <Text size="sm">
                     Free-form with minimal explicit organization:
@@ -99,8 +99,8 @@ const Introduction = () => {
                     • Customer reviews
                     • Transcribed speech
                   </Text>
-                </Col>
-              </Row>
+                </Grid.Col>
+              </Grid>
             </Stack>
           </Group>
 

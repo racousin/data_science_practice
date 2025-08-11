@@ -39,8 +39,8 @@ const Exercise0 = () => {
       <p>
         In this exercise, you will perform exploratory data analysis (EDA) to understand the underlying patterns and relationships within the data, with a specific emphasis on the visual and graphical representation of these elements.
       </p>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h2>Overview</h2>
           <ul>
             <li>Load the dataset and explore its structure and statistics.</li>
@@ -49,18 +49,18 @@ const Exercise0 = () => {
             <li>Investigate any outliers or anomalies in the data.</li>
             <li>Summarize your findings and insights from the EDA process.</li>
           </ul>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col>
           <h2>Expected Output</h2>
           <p>
             You are expected to submit a Jupyter Notebook named <code>exercise0.ipynb</code> containing your exploratory data analysis. The notebook should include:
           </p>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col>
           <h2>Review PR Validation</h2>
           The reviewer will assess:
               <ul>
@@ -73,9 +73,9 @@ const Exercise0 = () => {
           <p>
             Remember, the goal of this exercise is to gain a deep understanding of the dataset and to communicate your findings effectively through visual and written means. The review process is designed to help you improve your data analysis and presentation skills.
           </p>
-        </Col>
-      </Row>
-      <Row>
+        </Grid.Col>
+      </Grid>
+      <Grid>
         <DataInteractionPanel
           trainDataUrl={trainDataUrl}
           testDataUrl={testDataUrl}
@@ -84,7 +84,7 @@ const Exercise0 = () => {
           notebookColabUrl={notebookColabUrl}
           metadata={metadata}
         />
-      </Row>
+      </Grid>
     </Container>
   );
 };

@@ -10,8 +10,8 @@ const Collaborating = () => {
         Git, along with hosting services like GitHub, provides powerful tools to enhance collaboration among developers. 
         This guide will walk you through the process of creating, reviewing, and merging pull requests on GitHub.
       </p>
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3 id="creating-pull-request">Creating a Pull Request</h3>
           <p>
             After you've made changes in your feature branch and pushed it to GitHub, follow these steps to create a pull request:
@@ -26,10 +26,10 @@ const Collaborating = () => {
             <li>Click "Create pull request" to submit it.</li>
           </ol>
           <Image src="/assets/module1/createPR.png" alt="Creating a Pull Request on GitHub" fluid className="my-3" />
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3 id="review-process">The Review Process</h3>
           <p>
             Once you've created a pull request, it's time for others to review your code:
@@ -50,10 +50,10 @@ const Collaborating = () => {
               <strong>Re-request review:</strong> After making changes, you can re-request a review.
             </li>
           </ol>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3 id="merging-pull-request">Merging a Pull Request</h3>
           <p>
             Once your pull request has been approved, you can merge it into the main branch:
@@ -65,10 +65,10 @@ const Collaborating = () => {
             <li>Confirm the merge by clicking "Confirm merge".</li>
           </ol>
           <Image src="/assets/module1/mergePR.png" alt="Merging a Pull Request on GitHub" fluid className="my-3" />
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3 id="best-practices">Best Practices</h3>
           <ul>
             <li>Keep your pull requests small and focused on a single feature or bug fix.</li>
@@ -76,8 +76,8 @@ const Collaborating = () => {
             <li>Respond promptly to review comments and be open to feedback.</li>
             <li>If you're a reviewer, be constructive and specific in your feedback.</li>
           </ul>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

@@ -16,8 +16,8 @@ const BranchingAndMerging = () => {
         together into a single branch.
       </p>
       {/* Working with Branches */}
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h3 id="working-with-branches">Working with Branches</h3>
           <p></p>
           <ol>
@@ -45,11 +45,11 @@ Switched to a new branch 'newbranch'
               />
             </li>
           </ol>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       {/* Merging Branches */}
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3 id="merging-branches">Merging Branches</h3>
           <p>
             Once development on a branch is complete, the changes can be merged
@@ -135,10 +135,10 @@ git merge --no-ff feature-branch`}
               />
             </li>
           </ul>
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
-        <Col xs={12} md={10} lg={8}>
+        </Grid.Col>
+      </Grid>
+      <Grid className="justify-content-center">
+        <Grid.Col span={{ xs: 12 }} md={10} lg={8}>
           <div className="text-center">
             <Image
               src="/assets/module1/Git_Fast-forward_Merge.png"
@@ -147,10 +147,10 @@ git merge --no-ff feature-branch`}
             />
             <p>Git_Fast-forward_Merge</p>
           </div>
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
-        <Col xs={12} md={10} lg={8}>
+        </Grid.Col>
+      </Grid>
+      <Grid className="justify-content-center">
+        <Grid.Col span={{ xs: 12 }} md={10} lg={8}>
           <div className="text-center">
             <Image
               src="/assets/module1/Git_Rebase_Merge.png"
@@ -159,10 +159,10 @@ git merge --no-ff feature-branch`}
             />
             <p>Git_Rebase_Merge</p>
           </div>
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
-        <Col xs={12} md={10} lg={8}>
+        </Grid.Col>
+      </Grid>
+      <Grid className="justify-content-center">
+        <Grid.Col span={{ xs: 12 }} md={10} lg={8}>
           <div className="text-center">
             <Image
               src="/assets/module1/Git_Squash_Merge.png"
@@ -171,10 +171,10 @@ git merge --no-ff feature-branch`}
             />
             <p>Git_Squash_Merge</p>
           </div>
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
-        <Col xs={12} md={10} lg={8}>
+        </Grid.Col>
+      </Grid>
+      <Grid className="justify-content-center">
+        <Grid.Col span={{ xs: 12 }} md={10} lg={8}>
           <div className="text-center">
             <Image
               src="/assets/module1/Git_Three-way_Merge.png"
@@ -183,13 +183,13 @@ git merge --no-ff feature-branch`}
             />
             <p>Git_Three-way_Merge</p>
           </div>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       {/* Merging Branches */}
-      <Row className="mt-4">{/* ... (existing code) ... */}</Row>
+      <Grid className="mt-4">{/* ... (existing code) ... */}</Grid>
       {/* Advantages of Merge Strategies */}
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h4>Advantages of Different Merge Strategies</h4>
           <table className="table table-bordered">
             <thead>
@@ -245,11 +245,11 @@ git merge --no-ff feature-branch`}
               </tr>
             </tbody>
           </table>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       {/* Resolving Merge Conflicts */}
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3 id="resolving-merge-conflicts">Resolving Merge Conflicts</h3>
           <p>
             Conflicts occur when the same parts of the same file are changed in
@@ -294,11 +294,11 @@ Unmerged paths:
               />
             </li>
           </ol>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       {/* Concrete Example of Branching and Merging */}
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3 id="example-case">Example: Adding a Feature via Branch</h3>
           <p>
             Imagine you are working on a project and need to add a new feature
@@ -350,8 +350,8 @@ Unmerged paths:
             is not affected by the new changes until they are fully ready to be
             integrated.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

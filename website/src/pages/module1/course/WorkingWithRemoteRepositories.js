@@ -5,11 +5,11 @@ import CodeBlock from "components/CodeBlock";
 const WorkingWithRemoteRepositories = () => {
   return (
     <Container fluid>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           {/* Introduction to Remote Repositories */}
-          <Row>
-            <Col>
+          <Grid>
+            <Grid.Col>
               <h3 id="why-remote-repositories">
                 Why Remote Repositories are Useful
               </h3>
@@ -21,10 +21,10 @@ const WorkingWithRemoteRepositories = () => {
                 changes, merge contributions, and maintain a history of all
                 modifications.
               </p>
-            </Col>
-          </Row>
-          <Row className="justify-content-center">
-            <Col xs={12} md={10} lg={8}>
+            </Grid.Col>
+          </Grid>
+          <Grid className="justify-content-center">
+            <Grid.Col span={{ xs: 12 }} md={10} lg={8}>
               <div className="text-center">
                 <Image
                   src="/assets/module1/Git_Remote_Workflow.png"
@@ -33,11 +33,11 @@ const WorkingWithRemoteRepositories = () => {
                 />
                 <p>Git_Remote_Workflow</p>
               </div>
-            </Col>
-          </Row>
+            </Grid.Col>
+          </Grid>
           {/* Creating a Repository on GitHub */}
-          <Row>
-            <Col>
+          <Grid>
+            <Grid.Col>
               <h3 id="creating-repository-github">
                 Creating a Repository on GitHub
               </h3>
@@ -58,11 +58,11 @@ const WorkingWithRemoteRepositories = () => {
                 </li>
                 <li>Click 'Create repository'.</li>
               </ol>
-            </Col>
-          </Row>
+            </Grid.Col>
+          </Grid>
           {/* Adding and Cloning Remote Repositories */}
-          <Row>
-            <Col>
+          <Grid>
+            <Grid.Col>
               <h2>Connecting to Remote Repositories</h2>
               <ol>
                 <li>Navigate to the Repository of interest.</li>
@@ -115,10 +115,10 @@ const WorkingWithRemoteRepositories = () => {
                   </Tab.Content>
                 </Tab.Container>
               </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
+            </Grid.Col>
+          </Grid>
+          <Grid>
+            <Grid.Col>
               <h3 id="view-remote-repositories">View Remote Repositories</h3>
               <p>
                 The <code>git remote -v</code> command is used to view all the
@@ -149,10 +149,10 @@ origin	git@github.com:racousin/data_science_practice_2024.git (push)
                 are set up for fetch and push operations, ensuring that you have
                 the correct access paths for collaboration and deployment.
               </p>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
+            </Grid.Col>
+          </Grid>
+          <Grid>
+            <Grid.Col>
               <h3 id="fetch-changes">Fetch Changes from a Remote Repository</h3>
               <p>
                 The <code>git fetch origin</code> command is used to fetch
@@ -187,10 +187,10 @@ origin	git@github.com:racousin/data_science_practice_2024.git (push)
                 After fetching, you may want to integrate these updates into
                 your local branch, which involves an additional step:
               </p>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
+            </Grid.Col>
+          </Grid>
+          <Grid>
+            <Grid.Col>
               <h3 id="merge-fetched-changes">Merge Fetched Changes</h3>
               <p>
                 To merge the fetched changes into your current branch, you use
@@ -210,10 +210,10 @@ origin	git@github.com:racousin/data_science_practice_2024.git (push)
                 the new changes and your local changes, you'll need to resolve
                 them manually before completing the merge.
               </p>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
+            </Grid.Col>
+          </Grid>
+          <Grid>
+            <Grid.Col>
               <h3 id="pull-changes">Pull Changes from a Remote Repository</h3>
               <p>
                 The <code>git pull origin main</code> command combines two
@@ -241,10 +241,10 @@ origin	git@github.com:racousin/data_science_practice_2024.git (push)
                 the repository. It ensures that you are working on the latest
                 version of the project, reducing conflicts and inconsistencies.
               </p>
-            </Col>
-          </Row>
-          <Row className="justify-content-center">
-            <Col xs={12} md={10} lg={8}>
+            </Grid.Col>
+          </Grid>
+          <Grid className="justify-content-center">
+            <Grid.Col span={{ xs: 12 }} md={10} lg={8}>
               <div className="text-center">
                 <Image
                   src="/assets/module1/Git_Fetch_Merge_Pull.png"
@@ -253,10 +253,10 @@ origin	git@github.com:racousin/data_science_practice_2024.git (push)
                 />
                 <p>Git_Fetch_Merge_Pull</p>
               </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
+            </Grid.Col>
+          </Grid>
+          <Grid>
+            <Grid.Col>
               <h3 id="push-changes">Push Changes to a Remote Repository</h3>
               <p>
                 The <code>git push origin main</code> command sends the commits
@@ -289,10 +289,10 @@ origin	git@github.com:racousin/data_science_practice_2024.git (push)
                 that all contributions are integrated and tracked in the remote
                 repository.
               </p>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
+            </Grid.Col>
+          </Grid>
+          <Grid>
+            <Grid.Col>
               <h3 id="example-case">Example case with Remote Repositories</h3>
               <p>
                 Here's a practical example of working with a remote repository:
@@ -336,10 +336,10 @@ origin	git@github.com:racousin/data_science_practice_2024.git (push)
                 between local and remote repositories, demonstrating the
                 collaborative possibilities of Git and GitHub.
               </p>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
+            </Grid.Col>
+          </Grid>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

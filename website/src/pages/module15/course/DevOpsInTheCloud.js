@@ -10,8 +10,8 @@ const DevOpsInTheCloud = () => {
         In this section, you will learn how to implement DevOps practices using
         GCP tools.
       </p>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h2>
             Introduction to Cloud Build, Container Registry, and Kubernetes
             Engine
@@ -40,8 +40,8 @@ steps:
             Stackdriver is a service that allows you to monitor and log the
             performance and health of your applications.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

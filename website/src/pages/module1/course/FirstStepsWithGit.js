@@ -7,8 +7,8 @@ const FirstStepsWithGit = () => {
     <Container fluid>
       <h2>First Steps with Git</h2>
       {/* Creating a Repository */}
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h3 id="creating-repository">Creating a Git Repository</h3>
           <p>
             Before you can start using Git to track changes, you need to create
@@ -49,11 +49,11 @@ const FirstStepsWithGit = () => {
             Git repository and can begin tracking changes to the files within
             this directory.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       {/* Introduction to staging changes */}
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h3 id="staging-changes">Staging Changes</h3>
           <p>
             Staging changes in Git involves preparing changes made to files in
@@ -61,11 +61,11 @@ const FirstStepsWithGit = () => {
             process allows you to selectively add files to your next commit
             while leaving others unchanged.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       {/* Detailed steps */}
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h4>Adding a New File and Tracking Changes</h4>
           <p>
             <strong>
@@ -147,11 +147,11 @@ Changes to be committed:
             <code>git reset HEAD &quot;&lt;file&gt;&quot;</code> will result in
             an error.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       {/* Committing Changes */}
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h3 id="committing-changes">What Does Committing Mean?</h3>
           <p>
             Committing in Git refers to the process of saving your staged
@@ -159,22 +159,22 @@ Changes to be committed:
             snapshot of your repository at a specific point in time, allowing
             you to record the progress of your project in manageable increments.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       {/* Detailed explanation of what happens during a commit */}
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h4>What Will Be Committed?</h4>
           <p>
             Only changes that have been staged (using <code>git add</code>) will
             be included in a commit. Unstaged changes remain in your working
             directory and are not included in the commit.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       {/* Step-by-step process to create a commit */}
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h4>How to Create a Commit</h4>
           <p>
             To create a commit, you use the <code>git commit</code> command
@@ -197,10 +197,10 @@ Changes to be committed:
             do, making it easier for others (and your future self) to understand
             the purpose of the changes without needing to read the code.
           </p>
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
-        <Col xs={12} md={10} lg={8}>
+        </Grid.Col>
+      </Grid>
+      <Grid className="justify-content-center">
+        <Grid.Col span={{ xs: 12 }} md={10} lg={8}>
           <div className="text-center">
             <Image
               src="/assets/module1/Git_Workflow.png"
@@ -209,11 +209,11 @@ Changes to be committed:
             />
             <p>Git Workflow Diagram</p>
           </div>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       {/* Why commits are important */}
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h4>Why Committing is Important</h4>
           <p>
             Commits serve as checkpoints where individual changes can be saved
@@ -229,11 +229,11 @@ Changes to be committed:
             workflows such as branching and merging, and supports continuous
             integration practices.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       {/* Viewing Commit History */}
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h3 id="viewing-commit-history">Understanding Commit History</h3>
           <p>
             Commit history in Git is a record of all previous commits in the
@@ -241,11 +241,11 @@ Changes to be committed:
             states, and understand the chronological progression of your
             project.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       {/* Basic command to view commit history */}
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h4>Basic Command to View Commit History</h4>
           <p>
             To see a detailed list of the commit history, you can use the{" "}
@@ -272,11 +272,11 @@ Date:   Thu Jul 4 12:12:14 2024 +0200
             This command displays the commit IDs, author information, dates, and
             commit messages in a detailed log format.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       {/* More options to view commit history */}
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h4>Condensed Commit History</h4>
           <p>
             For a more concise view of the commit history, use the{" "}
@@ -321,10 +321,10 @@ ncept into refacto/multi_ml
             This graph view provides a visual representation of branches and
             merge points in your commit history.
           </p>
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
-        <Col xs={12} md={10} lg={8}>
+        </Grid.Col>
+      </Grid>
+      <Grid className="justify-content-center">
+        <Grid.Col span={{ xs: 12 }} md={10} lg={8}>
           <div className="text-center">
             <Image
               src="/assets/module1/Git_Commit_History.png"
@@ -333,22 +333,22 @@ ncept into refacto/multi_ml
             />
             <p>Git_Commit_History</p>
           </div>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       {/* Undoing Changes */}
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h3 id="undoing-changes">Overview of Undoing Changes</h3>
           <p>
             Git provides several tools to revert or undo changes after they have
             been committed. These tools are crucial for maintaining the
             integrity and accuracy of your project history.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       {/* Example of Committing a Change and Undoing It */}
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h4>Committing and Realizing a Mistake</h4>
           <p>Imagine you've modified a file and committed the changes:</p>
           <CodeBlock code={`echo 'Modify content' > example.txt`} />
@@ -358,11 +358,11 @@ ncept into refacto/multi_ml
             After reviewing, you realize there's a mistake that needs
             correction.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       {/* Finding a Commit Hash */}
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h3 id="finding-commit-hash">Finding a Commit Hash</h3>
           <p>
             Before you can revert changes or checkout a previous version, you
@@ -393,11 +393,11 @@ Date:   Thu Jul 4 12:12:14 2024 +0200
             for the hash associated with the commit you are interested in
             reverting or checking out.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       {/* Viewing Differences */}
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h4>Viewing the Difference</h4>
           <p>To see what was changed with a previous commit, you can use:</p>
           <CodeBlock code="git diff <commit_hash>" />
@@ -417,11 +417,11 @@ index 8430408..9201842 100644
             This command shows the differences between the current HEAD and the
             previous commit.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       {/* Reverting Changes */}
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h4>Reverting a Commit</h4>
           <p>
             To undo the changes made by a previous commit, use the{" "}
@@ -440,10 +440,10 @@ index 8430408..9201842 100644
             This is safe for shared branches as it does not alter commit
             history.
           </p>
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
-        <Col xs={12} md={10} lg={8}>
+        </Grid.Col>
+      </Grid>
+      <Grid className="justify-content-center">
+        <Grid.Col span={{ xs: 12 }} md={10} lg={8}>
           <div className="text-center">
             <Image
               src="/assets/module1/Git_Commit_History_Revert.png"
@@ -452,11 +452,11 @@ index 8430408..9201842 100644
             />
             <p>Git_Commit_Revert</p>
           </div>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       {/* Checking Out a Previous Version */}
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h4>Checking Out to a Previous Version</h4>
           <p>
             If reverting is not suitable, you can checkout a previous version of
@@ -468,8 +468,8 @@ index 8430408..9201842 100644
             <code>HEAD</code> commit using
           </p>
           <CodeBlock code="git checkout main" />
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

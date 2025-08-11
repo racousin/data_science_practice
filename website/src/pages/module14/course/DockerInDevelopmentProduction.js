@@ -10,8 +10,8 @@ const DockerInDevelopmentProduction = () => {
         In this section, you will learn how to use Docker in real-world
         scenarios.
       </p>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h2>Integrating Docker into Development Workflows</h2>
           <p>
             Docker can be integrated into development workflows to ensure that
@@ -33,8 +33,8 @@ const DockerInDevelopmentProduction = () => {
             are secure. These include using non-root users, limiting container
             privileges, and using secure container images.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

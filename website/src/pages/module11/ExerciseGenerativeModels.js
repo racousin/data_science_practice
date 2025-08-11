@@ -4,7 +4,7 @@ import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
 import { useLocation } from "react-router-dom";
 import DataInteractionPanel from "components/DataInteractionPanel";
-import { Text } from '@mantine/core';
+import { Text, Grid } from '@mantine/core';
 const ExerciseGenerativeModels = () => {
   const exerciseLinks = [
     // Add links to other exercises as needed
@@ -36,11 +36,11 @@ const ExerciseGenerativeModels = () => {
           />
         </>
       )}
-      <Row>
-        <Col md={11}>
+      <Grid>
+        <Grid.Col span={{ md: 11 }}>
           <DynamicRoutes routes={exerciseLinks} />
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </ModuleFrame>
   );
 };

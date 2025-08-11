@@ -11,8 +11,8 @@ const Exercise2 = () => {
         In this exercise, you will develop a simple machine learning pipeline
         using scikit-learn to model the data explored in Exercise 1.
       </p>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h2>Requirements</h2>
           <h3>Feature Selection and Preprocessing</h3>
           <ul>
@@ -66,8 +66,8 @@ const Exercise2 = () => {
               commentary on each decision made in the process.
             </li>
           </ul>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

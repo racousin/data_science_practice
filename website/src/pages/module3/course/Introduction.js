@@ -11,8 +11,8 @@ const Introduction = () => {
         involves various techniques from statistics, machine learning, and
         computer science to analyze data to make informed decisions.
       </p>
-      <Row>
-        <Col md={12}>
+      <Grid>
+        <Grid.Col span={{ md: 12 }}>
           <h3 id="data">The Data</h3>
           <p>
             Data is the cornerstone of the modern digital economy, powering
@@ -47,10 +47,10 @@ const Introduction = () => {
             significantly to the generation of user-generated content, offering
             rich datasets that are invaluable for insights and marketing.
           </p>
-        </Col>
-      </Row>
-      <Row>
-        <Col md={12}>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col span={{ md: 12 }}>
           <h3 id="applications">"Recent" Breakthroughs in AI Applications</h3>
           <p>
             Recent years have seen remarkable advancements in AI applications
@@ -127,10 +127,10 @@ const Introduction = () => {
           <p>
             <em>Source: OpenAI. (2023). GPT-4 Technical Report.</em>
           </p>
-        </Col>
-      </Row>
-      <Row>
-        <Col md={12}>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col span={{ md: 12 }}>
           <h2 id="roles">Roles in Data Science</h2>
           <p>
             Data science teams comprise professionals with diverse skill sets,
@@ -278,10 +278,10 @@ const Introduction = () => {
             ones may transform to meet the ever-changing challenges of working
             with data.
           </p>
-        </Col>
-      </Row>
-      <Row>
-  <Col md={12}>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+  <Grid.Col span={{ md: 12 }}>
     <h3 id="tools">The Data Science Tools</h3>
     <p>
       Data science relies heavily on a suite of powerful tools that help
@@ -389,8 +389,8 @@ const Introduction = () => {
         <strong>Databricks:</strong> A unified analytics platform built on top of Apache Spark, offering collaborative notebooks and integrated workflows for big data processing and machine learning.
       </li>
     </ul>
-  </Col>
-</Row>
+  </Grid.Col>
+</Grid>
     </Container>
   );
 };

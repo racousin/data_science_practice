@@ -31,8 +31,8 @@ const Exercise2 = () => {
       <p>
         In this exercise, you will develop a model to predict diabetes in Pima Indian women based on various health metrics.
       </p>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h2>Overview</h2>
           <ul>
             <li>Load the Pima Indians Diabetes dataset and explore its structure and statistics.</li>
@@ -41,10 +41,10 @@ const Exercise2 = () => {
             <li>Evaluate the model's performance using appropriate metrics, with a focus on accuracy.</li>
             <li>Generate predictions for the test dataset.</li>
           </ul>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col>
           <h2>Expected Output</h2>
           <p>
             You are expected to submit two files:
@@ -53,10 +53,10 @@ const Exercise2 = () => {
             <li>A Jupyter Notebook named <code>exercise2.ipynb</code> containing your model development, evaluation, and analysis.</li>
             <li>A CSV file named <code>submission.csv</code> with your predictions.</li>
           </ol>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col>
           <h2>Submission Requirements</h2>
           <ol>
             <li>
@@ -73,10 +73,10 @@ const Exercise2 = () => {
               Save both the <code>exercise2.ipynb</code> notebook and the <code>submission.csv</code> file in the <code>module3</code> directory under your username folder.
             </li>
           </ol>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col>
           <h2>Review PR Validation</h2>
           <p>Once you've completed your model development and created your submission, follow these steps:</p>
           <ol>
@@ -103,9 +103,9 @@ const Exercise2 = () => {
           <p>
             <strong>Note:</strong> The validation threshold for this exercise is an accuracy above 80% on the test set. Ensure your model meets or exceeds this threshold.
           </p>
-        </Col>
-      </Row>
-      <Row>
+        </Grid.Col>
+      </Grid>
+      <Grid>
         <DataInteractionPanel
           trainDataUrl={trainDataUrl}
           testDataUrl={testDataUrl}
@@ -114,7 +114,7 @@ const Exercise2 = () => {
           notebookColabUrl={notebookColabUrl}
           metadata={metadata}
         />
-      </Row>
+      </Grid>
     </Container>
   );
 };

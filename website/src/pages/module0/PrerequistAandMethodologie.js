@@ -13,13 +13,13 @@ const PrerequisiteAndMethodology = () => {
       title="Module 0: Prerequisites and Methodology"
       courseLinks={[]}
     >
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <p>Last Updated: {"2024-09-20"}</p>
-        </Col>
-      </Row>
-      <Row>
-        <Col md={11}>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col span={{ md: 11 }}>
           <h2>Setting Up Your Environment</h2>
           <p>
             To participate in the course exercises and submit your work, you
@@ -64,10 +64,10 @@ const PrerequisiteAndMethodology = () => {
               start with the <Link to="/module1/course/">Module 1: Git</Link>
             </li>
           </ol>
-        </Col>
-      </Row>
-      <Row>
-      <Col md={11}>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+      <Grid.Col span={{ md: 11 }}>
         <h2>Methodology and Submitting Exercises</h2>
         <p>
           Each module in this course is divided into a learning section and an
@@ -110,9 +110,9 @@ const PrerequisiteAndMethodology = () => {
           </a>{" "}
           on the course website.
         </p>
-      </Col>
-    </Row>
-      <Row>
+      </Grid.Col>
+    </Grid>
+      <Grid>
         <h2>Example Exercise Submission Steps</h2>
         <ol>
           <li>
@@ -191,7 +191,7 @@ const PrerequisiteAndMethodology = () => {
             <p>Once approved, merge your pull request into the main branch.</p>
           </li>
         </ol>
-      </Row>
+      </Grid>
     </ModuleFrame>
   );
 };

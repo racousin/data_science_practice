@@ -8,28 +8,28 @@ const DeepRL = () => {
   return (
     <Container fluid>
       <h2>Deep Reinforcement Learning</h2>
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Glossary</h3>
           <ul>
             <li>Reinforce/VPG</li>
             <li>Deep Q-learning</li>
             <li>Actor-Critic</li>
           </ul>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Limitations of Traditional Q Learning</h3>
           <p>Q Learning faces challenges when scaling to complex problems:</p>
           <ul>
             <li>High-dimensional state spaces lead to slow convergence.</li>
             <li>Inapplicable to environments with continuous action spaces.</li>
           </ul>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Deep Q Learning Overview</h3>
           <p>Deep Q Learning extends Q Learning by using neural networks:</p>
           <ul>
@@ -54,10 +54,10 @@ const DeepRL = () => {
               .
             </li>
           </ul>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Executing the Deep Q Learning Algorithm</h3>
           <p>Steps to implement Deep Q Learning:</p>
           <ol>
@@ -78,10 +78,10 @@ const DeepRL = () => {
               Iterate to refine <InlineMath math="\theta" /> towards optimal.
             </li>
           </ol>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Improving Deep Q Learning Stability</h3>
           <p>Key techniques for enhancing DQL:</p>
           <ul>
@@ -100,10 +100,10 @@ const DeepRL = () => {
               overestimation.
             </li>
           </ul>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Policy Optimization</h3>
           <ul>
             <li>
@@ -134,10 +134,10 @@ const DeepRL = () => {
               Policy Gradient Algorithms
             </a>
           </p>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Reinforce/VPG algorithm</h3>
           <p>
             Initialize policy <InlineMath math="\pi_{\theta}" />
@@ -158,10 +158,10 @@ const DeepRL = () => {
             </li>
             <li>Iterate</li>
           </ol>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Introduction to Actor-Critic Models</h3>
           <p>
             Actor-Critic models combine the benefits of policy-based and
@@ -182,10 +182,10 @@ const DeepRL = () => {
               function to reduce the variance in policy gradient estimates.
             </li>
           </ul>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Policy Gradient in Actor-Critic</h3>
           <p>The policy gradient in Actor-Critic models can be written as:</p>
           <BlockMath math="\nabla_{\theta} J(\pi_{\theta}) = E_{\tau \sim \pi_{\theta}}\left[\sum_{t=0}^{T} \nabla_{\theta} \log \pi_{\theta}(a_t |s_t) \Phi_t\right]" />
@@ -205,10 +205,10 @@ const DeepRL = () => {
             Using <InlineMath math="\Phi_t" /> improves policy updates by
             evaluating actions more effectively.
           </p>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Actor-Critic Algorithm Steps</h3>
           <p>Implementing the Actor-Critic algorithm involves:</p>
           <ol>
@@ -237,8 +237,8 @@ const DeepRL = () => {
             </li>
             <li>Repeat the process to refine both Actor and Critic.</li>
           </ol>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

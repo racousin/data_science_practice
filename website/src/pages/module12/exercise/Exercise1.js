@@ -67,8 +67,8 @@ const Exercise1 = () => {
         generate a baseline prediction. This task integrates data understanding
         with predictive modeling.
       </p>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h2>Overview</h2>
           <ul>
             <li>Load the dataset and explore its structure and statistics.</li>
@@ -88,10 +88,10 @@ const Exercise1 = () => {
               merge your pull request to the main branch.
             </li>
           </ul>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col>
           <h2>Expected Output</h2>
           <p>
             You are expected to submit a Jupyter Notebook containing the EDA and
@@ -107,10 +107,10 @@ const Exercise1 = () => {
               requirements.
             </li>
           </ul>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col>
           <h2>Evaluation</h2>
           <ol>
             <li>
@@ -142,9 +142,9 @@ const Exercise1 = () => {
             (MAE) metric. The error threshold for this exercise is 34000. Ensure
             your predictions are accurate enough to meet this threshold.
           </p>
-        </Col>
-      </Row>
-      <Row>
+        </Grid.Col>
+      </Grid>
+      <Grid>
         <DataInteractionPanel
           trainDataUrl={trainDataUrl}
           testDataUrl={testDataUrl}
@@ -153,7 +153,7 @@ const Exercise1 = () => {
           notebookColabUrl={notebookColabUrl}
           metadata={metadata}
         />
-      </Row>
+      </Grid>
     </Container>
   );
 };

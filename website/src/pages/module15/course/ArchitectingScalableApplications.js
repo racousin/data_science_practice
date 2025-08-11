@@ -10,8 +10,8 @@ const ArchitectingScalableApplications = () => {
         In this section, you will learn how to design applications for
         scalability and reliability on GCP.
       </p>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h2>Architecting Multi-Tier Applications using GCP Services</h2>
           <p>
             Multi-tier applications can be architected using GCP services such
@@ -32,8 +32,8 @@ const ArchitectingScalableApplications = () => {
             involve techniques such as caching, load balancing, and
             auto-scaling.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

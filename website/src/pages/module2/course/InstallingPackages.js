@@ -6,8 +6,8 @@ const InstallingPackages = () => {
   return (
     <Container fluid>
       <h1 className="my-4">Installing Packages</h1>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h3 id="install-package">Install a Package</h3>
           <p>To install a package using pip, use the following command:</p>
           <CodeBlock code={`pip install numpy`} language="bash"/>
@@ -60,8 +60,8 @@ const InstallingPackages = () => {
           <p>To save the current environment’s dependencies to a <code>requirements.txt</code> file, run:</p>
           <CodeBlock code={`pip freeze > requirements.txt`} language="bash"/>
           <p>This command captures all installed packages and their versions in the <code>requirements.txt</code> file. This file can be used later to recreate the same environment.</p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

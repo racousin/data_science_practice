@@ -343,8 +343,8 @@ lora_model.save_pretrained("./lora_model_saved")`}
             />
             <div className="mt-4">
               <h4>Advantages of LoRA</h4>
-              <Row>
-                <Col md={6}>
+              <Grid>
+                <Grid.Col span={{ md: 6 }}>
                   <Card className="h-100">
                     <Card.Body>
                       <Card.Title className="d-flex align-items-center">
@@ -359,8 +359,8 @@ lora_model.save_pretrained("./lora_model_saved")`}
                       </ListGroup>
                     </Card.Body>
                   </Card>
-                </Col>
-                <Col md={6}>
+                </Grid.Col>
+                <Grid.Col span={{ md: 6 }}>
                   <Card className="h-100">
                     <Card.Body>
                       <Card.Title className="d-flex align-items-center">
@@ -375,8 +375,8 @@ lora_model.save_pretrained("./lora_model_saved")`}
                       </ListGroup>
                     </Card.Body>
                   </Card>
-                </Col>
-              </Row>
+                </Grid.Col>
+              </Grid>
             </div>
           </Card.Body>
         </Card>

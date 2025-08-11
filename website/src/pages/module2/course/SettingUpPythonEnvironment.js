@@ -13,8 +13,8 @@ const SettingUpPythonEnvironment = () => {
         the setup of a Python virtual environment using <code>venv</code>, a
         built-in tool for creating isolated Python environments.
       </p>
-      <Row>
-        <Col md={12}>
+      <Grid>
+        <Grid.Col span={{ md: 12 }}>
           <h3 id="create-environment">Create a Virtual Environment</h3>
           <p>
             To create a new virtual environment, use the <code>venv</code>{" "}
@@ -54,8 +54,8 @@ const SettingUpPythonEnvironment = () => {
             This command deactivates the environment, and your command prompt
             will return to its normal state.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

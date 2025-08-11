@@ -41,8 +41,8 @@ const ModelTrainingPrediction = () => {
   <text x="400" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold">Training Process</text>
   <text x="400" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold">Serving Process</text>
 </svg>
-      <Row className="mb-4">
-        <Col md={6}>
+      <Grid className="mb-4">
+        <Grid.Col span={{ md: 6 }}>
           <section>
             <h2 id="model-fitting">Training</h2>
             <p>
@@ -95,8 +95,8 @@ joblib.dump(scaler, 'scaler.joblib')
               `}
             />
           </section>
-        </Col>
-        <Col md={6}>
+        </Grid.Col>
+        <Grid.Col span={{ md: 6 }}>
           <section>
             <h2 id="prediction">Prediction</h2>
             <p>
@@ -124,8 +124,8 @@ print("Predictions:", predictions)
               `}
             />
           </section>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       <section className="mb-4">
         <h2 id="considerations">Key Considerations</h2>
         <ul>

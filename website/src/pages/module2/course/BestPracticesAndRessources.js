@@ -6,8 +6,8 @@ const BestPracticesAndResources = () => {
   return (
     <Container fluid>
       <h1 className="my-4">Best Practices and Resources</h1>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h3 id="other-package-managers">Other Package Managers</h3>
           <p>
             While <code>pip</code> is the standard package manager for Python,
@@ -36,10 +36,10 @@ const BestPracticesAndResources = () => {
           <CodeBlock code={`conda activate myenv`} />
           <p>Install a package:</p>
           <CodeBlock code={`conda install numpy`} />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col>
           <h3 id="testing-and-unit-tests">Testing and Unit Tests</h3>
           <p>
             Writing tests for your code is a crucial practice to ensure
@@ -77,10 +77,10 @@ if __name__ == '__main__':
     unittest.main()`}
             language={"python"}
           />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col>
           <h3 id="syntax-and-linting">Syntax and Linting</h3>
           <p>
             Maintaining a consistent code style is important for readability and
@@ -104,8 +104,8 @@ if __name__ == '__main__':
           <CodeBlock code={`pip install flake8`} />
           <p>Run Flake8:</p>
           <CodeBlock code={`flake8 myscript.py`} />
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

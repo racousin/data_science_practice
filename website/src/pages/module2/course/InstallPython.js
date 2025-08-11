@@ -6,8 +6,8 @@ const InstallPython = () => {
   return (
     <Container fluid>
       <h1 className="my-4">Installing Python</h1>
-      <Row>
-        <Col md={12}>
+      <Grid>
+        <Grid.Col span={{ md: 12 }}>
           <h3 id="windows">Windows</h3>
           <p>Follow these steps to install Python on Windows:</p>
           <ol>
@@ -87,10 +87,10 @@ Python 3.10.12
               <CodeBlock code={`sudo apt-get install python3`} />
             </li>
           </ol>
-        </Col>
-      </Row>
-      <Row>
-        <Col md={12}>
+        </Grid.Col>
+      </Grid>
+      <Grid>
+        <Grid.Col span={{ md: 12 }}>
           <h3 id="install-pip">Install pip</h3>
           <p>
             <code>pip</code> is Python's package installer and is included by
@@ -139,8 +139,8 @@ pip 22.0.2 from /usr/lib/python3/dist-packages/pip (python 3.10)
             easily manage and install packages, which are often necessary for
             development projects.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

@@ -11,8 +11,8 @@ const Exercise1 = () => {
         In this exercise, you will use a Jupyter Notebook to perform exploratory
         data analysis (EDA) on a provided dataset.
       </p>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h2>Requirements</h2>
           <h3>Load and Inspect the Data</h3>
           <ul>
@@ -50,8 +50,8 @@ const Exercise1 = () => {
               hypotheses about the data.
             </li>
           </ul>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

@@ -16,8 +16,8 @@ const Exercise1 = () => {
         This file should contain your username, first name, and surname,
         separated by commas (no space).
       </p>
-      <Row>
-        <Col md={6}>
+      <Grid>
+        <Grid.Col span={{ md: 6 }}>
           <h2>Instructions</h2>
           <ol>
             <li>
@@ -40,8 +40,8 @@ const Exercise1 = () => {
             Ensure the file is saved with the correct content to pass automated
             checks.
           </p>
-        </Col>
-        <Col md={6}>
+        </Grid.Col>
+        <Grid.Col span={{ md: 6 }}>
           <h2>Example</h2>
           <p>
             <code>Directory Path: ./your_username/module1/user</code>
@@ -53,11 +53,11 @@ const Exercise1 = () => {
             This block shows how your file should look when opened with a text
             editor.
           </p>
-        </Col>
-      </Row>
-      <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid.Col>
         <EvaluationModal module={1} />
-      </Col>
+      </Grid.Col>
     </Container>
   );
 };

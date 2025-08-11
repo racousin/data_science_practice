@@ -8,17 +8,17 @@ const ModelBased = () => {
   return (
     <Container fluid>
       <h2>Model-Based Reinforcement Learning</h2>
-      <Row className="mt-4">
-        <Col>
+      <Grid className="mt-4">
+        <Grid.Col>
           <p>
             Model-Based Reinforcement Learning (MBRL) is an approach where the
             agent learns a model of the environment's dynamics and uses this
             model to make decisions or improve its policy.
           </p>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Key Concepts</h3>
           <ul>
             <li>
@@ -34,10 +34,10 @@ const ModelBased = () => {
               in the learned model to avoid overfitting.
             </li>
           </ul>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Advantages of Model-Based RL</h3>
           <ul>
             <li>
@@ -53,10 +53,10 @@ const ModelBased = () => {
               dynamics.
             </li>
           </ul>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Model Learning</h3>
           <p>The environment model can be represented as:</p>
           <BlockMath
@@ -76,10 +76,10 @@ const ModelBased = () => {
             ]
           `}
           />
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Planning with Learned Models</h3>
           <p>
             Once a model is learned, it can be used for planning. Common
@@ -99,10 +99,10 @@ const ModelBased = () => {
               tree of possible future states and actions.
             </li>
           </ul>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Challenges in Model-Based RL</h3>
           <ul>
             <li>
@@ -118,10 +118,10 @@ const ModelBased = () => {
               struggle with accurate long-term predictions.
             </li>
           </ul>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Example: Simple Model-Based RL Algorithm</h3>
           <CodeBlock
             code={`
@@ -183,10 +183,10 @@ for episode in range(num_episodes):
     # ...
             `}
           />
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Recent Advancements</h3>
           <ul>
             <li>
@@ -206,10 +206,10 @@ for episode in range(num_episodes):
               differentiable planning modules into end-to-end learning systems.
             </li>
           </ul>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
+        </Grid.Col>
+      </Grid>
+      <Grid className="mt-4">
+        <Grid.Col>
           <h3>Conclusion</h3>
           <p>
             Model-Based Reinforcement Learning offers a powerful framework for
@@ -218,8 +218,8 @@ for episode in range(num_episodes):
             of what's possible with MBRL, making it an exciting area of study in
             the field of AI and robotics.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };

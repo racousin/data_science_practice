@@ -8,19 +8,19 @@ const NLPEvaluation = () => {
   return (
     <Container className="py-4">
       <h1>Modern LLM Evaluation: Metrics and Challenges</h1>
-      <Row className="mb-4">
-        <Col>
+      <Grid className="mb-4">
+        <Grid.Col>
           <p className="lead">
             Evaluating Large Language Models (LLMs) presents unique challenges beyond traditional NLP metrics.
             This guide covers cutting-edge approaches for assessing translation quality, reasoning abilities,
             and general capabilities with practical examples and current leaderboards.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
       <section id="fundamentals" className="mb-5">
         <h2>1. LLM Evaluation Fundamentals</h2>
-        <Row className="mb-4">
-          <Col>
+        <Grid className="mb-4">
+          <Grid.Col>
             <Card>
               <Card.Body>
                 <p>
@@ -42,16 +42,16 @@ const NLPEvaluation = () => {
                 </Alert>
               </Card.Body>
             </Card>
-          </Col>
-        </Row>
+          </Grid.Col>
+        </Grid>
       </section>
       <section id="translation-eval" className="mb-5">
         <h2>2. Translation Evaluation Challenges</h2>
         <p>
           Measuring translation accuracy goes beyond word-level correspondence to capture meaning, fluency, and cultural nuance.
         </p>
-        <Row className="mb-4">
-          <Col md={6}>
+        <Grid className="mb-4">
+          <Grid.Col span={{ md: 6 }}>
             <Card className="h-100">
               <Card.Header>Limitations of Traditional Metrics</Card.Header>
               <Card.Body>
@@ -68,8 +68,8 @@ const NLPEvaluation = () => {
                 </Alert>
               </Card.Body>
             </Card>
-          </Col>
-          <Col md={6}>
+          </Grid.Col>
+          <Grid.Col span={{ md: 6 }}>
             <Card className="h-100">
               <Card.Header>Modern Translation Evaluation Approaches</Card.Header>
               <Card.Body>
@@ -89,8 +89,8 @@ const NLPEvaluation = () => {
                 </p>
               </Card.Body>
             </Card>
-          </Col>
-        </Row>
+          </Grid.Col>
+        </Grid>
         <Card className="mb-4">
           <Card.Header>Translation Evaluation Implementation</Card.Header>
           <Card.Body>
@@ -137,8 +137,8 @@ def llm_translation_evaluation(source_text, translation, reference, source_langu
           Assessing LLMs' reasoning abilities is particularly challenging as it involves logical thinking,
           step-by-step problem solving, and consistency.
         </p>
-        <Row className="mb-4">
-          <Col md={6}>
+        <Grid className="mb-4">
+          <Grid.Col span={{ md: 6 }}>
             <Card className="h-100">
               <Card.Header>Reasoning Benchmarks</Card.Header>
               <Card.Body>
@@ -189,8 +189,8 @@ def llm_translation_evaluation(source_text, translation, reference, source_langu
                 </ul>
               </Card.Body>
             </Card>
-          </Col>
-          <Col md={6}>
+          </Grid.Col>
+          <Grid.Col span={{ md: 6 }}>
             <Card className="h-100">
               <Card.Header>Reasoning Evaluation Techniques</Card.Header>
               <Card.Body>
@@ -232,16 +232,16 @@ def llm_translation_evaluation(source_text, translation, reference, source_langu
                 </Alert>
               </Card.Body>
             </Card>
-          </Col>
-        </Row>
+          </Grid.Col>
+        </Grid>
       </section>
       <section id="leaderboards" className="mb-5">
         <h2>4. LLM Leaderboards and Comparative Evaluation</h2>
         <p>
           Leaderboards offer standardized comparisons across models, though they come with limitations.
         </p>
-        <Row className="mb-4">
-          <Col>
+        <Grid className="mb-4">
+          <Grid.Col>
             <Card>
               <Card.Header>Major LLM Evaluation Leaderboards</Card.Header>
               <Card.Body>
@@ -299,8 +299,8 @@ def llm_translation_evaluation(source_text, translation, reference, source_langu
                 </Alert>
               </Card.Body>
             </Card>
-          </Col>
-        </Row>
+          </Grid.Col>
+        </Grid>
       </section>
     </Container>
   );

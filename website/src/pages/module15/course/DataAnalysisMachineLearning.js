@@ -10,8 +10,8 @@ const DataAnalysisMachineLearning = () => {
         In this section, you will learn how to utilize GCP services for data
         analysis and deploying machine learning models.
       </p>
-      <Row>
-        <Col>
+      <Grid>
+        <Grid.Col>
           <h2>Using BigQuery for Large-scale Data Analysis</h2>
           <p>
             BigQuery is a fully managed, serverless data warehouse that can
@@ -30,8 +30,8 @@ const DataAnalysisMachineLearning = () => {
             used to build and train models. AI Platform provides a managed
             service for training and deploying TensorFlow models.
           </p>
-        </Col>
-      </Row>
+        </Grid.Col>
+      </Grid>
     </Container>
   );
 };
