@@ -1,6 +1,5 @@
 import React from "react";
-import {  Row, Col, Image } from "react-bootstrap";
-import { Title, Text, Stack, Container, Accordion, Grid } from '@mantine/core';
+import { Title, Text, Stack, Container, Accordion, Grid, Image } from '@mantine/core';
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 import CodeBlock from "components/CodeBlock";
@@ -44,8 +43,6 @@ const QLearning = () => {
   );
 };
 
-
-
 const SarsaAlgorithm = () => {
   return (
     <Stack className="p-4">
@@ -80,9 +77,7 @@ const SarsaAlgorithm = () => {
   );
 };
 
-
 const RLObjectiveSection = () => {
-
 
   return (
 
@@ -122,8 +117,6 @@ const RLObjectiveSection = () => {
       </Stack>
   );
 };
-
-
 
 const ModelFreeMethods = () => {
   const agentCode = `

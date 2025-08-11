@@ -1,5 +1,4 @@
 import React, { lazy } from "react";
-import { Container, Row, Col } from "react-bootstrap";
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
 import { useLocation } from "react-router-dom";

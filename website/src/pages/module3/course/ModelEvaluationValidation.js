@@ -1,5 +1,4 @@
 import React from "react";
-import { Row, Col } from 'react-bootstrap';
 import { Container, Grid, Image } from '@mantine/core';
 import { BlockMath, InlineMath } from "react-katex";
 import CodeBlock from "components/CodeBlock";

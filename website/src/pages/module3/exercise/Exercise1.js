@@ -1,5 +1,4 @@
 import React from "react";
-import { Row, Col } from 'react-bootstrap';
 import { Container, Grid } from '@mantine/core';
 import DataInteractionPanel from "components/DataInteractionPanel";
 import CodeBlock from "components/CodeBlock";

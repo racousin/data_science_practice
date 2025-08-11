@@ -1,5 +1,4 @@
 import React from "react";
-import { Row, Col, ListGroup } from 'react-bootstrap';
 import { Container, Grid, Card, Alert } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 import { FaLightbulb, FaCode, FaExclamationTriangle, FaTools, FaRocket } from "react-icons/fa";

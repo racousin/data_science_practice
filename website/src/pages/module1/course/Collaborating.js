@@ -1,5 +1,4 @@
 import React from "react";
-import { Row, Col } from 'react-bootstrap';
 import { Container, Grid, Image } from '@mantine/core';
 const Collaborating = () => {
   return (

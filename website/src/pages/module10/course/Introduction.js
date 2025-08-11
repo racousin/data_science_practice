@@ -1,5 +1,4 @@
 import React from "react";
-import { Row, Col, Card, Table } from "react-bootstrap";
 import { Text, Title, Group, Image, Stack, Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 import 'katex/dist/katex.min.css';
@@ -35,8 +34,7 @@ const Introduction = () => {
         {/* Text Data Representation */}
         <div>
           <Title order={2} id="text-representation">Text Data Representation</Title>
-          
-          
+
           <Text className="mt-3">
             At its core, text is sequential, discrete, and unstructured data that requires transformation into numerical 
             representations before it can be processed by machine learning algorithms.

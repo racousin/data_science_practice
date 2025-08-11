@@ -84,11 +84,60 @@ def add_grid_to_mantine_import(content):
     
     return content, True
 
+def remove_unused_bootstrap_imports(content):
+    """Remove unused react-bootstrap imports"""
+    
+    # Skip files that don't have react-bootstrap imports
+    if 'react-bootstrap' not in content:
+        return content, False
+        
+    modified = False
+    
+    # Remove entire react-bootstrap import lines
+    bootstrap_import_pattern = r'import\s*{[^}]*}\s*from\s*["\']react-bootstrap["\'];\s*\n?'
+    new_content = re.sub(bootstrap_import_pattern, '', content)
+    
+    if new_content != content:
+        modified = True
+        content = new_content
+    
+    # Clean up any empty lines that might be left
+    content = re.sub(r'\n\s*\n\s*\n', '\n\n', content)  # Replace multiple empty lines with just one
+    
+    return content, modified
+
 def main():
     import sys
     
+    # Check if we should remove bootstrap imports
+    if len(sys.argv) > 1 and sys.argv[1] == "--remove-bootstrap":
+        print("Removing unused react-bootstrap imports...")
+        
+        js_files = find_js_jsx_files("website/src")
+        print(f"Found {len(js_files)} JavaScript/JSX files")
+        
+        modified_files = []
+        for file_path in js_files:
+            try:
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                
+                new_content, modified = remove_unused_bootstrap_imports(content)
+                
+                if modified:
+                    with open(file_path, 'w', encoding='utf-8') as f:
+                        f.write(new_content)
+                    modified_files.append(file_path)
+                    print(f"Removed Bootstrap imports: {file_path}")
+                    
+            except Exception as e:
+                print(f"Error processing {file_path}: {e}")
+        
+        print(f"\nProcessed {len(js_files)} files")
+        print(f"Updated {len(modified_files)} files")
+        
     # Check if we should add Grid to imports
-    if len(sys.argv) > 1 and sys.argv[1] == "--add-grid":
+    elif len(sys.argv) > 1 and sys.argv[1] == "--add-grid":
         print("Adding Grid to Mantine imports where needed...")
         
         js_files = find_js_jsx_files("website/src")

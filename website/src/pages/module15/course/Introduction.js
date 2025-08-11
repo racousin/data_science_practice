@@ -1,5 +1,4 @@
 import React from "react";
-import { Row, Col } from 'react-bootstrap';
 import { Container, Grid } from '@mantine/core';
 const Introduction = () => {
   return (

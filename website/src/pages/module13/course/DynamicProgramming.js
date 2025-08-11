@@ -1,9 +1,8 @@
 import React from "react";
-import { Container, Row, Col, Image } from "react-bootstrap";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 import CodeBlock from "components/CodeBlock";
-import { Paper, Alert, Text, Title, Code, Grid } from '@mantine/core';
+import { Paper, Alert, Text, Title, Code, Grid, Container, Image } from '@mantine/core';
 import { AlertTriangle } from 'lucide-react';
 
 const DynamicProgrammingSection = () => {
@@ -235,10 +234,6 @@ const DynamicProgramming = () => {
   </Grid.Col>
 </Grid>
 
-
-
-
-
       <Grid className="mt-4">
         <Grid.Col>
           <h3 id="mdp-solution" >The MDP Solution</h3>
@@ -363,7 +358,6 @@ const DynamicProgramming = () => {
           />
         </Grid.Col>
       </Grid>
-
 
       <Grid className="mt-4">
         <Grid.Col>

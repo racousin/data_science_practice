@@ -1,11 +1,9 @@
 import React, { lazy } from "react";
-import { Row, Col } from "react-bootstrap";
 import { Grid } from '@mantine/core';
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
 import { useLocation } from "react-router-dom";
 import { TouchpadOff } from "lucide-react";
-
 
 // TODO 
 // explain hyper clearly the steps of eval and train with a complete example
