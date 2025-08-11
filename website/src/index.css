@@ -1,0 +1,170 @@
+/* Global styles for dark mode support */
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* Light mode */
+[data-mantine-color-scheme="light"] {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+[data-mantine-color-scheme="light"] body {
+  background-color: #ffffff;
+}
+
+/* Dark mode */
+[data-mantine-color-scheme="dark"] {
+  background-color: #1a1b1e;
+  color: #c1c2c5;
+}
+
+[data-mantine-color-scheme="dark"] body {
+  background-color: #1a1b1e;
+}
+
+/* Dark mode text visibility fixes */
+[data-mantine-color-scheme="dark"] h1,
+[data-mantine-color-scheme="dark"] h2, 
+[data-mantine-color-scheme="dark"] h3,
+[data-mantine-color-scheme="dark"] h4,
+[data-mantine-color-scheme="dark"] h5,
+[data-mantine-color-scheme="dark"] h6 {
+  color: #ffffff;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Title-root {
+  color: #ffffff !important;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Text-root:not([data-dimmed]) {
+  color: #c1c2c5;
+}
+
+/* General content in dark mode */
+[data-mantine-color-scheme="dark"] p {
+  color: #c1c2c5;
+}
+
+[data-mantine-color-scheme="dark"] li {
+  color: #c1c2c5;
+}
+
+[data-mantine-color-scheme="dark"] strong {
+  color: #e9ecef;
+}
+
+[data-mantine-color-scheme="dark"] ul,
+[data-mantine-color-scheme="dark"] ol {
+  color: #c1c2c5;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Anchor-root {
+  color: #4dabf7;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-NavLink-root {
+  color: #c1c2c5;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-NavLink-root:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-NavLink-label {
+  color: #c1c2c5 !important;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-NavLink-root[data-active="true"] {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Accordion-label {
+  color: #c1c2c5;
+}
+
+/* Auto mode follows system preference */
+@media (prefers-color-scheme: dark) {
+  [data-mantine-color-scheme="auto"] {
+    background-color: #1a1b1e;
+    color: #c1c2c5;
+  }
+  
+  [data-mantine-color-scheme="auto"] body {
+    background-color: #1a1b1e;
+  }
+  
+  [data-mantine-color-scheme="auto"] h1,
+  [data-mantine-color-scheme="auto"] h2,
+  [data-mantine-color-scheme="auto"] h3,
+  [data-mantine-color-scheme="auto"] h4,
+  [data-mantine-color-scheme="auto"] h5,
+  [data-mantine-color-scheme="auto"] h6 {
+    color: #ffffff;
+  }
+  
+  [data-mantine-color-scheme="auto"] .mantine-Title-root {
+    color: #ffffff !important;
+  }
+  
+  [data-mantine-color-scheme="auto"] .mantine-Text-root:not([data-dimmed]) {
+    color: #c1c2c5;
+  }
+  
+  /* General content in auto mode (dark) */
+  [data-mantine-color-scheme="auto"] p {
+    color: #c1c2c5;
+  }
+  
+  [data-mantine-color-scheme="auto"] li {
+    color: #c1c2c5;
+  }
+  
+  [data-mantine-color-scheme="auto"] strong {
+    color: #e9ecef;
+  }
+  
+  [data-mantine-color-scheme="auto"] ul,
+  [data-mantine-color-scheme="auto"] ol {
+    color: #c1c2c5;
+  }
+  
+  [data-mantine-color-scheme="auto"] .mantine-Anchor-root {
+    color: #4dabf7;
+  }
+  
+  [data-mantine-color-scheme="auto"] .mantine-NavLink-root {
+    color: #c1c2c5;
+  }
+  
+  [data-mantine-color-scheme="auto"] .mantine-NavLink-root:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  [data-mantine-color-scheme="auto"] .mantine-NavLink-label {
+    color: #c1c2c5 !important;
+  }
+  
+  [data-mantine-color-scheme="auto"] .mantine-NavLink-root[data-active="true"] {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+  }
+  
+  [data-mantine-color-scheme="auto"] .mantine-Accordion-label {
+    color: #c1c2c5;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  [data-mantine-color-scheme="auto"] {
+    background-color: #ffffff;
+    color: #000000;
+  }
+  
+  [data-mantine-color-scheme="auto"] body {
+    background-color: #ffffff;
+  }
+}

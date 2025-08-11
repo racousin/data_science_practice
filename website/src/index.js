@@ -4,6 +4,7 @@ import App from "./App";
 import "@mantine/core/styles.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "katex/dist/katex.min.css";
+import 'index.css'
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
