@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import Fuse from "fuse.js";
-import { Card, ListGroup } from "react-bootstrap"; // Using Bootstrap components for styling
+import { Card, ListGroup } from "react-bootstrap";
+import { Card } from '@mantine/core'; // Using Bootstrap components for styling
 
 const SearchResultsPage = () => {
   const [results, setResults] = useState([]);

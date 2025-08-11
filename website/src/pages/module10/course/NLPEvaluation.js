@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Row, Col, Card, Alert, Table, Tabs, Tab } from "react-bootstrap";
+import { Container, Grid, Card, Alert, Table, Tabs, TabsTab, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 import { InlineMath, BlockMath } from "react-katex";
 import { FaLightbulb, FaChartBar, FaExclamationTriangle, FaCheck, FaTimes } from "react-icons/fa";

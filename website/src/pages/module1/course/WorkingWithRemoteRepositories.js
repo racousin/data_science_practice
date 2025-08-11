@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Row, Col, Nav, Tab, Image } from "react-bootstrap";
+import { Container, Grid, Stack, TabsTab, Image, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 
 const WorkingWithRemoteRepositories = () => {

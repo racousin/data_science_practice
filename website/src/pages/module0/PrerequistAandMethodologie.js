@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Grid, Button, Grid } from '@mantine/core';
 import { Link } from "react-router-dom";
 import ModuleNavigation from "components/ModuleNavigation";
 import CodeBlock from "components/CodeBlock";

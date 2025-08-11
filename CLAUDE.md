@@ -10,6 +10,26 @@ This is a personal website and teaching platform featuring:
 - **Python Testing Framework**: Automated assessment system at `/tests`
 - **Content Management**: Course materials and Jupyter notebooks
 
+## Design Principles
+
+### Cultural Direction
+- **Academic and Professional**: Maintain a scholarly, educational focus
+- **Concise and Direct**: Clear communication without unnecessary elaboration
+- **Objective and Neutral**: Factual, impersonal presentation of content
+- **Non-commercial**: Avoid marketing language, focus on educational value
+
+### Visual Style
+- **Minimalist**: Simple, clean interfaces without clutter
+- **Sober Colors**: Modern, professional palette avoiding bright or playful colors
+- **Direct Interaction**: Clickable elements without unnecessary buttons or decorations
+- **Functional Design**: Every element serves a clear purpose
+
+### Content Guidelines
+- **Simple Navigation**: Direct links and lists over complex cards or widgets
+- **Clear Typography**: Readable fonts with appropriate hierarchy
+- **Dark Mode Support**: Accessible viewing in different lighting conditions
+- **Responsive Layout**: Works seamlessly across devices
+
 ## Common Commands
 
 ### Website Development

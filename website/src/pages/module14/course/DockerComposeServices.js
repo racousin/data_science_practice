@@ -1,5 +1,6 @@
 import React from "react";
 import { Container } from "react-bootstrap";
+import { Container } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 
 const DockerComposeServices = () => {

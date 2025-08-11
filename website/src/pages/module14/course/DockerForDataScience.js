@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Alert } from "react-bootstrap";
+import { Container, Alert } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 
 const DockerForDataScience = () => {

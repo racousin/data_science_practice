@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Table } from "react-bootstrap";
+import { Container, Table } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 
 const WorkingWithContainers = () => {
