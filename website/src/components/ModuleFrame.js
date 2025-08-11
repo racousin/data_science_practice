@@ -1,15 +1,13 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import ModuleNavigation from "components/ModuleNavigation";
+import { Container, Box } from "@mantine/core";
 
 const ModuleFrame = ({ module, isCourse, title, children }) => {
   return (
-    <Row>
-      <ModuleNavigation module={module} isCourse={isCourse} title={title} />
-      <Col md={12} className="module-content">
+    <Container size="xl">
+      <Box className="module-content">
         {children}
-      </Col>
-    </Row>
+      </Box>
+    </Container>
   );
 };
 
