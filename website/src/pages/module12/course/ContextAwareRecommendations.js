@@ -1,14 +1,11 @@
 import React from "react";
-import { Container } from "react-bootstrap";
 import { Container } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 import { InlineMath, BlockMath } from "react-katex";
-
 const ContextAwareRecommendations = () => {
   return (
     <Container>
       <h1>Context-Aware Recommendations</h1>
-
       <section id="introduction">
         <h2>Introduction</h2>
         <p>
@@ -18,7 +15,6 @@ const ContextAwareRecommendations = () => {
           time, location, or user mood.
         </p>
       </section>
-
       <section id="contextual-information">
         <h2>Contextual Information</h2>
         <p>Contextual information can be categorized into different types:</p>
@@ -30,7 +26,6 @@ const ContextAwareRecommendations = () => {
           <li>Device context (e.g., mobile, desktop)</li>
         </ul>
       </section>
-
       <section id="pre-filtering">
         <h2>Pre-filtering</h2>
         <p>
@@ -41,14 +36,12 @@ const ContextAwareRecommendations = () => {
           code={`
 def pre_filter(data, context):
     return data[data['context'] == context]
-
 filtered_data = pre_filter(all_data, current_context)
 recommendations = traditional_recommender(filtered_data)
           `}
           language="python"
         />
       </section>
-
       <section id="post-filtering">
         <h2>Post-filtering</h2>
         <p>
@@ -59,14 +52,12 @@ recommendations = traditional_recommender(filtered_data)
           code={`
 def post_filter(recommendations, context):
     return [rec for rec in recommendations if is_relevant(rec, context)]
-
 initial_recommendations = traditional_recommender(all_data)
 final_recommendations = post_filter(initial_recommendations, current_context)
           `}
           language="python"
         />
       </section>
-
       <section id="contextual-modeling">
         <h2>Contextual Modeling</h2>
         <p>
@@ -80,26 +71,21 @@ final_recommendations = post_filter(initial_recommendations, current_context)
         <CodeBlock
           code={`
 import numpy as np
-
 class ContextualMF:
     def __init__(self, num_users, num_items, num_contexts, num_factors):
         self.user_factors = np.random.rand(num_users, num_factors)
         self.item_factors = np.random.rand(num_items, num_factors)
         self.context_factors = np.random.rand(num_contexts, num_factors)
-
     def predict(self, user, item, context):
         return np.dot(self.user_factors[user], self.item_factors[item]) * self.context_factors[context]
-
     def train(self, ratings, learning_rate=0.01, num_iterations=100):
         for _ in range(num_iterations):
             for user, item, context, rating in ratings:
                 prediction = self.predict(user, item, context)
                 error = rating - prediction
-                
                 self.user_factors[user] += learning_rate * (error * self.item_factors[item] * self.context_factors[context] - 0.01 * self.user_factors[user])
                 self.item_factors[item] += learning_rate * (error * self.user_factors[user] * self.context_factors[context] - 0.01 * self.item_factors[item])
                 self.context_factors[context] += learning_rate * (error * self.user_factors[user] * self.item_factors[item] - 0.01 * self.context_factors[context])
-
 # Usage
 model = ContextualMF(num_users=100, num_items=1000, num_contexts=5, num_factors=20)
 ratings = [(0, 5, 2, 4.5), (1, 10, 1, 3.0), ...]  # (user, item, context, rating)
@@ -108,7 +94,6 @@ model.train(ratings)
           language="python"
         />
       </section>
-
       <section id="evaluation">
         <h2>Evaluation</h2>
         <p>
@@ -132,5 +117,4 @@ model.train(ratings)
     </Container>
   );
 };
-
 export default ContextAwareRecommendations;

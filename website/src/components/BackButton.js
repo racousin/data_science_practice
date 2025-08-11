@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@mantine/core";
+import { Button } from '@mantine/core';
 import { IconArrowLeft } from "@tabler/icons-react";
 
 const BackButton = () => {

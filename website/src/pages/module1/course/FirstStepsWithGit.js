@@ -1,13 +1,11 @@
 import React from "react";
-import { Container, Row, Col, Image } from "react-bootstrap";
-import { Container, Grid, Image, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid, Image } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
-
 const FirstStepsWithGit = () => {
   return (
     <Container fluid>
       <h2>First Steps with Git</h2>
-
       {/* Creating a Repository */}
       <Row>
         <Col>
@@ -26,7 +24,6 @@ const FirstStepsWithGit = () => {
             This command creates a new folder called 'my_project' where your
             project files will reside.
           </p>
-
           <p>
             <strong>Step 2: Navigate into your project directory:</strong>
           </p>
@@ -35,7 +32,6 @@ const FirstStepsWithGit = () => {
             This command moves the terminal's current working directory to the
             'my_project' folder.
           </p>
-
           <p>
             <strong>
               Step 3: Initialize the directory as a Git repository:
@@ -48,7 +44,6 @@ const FirstStepsWithGit = () => {
             directory. Here, Git will store all the metadata for the
             repository's change history.
           </p>
-
           <p>
             Once these steps are completed, you have successfully set up a new
             Git repository and can begin tracking changes to the files within
@@ -56,7 +51,6 @@ const FirstStepsWithGit = () => {
           </p>
         </Col>
       </Row>
-
       {/* Introduction to staging changes */}
       <Row>
         <Col>
@@ -69,7 +63,6 @@ const FirstStepsWithGit = () => {
           </p>
         </Col>
       </Row>
-
       {/* Detailed steps */}
       <Row className="mt-4">
         <Col>
@@ -84,7 +77,6 @@ const FirstStepsWithGit = () => {
             This command creates a new text file named 'example.txt' with some
             initial content.
           </p>
-
           <h4>Step 2: Check the status of your repository:</h4>
           <p>
             Use the <code>git status</code> command to see which changes are
@@ -94,13 +86,10 @@ const FirstStepsWithGit = () => {
           <CodeBlock
             code={`$ git status
 On branch master
-
 No commits yet
-
 Untracked files:
   (use "git add <file>..." to include in what will be committed)
 	example.txt
-
 nothing added to commit but untracked files present (use "git add" to track)
 `}
             showCopy={false}
@@ -111,7 +100,6 @@ nothing added to commit but untracked files present (use "git add" to track)
             has noticed a new file in the directory but it hasn't been added to
             the staging area yet.
           </p>
-
           <h4>Step 3: Stage the new file:</h4>
           <p>
             To add this new file to the staging area, use the{" "}
@@ -127,9 +115,7 @@ nothing added to commit but untracked files present (use "git add" to track)
           <CodeBlock
             code={`$ git status
 On branch master
-
 No commits yet
-
 Changes to be committed:
   (use "git rm --cached <file>..." to unstage)
 	new file:   example.txt
@@ -163,7 +149,6 @@ Changes to be committed:
           </p>
         </Col>
       </Row>
-
       {/* Committing Changes */}
       <Row>
         <Col>
@@ -176,7 +161,6 @@ Changes to be committed:
           </p>
         </Col>
       </Row>
-
       {/* Detailed explanation of what happens during a commit */}
       <Row className="mt-4">
         <Col>
@@ -188,7 +172,6 @@ Changes to be committed:
           </p>
         </Col>
       </Row>
-
       {/* Step-by-step process to create a commit */}
       <Row className="mt-4">
         <Col>
@@ -205,7 +188,6 @@ Changes to be committed:
 [master (root-commit) 1c17586] Your commit message
  1 file changed, 1 insertion(+)
  create mode 100644 example.txt
-
 `}
             language=""
           />
@@ -229,7 +211,6 @@ Changes to be committed:
           </div>
         </Col>
       </Row>
-
       {/* Why commits are important */}
       <Row className="mt-4">
         <Col>
@@ -250,7 +231,6 @@ Changes to be committed:
           </p>
         </Col>
       </Row>
-
       {/* Viewing Commit History */}
       <Row>
         <Col>
@@ -263,7 +243,6 @@ Changes to be committed:
           </p>
         </Col>
       </Row>
-
       {/* Basic command to view commit history */}
       <Row className="mt-4">
         <Col>
@@ -277,19 +256,14 @@ Changes to be committed:
             code={`commit 58ad9c9a1ca32944e9440c354631f5985a262d6e (HEAD -> master)
 Author: username <username@mail.com>
 Date:   Thu Jul 4 12:12:29 2024 +0200
-
     commit message 3
-
 commit e380ec1ec5b257e96ee15e3648eeec351cf1009c
 Author: username <username@mail.com>
 Date:   Thu Jul 4 12:12:23 2024 +0200
-
     commit message 2
-
 commit 6bd8e71d76237dfa4b72a8268c0f423e7bc91793
 Author: username <username@mail.com>
 Date:   Thu Jul 4 12:12:14 2024 +0200
-
     commit message 1
 `}
             language=""
@@ -300,7 +274,6 @@ Date:   Thu Jul 4 12:12:14 2024 +0200
           </p>
         </Col>
       </Row>
-
       {/* More options to view commit history */}
       <Row className="mt-4">
         <Col>
@@ -314,7 +287,6 @@ Date:   Thu Jul 4 12:12:14 2024 +0200
             This option shows each commit as a single line, making it easier to
             browse through many commits quickly.
           </p>
-
           <h4>Visualizing Commit History as a Graph</h4>
           <p>
             To see the commit history represented as a graph, use the{" "}
@@ -342,7 +314,6 @@ ncept into refacto/multi_ml
 |\  
 | * 5da7b55 - Fix issues with recent data.
 | * c98d77a update ML with hotfix for dates
-
 `}
             language=""
           />
@@ -375,7 +346,6 @@ ncept into refacto/multi_ml
           </p>
         </Col>
       </Row>
-
       {/* Example of Committing a Change and Undoing It */}
       <Row className="mt-4">
         <Col>
@@ -405,19 +375,14 @@ ncept into refacto/multi_ml
             code={`commit 58ad9c9a1ca32944e9440c354631f5985a262d6e (HEAD -> master)
 Author: username <username@mail.com>
 Date:   Thu Jul 4 12:12:29 2024 +0200
-
     Add modify content
-
 commit e380ec1ec5b257e96ee15e3648eeec351cf1009c
 Author: username <username@mail.com>
 Date:   Thu Jul 4 12:12:23 2024 +0200
-
     Your commit message
-
 commit 6bd8e71d76237dfa4b72a8268c0f423e7bc91793
 Author: username <username@mail.com>
 Date:   Thu Jul 4 12:12:14 2024 +0200
-
     commit message 1
 `}
             language=""
@@ -454,7 +419,6 @@ index 8430408..9201842 100644
           </p>
         </Col>
       </Row>
-
       {/* Reverting Changes */}
       <Row className="mt-4">
         <Col>
@@ -509,5 +473,4 @@ index 8430408..9201842 100644
     </Container>
   );
 };
-
 export default FirstStepsWithGit;

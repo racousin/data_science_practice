@@ -1,14 +1,12 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 import { InlineMath, BlockMath } from "react-katex";
-
 const CollaborativeFiltering = () => {
   return (
     <Container>
       <h1>Collaborative Filtering</h1>
-
       <section id="definition">
         <h2>Definition</h2>
         <p>
@@ -18,7 +16,6 @@ const CollaborativeFiltering = () => {
           past tend to agree again in the future.
         </p>
       </section>
-
       <section id="user-based-cf">
         <h2>User-Based Collaborative Filtering</h2>
         <p>
@@ -52,7 +49,6 @@ const CollaborativeFiltering = () => {
           </li>
         </ul>
       </section>
-
       <section id="item-based-cf">
         <h2>Item-Based Collaborative Filtering</h2>
         <p>
@@ -82,7 +78,6 @@ const CollaborativeFiltering = () => {
           </li>
         </ul>
       </section>
-
       <section id="matrix-factorization">
         <h2>Matrix Factorization</h2>
         <p>
@@ -110,7 +105,6 @@ const CollaborativeFiltering = () => {
           {`\\min_{P,Q} \\sum_{(u,i) \\in K} (r_{ui} - p_u \\cdot q_i)^2 + \\lambda(\\|p_u\\|^2 + \\|q_i\\|^2)`}
         </BlockMath>
       </section>
-
       <section id="implementing-collaborative">
         <h2>Implementing Collaborative Filtering</h2>
         <p>
@@ -121,7 +115,6 @@ const CollaborativeFiltering = () => {
           language="python"
           code={`
 import numpy as np
-
 class MatrixFactorization:
     def __init__(self, R, K, alpha=0.001, beta=0.02, iterations=100):
         self.R = R
@@ -130,11 +123,9 @@ class MatrixFactorization:
         self.alpha = alpha
         self.beta = beta
         self.iterations = iterations
-        
     def train(self):
         self.P = np.random.normal(scale=1./self.K, size=(self.num_users, self.K))
         self.Q = np.random.normal(scale=1./self.K, size=(self.num_items, self.K))
-        
         for i in range(self.iterations):
             for u in range(self.num_users):
                 for i in range(self.num_items):
@@ -143,10 +134,8 @@ class MatrixFactorization:
                         for k in range(self.K):
                             self.P[u][k] += self.alpha * (2 * eui * self.Q[i][k] - self.beta * self.P[u][k])
                             self.Q[i][k] += self.alpha * (2 * eui * self.P[u][k] - self.beta * self.Q[i][k])
-            
     def predict(self, user, item):
         return np.dot(self.P[user,:], self.Q[item,:].T)
-
 # Usage
 R = np.array([
     [5, 3, 0, 1],
@@ -155,7 +144,6 @@ R = np.array([
     [1, 0, 0, 4],
     [0, 1, 5, 4],
 ])
-
 mf = MatrixFactorization(R, K=2, alpha=0.1, beta=0.01, iterations=100)
 mf.train()
 print(mf.predict(user=1, item=2))  # Predict rating for user 1, item 2
@@ -165,5 +153,4 @@ print(mf.predict(user=1, item=2))  # Predict rating for user 1, item 2
     </Container>
   );
 };
-
 export default CollaborativeFiltering;

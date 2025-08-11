@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Title, Text, Stack, Group, Box, Image} from '@mantine/core';
+import { Container, Title, Text, Stack, Group, Box, Image } from '@mantine/core';
 import CodeBlock from 'components/CodeBlock';
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';

@@ -1,8 +1,7 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
-
 const InstallPython = () => {
   return (
     <Container fluid>
@@ -112,7 +111,6 @@ pip 22.0.2 from /usr/lib/python3/dist-packages/pip (python 3.10)
                 language=""
               />
             </li>
-
             <li>
               If <code>pip</code> is not installed, you can install it by
               downloading <code>get-pip.py</code>:
@@ -146,5 +144,4 @@ pip 22.0.2 from /usr/lib/python3/dist-packages/pip (python 3.10)
     </Container>
   );
 };
-
 export default InstallPython;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Title, Text, List, Alert, Code, Space } from "@mantine/core";
+import { Container, Title, Text, List, Alert, Code, Space } from '@mantine/core';
 import { IconInfoCircle, IconBulb } from '@tabler/icons-react';
 import DataInteractionPanel from "components/DataInteractionPanel";
 import CodeBlock from "components/CodeBlock";

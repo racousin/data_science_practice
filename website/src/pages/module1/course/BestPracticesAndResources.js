@@ -1,8 +1,7 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
-
 const BestPracticesAndResources = () => {
   return (
     <Container fluid>
@@ -109,7 +108,6 @@ git push origin v1.1`}
           </p>
         </Col>
       </Row>
-
       {/* Using Git Stash */}
       <Row className="mt-4">
         <Col>
@@ -129,7 +127,6 @@ git stash apply`}
           </p>
         </Col>
       </Row>
-
       {/* CI/CD and GitHub Actions */}
       <Row className="mt-4">
         <Col>
@@ -162,5 +159,4 @@ git stash apply`}
     </Container>
   );
 };
-
 export default BestPracticesAndResources;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Title, Text, Card, Divider, List, Table, Image } from "@mantine/core";
+import { Container, Title, Text, Card, Divider, List, Table, Image } from '@mantine/core';
 import { InlineMath, BlockMath } from 'react-katex';
 import CodeBlock from "components/CodeBlock";
 import LearnedEmbeddings from "./LearnedEmbeddings";

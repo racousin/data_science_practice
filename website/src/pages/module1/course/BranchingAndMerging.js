@@ -1,10 +1,9 @@
 import React from "react";
-import { Container, Row, Col, Image } from "react-bootstrap";
-import { Container, Grid, Image, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid, Image } from '@mantine/core';
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import CodeBlock from "components/CodeBlock";
-
 const BranchingAndMerging = () => {
   return (
     <Container fluid>
@@ -16,7 +15,6 @@ const BranchingAndMerging = () => {
         without interfering with each other, while merging brings those changes
         together into a single branch.
       </p>
-
       {/* Working with Branches */}
       <Row>
         <Col>
@@ -36,7 +34,6 @@ const BranchingAndMerging = () => {
               />
               The <code>*</code> indicates the current branch.
             </li>
-
             <li>
               <strong>Create a Branch:</strong> Use{" "}
               <CodeBlock code={`git checkout -b newbranch`} />
@@ -50,7 +47,6 @@ Switched to a new branch 'newbranch'
           </ol>
         </Col>
       </Row>
-
       {/* Merging Branches */}
       <Row className="mt-4">
         <Col>
@@ -191,7 +187,6 @@ git merge --no-ff feature-branch`}
       </Row>
       {/* Merging Branches */}
       <Row className="mt-4">{/* ... (existing code) ... */}</Row>
-
       {/* Advantages of Merge Strategies */}
       <Row className="mt-4">
         <Col>
@@ -274,7 +269,6 @@ On branch main
 You have unmerged paths.
   (fix conflicts and run "git commit")
   (use "git merge --abort" to abort the merge)
-
 Unmerged paths:
   (use "git add <file>..." to mark resolution)
 	both modified:   example.txt
@@ -361,5 +355,4 @@ Unmerged paths:
     </Container>
   );
 };
-
 export default BranchingAndMerging;

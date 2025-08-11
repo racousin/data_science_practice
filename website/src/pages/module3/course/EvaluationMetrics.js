@@ -1,14 +1,12 @@
 import React from "react";
-import { Container, Row, Col, Image } from "react-bootstrap";
-import { Container, Grid, Image, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid, Image } from '@mantine/core';
 import { BlockMath, InlineMath } from "react-katex";
 import CodeBlock from "components/CodeBlock";
-
 const EvaluationMetrics = () => {
   return (
     <Container fluid>
       <h1 className="my-4">Evaluation Metrics</h1>
-
       <p>
         Evaluation metrics quantify the difference between the target variable{" "}
         <InlineMath math="y" /> and the model's predictions{" "}
@@ -18,13 +16,11 @@ const EvaluationMetrics = () => {
         time to assess if we are improving and to guide further model
         refinements.
       </p>
-
       <h2 id="regression-metrics">Regression Metrics</h2>
       <p>
         Regression problems involve predicting continuous numerical values. Key
         metrics include:
       </p>
-
       <h3>Mean Squared Error (MSE)</h3>
       <p>
         MSE measures the average squared difference between predicted and actual
@@ -35,11 +31,9 @@ const EvaluationMetrics = () => {
         language="python"
         code={`
 from sklearn.metrics import mean_squared_error
-
 mse = mean_squared_error(y_true, y_pred)
         `}
       />
-
       <h3>Mean Absolute Error (MAE)</h3>
       <p>
         MAE measures the average absolute difference between predicted and
@@ -50,17 +44,14 @@ mse = mean_squared_error(y_true, y_pred)
         language="python"
         code={`
 from sklearn.metrics import mean_absolute_error
-
 mae = mean_absolute_error(y_true, y_pred)
         `}
       />
-
       <h2 id="binary-classification-metrics">Binary Classification Metrics</h2>
       <p>
         Binary classification involves predicting one of two possible outcomes.
         Key metrics include:
       </p>
-
       <h3>Accuracy</h3>
       <p>
         Accuracy is the ratio of correct predictions to total predictions. It
@@ -71,11 +62,9 @@ mae = mean_absolute_error(y_true, y_pred)
         language="python"
         code={`
 from sklearn.metrics import accuracy_score
-
 accuracy = accuracy_score(y_true, y_pred)
         `}
       />
-
       <h3>Precision</h3>
       <p>
         Precision is the ratio of true positive predictions to total positive
@@ -86,11 +75,9 @@ accuracy = accuracy_score(y_true, y_pred)
         language="python"
         code={`
 from sklearn.metrics import precision_score
-
 precision = precision_score(y_true, y_pred)
         `}
       />
-
       <h3>Recall (Sensitivity)</h3>
       <p>
         Recall is the ratio of true positive predictions to total actual
@@ -101,11 +88,9 @@ precision = precision_score(y_true, y_pred)
         language="python"
         code={`
 from sklearn.metrics import recall_score
-
 recall = recall_score(y_true, y_pred)
         `}
       />
-
       <h3>F1 Score</h3>
       <p>
         F1 Score is the harmonic mean of precision and recall, providing a
@@ -116,11 +101,9 @@ recall = recall_score(y_true, y_pred)
         language="python"
         code={`
 from sklearn.metrics import f1_score
-
 f1 = f1_score(y_true, y_pred)
         `}
       />
-
       <h3>ROC AUC (Receiver Operating Characteristic Area Under Curve)</h3>
       <p>
         ROC AUC represents the model's ability to distinguish between classes.
@@ -131,7 +114,6 @@ f1 = f1_score(y_true, y_pred)
         language="python"
         code={`
 from sklearn.metrics import roc_auc_score
-
 roc_auc = roc_auc_score(y_true, y_pred_proba)
         `}
       />
@@ -147,7 +129,6 @@ roc_auc = roc_auc_score(y_true, y_pred_proba)
         <p>
           Multi-class classification involves predicting one of three or more possible outcomes. Key metrics include:
         </p>
-
         <h3>Macro-averaged F1 Score</h3>
         <p>
           Calculates F1 score for each class independently and takes the unweighted mean.
@@ -177,7 +158,6 @@ weighted_f1 = f1_score(y_true, y_pred, average='weighted')
         Ranking problems involve ordering items based on relevance or
         importance. Key metrics include:
       </p>
-
       <h3>Mean Average Precision (MAP)</h3>
       <p>
         MAP measures the quality of rankings across multiple queries. It's
@@ -187,11 +167,9 @@ weighted_f1 = f1_score(y_true, y_pred, average='weighted')
         language="python"
         code={`
 from sklearn.metrics import average_precision_score
-
 map_score = average_precision_score(y_true, y_score)
         `}
       />
-
       <h3>Normalized Discounted Cumulative Gain (NDCG)</h3>
       <p>
         NDCG measures the quality of rankings with emphasis on top-ranked items.
@@ -201,17 +179,14 @@ map_score = average_precision_score(y_true, y_score)
         language="python"
         code={`
 from sklearn.metrics import ndcg_score
-
 ndcg = ndcg_score(y_true, y_score)
         `}
       />
-
       <h2 id="time-series-metrics">Time Series Metrics</h2>
       <p>
         Time series forecasting involves predicting future values based on
         historical data. A key metric is:
       </p>
-
       <h3>Mean Absolute Percentage Error (MAPE)</h3>
       <p>
         MAPE measures the average percentage difference between predicted and
@@ -223,14 +198,11 @@ ndcg = ndcg_score(y_true, y_score)
         language="python"
         code={`
 import numpy as np
-
 def mape(y_true, y_pred):
     return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
-
 mape_score = mape(y_true, y_pred)
         `}
       />
-
       <h2 id="choosing-metrics">Choosing the Right Metric</h2>
       <p>When selecting evaluation metrics, consider:</p>
       <ul>
@@ -248,5 +220,4 @@ mape_score = mape(y_true, y_pred)
     </Container>
   );
 };
-
 export default EvaluationMetrics;

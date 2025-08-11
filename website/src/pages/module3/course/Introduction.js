@@ -1,7 +1,6 @@
 import React from "react";
-import { Container, Row, Col, Image } from "react-bootstrap";
-import { Container, Grid, Image, Grid } from '@mantine/core';
-
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid, Image } from '@mantine/core';
 const Introduction = () => {
   return (
     <Container fluid>
@@ -12,7 +11,6 @@ const Introduction = () => {
         involves various techniques from statistics, machine learning, and
         computer science to analyze data to make informed decisions.
       </p>
-
       <Row>
         <Col md={12}>
           <h3 id="data">The Data</h3>
@@ -60,7 +58,6 @@ const Introduction = () => {
             data science and machine learning. Here are some notable
             breakthroughs:
           </p>
-
           <h4>AlphaFold: Revolutionizing Protein Structure Prediction</h4>
           <p>
             In 2020, DeepMind's AlphaFold achieved a major breakthrough in the
@@ -76,7 +73,6 @@ const Introduction = () => {
               (2021).
             </em>
           </p>
-
           <h4>GPT-3 and ChatGPT: Advancing Natural Language Processing</h4>
           <p>
             OpenAI's GPT-3, released in 2020, demonstrated remarkable natural
@@ -92,7 +88,6 @@ const Introduction = () => {
               Dialogue.
             </em>
           </p>
-
           <h4>DALL-E and Midjourney: AI in Image Generation</h4>
           <p>
             AI models like DALL-E 2 (2022) and Midjourney have shown remarkable
@@ -107,7 +102,6 @@ const Introduction = () => {
               Image Generation with CLIP Latents. arXiv:2204.06125.
             </em>
           </p>
-
           <h4>AlphaGo and MuZero: Mastering Complex Games</h4>
           <p>
             DeepMind's AlphaGo defeated the world champion in Go in 2016, a feat
@@ -122,7 +116,6 @@ const Introduction = () => {
               Shogi by Planning with a Learned Model. Nature 588, 604–609.
             </em>
           </p>
-
           <h4>GPT-4: Multimodal AI</h4>
           <p>
             Released in 2023, GPT-4 showcased impressive multimodal
@@ -146,9 +139,7 @@ const Introduction = () => {
             crucial for effective collaboration and project success. As the
             field evolves, these roles continue to adapt and transform.
           </p>
-
           <h3>Core Data Science Roles</h3>
-
           <h4>Data Scientist</h4>
           <p>
             Data Scientists are central to data science projects. They design
@@ -161,7 +152,6 @@ const Introduction = () => {
             <strong>Key Skills:</strong> Statistical analysis, machine learning,
             programming (Python, R), data visualization
           </p>
-
           <h4>Data Engineer</h4>
           <p>
             Data Engineers develop and maintain the architectures (such as
@@ -173,7 +163,6 @@ const Introduction = () => {
             <strong>Key Skills:</strong> Database management, ETL processes, big
             data technologies (Hadoop, Spark), cloud platforms
           </p>
-
           <h4>Machine Learning Engineer</h4>
           <p>
             Machine Learning Engineers specialize in building and deploying
@@ -186,7 +175,6 @@ const Introduction = () => {
             <strong>Key Skills:</strong> Deep learning frameworks, MLOps,
             software engineering, scalable ML systems
           </p>
-
           <h4>Data Analyst</h4>
           <p>
             Data Analysts focus on parsing data using statistical tools to
@@ -198,7 +186,6 @@ const Introduction = () => {
             <strong>Key Skills:</strong> SQL, data visualization tools (Tableau,
             Power BI), statistical analysis, business intelligence
           </p>
-
           <div className="text-center">
             <Image
               src="/assets/module3/job-type.png"
@@ -206,9 +193,7 @@ const Introduction = () => {
               fluid
             />
           </div>
-
           <h3>Specialized and Emerging Roles</h3>
-
           <h4>Research Scientist</h4>
           <p>
             Research Scientists in data science focus on developing new
@@ -220,7 +205,6 @@ const Introduction = () => {
             <strong>Key Skills:</strong> Advanced mathematics, research
             methodologies, publishing academic papers
           </p>
-
           <h4>MLOps Engineer</h4>
           <p>
             MLOps Engineers bridge the gap between data science and IT
@@ -231,7 +215,6 @@ const Introduction = () => {
             <strong>Key Skills:</strong> CI/CD for ML, containerization
             (Docker), orchestration (Kubernetes), monitoring tools
           </p>
-
           <h4>Data Architect</h4>
           <p>
             Data Architects design and manage an organization's data
@@ -242,9 +225,7 @@ const Introduction = () => {
             <strong>Key Skills:</strong> Data modeling, system design, data
             governance, cloud architecture
           </p>
-
           <h3>Business and Domain-Specific Roles</h3>
-
           <h4>Business Intelligence Developer</h4>
           <p>
             BI Developers create and manage platforms for data visualization and
@@ -255,7 +236,6 @@ const Introduction = () => {
             <strong>Key Skills:</strong> BI tools (Power BI, Tableau), data
             warehousing, SQL, business analysis
           </p>
-
           <h4>Domain Expert</h4>
           <p>
             Domain Experts bring specific industry or field knowledge to data
@@ -267,9 +247,7 @@ const Introduction = () => {
             <strong>Key Skills:</strong> Deep industry knowledge, ability to
             translate between technical and business languages
           </p>
-
           <h3>Leadership and Management Roles</h3>
-
           <h4>Chief Data Officer (CDO)</h4>
           <p>
             The CDO is responsible for enterprise-wide data strategy,
@@ -281,7 +259,6 @@ const Introduction = () => {
             <strong>Key Skills:</strong> Strategic planning, data governance,
             executive communication, change management
           </p>
-
           <h4>Data Science Manager / Team Lead</h4>
           <p>
             Data Science Managers oversee teams of data professionals, aligning
@@ -292,7 +269,6 @@ const Introduction = () => {
             <strong>Key Skills:</strong> Project management, team leadership,
             technical expertise, stakeholder management
           </p>
-
           <p>
             These roles often have overlapping responsibilities, and their
             specific duties can vary significantly among organizations. The
@@ -418,5 +394,4 @@ const Introduction = () => {
     </Container>
   );
 };
-
 export default Introduction;

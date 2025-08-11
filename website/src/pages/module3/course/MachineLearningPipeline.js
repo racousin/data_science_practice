@@ -1,7 +1,6 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
-
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 const MachineLearningPipeline = () => {
   return (
     <Container fluid>
@@ -11,7 +10,6 @@ const MachineLearningPipeline = () => {
         deploying ML models. It consists of several interconnected stages, each
         crucial for creating effective and reliable models.
       </p>
-
       <Row>
         <Col md={12}>
         <h2 id="problem-definition">0. Problem Definition</h2>
@@ -40,7 +38,6 @@ const MachineLearningPipeline = () => {
           <p>
             <strong>Tools:</strong> Project management software, collaboration tools
           </p>
-
           <h2 id = "data-collection">1. Data Collection</h2>
           <p>
             <strong>Objective:</strong> Gather relevant data to address the defined problem
@@ -94,7 +91,6 @@ const MachineLearningPipeline = () => {
             <strong>Tools:</strong> Pandas, NumPy, Scikit-learn, OpenCV, NLTK,
             TensorFlow
           </p>
-
           <h2 id="model-building">3. Model Selection, Training, and Evaluation</h2>
           <p>
             <strong>Objective:</strong> Select, train, and evaluate appropriate
@@ -146,7 +142,6 @@ const MachineLearningPipeline = () => {
             <li>Implement monitoring for model performance and data drift</li>
             <li>Establish protocols for model updates and retraining</li>
           </ul>
-        
           <p>
             <strong>Roles:</strong> MLOps Engineer, DevOps Engineer, Data
             Engineer
@@ -173,14 +168,12 @@ const MachineLearningPipeline = () => {
             <li>Ensure compliance with regulatory requirements</li>
             <li>Communicate insights to stakeholders effectively</li>
           </ul>
-        
           <p>
             <strong>Roles:</strong> Data Scientist, Domain Expert
           </p>
           <p>
             <strong>Tools:</strong> SHAP, LIME, Captum, TensorBoard
           </p>
-
           <h2 id="best-practices">Best Practices: Baseline and Iterate</h2>
       <p>
         <strong>Objective:</strong> Establish simple, effective baseline approaches and iterate throughout the ML pipeline
@@ -198,33 +191,24 @@ const MachineLearningPipeline = () => {
       <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
     </marker>
   </defs>
-  
   <rect x="50" y="50" width="120" height="60" rx="10" ry="10" fill="#4CAF50" />
   <text x="110" y="85" font-family="Arial" font-size="14" fill="white" text-anchor="middle">Problem Definition</text>
-  
   <rect x="200" y="50" width="120" height="60" rx="10" ry="10" fill="#2196F3" />
   <text x="260" y="85" font-family="Arial" font-size="14" fill="white" text-anchor="middle">Data Collection</text>
-  
   <rect x="350" y="50" width="120" height="60" rx="10" ry="10" fill="#FFC107" />
   <text x="410" y="85" font-family="Arial" font-size="14" fill="white" text-anchor="middle">Data Preprocessing</text>
-  
   <rect x="500" y="50" width="120" height="60" rx="10" ry="10" fill="#9C27B0" />
   <text x="560" y="75" font-family="Arial" font-size="14" fill="white" text-anchor="middle">Model Training</text>
   <text x="560" y="95" font-family="Arial" font-size="14" fill="white" text-anchor="middle">and Evaluation</text>
-  
   <rect x="650" y="50" width="120" height="60" rx="10" ry="10" fill="#FF5722" />
   <text x="710" y="75" font-family="Arial" font-size="14" fill="white" text-anchor="middle">Deployment and</text>
   <text x="710" y="95" font-family="Arial" font-size="14" fill="white" text-anchor="middle">Monitoring</text>
-  
   <line x1="170" y1="80" x2="200" y2="80" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" />
   <line x1="320" y1="80" x2="350" y2="80" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" />
   <line x1="470" y1="80" x2="500" y2="80" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" />
   <line x1="620" y1="80" x2="650" y2="80" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" />
-  
   <path d="M 710 110 Q 710 300, 110 300 Q 60 300, 60 110" fill="none" stroke="#E91E63" stroke-width="3" stroke-dasharray="5,5" marker-end="url(#arrowhead)" />
-  
   <text x="400" y="340" font-family="Arial" font-size="18" fill="#E91E63" text-anchor="middle" font-weight="bold">Iterate and Improve</text>
-  
   <text x="110" y="250" font-family="Arial" font-size="12" fill="#333" text-anchor="middle">Refine Problem</text>
   <text x="260" y="250" font-family="Arial" font-size="12" fill="#333" text-anchor="middle">Expand Dataset</text>
   <text x="410" y="250" font-family="Arial" font-size="12" fill="#333" text-anchor="middle">Enhance Features</text>
@@ -326,5 +310,4 @@ const MachineLearningPipeline = () => {
     </Container>
   );
 };
-
 export default MachineLearningPipeline;

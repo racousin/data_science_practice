@@ -1,9 +1,8 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 import EvaluationModal from "components/EvaluationModal";
-
 const Exercise1 = () => {
   return (
     <Container fluid>
@@ -49,7 +48,6 @@ const Exercise1 = () => {
             <br />
             <code>Content of 'user' file:</code>
           </p>
-
           <CodeBlock code={`your_username,your_firstname,your_surname`} />
           <p>
             This block shows how your file should look when opened with a text
@@ -63,5 +61,4 @@ const Exercise1 = () => {
     </Container>
   );
 };
-
 export default Exercise1;

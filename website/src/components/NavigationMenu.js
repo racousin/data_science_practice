@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, Stack, Anchor } from "@mantine/core";
+import { NavLink, Stack, Anchor } from '@mantine/core';
 import { Link, useLocation } from "react-router-dom";
 
 const NavigationMenu = ({ links, prefix }) => {

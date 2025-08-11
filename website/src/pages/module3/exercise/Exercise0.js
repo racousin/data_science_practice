@@ -1,16 +1,14 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import DataInteractionPanel from "components/DataInteractionPanel";
 import CodeBlock from "components/CodeBlock";
-
 const Exercise0 = () => {
   const trainDataUrl = process.env.PUBLIC_URL + "/modules/module3/exercise/module3_exercise_train.csv";
   const testDataUrl = process.env.PUBLIC_URL + "/modules/module3/exercise/module3_exercise_test.csv";
   const notebookUrl = process.env.PUBLIC_URL + "/modules/module3/exercise/module3_exercise0.ipynb";
   const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/module3/exercise/module3_exercise0.html";
   const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/module3/exercise/module3_exercise0.ipynb";
-
   const metadata = {
     description: "This dataset includes various property metrics crucial for analyzing real estate sales, features, and pricing.",
     source: "Real Estate Transaction Records",
@@ -35,7 +33,6 @@ const Exercise0 = () => {
       { name: "SalePrice", description: "Price of sale (target variable)" },
     ],
   };
-
   return (
     <Container fluid>
       <h1 className="my-4">Exercise 0: Exploratory Data Analysis (EDA)</h1>
@@ -91,5 +88,4 @@ const Exercise0 = () => {
     </Container>
   );
 };
-
 export default Exercise0;

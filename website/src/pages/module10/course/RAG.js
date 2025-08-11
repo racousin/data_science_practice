@@ -1,21 +1,5 @@
 import React from "react";
-import {
-  Container,
-  Title,
-  Text,
-  Space,
-  Card,
-  Image,
-  Grid,
-  List,
-  Table,
-  Accordion,
-  Code,
-  Tabs,
-  Box,
-  Anchor,
-  ThemeIcon,
-} from "@mantine/core";
+import { Container, Title, Text, Space, Card, Image, Grid, List, Table, Accordion, Code, Tabs, Box, Anchor, ThemeIcon } from '@mantine/core';
 import { IconInfoCircle, IconBulb } from "@tabler/icons-react";
 import CodeBlock from "components/CodeBlock";
 import { InlineMath, BlockMath } from "react-katex";

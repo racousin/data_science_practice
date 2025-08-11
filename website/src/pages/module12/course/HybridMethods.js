@@ -1,14 +1,12 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 import { InlineMath, BlockMath } from "react-katex";
-
 const HybridMethods = () => {
   return (
     <Container>
       <h1>Hybrid Methods in Recommendation Systems</h1>
-
       <section id="definition">
         <h2>Definition</h2>
         <p>
@@ -18,7 +16,6 @@ const HybridMethods = () => {
           robust recommendations than single-technique approaches.
         </p>
       </section>
-
       <section id="weighted-hybrid">
         <h2>Weighted Hybrid</h2>
         <p>
@@ -49,7 +46,6 @@ const HybridMethods = () => {
           </li>
         </ul>
       </section>
-
       <section id="switching-hybrid">
         <h2>Switching Hybrid</h2>
         <p>
@@ -65,7 +61,6 @@ def switching_hybrid(user, item):
         return CF_prediction(user, item)
     else:
         return CB_prediction(user, item)
-
 # Where:
 # CF_prediction: Collaborative filtering prediction
 # CB_prediction: Content-based filtering prediction
@@ -74,7 +69,6 @@ def switching_hybrid(user, item):
           `}
         />
       </section>
-
       <section id="feature-combination">
         <h2>Feature Combination</h2>
         <p>
@@ -89,9 +83,7 @@ feature_vector = [
     CF_features,  # e.g., user-item interaction patterns
     CB_features   # e.g., item attributes
 ]
-
 prediction = ML_model(feature_vector)
-
 # Where:
 # CF_features: Features extracted from collaborative filtering
 # CB_features: Features extracted from content-based filtering
@@ -99,7 +91,6 @@ prediction = ML_model(feature_vector)
           `}
         />
       </section>
-
       <section id="implementing-hybrid">
         <h2>Implementing Hybrid Methods</h2>
         <p>
@@ -110,34 +101,27 @@ prediction = ML_model(feature_vector)
           language="python"
           code={`
 import numpy as np
-
 class WeightedHybridRecommender:
     def __init__(self, cf_model, cb_model, cf_weight=0.7):
         self.cf_model = cf_model
         self.cb_model = cb_model
         self.cf_weight = cf_weight
-        
     def predict(self, user, item):
         cf_score = self.cf_model.predict(user, item)
         cb_score = self.cb_model.predict(user, item)
-        
         return self.cf_weight * cf_score + (1 - self.cf_weight) * cb_score
-
 # Usage
 class MockModel:
     def predict(self, user, item):
         return np.random.rand()  # Mock prediction
-
 cf_model = MockModel()
 cb_model = MockModel()
-
 hybrid_model = WeightedHybridRecommender(cf_model, cb_model, cf_weight=0.7)
 prediction = hybrid_model.predict(user=1, item=2)
 print(f"Hybrid prediction: {prediction}")
           `}
         />
       </section>
-
       <section id="evaluation">
         <h2>Evaluating Hybrid Methods</h2>
         <p>
@@ -156,5 +140,4 @@ print(f"Hybrid prediction: {prediction}")
     </Container>
   );
 };
-
 export default HybridMethods;

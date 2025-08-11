@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Text, Progress, Group, Box, Tooltip } from "@mantine/core";
+import { Card, Text, Progress, Group, Box, Tooltip } from '@mantine/core';
 
 const OverallProgress = ({ progress, errors }) => {
   return (

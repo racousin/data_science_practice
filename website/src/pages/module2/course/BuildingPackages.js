@@ -1,8 +1,7 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
-
 const BuildingPackages = () => {
   return (
     <Container fluid>
@@ -57,7 +56,6 @@ mypackage/
           </ul>
         </Col>
       </Row>
-
       <Row>
         <Col>
           <h3 id="create-directory">Create a New Directory for Your Package</h3>
@@ -77,7 +75,6 @@ mypackage/
           <p>Create the `setup.py` in a text editor and add the following code:</p>
           <CodeBlock
             code={`from setuptools import setup
-
 setup(
     name='mypackage',
     version='1.0',
@@ -159,7 +156,6 @@ setup(
           />
         </Col>
       </Row>
-
       <Row>
   <Col>
     <h3 id="install-your-pkg">Install Your Package</h3>
@@ -186,14 +182,12 @@ setup(
           <CodeBlock
             code={`import mypackage.functions1 as fct1
 import mypackage.functions2 as fct2
-
 fct1.hello()
 fct2.goodbye()`}
             language={"python"}
           />
   </Col>
 </Row>
-
       <Row>
         <Col>
           <h3 id="build-package">Build the Package</h3>
@@ -220,7 +214,6 @@ fct2.goodbye()`}
           <CodeBlock
             code={`import mypackage.functions1 as fct1
 import mypackage.functions2 as fct2
-
 fct1.hello()
 fct2.goodbye()`}
             language={"python"}
@@ -261,5 +254,4 @@ fct2.goodbye()`}
     </Container>
   );
 };
-
 export default BuildingPackages;

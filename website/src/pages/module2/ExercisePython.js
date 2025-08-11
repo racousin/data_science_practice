@@ -1,10 +1,9 @@
 import React, { lazy } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
 import { useLocation } from "react-router-dom";
-
 const ExercisePython = () => {
   const exerciseLinks = [
     {
@@ -18,7 +17,6 @@ const ExercisePython = () => {
       component: lazy(() => import("pages/module2/exercise/Exercise2")),
     },
   ];
-
   const location = useLocation();
   const module = 2;
   return (
@@ -45,5 +43,4 @@ const ExercisePython = () => {
     </ModuleFrame>
   );
 };
-
 export default ExercisePython;

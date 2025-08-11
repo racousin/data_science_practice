@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Title, Stack, Text } from "@mantine/core";
+import { Box, Title, Stack, Text } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 
 const RNNOutro = () => {

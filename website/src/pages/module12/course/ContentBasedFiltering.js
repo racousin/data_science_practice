@@ -1,14 +1,12 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 import { InlineMath, BlockMath } from "react-katex";
-
 const ContentBasedFiltering = () => {
   return (
     <Container>
       <h1>Content-Based Filtering</h1>
-
       <section id="definition">
         <h2>Definition</h2>
         <p>
@@ -18,7 +16,6 @@ const ContentBasedFiltering = () => {
           then uses similarity measures to match users with items.
         </p>
       </section>
-
       <section id="item-representation">
         <h2>Item Representation</h2>
         <p>
@@ -39,7 +36,6 @@ movie = {
           `}
         />
       </section>
-
       <section id="user-profiles">
         <h2>User Profiles</h2>
         <p>
@@ -57,7 +53,6 @@ user\\_profile = \\frac{\\sum_{i} w_i \\cdot item\\_i\\_features}{\\sum_{i} w_i}
           by the user to item i
         </p>
       </section>
-
       <section id="similarity-measures">
         <h2>Similarity Measures</h2>
         <p>
@@ -74,7 +69,6 @@ cosine\\_similarity(A, B) = \\frac{A \\cdot B}{\\|A\\| \\cdot \\|B\\|}
           the magnitude of vector x
         </p>
       </section>
-
       <section id="implementing-content-based">
         <h2>Implementing Content-Based Filtering</h2>
         <p>Here's a basic implementation using Python and scikit-learn:</p>
@@ -83,25 +77,20 @@ cosine\\_similarity(A, B) = \\frac{A \\cdot B}{\\|A\\| \\cdot \\|B\\|}
           code={`
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-
 # Assume we have a list of item descriptions
 item_descriptions = ["sci-fi movie about virtual reality", 
                      "action movie with car chases",
                      "romantic comedy set in Paris"]
-
 # Create TF-IDF vectors
 vectorizer = TfidfVectorizer()
 tfidf_matrix = vectorizer.fit_transform(item_descriptions)
-
 # Compute cosine similarity
 cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
-
 # Function to get recommendations
 def get_recommendations(item_index, cosine_sim=cosine_sim):
     sim_scores = list(enumerate(cosine_sim[item_index]))
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
     return sim_scores[1:] # Exclude the item itself
-
 # Get recommendations for the first item
 recommendations = get_recommendations(0)
 print(recommendations)
@@ -111,5 +100,4 @@ print(recommendations)
     </Container>
   );
 };
-
 export default ContentBasedFiltering;

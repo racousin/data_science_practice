@@ -1,6 +1,6 @@
 import React from "react";
-import { Container, Row, Col, Card, Table } from "react-bootstrap";
-import { Text, Title, Group, Image, Stack } from "@mantine/core";
+import { Row, Col, Card, Table } from "react-bootstrap";
+import { Text, Title, Group, Image, Stack, Container } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';

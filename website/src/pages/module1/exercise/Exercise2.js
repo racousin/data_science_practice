@@ -1,8 +1,7 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
-
 const Exercise2 = () => {
   return (
     <Container fluid>
@@ -15,7 +14,6 @@ const Exercise2 = () => {
           <p>
             You are writing technical documentation for a mathematics library. You've started with a document explaining basic arithmetic operations, but you accidentally made an error in one of the examples. As you continue working, you'll discover this error and need to fix it while managing your ongoing work.
           </p>
-
           <h2>Instructions</h2>
           <ol>
             <li>
@@ -27,19 +25,15 @@ $ cd math-docs`}
                 language="bash"
               />
             </li>
-
             <li>
               <h3>Create and Push Initial Content</h3>
               <p>Create a README.md file in your local repository with the following content:</p>
               <CodeBlock
                 code={`# Mathematics Library Documentation
-
 ## 1. Basic Arithmetic
-
 ### 1.1 Addition
 The sum of two numbers a and b is represented as a + b.
 Example: 2 + 3 = 5
-
 ### 1.2 Multiplication
 The product of two numbers a and b is represented as a * b.
 Example: 2 * 3 = 5`}
@@ -53,14 +47,12 @@ $ git push origin main`}
                 language="bash"
               />
             </li>
-
             <li>
               <h3>Start Working on Advanced Operations</h3>
               <p>Create and switch to a new branch called "advanced-operations". Add the following content to the end of your README.md file:</p>
               <CodeBlock
                 code={`
 ## 2. Advanced Operations
-
 ### 2.1 Exponentiation
 Exponentiation is represented as a^b or pow(a, b).
 Example: 2^3 = 8`}
@@ -75,7 +67,6 @@ $ git commit -m "Start documentation on advanced operations"`}
                 language="bash"
               />
             </li>
-
             <li>
               <h3>Correct the Error in Basic Arithmetic</h3>
               <p>Switch back to the main branch and create a new branch called "fix-multiplication-error". In the README.md file, correct the multiplication example to read:</p>
@@ -93,7 +84,6 @@ $ git push origin fix-multiplication-error`}
                 language="bash"
               />
             </li>
-
             <li>
               <h3>Integrate Changes into Advanced Operations Branch</h3>
               <p>Now that the error is fixed in the main branch, switch back to your "advanced-operations" branch. Merge the changes from the main branch into this branch. This will bring in the corrected multiplication example while keeping your work on advanced operations.</p>
@@ -108,7 +98,6 @@ $ git push origin advanced-operations`}
               />
             </li>
           </ol>
-
           <h2>Verification</h2>
           <p>To verify your work, review the content of your README.md file in the "advanced-operations" branch. It should contain:</p>
           <ul>
@@ -120,5 +109,4 @@ $ git push origin advanced-operations`}
     </Container>
   );
 };
-
 export default Exercise2;

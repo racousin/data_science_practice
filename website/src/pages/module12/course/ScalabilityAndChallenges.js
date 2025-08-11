@@ -1,8 +1,7 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
-
 const ScalabilityAndChallenges = () => {
   return (
     <Container fluid>
@@ -25,17 +24,14 @@ function recommendItemsUsingDistributedFramework(user, data, users, k) {
   const U = [];
   const S = [];
   const Vt = [];
-
   // Perform SVD on the data matrix using a distributed computing framework
   const result = distributedSVD(data, k);
   U = result.U;
   S = result.S;
   Vt = result.Vt;
-
   // Create a reduced user matrix
   const userMatrix = U.map(row => row.slice(0, k));
   const reducedUserMatrix = userMatrix.map(row => row.map(val => val * S[row.indexOf(val)]));
-
   // Calculate the predicted ratings for the user using a distributed computing framework
   const predictedRatings = Vt.map(row => row.slice(0, k)).map(row => {
     let rating = 0;
@@ -44,10 +40,8 @@ function recommendItemsUsingDistributedFramework(user, data, users, k) {
     });
     return rating;
   });
-
   // Sort the predicted ratings and return the top N items
   const recommendedItems = predictedRatings.map((rating, itemId) => ({ itemId, rating })).sort((a, b) => b.rating - a.rating).slice(0, N).map(item => item.itemId);
-
   return recommendedItems;
 }
 `}
@@ -66,10 +60,8 @@ function recommendItemsForNewUser(data) {
     acc[cur] = (acc[cur] || 0) + 1;
     return acc;
   }, {});
-
   // Sort the items by their popularity and return the top N items
   const recommendedItems = Object.keys(itemPopularity).sort((a, b) => itemPopularity[b] - itemPopularity[a]).slice(0, N);
-
   return recommendedItems;
 }
 `}
@@ -85,7 +77,6 @@ function recommendItemsForNewUser(data) {
 function updateRecommendationModel(user, item, rating, model) {
   // Update the model parameters using online learning
   const newParameters = onlineLearning(user, item, rating, model.parameters);
-
   // Return a new model with the updated parameters
   return { ...model, parameters: newParameters };
 }
@@ -96,5 +87,4 @@ function updateRecommendationModel(user, item, rating, model) {
     </Container>
   );
 };
-
 export default ScalabilityAndChallenges;

@@ -1,7 +1,6 @@
 import React from "react";
-import { Container, Row, Col, Image } from "react-bootstrap";
-import { Container, Grid, Image, Grid } from '@mantine/core';
-
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid, Image } from '@mantine/core';
 const Collaborating = () => {
   return (
     <Container fluid>
@@ -11,7 +10,6 @@ const Collaborating = () => {
         Git, along with hosting services like GitHub, provides powerful tools to enhance collaboration among developers. 
         This guide will walk you through the process of creating, reviewing, and merging pull requests on GitHub.
       </p>
-
       <Row className="mt-4">
         <Col>
           <h3 id="creating-pull-request">Creating a Pull Request</h3>
@@ -30,7 +28,6 @@ const Collaborating = () => {
           <Image src="/assets/module1/createPR.png" alt="Creating a Pull Request on GitHub" fluid className="my-3" />
         </Col>
       </Row>
-
       <Row className="mt-4">
         <Col>
           <h3 id="review-process">The Review Process</h3>
@@ -48,16 +45,13 @@ const Collaborating = () => {
             </li>
             <li>
               <strong>Address feedback:</strong> Make any necessary changes based on the reviews and push new commits to your branch.
-              
             </li>
             <li>
               <strong>Re-request review:</strong> After making changes, you can re-request a review.
             </li>
           </ol>
-          
         </Col>
       </Row>
-
       <Row className="mt-4">
         <Col>
           <h3 id="merging-pull-request">Merging a Pull Request</h3>
@@ -73,7 +67,6 @@ const Collaborating = () => {
           <Image src="/assets/module1/mergePR.png" alt="Merging a Pull Request on GitHub" fluid className="my-3" />
         </Col>
       </Row>
-
       <Row className="mt-4">
         <Col>
           <h3 id="best-practices">Best Practices</h3>
@@ -88,5 +81,4 @@ const Collaborating = () => {
     </Container>
   );
 };
-
 export default Collaborating;

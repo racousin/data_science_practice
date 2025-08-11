@@ -1,14 +1,12 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 import { BlockMath, InlineMath } from "react-katex";
-
 const Introduction = () => {
   return (
     <Container fluid>
       <h1 className="my-4">Introduction to Recommendation Systems</h1>
-
       <section id="what-are-recommendation-systems">
         <h2>What are Recommendation Systems?</h2>
         <p>
@@ -33,7 +31,6 @@ const Introduction = () => {
           </ul>
         </p>
       </section>
-
       <section id="types-of-recommendation-systems">
         <h2>Types of Recommendation Systems</h2>
         <ol>
@@ -53,7 +50,6 @@ const Introduction = () => {
           </li>
         </ol>
       </section>
-
       <section id="applications">
         <h2>Applications of Recommendation Systems</h2>
         <ul>
@@ -64,7 +60,6 @@ const Introduction = () => {
           <li>Job and career recommendations</li>
         </ul>
       </section>
-
       <section id="basic-implementation">
         <h2>Basic Implementation Example</h2>
         <p>
@@ -76,28 +71,22 @@ const Introduction = () => {
           code={`
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
-
 # Item features (rows are items, columns are features)
 item_features = np.array([
     [1, 1, 0, 1],
     [0, 1, 1, 1],
     [1, 0, 1, 0]
 ])
-
 # User profile
 user_profile = np.array([1, 1, 0, 1])
-
 # Calculate cosine similarity
 similarities = cosine_similarity(user_profile.reshape(1, -1), item_features)
-
 # Get recommendations (indices of items sorted by similarity)
 recommendations = similarities.argsort()[0][::-1]
-
 print("Recommended items (by index):", recommendations)
           `}
         />
       </section>
-
       <section id="challenges">
         <h2>Challenges in Recommendation Systems</h2>
         <ul>
@@ -122,5 +111,4 @@ print("Recommended items (by index):", recommendations)
     </Container>
   );
 };
-
 export default Introduction;

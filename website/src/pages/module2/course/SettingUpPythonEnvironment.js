@@ -1,8 +1,7 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
-
 const SettingUpPythonEnvironment = () => {
   return (
     <Container fluid>
@@ -27,7 +26,6 @@ const SettingUpPythonEnvironment = () => {
             contains a fresh, isolated Python installation. You can replace
             "myenv" with a name of your choice for your environment.
           </p>
-
           <h3 id="activate-environment">Activate the Virtual Environment</h3>
           <p>
             Once the virtual environment is created, you need to activate it:
@@ -44,7 +42,6 @@ const SettingUpPythonEnvironment = () => {
             After activation, your command prompt will change to indicate that
             you are now working inside the virtual environment.
           </p>
-
           <h3 id="deactivate-environment">
             Deactivate the Virtual Environment
           </h3>
@@ -62,5 +59,4 @@ const SettingUpPythonEnvironment = () => {
     </Container>
   );
 };
-
 export default SettingUpPythonEnvironment;

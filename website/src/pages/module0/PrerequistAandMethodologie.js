@@ -1,11 +1,10 @@
 import React from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
-import { Container, Grid, Button, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid, Button } from '@mantine/core';
 import { Link } from "react-router-dom";
 import ModuleNavigation from "components/ModuleNavigation";
 import CodeBlock from "components/CodeBlock";
 import ModuleFrame from "components/ModuleFrame";
-
 const PrerequisiteAndMethodology = () => {
   return (
     <ModuleFrame
@@ -19,7 +18,6 @@ const PrerequisiteAndMethodology = () => {
           <p>Last Updated: {"2024-09-20"}</p>
         </Col>
       </Row>
-
       <Row>
         <Col md={11}>
           <h2>Setting Up Your Environment</h2>
@@ -68,7 +66,6 @@ const PrerequisiteAndMethodology = () => {
           </ol>
         </Col>
       </Row>
-
       <Row>
       <Col md={11}>
         <h2>Methodology and Submitting Exercises</h2>
@@ -115,7 +112,6 @@ const PrerequisiteAndMethodology = () => {
         </p>
       </Col>
     </Row>
-
       <Row>
         <h2>Example Exercise Submission Steps</h2>
         <ol>
@@ -199,5 +195,4 @@ const PrerequisiteAndMethodology = () => {
     </ModuleFrame>
   );
 };
-
 export default PrerequisiteAndMethodology;

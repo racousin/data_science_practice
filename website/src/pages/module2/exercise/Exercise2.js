@@ -1,9 +1,8 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 import EvaluationModal from "components/EvaluationModal";
-
 const Exercise2 = () => {
   return (
     <Container fluid>
@@ -39,9 +38,7 @@ const Exercise2 = () => {
             <li>
       Create a <code>cli.py</code> file that implements a command-line interface for your package using 
       the <code>argparse</code> module. The CLI should allow users to perform the operations implemented in your package.
-      
       <p>Here's how you can structure your CLI:</p>
-      
       <ol type="a">
         <li>Import the necessary modules and functions:</li>
         <CodeBlock
@@ -49,31 +46,26 @@ const Exercise2 = () => {
 from mysupertools2.math_operations import multiply, fibonacci`}
           language="python"
         />
-        
         <li>Create a main function that sets up the argument parser:</li>
         <CodeBlock
           code={`def main():
     parser = argparse.ArgumentParser(description='mysupertools2 CLI')
     # Add arguments here
-    
     args = parser.parse_args()`}
           language="python"
         />
-        
         <li>Add arguments to your parser:</li>
         <ul>
           <li>Add an argument for the operation (multiply or fibonacci)</li>
           <li>Add an argument for the numbers to operate on</li>
           <li>Hint: Use <code>parser.add_argument()</code> method</li>
         </ul>
-        
         <li>Implement the logic to handle different operations:</li>
         <ul>
           <li>Check which operation was selected (<code>args.operation</code>)</li>
           <li>Validate the number of arguments provided</li>
           <li>Call the appropriate function and print the result</li>
         </ul>
-        
         <li>Don't forget to add the following at the end of your file:</li>
         <CodeBlock
           code={`if __name__ == '__main__':
@@ -81,23 +73,18 @@ from mysupertools2.math_operations import multiply, fibonacci`}
           language="python"
         />
       </ol>
-      
       <p>Example usage of your CLI should look like this:</p>
       <CodeBlock
         code={`$ mysupertools2 multiply 4 5
 4 * 5 = 20
-
 $ mysupertools2 fibonacci 8
 The 8th Fibonacci number is 21`}
       />
-      
       <p>Remember to handle errors gracefully, such as when the wrong number of arguments is provided.</p>
     </li>
     <li>
       Write unit tests for all functions in <code>test_math_operations.py</code> using <code>pytest</code>.
-      
       <p>Here's a guide on how to structure your unit tests:</p>
-      
       <ol type="a">
         <li>Import the necessary modules and functions:</li>
         <CodeBlock
@@ -105,21 +92,18 @@ The 8th Fibonacci number is 21`}
 from mysupertools2.math_operations import multiply, fibonacci`}
           language="python"
         />
-        
         <li>Write test functions for each operation:</li>
         <ul>
           <li>Test functions should start with "test_"</li>
           <li>Use descriptive names for your test functions</li>
           <li>Example: <code>def test_multiply():</code></li>
         </ul>
-        
         <li>Inside each test function, use assertions to check expected outcomes:</li>
         <ul>
           <li>Use the <code>assert</code> statement to check if the function returns the expected result</li>
           <li>Test multiple scenarios, including edge cases</li>
           <li>Example: <code>assert multiply(2, 3) == 6</code></li>
         </ul>
-        
         <li>For the Fibonacci function, consider these test cases:</li>
         <ul>
           <li>Test with input 0</li>
@@ -127,7 +111,6 @@ from mysupertools2.math_operations import multiply, fibonacci`}
           <li>Test with a larger number (e.g., 6 or 10)</li>
           <li>Test with a negative number (should raise a ValueError)</li>
         </ul>
-        
         <li>To test for raised exceptions, use pytest's <code>raises</code> context manager:</li>
         <CodeBlock
           code={`def test_fibonacci_negative():
@@ -136,27 +119,22 @@ from mysupertools2.math_operations import multiply, fibonacci`}
           language="python"
         />
       </ol>
-      
       <p>Remember to test both normal cases and edge cases for each function. Your tests should cover different scenarios to ensure your functions work correctly under various conditions.</p>
-      
       <p>To run your tests, use the following command in your terminal:</p>
       <CodeBlock
         code={`pytest mysupertools2/tests/`}
       />
-      
       <p>Pytest will automatically discover and run all test functions in files that start with "test_" in the specified directory.</p>
     </li>
     <li>
       Update the <code>setup.py</code> file to include the new modules, CLI entry point, and dependencies. 
       Here's a guide on what to include:
-      
       <ol type="a">
         <li>Import the necessary setup tools:</li>
         <CodeBlock
           code={`from setuptools import setup, find_packages`}
           language="python"
         />
-        
         <li>Use the setup function to configure your package. Include these key elements:</li>
         <ul>
           <li>name: The name of your package</li>
@@ -165,7 +143,6 @@ from mysupertools2.math_operations import multiply, fibonacci`}
           <li>install_requires: List your package dependencies</li>
           <li>entry_points: Define your CLI entry point</li>
         </ul>
-        
         <li>Here's a basic structure to follow:</li>
         <CodeBlock
           code={`setup(
@@ -182,14 +159,12 @@ from mysupertools2.math_operations import multiply, fibonacci`}
 )`}
           language="python"
         />
-        
         <li>Consider adding these optional fields for more information about your package:</li>
         <ul>
           <li>author: Your name</li>
           <li>description: A short description of your package</li>
           <li>url: The URL for your package's repository</li>
         </ul>
-        
         <p>Remember, the goal is to make your package installable and to set up the CLI entry point. 
         Make sure to include all necessary dependencies and correctly specify the CLI entry point.</p>
       </ol>
@@ -226,7 +201,6 @@ mysupertools2 fibonacci 10`} />
             <li>Import and use your package in a Python session:</li>
             <CodeBlock
               code={`from mysupertools2.math_operations import multiply, fibonacci
-
 result = multiply(10, 5)
 fib_number = fibonacci(8)
 print(f"10 * 5 = {result}")
@@ -240,5 +214,4 @@ print(f"8th Fibonacci number: {fib_number}")
     </Container>
   );
 };
-
 export default Exercise2;

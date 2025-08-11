@@ -1,18 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  Container,
-  Title,
-  Accordion,
-  Badge,
-  Text,
-  Group,
-  Button,
-  Stack,
-  Paper,
-  Code,
-  Alert,
-} from "@mantine/core";
+import { Container, Title, Accordion, Badge, Text, Group, Button, Stack, Paper, Code, Alert } from '@mantine/core';
 import { IconRefresh, IconAlertTriangle } from "@tabler/icons-react";
 import OverallProgress from "components/OverallProgress";
 

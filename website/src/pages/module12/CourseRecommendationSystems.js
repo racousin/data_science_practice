@@ -1,10 +1,9 @@
 import React, { lazy } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
 import { useLocation } from "react-router-dom";
-
 const CourseRecommendationSystems = () => {
   const courseLinks = []
   // const courseLinks = [
@@ -132,7 +131,6 @@ const CourseRecommendationSystems = () => {
   //     component: lazy(() => import("pages/module5/course/CaseStudy")),
   //   },
   // ];
-
   const location = useLocation();
   const module = 12;
   return (
@@ -159,5 +157,4 @@ const CourseRecommendationSystems = () => {
     </ModuleFrame>
   );
 };
-
 export default CourseRecommendationSystems;

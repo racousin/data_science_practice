@@ -1,15 +1,13 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 import CodeBlock from "components/CodeBlock";
-
 const DeepRL = () => {
   return (
     <Container fluid>
       <h2>Deep Reinforcement Learning</h2>
-
       <Row className="mt-4">
         <Col>
           <h3>Glossary</h3>
@@ -20,7 +18,6 @@ const DeepRL = () => {
           </ul>
         </Col>
       </Row>
-
       <Row className="mt-4">
         <Col>
           <h3>Limitations of Traditional Q Learning</h3>
@@ -31,7 +28,6 @@ const DeepRL = () => {
           </ul>
         </Col>
       </Row>
-
       <Row className="mt-4">
         <Col>
           <h3>Deep Q Learning Overview</h3>
@@ -60,7 +56,6 @@ const DeepRL = () => {
           </ul>
         </Col>
       </Row>
-
       <Row className="mt-4">
         <Col>
           <h3>Executing the Deep Q Learning Algorithm</h3>
@@ -85,7 +80,6 @@ const DeepRL = () => {
           </ol>
         </Col>
       </Row>
-
       <Row className="mt-4">
         <Col>
           <h3>Improving Deep Q Learning Stability</h3>
@@ -108,7 +102,6 @@ const DeepRL = () => {
           </ul>
         </Col>
       </Row>
-
       <Row className="mt-4">
         <Col>
           <h3>Policy Optimization</h3>
@@ -143,7 +136,6 @@ const DeepRL = () => {
           </p>
         </Col>
       </Row>
-
       <Row className="mt-4">
         <Col>
           <h3>Reinforce/VPG algorithm</h3>
@@ -168,7 +160,6 @@ const DeepRL = () => {
           </ol>
         </Col>
       </Row>
-
       <Row className="mt-4">
         <Col>
           <h3>Introduction to Actor-Critic Models</h3>
@@ -193,7 +184,6 @@ const DeepRL = () => {
           </ul>
         </Col>
       </Row>
-
       <Row className="mt-4">
         <Col>
           <h3>Policy Gradient in Actor-Critic</h3>
@@ -217,7 +207,6 @@ const DeepRL = () => {
           </p>
         </Col>
       </Row>
-
       <Row className="mt-4">
         <Col>
           <h3>Actor-Critic Algorithm Steps</h3>
@@ -253,5 +242,4 @@ const DeepRL = () => {
     </Container>
   );
 };
-
 export default DeepRL;

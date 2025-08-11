@@ -1,8 +1,7 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
-
 const RecommendationSystemsInPractice = () => {
   return (
     <Container fluid>
@@ -24,7 +23,6 @@ const RecommendationSystemsInPractice = () => {
 function recommendProductsForECommerce(user, data, users, k) {
   // Use a recommendation algorithm, such as collaborative filtering or content-based filtering, to generate recommendations
   const recommendedProducts = generateRecommendations(user, data, users, k);
-
   // Return the recommended products
   return recommendedProducts;
 }
@@ -41,10 +39,8 @@ function recommendProductsForECommerce(user, data, users, k) {
 function integrateRecommendationSystem(product) {
   // Identify opportunities for recommendations within the product
   const recommendationOpportunities = identifyOpportunities(product);
-
   // Implement a recommendation algorithm for each opportunity
   const recommendationAlgorithms = implementAlgorithms(recommendationOpportunities);
-
   // Integrate the recommendation algorithms into the product
   return integrateAlgorithms(product, recommendationAlgorithms);
 }
@@ -61,7 +57,6 @@ function integrateRecommendationSystem(product) {
 function anonymizeUserData(data) {
   // Remove personally identifiable information from the data
   const anonymizedData = removePII(data);
-
   // Return the anonymized data
   return anonymizedData;
 }
@@ -72,5 +67,4 @@ function anonymizeUserData(data) {
     </Container>
   );
 };
-
 export default RecommendationSystemsInPractice;

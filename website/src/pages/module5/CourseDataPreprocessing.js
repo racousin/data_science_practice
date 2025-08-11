@@ -1,10 +1,9 @@
 import React, { lazy } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
 import { useLocation } from "react-router-dom";
-
 const CourseDataPreprocessing = () => {
   const courseLinks = [
     {
@@ -55,7 +54,6 @@ const CourseDataPreprocessing = () => {
         { id: "notebook-example", label: "Notebook Example" },
       ],
     },
-
     {
       to: "/handle-missing-values",
       label: "Handle Missing Values",
@@ -95,7 +93,6 @@ const CourseDataPreprocessing = () => {
         { id: "notebook-example", label: "Notebook Example" },
       ],
     },
-
     {
       to: "/handle-outliers",
       label: "Handle Outliers",
@@ -176,7 +173,6 @@ const CourseDataPreprocessing = () => {
       ],
     }
   ];
-
   const location = useLocation();
   const module = 5;
   return (
@@ -203,5 +199,4 @@ const CourseDataPreprocessing = () => {
     </ModuleFrame>
   );
 };
-
 export default CourseDataPreprocessing;

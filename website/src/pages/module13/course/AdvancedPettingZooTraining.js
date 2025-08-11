@@ -1,5 +1,5 @@
 import React from 'react';
-import { Title, Text, Container, Alert, Divider }  from '@mantine/core';
+import { Title, Text, Container, Alert, Divider } from '@mantine/core';
 import { Info, AlertTriangle } from 'lucide-react';
 import CodeBlock from 'components/CodeBlock';
 const AdvancedPettingZooTraining = () => {

@@ -1,16 +1,14 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import DataInteractionPanel from "components/DataInteractionPanel";
 import CodeBlock from "components/CodeBlock";
-
 const Exercise2 = () => {
   const trainDataUrl = process.env.PUBLIC_URL + "/modules/module3/exercise/module3_exercise2_train.csv";
   const testDataUrl = process.env.PUBLIC_URL + "/modules/module3/exercise/module3_exercise2_test.csv";
   const notebookUrl = process.env.PUBLIC_URL + "/modules/module3/exercise/module3_exercise2.ipynb";
   const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/module3/exercise/module3_exercise2.html";
   const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/module3/exercise/module3_exercise2.ipynb";
-
   const metadata = {
     description: "This dataset includes various health metrics crucial for predicting diabetes in Pima Indian women.",
     source: "National Institute of Diabetes and Digestive and Kidney Diseases",
@@ -27,7 +25,6 @@ const Exercise2 = () => {
       { name: "Outcome", description: "Class variable (0 or 1, where 1 indicates tested positive for diabetes)" },
     ],
   };
-
   return (
     <Container fluid>
       <h1 className="my-4">Exercise 2: Diabetes Prediction Model</h1>
@@ -121,5 +118,4 @@ const Exercise2 = () => {
     </Container>
   );
 };
-
 export default Exercise2;

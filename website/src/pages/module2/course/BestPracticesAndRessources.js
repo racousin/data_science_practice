@@ -1,13 +1,11 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
-
 const BestPracticesAndResources = () => {
   return (
     <Container fluid>
       <h1 className="my-4">Best Practices and Resources</h1>
-
       <Row>
         <Col>
           <h3 id="other-package-managers">Other Package Managers</h3>
@@ -16,7 +14,6 @@ const BestPracticesAndResources = () => {
             there are other tools available that provide additional features and
             benefits.
           </p>
-
           <h4>Poetry</h4>
           <p>
             Poetry is a tool for dependency management and packaging in Python.
@@ -28,7 +25,6 @@ const BestPracticesAndResources = () => {
           <CodeBlock code={`poetry init`} />
           <p>Add a dependency:</p>
           <CodeBlock code={`poetry add requests`} />
-
           <h4>Conda</h4>
           <p>
             Conda is an open-source package management and environment
@@ -42,7 +38,6 @@ const BestPracticesAndResources = () => {
           <CodeBlock code={`conda install numpy`} />
         </Col>
       </Row>
-
       <Row>
         <Col>
           <h3 id="testing-and-unit-tests">Testing and Unit Tests</h3>
@@ -51,7 +46,6 @@ const BestPracticesAndResources = () => {
             functionality and to catch bugs early. Python has several testing
             frameworks that make it easy to write and run tests.
           </p>
-
           <h4>pytest</h4>
           <p>
             <code>pytest</code> is a popular testing framework for Python that
@@ -68,7 +62,6 @@ const BestPracticesAndResources = () => {
           />
           <p>Run the tests:</p>
           <CodeBlock code={`pytest`} />
-
           <h4>Unittest</h4>
           <p>
             <code>unittest</code> is the built-in testing framework in Python.
@@ -77,18 +70,15 @@ const BestPracticesAndResources = () => {
           </p>
           <CodeBlock
             code={`import unittest
-
 class TestMath(unittest.TestCase):
     def test_addition(self):
         self.assertEqual(1 + 1, 2)
-
 if __name__ == '__main__':
     unittest.main()`}
             language={"python"}
           />
         </Col>
       </Row>
-
       <Row>
         <Col>
           <h3 id="syntax-and-linting">Syntax and Linting</h3>
@@ -97,7 +87,6 @@ if __name__ == '__main__':
             maintainability. There are several tools available to help enforce a
             consistent style.
           </p>
-
           <h4>Black</h4>
           <p>
             Black is an uncompromising code formatter for Python. It formats
@@ -106,7 +95,6 @@ if __name__ == '__main__':
           <CodeBlock code={`pip install black`} />
           <p>Format your code:</p>
           <CodeBlock code={`black myscript.py`} />
-
           <h4>Flake8</h4>
           <p>
             Flake8 is a tool for checking the style and quality of Python code.
@@ -121,5 +109,4 @@ if __name__ == '__main__':
     </Container>
   );
 };
-
 export default BestPracticesAndResources;

@@ -1,8 +1,7 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
-
 const ConfigureAndAccessGithub = () => {
   const commands = {
     configUser: "git config --global user.name 'Your Username'",
@@ -12,7 +11,6 @@ const ConfigureAndAccessGithub = () => {
     sshAdd: "ssh-add ~/.ssh/id_rsa",
     testConnection: "ssh -T git@github.com",
   };
-
   return (
     <Container fluid>
       <h3 id="create-github-account">Create a GitHub Account</h3>
@@ -108,7 +106,6 @@ The key's randomart image is:
             </a>
             .
           </p>
-
           <h4>Add Your SSH Public Key to GitHub</h4>
           <p>
             To enable secure SSH access to your GitHub account, you need to add
@@ -127,7 +124,6 @@ The key's randomart image is:
             This step is essential for authenticating your future SSH sessions
             with GitHub.
           </p>
-
           <h4>Test Your SSH Connection</h4>
           <p>Verify that SSH is properly set up by connecting to GitHub:</p>
           <CodeBlock code={commands.testConnection} language="bash" />
@@ -147,5 +143,4 @@ Hi username! You've successfully authenticated, but GitHub does not provide shel
     </Container>
   );
 };
-
 export default ConfigureAndAccessGithub;

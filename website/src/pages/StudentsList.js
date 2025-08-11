@@ -1,17 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
-import {
-  Table,
-  Container,
-  Alert,
-  TextInput,
-  Button,
-  Progress,
-  Box,
-  Title,
-  Group,
-  Tooltip, Text, ActionIcon
-} from "@mantine/core";
+import { Table, Container, Alert, TextInput, Button, Progress, Box, Title, Group, Tooltip, Text, ActionIcon } from '@mantine/core';
 import { IconRefresh, IconChevronUp, IconChevronDown, IconArrowLeft, IconSearch  } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 

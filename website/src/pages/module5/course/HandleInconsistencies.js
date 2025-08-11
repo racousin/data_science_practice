@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Stack, Title, Text, List } from "@mantine/core";
+import { Container, Stack, Title, Text, List } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 import DataInteractionPanel from "components/DataInteractionPanel";
 

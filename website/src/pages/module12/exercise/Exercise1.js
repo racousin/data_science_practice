@@ -1,9 +1,8 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import DataInteractionPanel from "components/DataInteractionPanel";
 import CodeBlock from "components/CodeBlock";
-
 const Exercise1 = () => {
   const trainDataUrl =
     process.env.PUBLIC_URL +
@@ -58,7 +57,6 @@ const Exercise1 = () => {
       { name: "SalePrice", description: "Price of sale (target variable)" },
     ],
   };
-
   return (
     <Container fluid>
       <h1 className="my-4">
@@ -159,5 +157,4 @@ const Exercise1 = () => {
     </Container>
   );
 };
-
 export default Exercise1;

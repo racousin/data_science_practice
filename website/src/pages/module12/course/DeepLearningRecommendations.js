@@ -1,14 +1,12 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 import { InlineMath, BlockMath } from "react-katex";
-
 const DeepLearningRecommendations = () => {
   return (
     <Container>
       <h1>Deep Learning for Recommendations</h1>
-
       <section id="introduction">
         <h2>Introduction</h2>
         <p>
@@ -19,7 +17,6 @@ const DeepLearningRecommendations = () => {
           might miss.
         </p>
       </section>
-
       <section id="neural-collaborative-filtering">
         <h2>Neural Collaborative Filtering (NCF)</h2>
         <p>
@@ -46,7 +43,6 @@ const DeepLearningRecommendations = () => {
           </li>
         </ul>
       </section>
-
       <section id="autoencoders-for-recommendations">
         <h2>Autoencoders for Recommendations</h2>
         <p>
@@ -60,7 +56,6 @@ const DeepLearningRecommendations = () => {
 Input layer: x (user's rating vector)
 Encoder: h = σ(Wx + b)
 Decoder: x̂ = σ(W'h + b')
-
 Where:
 σ: Activation function (e.g., ReLU)
 W, W': Weight matrices
@@ -68,7 +63,6 @@ b, b': Bias vectors
           `}
         />
       </section>
-
       <section id="sequence-models-for-recommendations">
         <h2>Sequence Models for Recommendations</h2>
         <p>
@@ -102,7 +96,6 @@ h_t = \\tanh(W_h x_t + U_h h_{t-1} + b_h)
           </li>
         </ul>
       </section>
-
       <section id="implementing-deep-learning">
         <h2>Implementing Deep Learning Models</h2>
         <p>
@@ -114,7 +107,6 @@ h_t = \\tanh(W_h x_t + U_h h_{t-1} + b_h)
           code={`
 import torch
 import torch.nn as nn
-
 class NCF(nn.Module):
     def __init__(self, num_users, num_items, embedding_size, layers):
         super(NCF, self).__init__()
@@ -125,7 +117,6 @@ class NCF(nn.Module):
             self.fc_layers.append(nn.Linear(in_size, out_size))
         self.output_layer = nn.Linear(layers[-1], 1)
         self.activation = nn.ReLU()
-
     def forward(self, user_indices, item_indices):
         user_embedding = self.user_embedding(user_indices)
         item_embedding = self.item_embedding(item_indices)
@@ -134,13 +125,11 @@ class NCF(nn.Module):
             x = self.activation(layer(x))
         output = self.output_layer(x)
         return output.squeeze()
-
 # Usage
 num_users, num_items = 1000, 5000
 model = NCF(num_users, num_items, embedding_size=64, layers=[128, 64, 32, 16])
 criterion = nn.MSELoss()
 optimizer = torch.optim.Adam(model.parameters())
-
 # Training loop (simplified)
 for epoch in range(num_epochs):
     for user, item, rating in dataloader:
@@ -152,7 +141,6 @@ for epoch in range(num_epochs):
           `}
         />
       </section>
-
       <section id="challenges">
         <h2>Challenges and Considerations</h2>
         <p>Deep learning models for recommendations face several challenges:</p>
@@ -167,5 +155,4 @@ for epoch in range(num_epochs):
     </Container>
   );
 };
-
 export default DeepLearningRecommendations;

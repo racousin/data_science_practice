@@ -1,7 +1,6 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
-
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 const Introduction = () => {
   return (
     <Container fluid>
@@ -37,5 +36,4 @@ const Introduction = () => {
     </Container>
   );
 };
-
 export default Introduction;

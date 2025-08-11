@@ -1,10 +1,9 @@
 import React from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
-import { Container, Grid, Button, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid, Button } from '@mantine/core';
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import CodeBlock from "components/CodeBlock";
-
 const InstallingGit = () => {
   const commands = {
     mac: "brew install git",
@@ -12,7 +11,6 @@ const InstallingGit = () => {
     linux: "sudo apt install git",
     version: "git --version",
   };
-
   return (
     <Container fluid>
       <h2>Installing Git</h2>
@@ -156,5 +154,4 @@ git version 2.34.1`}
     </Container>
   );
 };
-
 export default InstallingGit;

@@ -1,8 +1,7 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
-
 const ManagingComputeResources = () => {
   return (
     <Container fluid>
@@ -41,5 +40,4 @@ gcloud compute instances create my-instance --machine-type=n1-standard-1 --image
     </Container>
   );
 };
-
 export default ManagingComputeResources;

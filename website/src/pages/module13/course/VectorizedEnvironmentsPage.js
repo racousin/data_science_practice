@@ -1,5 +1,5 @@
 import React from 'react';
-import { Title, Text, Container, Paper, Alert,List, Grid  } from '@mantine/core';
+import { Title, Text, Container, Paper, Alert, List, Grid } from '@mantine/core';
 import { Info } from 'lucide-react';
 import CodeBlock from 'components/CodeBlock';
 

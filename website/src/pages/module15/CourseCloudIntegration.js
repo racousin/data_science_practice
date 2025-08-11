@@ -1,10 +1,9 @@
 import React, { lazy } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
 import { useLocation } from "react-router-dom";
-
 const CourseCloudIntegration = () => {
   const courseLinks = []
   // const courseLinks = [
@@ -52,7 +51,6 @@ const CourseCloudIntegration = () => {
     //   ),
     // },
   // ];
-
   const location = useLocation();
   const module = 15;
   return (
@@ -85,5 +83,4 @@ const CourseCloudIntegration = () => {
     </ModuleFrame>
   );
 };
-
 export default CourseCloudIntegration;

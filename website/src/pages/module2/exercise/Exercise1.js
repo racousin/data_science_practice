@@ -1,9 +1,8 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 import EvaluationModal from "components/EvaluationModal";
-
 const Exercise1 = () => {
   return (
     <Container fluid>
@@ -34,7 +33,6 @@ const Exercise1 = () => {
             </li>
             <CodeBlock
               code={`from setuptools import setup, find_packages
-
 setup(
     name='mysupertools',
     version='0.1',
@@ -92,5 +90,4 @@ setup(
     </Container>
   );
 };
-
 export default Exercise1;

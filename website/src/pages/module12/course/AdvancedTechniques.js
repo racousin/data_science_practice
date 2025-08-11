@@ -1,8 +1,7 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
-
 const AdvancedTechniques = () => {
   return (
     <Container fluid>
@@ -26,14 +25,11 @@ function recommendItemsUsingNeuralCF(user, data, users, k) {
   const U = [];
   const S = [];
   const Vt = [];
-
   // Train a neural collaborative filtering model on the data matrix
   const model = neuralCF(data, k);
-
   // Create a reduced user matrix
   const userMatrix = U.map(row => row.slice(0, k));
   const reducedUserMatrix = userMatrix.map(row => row.map(val => val * S[row.indexOf(val)]));
-
   // Calculate the predicted ratings for the user using the neural collaborative filtering model
   const predictedRatings = Vt.map(row => row.slice(0, k)).map(row => {
     let rating = 0;
@@ -42,10 +38,8 @@ function recommendItemsUsingNeuralCF(user, data, users, k) {
     });
     return rating;
   });
-
   // Sort the predicted ratings and return the top N items
   const recommendedItems = predictedRatings.map((rating, itemId) => ({ itemId, rating })).sort((a, b) => b.rating - a.rating).slice(0, N).map(item => item.itemId);
-
   return recommendedItems;
 }
 `}
@@ -63,14 +57,11 @@ function recommendItemsUsingContextAwareModel(user, data, users, k, context) {
   const U = [];
   const S = [];
   const Vt = [];
-
   // Train a context-aware recommendation model on the data matrix and context information
   const model = contextAwareModel(data, context, k);
-
   // Create a reduced user matrix
   const userMatrix = U.map(row => row.slice(0, k));
   const reducedUserMatrix = userMatrix.map(row => row.map(val => val * S[row.indexOf(val)]));
-
   // Calculate the predicted ratings for the user using the context-aware recommendation model
   const predictedRatings = Vt.map(row => row.slice(0, k)).map(row => {
     let rating = 0;
@@ -79,10 +70,8 @@ function recommendItemsUsingContextAwareModel(user, data, users, k, context) {
     });
     return rating;
   });
-
   // Sort the predicted ratings and return the top N items
   const recommendedItems = predictedRatings.map((rating, itemId) => ({ itemId, rating })).sort((a, b) => b.rating - a.rating).slice(0, N).map(item => item.itemId);
-
   return recommendedItems;
 }
 `}
@@ -100,11 +89,9 @@ function recommendItemsUsingReinforcementLearning(user, data, users, k, model) {
   const U = [];
   const S = [];
   const Vt = [];
-
   // Create a reduced user matrix
   const userMatrix = U.map(row => row.slice(0, k));
   const reducedUserMatrix = userMatrix.map(row => row.map(val => val * S[row.indexOf(val)]));
-
   // Calculate the predicted ratings for the user using the reinforcement learning model
   const predictedRatings = Vt.map(row => row.slice(0, k)).map(row => {
     let rating = 0;
@@ -113,14 +100,11 @@ function recommendItemsUsingReinforcementLearning(user, data, users, k, model) {
     });
     return rating;
   });
-
   // Sort the predicted ratings and return the top N items
   const recommendedItems = predictedRatings.map((rating, itemId) => ({ itemId, rating })).sort((a, b) => b.rating - a.rating).slice(0, N).map(item => item.itemId);
-
   // Update the reinforcement learning model based on user feedback
   const feedback = getUserFeedback(recommendedItems);
   updateReinforcementLearningModel(feedback, model);
-
   return recommendedItems;
 }
 `}
@@ -130,5 +114,4 @@ function recommendItemsUsingReinforcementLearning(user, data, users, k, model) {
     </Container>
   );
 };
-
 export default AdvancedTechniques;

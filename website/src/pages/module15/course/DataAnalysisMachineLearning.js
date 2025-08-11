@@ -1,8 +1,7 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
-
 const DataAnalysisMachineLearning = () => {
   return (
     <Container fluid>
@@ -36,5 +35,4 @@ const DataAnalysisMachineLearning = () => {
     </Container>
   );
 };
-
 export default DataAnalysisMachineLearning;

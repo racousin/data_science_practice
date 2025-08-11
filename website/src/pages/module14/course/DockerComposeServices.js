@@ -1,13 +1,10 @@
 import React from "react";
-import { Container } from "react-bootstrap";
 import { Container } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
-
 const DockerComposeServices = () => {
   return (
     <Container>
       <h1>Docker Compose and Services</h1>
-
       <section id="docker-compose-intro">
         <h2>Introduction to Docker Compose</h2>
         <p>
@@ -23,7 +20,6 @@ const DockerComposeServices = () => {
           <li>Service dependencies and scaling</li>
         </ul>
       </section>
-
       <section id="compose-file-structure">
         <h2>Docker Compose File Structure</h2>
         <p>
@@ -41,10 +37,8 @@ services:
       - "5000:5000"
   redis:
     image: "redis:alpine"
-
 volumes:
   logvolume01: {}
-
 networks:
   frontend:
   backend:
@@ -56,7 +50,6 @@ networks:
           networks.
         </p>
       </section>
-
       <section id="multi-container-apps">
         <h2>Creating Multi-Container Applications</h2>
         <p>
@@ -87,7 +80,6 @@ services:
       - POSTGRES_PASSWORD=pass
   redis:
     image: "redis:alpine"
-
 volumes:
   postgres_data:
           `}
@@ -98,20 +90,16 @@ volumes:
           code={`
 # Start the application
 docker-compose up -d
-
 # Stop the application
 docker-compose down
-
 # View logs
 docker-compose logs
-
 # Scale a service
 docker-compose up -d --scale web=3
           `}
           language="bash"
         />
       </section>
-
       <section id="docker-services">
         <h2>Docker Services and Swarm Mode</h2>
         <p>
@@ -124,19 +112,14 @@ docker-compose up -d --scale web=3
           code={`
 # Initialize a swarm
 docker swarm init
-
 # Create a service
 docker service create --name my_web nginx
-
 # List services
 docker service ls
-
 # Scale a service
 docker service scale my_web=3
-
 # Update a service
 docker service update --image nginx:1.14 my_web
-
 # Remove a service
 docker service rm my_web
           `}
@@ -147,17 +130,14 @@ docker service rm my_web
           code={`
 # Deploy a stack
 docker stack deploy -c docker-compose.yml my_stack
-
 # List stacks
 docker stack ls
-
 # Remove a stack
 docker stack rm my_stack
           `}
           language="bash"
         />
       </section>
-
       <section id="networking-compose">
         <h2>Networking in Docker Compose</h2>
         <p>
@@ -177,7 +157,6 @@ services:
     image: postgres
     networks:
       - backend
-
 networks:
   frontend:
   backend:
@@ -189,7 +168,6 @@ networks:
           while the db service is only connected to the backend network.
         </p>
       </section>
-
       <section id="conclusion">
         <h2>Conclusion</h2>
         <p>
@@ -202,5 +180,4 @@ networks:
     </Container>
   );
 };
-
 export default DockerComposeServices;

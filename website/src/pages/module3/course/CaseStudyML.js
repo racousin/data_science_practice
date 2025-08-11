@@ -1,9 +1,8 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import DataInteractionPanel from "components/DataInteractionPanel";
 import CodeBlock from "components/CodeBlock";
-
 const CaseStudy = () => {
   const trainDataUrl =
     process.env.PUBLIC_URL + "/modules/module3/course/module3_course_train.csv";
@@ -77,5 +76,4 @@ const CaseStudy = () => {
     </Container>
   );
 };
-
 export default CaseStudy;

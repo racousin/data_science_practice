@@ -1,8 +1,7 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
-
 const InstallingPackages = () => {
   return (
     <Container fluid>
@@ -16,7 +15,6 @@ const InstallingPackages = () => {
             This command installs the latest version of the specified package,
             in this case, numpy.
           </p>
-
           <h3 id="install-specific-version">
             Install a Specific Version of a Package
           </h3>
@@ -30,7 +28,6 @@ const InstallingPackages = () => {
             Specifying the version is useful when you need a particular version
             that is compatible with your code.
           </p>
-
           <h3 id="install-from-requirements">
             Install Packages from a Requirements File
           </h3>
@@ -57,7 +54,6 @@ const InstallingPackages = () => {
           <p>To see a list of all the installed Python packages in your environment, use the following command:</p>
           <CodeBlock code={`pip freeze`} language="bash"/>
           <p>This will output a list of installed packages with their versions.</p>
-
           <h3 id="create-a-requirements-file">
             Create a Requirements File
           </h3>
@@ -69,5 +65,4 @@ const InstallingPackages = () => {
     </Container>
   );
 };
-
 export default InstallingPackages;

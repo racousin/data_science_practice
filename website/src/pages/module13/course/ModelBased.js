@@ -1,15 +1,13 @@
 import React from "react";
-import { Container, Row, Col, Image } from "react-bootstrap";
-import { Container, Grid, Image, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid, Image } from '@mantine/core';
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 import CodeBlock from "components/CodeBlock";
-
 const ModelBased = () => {
   return (
     <Container fluid>
       <h2>Model-Based Reinforcement Learning</h2>
-
       <Row className="mt-4">
         <Col>
           <p>
@@ -19,7 +17,6 @@ const ModelBased = () => {
           </p>
         </Col>
       </Row>
-
       <Row className="mt-4">
         <Col>
           <h3>Key Concepts</h3>
@@ -39,7 +36,6 @@ const ModelBased = () => {
           </ul>
         </Col>
       </Row>
-
       <Row className="mt-4">
         <Col>
           <h3>Advantages of Model-Based RL</h3>
@@ -59,7 +55,6 @@ const ModelBased = () => {
           </ul>
         </Col>
       </Row>
-
       <Row className="mt-4">
         <Col>
           <h3>Model Learning</h3>
@@ -83,7 +78,6 @@ const ModelBased = () => {
           />
         </Col>
       </Row>
-
       <Row className="mt-4">
         <Col>
           <h3>Planning with Learned Models</h3>
@@ -107,7 +101,6 @@ const ModelBased = () => {
           </ul>
         </Col>
       </Row>
-
       <Row className="mt-4">
         <Col>
           <h3>Challenges in Model-Based RL</h3>
@@ -127,7 +120,6 @@ const ModelBased = () => {
           </ul>
         </Col>
       </Row>
-
       <Row className="mt-4">
         <Col>
           <h3>Example: Simple Model-Based RL Algorithm</h3>
@@ -137,7 +129,6 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
-
 class EnvironmentModel(nn.Module):
     def __init__(self, state_dim, action_dim):
         super().__init__()
@@ -148,11 +139,9 @@ class EnvironmentModel(nn.Module):
             nn.ReLU(),
             nn.Linear(64, state_dim + 1)  # predict next state and reward
         )
-    
     def forward(self, state, action):
         x = torch.cat([state, action], dim=-1)
         return self.network(x)
-
 def train_model(model, optimizer, states, actions, next_states, rewards):
     predicted = model(states, actions)
     loss = nn.MSELoss()(predicted, torch.cat([next_states, rewards.unsqueeze(-1)], dim=-1))
@@ -160,54 +149,42 @@ def train_model(model, optimizer, states, actions, next_states, rewards):
     loss.backward()
     optimizer.step()
     return loss.item()
-
 def plan_action(model, state, num_simulations=100, horizon=10):
     best_action = None
     best_return = float('-inf')
-    
     for _ in range(num_simulations):
         total_return = 0
         current_state = state
-        
         for t in range(horizon):
             action = torch.rand(action_dim)  # random action for simplicity
             prediction = model(current_state, action)
             next_state, reward = prediction[:state_dim], prediction[-1]
             total_return += reward.item()
             current_state = next_state
-        
         if total_return > best_return:
             best_return = total_return
             best_action = action
-    
     return best_action
-
 # Usage
 state_dim = 4
 action_dim = 2
 model = EnvironmentModel(state_dim, action_dim)
 optimizer = optim.Adam(model.parameters(), lr=1e-3)
-
 # Training loop (assuming you have a way to collect experiences)
 for episode in range(num_episodes):
     # Collect experiences
     states, actions, next_states, rewards = collect_experiences()
-    
     # Train model
     loss = train_model(model, optimizer, states, actions, next_states, rewards)
-    
     # Use model for planning
     state = get_current_state()
     action = plan_action(model, state)
-    
     # Take action in the environment
     # ...
-
             `}
           />
         </Col>
       </Row>
-
       <Row className="mt-4">
         <Col>
           <h3>Recent Advancements</h3>
@@ -231,7 +208,6 @@ for episode in range(num_episodes):
           </ul>
         </Col>
       </Row>
-
       <Row className="mt-4">
         <Col>
           <h3>Conclusion</h3>
@@ -247,5 +223,4 @@ for episode in range(num_episodes):
     </Container>
   );
 };
-
 export default ModelBased;

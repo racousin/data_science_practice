@@ -1,8 +1,7 @@
 import React from "react";
-import { Container, Row, Col, Nav, Tab, Image } from "react-bootstrap";
-import { Container, Grid, Stack, TabsTab, Image, Grid } from '@mantine/core';
+import { Row, Col, Nav, Tab } from 'react-bootstrap';
+import { Container, Grid, Stack, TabsTab, Image } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
-
 const WorkingWithRemoteRepositories = () => {
   return (
     <Container fluid>
@@ -61,7 +60,6 @@ const WorkingWithRemoteRepositories = () => {
               </ol>
             </Col>
           </Row>
-
           {/* Adding and Cloning Remote Repositories */}
           <Row>
             <Col>
@@ -293,7 +291,6 @@ origin	git@github.com:racousin/data_science_practice_2024.git (push)
               </p>
             </Col>
           </Row>
-
           <Row>
             <Col>
               <h3 id="example-case">Example case with Remote Repositories</h3>
@@ -346,5 +343,4 @@ origin	git@github.com:racousin/data_science_practice_2024.git (push)
     </Container>
   );
 };
-
 export default WorkingWithRemoteRepositories;

@@ -1,10 +1,9 @@
 import React, { lazy } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
 import { useLocation } from "react-router-dom";
-
 const CourseTextProcessing = () => {
   const courseLinks = [
     {
@@ -12,7 +11,6 @@ const CourseTextProcessing = () => {
       label: "Introduction to NLP",
       component: lazy(() => import("pages/module10/course/Introduction")),
       subLinks: [
-
         { id: "text-representation", label: "Text Data Representation" },
         { id: "history", label: "Historical Context" },
         { id: "applications", label: "NLP Applications and Tasks" }
@@ -54,7 +52,6 @@ const CourseTextProcessing = () => {
         {id:"transformer-components-layers", label:"Transformers Components Layers"},
         {id:"attention-backprop", label:"Backpropagation Through Attention"},
         {id:"minimal-transformer-implementation", label:"Minimal Transformer Implementation"}
-
       ],
     },
     {
@@ -69,7 +66,6 @@ const CourseTextProcessing = () => {
       label: "Transfer Learning in NLP",
       component: lazy(() => import("pages/module10/course/TransferLearning")),
       subLinks: [
-
       ],
     },
     {
@@ -77,10 +73,8 @@ const CourseTextProcessing = () => {
       label: "NLP Evaluation",
       component: lazy(() => import("pages/module10/course/NLPEvaluation")),
       subLinks: [
-
       ],
     },
-
     // {
     //   to: "/rag",
     //   label: "Retrieval-Augmented Generation (RAG)",
@@ -109,7 +103,6 @@ const CourseTextProcessing = () => {
     //   ],
     // },
   ];
-
   const location = useLocation();
   const module = 10;
   return (
@@ -136,5 +129,4 @@ const CourseTextProcessing = () => {
     </ModuleFrame>
   );
 };
-
 export default CourseTextProcessing;

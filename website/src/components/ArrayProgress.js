@@ -1,5 +1,5 @@
 import React from "react";
-import { Progress, Text, Box } from "@mantine/core";
+import { Progress, Text, Box } from '@mantine/core';
 
 const ArrayProgress = ({ progressPercent }) => {
   const getProgressColor = () => {

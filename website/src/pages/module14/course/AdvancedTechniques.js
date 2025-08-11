@@ -1,8 +1,7 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
-
 const AdvancedTechniques = () => {
   return (
     <Container fluid>
@@ -28,7 +27,6 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 COPY . .
 RUN pip install .
-
 FROM python:3.8-slim-buster
 WORKDIR /app
 COPY --from=builder /app/ /app/`}
@@ -52,5 +50,4 @@ COPY --from=builder /app/ /app/`}
     </Container>
   );
 };
-
 export default AdvancedTechniques;

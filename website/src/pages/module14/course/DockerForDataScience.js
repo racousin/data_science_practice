@@ -1,13 +1,10 @@
 import React from "react";
-import { Container, Alert } from "react-bootstrap";
 import { Container, Alert } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
-
 const DockerForDataScience = () => {
   return (
     <Container>
       <h1>Docker for Data Science and Machine Learning</h1>
-
       <section id="data-science-workflows">
         <h2>Containerizing Data Science Workflows</h2>
         <p>
@@ -18,16 +15,11 @@ const DockerForDataScience = () => {
         <CodeBlock
           code={`
 FROM python:3.8
-
 RUN pip install numpy pandas scikit-learn matplotlib jupyter
-
 WORKDIR /app
-
 COPY requirements.txt .
 RUN pip install -r requirements.txt
-
 COPY . .
-
 CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
           `}
           language="dockerfile"
@@ -37,7 +29,6 @@ CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--al
           libraries and Jupyter Notebook.
         </p>
       </section>
-
       <section id="ml-model-deployment">
         <h2>Deploying Machine Learning Models</h2>
         <p>
@@ -47,14 +38,10 @@ CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--al
         <CodeBlock
           code={`
 FROM python:3.8
-
 WORKDIR /app
-
 COPY requirements.txt .
 RUN pip install -r requirements.txt
-
 COPY . .
-
 CMD ["python", "app.py"]
           `}
           language="dockerfile"
@@ -64,23 +51,19 @@ CMD ["python", "app.py"]
           code={`
 from flask import Flask, request, jsonify
 import joblib
-
 app = Flask(__name__)
 model = joblib.load('model.joblib')
-
 @app.route('/predict', methods=['POST'])
 def predict():
     data = request.json
     prediction = model.predict(data['features'])
     return jsonify({'prediction': prediction.tolist()})
-
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
           `}
           language="python"
         />
       </section>
-
       <section id="gpu-support">
         <h2>GPU Support in Docker</h2>
         <p>
@@ -92,10 +75,8 @@ if __name__ == '__main__':
 distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
 curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
 curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
-
 sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
 sudo systemctl restart docker
-
 # Run a GPU-enabled container
 docker run --gpus all nvidia/cuda:10.0-base nvidia-smi
           `}
@@ -106,7 +87,6 @@ docker run --gpus all nvidia/cuda:10.0-base nvidia-smi
           host system.
         </Alert>
       </section>
-
       <section id="jupyter-notebooks">
         <h2>Running Jupyter Notebooks in Docker</h2>
         <p>To run Jupyter Notebooks in a Docker container:</p>
@@ -121,7 +101,6 @@ docker run -p 8888:8888 -v $(pwd):/home/jovyan/work jupyter/datascience-notebook
           mounts the current directory to the container's work directory.
         </p>
       </section>
-
       <section id="data-pipelines">
         <h2>Building Data Pipelines with Docker</h2>
         <p>
@@ -155,7 +134,6 @@ services:
           database for managing data workflows.
         </p>
       </section>
-
       <section id="best-practices">
         <h2>Best Practices for Data Science with Docker</h2>
         <ul>
@@ -177,7 +155,6 @@ services:
           </li>
         </ul>
       </section>
-
       <section id="conclusion">
         <h2>Conclusion</h2>
         <p>
@@ -192,5 +169,4 @@ services:
     </Container>
   );
 };
-
 export default DockerForDataScience;

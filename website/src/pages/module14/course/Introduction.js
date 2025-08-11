@@ -1,13 +1,11 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Container, Grid, Grid } from '@mantine/core';
+import { Row, Col } from 'react-bootstrap';
+import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
-
 const Introduction = () => {
   return (
     <Container>
       <h1>Introduction to Containerization</h1>
-
       <section id="what-is-containerization">
         <h2>What is Containerization?</h2>
         <p>
@@ -17,7 +15,6 @@ const Introduction = () => {
           different computing environments.
         </p>
       </section>
-
       <section id="benefits-of-containerization">
         <h2>Benefits of Containerization</h2>
         <ul>
@@ -43,7 +40,6 @@ const Introduction = () => {
           </li>
         </ul>
       </section>
-
       <section id="containers-vs-vms">
         <h2>Containers vs. Virtual Machines</h2>
         <p>
@@ -71,7 +67,6 @@ const Introduction = () => {
           </Col>
         </Row>
       </section>
-
       <section id="docker-overview">
         <h2>Docker Overview</h2>
         <p>
@@ -103,20 +98,16 @@ const Introduction = () => {
           code={`
 # Build an image from a Dockerfile
 docker build -t my-app .
-
 # Run a container from the image
 docker run -d -p 8080:80 my-app
-
 # Stop the container
 docker stop <container_id>
-
 # Remove the container
 docker rm <container_id>
           `}
           language="bash"
         />
       </section>
-
       <section id="conclusion">
         <h2>Conclusion</h2>
         <p>
@@ -129,5 +120,4 @@ docker rm <container_id>
     </Container>
   );
 };
-
 export default Introduction;
