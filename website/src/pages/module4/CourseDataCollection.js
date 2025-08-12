@@ -1,6 +1,6 @@
 import React, { lazy } from "react";
 import { useLocation } from "react-router-dom";
-import { Container, Title, Text, Stack } from '@mantine/core';
+import { Container, Text, Stack } from '@mantine/core';
 import DynamicRoutes from "components/DynamicRoutes";
 import ModuleFrame from "components/ModuleFrame";
 
@@ -116,7 +116,7 @@ const CourseDataCollection = () => {
           </Stack>
         </Container>
       )}
-      <DynamicRoutes routes={courseLinks} />
+      <DynamicRoutes routes={courseLinks} type="course" />
     </ModuleFrame>
   );
 };

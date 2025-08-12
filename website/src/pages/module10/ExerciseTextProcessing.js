@@ -25,9 +25,7 @@ const ExerciseTextProcessing = () => {
       label: "Exercise 3",
       component: lazy(() => import("pages/module10/exercise/Exercise3")),
     },
-  ];
-  const location = useLocation();
-  const module = 10;
+  ];const module = 10;
   return (
     <ModuleFrame
       module={module}
@@ -35,24 +33,10 @@ const ExerciseTextProcessing = () => {
       title="Module 10: Exercise Natural Language Processing"
       courseLinks={exerciseLinks}
     >
-      {location.pathname === `/module${module}/exercise` && (
-        <>
-          <Grid>
-            <p>
-              In this module, you will practice text processing techniques and
-              applications in data science.
-            </p>
-          </Grid>
-          <Grid>
-            <Grid.Col>
-              <p>Last Updated: {"2024-09-20"}</p>
-            </Grid.Col>
-          </Grid>
-        </>
-      )}
+      
       <Grid>
         <Grid.Col span={{ md: 11 }}>
-          <DynamicRoutes routes={exerciseLinks} />
+          <DynamicRoutes routes={exerciseLinks} type="exercise" />
         </Grid.Col>
       </Grid>
     </ModuleFrame>

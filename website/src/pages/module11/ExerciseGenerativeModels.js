@@ -7,10 +7,7 @@ import { Text, Grid } from '@mantine/core';
 const ExerciseGenerativeModels = () => {
   const exerciseLinks = [
     // Add links to other exercises as needed
-  ];
-
-  const location = useLocation();
-  const module = 11;
+  ];const module = 11;
 
   const notebookUrl = process.env.PUBLIC_URL + "/modules/module11/TP_gen.ipynb";
   const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/module11/TP_gen.html";
@@ -26,18 +23,10 @@ const ExerciseGenerativeModels = () => {
                     <Text mt="md" c="dimmed" size="sm">
           Author: Alessandro Bucci
         </Text>
-      {location.pathname === `/module${module}/exercise` && (
-        <>
-          <DataInteractionPanel
-            notebookUrl={notebookUrl}
-            notebookHtmlUrl={notebookHtmlUrl}
-            notebookColabUrl={notebookColabUrl}
-          />
-        </>
-      )}
+      
       <Grid>
         <Grid.Col span={{ md: 11 }}>
-          <DynamicRoutes routes={exerciseLinks} />
+          <DynamicRoutes routes={exerciseLinks} type="exercise" />
         </Grid.Col>
       </Grid>
     </ModuleFrame>

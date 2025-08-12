@@ -10,9 +10,7 @@ const ExerciseDataPreprocessing = () => {
       label: <>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></>,
       component: lazy(() => import("pages/module5/exercise/Exercise1")),
     },
-  ];
-  const location = useLocation();
-  const module = 5;
+  ];const module = 5;
   return (
     <ModuleFrame
       module={5}
@@ -20,18 +18,10 @@ const ExerciseDataPreprocessing = () => {
       title="Module 5: Data Preprocessing"
       courseLinks={exerciseLinks}
     >
-      {location.pathname === `/module${module}/exercise` && (
-        <>
-          <Grid>
-            <Grid.Col>
-              <p>Last Updated: {"2024-09-20"}</p>
-            </Grid.Col>
-          </Grid>
-        </>
-      )}
+      
       <Grid>
         <Grid.Col span={{ md: 11 }}>
-          <DynamicRoutes routes={exerciseLinks} />
+          <DynamicRoutes routes={exerciseLinks} type="exercise" />
         </Grid.Col>
       </Grid>
     </ModuleFrame>

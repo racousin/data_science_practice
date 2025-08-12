@@ -33,7 +33,7 @@ const ExerciseCloudIntegration = () => {
       )}
       <Grid>
         <Grid.Col span={{ md: 11 }}>
-          <DynamicRoutes routes={exerciseLinks} />
+          <DynamicRoutes routes={exerciseLinks} type="exercise" />
         </Grid.Col>
       </Grid>
     </ModuleFrame>

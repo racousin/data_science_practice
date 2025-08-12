@@ -1,9 +1,8 @@
 import React, { lazy } from 'react';
-import { Box, Container, Stack, Text, Image } from '@mantine/core';
+import { Box, Container, Image } from '@mantine/core';
 import { useLocation } from 'react-router-dom';
 import DynamicRoutes from 'components/DynamicRoutes';
 import ModuleFrame from 'components/ModuleFrame';
-
 
 const ImageProcessingCourse = () => {
   const courseLinks = [
@@ -81,11 +80,7 @@ const ImageProcessingCourse = () => {
         { id: "results", label: "Results Analysis" }
       ]
     }
-  ];
-
-  const location = useLocation();
-  
-  return (
+  ];return (
     <ModuleFrame
       module={8}
       isCourse={true}

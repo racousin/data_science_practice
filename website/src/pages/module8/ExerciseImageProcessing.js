@@ -16,9 +16,7 @@ const ExerciseImageProcessing = () => {
       component: lazy(() => import("pages/module8/exercise/Exercise1")),
     },
     // Add links to other exercises as needed
-  ];
-  const location = useLocation();
-  const module = 8;
+  ];const module = 8;
   return (
     <ModuleFrame
       module={module}
@@ -26,24 +24,10 @@ const ExerciseImageProcessing = () => {
       title="Module 8: Exercise Image Processing"
       courseLinks={exerciseLinks}
     >
-      {location.pathname === `/module${module}/exercise` && (
-        <>
-          <Grid>
-            <p>
-              In this module, you will practice image processing techniques and
-              applications.
-            </p>
-          </Grid>
-          <Grid>
-            <Grid.Col>
-              <p>Last Updated: {"2024-09-20"}</p>
-            </Grid.Col>
-          </Grid>
-        </>
-      )}
+      
       <Grid>
         <Grid.Col span={{ md: 11 }}>
-          <DynamicRoutes routes={exerciseLinks} />
+          <DynamicRoutes routes={exerciseLinks} type="exercise" />
         </Grid.Col>
       </Grid>
     </ModuleFrame>

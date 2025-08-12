@@ -16,9 +16,7 @@ const ExerciseDeepLearningFundamentals = () => {
       component: lazy(() => import("pages/module7/exercise/Exercise1")),
     },
     // Add links to other exercises as needed
-  ];
-  const location = useLocation();
-  const module = 7;
+  ];const module = 7;
   return (
     <ModuleFrame
       module={module}
@@ -26,18 +24,10 @@ const ExerciseDeepLearningFundamentals = () => {
       title="Module 8: Exercise Deep Learning Fundamentals"
       courseLinks={exerciseLinks}
     >
-      {location.pathname === `/module${module}/exercise` && (
-        <>
-          <Grid>
-            <Grid.Col>
-              <p>Last Updated: {"2024-11-18"}</p>
-            </Grid.Col>
-          </Grid>
-        </>
-      )}
+      
       <Grid>
         <Grid.Col span={{ md: 11 }}>
-          <DynamicRoutes routes={exerciseLinks} />
+          <DynamicRoutes routes={exerciseLinks} type="exercise" />
         </Grid.Col>
       </Grid>
     </ModuleFrame>

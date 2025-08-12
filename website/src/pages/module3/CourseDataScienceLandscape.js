@@ -119,7 +119,7 @@ const CourseDataScienceLandscape = () => {
       )}
       <Grid>
         <Grid.Col span={{ md: 12 }}>
-          <DynamicRoutes routes={courseLinks} />
+          <DynamicRoutes routes={courseLinks} type="course" />
         </Grid.Col>
       </Grid>
     </ModuleFrame>

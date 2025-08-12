@@ -113,7 +113,7 @@ const CourseReinforcementLearning = () => {
       )}
       <Grid>
         <Grid.Col span={{ md: 11 }}>
-          <DynamicRoutes routes={courseLinks} />
+          <DynamicRoutes routes={courseLinks} type="course" />
         </Grid.Col>
       </Grid>
     </ModuleFrame>

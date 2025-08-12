@@ -15,9 +15,7 @@ const ExerciseGit = () => {
       label: "Exercise 2",
       component: lazy(() => import("pages/module1/exercise/Exercise2")),
     },
-  ];
-  const location = useLocation();
-  const module = 1;
+  ];const module = 1;
   return (
     <ModuleFrame
       module={module}
@@ -25,24 +23,10 @@ const ExerciseGit = () => {
       title="Module 1: Git Exercises"
       courseLinks={exerciseLinks}
     >
-      {location.pathname === `/module${module}/exercise` && (
-        <>
-          <Grid>
-            <p>
-              Practice using Git for version control and GitHub for
-              collaboration.
-            </p>
-          </Grid>
-          <Grid>
-            <Grid.Col>
-              <p>Last Updated: {"2024-09-20"}</p>
-            </Grid.Col>
-          </Grid>
-        </>
-      )}
+      
       <Grid>
         <Grid.Col span={{ md: 11 }}>
-          <DynamicRoutes routes={exerciseLinks} />
+          <DynamicRoutes routes={exerciseLinks} type="exercise" />
         </Grid.Col>
       </Grid>
     </ModuleFrame>

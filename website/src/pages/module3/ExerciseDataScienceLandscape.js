@@ -20,26 +20,17 @@ const ExerciseMLPipelineAndExploratoryDataAnalysis = () => {
       label: "Exercise 2",
       component: lazy(() => import("pages/module3/exercise/Exercise2")),
     },
-  ];
-  const location = useLocation();
-  const module = 3;
+  ];const module = 3;
   return (
     <ModuleFrame
       module={3}
       isCourse={false}
       title="Module 3"
     >
-      {location.pathname === `/module${module}/exercise` && (
-        <>
-          <Grid>
-            Exercises to perform exploratory data analysis and model
-            baseline,using Python and Jupyter Notebooks.
-          </Grid>
-        </>
-      )}
+      
       <Grid>
         <Grid.Col span={{ md: 12 }}>
-          <DynamicRoutes routes={exerciseLinks} />
+          <DynamicRoutes routes={exerciseLinks} type="exercise" />
         </Grid.Col>
       </Grid>
     </ModuleFrame>

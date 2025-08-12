@@ -35,9 +35,7 @@ const ExerciseReinforcementLearning = () => {
       label: "Exercise 5",
       component: lazy(() => import("pages/module13/exercise/Exercise5")),
     },
-  ];
-  const location = useLocation();
-  const module = 13;
+  ];const module = 13;
   return (
     <ModuleFrame
       module={13}
@@ -45,24 +43,10 @@ const ExerciseReinforcementLearning = () => {
       title="Module 13: Exercise Reinforcement Learning"
       courseLinks={exerciseLinks}
     >
-      {location.pathname === `/module${module}/exercise` && (
-        <>
-          <Grid>
-            <p>
-              In this module, you will practice building and applying
-              reinforcement learning algorithms.
-            </p>
-          </Grid>
-          <Grid>
-            <Grid.Col>
-              <p>Last Updated: {"2024-09-20"}</p>
-            </Grid.Col>
-          </Grid>
-        </>
-      )}
+      
       <Grid>
         <Grid.Col span={{ md: 11 }}>
-          <DynamicRoutes routes={exerciseLinks} />
+          <DynamicRoutes routes={exerciseLinks} type="exercise" />
         </Grid.Col>
       </Grid>
     </ModuleFrame>

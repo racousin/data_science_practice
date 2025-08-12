@@ -15,9 +15,7 @@ const ExercisePython = () => {
       label: "Exercise 2",
       component: lazy(() => import("pages/module2/exercise/Exercise2")),
     },
-  ];
-  const location = useLocation();
-  const module = 2;
+  ];const module = 2;
   return (
     <ModuleFrame
       module={2}
@@ -25,18 +23,10 @@ const ExercisePython = () => {
       title="Module 2: Python Environment and Package Exercises"
       courseLinks={exerciseLinks}
     >
-      {location.pathname === `/module${module}/exercise` && (
-        <>
-          <Grid>
-            <Grid.Col>
-              <p>Last Updated: {"2024-09-20"}</p>
-            </Grid.Col>
-          </Grid>
-        </>
-      )}
+      
       <Grid>
         <Grid.Col span={{ md: 11 }}>
-          <DynamicRoutes routes={exerciseLinks} />
+          <DynamicRoutes routes={exerciseLinks} type="exercise" />
         </Grid.Col>
       </Grid>
     </ModuleFrame>
