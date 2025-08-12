@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Grid, Card, Alert } from '@mantine/core';
+import { Container, Grid, Card, Alert, List } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 import { FaLightbulb, FaCode, FaExclamationTriangle, FaTools, FaRocket } from "react-icons/fa";
 import { InlineMath, BlockMath } from 'react-katex';
@@ -19,17 +19,17 @@ const TransferLearning = () => {
             <p>
               Rather than training a model from scratch for your specific NLP task (which would require enormous amounts of data and computing resources), transfer learning allows you to:
             </p>
-            <ListGroup variant="flush">
-              <ListGroup.Item>
+            <List>
+              <List.Item>
                 <strong>Leverage existing knowledge</strong> - Use representations learned from massive datasets
-              </ListGroup.Item>
-              <ListGroup.Item>
+              </List.Item>
+              <List.Item>
                 <strong>Reduce training time and cost</strong> - Fine-tune only what's necessary for your specific task
-              </ListGroup.Item>
-              <ListGroup.Item>
+              </List.Item>
+              <List.Item>
                 <strong>Achieve better performance with less data</strong> - Pre-trained models already understand language structure
-              </ListGroup.Item>
-            </ListGroup>
+              </List.Item>
+            </List>
           </Card.Body>
         </Card>
         <Alert variant="info" className="d-flex align-items-start">
@@ -350,12 +350,12 @@ lora_model.save_pretrained("./lora_model_saved")`}
                         <FaRocket className="text-success me-2" />
                         Efficiency Benefits
                       </Card.Title>
-                      <ListGroup variant="flush">
-                        <ListGroup.Item>Reduces trainable parameters by 99%+</ListGroup.Item>
-                        <ListGroup.Item>Lower memory requirements</ListGroup.Item>
-                        <ListGroup.Item>Faster training times</ListGroup.Item>
-                        <ListGroup.Item>Smaller storage footprint (only save adapter weights)</ListGroup.Item>
-                      </ListGroup>
+                      <List>
+                        <List.Item>Reduces trainable parameters by 99%+</List.Item>
+                        <List.Item>Lower memory requirements</List.Item>
+                        <List.Item>Faster training times</List.Item>
+                        <List.Item>Smaller storage footprint (only save adapter weights)</List.Item>
+                      </List>
                     </Card.Body>
                   </Card>
                 </Grid.Col>
@@ -366,12 +366,12 @@ lora_model.save_pretrained("./lora_model_saved")`}
                         <FaTools className="text-primary me-2" />
                         Practical Benefits
                       </Card.Title>
-                      <ListGroup variant="flush">
-                        <ListGroup.Item>Performance comparable to full fine-tuning</ListGroup.Item>
-                        <ListGroup.Item>Reduces risk of catastrophic forgetting</ListGroup.Item>
-                        <ListGroup.Item>Multiple adapters can be combined or switched</ListGroup.Item>
-                        <ListGroup.Item>Enables fine-tuning of models too large for traditional methods</ListGroup.Item>
-                      </ListGroup>
+                      <List>
+                        <List.Item>Performance comparable to full fine-tuning</List.Item>
+                        <List.Item>Reduces risk of catastrophic forgetting</List.Item>
+                        <List.Item>Multiple adapters can be combined or switched</List.Item>
+                        <List.Item>Enables fine-tuning of models too large for traditional methods</List.Item>
+                      </List>
                     </Card.Body>
                   </Card>
                 </Grid.Col>
@@ -385,20 +385,20 @@ lora_model.save_pretrained("./lora_model_saved")`}
             <p>
               Beyond LoRA, several other parameter-efficient fine-tuning methods exist:
             </p>
-            <ListGroup className="mb-4">
-              <ListGroup.Item>
+            <List className="mb-4">
+              <List.Item>
                 <strong>Prefix Tuning:</strong> Prepends trainable prefix vectors to the input of transformer layers
-              </ListGroup.Item>
-              <ListGroup.Item>
+              </List.Item>
+              <List.Item>
                 <strong>Prompt Tuning:</strong> Adds trainable "soft prompts" to the input embeddings
-              </ListGroup.Item>
-              <ListGroup.Item>
+              </List.Item>
+              <List.Item>
                 <strong>Adapter Tuning:</strong> Inserts small trainable modules between layers of the pre-trained model
-              </ListGroup.Item>
-              <ListGroup.Item>
+              </List.Item>
+              <List.Item>
                 <strong>QLoRA:</strong> Combines LoRA with quantization for even more memory efficiency
-              </ListGroup.Item>
-            </ListGroup>
+              </List.Item>
+            </List>
             <h4>QLoRA Example</h4>
             <CodeBlock
               language="python"

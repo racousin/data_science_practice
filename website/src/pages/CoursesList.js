@@ -34,6 +34,17 @@ const CoursesList = () => {
         <Text size="lg" color="dimmed" align="center" maw={700}>
           Choose from our comprehensive courses designed to take you from beginner to expert
         </Text>
+        <Text size="sm" color="dimmed" align="center">
+          Courses from the{' '}
+          <Text 
+            component="a" 
+            href="https://ms2a.lpsm.paris/" 
+            target="_blank"
+            style={{ textDecoration: 'none', color: 'inherit', fontWeight: 500 }}
+          >
+            Master Mathématiques et Applications
+          </Text>
+        </Text>
       </Stack>
 
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing="xl">
@@ -41,10 +52,10 @@ const CoursesList = () => {
           const Icon = course.icon;
           return (
             <Card key={course.id} shadow="sm" padding="lg" radius="md" withBorder>
-              <Card.Section py="md" bg={`${course.color}.1`}>
+              <Card.Section py="md" bg="gray.0">
                 <Stack align="center" spacing="sm">
-                  <Icon size={48} />
-                  <Badge size="lg" color={course.color}>
+                  <Icon size={32} color="gray.6" />
+                  <Badge size="sm" color="gray">
                     {course.modules} Modules
                   </Badge>
                 </Stack>
@@ -61,7 +72,7 @@ const CoursesList = () => {
 
                 <Group justify="center" gap="xs">
                   {course.topics.map((topic) => (
-                    <Badge key={topic} variant="light" color={course.color}>
+                    <Badge key={topic} variant="light" color="gray">
                       {topic}
                     </Badge>
                   ))}
@@ -72,7 +83,7 @@ const CoursesList = () => {
                   component={Link}
                   to={course.path}
                   variant="filled"
-                  color={course.color}
+                  color="dark"
                   leftSection={<IconBook size={18} />}
                 >
                   View Course

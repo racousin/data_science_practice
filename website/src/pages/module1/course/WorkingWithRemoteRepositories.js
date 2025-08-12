@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Grid, Stack, TabsTab, Image } from '@mantine/core';
+import { Container, Grid, Stack, Tabs, Image } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 const WorkingWithRemoteRepositories = () => {
   return (
@@ -70,49 +70,44 @@ const WorkingWithRemoteRepositories = () => {
                 <li>Copy the &#60;remote_repository_url&#62;</li>
               </ol>
               <div className="mytab">
-                <Tab.Container defaultActiveKey="clone">
-                  <Nav variant="pills" className="mb-3">
-                    <Nav.Item>
-                      <Nav.Link eventKey="clone" className="mx-1">
-                        Clone Remote Repository
-                      </Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                      <Nav.Link eventKey="add" className="mx-1">
-                        Add to Existing Local Repository
-                      </Nav.Link>
-                    </Nav.Item>
-                  </Nav>
-                  <Tab.Content>
-                    <Tab.Pane eventKey="add">
-                      <h4>Add a Remote Repository</h4>
-                      <p>
-                        Link your existing local repository to a remote
-                        repository on GitHub using the following command:
-                      </p>
-                      <CodeBlock
-                        code={`git remote add origin <remote_repository_url>`}
-                      />
-                      <p>
-                        This command sets the specified URL as 'origin', which
-                        is the conventional name used by Git to reference the
-                        primary remote.
-                      </p>
-                    </Tab.Pane>
-                    <Tab.Pane eventKey="clone">
-                      <h4>Clone a Remote Repository</h4>
-                      <p>
-                        To work on an existing project, clone the remote
-                        repository with this command:
-                      </p>
-                      <CodeBlock code={`git clone <remote_repository_url>`} />
-                      <p>
-                        Cloning creates a local copy of the repository,
-                        including all historical commits and branches.
-                      </p>
-                    </Tab.Pane>
-                  </Tab.Content>
-                </Tab.Container>
+                <Tabs defaultValue="clone">
+                  <Tabs.List>
+                    <Tabs.Tab value="clone" className="mx-1">
+                      Clone Remote Repository
+                    </Tabs.Tab>
+                    <Tabs.Tab value="add" className="mx-1">
+                      Add to Existing Local Repository
+                    </Tabs.Tab>
+                  </Tabs.List>
+                  
+                  <Tabs.Panel value="add">
+                    <h4>Add a Remote Repository</h4>
+                    <p>
+                      Link your existing local repository to a remote
+                      repository on GitHub using the following command:
+                    </p>
+                    <CodeBlock
+                      code={`git remote add origin <remote_repository_url>`}
+                    />
+                    <p>
+                      This command sets the specified URL as 'origin', which
+                      is the conventional name used by Git to reference the
+                      primary remote.
+                    </p>
+                  </Tabs.Panel>
+                  <Tabs.Panel value="clone">
+                    <h4>Clone a Remote Repository</h4>
+                    <p>
+                      To work on an existing project, clone the remote
+                      repository with this command:
+                    </p>
+                    <CodeBlock code={`git clone <remote_repository_url>`} />
+                    <p>
+                      Cloning creates a local copy of the repository,
+                      including all historical commits and branches.
+                    </p>
+                  </Tabs.Panel>
+                </Tabs>
               </div>
             </Grid.Col>
           </Grid>

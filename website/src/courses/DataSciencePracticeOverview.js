@@ -84,8 +84,8 @@ const DataSciencePracticeOverview = () => {
             >
               <Stack spacing="sm" style={{ flex: 1 }}>
                 <Group justify="space-between">
-                  <Icon size={24} />
-                  <Badge color={module.color}>Module {module.id}</Badge>
+                  <Icon size={20} color="gray.6" />
+                  <Badge color="gray">Module {module.id}</Badge>
                 </Group>
                 
                 <Text fw={500} size="sm">
@@ -98,6 +98,7 @@ const DataSciencePracticeOverview = () => {
                       <Button 
                         size="xs"
                         variant="light"
+                        color="gray"
                         component={Link}
                         to={`/courses/data-science-practice/module${module.id}/course`}
                         fullWidth
@@ -107,6 +108,7 @@ const DataSciencePracticeOverview = () => {
                       <Button 
                         size="xs"
                         variant="filled"
+                        color="dark"
                         component={Link}
                         to={`/courses/data-science-practice/module${module.id}/exercise`}
                         fullWidth
@@ -119,6 +121,7 @@ const DataSciencePracticeOverview = () => {
                     <Button 
                       size="xs"
                       variant="light"
+                      color="gray"
                       component={Link}
                       to={`/courses/data-science-practice/module${module.id}`}
                       fullWidth

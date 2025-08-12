@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Title, Group, Image, Stack, Container, Grid } from '@mantine/core';
+import { Text, Title, Group, Image, Stack, Container, Grid, Card, Table } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
@@ -8,13 +8,11 @@ import DataInteractionPanel from "components/DataInteractionPanel";
 // TaskBox component for displaying NLP tasks with mathematical formulation
 const TaskBox = ({ title, formula, description }) => (
   <Card className="h-100">
-    <Card.Body>
-      <Title order={4}>{title}</Title>
-      <div className="my-2">
-        <BlockMath math={formula} />
-      </div>
-      <Text size="sm">{description}</Text>
-    </Card.Body>
+    <Title order={4}>{title}</Title>
+    <div className="my-2">
+      <BlockMath math={formula} />
+    </div>
+    <Text size="sm">{description}</Text>
   </Card>
 );
 
@@ -43,24 +41,22 @@ const Introduction = () => {
           {/* Levels of Text Structure */}
           <Title order={3} className="mt-3">Levels of Text Structure</Title>
           <Card className="mb-3">
-            <Card.Body>
-              <Grid>
-                <Grid.Col span={{ md: 6 }}>
-                  <ul>
-                    <li><strong>Characters:</strong> Individual letters, numbers, punctuation (e.g., 'a', '5', '!')</li>
-                    <li><strong>Subwords:</strong> Character sequences that form meaningful units (e.g., 'ing', 'pre-', 'un-')</li>
-                    <li><strong>Words:</strong> Complete lexical units (e.g., 'language', 'processing')</li>
-                  </ul>
-                </Grid.Col>
-                <Grid.Col span={{ md: 6 }}>
-                  <ul>
-                    <li><strong>Sentences:</strong> Sequences of words with complete meaning</li>
-                    <li><strong>Paragraphs:</strong> Related sentences grouped together</li>
-                    <li><strong>Documents:</strong> Complete texts with overall structure and context</li>
-                  </ul>
-                </Grid.Col>
-              </Grid>
-            </Card.Body>
+            <Grid>
+              <Grid.Col span={{ md: 6 }}>
+                <ul>
+                  <li><strong>Characters:</strong> Individual letters, numbers, punctuation (e.g., 'a', '5', '!')</li>
+                  <li><strong>Subwords:</strong> Character sequences that form meaningful units (e.g., 'ing', 'pre-', 'un-')</li>
+                  <li><strong>Words:</strong> Complete lexical units (e.g., 'language', 'processing')</li>
+                </ul>
+              </Grid.Col>
+              <Grid.Col span={{ md: 6 }}>
+                <ul>
+                  <li><strong>Sentences:</strong> Sequences of words with complete meaning</li>
+                  <li><strong>Paragraphs:</strong> Related sentences grouped together</li>
+                  <li><strong>Documents:</strong> Complete texts with overall structure and context</li>
+                </ul>
+              </Grid.Col>
+            </Grid>
           </Card>
 
           {/* Text Structure Types */}
@@ -105,25 +101,23 @@ const Introduction = () => {
           {/* Sequential Nature */}
           <Title order={3}>Sequential Nature of Text</Title>
           <Card className="mb-3">
-            <Card.Body>
-              <Text>
-                Text is inherently sequential, with meaning derived from the order of elements:
-              </Text>
-              <ul>
-                <li>Word order impacts meaning: "Dog bites man" ≠ "Man bites dog"</li>
-                <li>Dependencies can span across long distances in a sequence</li>
-                <li>Context is critical for disambiguation (e.g., "bank" can mean financial institution or river edge)</li>
-              </ul>
-              <Text>
-                Mathematically, text sequences can be represented as:
-              </Text>
-              <BlockMath>
-                {`\\mathcal{S} = (w_1, w_2, \\ldots, w_n) \\quad \\text{where } w_i \\in \\mathcal{V}`}
-              </BlockMath>
-              <Text>
-                Where <InlineMath math="\mathcal{S}" /> is a sequence and <InlineMath math="\mathcal{V}" /> is the vocabulary.
-              </Text>
-            </Card.Body>
+            <Text>
+              Text is inherently sequential, with meaning derived from the order of elements:
+            </Text>
+            <ul>
+              <li>Word order impacts meaning: "Dog bites man" ≠ "Man bites dog"</li>
+              <li>Dependencies can span across long distances in a sequence</li>
+              <li>Context is critical for disambiguation (e.g., "bank" can mean financial institution or river edge)</li>
+            </ul>
+            <Text>
+              Mathematically, text sequences can be represented as:
+            </Text>
+            <BlockMath>
+              {`\\mathcal{S} = (w_1, w_2, \\ldots, w_n) \\quad \\text{where } w_i \\in \\mathcal{V}`}
+            </BlockMath>
+            <Text>
+              Where <InlineMath math="\mathcal{S}" /> is a sequence and <InlineMath math="\mathcal{V}" /> is the vocabulary.
+            </Text>
           </Card>
 
         </div>
@@ -131,47 +125,45 @@ const Introduction = () => {
 
       <Title order={2} mb="sm" id="history">Historical Context of NLP</Title>
       <Card className="mb-4">
-        <Card.Body>
-          <Text>
-            NLP development has progressed through several distinct paradigms over the decades:
-          </Text>
-          <Table striped bordered hover className="mt-3">
-            <thead>
-              <tr>
-                <th>Era</th>
-                <th>Period</th>
-                <th>Key Characteristics</th>
-                <th>Notable Systems/Approaches</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Rule-based Era</td>
-                <td>1950s-1980s</td>
-                <td>Hard-coded linguistic rules and pattern matching</td>
-                <td>ELIZA, SHRDLU, expert systems</td>
-              </tr>
-              <tr>
-                <td>Statistical Era</td>
-                <td>1990s-2000s</td>
-                <td>Statistical models and machine learning</td>
-                <td>N-gram models, Hidden Markov Models, IBM Translation Models</td>
-              </tr>
-              <tr>
-                <td>Neural Network Era</td>
-                <td>2010s-2018</td>
-                <td>Word embeddings and recurrent neural architectures</td>
-                <td>Word2Vec, GloVe, LSTM, GRU, Seq2Seq models</td>
-              </tr>
-              <tr>
-                <td>Transformer Era</td>
-                <td>2018-Present</td>
-                <td>Self-attention and large pre-trained models</td>
-                <td>BERT, GPT, T5, Transformer-based architectures</td>
-              </tr>
-            </tbody>
-          </Table>
-        </Card.Body>
+        <Text>
+          NLP development has progressed through several distinct paradigms over the decades:
+        </Text>
+        <Table striped className="mt-3">
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>Era</Table.Th>
+              <Table.Th>Period</Table.Th>
+              <Table.Th>Key Characteristics</Table.Th>
+              <Table.Th>Notable Systems/Approaches</Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
+            <Table.Tr>
+              <Table.Td>Rule-based Era</Table.Td>
+              <Table.Td>1950s-1980s</Table.Td>
+              <Table.Td>Hard-coded linguistic rules and pattern matching</Table.Td>
+              <Table.Td>ELIZA, SHRDLU, expert systems</Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td>Statistical Era</Table.Td>
+              <Table.Td>1990s-2000s</Table.Td>
+              <Table.Td>Statistical models and machine learning</Table.Td>
+              <Table.Td>N-gram models, Hidden Markov Models, IBM Translation Models</Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td>Neural Network Era</Table.Td>
+              <Table.Td>2010s-2018</Table.Td>
+              <Table.Td>Word embeddings and recurrent neural architectures</Table.Td>
+              <Table.Td>Word2Vec, GloVe, LSTM, GRU, Seq2Seq models</Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td>Transformer Era</Table.Td>
+              <Table.Td>2018-Present</Table.Td>
+              <Table.Td>Self-attention and large pre-trained models</Table.Td>
+              <Table.Td>BERT, GPT, T5, Transformer-based architectures</Table.Td>
+            </Table.Tr>
+          </Table.Tbody>
+        </Table>
       </Card>
 
       <Text mb="lg">
