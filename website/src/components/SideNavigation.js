@@ -607,7 +607,7 @@ const SideNavigation = ({ onClose }) => {
                         label="Course Overview"
                         component={Link}
                         to={`/courses/${currentCourseId}/${module.id}/course`}
-                        active={path === `/courses/${currentCourseId}/${module.id}/course` && !path.includes('/course/')}
+                        active={path === `/courses/${currentCourseId}/${module.id}/course`}
                         pl="xs"
                         icon={<IconBook size={16} />}
                         onClick={onClose}
@@ -628,7 +628,7 @@ const SideNavigation = ({ onClose }) => {
                         label="Exercise Overview"
                         component={Link}
                         to={`/courses/${currentCourseId}/${module.id}/exercise`}
-                        active={path === `/courses/${currentCourseId}/${module.id}/exercise` && !path.includes('/exercise/')}
+                        active={path === `/courses/${currentCourseId}/${module.id}/exercise`}
                         pl="xs"
                         icon={<IconClipboardList size={16} />}
                         onClick={onClose}

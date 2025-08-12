@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useParams, Outlet } from "react-router-dom";
-import { MantineProvider, AppShell, Burger, Group, CloseButton, Box } from '@mantine/core';
+import { MantineProvider, AppShell, Burger } from '@mantine/core';
 import '@mantine/core/styles.css';
 
 // Core components
