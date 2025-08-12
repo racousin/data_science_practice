@@ -1,11 +1,14 @@
 import React from "react";
 import { Container, Box } from '@mantine/core';
+import SlideView from './SlideView';
 
-const ModuleFrame = ({ module, isCourse, title, children }) => {
+const ModuleFrame = ({ module, isCourse, title, children, enableSlides = false }) => {
   return (
     <Container size="xl">
       <Box className="module-content">
-        {children}
+        <SlideView enabled={enableSlides}>
+          {children}
+        </SlideView>
       </Box>
     </Container>
   );

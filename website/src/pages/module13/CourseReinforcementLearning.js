@@ -101,6 +101,7 @@ const CourseReinforcementLearning = () => {
       isCourse={true}
       title="Module 13: Reinforcement Learning"
       courseLinks={courseLinks}
+      enableSlides={true}
     >
       {location.pathname === `/module${module}/course` && (
         <>

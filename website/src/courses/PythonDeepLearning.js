@@ -4,14 +4,8 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 // Course overview page
 import CourseOverview from './PythonDeepLearningOverview';
 
-// For now, we'll create placeholder components for the modules
-// These can be replaced with actual module components later
-const Module1 = () => (
-  <div style={{ padding: '20px' }}>
-    <h1>Module 1: Introduction to Tensors</h1>
-    <p>This module is under construction.</p>
-  </div>
-);
+// Module pages
+import CourseTensors from '../pages/python-deep-learning/module1/CourseTensors';
 
 const Module2 = () => (
   <div style={{ padding: '20px' }}>
@@ -33,8 +27,8 @@ const PythonDeepLearning = () => {
       <Route path="/" element={<CourseOverview />} />
       
       {/* Module 1 - Tensors */}
-      <Route path="module1" element={<Module1 />} />
-      <Route path="module1/*" element={<Module1 />} />
+      <Route path="module1" element={<CourseTensors />} />
+      <Route path="module1/course/*" element={<CourseTensors />} />
       
       {/* Module 2 - PyTorch */}
       <Route path="module2" element={<Module2 />} />

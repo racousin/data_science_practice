@@ -155,7 +155,7 @@ const Introduction = () => {
     <Container size="xl" className="py-6">
       {/* Hero Section with AlphaGo */}
       <Stack spacing="xl">
-        <div className="relative w-full h-64 bg-gray-100 rounded-lg overflow-hidden mb-8">
+        <div data-slide className="relative w-full h-64 bg-gray-100 rounded-lg overflow-hidden mb-8">
           <Image
             src="/assets/module13/alphago.jpg"
             alt="AlphaGo vs Ke Jie match"
@@ -168,10 +168,12 @@ const Introduction = () => {
           </div>
         </div>
 
-<MLParadigmsComparison/>
+<div data-slide>
+  <MLParadigmsComparison/>
+</div>
 
         {/* RL Framework */}
-        <section className="mb-12">
+        <section data-slide className="mb-12">
           <Title order={2} className="mb-6" id="rl-framework">
             The RL Framework
           </Title>
@@ -213,10 +215,12 @@ const Introduction = () => {
           </Grid>
         </section>
 
-<RLApplications/>
+<div data-slide>
+  <RLApplications/>
+</div>
 
 {/* Limitations and Challenges */}
-<section>
+<section data-slide>
   <Title order={2} className="mb-6" id="limitations">
     Key Limitations and Practical Challenges
   </Title>
