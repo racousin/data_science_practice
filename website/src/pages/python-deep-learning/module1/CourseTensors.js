@@ -19,6 +19,30 @@ const CourseTensors = () => {
         { id: "broadcasting", label: "Broadcasting" }
       ],
     },
+    {
+      to: "/pytorch-basics",
+      label: "PyTorch Basics",
+      component: lazy(() => import("./course/PyTorchBasics")),
+      subLinks: [
+        { id: "installation", label: "Installation and Setup" },
+        { id: "tensors-vs-numpy", label: "Tensors vs NumPy Arrays" },
+        { id: "tensor-attributes", label: "Tensor Attributes" },
+        { id: "indexing-slicing", label: "Indexing and Slicing" },
+        { id: "tensor-math", label: "Mathematical Operations" }
+      ],
+    },
+    {
+      to: "/automatic-differentiation",
+      label: "Automatic Differentiation Deep Dive",
+      component: lazy(() => import("./course/AutomaticDifferentiation")),
+      subLinks: [
+        { id: "computation-graph", label: "Computation Graphs" },
+        { id: "gradient-computation", label: "Gradient Computation" },
+        { id: "backward-pass", label: "Backward Pass" },
+        { id: "gradient-accumulation", label: "Gradient Accumulation" },
+        { id: "higher-order-gradients", label: "Higher-order Gradients" }
+      ],
+    }
   ];
 
   const location = useLocation();
@@ -28,7 +52,7 @@ const CourseTensors = () => {
     <ModuleFrame
       module={module}
       isCourse={true}
-      title="Module 1: Introduction to Tensors"
+      title="Module 1: PyTorch Fundamentals"
       courseLinks={courseLinks}
       enableSlides={true}
     >
