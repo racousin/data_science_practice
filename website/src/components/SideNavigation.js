@@ -450,7 +450,7 @@ export const coursesData = {
 };
 
 // Course content section with hierarchical sublinks
-const CourseContentSection = ({ courseContentLinks, currentCourseId, moduleId, currentPath }) => {
+const CourseContentSection = ({ courseContentLinks, currentCourseId, moduleId, currentPath, onClose }) => {
   const [openSections, setOpenSections] = useState({});
 
   const toggleSection = (index) => {
@@ -488,6 +488,7 @@ const CourseContentSection = ({ courseContentLinks, currentCourseId, moduleId, c
             pl="xs"
             size="sm"
             styles={{ label: { fontSize: '0.85rem' } }}
+            onClick={onClose}
           />
           
           {link.subLinks && (
@@ -517,7 +518,7 @@ const CourseContentSection = ({ courseContentLinks, currentCourseId, moduleId, c
 };
 
 // Exercise content section
-const ExerciseContentSection = ({ exerciseContentLinks, currentCourseId, moduleId, currentPath }) => {
+const ExerciseContentSection = ({ exerciseContentLinks, currentCourseId, moduleId, currentPath, onClose }) => {
   return (
     <Box pl="md" mt="xs">
       {exerciseContentLinks.map((link, index) => (
@@ -530,13 +531,14 @@ const ExerciseContentSection = ({ exerciseContentLinks, currentCourseId, moduleI
           pl="xs"
           size="sm"
           styles={{ label: { fontSize: '0.85rem' } }}
+          onClick={onClose}
         />
       ))}
     </Box>
   );
 };
 
-const SideNavigation = () => {
+const SideNavigation = ({ onClose }) => {
   const location = useLocation();
   const path = location.pathname;
   
@@ -570,6 +572,7 @@ const SideNavigation = () => {
           active={path === `/courses/${currentCourseId}`}
           mb="md"
           icon={<IconBook size={16} />}
+          onClick={onClose}
         />
         
         {/* Results link - only for data-science-practice for now */}
@@ -581,6 +584,7 @@ const SideNavigation = () => {
             active={path.includes(`/courses/${currentCourseId}/results`)}
             mb="md"
             icon={<IconChartBar size={16} />}
+            onClick={onClose}
           />
         )}
         
@@ -606,6 +610,7 @@ const SideNavigation = () => {
                         active={path === `/courses/${currentCourseId}/${module.id}/course` && !path.includes('/course/')}
                         pl="xs"
                         icon={<IconBook size={16} />}
+                        onClick={onClose}
                       />
                       
                       {/* Course Content Links - show when in current module */}
@@ -615,6 +620,7 @@ const SideNavigation = () => {
                           currentCourseId={currentCourseId}
                           moduleId={module.id}
                           currentPath={path}
+                          onClose={onClose}
                         />
                       )}
                       
@@ -625,6 +631,7 @@ const SideNavigation = () => {
                         active={path === `/courses/${currentCourseId}/${module.id}/exercise` && !path.includes('/exercise/')}
                         pl="xs"
                         icon={<IconClipboardList size={16} />}
+                        onClick={onClose}
                       />
                       
                       {/* Exercise Content Links - show when in current module */}
@@ -634,6 +641,7 @@ const SideNavigation = () => {
                           currentCourseId={currentCourseId}
                           moduleId={module.id}
                           currentPath={path}
+                          onClose={onClose}
                         />
                       )}
                     </>
@@ -645,6 +653,7 @@ const SideNavigation = () => {
                       active={path.includes(`/courses/${currentCourseId}/${module.id}`)}
                       pl="xs"
                       icon={<IconBook size={16} />}
+                      onClick={onClose}
                     />
                   )}
                 </Accordion.Panel>

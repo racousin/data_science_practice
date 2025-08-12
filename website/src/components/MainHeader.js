@@ -3,24 +3,27 @@ import { Group, Text, Button, Container, ActionIcon, useMantineColorScheme } fro
 import { Link } from 'react-router-dom';
 import { IconHome, IconSchool, IconSun, IconMoon } from '@tabler/icons-react';
 
-const MainHeader = () => {
+const MainHeader = ({ hamburger }) => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   
   return (
     <Container fluid h="100%" style={{ backgroundColor: '#1a1b1e' }}>
       <Group justify="space-between" align="center" h="100%" px="md">
-        <Text 
-          component={Link} 
-          to="/" 
-          size="xl" 
-          fw={700} 
-          c="white"
-          style={{ textDecoration: 'none' }}
-        >
-          Raphael Cousin
-        </Text>
+        <Group gap="md">
+          {hamburger}
+          <Text 
+            component={Link} 
+            to="/" 
+            size="xl" 
+            fw={700} 
+            c="white"
+            style={{ textDecoration: 'none' }}
+          >
+            Raphael Cousin
+          </Text>
+        </Group>
         
-        <Group>
+        <Group visibleFrom="sm">
           <Button 
             component={Link} 
             to="/" 
@@ -50,6 +53,17 @@ const MainHeader = () => {
             {colorScheme === 'dark' ? <IconSun size={18} /> : <IconMoon size={18} />}
           </ActionIcon>
         </Group>
+        
+        {/* Mobile menu - only show dark mode toggle */}
+        <ActionIcon
+          hiddenFrom="sm"
+          variant="subtle"
+          color="white"
+          onClick={() => toggleColorScheme()}
+          size="lg"
+        >
+          {colorScheme === 'dark' ? <IconSun size={18} /> : <IconMoon size={18} />}
+        </ActionIcon>
       </Group>
     </Container>
   );

@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useParams, Outlet } from "react-router-dom";
-import { MantineProvider, AppShell } from '@mantine/core';
+import { MantineProvider, AppShell, Burger, Group, CloseButton, Box } from '@mantine/core';
 import '@mantine/core/styles.css';
 
 // Core components
@@ -37,17 +37,36 @@ const SimpleLayout = () => {
 
 // Layout component for pages with sidebar
 const CourseLayout = () => {
+  const [opened, setOpened] = useState(false);
+  
   return (
     <AppShell
       header={{ height: 60 }}
-      navbar={{ width: 300, breakpoint: 'sm', collapsed: { mobile: true } }}
+      navbar={{ 
+        width: 300, 
+        breakpoint: 'md',
+        collapsed: { 
+          mobile: !opened,
+          desktop: false 
+        }
+      }}
       padding="md"
     >
       <AppShell.Header>
-        <MainHeader />
+        <MainHeader 
+          hamburger={
+            <Burger
+              opened={opened}
+              onClick={() => setOpened((o) => !o)}
+              hiddenFrom="md"
+              size="sm"
+              color="white"
+            />
+          }
+        />
       </AppShell.Header>
       <AppShell.Navbar>
-        <SideNavigation />
+        <SideNavigation onClose={() => setOpened(false)} />
       </AppShell.Navbar>
       <AppShell.Main>
         <Outlet />
