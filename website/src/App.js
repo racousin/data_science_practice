@@ -7,6 +7,7 @@ import '@mantine/core/styles.css';
 import MainHeader from "./components/MainHeader";
 import SideNavigation from "./components/SideNavigation";
 import GoogleAnalyticsRouteTracker from "./components/GoogleAnalyticsRouteTracker";
+import { SidebarProvider, useSidebar } from "./contexts/SidebarContext";
 
 // Main pages
 import Home from "./pages/Home";
@@ -40,31 +41,46 @@ const CourseLayout = () => {
   const [opened, setOpened] = useState(false);
   
   return (
+    <SidebarProvider 
+      sidebarOpened={opened} 
+      toggleSidebar={() => setOpened((o) => !o)}
+    >
+      <CourseLayoutInner opened={opened} setOpened={setOpened} />
+    </SidebarProvider>
+  );
+};
+
+// Inner component to access slide mode context
+const CourseLayoutInner = ({ opened, setOpened }) => {
+  const { slideMode } = useSidebar();
+  
+  return (
     <AppShell
-      header={{ height: 60 }}
+      header={slideMode ? undefined : { height: 60 }}
       navbar={{ 
         width: 300, 
         breakpoint: 'md',
         collapsed: { 
           mobile: !opened,
-          desktop: false 
+          desktop: opened 
         }
       }}
       padding="md"
     >
-      <AppShell.Header>
-        <MainHeader 
-          hamburger={
-            <Burger
-              opened={opened}
-              onClick={() => setOpened((o) => !o)}
-              hiddenFrom="md"
-              size="sm"
-              color="white"
-            />
-          }
-        />
-      </AppShell.Header>
+      {!slideMode && (
+        <AppShell.Header>
+          <MainHeader 
+            hamburger={
+              <Burger
+                opened={opened}
+                onClick={() => setOpened((o) => !o)}
+                size="sm"
+                color="white"
+              />
+            }
+          />
+        </AppShell.Header>
+      )}
       <AppShell.Navbar>
         <SideNavigation onClose={() => setOpened(false)} />
       </AppShell.Navbar>

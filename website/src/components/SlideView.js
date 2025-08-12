@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Carousel } from '@mantine/carousel';
-import { ActionIcon, Tooltip } from '@mantine/core';
+import { ActionIcon, Tooltip, Burger } from '@mantine/core';
 import { IconPresentation, IconX } from '@tabler/icons-react';
+import { useSidebar } from '../contexts/SidebarContext';
 import '@mantine/carousel/styles.css';
 
 const SlideView = ({ children, enabled = false }) => {
-  const [slideMode, setSlideMode] = useState(false);
+  const { sidebarOpened, toggleSidebar, slideMode, setSlideMode } = useSidebar();
   const [slides, setSlides] = useState([]);
 
   useEffect(() => {
@@ -46,18 +47,47 @@ const SlideView = ({ children, enabled = false }) => {
     // Start presentation with 'S' key
     if (!slideMode && (e.key === 's' || e.key === 'S') && slides.length > 0) {
       e.preventDefault();
-      setSlideMode(true);
+      enterFullscreen();
       return;
     }
     
     // Exit with Escape
     if (slideMode && e.key === 'Escape') {
-      setSlideMode(false);
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
-      }
+      exitFullscreen();
     }
   }, [slideMode, slides.length]);
+
+  const enterFullscreen = async () => {
+    setSlideMode(true);
+    try {
+      await document.documentElement.requestFullscreen();
+    } catch (err) {
+      console.log('Fullscreen not supported or denied');
+    }
+  };
+
+  const exitFullscreen = async () => {
+    setSlideMode(false);
+    try {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen();
+      }
+    } catch (err) {
+      console.log('Exit fullscreen error:', err);
+    }
+  };
+
+  // Listen for fullscreen changes to sync state
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement && slideMode) {
+        setSlideMode(false);
+      }
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, [slideMode]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyPress);
@@ -71,16 +101,35 @@ const SlideView = ({ children, enabled = false }) => {
   if (slideMode) {
     return (
       <div className="fixed inset-0 w-full h-screen bg-white dark:bg-gray-900 z-50">
-        {/* Exit button */}
-        <Tooltip label="Exit (Esc)" position="left">
+        {/* Hamburger menu button - left side */}
+        <Tooltip label="Toggle Sidebar" position="right">
           <ActionIcon
-            onClick={() => setSlideMode(false)}
-            className="absolute top-4 right-4 z-10"
+            onClick={toggleSidebar}
+            className="absolute top-4 left-4 z-10"
             size="lg"
             variant="filled"
             color="dark"
           >
-            <IconX size={20} />
+            <Burger opened={sidebarOpened} size="sm" color="white" />
+          </ActionIcon>
+        </Tooltip>
+        
+        {/* Exit button - transparent and aligned with hamburger */}
+        <Tooltip label="Exit (Esc)" position="left">
+          <ActionIcon
+            onClick={exitFullscreen}
+            className="absolute top-4 right-4 z-10"
+            size="lg"
+            variant="subtle"
+            style={{ 
+              backgroundColor: 'transparent',
+              opacity: 0.3,
+              transition: 'opacity 0.2s ease'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+            onMouseLeave={(e) => e.currentTarget.style.opacity = '0.3'}
+          >
+            <IconX size={20} color="white" />
           </ActionIcon>
         </Tooltip>
 
@@ -137,7 +186,7 @@ const SlideView = ({ children, enabled = false }) => {
       {slides.length > 0 && (
         <Tooltip label="Start presentation (S)">
           <ActionIcon
-            onClick={() => setSlideMode(true)}
+            onClick={enterFullscreen}
             className="fixed top-4 right-4 z-40"
             size="lg"
             variant="subtle"
