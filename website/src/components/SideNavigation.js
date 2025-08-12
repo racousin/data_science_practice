@@ -256,114 +256,93 @@ export const pytorchCourseContentData = {
     ]}
   ],
   'module2': [
-    { to: '/Introduction', label: 'Automatic Differentiation Fundamentals', subLinks: [
-      { id: 'autograd-concept', label: 'Autograd Concept' },
-      { id: 'computational-graphs', label: 'Computational Graphs' },
-      { id: 'dynamic-vs-static', label: 'Dynamic vs Static Graphs' }
+    { to: '/neural-network-basics', label: 'Neural Network Basics', subLinks: [
+      { id: 'perceptron', label: 'The Perceptron' },
+      { id: 'multilayer', label: 'Multilayer Perceptrons' },
+      { id: 'activation-functions', label: 'Activation Functions' },
+      { id: 'loss-functions', label: 'Loss Functions' },
+      { id: 'backpropagation', label: 'Backpropagation Algorithm' }
     ]},
-    { to: '/gradient-computation', label: 'Gradient Computation', subLinks: [
-      { id: 'backward-pass', label: 'The Backward Pass' },
-      { id: 'chain-rule', label: 'Chain Rule Implementation' },
-      { id: 'gradient-accumulation', label: 'Gradient Accumulation' },
-      { id: 'gradient-clipping', label: 'Gradient Clipping' }
+    { to: '/pytorch-nn-module', label: 'PyTorch nn.Module', subLinks: [
+      { id: 'module-basics', label: 'Module Basics' },
+      { id: 'custom-layers', label: 'Creating Custom Layers' },
+      { id: 'parameter-management', label: 'Parameter Management' },
+      { id: 'forward-method', label: 'Forward Method' },
+      { id: 'model-composition', label: 'Model Composition' }
     ]},
-    { to: '/autograd-mechanics', label: 'Autograd Mechanics', subLinks: [
-      { id: 'requires-grad', label: 'requires_grad Mechanism' },
-      { id: 'grad-fn', label: 'grad_fn & Function Objects' },
-      { id: 'retain-graph', label: 'retain_graph & Multiple Backwards' },
-      { id: 'no-grad-context', label: 'no_grad & inference_mode' }
+    { to: '/training-neural-networks', label: 'Training Neural Networks', subLinks: [
+      { id: 'training-loop', label: 'The Training Loop' },
+      { id: 'optimizers', label: 'Optimizers' },
+      { id: 'learning-rate-scheduling', label: 'Learning Rate Scheduling' },
+      { id: 'regularization', label: 'Regularization Techniques' },
+      { id: 'monitoring-training', label: 'Monitoring Training' }
     ]},
-    { to: '/custom-autograd', label: 'Custom Autograd Functions', subLinks: [
-      { id: 'function-class', label: 'torch.autograd.Function' },
-      { id: 'custom-backward', label: 'Implementing Custom Backward' },
-      { id: 'numerical-gradients', label: 'Numerical Gradient Checking' },
-      { id: 'higher-order-derivatives', label: 'Higher-order Derivatives' }
-    ]},
-    { to: '/gradient-hooks', label: 'Gradient Hooks & Debugging', subLinks: [
-      { id: 'tensor-hooks', label: 'Tensor Hooks' },
-      { id: 'module-hooks', label: 'Module Hooks' },
-      { id: 'gradient-debugging', label: 'Gradient Debugging Techniques' },
-      { id: 'anomaly-detection', label: 'Anomaly Detection' }
-    ]},
-    { to: '/advanced-differentiation', label: 'Advanced Differentiation', subLinks: [
-      { id: 'jacobian-hessian', label: 'Jacobian & Hessian Computation' },
-      { id: 'functorch', label: 'Functorch Integration' },
-      { id: 'double-backward', label: 'Double Backward Pass' },
-      { id: 'gradient-checkpointing', label: 'Gradient Checkpointing' }
+    { to: '/advanced-architectures', label: 'Advanced Architectures', subLinks: [
+      { id: 'residual-networks', label: 'Residual Networks' },
+      { id: 'attention-mechanisms', label: 'Attention Mechanisms' },
+      { id: 'normalization', label: 'Normalization Techniques' },
+      { id: 'skip-connections', label: 'Skip Connections' },
+      { id: 'architectural-patterns', label: 'Architectural Patterns' }
     ]}
   ],
   'module3': [
-    { to: '/Introduction', label: 'Compute Infrastructure', subLinks: [
-      { id: 'cpu-vs-gpu', label: 'CPU vs GPU Computation' },
-      { id: 'device-management', label: 'Device Management' },
-      { id: 'cuda-basics', label: 'CUDA Basics in PyTorch' }
+    { to: '/convolutional-networks', label: 'Convolutional Neural Networks', subLinks: [
+      { id: 'convolution-operation', label: 'Convolution Operation' },
+      { id: 'cnn-architectures', label: 'CNN Architectures' },
+      { id: 'pooling-layers', label: 'Pooling Layers' },
+      { id: 'transfer-learning', label: 'Transfer Learning' },
+      { id: 'computer-vision', label: 'Computer Vision Applications' }
     ]},
-    { to: '/memory-optimization', label: 'Memory Optimization', subLinks: [
-      { id: 'memory-profiling', label: 'Memory Profiling Tools' },
-      { id: 'memory-efficient-attention', label: 'Memory-efficient Attention' },
-      { id: 'activation-checkpointing', label: 'Activation Checkpointing' },
-      { id: 'gradient-accumulation-memory', label: 'Memory-aware Gradient Accumulation' }
+    { to: '/recurrent-networks', label: 'Recurrent Neural Networks', subLinks: [
+      { id: 'rnn-basics', label: 'RNN Basics' },
+      { id: 'lstm-gru', label: 'LSTM and GRU' },
+      { id: 'sequence-to-sequence', label: 'Sequence-to-Sequence Models' },
+      { id: 'attention-mechanism', label: 'Attention Mechanisms' },
+      { id: 'nlp-applications', label: 'NLP Applications' }
     ]},
-    { to: '/performance-profiling', label: 'Performance Profiling', subLinks: [
-      { id: 'torch-profiler', label: 'PyTorch Profiler' },
-      { id: 'tensorboard-profiling', label: 'TensorBoard Profiling' },
-      { id: 'bottleneck-identification', label: 'Bottleneck Identification' },
-      { id: 'cuda-events', label: 'CUDA Events & Timing' }
+    { to: '/transformers', label: 'Transformer Architecture', subLinks: [
+      { id: 'self-attention', label: 'Self-Attention' },
+      { id: 'multi-head-attention', label: 'Multi-Head Attention' },
+      { id: 'positional-encoding', label: 'Positional Encoding' },
+      { id: 'transformer-blocks', label: 'Transformer Blocks' },
+      { id: 'pre-trained-models', label: 'Pre-trained Models' }
     ]},
-    { to: '/parallelization', label: 'Parallelization Strategies', subLinks: [
-      { id: 'data-parallelism', label: 'Data Parallelism' },
-      { id: 'model-parallelism', label: 'Model Parallelism' },
-      { id: 'pipeline-parallelism', label: 'Pipeline Parallelism' },
-      { id: 'threading-multiprocessing', label: 'Threading vs Multiprocessing' }
-    ]},
-    { to: '/compilation-optimization', label: 'Compilation & Optimization', subLinks: [
-      { id: 'torchscript', label: 'TorchScript Compilation' },
-      { id: 'torch-compile', label: 'torch.compile' },
-      { id: 'onnx-export', label: 'ONNX Export & Optimization' },
-      { id: 'quantization', label: 'Quantization Techniques' }
-    ]},
-    { to: '/distributed-basics', label: 'Distributed Computing Basics', subLinks: [
-      { id: 'distributed-data-parallel', label: 'DistributedDataParallel' },
-      { id: 'communication-backends', label: 'Communication Backends' },
-      { id: 'synchronization', label: 'Synchronization Primitives' },
-      { id: 'fault-tolerance', label: 'Fault Tolerance' }
+    { to: '/generative-models', label: 'Generative Models', subLinks: [
+      { id: 'autoencoders', label: 'Autoencoders' },
+      { id: 'variational-autoencoders', label: 'Variational Autoencoders' },
+      { id: 'gans', label: 'Generative Adversarial Networks' },
+      { id: 'diffusion-models', label: 'Diffusion Models' },
+      { id: 'applications', label: 'Applications' }
     ]}
   ],
   'module4': [
-    { to: '/Introduction', label: 'Custom Operations', subLinks: [
-      { id: 'extending-pytorch', label: 'Extending PyTorch' },
-      { id: 'cpp-extensions', label: 'C++ Extensions Overview' },
-      { id: 'cuda-extensions', label: 'CUDA Extensions Overview' }
+    { to: '/model-optimization', label: 'Model Optimization', subLinks: [
+      { id: 'quantization', label: 'Quantization' },
+      { id: 'pruning', label: 'Model Pruning' },
+      { id: 'knowledge-distillation', label: 'Knowledge Distillation' },
+      { id: 'onnx', label: 'ONNX Export' },
+      { id: 'torchscript', label: 'TorchScript' }
     ]},
-    { to: '/custom-functions', label: 'Custom Autograd Functions', subLinks: [
-      { id: 'advanced-function-class', label: 'Advanced Function Class Usage' },
-      { id: 'save-for-backward', label: 'save_for_backward & ctx Usage' },
-      { id: 'non-differentiable-inputs', label: 'Non-differentiable Inputs' },
-      { id: 'inplace-functions', label: 'In-place Custom Functions' }
+    { to: '/deployment-strategies', label: 'Deployment Strategies', subLinks: [
+      { id: 'serving-models', label: 'Model Serving' },
+      { id: 'batch-inference', label: 'Batch Inference' },
+      { id: 'real-time-inference', label: 'Real-time Inference' },
+      { id: 'edge-deployment', label: 'Edge Deployment' },
+      { id: 'cloud-deployment', label: 'Cloud Deployment' }
     ]},
-    { to: '/cpp-extensions', label: 'C++ Extensions Deep Dive', subLinks: [
-      { id: 'pybind11-basics', label: 'PyBind11 Basics' },
-      { id: 'tensor-cpp-api', label: 'Tensor C++ API' },
-      { id: 'autograd-cpp', label: 'Autograd in C++' },
-      { id: 'building-extensions', label: 'Building & Installing Extensions' }
+    { to: '/monitoring-maintenance', label: 'Monitoring and Maintenance', subLinks: [
+      { id: 'model-monitoring', label: 'Model Monitoring' },
+      { id: 'performance-metrics', label: 'Performance Metrics' },
+      { id: 'data-drift', label: 'Data Drift Detection' },
+      { id: 'model-versioning', label: 'Model Versioning' },
+      { id: 'continuous-integration', label: 'CI/CD for ML' }
     ]},
-    { to: '/cuda-programming', label: 'CUDA Programming', subLinks: [
-      { id: 'cuda-kernels', label: 'Writing CUDA Kernels' },
-      { id: 'memory-management-cuda', label: 'CUDA Memory Management' },
-      { id: 'cooperative-groups', label: 'Cooperative Groups' },
-      { id: 'cuda-graphs', label: 'CUDA Graphs' }
-    ]},
-    { to: '/debugging-profiling-advanced', label: 'Advanced Debugging & Profiling', subLinks: [
-      { id: 'cuda-debugging', label: 'CUDA Debugging Tools' },
-      { id: 'nsight-profiling', label: 'Nsight Profiling' },
-      { id: 'memory-debugging', label: 'Memory Debugging' },
-      { id: 'performance-regression', label: 'Performance Regression Testing' }
-    ]},
-    { to: '/production-deployment', label: 'Production & Deployment', subLinks: [
-      { id: 'torchserve', label: 'TorchServe' },
-      { id: 'model-optimization', label: 'Model Optimization for Production' },
-      { id: 'monitoring-logging', label: 'Monitoring & Logging' },
-      { id: 'a-b-testing', label: 'A/B Testing ML Models' }
+    { to: '/best-practices', label: 'Production Best Practices', subLinks: [
+      { id: 'experiment-tracking', label: 'Experiment Tracking' },
+      { id: 'reproducibility', label: 'Reproducibility' },
+      { id: 'testing-ml', label: 'Testing ML Models' },
+      { id: 'security', label: 'Security Considerations' },
+      { id: 'ethics', label: 'Ethics and Fairness' }
     ]}
   ]
 };
@@ -371,24 +350,20 @@ export const pytorchCourseContentData = {
 // PyTorch exercise content data
 export const pytorchExerciseContentData = {
   'module1': [
-    { to: '/exercise1', label: 'Tensor Creation & Manipulation' },
-    { to: '/exercise2', label: 'Mathematical Operations Deep Dive' },
-    { to: '/exercise3', label: 'Memory Management Challenges' }
+    { to: '/exercise1', label: 'Exercise 1: Tensor Basics' },
+    { to: '/exercise2', label: 'Exercise 2: PyTorch Operations' }
   ],
   'module2': [
-    { to: '/exercise1', label: 'Custom Autograd Functions' },
-    { to: '/exercise2', label: 'Gradient Debugging Workshop' },
-    { to: '/exercise3', label: 'Higher-order Derivatives' }
+    { to: '/exercise1', label: 'Exercise 1: Building Neural Networks' },
+    { to: '/exercise2', label: 'Exercise 2: Training Networks' }
   ],
   'module3': [
-    { to: '/exercise1', label: 'Performance Profiling Lab' },
-    { to: '/exercise2', label: 'Memory Optimization Challenge' },
-    { to: '/exercise3', label: 'Parallelization Patterns' }
+    { to: '/exercise1', label: 'Exercise 1: Advanced Architectures' },
+    { to: '/exercise2', label: 'Exercise 2: Specialized Networks' }
   ],
   'module4': [
-    { to: '/exercise1', label: 'Custom C++ Extension' },
-    { to: '/exercise2', label: 'CUDA Kernel Implementation' },
-    { to: '/exercise3', label: 'Production Optimization' }
+    { to: '/exercise1', label: 'Exercise 1: Model Deployment' },
+    { to: '/exercise2', label: 'Exercise 2: Production Monitoring' }
   ]
 };
 
