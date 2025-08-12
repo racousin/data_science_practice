@@ -1,7 +1,6 @@
 import React from "react";
 import { Container, Grid, Button } from '@mantine/core';
 import { Link } from "react-router-dom";
-import ModuleNavigation from "components/ModuleNavigation";
 import CodeBlock from "components/CodeBlock";
 import ModuleFrame from "components/ModuleFrame";
 const PrerequisiteAndMethodology = () => {

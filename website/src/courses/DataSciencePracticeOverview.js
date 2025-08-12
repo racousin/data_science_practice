@@ -1,43 +1,17 @@
 import React from 'react';
-import { Container, Title, Text, SimpleGrid, Card, Button, Stack, Badge, Group, Timeline } from '@mantine/core';
+import { Container, Title, Text, SimpleGrid, Card, Button, Stack, Badge, Group } from '@mantine/core';
 import { Link } from 'react-router-dom';
-import { 
-  IconGitBranch, 
-  IconBrandPython, 
-  IconChartBar,
-  IconDatabase,
-  IconFilter,
-  IconTable,
-  IconBrain,
-  IconPhoto,
-  IconClock,
-  IconFileText,
-  IconSparkles,
-  IconUsers,
-  IconRobot,
-  IconBrandDocker,
-  IconCloud,
-  IconTrophy
-} from '@tabler/icons-react';
+import { IconTrophy } from '@tabler/icons-react';
+import { coursesData, getModuleIndex } from '../components/SideNavigation';
 
-const modules = [
-  { id: 0, title: 'Prerequisites & Methodology', icon: IconChartBar, color: 'gray' },
-  { id: 1, title: 'Git & Version Control', icon: IconGitBranch, color: 'orange' },
-  { id: 2, title: 'Python Ecosystem', icon: IconBrandPython, color: 'blue' },
-  { id: 3, title: 'Data Science Landscape', icon: IconChartBar, color: 'teal' },
-  { id: 4, title: 'Data Collection', icon: IconDatabase, color: 'green' },
-  { id: 5, title: 'Data Preprocessing', icon: IconFilter, color: 'lime' },
-  { id: 6, title: 'Tabular Models', icon: IconTable, color: 'yellow' },
-  { id: 7, title: 'Deep Learning Fundamentals', icon: IconBrain, color: 'orange' },
-  { id: 8, title: 'Image Processing', icon: IconPhoto, color: 'red' },
-  { id: 9, title: 'Time Series Processing', icon: IconClock, color: 'pink' },
-  { id: 10, title: 'Text Processing & NLP', icon: IconFileText, color: 'grape' },
-  { id: 11, title: 'Generative Models', icon: IconSparkles, color: 'violet' },
-  { id: 12, title: 'Recommendation Systems', icon: IconUsers, color: 'indigo' },
-  { id: 13, title: 'Reinforcement Learning', icon: IconRobot, color: 'blue' },
-  { id: 14, title: 'Docker & Containers', icon: IconBrandDocker, color: 'cyan' },
-  { id: 15, title: 'Cloud Integration', icon: IconCloud, color: 'teal' },
-];
+// Get modules from centralized course data
+const modules = coursesData['data-science-practice'].modules
+  .filter(m => m.id !== 'project')
+  .map(m => ({
+    id: getModuleIndex(m.id),
+    title: m.name,
+    icon: m.icon
+  }));
 
 const DataSciencePracticeOverview = () => {
   return (
@@ -84,7 +58,7 @@ const DataSciencePracticeOverview = () => {
             >
               <Stack spacing="sm" style={{ flex: 1 }}>
                 <Group justify="space-between">
-                  <Icon size={20} color="gray.6" />
+                  <Icon size={20} style={{ color: 'var(--mantine-color-gray-6)' }} />
                   <Badge color="gray">Module {module.id}</Badge>
                 </Group>
                 

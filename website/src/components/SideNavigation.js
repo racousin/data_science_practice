@@ -1,10 +1,34 @@
 import React, { useState } from 'react';
 import { NavLink, Accordion, Text, Box, Divider, ScrollArea, Collapse } from '@mantine/core';
 import { useLocation, Link } from 'react-router-dom';
-import { IconBook, IconClipboardList, IconChartBar, IconChevronDown, IconChevronRight } from '@tabler/icons-react';
+import { 
+  IconBook, 
+  IconClipboardList, 
+  IconChartBar, 
+  IconChevronDown, 
+  IconChevronRight,
+  IconGitBranch,
+  IconBrandPython,
+  IconDatabase,
+  IconFilter,
+  IconTable,
+  IconBrain,
+  IconPhoto,
+  IconClock,
+  IconFileText,
+  IconSparkles,
+  IconUsers,
+  IconRobot,
+  IconBrandDocker,
+  IconCloud,
+  IconCube,
+  IconMathFunction,
+  IconCpu,
+  IconCode
+} from '@tabler/icons-react';
 
 // Course content links for modules with hierarchical structure including sublinks
-const courseContentData = {
+export const courseContentData = {
   'module1': [
     { to: '/Introduction', label: 'Introduction', subLinks: [
       { id: 'what-is-version-control', label: 'What is Version Control?' },
@@ -142,7 +166,7 @@ const courseContentData = {
 };
 
 // Exercise links for modules that have exercises
-const exerciseContentData = {
+export const exerciseContentData = {
   'module1': [
     { to: '/exercise1', label: 'Exercise 1' },
     { to: '/exercise2', label: 'Exercise 2' }
@@ -193,7 +217,7 @@ const exerciseContentData = {
 };
 
 // PyTorch course content links for modules with hierarchical structure
-const pytorchCourseContentData = {
+export const pytorchCourseContentData = {
   'module1': [
     { to: '/Introduction', label: 'Introduction to PyTorch', subLinks: [
       { id: 'pytorch-ecosystem', label: 'PyTorch Ecosystem Overview' },
@@ -345,7 +369,7 @@ const pytorchCourseContentData = {
 };
 
 // PyTorch exercise content data
-const pytorchExerciseContentData = {
+export const pytorchExerciseContentData = {
   'module1': [
     { to: '/exercise1', label: 'Tensor Creation & Manipulation' },
     { to: '/exercise2', label: 'Mathematical Operations Deep Dive' },
@@ -369,7 +393,7 @@ const pytorchExerciseContentData = {
 };
 
 // Function to get course content links for a module
-const getCourseContentLinks = (moduleId, courseId) => {
+export const getCourseContentLinks = (moduleId, courseId) => {
   if (courseId === 'data-science-practice' && courseContentData[moduleId]) {
     return courseContentData[moduleId];
   }
@@ -380,7 +404,7 @@ const getCourseContentLinks = (moduleId, courseId) => {
 };
 
 // Function to get exercise links for a module
-const getExerciseContentLinks = (moduleId, courseId) => {
+export const getExerciseContentLinks = (moduleId, courseId) => {
   if (courseId === 'data-science-practice' && exerciseContentData[moduleId]) {
     return exerciseContentData[moduleId];
   }
@@ -390,36 +414,36 @@ const getExerciseContentLinks = (moduleId, courseId) => {
   return [];
 };
 
-// Course structure data
-const coursesData = {
-    'python-deep-learning': {
+// Course structure data with icons for modules
+export const coursesData = {
+  'python-deep-learning': {
     name: 'Python for Deep Learning (PyTorch)',
     modules: [
-      { id: 'module1', name: 'PyTorch Core Components & Tensor Mathematics' },
-      { id: 'module2', name: 'Automatic Differentiation & Gradient Mechanics' },
-      { id: 'module3', name: 'Infrastructure & Performance Optimization' },
-      { id: 'module4', name: 'Advanced PyTorch Features & Custom Operations' },
+      { id: 'module1', name: 'PyTorch Core Components & Tensor Mathematics', icon: IconCube },
+      { id: 'module2', name: 'Automatic Differentiation & Gradient Mechanics', icon: IconMathFunction },
+      { id: 'module3', name: 'Infrastructure & Performance Optimization', icon: IconCpu },
+      { id: 'module4', name: 'Advanced PyTorch Features & Custom Operations', icon: IconCode },
     ]
   },
   'data-science-practice': {
     name: 'Data Science Practice',
     modules: [
-      { id: 'module0', name: 'Prerequisites & Methodology' },
-      { id: 'module1', name: 'Git and Github' },
-      { id: 'module2', name: 'Python Environment' },
-      { id: 'module3', name: 'Data Science Landscape' },
-      { id: 'module4', name: 'Data Collection' },
-      { id: 'module5', name: 'Data Preprocessing' },
-      { id: 'module6', name: 'Tabular Models' },
-      { id: 'module7', name: 'Deep Learning Fundamentals' },
-      { id: 'module8', name: 'Image Processing' },
-      { id: 'module9', name: 'TimeSeries Processing' },
-      { id: 'module10', name: 'Natural Language Processing' },
-      { id: 'module11', name: 'Generative Models' },
-      { id: 'module12', name: 'Recommendation Systems' },
-      { id: 'module13', name: 'Reinforcement Learning' },
-      { id: 'module14', name: 'Docker' },
-      { id: 'module15', name: 'Cloud Integration' },
+      { id: 'module0', name: 'Prerequisites & Methodology', icon: IconChartBar },
+      { id: 'module1', name: 'Git and Github', icon: IconGitBranch },
+      { id: 'module2', name: 'Python Environment', icon: IconBrandPython },
+      { id: 'module3', name: 'Data Science Landscape', icon: IconChartBar },
+      { id: 'module4', name: 'Data Collection', icon: IconDatabase },
+      { id: 'module5', name: 'Data Preprocessing', icon: IconFilter },
+      { id: 'module6', name: 'Tabular Models', icon: IconTable },
+      { id: 'module7', name: 'Deep Learning Fundamentals', icon: IconBrain },
+      { id: 'module8', name: 'Image Processing', icon: IconPhoto },
+      { id: 'module9', name: 'TimeSeries Processing', icon: IconClock },
+      { id: 'module10', name: 'Natural Language Processing', icon: IconFileText },
+      { id: 'module11', name: 'Generative Models', icon: IconSparkles },
+      { id: 'module12', name: 'Recommendation Systems', icon: IconUsers },
+      { id: 'module13', name: 'Reinforcement Learning', icon: IconRobot },
+      { id: 'module14', name: 'Docker', icon: IconBrandDocker },
+      { id: 'module15', name: 'Cloud Integration', icon: IconCloud },
       { id: 'project', name: 'Project' }
     ]
   }
@@ -631,6 +655,13 @@ const SideNavigation = () => {
       </Box>
     </ScrollArea>
   );
+};
+
+// Export function to get module index from module id
+export const getModuleIndex = (moduleId) => {
+  if (!moduleId || moduleId === 'project') return null;
+  const match = moduleId.match(/module(\d+)/);
+  return match ? parseInt(match[1]) : null;
 };
 
 export default SideNavigation;

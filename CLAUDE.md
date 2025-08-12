@@ -86,7 +86,7 @@ The website uses React 18.3 with Mantine UI components. Key directories:
 
 ### Supported Courses
 1. **Data Science Practice**: 15 modules covering Git, Python, ML, Deep Learning, NLP, Computer Vision
-2. **Python Deep Learning**: 3 modules on PyTorch and deep learning (under development)
+2. **Python Deep Learning**: 4 modules on PyTorch and deep learning (under development)
 
 ### Navigation Features
 - **Hierarchical Sidebar**: Course content with expandable subsections

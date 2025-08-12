@@ -93,15 +93,8 @@ const ImageProcessingCourse = () => {
       courseLinks={courseLinks}
     >
       <Container size="xl" px="md">
-        {location.pathname === '/module8/course' && (
-        <Stack spacing="md">
-
-        <Text mt="md" c="dimmed" size="sm">
-          Last Updated: 2024-09-20
-        </Text>
-      </Stack>)}
         <Box>
-          <DynamicRoutes routes={courseLinks} />
+          <DynamicRoutes routes={courseLinks} type="course" />
         </Box>
       </Container>
     </ModuleFrame>

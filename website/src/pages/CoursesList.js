@@ -4,6 +4,16 @@ import { Link } from 'react-router-dom';
 import { IconBook, IconCode, IconChartBar, IconBrain } from '@tabler/icons-react';
 
 const courses = [
+    {
+    id: 'python-deep-learning',
+    title: 'Python for Deep Learning',
+    description: 'Master PyTorch and deep learning fundamentals',
+    modules: 4,
+    icon: IconBrain,
+    color: 'indigo',
+    topics: ['PyTorch', 'Tensors', 'Neural Networks', 'TensorBoard'],
+    path: '/courses/python-deep-learning'
+  },
   {
     id: 'data-science-practice',
     title: 'Data Science Practice',
@@ -13,16 +23,6 @@ const courses = [
     color: 'blue',
     topics: ['Python', 'Machine Learning', 'Deep Learning', 'MLOps'],
     path: '/courses/data-science-practice'
-  },
-  {
-    id: 'python-deep-learning',
-    title: 'Python for Deep Learning: PyTorch',
-    description: 'Master PyTorch and deep learning fundamentals',
-    modules: 3,
-    icon: IconBrain,
-    color: 'indigo',
-    topics: ['PyTorch', 'Tensors', 'Neural Networks', 'TensorBoard'],
-    path: '/courses/python-deep-learning'
   }
 ];
 
