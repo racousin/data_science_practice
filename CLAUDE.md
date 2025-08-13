@@ -94,10 +94,21 @@ The website uses React 18.3 with Mantine UI components. Key directories:
 - **No Duplicate Menus**: All navigation centralized in left sidebar for course pages
 
 ### Testing System
-Python-based automated testing with pytest. Each module has:
-- Shell script runner (`exercise*.sh`)
-- Python test file (`test_exercise*.py`)
-- Results are uploaded to AWS S3 for progress tracking
+
+#### Data Science Practice Course
+Students work with a dedicated Git repository workflow:
+- Create and push solutions to their own GitHub repository
+- Run shell scripts (`exercise*.sh`) to validate their solutions
+- Test results are automatically uploaded to AWS S3 for instructor tracking
+- Progress is monitored via the Session Results page
+
+#### Python Deep Learning Course  
+Students work directly in Google Colab notebooks:
+- Open exercise notebooks in Colab environment
+- Clone test files directly in the notebook for self-validation
+- Run pytest locally to verify their solutions
+- No separate repository or submission required
+- Immediate feedback without external dependencies
 
 ### Content Structure
 Each module contains:
@@ -106,6 +117,63 @@ Each module contains:
 - Jupyter notebooks (interactive coding)
 
 Notebooks are converted to HTML via the Makefile for web display.
+
+## Important Path File Resources
+
+### Course Content Structure
+```
+/website/public/modules/
+├── data-science-practice/
+│   ├── module1/
+│   │   ├── course.ipynb
+│   │   ├── course.html
+│   │   └── exercises/
+│   └── ...module15/
+└── python-deep-learning/
+    ├── module1/
+    │   ├── course.ipynb
+    │   ├── course.html
+    │   └── exercises/
+    └── ...module4/
+```
+
+### Source Code Organization
+```
+/website/src/
+├── components/
+│   ├── MainHeader.js         # Top navigation
+│   ├── SideNavigation.js     # Course sidebar navigation (defines course structure)
+│   └── ModuleFrame.js        # Module page wrapper
+├── pages/
+│   ├── Home.js               # Landing page
+│   ├── Courses.js            # Course selection
+│   ├── Projects.js           # Research projects
+│   ├── data-science-practice/
+│   │   └── module{1-15}/
+│   │       ├── course/
+│   │       └── exercise/
+│   └── python-deep-learning/
+│       └── module{1-4}/
+│           ├── course/
+│           └── exercise/
+└── courses/
+    ├── DataSciencePractice.js
+    └── PythonDeepLearning.js
+```
+
+### Testing Framework
+```
+/tests/
+├── data-science-practice/        # Repository-based workflow
+│   ├── requirements.txt
+│   └── module{1-15}/
+│       ├── exercise{N}.sh        # Shell script runner (uploads to S3)
+│       └── test_exercise{N}.py   # Pytest test file
+└── python-deep-learning/          # Colab self-validation workflow
+    ├── requirements.txt
+    └── module{1-4}/
+        └── test_exercise{N}.py   # Pytest test file (no .sh scripts)
+```
 
 ## Key Dependencies
 
@@ -134,4 +202,6 @@ Notebooks are converted to HTML via the Makefile for web display.
 - `/courses/data-science-practice/module{N}/course` - Course content
 - `/courses/data-science-practice/module{N}/exercise` - Exercises
 - `/courses/data-science-practice/results` - Student results
+- `/courses/python-deep-learning/module{N}/course` - Course content
+- `/courses/python-deep-learning/module{N}/exercise` - Exercises
 - `/projects` - Research projects and collaborations

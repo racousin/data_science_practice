@@ -7312,6 +7312,7 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -7645,21 +7646,21 @@ Requirement already satisfied: MarkupSafe&gt;=2.0 in /home/raphael/.cache/pypoet
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Import necessary libraries</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">precision_recall_fscore_support</span><span class="p">,</span> <span class="n">mean_squared_error</span><span class="p">,</span> <span class="n">r2_score</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
-<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span><span class="p">,</span> <span class="n">LinearRegression</span>
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">pipeline</span><span class="p">,</span> <span class="n">AutoModelForSequenceClassification</span><span class="p">,</span> <span class="n">AutoTokenizer</span>
-<span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">load_dataset</span>
-<span class="kn">import</span> <span class="nn">evaluate</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">precision_recall_fscore_support</span><span class="p">,</span> <span class="n">mean_squared_error</span><span class="p">,</span> <span class="n">r2_score</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span><span class="p">,</span> <span class="n">LinearRegression</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">pipeline</span><span class="p">,</span> <span class="n">AutoModelForSequenceClassification</span><span class="p">,</span> <span class="n">AutoTokenizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dataset</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">evaluate</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
 
 <span class="c1"># Set random seeds for reproducibility</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
@@ -7693,7 +7694,7 @@ Requirement already satisfied: MarkupSafe&gt;=2.0 in /home/raphael/.cache/pypoet
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create a synthetic dataset of math problems with binary classification</span>
-<span class="k">def</span> <span class="nf">generate_math_dataset</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_math_dataset</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
     <span class="n">problems</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
     
@@ -7834,8 +7835,8 @@ Test set size: 100
 <div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">TfidfVectorizer</span>
-<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipeline</span>
 
 <span class="c1"># Create a pipeline with TF-IDF vectorizer and logistic regression</span>
 <span class="n">trad_ml_pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
@@ -7902,7 +7903,7 @@ F1 Score: 0.5603
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Function to extract LLM responses for classification</span>
-<span class="k">def</span> <span class="nf">extract_classification</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_classification</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
     <span class="k">if</span> <span class="s2">"yes"</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="s2">"real solution"</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="s2">"real root"</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
         <span class="k">return</span> <span class="mi">1</span>
     <span class="k">elif</span> <span class="s2">"no"</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="s2">"no real solution"</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="s2">"no real root"</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
@@ -7920,13 +7921,13 @@ F1 Score: 0.5603
 <span class="p">)</span>
 
 <span class="c1"># Zero-shot prompting</span>
-<span class="k">def</span> <span class="nf">zero_shot_classify</span><span class="p">(</span><span class="n">problem</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">zero_shot_classify</span><span class="p">(</span><span class="n">problem</span><span class="p">):</span>
     <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span><span class="si">{</span><span class="n">problem</span><span class="si">}</span><span class="s2"> Answer yes or no."""</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">llm</span><span class="p">(</span><span class="n">prompt</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'generated_text'</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">extract_classification</span><span class="p">(</span><span class="n">response</span><span class="p">),</span> <span class="n">response</span>
 
 <span class="c1"># Few-shot prompting</span>
-<span class="k">def</span> <span class="nf">few_shot_classify</span><span class="p">(</span><span class="n">problem</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">few_shot_classify</span><span class="p">(</span><span class="n">problem</span><span class="p">):</span>
     <span class="n">prompt</span> <span class="o">=</span> <span class="s2">"""</span>
 <span class="s2">Example 1: Does the quadratic equation 1x^2 + 2x + 1 = 0 have real solutions?</span>
 <span class="s2">Answer: Yes, it has one real solution x = -1.</span>
@@ -8220,7 +8221,7 @@ F1 Score: 0.5248
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Generate a synthetic dataset for regression</span>
-<span class="k">def</span> <span class="nf">generate_regression_dataset</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_regression_dataset</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
     <span class="n">problems</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
     
@@ -8271,7 +8272,7 @@ F1 Score: 0.5248
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Function to extract numerical values from LLM responses</span>
-<span class="k">def</span> <span class="nf">extract_numerical_value</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_numerical_value</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
     <span class="c1"># Look for patterns like "y = 25" or "the value is 25" or just "25"</span>
     <span class="n">patterns</span> <span class="o">=</span> <span class="p">[</span>
         <span class="sa">r</span><span class="s2">"y\s*=\s*(-?\d+)"</span><span class="p">,</span>
@@ -8294,7 +8295,7 @@ F1 Score: 0.5248
     <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># No number found</span>
 
 <span class="c1"># LLM-based regression function</span>
-<span class="k">def</span> <span class="nf">llm_regression</span><span class="p">(</span><span class="n">problem</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">llm_regression</span><span class="p">(</span><span class="n">problem</span><span class="p">):</span>
     <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span><span class="si">{</span><span class="n">problem</span><span class="si">}</span><span class="s2"> Provide only the numerical answer without any explanation."""</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">llm</span><span class="p">(</span><span class="n">prompt</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'generated_text'</span><span class="p">]</span>
     <span class="n">value</span> <span class="o">=</span> <span class="n">extract_numerical_value</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
@@ -8435,7 +8436,7 @@ F1 Score: 0.5248
 <span class="p">)</span>
 
 <span class="c1"># Function to generate step-by-step solutions</span>
-<span class="k">def</span> <span class="nf">generate_solution</span><span class="p">(</span><span class="n">problem</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_solution</span><span class="p">(</span><span class="n">problem</span><span class="p">):</span>
     <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""Solve the following mathematical problem step by step:</span>
 <span class="si">{</span><span class="n">problem</span><span class="si">}</span>
 
@@ -8507,7 +8508,7 @@ F1 Score: 0.5248
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create a dataset of algebraic manipulations with correctness labels</span>
-<span class="k">def</span> <span class="nf">generate_algebraic_dataset</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_algebraic_dataset</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
     <span class="n">problems</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
     
@@ -8589,7 +8590,7 @@ F1 Score: 0.5248
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Function to extract correctness judgment from LLM responses</span>
-<span class="k">def</span> <span class="nf">extract_correctness</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_correctness</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
     <span class="n">positive_patterns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"correct"</span><span class="p">,</span> <span class="s2">"yes"</span><span class="p">,</span> <span class="s2">"true"</span><span class="p">,</span> <span class="s2">"valid"</span><span class="p">,</span> <span class="s2">"right"</span><span class="p">]</span>
     <span class="n">negative_patterns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"incorrect"</span><span class="p">,</span> <span class="s2">"no"</span><span class="p">,</span> <span class="s2">"false"</span><span class="p">,</span> <span class="s2">"invalid"</span><span class="p">,</span> <span class="s2">"wrong"</span><span class="p">]</span>
     
@@ -8611,7 +8612,7 @@ F1 Score: 0.5248
     <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># Unclear response</span>
 
 <span class="c1"># Function to evaluate algebraic correctness</span>
-<span class="k">def</span> <span class="nf">evaluate_algebraic_correctness</span><span class="p">(</span><span class="n">problem</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">evaluate_algebraic_correctness</span><span class="p">(</span><span class="n">problem</span><span class="p">):</span>
     <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span><span class="si">{</span><span class="n">problem</span><span class="si">}</span>
 <span class="s2">Answer with yes if it's correct or no if it's incorrect."""</span>
     
@@ -8682,9 +8683,9 @@ F1 Score: 0.5248
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"F1 Score: </span><span class="si">{</span><span class="n">alg_f1</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="c1"># Create a confusion matrix</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">confusion_matrix</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 
 <span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">alg_valid_labels</span><span class="p">,</span> <span class="n">alg_valid_preds</span><span class="p">)</span>
 
@@ -8796,8 +8797,8 @@ F1 Score: 0.5248
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create a radar chart for task comparison</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># Prepare data for radar chart</span>
 <span class="n">labels</span> <span class="o">=</span> <span class="n">tasks</span>

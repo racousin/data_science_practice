@@ -7312,6 +7312,7 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -7529,19 +7530,19 @@ a.anchor-link {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Now import the needed libraries</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">Dataset</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dataset</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm.auto</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 
 <span class="c1"># For transformers library</span>
-<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AutoModelForSequenceClassification</span><span class="p">,</span> 
     <span class="n">AutoTokenizer</span><span class="p">,</span> 
     <span class="n">AutoModelForQuestionAnswering</span><span class="p">,</span>
@@ -7936,7 +7937,7 @@ Text: This movie had amazing visuals but the plot was boring and predictable.
         <span class="nb">print</span><span class="p">()</span>
 
 <span class="c1"># Function to visualize answer confidence</span>
-<span class="k">def</span> <span class="nf">plot_qa_confidence</span><span class="p">(</span><span class="n">qa_results</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_qa_confidence</span><span class="p">(</span><span class="n">qa_results</span><span class="p">):</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">qa_results</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">qa_results</span><span class="p">)))</span>
     
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">qa_results</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -7959,7 +7960,7 @@ Text: This movie had amazing visuals but the plot was boring and predictable.
 <span class="n">plot_qa_confidence</span><span class="p">(</span><span class="n">qa_results</span><span class="p">)</span>
 
 <span class="c1"># Highlight answers in context</span>
-<span class="k">def</span> <span class="nf">highlight_answer</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">highlight_answer</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">context</span><span class="p">[:</span><span class="n">start</span><span class="p">]</span> <span class="o">+</span> <span class="s2">"**"</span> <span class="o">+</span> <span class="n">context</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span> <span class="o">+</span> <span class="s2">"**"</span> <span class="o">+</span> <span class="n">context</span><span class="p">[</span><span class="n">end</span><span class="p">:]</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Highlighted Answers in Context:"</span><span class="p">)</span>
@@ -8460,7 +8461,7 @@ Summary (46 words):
     <span class="n">math_model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">"Qwen/Qwen2.5-Math-1.5B"</span><span class="p">,</span> <span class="n">device_map</span><span class="o">=</span><span class="s2">"auto"</span><span class="p">)</span>
     
     <span class="c1"># Helper function for math problem solving</span>
-    <span class="k">def</span> <span class="nf">solve_math_problem</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">1024</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">solve_math_problem</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">1024</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Solve math problems using the specialized model"""</span>
         <span class="c1"># Format the input prompt</span>
         <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Solve the following math problem step by step:</span><span class="se">\n</span><span class="si">{</span><span class="n">problem</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">Solution:"</span>
@@ -8532,7 +8533,7 @@ Summary (46 words):
         <span class="n">device</span><span class="o">=</span><span class="mi">0</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
     <span class="p">)</span>
     
-    <span class="k">def</span> <span class="nf">solve_with_general_model</span><span class="p">(</span><span class="n">problem</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">solve_with_general_model</span><span class="p">(</span><span class="n">problem</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Solve a math problem using a general LLM with chain-of-thought prompting"""</span>
         <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""Problem: If a rectangle has a width of 5 cm and a length of 8 cm, what is its area?</span>
 <span class="s2">Solution: To find the area of a rectangle, I multiply width × length.</span>
@@ -8822,7 +8823,7 @@ Solution: In a straight line, we have a straight line. In a straight line, we ha
 </li>
 <li>Use the following code template to generate a short poem:</li>
 </ol>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">pipeline</span>
+<div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">pipeline</span>
 
 <span class="c1"># Initialize text generation pipeline with a small model</span>
 <span class="n">generator</span> <span class="o">=</span> <span class="n">pipeline</span><span class="p">(</span><span class="s1">'text-generation'</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span>  <span class="c1"># or another small model</span>

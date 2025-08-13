@@ -7312,6 +7312,7 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -7517,20 +7518,20 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">subprocess</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">tempfile</span>
-<span class="kn">import</span> <span class="nn">shutil</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
 
-<span class="k">def</span> <span class="nf">extract_tikz_pictures</span><span class="p">(</span><span class="n">latex_file</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_tikz_pictures</span><span class="p">(</span><span class="n">latex_file</span><span class="p">):</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">latex_file</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
         <span class="n">content</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
     
     <span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'</span><span class="se">\\</span><span class="s1">begin</span><span class="si">{tikzpicture}</span><span class="s1">.*?</span><span class="se">\\</span><span class="s1">end</span><span class="si">{tikzpicture}</span><span class="s1">'</span>
     <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">tikz_to_png</span><span class="p">(</span><span class="n">tikz_code</span><span class="p">,</span> <span class="n">output_file</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tikz_to_png</span><span class="p">(</span><span class="n">tikz_code</span><span class="p">,</span> <span class="n">output_file</span><span class="p">):</span>
     <span class="n">latex_template_start</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"""</span>
 <span class="s2">\documentclass</span><span class="si">{standalone}</span>
 <span class="s2">\usepackage</span><span class="si">{tikz}</span>
@@ -7585,7 +7586,7 @@ a.anchor-link {
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Error: Generated PNG file not found: </span><span class="si">{</span><span class="n">generated_png</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">latex_file</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">latex_file</span><span class="p">):</span>
     <span class="n">tikz_pictures</span> <span class="o">=</span> <span class="n">extract_tikz_pictures</span><span class="p">(</span><span class="n">latex_file</span><span class="p">)</span>
     
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s1">'tikz_images'</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>

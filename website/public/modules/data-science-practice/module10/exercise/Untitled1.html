@@ -7312,6 +7312,7 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -7519,19 +7520,19 @@ a.anchor-link {
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Math Problem Solving with Transformers: From Pre-trained Models to Fine-tuning</span>
 
-<span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
-<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">from</span> <span class="nn">tqdm.notebook</span> <span class="kn">import</span> <span class="n">tqdm</span>
-<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm.notebook</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 
 <span class="c1"># For transformer models</span>
-<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoModelForSeq2SeqLM</span><span class="p">,</span> <span class="n">AutoModelForCausalLM</span><span class="p">,</span>
     <span class="n">GPT2Tokenizer</span><span class="p">,</span> <span class="n">GPT2LMHeadModel</span><span class="p">,</span>
     <span class="n">TrainingArguments</span><span class="p">,</span> <span class="n">Trainer</span><span class="p">,</span>
@@ -7539,12 +7540,12 @@ a.anchor-link {
 <span class="p">)</span>
 
 <span class="c1"># For evaluation</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
-<span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">Dataset</span> <span class="k">as</span> <span class="n">HFDataset</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">accuracy_score</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dataset</span> <span class="k">as</span> <span class="n">HFDataset</span>
 
 <span class="c1"># For fine-tuning</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">peft</span> <span class="kn">import</span> <span class="n">LoraConfig</span><span class="p">,</span> <span class="n">get_peft_model</span><span class="p">,</span> <span class="n">TaskType</span><span class="p">,</span> <span class="n">prepare_model_for_kbit_training</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">peft</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoraConfig</span><span class="p">,</span> <span class="n">get_peft_model</span><span class="p">,</span> <span class="n">TaskType</span><span class="p">,</span> <span class="n">prepare_model_for_kbit_training</span>
     <span class="n">PEFT_AVAILABLE</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">PEFT_AVAILABLE</span> <span class="o">=</span> <span class="kc">False</span>
@@ -7562,7 +7563,7 @@ a.anchor-link {
 <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">'cuda'</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">'cpu'</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Using device: </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">generate_math_problem</span><span class="p">(</span><span class="n">difficulty</span><span class="o">=</span><span class="s1">'easy'</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_math_problem</span><span class="p">(</span><span class="n">difficulty</span><span class="o">=</span><span class="s1">'easy'</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Generate a simple math problem based on difficulty level."""</span>
     <span class="k">if</span> <span class="n">difficulty</span> <span class="o">==</span> <span class="s1">'easy'</span><span class="p">:</span>
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
@@ -7600,7 +7601,7 @@ a.anchor-link {
         <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'numeric'</span>
     <span class="p">}</span>
 
-<span class="k">def</span> <span class="nf">generate_word_problem</span><span class="p">(</span><span class="n">difficulty</span><span class="o">=</span><span class="s1">'easy'</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_word_problem</span><span class="p">(</span><span class="n">difficulty</span><span class="o">=</span><span class="s1">'easy'</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Generate a word problem based on difficulty."""</span>
     <span class="n">templates</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">'easy'</span><span class="p">:</span> <span class="p">[</span>
@@ -7669,7 +7670,7 @@ a.anchor-link {
         <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'word'</span>
     <span class="p">}</span>
 
-<span class="k">def</span> <span class="nf">generate_dataset</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_dataset</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Generate a dataset of math problems with an equal mix of types and difficulties."""</span>
     <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">difficulties</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'easy'</span><span class="p">,</span> <span class="s1">'medium'</span><span class="p">,</span> <span class="s1">'hard'</span><span class="p">]</span>
@@ -7745,14 +7746,14 @@ Train: 840, Validation: 180, Test: 180
     <span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token</span>
 
 <span class="c1"># Format data for different training paradigms</span>
-<span class="k">def</span> <span class="nf">format_for_training</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">solution</span><span class="p">,</span> <span class="n">with_work</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">work</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">format_for_training</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">solution</span><span class="p">,</span> <span class="n">with_work</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">work</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Format the data for model training and inference."""</span>
     <span class="k">if</span> <span class="n">with_work</span> <span class="ow">and</span> <span class="n">work</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">"Problem: </span><span class="si">{</span><span class="n">problem</span><span class="si">}</span><span class="se">\n</span><span class="s2">Solution: </span><span class="si">{</span><span class="n">work</span><span class="si">}</span><span class="s2"> The answer is </span><span class="si">{</span><span class="n">solution</span><span class="si">}</span><span class="s2">."</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">"Problem: </span><span class="si">{</span><span class="n">problem</span><span class="si">}</span><span class="se">\n</span><span class="s2">Solution: The answer is </span><span class="si">{</span><span class="n">solution</span><span class="si">}</span><span class="s2">."</span>
 
-<span class="k">def</span> <span class="nf">format_for_inference</span><span class="p">(</span><span class="n">problem</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">format_for_inference</span><span class="p">(</span><span class="n">problem</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Format the data for model inference."""</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">"Problem: </span><span class="si">{</span><span class="n">problem</span><span class="si">}</span><span class="se">\n</span><span class="s2">Solution:"</span>
 
@@ -7770,7 +7771,7 @@ Train: 840, Validation: 180, Test: 180
 <span class="n">test_dataset</span> <span class="o">=</span> <span class="n">HFDataset</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">"text"</span><span class="p">:</span> <span class="n">test_texts</span><span class="p">})</span>
 
 <span class="c1"># Tokenize function for language modeling</span>
-<span class="k">def</span> <span class="nf">tokenize_function</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tokenize_function</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">examples</span><span class="p">[</span><span class="s2">"text"</span><span class="p">],</span> <span class="n">padding</span><span class="o">=</span><span class="s2">"max_length"</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
 
 <span class="c1"># Tokenize all datasets</span>
@@ -7833,7 +7834,7 @@ Solution: To solve this problem, I need to calculate the discounted price as ori
 <div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">extract_answer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">extract_answer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Extract the numerical answer from model output."""</span>
     <span class="c1"># Try to find "the answer is X" pattern</span>
     <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">"the answer is ([-+]?\d*\.?\d+)"</span><span class="p">,</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
@@ -7861,7 +7862,7 @@ Solution: To solve this problem, I need to calculate the discounted price as ori
     
     <span class="k">return</span> <span class="kc">None</span>
 
-<span class="k">def</span> <span class="nf">evaluate_model_predictions</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">references</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">evaluate_model_predictions</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">references</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Evaluate model predictions against references."""</span>
     <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">extracted</span> <span class="o">=</span> <span class="mi">0</span>
@@ -7883,7 +7884,7 @@ Solution: To solve this problem, I need to calculate the discounted price as ori
         <span class="s2">"total"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">references</span><span class="p">)</span>
     <span class="p">}</span>
 
-<span class="k">def</span> <span class="nf">analyze_model_performance</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">references</span><span class="p">,</span> <span class="n">test_df</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">analyze_model_performance</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">references</span><span class="p">,</span> <span class="n">test_df</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Analyze model performance by difficulty and problem type."""</span>
     <span class="n">results</span> <span class="o">=</span> <span class="n">evaluate_model_predictions</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">references</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Overall Accuracy: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">'accuracy'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
@@ -7921,7 +7922,7 @@ Solution: To solve this problem, I need to calculate the discounted price as ori
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Evaluate the model</span>
-<span class="k">def</span> <span class="nf">evaluate_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">evaluate_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
     <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
     <span class="n">predictions</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">references</span> <span class="o">=</span> <span class="p">[]</span>
@@ -7972,7 +7973,7 @@ Solution: To solve this problem, I need to calculate the discounted price as ori
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">GPT2Config</span><span class="p">,</span> <span class="n">GPT2LMHeadModel</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">GPT2Config</span><span class="p">,</span> <span class="n">GPT2LMHeadModel</span>
 
 <span class="c1"># Create a smaller GPT-2 style config</span>
 <span class="n">small_config</span> <span class="o">=</span> <span class="n">GPT2Config</span><span class="p">(</span>
@@ -8320,11 +8321,11 @@ File <span class="ansi-green-fg">~/.cache/pypoetry/virtualenvs/data-science-prac
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoModelForCausalLM</span><span class="p">,</span> <span class="n">AutoTokenizer</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForCausalLM</span><span class="p">,</span> <span class="n">AutoTokenizer</span>
 
 <span class="c1"># Load model directly</span>
-<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoModelForCausalLM</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoModelForCausalLM</span>
 
 <span class="c1"># tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-Math-7B")</span>
 <span class="c1"># model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen2.5-Math-7B")</span>
@@ -8339,7 +8340,7 @@ File <span class="ansi-green-fg">~/.cache/pypoetry/virtualenvs/data-science-prac
     <span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token</span>
 
 <span class="c1"># Simple test problem</span>
-<span class="k">def</span> <span class="nf">format_for_inference</span><span class="p">(</span><span class="n">problem</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">format_for_inference</span><span class="p">(</span><span class="n">problem</span><span class="p">):</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">"Please solve this math problem step by step and provide the final numerical answer.</span><span class="se">\n</span><span class="s2">Problem: </span><span class="si">{</span><span class="n">problem</span><span class="si">}</span><span class="se">\n</span><span class="s2">Solution: The answer is"</span>
 <span class="n">problem</span> <span class="o">=</span> <span class="s2">"2 + 2 = ?"</span>
 <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Problem: </span><span class="si">{</span><span class="n">problem</span><span class="si">}</span><span class="se">\n</span><span class="s2">Solution:"</span>
@@ -8393,7 +8394,7 @@ File <span class="ansi-green-fg">~/.cache/pypoetry/virtualenvs/data-science-prac
 <span class="c1"># Let's fine-tune our pre-trained model using LoRA for efficiency</span>
 
 <span class="k">if</span> <span class="n">PEFT_AVAILABLE</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">peft</span> <span class="kn">import</span> <span class="n">LoraConfig</span><span class="p">,</span> <span class="n">get_peft_model</span><span class="p">,</span> <span class="n">TaskType</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">peft</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoraConfig</span><span class="p">,</span> <span class="n">get_peft_model</span><span class="p">,</span> <span class="n">TaskType</span>
     
     <span class="nb">print</span><span class="p">(</span><span class="s2">"Fine-tuning with LoRA..."</span><span class="p">)</span>
     
@@ -8466,7 +8467,7 @@ File <span class="ansi-green-fg">~/.cache/pypoetry/virtualenvs/data-science-prac
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 5. Comparison and Analysis</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="c1"># Collect results from all approaches</span>
 <span class="n">all_results</span> <span class="o">=</span> <span class="p">{}</span>
@@ -8532,7 +8533,7 @@ File <span class="ansi-green-fg">~/.cache/pypoetry/virtualenvs/data-science-prac
 
 <span class="n">In</span> <span class="n">this</span> <span class="n">notebook</span><span class="p">,</span> <span class="n">we</span><span class="s1">'ve explored three approaches to solving math problems with transformer models:</span>
 
-<span class="mf">1.</span> <span class="o">**</span><span class="n">Training</span> <span class="kn">from</span> <span class="nn">Scratch</span><span class="o">**</span><span class="p">:</span> <span class="n">We</span> <span class="n">trained</span> <span class="n">a</span> <span class="n">small</span> <span class="n">GPT</span><span class="o">-</span><span class="mi">2</span> <span class="n">style</span> <span class="n">model</span> <span class="kn">from</span> <span class="nn">scratch</span> <span class="n">on</span> <span class="n">our</span> <span class="n">math</span> <span class="n">dataset</span><span class="o">.</span>
+<span class="mf">1.</span> <span class="o">**</span><span class="n">Training</span> <span class="kn">from</span><span class="w"> </span><span class="nn">Scratch</span><span class="o">**</span><span class="p">:</span> <span class="n">We</span> <span class="n">trained</span> <span class="n">a</span> <span class="n">small</span> <span class="n">GPT</span><span class="o">-</span><span class="mi">2</span> <span class="n">style</span> <span class="n">model</span> <span class="kn">from</span><span class="w"> </span><span class="nn">scratch</span> <span class="n">on</span> <span class="n">our</span> <span class="n">math</span> <span class="n">dataset</span><span class="o">.</span>
 <span class="mf">2.</span> <span class="o">**</span><span class="n">Zero</span><span class="o">-</span><span class="n">Shot</span> <span class="n">Learning</span><span class="o">**</span><span class="p">:</span> <span class="n">We</span> <span class="n">used</span> <span class="n">a</span> <span class="n">pre</span><span class="o">-</span><span class="n">trained</span> <span class="n">DistilGPT2</span> <span class="n">model</span> <span class="n">to</span> <span class="n">solve</span> <span class="n">math</span> <span class="n">problems</span> <span class="n">without</span> <span class="nb">any</span> <span class="n">additional</span> <span class="n">training</span><span class="o">.</span>
 <span class="mf">3.</span> <span class="o">**</span><span class="n">Few</span><span class="o">-</span><span class="n">Shot</span> <span class="n">Learning</span><span class="o">**</span><span class="p">:</span> <span class="n">We</span> <span class="n">provided</span> <span class="n">the</span> <span class="n">pre</span><span class="o">-</span><span class="n">trained</span> <span class="n">model</span> <span class="k">with</span> <span class="n">a</span> <span class="n">few</span> <span class="n">examples</span> <span class="n">to</span> <span class="n">guide</span> <span class="n">its</span> <span class="n">reasoning</span><span class="o">.</span>
 <span class="mf">4.</span> <span class="o">**</span><span class="n">Fine</span><span class="o">-</span><span class="n">tuning</span> <span class="k">with</span> <span class="n">LoRA</span><span class="o">**</span><span class="p">:</span> <span class="n">We</span> <span class="n">fine</span><span class="o">-</span><span class="n">tuned</span> <span class="n">the</span> <span class="n">pre</span><span class="o">-</span><span class="n">trained</span> <span class="n">model</span> <span class="n">using</span> <span class="n">parameter</span><span class="o">-</span><span class="n">efficient</span> <span class="n">methods</span><span class="o">.</span>

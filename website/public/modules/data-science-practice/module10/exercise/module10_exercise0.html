@@ -7312,6 +7312,7 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -7528,14 +7529,14 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
-<span class="kn">import</span> <span class="nn">nltk</span>
-<span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="kn">import</span> <span class="n">word_tokenize</span>
-<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">BertTokenizer</span><span class="p">,</span> <span class="n">GPT2Tokenizer</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">nltk</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nltk.tokenize</span><span class="w"> </span><span class="kn">import</span> <span class="n">word_tokenize</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">BertTokenizer</span><span class="p">,</span> <span class="n">GPT2Tokenizer</span>
 
 <span class="c1"># Download necessary NLTK data</span>
 <span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">'punkt'</span><span class="p">)</span>
@@ -7620,7 +7621,7 @@ a.anchor-link {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 1.2 Basic Word Tokenizer</span>
-<span class="k">def</span> <span class="nf">simple_word_tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">simple_word_tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Split text on whitespace and remove punctuation"""</span>
     <span class="c1"># Remove punctuation and lowercase the text</span>
     <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">'[^\w\s]'</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
@@ -7641,7 +7642,7 @@ a.anchor-link {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 1.3 Simple Regex Tokenizer</span>
-<span class="k">def</span> <span class="nf">regex_tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">regex_tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Tokenize text using regular expressions"""</span>
     <span class="c1"># This regex pattern matches words, numbers, and common punctuation</span>
     <span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'\w+|[^\w\s]'</span>
@@ -7661,7 +7662,7 @@ a.anchor-link {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 1.4 Character Tokenizer</span>
-<span class="k">def</span> <span class="nf">char_tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">char_tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Tokenize text into individual characters"""</span>
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 </pre></div>
@@ -7678,7 +7679,7 @@ a.anchor-link {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 1.5 Build a vocabulary from our corpus</span>
-<span class="k">def</span> <span class="nf">build_vocabulary</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">tokenizer_func</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_vocabulary</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">tokenizer_func</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Build a vocabulary from a corpus using the provided tokenizer function"""</span>
     <span class="n">all_tokens</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">:</span>
@@ -7714,7 +7715,7 @@ a.anchor-link {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 1.6 Implement a simple subword tokenizer (BPE-like approach)</span>
-<span class="k">def</span> <span class="nf">train_subword_tokenizer</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">vocab_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">min_frequency</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">train_subword_tokenizer</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">vocab_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">min_frequency</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Implement a very simplified version of Byte-Pair Encoding (BPE)"""</span>
     <span class="c1"># Start with character-level tokens</span>
     <span class="n">all_chars</span> <span class="o">=</span> <span class="p">[]</span>
@@ -7771,7 +7772,7 @@ a.anchor-link {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 1.7 Create Encoder and Decoder functions</span>
-<span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">tokenizer_func</span><span class="p">,</span> <span class="n">vocab</span><span class="p">,</span> <span class="n">add_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">tokenizer_func</span><span class="p">,</span> <span class="n">vocab</span><span class="p">,</span> <span class="n">add_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Encode text to token IDs</span>
 <span class="sd">    </span>
@@ -7795,7 +7796,7 @@ a.anchor-link {
     
     <span class="k">return</span> <span class="n">ids</span>
 
-<span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">id_to_token</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">decode</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">id_to_token</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Decode token IDs back to text</span>
 <span class="sd">    </span>
