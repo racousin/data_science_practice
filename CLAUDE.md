@@ -105,10 +105,10 @@ Students work with a dedicated Git repository workflow:
 #### Python Deep Learning Course  
 Students work directly in Google Colab notebooks:
 - Open exercise notebooks in Colab environment
-- Clone test files directly in the notebook for self-validation
-- Run pytest locally to verify their solutions
+- Clone test repository (https://github.com/racousin/data_science_practice.git) for step-by-step validation
+- Run pytest tests for each exercise part to verify their solutions
 - No separate repository or submission required
-- Immediate feedback without external dependencies
+- Immediate feedback with validation throughout exercises
 
 ### Content Structure
 Each module contains:
