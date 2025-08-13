@@ -11,7 +11,7 @@ const courses = [
     modules: 4,
     icon: IconBrain,
     color: 'indigo',
-    topics: ['PyTorch', 'Tensors', 'Neural Networks', 'TensorBoard'],
+    topics: [],//['PyTorch', 'Tensors', 'Neural Networks', 'TensorBoard'],
     path: '/courses/python-deep-learning'
   },
   {
@@ -21,7 +21,7 @@ const courses = [
     modules: 15,
     icon: IconChartBar,
     color: 'blue',
-    topics: ['Python', 'Machine Learning', 'Deep Learning', 'MLOps'],
+    topics: [], //['Python', 'Machine Learning', 'Deep Learning', 'MLOps'],
     path: '/courses/data-science-practice'
   }
 ];
@@ -31,9 +31,6 @@ const CoursesList = () => {
     <Container size="lg" py="xl">
       <Stack align="center" spacing="xl" mb={50}>
         <Title order={1}>Available Courses</Title>
-        <Text size="lg" color="dimmed" align="center" maw={700}>
-          Choose from our comprehensive courses designed to take you from beginner to expert
-        </Text>
         <Text size="sm" color="dimmed" align="center">
           Courses from the{' '}
           <Text 
