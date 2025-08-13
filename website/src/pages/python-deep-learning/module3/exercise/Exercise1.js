@@ -1,24 +1,18 @@
-import React from "react";
-import { Container, Grid, Text, Title } from '@mantine/core';
+import React from 'react';
+import DataInteractionPanel from 'components/DataInteractionPanel';
 
 const Exercise1 = () => {
+  const notebookUrl = process.env.PUBLIC_URL + "/modules/python-deep-learning/module3/exercises/exercise1.ipynb";
+  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/python-deep-learning/module3/exercises/exercise1.html";
+  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/python-deep-learning/module3/exercises/exercise1.ipynb";
+
   return (
-    <Container fluid>
-      <Title order={1} mb="md">
-        Exercise 1: Advanced Architectures
-      </Title>
-      <Text mb="lg">
-        This exercise covers advanced deep learning architectures and techniques.
-      </Text>
-      <Grid>
-        <Grid.Col span={{ md: 12 }}>
-          <Title order={2} mb="md">Instructions</Title>
-          <Text>
-            Exercise content will be added soon. This is a placeholder for the advanced architectures exercise.
-          </Text>
-        </Grid.Col>
-      </Grid>
-    </Container>
+    <DataInteractionPanel
+      notebookUrl={notebookUrl}
+      notebookHtmlUrl={notebookHtmlUrl}
+      notebookColabUrl={notebookColabUrl}
+      className="mt-6"
+    />
   );
 };
 
