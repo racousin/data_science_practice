@@ -163,6 +163,60 @@ class TestExercise1:
         assert shared_tensor[0, 0] == 999, "Shared tensor should reflect changes in numpy array"
 
 
+def test_tensor_creation(namespace):
+    """Test function that can be called directly from notebooks"""
+    import torch
+    
+    # Test tensor_zeros
+    if 'tensor_zeros' in namespace:
+        tensor_zeros = namespace['tensor_zeros']
+        assert tensor_zeros.shape == (3, 3), "tensor_zeros should have shape (3, 3)"
+        assert torch.all(tensor_zeros == 0), "tensor_zeros should contain all zeros"
+    else:
+        raise AssertionError("tensor_zeros not found. Please create a 3x3 tensor of zeros named 'tensor_zeros'")
+    
+    # Test tensor_ones
+    if 'tensor_ones' in namespace:
+        tensor_ones = namespace['tensor_ones']
+        assert tensor_ones.shape == (2, 4), "tensor_ones should have shape (2, 4)"
+        assert torch.all(tensor_ones == 1), "tensor_ones should contain all ones"
+    else:
+        raise AssertionError("tensor_ones not found. Please create a 2x4 tensor of ones named 'tensor_ones'")
+    
+    # Test tensor_identity
+    if 'tensor_identity' in namespace:
+        tensor_identity = namespace['tensor_identity']
+        assert tensor_identity.shape == (3, 3), "tensor_identity should have shape (3, 3)"
+        assert torch.allclose(tensor_identity, torch.eye(3)), "tensor_identity should be an identity matrix"
+    else:
+        raise AssertionError("tensor_identity not found. Please create a 3x3 identity tensor named 'tensor_identity'")
+    
+    # Test tensor_random
+    if 'tensor_random' in namespace:
+        tensor_random = namespace['tensor_random']
+        assert tensor_random.shape == (2, 3, 4), "tensor_random should have shape (2, 3, 4)"
+        assert torch.all((tensor_random >= 0) & (tensor_random <= 1)), "tensor_random values should be between 0 and 1"
+    else:
+        raise AssertionError("tensor_random not found. Please create a 2x3x4 tensor of random values named 'tensor_random'")
+    
+    # Test tensor_from_list
+    if 'tensor_from_list' in namespace:
+        tensor_from_list = namespace['tensor_from_list']
+        assert tensor_from_list.shape == (2, 3), "tensor_from_list should have shape (2, 3)"
+        expected = torch.tensor([[1, 2, 3], [4, 5, 6]])
+        assert torch.equal(tensor_from_list, expected), "tensor_from_list should match expected values [[1, 2, 3], [4, 5, 6]]"
+    else:
+        raise AssertionError("tensor_from_list not found. Please create a tensor from the list [[1, 2, 3], [4, 5, 6]] named 'tensor_from_list'")
+    
+    # Test tensor_range
+    if 'tensor_range' in namespace:
+        tensor_range = namespace['tensor_range']
+        assert tensor_range.shape == (10,), "tensor_range should have shape (10,)"
+        assert torch.equal(tensor_range, torch.arange(10)), "tensor_range should contain values from 0 to 9"
+    else:
+        raise AssertionError("tensor_range not found. Please create a tensor with values 0-9 named 'tensor_range'")
+
+
 def run_tests():
     """Run all tests for Exercise 1"""
     pytest.main([__file__, "-v"])

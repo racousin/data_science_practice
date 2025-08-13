@@ -45,6 +45,9 @@ cd website && npm run build
 
 # Run tests
 cd website && npm test
+
+# Deploy to AWS (build, upload to S3, create CloudFront invalidation)
+./scripts/deploy.sh
 ```
 
 ### Jupyter Notebook Processing
