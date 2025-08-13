@@ -1,5 +1,7 @@
 import React from 'react';
 import { Container, Title, Text, Stack, Grid, Paper, List } from '@mantine/core';
+import { InlineMath, BlockMath } from 'react-katex';
+import 'katex/dist/katex.min.css';
 import CodeBlock from 'components/CodeBlock';
 
 const OptimizationAlgorithms = () => {
@@ -22,16 +24,32 @@ const OptimizationAlgorithms = () => {
               Understanding their mathematical foundations is crucial for effective training.
             </Text>
             
+            <Text className="mb-4">
+              <strong>General Optimization Problem:</strong> Find <InlineMath>{`\\theta^* = \\arg\\min_{\\theta} \\mathcal{L}(\\theta)`}</InlineMath>
+            </Text>
+            <BlockMath>{`\\theta_{t+1} = \\theta_t + \\Delta\\theta_t`}</BlockMath>
+            
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
                   <Title order={4} className="mb-3">Momentum-based Methods</Title>
+                  <Text className="mb-3">
+                    <strong>SGD with Momentum:</strong> Accelerates convergence by accumulating gradients
+                  </Text>
+                  <BlockMath>{`
+                    \\\\begin{aligned}
+                    \\\\mathbf{v}_t &= \\\\beta \\\\mathbf{v}_{t-1} + \\\\nabla \\\\mathcal{L}(\\\\theta_t) \\\\\\\\
+                    \\\\theta_{t+1} &= \\\\theta_t - \\\\eta \\\\mathbf{v}_t
+                    \\\\end{aligned}
+                  `}</BlockMath>
                   <CodeBlock language="python" code={`import torch
 import torch.optim as optim
 
 # SGD with Momentum
-# vₜ = βvₜ₋₁ + ∇f(θₜ)  
-# θₜ₊₁ = θₜ - η·vₜ
+# Mathematical formulation:
+# v_t = β*v_{t-1} + ∇L(θ_t)  
+# θ_{t+1} = θ_t - η*v_t
+# where β controls momentum strength
 
 class SGDWithMomentum:
     def __init__(self, params, lr=0.01, momentum=0.9):

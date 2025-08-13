@@ -40,14 +40,20 @@ const NeuralNetworkBasics = () => {
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
                 <Title order={4} className="mb-3">Mathematical Model</Title>
-                <Text className="mb-3">A perceptron computes:</Text>
-                <BlockMath>{`y = f(\\sum_{i=1}^n w_i x_i + b)`}</BlockMath>
+                <Text className="mb-3">A perceptron computes a linear combination followed by an activation:</Text>
+                <BlockMath>{`
+                  \\\\begin{aligned}
+                  z &= \\\\mathbf{w}^T \\\\mathbf{x} + b = \\\\sum_{i=1}^n w_i x_i + b \\\\\\\\
+                  y &= f(z) = f(\\\\mathbf{w}^T \\\\mathbf{x} + b)
+                  \\\\end{aligned}
+                `}</BlockMath>
                 <Text className="mb-3">Where:</Text>
                 <List size="sm">
-                  <List.Item><InlineMath>x_i</InlineMath> = input features</List.Item>
-                  <List.Item><InlineMath>w_i</InlineMath> = weights</List.Item>
-                  <List.Item><InlineMath>b</InlineMath> = bias</List.Item>
-                  <List.Item><InlineMath>f</InlineMath> = activation function</List.Item>
+                  <List.Item><InlineMath>{`\\\\mathbf{x} \\\\in \\\\mathbb{R}^n`}</InlineMath> = input feature vector</List.Item>
+                  <List.Item><InlineMath>{`\\\\mathbf{w} \\\\in \\\\mathbb{R}^n`}</InlineMath> = weight vector</List.Item>
+                  <List.Item><InlineMath>{`b \\\\in \\\\mathbb{R}`}</InlineMath> = bias scalar</List.Item>
+                  <List.Item><InlineMath>{`f: \\\\mathbb{R} \\\\rightarrow \\\\mathbb{R}`}</InlineMath> = activation function</List.Item>
+                  <List.Item><InlineMath>{`y \\\\in \\\\mathbb{R}`}</InlineMath> = output</List.Item>
                 </List>
               </Paper>
               

@@ -1,5 +1,7 @@
 import React from 'react';
 import { Container, Title, Text, Stack, Grid, Paper, Code, List } from '@mantine/core';
+import { InlineMath, BlockMath } from 'react-katex';
+import 'katex/dist/katex.min.css';
 
 const ConvolutionalNetworks = () => {
   return (
@@ -40,6 +42,11 @@ const ConvolutionalNetworks = () => {
               Convolution applies a learnable filter (kernel) across the input to produce feature maps.
               This operation preserves spatial relationships while reducing the number of parameters.
             </Text>
+            
+            <Text className="mt-4">
+              <strong>Mathematical Definition:</strong> For input <InlineMath>{`\\mathbf{X} \\in \\mathbb{R}^{H \\times W}`}</InlineMath> and kernel <InlineMath>{`\\mathbf{K} \\in \\mathbb{R}^{k \\times k}`}</InlineMath>:
+            </Text>
+            <BlockMath>{`(\\mathbf{X} * \\mathbf{K})_{i,j} = \\sum_{m=0}^{k-1} \\sum_{n=0}^{k-1} \\mathbf{X}_{i+m,j+n} \\cdot \\mathbf{K}_{m,n}`}</BlockMath>
           </Paper>
           
           <Grid gutter="lg">

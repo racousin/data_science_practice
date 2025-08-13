@@ -217,6 +217,230 @@ def test_tensor_creation(namespace):
         raise AssertionError("tensor_range not found. Please create a tensor with values 0-9 named 'tensor_range'")
 
 
+def test_tensor_attributes(namespace):
+    """Test function for tensor attributes that can be called directly from notebooks"""
+    import torch
+    
+    # Create the sample tensor if it doesn't exist
+    if 'sample_tensor' not in namespace:
+        namespace['sample_tensor'] = torch.randn(3, 4, 5)
+    
+    sample_tensor = namespace['sample_tensor']
+    
+    # Test tensor_shape
+    if 'tensor_shape' in namespace:
+        tensor_shape = namespace['tensor_shape']
+        assert tensor_shape == sample_tensor.shape, f"tensor_shape should be {sample_tensor.shape}, got {tensor_shape}"
+    else:
+        raise AssertionError("tensor_shape not found. Please assign sample_tensor.shape to tensor_shape")
+    
+    # Test tensor_dtype
+    if 'tensor_dtype' in namespace:
+        tensor_dtype = namespace['tensor_dtype']
+        assert tensor_dtype == sample_tensor.dtype, f"tensor_dtype should be {sample_tensor.dtype}, got {tensor_dtype}"
+    else:
+        raise AssertionError("tensor_dtype not found. Please assign sample_tensor.dtype to tensor_dtype")
+    
+    # Test tensor_device
+    if 'tensor_device' in namespace:
+        tensor_device = namespace['tensor_device']
+        assert tensor_device == sample_tensor.device, f"tensor_device should be {sample_tensor.device}, got {tensor_device}"
+    else:
+        raise AssertionError("tensor_device not found. Please assign sample_tensor.device to tensor_device")
+    
+    # Test tensor_ndim
+    if 'tensor_ndim' in namespace:
+        tensor_ndim = namespace['tensor_ndim']
+        assert tensor_ndim == sample_tensor.ndim, f"tensor_ndim should be {sample_tensor.ndim}, got {tensor_ndim}"
+    else:
+        raise AssertionError("tensor_ndim not found. Please assign sample_tensor.ndim to tensor_ndim")
+    
+    # Test tensor_numel
+    if 'tensor_numel' in namespace:
+        tensor_numel = namespace['tensor_numel']
+        assert tensor_numel == sample_tensor.numel(), f"tensor_numel should be {sample_tensor.numel()}, got {tensor_numel}"
+    else:
+        raise AssertionError("tensor_numel not found. Please assign sample_tensor.numel() to tensor_numel")
+
+
+def test_tensor_indexing(namespace):
+    """Test function for tensor indexing that can be called directly from notebooks"""
+    import torch
+    
+    # Create the tensor if it doesn't exist
+    if 'tensor' not in namespace:
+        namespace['tensor'] = torch.arange(24).reshape(4, 6)
+    
+    tensor = namespace['tensor']
+    
+    # Test element access
+    if 'element' in namespace:
+        element = namespace['element']
+        expected = tensor[1, 3]
+        assert element == expected, f"element should be {expected}, got {element}"
+    else:
+        raise AssertionError("element not found. Please assign tensor[1, 3] to element")
+    
+    # Test second_row
+    if 'second_row' in namespace:
+        second_row = namespace['second_row']
+        expected = tensor[1]
+        assert torch.equal(second_row, expected), f"second_row should equal tensor[1]"
+    else:
+        raise AssertionError("second_row not found. Please assign tensor[1] to second_row")
+    
+    # Test last_column
+    if 'last_column' in namespace:
+        last_column = namespace['last_column']
+        expected = tensor[:, -1]
+        assert torch.equal(last_column, expected), f"last_column should equal tensor[:, -1]"
+    else:
+        raise AssertionError("last_column not found. Please assign tensor[:, -1] to last_column")
+    
+    # Test submatrix
+    if 'submatrix' in namespace:
+        submatrix = namespace['submatrix']
+        expected = tensor[:2, :2]
+        assert torch.equal(submatrix, expected), f"submatrix should equal tensor[:2, :2]"
+    else:
+        raise AssertionError("submatrix not found. Please assign tensor[:2, :2] to submatrix")
+    
+    # Test alternating_elements
+    if 'alternating_elements' in namespace:
+        alternating_elements = namespace['alternating_elements']
+        expected = tensor[0, ::2]
+        assert torch.equal(alternating_elements, expected), f"alternating_elements should equal tensor[0, ::2]"
+    else:
+        raise AssertionError("alternating_elements not found. Please assign tensor[0, ::2] to alternating_elements")
+
+
+def test_tensor_reshaping(namespace):
+    """Test function for tensor reshaping that can be called directly from notebooks"""
+    import torch
+    
+    # Create the original tensor if it doesn't exist
+    if 'original' not in namespace:
+        namespace['original'] = torch.arange(12)
+    
+    original = namespace['original']
+    
+    # Test reshaped_3x4
+    if 'reshaped_3x4' in namespace:
+        reshaped_3x4 = namespace['reshaped_3x4']
+        assert reshaped_3x4.shape == (3, 4), f"reshaped_3x4 should have shape (3, 4), got {reshaped_3x4.shape}"
+    else:
+        raise AssertionError("reshaped_3x4 not found. Please assign original.reshape(3, 4) to reshaped_3x4")
+    
+    # Test reshaped_2x2x3
+    if 'reshaped_2x2x3' in namespace:
+        reshaped_2x2x3 = namespace['reshaped_2x2x3']
+        assert reshaped_2x2x3.shape == (2, 2, 3), f"reshaped_2x2x3 should have shape (2, 2, 3), got {reshaped_2x2x3.shape}"
+    else:
+        raise AssertionError("reshaped_2x2x3 not found. Please assign original.reshape(2, 2, 3) to reshaped_2x2x3")
+    
+    # Test flattened
+    if 'flattened' in namespace:
+        flattened = namespace['flattened']
+        assert flattened.shape == (12,), f"flattened should have shape (12,), got {flattened.shape}"
+        if 'reshaped_2x2x3' in namespace:
+            assert torch.equal(flattened, original), "flattened should equal original tensor"
+    else:
+        raise AssertionError("flattened not found. Please assign reshaped_2x2x3.flatten() to flattened")
+    
+    # Test unsqueezed
+    if 'unsqueezed' in namespace:
+        unsqueezed = namespace['unsqueezed']
+        assert unsqueezed.shape == (1, 12), f"unsqueezed should have shape (1, 12), got {unsqueezed.shape}"
+    else:
+        raise AssertionError("unsqueezed not found. Please assign original.unsqueeze(0) to unsqueezed")
+    
+    # Test squeezed
+    if 'squeezed' in namespace:
+        squeezed = namespace['squeezed']
+        assert squeezed.shape == (3, 4), f"squeezed should have shape (3, 4), got {squeezed.shape}"
+    else:
+        raise AssertionError("squeezed not found. Please assign tensor_with_singles.squeeze() to squeezed")
+
+
+def test_tensor_dtypes(namespace):
+    """Test function for tensor data types that can be called directly from notebooks"""
+    import torch
+    
+    # Test float32_tensor
+    if 'float32_tensor' in namespace:
+        float32_tensor = namespace['float32_tensor']
+        assert float32_tensor.dtype == torch.float32, f"float32_tensor should have dtype float32, got {float32_tensor.dtype}"
+    else:
+        raise AssertionError("float32_tensor not found. Please create a float32 tensor")
+    
+    # Test float64_tensor
+    if 'float64_tensor' in namespace:
+        float64_tensor = namespace['float64_tensor']
+        assert float64_tensor.dtype == torch.float64, f"float64_tensor should have dtype float64, got {float64_tensor.dtype}"
+    else:
+        raise AssertionError("float64_tensor not found. Please convert float32_tensor to float64")
+    
+    # Test int_tensor and int_to_float
+    if 'int_tensor' in namespace:
+        int_tensor = namespace['int_tensor']
+        assert int_tensor.dtype in [torch.int32, torch.int64], f"int_tensor should have integer dtype, got {int_tensor.dtype}"
+    else:
+        raise AssertionError("int_tensor not found. Please create an integer tensor")
+    
+    if 'int_to_float' in namespace:
+        int_to_float = namespace['int_to_float']
+        assert int_to_float.dtype == torch.float32, f"int_to_float should have dtype float32, got {int_to_float.dtype}"
+    else:
+        raise AssertionError("int_to_float not found. Please convert int_tensor to float")
+    
+    # Test bool_tensor
+    if 'bool_tensor' in namespace:
+        bool_tensor = namespace['bool_tensor']
+        assert bool_tensor.dtype == torch.bool, f"bool_tensor should have dtype bool, got {bool_tensor.dtype}"
+        expected = torch.tensor([False, False, False, True, True])
+        assert torch.equal(bool_tensor, expected), "bool_tensor should show elements > 3"
+    else:
+        raise AssertionError("bool_tensor not found. Please create a boolean tensor showing comparison_tensor > 3")
+
+
+def test_numpy_interop(namespace):
+    """Test function for numpy interoperability that can be called directly from notebooks"""
+    import torch
+    import numpy as np
+    
+    # Test tensor_from_numpy
+    if 'tensor_from_numpy' in namespace:
+        tensor_from_numpy = namespace['tensor_from_numpy']
+        assert tensor_from_numpy.shape == (2, 3), f"tensor_from_numpy should have shape (2, 3), got {tensor_from_numpy.shape}"
+        if 'numpy_array' in namespace:
+            expected_values = torch.from_numpy(namespace['numpy_array'])
+            assert torch.equal(tensor_from_numpy, expected_values), "tensor_from_numpy should match numpy_array values"
+    else:
+        raise AssertionError("tensor_from_numpy not found. Please convert numpy_array to tensor using torch.from_numpy()")
+    
+    # Test numpy_from_tensor
+    if 'numpy_from_tensor' in namespace:
+        numpy_from_tensor = namespace['numpy_from_tensor']
+        assert isinstance(numpy_from_tensor, np.ndarray), "numpy_from_tensor should be a numpy array"
+        assert numpy_from_tensor.shape == (2, 3), f"numpy_from_tensor should have shape (2, 3), got {numpy_from_tensor.shape}"
+    else:
+        raise AssertionError("numpy_from_tensor not found. Please convert pytorch_tensor to numpy using .numpy()")
+    
+    # Test shared memory
+    if 'shared_tensor' in namespace:
+        shared_tensor = namespace['shared_tensor']
+        if 'shared_numpy' in namespace:
+            shared_numpy = namespace['shared_numpy']
+            # Modify numpy array and check if tensor reflects the change
+            original_value = shared_numpy[0, 0]
+            shared_numpy[0, 0] = 999
+            assert shared_tensor[0, 0] == 999, "shared_tensor should reflect changes in shared_numpy (memory sharing)"
+            # Restore original value
+            shared_numpy[0, 0] = original_value
+    else:
+        raise AssertionError("shared_tensor not found. Please create a tensor from shared_numpy using torch.from_numpy()")
+
+
 def run_tests():
     """Run all tests for Exercise 1"""
     pytest.main([__file__, "-v"])

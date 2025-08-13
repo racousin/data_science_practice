@@ -7517,7 +7517,19 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Exercise-1:-Tensor-Basics">Exercise 1: Tensor Basics<a class="anchor-link" href="#Exercise-1:-Tensor-Basics">¶</a></h1><p>This exercise will help you master the fundamental concepts of PyTorch tensors, including creation, manipulation, and basic operations.</p>
+<h1 id="Module-1---Exercise-1:-Environment-&amp;-Basics">Module 1 - Exercise 1: Environment &amp; Basics<a class="anchor-link" href="#Module-1---Exercise-1:-Environment-&amp;-Basics">¶</a></h1><h2 id="Learning-Objectives">Learning Objectives<a class="anchor-link" href="#Learning-Objectives">¶</a></h2><ul>
+<li>Set up and verify PyTorch environment</li>
+<li>Master tensor creation methods and basic properties</li>
+<li>Understand tensor device management and CUDA availability</li>
+<li>Practice tensor indexing, slicing, and reshaping operations</li>
+<li>Convert between PyTorch tensors and NumPy arrays</li>
+<li>Explore tensor data types and memory layout</li>
+</ul>
+<h2 id="Prerequisites">Prerequisites<a class="anchor-link" href="#Prerequisites">¶</a></h2><ul>
+<li>Basic Python programming knowledge</li>
+<li>Familiarity with NumPy arrays</li>
+<li>Understanding of multidimensional array concepts</li>
+</ul>
 </div>
 </div>
 </div>
@@ -7528,29 +7540,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Setup">Setup<a class="anchor-link" href="#Setup">¶</a></h2><p>First, let's import PyTorch and set up our environment.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-<span class="c1"># Check PyTorch version</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"PyTorch version: </span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Set random seed for reproducibility</span>
-<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-</pre></div>
-</div>
+<h2 id="Setup-and-Test-Repository">Setup and Test Repository<a class="anchor-link" href="#Setup-and-Test-Repository">¶</a></h2><p>First, let's clone the test repository and set up our environment for step-by-step validation.</p>
 </div>
 </div>
 </div>
@@ -7564,7 +7554,7 @@ a.anchor-link {
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Clone the test repository</span>
 <span class="o">!</span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/racousin/data_science_practice.git<span class="w"> </span>/tmp/tests<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="o">||</span><span class="w"> </span>true
-<span class="o">!</span><span class="nb">cd</span><span class="w"> </span>/tmp/tests<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">pwd</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>ls<span class="w"> </span>-la<span class="w"> </span>tests/python-deep-learning/module1/
+<span class="o">!</span><span class="nb">cd</span><span class="w"> </span>/tmp/tests<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">pwd</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>ls<span class="w"> </span>-la<span class="w"> </span>tests/python_deep_learning/module1/
 
 <span class="c1"># Import the test module</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -7582,7 +7572,39 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Test-Setup">Test Setup<a class="anchor-link" href="#Test-Setup">¶</a></h2><p>First, let's clone the test repository to validate our solutions step by step.</p>
+<h2 id="Environment-Setup">Environment Setup<a class="anchor-link" href="#Environment-Setup">¶</a></h2><p>Let's import PyTorch and verify our installation, including CUDA availability.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># Print PyTorch version and setup information</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"PyTorch version: </span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CUDA available: </span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CUDA version: </span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">cuda</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Number of CUDA devices: </span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">device_count</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Current CUDA device: </span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">current_device</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Device name: </span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">get_device_name</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Set random seeds for reproducibility</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Import test functions</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tests.python_deep_learning.module1.test_exercise1</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -7593,7 +7615,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Part-1:-Tensor-Creation">Part 1: Tensor Creation<a class="anchor-link" href="#Part-1:-Tensor-Creation">¶</a></h2><p>Create tensors using different methods and understand their properties.</p>
+<h2 id="Section-1:-Tensor-Creation">Section 1: Tensor Creation<a class="anchor-link" href="#Section-1:-Tensor-Creation">¶</a></h2><p>Learn different methods to create PyTorch tensors with specific properties.</p>
 </div>
 </div>
 </div>
@@ -7608,7 +7630,7 @@ a.anchor-link {
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a 3x3 tensor filled with zeros</span>
 <span class="n">tensor_zeros</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="c1"># TODO: Create a 2x4 tensor filled with ones</span>
+<span class="c1"># TODO: Create a 2x4 tensor filled with ones  </span>
 <span class="n">tensor_ones</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="c1"># TODO: Create a 3x3 identity matrix</span>
@@ -7622,6 +7644,15 @@ a.anchor-link {
 
 <span class="c1"># TODO: Create a tensor with values from 0 to 9</span>
 <span class="n">tensor_range</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># Display your created tensors</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Your tensors:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"tensor_zeros:</span><span class="se">\n</span><span class="si">{</span><span class="n">tensor_zeros</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"tensor_ones:</span><span class="se">\n</span><span class="si">{</span><span class="n">tensor_ones</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"tensor_identity:</span><span class="se">\n</span><span class="si">{</span><span class="n">tensor_identity</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"tensor_random shape: </span><span class="si">{</span><span class="n">tensor_random</span><span class="o">.</span><span class="n">shape</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">tensor_random</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'None'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"tensor_from_list:</span><span class="se">\n</span><span class="si">{</span><span class="n">tensor_from_list</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"tensor_range: </span><span class="si">{</span><span class="n">tensor_range</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7635,14 +7666,13 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Part 1: Tensor Creation</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test your tensor creation</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">tests.python_deep_learning.module1.test_exercise1</span><span class="w"> </span><span class="kn">import</span> <span class="n">test_tensor_creation</span>
     <span class="n">test_tensor_creation</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Part 1: Tensor Creation - All tests passed!"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Section 1: Tensor Creation - All tests passed!"</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Part 1: Tensor Creation - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Complete the tensor creation tasks above before proceeding."</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Section 1: Tensor Creation - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Please complete the tensor creation tasks above before proceeding."</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7655,18 +7685,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Validate-Part-1:-Tensor-Creation">Validate Part 1: Tensor Creation<a class="anchor-link" href="#Validate-Part-1:-Tensor-Creation">¶</a></h3><p>Let's validate your tensor creation solutions.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Part-2:-Tensor-Attributes">Part 2: Tensor Attributes<a class="anchor-link" href="#Part-2:-Tensor-Attributes">¶</a></h2><p>Explore tensor properties and metadata.</p>
+<h2 id="Section-2:-Device-Management">Section 2: Device Management<a class="anchor-link" href="#Section-2:-Device-Management">¶</a></h2><p>Understand how to work with different devices (CPU/CUDA) and move tensors between them.</p>
 </div>
 </div>
 </div>
@@ -7678,7 +7697,55 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create a sample tensor</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create tensors on different devices</span>
+<span class="n">cpu_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CPU tensor device: </span><span class="si">{</span><span class="n">cpu_tensor</span><span class="o">.</span><span class="n">device</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Check if CUDA is available and create GPU tensor if possible</span>
+<span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
+    <span class="n">gpu_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">'cuda'</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"GPU tensor device: </span><span class="si">{</span><span class="n">gpu_tensor</span><span class="o">.</span><span class="n">device</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="c1"># Move CPU tensor to GPU</span>
+    <span class="n">cpu_to_gpu</span> <span class="o">=</span> <span class="n">cpu_tensor</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'cuda'</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Moved to GPU: </span><span class="si">{</span><span class="n">cpu_to_gpu</span><span class="o">.</span><span class="n">device</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="c1"># Move GPU tensor back to CPU</span>
+    <span class="n">gpu_to_cpu</span> <span class="o">=</span> <span class="n">gpu_tensor</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Moved to CPU: </span><span class="si">{</span><span class="n">gpu_to_cpu</span><span class="o">.</span><span class="n">device</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"CUDA not available - all tensors will be on CPU"</span><span class="p">)</span>
+
+<span class="c1"># Verify same device operations</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>  <span class="c1"># Both on same device (CPU)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Addition result shape: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, device: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">device</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Section-3:-Tensor-Attributes">Section 3: Tensor Attributes<a class="anchor-link" href="#Section-3:-Tensor-Attributes">¶</a></h2><p>Explore tensor properties and metadata information.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create a sample tensor for analysis</span>
 <span class="n">sample_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 
 <span class="c1"># TODO: Get the shape of the tensor</span>
@@ -7695,6 +7762,15 @@ a.anchor-link {
 
 <span class="c1"># TODO: Get the total number of elements</span>
 <span class="n">tensor_numel</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># Display the attributes</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sample tensor shape: </span><span class="si">{</span><span class="n">tensor_shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Data type: </span><span class="si">{</span><span class="n">tensor_dtype</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Device: </span><span class="si">{</span><span class="n">tensor_device</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Number of dimensions: </span><span class="si">{</span><span class="n">tensor_ndim</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total elements: </span><span class="si">{</span><span class="n">tensor_numel</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Memory size (bytes): </span><span class="si">{</span><span class="n">sample_tensor</span><span class="o">.</span><span class="n">element_size</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">sample_tensor</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Stride: </span><span class="si">{</span><span class="n">sample_tensor</span><span class="o">.</span><span class="n">stride</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7708,14 +7784,13 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Part 2: Tensor Attributes</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test your tensor attributes understanding</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">tests.python_deep_learning.module1.test_exercise1</span><span class="w"> </span><span class="kn">import</span> <span class="n">test_tensor_attributes</span>
     <span class="n">test_tensor_attributes</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Part 2: Tensor Attributes - All tests passed!"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Section 3: Tensor Attributes - All tests passed!"</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Part 2: Tensor Attributes - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Complete the tensor attributes tasks above before proceeding."</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Section 3: Tensor Attributes - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Please complete the tensor attributes tasks above before proceeding."</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7728,18 +7803,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Validate-Part-2:-Tensor-Attributes">Validate Part 2: Tensor Attributes<a class="anchor-link" href="#Validate-Part-2:-Tensor-Attributes">¶</a></h3><p>Let's validate your tensor attributes solutions.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Part-3:-Tensor-Indexing-and-Slicing">Part 3: Tensor Indexing and Slicing<a class="anchor-link" href="#Part-3:-Tensor-Indexing-and-Slicing">¶</a></h2><p>Practice accessing and modifying tensor elements.</p>
+<h2 id="Section-4:-Tensor-Indexing-and-Slicing">Section 4: Tensor Indexing and Slicing<a class="anchor-link" href="#Section-4:-Tensor-Indexing-and-Slicing">¶</a></h2><p>Master accessing and modifying tensor elements using indexing and slicing.</p>
 </div>
 </div>
 </div>
@@ -7751,15 +7815,16 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create a sample tensor</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create a sample tensor for indexing practice</span>
 <span class="n">tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"Original tensor:"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Shape: </span><span class="si">{</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="c1"># TODO: Get the element at position (1, 3)</span>
 <span class="n">element</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="c1"># TODO: Get the second row</span>
+<span class="c1"># TODO: Get the second row (index 1)</span>
 <span class="n">second_row</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="c1"># TODO: Get the last column</span>
@@ -7770,6 +7835,13 @@ a.anchor-link {
 
 <span class="c1"># TODO: Get every other element from the first row</span>
 <span class="n">alternating_elements</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># Display your results</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Element at (1,3): </span><span class="si">{</span><span class="n">element</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Second row: </span><span class="si">{</span><span class="n">second_row</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Last column: </span><span class="si">{</span><span class="n">last_column</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Top-left 2x2 submatrix:</span><span class="se">\n</span><span class="si">{</span><span class="n">submatrix</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Every other element from first row: </span><span class="si">{</span><span class="n">alternating_elements</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7783,14 +7855,13 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Part 3: Tensor Indexing and Slicing</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test your indexing and slicing skills</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">tests.python_deep_learning.module1.test_exercise1</span><span class="w"> </span><span class="kn">import</span> <span class="n">test_tensor_indexing</span>
     <span class="n">test_tensor_indexing</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Part 3: Tensor Indexing and Slicing - All tests passed!"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Section 4: Tensor Indexing and Slicing - All tests passed!"</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Part 3: Tensor Indexing and Slicing - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Complete the indexing and slicing tasks above before proceeding."</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Section 4: Tensor Indexing and Slicing - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Please complete the indexing and slicing tasks above before proceeding."</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7803,18 +7874,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Validate-Part-3:-Tensor-Indexing-and-Slicing">Validate Part 3: Tensor Indexing and Slicing<a class="anchor-link" href="#Validate-Part-3:-Tensor-Indexing-and-Slicing">¶</a></h3><p>Let's validate your indexing and slicing solutions.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Part-4:-Tensor-Reshaping">Part 4: Tensor Reshaping<a class="anchor-link" href="#Part-4:-Tensor-Reshaping">¶</a></h2><p>Learn to manipulate tensor dimensions.</p>
+<h2 id="Section-5:-Tensor-Reshaping-and-Dimension-Manipulation">Section 5: Tensor Reshaping and Dimension Manipulation<a class="anchor-link" href="#Section-5:-Tensor-Reshaping-and-Dimension-Manipulation">¶</a></h2><p>Learn to manipulate tensor dimensions and understand memory layout.</p>
 </div>
 </div>
 </div>
@@ -7826,8 +7886,10 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create a sample tensor</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create original tensor for reshaping</span>
 <span class="n">original</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Original tensor: </span><span class="si">{</span><span class="n">original</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Original shape: </span><span class="si">{</span><span class="n">original</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="c1"># TODO: Reshape to 3x4</span>
 <span class="n">reshaped_3x4</span> <span class="o">=</span> <span class="kc">None</span>
@@ -7835,7 +7897,7 @@ a.anchor-link {
 <span class="c1"># TODO: Reshape to 2x2x3</span>
 <span class="n">reshaped_2x2x3</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="c1"># TODO: Flatten the 2x2x3 tensor</span>
+<span class="c1"># TODO: Flatten the 2x2x3 tensor back to 1D</span>
 <span class="n">flattened</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="c1"># TODO: Add a new dimension at position 0 (unsqueeze)</span>
@@ -7843,7 +7905,23 @@ a.anchor-link {
 
 <span class="c1"># TODO: Remove single-dimensional entries (squeeze)</span>
 <span class="n">tensor_with_singles</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Tensor with single dimensions: shape </span><span class="si">{</span><span class="n">tensor_with_singles</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="n">squeezed</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># Display your reshaped tensors</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Reshaped 3x4:</span><span class="se">\n</span><span class="si">{</span><span class="n">reshaped_3x4</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Shape: </span><span class="si">{</span><span class="n">reshaped_3x4</span><span class="o">.</span><span class="n">shape</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">reshaped_3x4</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'None'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Reshaped 2x2x3:</span><span class="se">\n</span><span class="si">{</span><span class="n">reshaped_2x2x3</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Shape: </span><span class="si">{</span><span class="n">reshaped_2x2x3</span><span class="o">.</span><span class="n">shape</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">reshaped_2x2x3</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'None'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Flattened: </span><span class="si">{</span><span class="n">flattened</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Shape: </span><span class="si">{</span><span class="n">flattened</span><span class="o">.</span><span class="n">shape</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">flattened</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'None'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Unsqueezed: </span><span class="si">{</span><span class="n">unsqueezed</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Shape: </span><span class="si">{</span><span class="n">unsqueezed</span><span class="o">.</span><span class="n">shape</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">unsqueezed</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'None'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Squeezed shape: </span><span class="si">{</span><span class="n">squeezed</span><span class="o">.</span><span class="n">shape</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">squeezed</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'None'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7857,14 +7935,13 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Part 4: Tensor Reshaping</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test your reshaping operations</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">tests.python_deep_learning.module1.test_exercise1</span><span class="w"> </span><span class="kn">import</span> <span class="n">test_tensor_reshaping</span>
     <span class="n">test_tensor_reshaping</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Part 4: Tensor Reshaping - All tests passed!"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Section 5: Tensor Reshaping - All tests passed!"</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Part 4: Tensor Reshaping - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Complete the reshaping tasks above before proceeding."</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Section 5: Tensor Reshaping - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Please complete the reshaping tasks above before proceeding."</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7877,18 +7954,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Validate-Part-4:-Tensor-Reshaping">Validate Part 4: Tensor Reshaping<a class="anchor-link" href="#Validate-Part-4:-Tensor-Reshaping">¶</a></h3><p>Let's validate your reshaping solutions.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Part-5:-Tensor-Data-Types">Part 5: Tensor Data Types<a class="anchor-link" href="#Part-5:-Tensor-Data-Types">¶</a></h2><p>Work with different tensor data types and conversions.</p>
+<h2 id="Section-6:-Tensor-Data-Types">Section 6: Tensor Data Types<a class="anchor-link" href="#Section-6:-Tensor-Data-Types">¶</a></h2><p>Work with different tensor data types and learn about type conversions.</p>
 </div>
 </div>
 </div>
@@ -7903,7 +7969,7 @@ a.anchor-link {
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a float32 tensor</span>
 <span class="n">float32_tensor</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="c1"># TODO: Convert it to float64</span>
+<span class="c1"># TODO: Convert it to float64 (double precision)</span>
 <span class="n">float64_tensor</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="c1"># TODO: Create an integer tensor and convert to float</span>
@@ -7913,6 +7979,25 @@ a.anchor-link {
 <span class="c1"># TODO: Create a boolean tensor from a condition</span>
 <span class="n">comparison_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
 <span class="n">bool_tensor</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Elements greater than 3</span>
+
+<span class="c1"># Display data types and their properties</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Data Type Analysis:"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">float32_tensor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"float32_tensor dtype: </span><span class="si">{</span><span class="n">float32_tensor</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">, size: </span><span class="si">{</span><span class="n">float32_tensor</span><span class="o">.</span><span class="n">element_size</span><span class="p">()</span><span class="si">}</span><span class="s2"> bytes"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">float64_tensor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"float64_tensor dtype: </span><span class="si">{</span><span class="n">float64_tensor</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">, size: </span><span class="si">{</span><span class="n">float64_tensor</span><span class="o">.</span><span class="n">element_size</span><span class="p">()</span><span class="si">}</span><span class="s2"> bytes"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">int_tensor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"int_tensor dtype: </span><span class="si">{</span><span class="n">int_tensor</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">, size: </span><span class="si">{</span><span class="n">int_tensor</span><span class="o">.</span><span class="n">element_size</span><span class="p">()</span><span class="si">}</span><span class="s2"> bytes"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">int_to_float</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"int_to_float dtype: </span><span class="si">{</span><span class="n">int_to_float</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">, size: </span><span class="si">{</span><span class="n">int_to_float</span><span class="o">.</span><span class="n">element_size</span><span class="p">()</span><span class="si">}</span><span class="s2"> bytes"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">bool_tensor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"bool_tensor: </span><span class="si">{</span><span class="n">bool_tensor</span><span class="si">}</span><span class="s2">, dtype: </span><span class="si">{</span><span class="n">bool_tensor</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Demonstrate precision differences</span>
+<span class="k">if</span> <span class="n">float32_tensor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">float64_tensor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Precision comparison:"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"float32: </span><span class="si">{</span><span class="n">float32_tensor</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"float64: </span><span class="si">{</span><span class="n">float64_tensor</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7926,14 +8011,13 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Part 5: Tensor Data Types</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test your data type operations</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">tests.python_deep_learning.module1.test_exercise1</span><span class="w"> </span><span class="kn">import</span> <span class="n">test_tensor_dtypes</span>
     <span class="n">test_tensor_dtypes</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Part 5: Tensor Data Types - All tests passed!"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Section 6: Tensor Data Types - All tests passed!"</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Part 5: Tensor Data Types - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Complete the data types tasks above before proceeding."</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Section 6: Tensor Data Types - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Please complete the data types tasks above before proceeding."</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7946,18 +8030,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Validate-Part-5:-Tensor-Data-Types">Validate Part 5: Tensor Data Types<a class="anchor-link" href="#Validate-Part-5:-Tensor-Data-Types">¶</a></h3><p>Let's validate your data types solutions.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Part-6:-NumPy-Interoperability">Part 6: NumPy Interoperability<a class="anchor-link" href="#Part-6:-NumPy-Interoperability">¶</a></h2><p>Convert between PyTorch tensors and NumPy arrays.</p>
+<h2 id="Section-7:-NumPy-Interoperability">Section 7: NumPy Interoperability<a class="anchor-link" href="#Section-7:-NumPy-Interoperability">¶</a></h2><p>Convert between PyTorch tensors and NumPy arrays, understanding memory sharing.</p>
 </div>
 </div>
 </div>
@@ -7977,72 +8050,273 @@ a.anchor-link {
 <span class="n">pytorch_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="n">numpy_from_tensor</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="c1"># TODO: Demonstrate that they share memory (for CPU tensors)</span>
-<span class="c1"># Modify the numpy array and show the tensor changes</span>
+<span class="c1"># TODO: Demonstrate memory sharing between tensor and numpy array</span>
 <span class="n">shared_numpy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 <span class="n">shared_tensor</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="c1"># Modify shared_numpy and verify shared_tensor changes</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Part 6: NumPy Interoperability</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">tests.python_deep_learning.module1.test_exercise1</span><span class="w"> </span><span class="kn">import</span> <span class="n">test_numpy_interop</span>
-    <span class="n">test_numpy_interop</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Part 6: NumPy Interoperability - All tests passed!"</span><span class="p">)</span>
-<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Part 6: NumPy Interoperability - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Complete the NumPy interoperability tasks above before proceeding."</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Validate-Part-6:-NumPy-Interoperability">Validate Part 6: NumPy Interoperability<a class="anchor-link" href="#Validate-Part-6:-NumPy-Interoperability">¶</a></h3><p>Let's validate your NumPy interoperability solutions.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Run-complete-test-suite">Run complete test suite<a class="anchor-link" href="#Run-complete-test-suite">¶</a></h1><p>!cd /tmp/tests &amp;&amp; python tests/python-deep-learning/module1/test_exercise1.py</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1">## Final Validation</span>
 
-<span class="n">Run</span> <span class="n">this</span> <span class="n">cell</span> <span class="n">to</span> <span class="n">validate</span> <span class="nb">all</span> <span class="n">your</span> <span class="n">solutions</span> <span class="n">at</span> <span class="n">once</span><span class="o">.</span>
+<span class="c1"># Display conversions</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Conversion Results:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Original NumPy array:</span><span class="se">\n</span><span class="si">{</span><span class="n">numpy_array</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Tensor from NumPy: </span><span class="si">{</span><span class="n">tensor_from_numpy</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Tensor from NumPy dtype: </span><span class="si">{</span><span class="n">tensor_from_numpy</span><span class="o">.</span><span class="n">dtype</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">tensor_from_numpy</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'None'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Original PyTorch tensor: </span><span class="si">{</span><span class="n">pytorch_tensor</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"NumPy from tensor: </span><span class="si">{</span><span class="n">numpy_from_tensor</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Demonstrate memory sharing</span>
+<span class="k">if</span> <span class="n">shared_tensor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Before modification:"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"NumPy array: </span><span class="si">{</span><span class="n">shared_numpy</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Shared tensor: </span><span class="si">{</span><span class="n">shared_tensor</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="c1"># Modify the numpy array</span>
+    <span class="n">shared_numpy</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">999</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">After modifying NumPy array:"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"NumPy array: </span><span class="si">{</span><span class="n">shared_numpy</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Shared tensor: </span><span class="si">{</span><span class="n">shared_tensor</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Notice how both arrays changed - they share memory!"</span><span class="p">)</span>
+    
+    <span class="c1"># Reset for testing</span>
+    <span class="n">shared_numpy</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 </div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test your NumPy interoperability</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">test_numpy_interop</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Section 7: NumPy Interoperability - All tests passed!"</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Section 7: NumPy Interoperability - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Please complete the NumPy interoperability tasks above before proceeding."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Section-8:-Basic-Mathematical-Operations">Section 8: Basic Mathematical Operations<a class="anchor-link" href="#Section-8:-Basic-Mathematical-Operations">¶</a></h2><p>Explore fundamental tensor operations and broadcasting.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create sample tensors for operations</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Sample tensors:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"a = </span><span class="se">\n</span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"b = </span><span class="se">\n</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"c = </span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2"> (shape: </span><span class="si">{</span><span class="n">c</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+
+<span class="c1"># Element-wise operations</span>
+<span class="n">addition</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="n">subtraction</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span>
+<span class="n">multiplication</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
+<span class="n">division</span> <span class="o">=</span> <span class="n">a</span> <span class="o">/</span> <span class="n">b</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Element-wise operations:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"a + b = </span><span class="se">\n</span><span class="si">{</span><span class="n">addition</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"a - b = </span><span class="se">\n</span><span class="si">{</span><span class="n">subtraction</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"a * b = </span><span class="se">\n</span><span class="si">{</span><span class="n">multiplication</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"a / b = </span><span class="se">\n</span><span class="si">{</span><span class="n">division</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Broadcasting example</span>
+<span class="n">broadcast_add</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">c</span>  <span class="c1"># c is broadcasted to match a's shape</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Broadcasting a + c = </span><span class="se">\n</span><span class="si">{</span><span class="n">broadcast_add</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Broadcasting rule: </span><span class="si">{</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> + </span><span class="si">{</span><span class="n">c</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">broadcast_add</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Matrix operations</span>
+<span class="n">matrix_mult</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mm</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Matrix multiplication a @ b = </span><span class="se">\n</span><span class="si">{</span><span class="n">matrix_mult</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Reduction operations</span>
+<span class="n">sum_all</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">sum_dim0</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">sum_dim1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Reduction operations:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sum of all elements: </span><span class="si">{</span><span class="n">sum_all</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sum along dimension 0 (columns): </span><span class="si">{</span><span class="n">sum_dim0</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sum along dimension 1 (rows): </span><span class="si">{</span><span class="n">sum_dim1</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Statistical operations</span>
+<span class="n">mean_val</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">std_val</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">max_val</span><span class="p">,</span> <span class="n">max_indices</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Statistical operations:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mean: </span><span class="si">{</span><span class="n">mean_val</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Standard deviation: </span><span class="si">{</span><span class="n">std_val</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Max values per row: </span><span class="si">{</span><span class="n">max_val</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Max indices per row: </span><span class="si">{</span><span class="n">max_indices</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Section-9:-Memory-Views-and-Copying">Section 9: Memory Views and Copying<a class="anchor-link" href="#Section-9:-Memory-Views-and-Copying">¶</a></h2><p>Understand the difference between views and copies in tensor operations.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create original tensor</span>
+<span class="n">original</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Original tensor:</span><span class="se">\n</span><span class="si">{</span><span class="n">original</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Original data pointer: </span><span class="si">{</span><span class="n">original</span><span class="o">.</span><span class="n">data_ptr</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># View operations (share memory)</span>
+<span class="n">view_reshaped</span> <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">view_sliced</span> <span class="o">=</span> <span class="n">original</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">view_transposed</span> <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="n">t</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">View operations (share memory):"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Reshaped view data pointer: </span><span class="si">{</span><span class="n">view_reshaped</span><span class="o">.</span><span class="n">data_ptr</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sliced view data pointer: </span><span class="si">{</span><span class="n">view_sliced</span><span class="o">.</span><span class="n">data_ptr</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Transposed view data pointer: </span><span class="si">{</span><span class="n">view_transposed</span><span class="o">.</span><span class="n">data_ptr</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Copy operations (new memory)</span>
+<span class="n">copy_clone</span> <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+<span class="n">copy_detach</span> <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Copy operations (new memory):"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Clone data pointer: </span><span class="si">{</span><span class="n">copy_clone</span><span class="o">.</span><span class="n">data_ptr</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Detached clone data pointer: </span><span class="si">{</span><span class="n">copy_detach</span><span class="o">.</span><span class="n">data_ptr</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Demonstrate shared memory effect</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Before modification:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Original[0,0]: </span><span class="si">{</span><span class="n">original</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"View[0,0]: </span><span class="si">{</span><span class="n">view_reshaped</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Copy[0,0]: </span><span class="si">{</span><span class="n">copy_clone</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Modify original</span>
+<span class="n">original</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">999</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">After modifying original[0,0] = 999:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Original[0,0]: </span><span class="si">{</span><span class="n">original</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"View[0,0]: </span><span class="si">{</span><span class="n">view_reshaped</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> (changed - shares memory)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Copy[0,0]: </span><span class="si">{</span><span class="n">copy_clone</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> (unchanged - separate memory)"</span><span class="p">)</span>
+
+<span class="c1"># Check contiguity</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Memory layout (is_contiguous):"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Original: </span><span class="si">{</span><span class="n">original</span><span class="o">.</span><span class="n">is_contiguous</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Transposed: </span><span class="si">{</span><span class="n">view_transposed</span><span class="o">.</span><span class="n">is_contiguous</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Contiguous copy of transposed: </span><span class="si">{</span><span class="n">view_transposed</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span><span class="o">.</span><span class="n">is_contiguous</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Final-Validation">Final Validation<a class="anchor-link" href="#Final-Validation">¶</a></h2><p>Run the complete test suite to validate all your solutions.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Run complete validation</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Running complete test suite...</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">all_tests_passed</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">test_sections</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">"Tensor Creation"</span><span class="p">,</span> <span class="n">test_tensor_creation</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Tensor Attributes"</span><span class="p">,</span> <span class="n">test_tensor_attributes</span><span class="p">),</span> 
+    <span class="p">(</span><span class="s2">"Tensor Indexing"</span><span class="p">,</span> <span class="n">test_tensor_indexing</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Tensor Reshaping"</span><span class="p">,</span> <span class="n">test_tensor_reshaping</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Data Types"</span><span class="p">,</span> <span class="n">test_tensor_dtypes</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"NumPy Interop"</span><span class="p">,</span> <span class="n">test_numpy_interop</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">section_name</span><span class="p">,</span> <span class="n">test_func</span> <span class="ow">in</span> <span class="n">test_sections</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">test_func</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"✅ </span><span class="si">{</span><span class="n">section_name</span><span class="si">}</span><span class="s2"> - PASSED"</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ </span><span class="si">{</span><span class="n">section_name</span><span class="si">}</span><span class="s2"> - FAILED: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">all_tests_passed</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">all_tests_passed</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"🎉 ALL TESTS PASSED! You have successfully completed Exercise 1."</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"You are now ready to proceed to Exercise 2: Mathematical Implementation."</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"❌ Some tests failed. Please review the failed sections and complete the missing implementations."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h2><p>In this exercise, you have learned:</p>
+<ol>
+<li><strong>Environment Setup</strong>: How to verify PyTorch installation and CUDA availability</li>
+<li><strong>Tensor Creation</strong>: Various methods to create tensors with different properties</li>
+<li><strong>Device Management</strong>: Moving tensors between CPU and GPU devices</li>
+<li><strong>Tensor Attributes</strong>: Understanding shape, dtype, device, and memory properties</li>
+<li><strong>Indexing &amp; Slicing</strong>: Accessing and modifying tensor elements efficiently</li>
+<li><strong>Reshaping</strong>: Manipulating tensor dimensions and understanding memory layout</li>
+<li><strong>Data Types</strong>: Working with different numerical precisions and boolean operations</li>
+<li><strong>NumPy Interoperability</strong>: Converting between PyTorch and NumPy with memory considerations</li>
+<li><strong>Basic Operations</strong>: Element-wise operations, broadcasting, and mathematical functions</li>
+<li><strong>Memory Management</strong>: Understanding views vs. copies and memory sharing</li>
+</ol>
+<p>These fundamental concepts form the foundation for all advanced PyTorch operations you'll encounter in deep learning applications.</p>
 </div>
 </div>
 </div>

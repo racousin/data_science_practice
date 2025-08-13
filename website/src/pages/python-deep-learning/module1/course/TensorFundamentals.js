@@ -1,5 +1,7 @@
 import React from 'react';
 import { Container, Title, Text, Stack, Grid, Paper, List } from '@mantine/core';
+import { InlineMath, BlockMath } from 'react-katex';
+import 'katex/dist/katex.min.css';
 import CodeBlock from 'components/CodeBlock';
 
 const TensorFundamentals = () => {
@@ -20,11 +22,15 @@ const TensorFundamentals = () => {
               Tensors are the fundamental data structure in deep learning frameworks.
               They generalize matrices to arbitrary dimensions and enable efficient computation on GPUs.
             </Text>
+            
+            <Text className="mb-4">
+              Mathematically, a tensor <InlineMath>{`\\mathbf{T} \\in \\mathbb{R}^{n_1 \\times n_2 \\times \\cdots \\times n_k}`}</InlineMath> is a multi-dimensional array where <InlineMath>k</InlineMath> is the number of dimensions (rank).
+            </Text>
             <List>
-              <List.Item>Scalar: 0-dimensional tensor (single number)</List.Item>
-              <List.Item>Vector: 1-dimensional tensor (array of numbers)</List.Item>
-              <List.Item>Matrix: 2-dimensional tensor (2D array)</List.Item>
-              <List.Item>3D+ Tensor: Higher dimensional arrays</List.Item>
+              <List.Item><strong>Scalar:</strong> 0-dimensional tensor <InlineMath>{`s \\in \\mathbb{R}`}</InlineMath> (single number)</List.Item>
+              <List.Item><strong>Vector:</strong> 1-dimensional tensor <InlineMath>{`\\mathbf{v} \\in \\mathbb{R}^n`}</InlineMath> (array of numbers)</List.Item>
+              <List.Item><strong>Matrix:</strong> 2-dimensional tensor <InlineMath>{`\\mathbf{M} \\in \\mathbb{R}^{m \\times n}`}</InlineMath> (2D array)</List.Item>
+              <List.Item><strong>Higher-order Tensor:</strong> <InlineMath>{`\\mathbf{T} \\in \\mathbb{R}^{n_1 \\times n_2 \\times \\cdots \\times n_k}`}</InlineMath> where <InlineMath>{`k \\geq 3`}</InlineMath></List.Item>
             </List>
           </Paper>
         </div>
@@ -173,19 +179,28 @@ np_array = tensor.numpy()`}
             <Grid.Col span={12}>
               <Paper className="p-4 bg-gray-50 mb-4">
                 <Title order={4} className="mb-3">Arithmetic Operations</Title>
+                <Text className="mb-3">
+                  <strong>Element-wise operations:</strong> Applied component-wise using broadcasting rules.
+                </Text>
+                <BlockMath>{`
+                  \\begin{aligned}
+                  \\text{Addition: } (\\mathbf{A} + \\mathbf{B})_{ij} &= A_{ij} + B_{ij} \\\\
+                  \\text{Hadamard Product: } (\\mathbf{A} \\odot \\mathbf{B})_{ij} &= A_{ij} \\cdot B_{ij}
+                  \\end{aligned}
+                `}</BlockMath>
                 <CodeBlock 
                   language="python" 
                   code={`# Element-wise operations
 a = torch.tensor([1, 2, 3])
 b = torch.tensor([4, 5, 6])
 
-# Addition
+# Addition: c_i = a_i + b_i
 c = a + b  # or torch.add(a, b)
 
-# Multiplication (element-wise)
+# Element-wise multiplication (Hadamard product)
 d = a * b  # or torch.mul(a, b)
 
-# Matrix multiplication
+# Matrix multiplication: C = AB where C_ik = Σ_j A_ij B_jk
 x = torch.randn(2, 3)
 y = torch.randn(3, 4)
 z = torch.mm(x, y)  # or x @ y  # Result: (2, 4)`} 
@@ -310,29 +325,37 @@ result = gpu_tensor @ gpu_tensor.T`}
               PyTorch's autograd engine enables automatic computation of gradients,
               which is essential for training neural networks using backpropagation.
             </Text>
+            
+            <Text className="mt-4">
+              For a scalar function <InlineMath>{`f: \\mathbb{R}^n \\rightarrow \\mathbb{R}`}</InlineMath>, autograd computes:
+            </Text>
+            <BlockMath>{`\\nabla f(\\mathbf{x}) = \\left(\\frac{\\partial f}{\\partial x_1}, \\frac{\\partial f}{\\partial x_2}, \\ldots, \\frac{\\partial f}{\\partial x_n}\\right)^T`}</BlockMath>
           </Paper>
           
           <Grid gutter="lg">
             <Grid.Col span={12}>
               <Paper className="p-4 bg-gray-50">
                 <Title order={4} className="mb-3">Basic Autograd Example</Title>
+                <Text className="mb-3">
+                  <strong>Chain Rule Application:</strong> For <InlineMath>{`f(g(x))`}</InlineMath>, autograd computes <InlineMath>{`\\frac{df}{dx} = \\frac{df}{dg} \\cdot \\frac{dg}{dx}`}</InlineMath>
+                </Text>
                 <CodeBlock 
                   language="python" 
                   code={`# Enable gradient computation
 x = torch.randn(3, requires_grad=True)
-y = x * 2
-z = y * y * 3
-out = z.mean()
+y = x * 2          # y = 2x
+z = y * y * 3      # z = 3y² = 3(2x)² = 12x²
+out = z.mean()     # out = (1/3)Σ(12x_i²) = 4Σx_i²
 
 print(f"x: {x}")
 print(f"out: {out}")
 
-# Compute gradients
+# Compute gradients using backpropagation
 out.backward()
 
-# Access gradients
+# Access gradients: ∂out/∂x = 8x/3
 print(f"Gradient of x: {x.grad}")
-# ∂out/∂x = ∂(3*(2x)²/3)/∂x = 4x`} 
+# Mathematical derivation: ∂/∂x[4Σx_i²] = 8x`} 
                 />
               </Paper>
             </Grid.Col>
@@ -393,11 +416,17 @@ x.grad.zero_()`}
               Broadcasting allows operations between tensors of different shapes by automatically
               expanding the smaller tensor to match the larger one's shape.
             </Text>
+            
+            <Text className="mb-4">
+              <strong>Mathematical Foundation:</strong> For tensors <InlineMath>{`\\mathbf{A} \\in \\mathbb{R}^{m \\times n}`}</InlineMath> and <InlineMath>{`\\mathbf{b} \\in \\mathbb{R}^n`}</InlineMath>, 
+              broadcasting computes <InlineMath>{`\\mathbf{A} + \\mathbf{b}`}</InlineMath> by treating <InlineMath>{`\\mathbf{b}`}</InlineMath> as <InlineMath>{`\\mathbf{1}_m \\otimes \\mathbf{b}^T`}</InlineMath>.
+            </Text>
             <Text className="font-semibold">Broadcasting Rules:</Text>
             <List>
               <List.Item>Start with the rightmost dimension and work left</List.Item>
               <List.Item>Dimensions are compatible if they are equal or one is 1</List.Item>
               <List.Item>Missing dimensions are treated as 1</List.Item>
+              <List.Item>Result shape: <InlineMath>{`\\max(\\text{shape}_A, \\text{shape}_B)`}</InlineMath> element-wise</List.Item>
             </List>
           </Paper>
           

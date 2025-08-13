@@ -7517,7 +7517,19 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Exercise-2:-PyTorch-Operations">Exercise 2: PyTorch Operations<a class="anchor-link" href="#Exercise-2:-PyTorch-Operations">¶</a></h1><p>Master tensor operations including mathematical operations, broadcasting, and advanced tensor manipulations.</p>
+<h1 id="Module-1---Exercise-2:-Mathematical-Implementation">Module 1 - Exercise 2: Mathematical Implementation<a class="anchor-link" href="#Module-1---Exercise-2:-Mathematical-Implementation">¶</a></h1><h2 id="Learning-Objectives">Learning Objectives<a class="anchor-link" href="#Learning-Objectives">¶</a></h2><ul>
+<li>Implement gradient descent from scratch using NumPy and PyTorch tensors</li>
+<li>Understand optimization trajectories and convergence behavior</li>
+<li>Compare different optimization algorithms (SGD, momentum, adaptive learning rates)</li>
+<li>Visualize mathematical optimization concepts</li>
+<li>Implement key mathematical functions for machine learning</li>
+</ul>
+<h2 id="Prerequisites">Prerequisites<a class="anchor-link" href="#Prerequisites">¶</a></h2><ul>
+<li>Completion of Exercise 1: Environment &amp; Basics</li>
+<li>Basic calculus knowledge (derivatives, gradients)</li>
+<li>Understanding of optimization concepts</li>
+<li>Familiarity with NumPy arrays and mathematical operations</li>
+</ul>
 </div>
 </div>
 </div>
@@ -7528,7 +7540,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Setup">Setup<a class="anchor-link" href="#Setup">¶</a></h2>
+<h2 id="Setup-and-Test-Repository">Setup and Test Repository<a class="anchor-link" href="#Setup-and-Test-Repository">¶</a></h2><p>First, let's clone the test repository and set up our environment for step-by-step validation.</p>
 </div>
 </div>
 </div>
@@ -7542,7 +7554,7 @@ a.anchor-link {
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Clone the test repository</span>
 <span class="o">!</span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/racousin/data_science_practice.git<span class="w"> </span>/tmp/tests<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="o">||</span><span class="w"> </span>true
-<span class="o">!</span><span class="nb">cd</span><span class="w"> </span>/tmp/tests<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">pwd</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>ls<span class="w"> </span>-la<span class="w"> </span>tests/python-deep-learning/module1/
+<span class="o">!</span><span class="nb">cd</span><span class="w"> </span>/tmp/tests<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">pwd</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>ls<span class="w"> </span>-la<span class="w"> </span>tests/python_deep_learning/module1/
 
 <span class="c1"># Import the test module</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -7560,7 +7572,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Test-Setup">Test Setup<a class="anchor-link" href="#Test-Setup">¶</a></h2><p>First, let's clone the test repository to validate our solutions step by step.</p>
+<h2 id="Environment-Setup">Environment Setup<a class="anchor-link" href="#Environment-Setup">¶</a></h2><p>Import necessary libraries for mathematical implementations and visualizations.</p>
 </div>
 </div>
 </div>
@@ -7574,12 +7586,20 @@ a.anchor-link {
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mpl_toolkits.mplot3d</span><span class="w"> </span><span class="kn">import</span> <span class="n">Axes3D</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="c1"># Set random seed for reproducibility</span>
+<span class="c1"># Set random seeds for reproducibility</span>
 <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 
+<span class="c1"># Import test functions</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tests.python_deep_learning.module1.test_exercise2</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"PyTorch version: </span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"NumPy version: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7592,7 +7612,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Part-1:-Element-wise-Operations">Part 1: Element-wise Operations<a class="anchor-link" href="#Part-1:-Element-wise-Operations">¶</a></h2><p>Perform basic mathematical operations on tensors.</p>
+<h2 id="Section-1:-Gradient-Descent-from-Scratch-with-NumPy">Section 1: Gradient Descent from Scratch with NumPy<a class="anchor-link" href="#Section-1:-Gradient-Descent-from-Scratch-with-NumPy">¶</a></h2><p>Implement basic gradient descent using only NumPy to understand the fundamental mathematics.</p>
 </div>
 </div>
 </div>
@@ -7604,43 +7624,78 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create sample tensors</span>
-<span class="n">tensor_a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-<span class="n">tensor_b</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">quadratic_function</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Simple quadratic function: f(x) = (x[0]-3)^2 + (x[1]-2)^2"""</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">3</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
 
-<span class="c1"># TODO: Add the two tensors</span>
-<span class="n">tensor_sum</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">quadratic_gradient</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Gradient of the quadratic function"""</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)])</span>
 
-<span class="c1"># TODO: Subtract tensor_b from tensor_a</span>
-<span class="n">tensor_diff</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rosenbrock_function</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Rosenbrock function: f(x) = (1-x[0])^2 + 100*(x[1]-x[0]^2)^2"""</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
 
-<span class="c1"># TODO: Multiply tensors element-wise</span>
-<span class="n">tensor_mul</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rosenbrock_gradient</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Gradient of the Rosenbrock function"""</span>
+    <span class="n">dx0</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">400</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">dx1</span> <span class="o">=</span> <span class="mi">200</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dx0</span><span class="p">,</span> <span class="n">dx1</span><span class="p">])</span>
 
-<span class="c1"># TODO: Divide tensor_a by tensor_b</span>
-<span class="n">tensor_div</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1"># TODO: Implement gradient descent with NumPy</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">gradient_descent_numpy</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">grad_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> 
+                          <span class="n">initial_point</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> 
+                          <span class="n">num_iterations</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Implement gradient descent using NumPy.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        func: The function to minimize</span>
+<span class="sd">        grad_func: The gradient function</span>
+<span class="sd">        initial_point: Starting point for optimization</span>
+<span class="sd">        learning_rate: Step size for updates</span>
+<span class="sd">        num_iterations: Number of optimization steps</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        final_point: Final optimized point</span>
+<span class="sd">        trajectory: List of points visited during optimization</span>
+<span class="sd">        losses: List of function values at each step</span>
+<span class="sd">    """</span>
+    <span class="c1"># TODO: Initialize variables</span>
+    <span class="n">current_point</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">trajectory</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1"># TODO: Implement the gradient descent loop</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">):</span>
+        <span class="c1"># Calculate current loss and gradient</span>
+        <span class="n">current_loss</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">current_gradient</span> <span class="o">=</span> <span class="kc">None</span>
+        
+        <span class="c1"># Store trajectory and loss</span>
+        <span class="n">trajectory</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_point</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+        <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_loss</span><span class="p">)</span>
+        
+        <span class="c1"># Update point using gradient descent rule</span>
+        <span class="n">current_point</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># current_point - learning_rate * gradient</span>
+    
+    <span class="k">return</span> <span class="n">current_point</span><span class="p">,</span> <span class="n">trajectory</span><span class="p">,</span> <span class="n">losses</span>
 
-<span class="c1"># TODO: Compute tensor_a to the power of 2</span>
-<span class="n">tensor_pow</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1"># Test your implementation</span>
+<span class="n">initial_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+<span class="n">final_point</span><span class="p">,</span> <span class="n">trajectory</span><span class="p">,</span> <span class="n">losses</span> <span class="o">=</span> <span class="n">gradient_descent_numpy</span><span class="p">(</span>
+    <span class="n">quadratic_function</span><span class="p">,</span> <span class="n">quadratic_gradient</span><span class="p">,</span> <span class="n">initial_point</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">50</span>
+<span class="p">)</span>
 
-<span class="c1"># TODO: Compute the square root of tensor_a</span>
-<span class="n">tensor_sqrt</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Initial point: </span><span class="si">{</span><span class="n">initial_point</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Final point: </span><span class="si">{</span><span class="n">final_point</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Final loss: </span><span class="si">{</span><span class="n">losses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">losses</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'No losses recorded'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Expected minimum: [3.0, 2.0] with loss 0.0"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Part-2:-Reduction-Operations">Part 2: Reduction Operations<a class="anchor-link" href="#Part-2:-Reduction-Operations">¶</a></h2><p>Apply operations that reduce tensor dimensions.</p>
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -7649,14 +7704,13 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Part 1: Element-wise Operations</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test your NumPy gradient descent implementation</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">tests.python_deep_learning.module1.test_exercise2</span><span class="w"> </span><span class="kn">import</span> <span class="n">test_element_wise_ops</span>
-    <span class="n">test_element_wise_ops</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Part 1: Element-wise Operations - All tests passed!"</span><span class="p">)</span>
+    <span class="n">test_numpy_gradient_descent</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Section 1: NumPy Gradient Descent - All tests passed!"</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Part 1: Element-wise Operations - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Complete the element-wise operations tasks above before proceeding."</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Section 1: NumPy Gradient Descent - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Please complete the gradient descent implementation above before proceeding."</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7669,7 +7723,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Validate-Part-1:-Element-wise-Operations">Validate Part 1: Element-wise Operations<a class="anchor-link" href="#Validate-Part-1:-Element-wise-Operations">¶</a></h3><p>Let's validate your element-wise operations solutions.</p>
+<h2 id="Section-2:-Gradient-Descent-with-PyTorch-Tensors-(No-Autograd)">Section 2: Gradient Descent with PyTorch Tensors (No Autograd)<a class="anchor-link" href="#Section-2:-Gradient-Descent-with-PyTorch-Tensors-(No-Autograd)">¶</a></h2><p>Implement gradient descent using PyTorch tensors but without autograd to understand manual differentiation.</p>
 </div>
 </div>
 </div>
@@ -7681,40 +7735,78 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create a sample tensor</span>
-<span class="n">tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">quadratic_function_torch</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Quadratic function using PyTorch tensors"""</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">3</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
 
-<span class="c1"># TODO: Compute the sum of all elements</span>
-<span class="n">total_sum</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">quadratic_gradient_torch</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Gradient of quadratic function using PyTorch tensors"""</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
 
-<span class="c1"># TODO: Compute the mean along dimension 1</span>
-<span class="n">mean_dim1</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rosenbrock_function_torch</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Rosenbrock function using PyTorch tensors"""</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
 
-<span class="c1"># TODO: Find the maximum value and its index along dimension 2</span>
-<span class="n">max_values</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">max_indices</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rosenbrock_gradient_torch</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Gradient of Rosenbrock function using PyTorch tensors"""</span>
+    <span class="n">dx0</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">400</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">dx1</span> <span class="o">=</span> <span class="mi">200</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">dx0</span><span class="p">,</span> <span class="n">dx1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
 
-<span class="c1"># TODO: Compute the standard deviation along dimension 0</span>
-<span class="n">std_dim0</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1"># TODO: Implement gradient descent with PyTorch tensors</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">gradient_descent_torch</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">grad_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> 
+                          <span class="n">initial_point</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> 
+                          <span class="n">num_iterations</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Implement gradient descent using PyTorch tensors (without autograd).</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        func: The function to minimize</span>
+<span class="sd">        grad_func: The gradient function  </span>
+<span class="sd">        initial_point: Starting point for optimization</span>
+<span class="sd">        learning_rate: Step size for updates</span>
+<span class="sd">        num_iterations: Number of optimization steps</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        final_point: Final optimized point</span>
+<span class="sd">        trajectory: List of points visited during optimization</span>
+<span class="sd">        losses: List of function values at each step</span>
+<span class="sd">    """</span>
+    <span class="c1"># TODO: Initialize variables</span>
+    <span class="n">current_point</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">trajectory</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1"># TODO: Implement the gradient descent loop</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">):</span>
+        <span class="c1"># Calculate current loss and gradient</span>
+        <span class="n">current_loss</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">current_gradient</span> <span class="o">=</span> <span class="kc">None</span>
+        
+        <span class="c1"># Store trajectory and loss</span>
+        <span class="n">trajectory</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_point</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
+        <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+        
+        <span class="c1"># Update point using gradient descent rule</span>
+        <span class="n">current_point</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># current_point - learning_rate * gradient</span>
+    
+    <span class="k">return</span> <span class="n">current_point</span><span class="p">,</span> <span class="n">trajectory</span><span class="p">,</span> <span class="n">losses</span>
 
-<span class="c1"># TODO: Compute the product of all elements</span>
-<span class="n">total_product</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1"># Test your PyTorch implementation</span>
+<span class="n">initial_point_torch</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">final_point_torch</span><span class="p">,</span> <span class="n">trajectory_torch</span><span class="p">,</span> <span class="n">losses_torch</span> <span class="o">=</span> <span class="n">gradient_descent_torch</span><span class="p">(</span>
+    <span class="n">quadratic_function_torch</span><span class="p">,</span> <span class="n">quadratic_gradient_torch</span><span class="p">,</span> <span class="n">initial_point_torch</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">50</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Initial point: </span><span class="si">{</span><span class="n">initial_point_torch</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Final point: </span><span class="si">{</span><span class="n">final_point_torch</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Final loss: </span><span class="si">{</span><span class="n">losses_torch</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">losses_torch</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'No losses recorded'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Expected minimum: [3.0, 2.0] with loss 0.0"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Part-3:-Matrix-Operations">Part 3: Matrix Operations<a class="anchor-link" href="#Part-3:-Matrix-Operations">¶</a></h2><p>Perform linear algebra operations on tensors.</p>
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -7723,14 +7815,13 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Part 2: Reduction Operations</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test your PyTorch gradient descent implementation</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">tests.python_deep_learning.module1.test_exercise2</span><span class="w"> </span><span class="kn">import</span> <span class="n">test_reduction_ops</span>
-    <span class="n">test_reduction_ops</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Part 2: Reduction Operations - All tests passed!"</span><span class="p">)</span>
+    <span class="n">test_torch_gradient_descent</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Section 2: PyTorch Gradient Descent - All tests passed!"</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Part 2: Reduction Operations - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Complete the reduction operations tasks above before proceeding."</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Section 2: PyTorch Gradient Descent - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Please complete the PyTorch gradient descent implementation above before proceeding."</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7743,7 +7834,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Validate-Part-2:-Reduction-Operations">Validate Part 2: Reduction Operations<a class="anchor-link" href="#Validate-Part-2:-Reduction-Operations">¶</a></h3><p>Let's validate your reduction operations solutions.</p>
+<h2 id="Section-3:-Optimization-Trajectory-Visualization">Section 3: Optimization Trajectory Visualization<a class="anchor-link" href="#Section-3:-Optimization-Trajectory-Visualization">¶</a></h2><p>Visualize how gradient descent navigates the optimization landscape.</p>
 </div>
 </div>
 </div>
@@ -7755,42 +7846,83 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create sample matrices</span>
-<span class="n">matrix_a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="n">matrix_b</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">square_matrix</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create visualization function for 2D optimization</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_optimization_trajectory</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">trajectory</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Optimization Trajectory"</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Plot the optimization trajectory on a 2D contour plot.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        func: The function being optimized</span>
+<span class="sd">        trajectory: List of points visited during optimization</span>
+<span class="sd">        title: Plot title</span>
+<span class="sd">    """</span>
+    <span class="c1"># TODO: Create a grid for contour plot</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">trajectory</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"No trajectory to plot"</span><span class="p">)</span>
+        <span class="k">return</span>
+    
+    <span class="c1"># Convert trajectory to numpy if it's torch tensors</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trajectory</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+        <span class="n">trajectory_np</span> <span class="o">=</span> <span class="p">[</span><span class="n">point</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">trajectory</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">trajectory_np</span> <span class="o">=</span> <span class="n">trajectory</span>
+    
+    <span class="c1"># Create grid for contour plot</span>
+    <span class="n">trajectory_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">trajectory_np</span><span class="p">)</span>
+    <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span> <span class="o">=</span> <span class="n">trajectory_array</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">trajectory_array</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="n">trajectory_array</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">trajectory_array</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+    
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    
+    <span class="c1"># TODO: Evaluate function on grid</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Apply func to each point in the grid</span>
+    
+    <span class="c1"># TODO: Create the plot</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    
+    <span class="c1"># Plot contour</span>
+    <span class="n">contour</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">'Function Value'</span><span class="p">)</span>
+    
+    <span class="c1"># Plot trajectory</span>
+    <span class="n">trajectory_x</span> <span class="o">=</span> <span class="p">[</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">trajectory_np</span><span class="p">]</span>
+    <span class="n">trajectory_y</span> <span class="o">=</span> <span class="p">[</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">trajectory_np</span><span class="p">]</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trajectory_x</span><span class="p">,</span> <span class="n">trajectory_y</span><span class="p">,</span> <span class="s1">'ro-'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Optimization Path'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trajectory_x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">trajectory_y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">'gs'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Start'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trajectory_x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">trajectory_y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">'r^'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'End'</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'x[0]'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'x[1]'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-<span class="c1"># TODO: Perform matrix multiplication of matrix_a and matrix_b</span>
-<span class="n">matmul_result</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1"># Visualize trajectories for different functions</span>
+<span class="k">if</span> <span class="s1">'trajectory'</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span> <span class="ow">and</span> <span class="n">trajectory</span><span class="p">:</span>
+    <span class="n">plot_optimization_trajectory</span><span class="p">(</span><span class="n">quadratic_function</span><span class="p">,</span> <span class="n">trajectory</span><span class="p">,</span> <span class="s2">"Quadratic Function Optimization"</span><span class="p">)</span>
 
-<span class="c1"># TODO: Compute the transpose of matrix_a</span>
-<span class="n">transpose_a</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1"># Test on Rosenbrock function</span>
+<span class="n">rosenbrock_result</span> <span class="o">=</span> <span class="n">gradient_descent_numpy</span><span class="p">(</span>
+    <span class="n">rosenbrock_function</span><span class="p">,</span> <span class="n">rosenbrock_gradient</span><span class="p">,</span> 
+    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]),</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mi">1000</span>
+<span class="p">)</span>
+<span class="n">rosenbrock_final</span><span class="p">,</span> <span class="n">rosenbrock_trajectory</span><span class="p">,</span> <span class="n">rosenbrock_losses</span> <span class="o">=</span> <span class="n">rosenbrock_result</span>
 
-<span class="c1"># TODO: Compute the inverse of square_matrix</span>
-<span class="n">inverse_matrix</span> <span class="o">=</span> <span class="kc">None</span>
-
-<span class="c1"># TODO: Compute the determinant of square_matrix</span>
-<span class="n">determinant</span> <span class="o">=</span> <span class="kc">None</span>
-
-<span class="c1"># TODO: Compute eigenvalues and eigenvectors of square_matrix</span>
-<span class="n">eigenvalues</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">eigenvectors</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">if</span> <span class="n">rosenbrock_trajectory</span><span class="p">:</span>
+    <span class="n">plot_optimization_trajectory</span><span class="p">(</span><span class="n">rosenbrock_function</span><span class="p">,</span> <span class="n">rosenbrock_trajectory</span><span class="p">,</span> <span class="s2">"Rosenbrock Function Optimization"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Rosenbrock final point: </span><span class="si">{</span><span class="n">rosenbrock_final</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Rosenbrock final loss: </span><span class="si">{</span><span class="n">rosenbrock_losses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Expected minimum: [1.0, 1.0] with loss 0.0"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Part-4:-Broadcasting">Part 4: Broadcasting<a class="anchor-link" href="#Part-4:-Broadcasting">¶</a></h2><p>Understand and apply broadcasting rules in tensor operations.</p>
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -7799,14 +7931,13 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Part 3: Matrix Operations</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test your visualization implementation</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">tests.python_deep_learning.module1.test_exercise2</span><span class="w"> </span><span class="kn">import</span> <span class="n">test_matrix_ops</span>
-    <span class="n">test_matrix_ops</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Part 3: Matrix Operations - All tests passed!"</span><span class="p">)</span>
+    <span class="n">test_visualization</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Section 3: Optimization Visualization - All tests passed!"</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Part 3: Matrix Operations - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Complete the matrix operations tasks above before proceeding."</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Section 3: Optimization Visualization - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Please complete the visualization implementation above before proceeding."</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7819,7 +7950,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Validate-Part-3:-Matrix-Operations">Validate Part 3: Matrix Operations<a class="anchor-link" href="#Validate-Part-3:-Matrix-Operations">¶</a></h3><p>Let's validate your matrix operations solutions.</p>
+<h2 id="Section-4:-SGD-with-Momentum">Section 4: SGD with Momentum<a class="anchor-link" href="#Section-4:-SGD-with-Momentum">¶</a></h2><p>Implement SGD with momentum to improve convergence behavior.</p>
 </div>
 </div>
 </div>
@@ -7831,41 +7962,103 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create tensors of different shapes</span>
-<span class="n">tensor_3x4</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="n">tensor_1x4</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="n">tensor_3x1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">scalar</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Implement SGD with momentum</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sgd_with_momentum</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">grad_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> 
+                     <span class="n">initial_point</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> 
+                     <span class="n">momentum</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">num_iterations</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Implement SGD with momentum.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        func: The function to minimize</span>
+<span class="sd">        grad_func: The gradient function</span>
+<span class="sd">        initial_point: Starting point for optimization</span>
+<span class="sd">        learning_rate: Step size for updates</span>
+<span class="sd">        momentum: Momentum coefficient (typically 0.9)</span>
+<span class="sd">        num_iterations: Number of optimization steps</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        final_point: Final optimized point</span>
+<span class="sd">        trajectory: List of points visited during optimization</span>
+<span class="sd">        losses: List of function values at each step</span>
+<span class="sd">    """</span>
+    <span class="c1"># TODO: Initialize variables</span>
+    <span class="n">current_point</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">velocity</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Initialize momentum velocity</span>
+    <span class="n">trajectory</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1"># TODO: Implement the SGD with momentum loop</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">):</span>
+        <span class="c1"># Calculate current loss and gradient</span>
+        <span class="n">current_loss</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">current_gradient</span> <span class="o">=</span> <span class="kc">None</span>
+        
+        <span class="c1"># Store trajectory and loss</span>
+        <span class="n">trajectory</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_point</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+        <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_loss</span><span class="p">)</span>
+        
+        <span class="c1"># Update velocity with momentum</span>
+        <span class="n">velocity</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># momentum * velocity + learning_rate * gradient</span>
+        
+        <span class="c1"># Update point using velocity</span>
+        <span class="n">current_point</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># current_point - velocity</span>
+    
+    <span class="k">return</span> <span class="n">current_point</span><span class="p">,</span> <span class="n">trajectory</span><span class="p">,</span> <span class="n">losses</span>
 
-<span class="c1"># TODO: Add tensor_1x4 to tensor_3x4 (broadcasting along dim 0)</span>
-<span class="n">broadcast_add_dim0</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1"># Compare regular SGD vs SGD with momentum</span>
+<span class="n">initial_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
 
-<span class="c1"># TODO: Multiply tensor_3x1 with tensor_3x4 (broadcasting along dim 1)</span>
-<span class="n">broadcast_mul_dim1</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1"># Regular SGD</span>
+<span class="n">sgd_result</span> <span class="o">=</span> <span class="n">gradient_descent_numpy</span><span class="p">(</span>
+    <span class="n">rosenbrock_function</span><span class="p">,</span> <span class="n">rosenbrock_gradient</span><span class="p">,</span> 
+    <span class="n">initial_point</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mi">500</span>
+<span class="p">)</span>
+<span class="n">sgd_final</span><span class="p">,</span> <span class="n">sgd_trajectory</span><span class="p">,</span> <span class="n">sgd_losses</span> <span class="o">=</span> <span class="n">sgd_result</span>
 
-<span class="c1"># TODO: Add scalar to tensor_3x4 (scalar broadcasting)</span>
-<span class="n">scalar_broadcast</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1"># SGD with momentum</span>
+<span class="n">momentum_result</span> <span class="o">=</span> <span class="n">sgd_with_momentum</span><span class="p">(</span>
+    <span class="n">rosenbrock_function</span><span class="p">,</span> <span class="n">rosenbrock_gradient</span><span class="p">,</span>
+    <span class="n">initial_point</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">500</span>
+<span class="p">)</span>
+<span class="n">momentum_final</span><span class="p">,</span> <span class="n">momentum_trajectory</span><span class="p">,</span> <span class="n">momentum_losses</span> <span class="o">=</span> <span class="n">momentum_result</span>
 
-<span class="c1"># TODO: Create two tensors that can be broadcast together and perform an operation</span>
-<span class="n">tensor_custom1</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Shape: (2, 1, 3)</span>
-<span class="n">tensor_custom2</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Shape: (1, 3, 1)</span>
-<span class="n">broadcast_custom</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Result of tensor_custom1 + tensor_custom2</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Regular SGD final point: </span><span class="si">{</span><span class="n">sgd_final</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Regular SGD final loss: </span><span class="si">{</span><span class="n">sgd_losses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">sgd_losses</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'No losses'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SGD with momentum final point: </span><span class="si">{</span><span class="n">momentum_final</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SGD with momentum final loss: </span><span class="si">{</span><span class="n">momentum_losses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">momentum_losses</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'No losses'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Plot loss curves</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">sgd_losses</span> <span class="ow">and</span> <span class="n">momentum_losses</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sgd_losses</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Regular SGD'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">momentum_losses</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'SGD with Momentum'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Iteration'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Loss'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Loss Comparison'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">'log'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">sgd_losses</span> <span class="ow">and</span> <span class="n">momentum_losses</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sgd_losses</span><span class="p">[</span><span class="o">-</span><span class="mi">100</span><span class="p">:],</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Regular SGD (last 100)'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">momentum_losses</span><span class="p">[</span><span class="o">-</span><span class="mi">100</span><span class="p">:],</span> <span class="n">label</span><span class="o">=</span><span class="s1">'SGD with Momentum (last 100)'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Iteration'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Loss'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Loss Comparison (Last 100 iterations)'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Part-5:-Advanced-Indexing">Part 5: Advanced Indexing<a class="anchor-link" href="#Part-5:-Advanced-Indexing">¶</a></h2><p>Use advanced indexing techniques including boolean masks and gather operations.</p>
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -7874,14 +8067,13 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Part 4: Broadcasting</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test your momentum implementation</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">tests.python_deep_learning.module1.test_exercise2</span><span class="w"> </span><span class="kn">import</span> <span class="n">test_broadcasting</span>
-    <span class="n">test_broadcasting</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Part 4: Broadcasting - All tests passed!"</span><span class="p">)</span>
+    <span class="n">test_sgd_momentum</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Section 4: SGD with Momentum - All tests passed!"</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Part 4: Broadcasting - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Complete the broadcasting tasks above before proceeding."</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Section 4: SGD with Momentum - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Please complete the SGD with momentum implementation above before proceeding."</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7894,7 +8086,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Validate-Part-4:-Broadcasting">Validate Part 4: Broadcasting<a class="anchor-link" href="#Validate-Part-4:-Broadcasting">¶</a></h3><p>Let's validate your broadcasting solutions.</p>
+<h2 id="Section-5:-Adaptive-Learning-Rate-Methods">Section 5: Adaptive Learning Rate Methods<a class="anchor-link" href="#Section-5:-Adaptive-Learning-Rate-Methods">¶</a></h2><p>Implement adaptive learning rate methods like AdaGrad and RMSprop.</p>
 </div>
 </div>
 </div>
@@ -7906,45 +8098,184 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create a sample tensor</span>
-<span class="n">tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Implement AdaGrad optimizer</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">adagrad_optimizer</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">grad_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> 
+                     <span class="n">initial_point</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> 
+                     <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">num_iterations</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Implement AdaGrad optimizer.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        func: The function to minimize</span>
+<span class="sd">        grad_func: The gradient function</span>
+<span class="sd">        initial_point: Starting point for optimization</span>
+<span class="sd">        learning_rate: Base learning rate</span>
+<span class="sd">        epsilon: Small constant for numerical stability</span>
+<span class="sd">        num_iterations: Number of optimization steps</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        final_point: Final optimized point</span>
+<span class="sd">        trajectory: List of points visited during optimization</span>
+<span class="sd">        losses: List of function values at each step</span>
+<span class="sd">    """</span>
+    <span class="c1"># TODO: Initialize variables</span>
+    <span class="n">current_point</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">sum_squared_gradients</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Accumulated squared gradients</span>
+    <span class="n">trajectory</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1"># TODO: Implement the AdaGrad loop</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">):</span>
+        <span class="c1"># Calculate current loss and gradient</span>
+        <span class="n">current_loss</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">current_gradient</span> <span class="o">=</span> <span class="kc">None</span>
+        
+        <span class="c1"># Store trajectory and loss</span>
+        <span class="n">trajectory</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_point</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+        <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_loss</span><span class="p">)</span>
+        
+        <span class="c1"># Update sum of squared gradients</span>
+        <span class="n">sum_squared_gradients</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># sum_squared_gradients + gradient^2</span>
+        
+        <span class="c1"># Compute adaptive learning rate</span>
+        <span class="n">adaptive_lr</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># learning_rate / sqrt(sum_squared_gradients + epsilon)</span>
+        
+        <span class="c1"># Update point</span>
+        <span class="n">current_point</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># current_point - adaptive_lr * gradient</span>
+    
+    <span class="k">return</span> <span class="n">current_point</span><span class="p">,</span> <span class="n">trajectory</span><span class="p">,</span> <span class="n">losses</span>
 
-<span class="c1"># TODO: Create a boolean mask for elements greater than 0</span>
-<span class="n">mask</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1"># TODO: Implement RMSprop optimizer</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rmsprop_optimizer</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">grad_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> 
+                     <span class="n">initial_point</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> 
+                     <span class="n">beta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">num_iterations</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Implement RMSprop optimizer.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        func: The function to minimize</span>
+<span class="sd">        grad_func: The gradient function</span>
+<span class="sd">        initial_point: Starting point for optimization</span>
+<span class="sd">        learning_rate: Base learning rate</span>
+<span class="sd">        beta: Exponential decay rate for moving average</span>
+<span class="sd">        epsilon: Small constant for numerical stability</span>
+<span class="sd">        num_iterations: Number of optimization steps</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        final_point: Final optimized point</span>
+<span class="sd">        trajectory: List of points visited during optimization</span>
+<span class="sd">        losses: List of function values at each step</span>
+<span class="sd">    """</span>
+    <span class="c1"># TODO: Initialize variables</span>
+    <span class="n">current_point</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">moving_avg_squared_grad</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Moving average of squared gradients</span>
+    <span class="n">trajectory</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1"># TODO: Implement the RMSprop loop</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">):</span>
+        <span class="c1"># Calculate current loss and gradient</span>
+        <span class="n">current_loss</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">current_gradient</span> <span class="o">=</span> <span class="kc">None</span>
+        
+        <span class="c1"># Store trajectory and loss</span>
+        <span class="n">trajectory</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_point</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+        <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_loss</span><span class="p">)</span>
+        
+        <span class="c1"># Update moving average of squared gradients</span>
+        <span class="n">moving_avg_squared_grad</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># beta * moving_avg + (1-beta) * gradient^2</span>
+        
+        <span class="c1"># Compute adaptive learning rate</span>
+        <span class="n">adaptive_lr</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># learning_rate / sqrt(moving_avg_squared_grad + epsilon)</span>
+        
+        <span class="c1"># Update point</span>
+        <span class="n">current_point</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># current_point - adaptive_lr * gradient</span>
+    
+    <span class="k">return</span> <span class="n">current_point</span><span class="p">,</span> <span class="n">trajectory</span><span class="p">,</span> <span class="n">losses</span>
 
-<span class="c1"># TODO: Select elements using the boolean mask</span>
-<span class="n">masked_elements</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1"># Compare different optimizers</span>
+<span class="n">initial_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">num_iters</span> <span class="o">=</span> <span class="mi">500</span>
 
-<span class="c1"># TODO: Set all negative values to 0 using boolean indexing</span>
-<span class="n">tensor_relu</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
-<span class="c1"># Apply ReLU using boolean indexing</span>
+<span class="c1"># Test AdaGrad</span>
+<span class="n">adagrad_result</span> <span class="o">=</span> <span class="n">adagrad_optimizer</span><span class="p">(</span>
+    <span class="n">rosenbrock_function</span><span class="p">,</span> <span class="n">rosenbrock_gradient</span><span class="p">,</span>
+    <span class="n">initial_point</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="n">num_iters</span>
+<span class="p">)</span>
+<span class="n">adagrad_final</span><span class="p">,</span> <span class="n">adagrad_trajectory</span><span class="p">,</span> <span class="n">adagrad_losses</span> <span class="o">=</span> <span class="n">adagrad_result</span>
 
-<span class="c1"># TODO: Use torch.gather to select specific elements</span>
-<span class="c1"># Select elements at positions (0,1), (1,2), (2,0), (3,4)</span>
-<span class="n">indices</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">]])</span>
-<span class="n">gathered</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1"># Test RMSprop</span>
+<span class="n">rmsprop_result</span> <span class="o">=</span> <span class="n">rmsprop_optimizer</span><span class="p">(</span>
+    <span class="n">rosenbrock_function</span><span class="p">,</span> <span class="n">rosenbrock_gradient</span><span class="p">,</span>
+    <span class="n">initial_point</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="n">num_iters</span>
+<span class="p">)</span>
+<span class="n">rmsprop_final</span><span class="p">,</span> <span class="n">rmsprop_trajectory</span><span class="p">,</span> <span class="n">rmsprop_losses</span> <span class="o">=</span> <span class="n">rmsprop_result</span>
 
-<span class="c1"># TODO: Use torch.scatter to place values at specific positions</span>
-<span class="n">scattered</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">src</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-<span class="n">index</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
-<span class="c1"># Scatter src values into scattered tensor</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"AdaGrad final point: </span><span class="si">{</span><span class="n">adagrad_final</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"AdaGrad final loss: </span><span class="si">{</span><span class="n">adagrad_losses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">adagrad_losses</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'No losses'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"RMSprop final point: </span><span class="si">{</span><span class="n">rmsprop_final</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"RMSprop final loss: </span><span class="si">{</span><span class="n">rmsprop_losses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">rmsprop_losses</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'No losses'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Plot comparison of all methods</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">optimizers</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">'SGD'</span><span class="p">,</span> <span class="n">sgd_losses</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'SGD+Momentum'</span><span class="p">,</span> <span class="n">momentum_losses</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'AdaGrad'</span><span class="p">,</span> <span class="n">adagrad_losses</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'RMSprop'</span><span class="p">,</span> <span class="n">rmsprop_losses</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">losses</span> <span class="ow">in</span> <span class="n">optimizers</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">losses</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">losses</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Iteration'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Loss'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Optimizer Comparison - Full Training'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">'log'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">losses</span> <span class="ow">in</span> <span class="n">optimizers</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">losses</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">losses</span><span class="p">[</span><span class="o">-</span><span class="mi">100</span><span class="p">:],</span> <span class="n">label</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Iteration'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Loss'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Optimizer Comparison - Last 100 iterations'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">trajectories</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">'SGD'</span><span class="p">,</span> <span class="n">sgd_trajectory</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'SGD+Momentum'</span><span class="p">,</span> <span class="n">momentum_trajectory</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'AdaGrad'</span><span class="p">,</span> <span class="n">adagrad_trajectory</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'RMSprop'</span><span class="p">,</span> <span class="n">rmsprop_trajectory</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">trajectory</span> <span class="ow">in</span> <span class="n">trajectories</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">trajectory</span><span class="p">:</span>
+        <span class="n">traj_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">trajectory</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">traj_array</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">traj_array</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">'r*'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Global Minimum'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'x[0]'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'x[1]'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Optimization Paths'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Part-6:-Tensor-Concatenation-and-Stacking">Part 6: Tensor Concatenation and Stacking<a class="anchor-link" href="#Part-6:-Tensor-Concatenation-and-Stacking">¶</a></h2><p>Combine multiple tensors into larger tensors.</p>
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -7953,14 +8284,13 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Part 5: Advanced Indexing</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test your adaptive learning rate implementations</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">tests.python_deep_learning.module1.test_exercise2</span><span class="w"> </span><span class="kn">import</span> <span class="n">test_advanced_indexing</span>
-    <span class="n">test_advanced_indexing</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Part 5: Advanced Indexing - All tests passed!"</span><span class="p">)</span>
+    <span class="n">test_adaptive_optimizers</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Section 5: Adaptive Learning Rate Methods - All tests passed!"</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Part 5: Advanced Indexing - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Complete the advanced indexing tasks above before proceeding."</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Section 5: Adaptive Learning Rate Methods - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Please complete the adaptive optimizer implementations above before proceeding."</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7973,7 +8303,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Validate-Part-5:-Advanced-Indexing">Validate Part 5: Advanced Indexing<a class="anchor-link" href="#Validate-Part-5:-Advanced-Indexing">¶</a></h3><p>Let's validate your advanced indexing solutions.</p>
+<h2 id="Section-6:-Learning-Rate-Schedules">Section 6: Learning Rate Schedules<a class="anchor-link" href="#Section-6:-Learning-Rate-Schedules">¶</a></h2><p>Implement different learning rate scheduling strategies.</p>
 </div>
 </div>
 </div>
@@ -7985,42 +8315,164 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create sample tensors</span>
-<span class="n">tensor1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="n">tensor2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="n">tensor3</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Implement learning rate schedules</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">step_schedule</span><span class="p">(</span><span class="n">initial_lr</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">step_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">epoch</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Step decay schedule: lr = initial_lr * gamma^(epoch // step_size)"""</span>
+    <span class="c1"># TODO: Implement step decay</span>
+    <span class="k">return</span> <span class="kc">None</span>
 
-<span class="c1"># TODO: Concatenate tensors along dimension 0</span>
-<span class="n">concat_dim0</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">exponential_schedule</span><span class="p">(</span><span class="n">initial_lr</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">epoch</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Exponential decay schedule: lr = initial_lr * gamma^epoch"""</span>
+    <span class="c1"># TODO: Implement exponential decay</span>
+    <span class="k">return</span> <span class="kc">None</span>
 
-<span class="c1"># TODO: Concatenate tensors along dimension 1</span>
-<span class="n">concat_dim1</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cosine_schedule</span><span class="p">(</span><span class="n">initial_lr</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">max_epochs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">epoch</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Cosine annealing schedule"""</span>
+    <span class="c1"># TODO: Implement cosine annealing</span>
+    <span class="k">return</span> <span class="kc">None</span>
 
-<span class="c1"># TODO: Stack tensors along a new dimension 0</span>
-<span class="n">stacked_dim0</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1"># TODO: Implement SGD with learning rate schedule</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sgd_with_schedule</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">grad_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> 
+                     <span class="n">initial_point</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">initial_lr</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                     <span class="n">schedule_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">num_iterations</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Implement SGD with learning rate scheduling.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        func: The function to minimize</span>
+<span class="sd">        grad_func: The gradient function</span>
+<span class="sd">        initial_point: Starting point for optimization</span>
+<span class="sd">        initial_lr: Initial learning rate</span>
+<span class="sd">        schedule_func: Function that returns learning rate given epoch</span>
+<span class="sd">        num_iterations: Number of optimization steps</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        final_point: Final optimized point</span>
+<span class="sd">        trajectory: List of points visited during optimization</span>
+<span class="sd">        losses: List of function values at each step</span>
+<span class="sd">        learning_rates: List of learning rates used at each step</span>
+<span class="sd">    """</span>
+    <span class="c1"># TODO: Initialize variables</span>
+    <span class="n">current_point</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">trajectory</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">learning_rates</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1"># TODO: Implement the SGD with schedule loop</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">):</span>
+        <span class="c1"># Get current learning rate from schedule</span>
+        <span class="n">current_lr</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># schedule_func(i)</span>
+        
+        <span class="c1"># Calculate current loss and gradient</span>
+        <span class="n">current_loss</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">current_gradient</span> <span class="o">=</span> <span class="kc">None</span>
+        
+        <span class="c1"># Store trajectory, loss, and learning rate</span>
+        <span class="n">trajectory</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_point</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+        <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_loss</span><span class="p">)</span>
+        <span class="n">learning_rates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_lr</span><span class="p">)</span>
+        
+        <span class="c1"># Update point</span>
+        <span class="n">current_point</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># current_point - current_lr * gradient</span>
+    
+    <span class="k">return</span> <span class="n">current_point</span><span class="p">,</span> <span class="n">trajectory</span><span class="p">,</span> <span class="n">losses</span><span class="p">,</span> <span class="n">learning_rates</span>
 
-<span class="c1"># TODO: Stack tensors along a new dimension 2</span>
-<span class="n">stacked_dim2</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1"># Test different schedules</span>
+<span class="n">initial_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">num_iters</span> <span class="o">=</span> <span class="mi">500</span>
 
-<span class="c1"># TODO: Split a tensor into multiple chunks</span>
-<span class="n">large_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="n">chunks</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Split into 5 chunks along dimension 0</span>
+<span class="c1"># Step schedule</span>
+<span class="n">step_sched</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">epoch</span><span class="p">:</span> <span class="n">step_schedule</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">epoch</span><span class="p">)</span>
+<span class="n">step_result</span> <span class="o">=</span> <span class="n">sgd_with_schedule</span><span class="p">(</span>
+    <span class="n">rosenbrock_function</span><span class="p">,</span> <span class="n">rosenbrock_gradient</span><span class="p">,</span>
+    <span class="n">initial_point</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">step_sched</span><span class="p">,</span> <span class="n">num_iters</span>
+<span class="p">)</span>
+<span class="n">step_final</span><span class="p">,</span> <span class="n">step_trajectory</span><span class="p">,</span> <span class="n">step_losses</span><span class="p">,</span> <span class="n">step_lrs</span> <span class="o">=</span> <span class="n">step_result</span>
+
+<span class="c1"># Exponential schedule</span>
+<span class="n">exp_sched</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">epoch</span><span class="p">:</span> <span class="n">exponential_schedule</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">,</span> <span class="n">epoch</span><span class="p">)</span>
+<span class="n">exp_result</span> <span class="o">=</span> <span class="n">sgd_with_schedule</span><span class="p">(</span>
+    <span class="n">rosenbrock_function</span><span class="p">,</span> <span class="n">rosenbrock_gradient</span><span class="p">,</span>
+    <span class="n">initial_point</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">exp_sched</span><span class="p">,</span> <span class="n">num_iters</span>
+<span class="p">)</span>
+<span class="n">exp_final</span><span class="p">,</span> <span class="n">exp_trajectory</span><span class="p">,</span> <span class="n">exp_losses</span><span class="p">,</span> <span class="n">exp_lrs</span> <span class="o">=</span> <span class="n">exp_result</span>
+
+<span class="c1"># Cosine schedule</span>
+<span class="n">cos_sched</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">epoch</span><span class="p">:</span> <span class="n">cosine_schedule</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">num_iters</span><span class="p">,</span> <span class="n">epoch</span><span class="p">)</span>
+<span class="n">cos_result</span> <span class="o">=</span> <span class="n">sgd_with_schedule</span><span class="p">(</span>
+    <span class="n">rosenbrock_function</span><span class="p">,</span> <span class="n">rosenbrock_gradient</span><span class="p">,</span>
+    <span class="n">initial_point</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">cos_sched</span><span class="p">,</span> <span class="n">num_iters</span>
+<span class="p">)</span>
+<span class="n">cos_final</span><span class="p">,</span> <span class="n">cos_trajectory</span><span class="p">,</span> <span class="n">cos_losses</span><span class="p">,</span> <span class="n">cos_lrs</span> <span class="o">=</span> <span class="n">cos_result</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Step schedule final point: </span><span class="si">{</span><span class="n">step_final</span><span class="si">}</span><span class="s2">, loss: </span><span class="si">{</span><span class="n">step_losses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">step_losses</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'N/A'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Exponential schedule final point: </span><span class="si">{</span><span class="n">exp_final</span><span class="si">}</span><span class="s2">, loss: </span><span class="si">{</span><span class="n">exp_losses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">exp_losses</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'N/A'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Cosine schedule final point: </span><span class="si">{</span><span class="n">cos_final</span><span class="si">}</span><span class="s2">, loss: </span><span class="si">{</span><span class="n">cos_losses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">cos_losses</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'N/A'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Plot learning rate schedules and losses</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">schedules</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">'Step'</span><span class="p">,</span> <span class="n">step_lrs</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'Exponential'</span><span class="p">,</span> <span class="n">exp_lrs</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'Cosine'</span><span class="p">,</span> <span class="n">cos_lrs</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">lrs</span> <span class="ow">in</span> <span class="n">schedules</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">lrs</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lrs</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Iteration'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Learning Rate'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Learning Rate Schedules'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">losses_schedules</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">'Step'</span><span class="p">,</span> <span class="n">step_losses</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'Exponential'</span><span class="p">,</span> <span class="n">exp_losses</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'Cosine'</span><span class="p">,</span> <span class="n">cos_losses</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">losses</span> <span class="ow">in</span> <span class="n">losses_schedules</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">losses</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">losses</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Iteration'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Loss'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Loss with Different Schedules'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">'log'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">traj_schedules</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">'Step'</span><span class="p">,</span> <span class="n">step_trajectory</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'Exponential'</span><span class="p">,</span> <span class="n">exp_trajectory</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'Cosine'</span><span class="p">,</span> <span class="n">cos_trajectory</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">trajectory</span> <span class="ow">in</span> <span class="n">traj_schedules</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">trajectory</span><span class="p">:</span>
+        <span class="n">traj_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">trajectory</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">traj_array</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">traj_array</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">'r*'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Global Minimum'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'x[0]'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'x[1]'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Optimization Paths with Schedules'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Part-7:-In-place-Operations">Part 7: In-place Operations<a class="anchor-link" href="#Part-7:-In-place-Operations">¶</a></h2><p>Understand memory-efficient in-place operations.</p>
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -8029,14 +8481,13 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Part 6: Tensor Concatenation and Stacking</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test your learning rate schedule implementations</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">tests.python_deep_learning.module1.test_exercise2</span><span class="w"> </span><span class="kn">import</span> <span class="n">test_concat_stack</span>
-    <span class="n">test_concat_stack</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Part 6: Tensor Concatenation and Stacking - All tests passed!"</span><span class="p">)</span>
+    <span class="n">test_learning_rate_schedules</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Section 6: Learning Rate Schedules - All tests passed!"</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Part 6: Tensor Concatenation and Stacking - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Complete the concatenation and stacking tasks above before proceeding."</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Section 6: Learning Rate Schedules - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Please complete the learning rate schedule implementations above before proceeding."</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8049,7 +8500,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Validate-Part-6:-Tensor-Concatenation-and-Stacking">Validate Part 6: Tensor Concatenation and Stacking<a class="anchor-link" href="#Validate-Part-6:-Tensor-Concatenation-and-Stacking">¶</a></h3><p>Let's validate your concatenation and stacking solutions.</p>
+<h2 id="Final-Validation">Final Validation<a class="anchor-link" href="#Final-Validation">¶</a></h2><p>Run the complete test suite to validate all your mathematical implementations.</p>
 </div>
 </div>
 </div>
@@ -8061,28 +8512,34 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create sample tensors</span>
-<span class="n">tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="n">original_id</span> <span class="o">=</span> <span class="nb">id</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Run complete validation</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Running complete test suite...</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 
-<span class="c1"># TODO: Add 1 to tensor in-place</span>
-<span class="c1"># tensor in-place addition</span>
+<span class="n">all_tests_passed</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">test_sections</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">"NumPy Gradient Descent"</span><span class="p">,</span> <span class="n">test_numpy_gradient_descent</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"PyTorch Gradient Descent"</span><span class="p">,</span> <span class="n">test_torch_gradient_descent</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Optimization Visualization"</span><span class="p">,</span> <span class="n">test_visualization</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"SGD with Momentum"</span><span class="p">,</span> <span class="n">test_sgd_momentum</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Adaptive Optimizers"</span><span class="p">,</span> <span class="n">test_adaptive_optimizers</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Learning Rate Schedules"</span><span class="p">,</span> <span class="n">test_learning_rate_schedules</span><span class="p">)</span>
+<span class="p">]</span>
 
-<span class="c1"># TODO: Multiply tensor by 2 in-place</span>
-<span class="c1"># tensor in-place multiplication</span>
+<span class="k">for</span> <span class="n">section_name</span><span class="p">,</span> <span class="n">test_func</span> <span class="ow">in</span> <span class="n">test_sections</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">test_func</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"✅ </span><span class="si">{</span><span class="n">section_name</span><span class="si">}</span><span class="s2"> - PASSED"</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ </span><span class="si">{</span><span class="n">section_name</span><span class="si">}</span><span class="s2"> - FAILED: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">all_tests_passed</span> <span class="o">=</span> <span class="kc">False</span>
 
-<span class="c1"># TODO: Apply ReLU in-place</span>
-<span class="c1"># tensor in-place ReLU</span>
-
-<span class="c1"># Verify that the tensor ID hasn't changed</span>
-<span class="k">assert</span> <span class="nb">id</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="o">==</span> <span class="n">original_id</span><span class="p">,</span> <span class="s2">"Tensor ID changed - not an in-place operation!"</span>
-
-<span class="c1"># TODO: Demonstrate the difference between in-place and regular operations</span>
-<span class="n">tensor_copy</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="c1"># Regular operation (creates new tensor)</span>
-<span class="n">regular_result</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="c1"># In-place operation (modifies existing tensor)</span>
-<span class="n">inplace_result</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">all_tests_passed</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"🎉 ALL TESTS PASSED! You have successfully completed Exercise 2."</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"You are now ready to proceed to Exercise 3: Tensor Mastery."</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"❌ Some tests failed. Please review the failed sections and complete the missing implementations."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8095,55 +8552,23 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Validation">Validation<a class="anchor-link" href="#Validation">¶</a></h2><p>Run this cell to validate your solutions.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Part 7: In-place Operations</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">tests.python_deep_learning.module1.test_exercise2</span><span class="w"> </span><span class="kn">import</span> <span class="n">test_inplace_ops</span>
-    <span class="n">test_inplace_ops</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Part 7: In-place Operations - All tests passed!"</span><span class="p">)</span>
-<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Part 7: In-place Operations - Tests failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Complete the in-place operations tasks above before proceeding."</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Run-complete-test-suite">Run complete test suite<a class="anchor-link" href="#Run-complete-test-suite">¶</a></h1><p>!cd /tmp/tests &amp;&amp; python tests/python-deep-learning/module1/test_exercise2.py</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1">## Final Validation</span>
-
-<span class="n">Run</span> <span class="n">this</span> <span class="n">cell</span> <span class="n">to</span> <span class="n">validate</span> <span class="nb">all</span> <span class="n">your</span> <span class="n">solutions</span> <span class="n">at</span> <span class="n">once</span><span class="o">.</span>
-</pre></div>
-</div>
+<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h2><p>In this exercise, you have implemented core mathematical foundations for optimization:</p>
+<ol>
+<li><strong>Gradient Descent from Scratch</strong>: Understanding the fundamental mathematics behind optimization</li>
+<li><strong>NumPy vs PyTorch Implementation</strong>: Comparing different computational backends</li>
+<li><strong>Optimization Visualization</strong>: Seeing how algorithms navigate the loss landscape</li>
+<li><strong>Momentum Methods</strong>: Accelerating convergence with momentum</li>
+<li><strong>Adaptive Learning Rates</strong>: AdaGrad and RMSprop for automatic learning rate adjustment</li>
+<li><strong>Learning Rate Schedules</strong>: Dynamic learning rate adjustment strategies</li>
+</ol>
+<p>These mathematical implementations provide the foundation for understanding how modern deep learning optimizers work under the hood. You've gained practical experience with:</p>
+<ul>
+<li>Manual gradient computation and parameter updates</li>
+<li>Different optimization strategies and their trade-offs</li>
+<li>Convergence analysis and visualization techniques</li>
+<li>The mathematical principles underlying popular optimization algorithms</li>
+</ul>
+<p>This knowledge will be crucial when working with PyTorch's built-in optimizers and understanding their behavior in neural network training.</p>
 </div>
 </div>
 </div>

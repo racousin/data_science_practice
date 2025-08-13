@@ -1,5 +1,7 @@
 import React from 'react';
 import { Container, Title, Text, Stack, Grid, Paper, List } from '@mantine/core';
+import { InlineMath, BlockMath } from 'react-katex';
+import 'katex/dist/katex.min.css';
 import CodeBlock from 'components/CodeBlock';
 
 const MathematicalPrerequisites = () => {
@@ -19,18 +21,23 @@ const MathematicalPrerequisites = () => {
           <Paper className="p-6 bg-blue-50 mb-6">
             <Title order={3} className="mb-4">Parameter Spaces in Deep Learning</Title>
             <Text className="mb-4">
-              A neural network with parameters θ defines a function f(x; θ) that maps inputs x to outputs. 
-              The parameter space Θ is the set of all possible parameter values.
+              A neural network with parameters <InlineMath>{`\theta`}</InlineMath> defines a function <InlineMath>{`f(x; \theta)`}</InlineMath> that maps inputs <InlineMath>x</InlineMath> to outputs. 
+              The parameter space <InlineMath>{`\Theta`}</InlineMath> is the set of all possible parameter values.
+            </Text>
+            
+            <BlockMath>{`f: \\mathbb{R}^d \\times \\Theta \\rightarrow \\mathbb{R}^k`}</BlockMath>
+            <Text size="sm" className="mt-2">
+              where <InlineMath>d</InlineMath> is input dimension, <InlineMath>k</InlineMath> is output dimension, and <InlineMath>{`\\theta \\in \\Theta \\subseteq \\mathbb{R}^p`}</InlineMath> with <InlineMath>p</InlineMath> parameters.
             </Text>
             
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Title order={4} className="mb-3">Mathematical Notation</Title>
                 <List>
-                  <List.Item><strong>θ ∈ ℝᵈ:</strong> Parameter vector in d-dimensional space</List.Item>
-                  <List.Item><strong>W ∈ ℝᵐˣⁿ:</strong> Weight matrix (m outputs, n inputs)</List.Item>
-                  <List.Item><strong>b ∈ ℝᵐ:</strong> Bias vector</List.Item>
-                  <List.Item><strong>f(x; θ):</strong> Function parameterized by θ</List.Item>
+                  <List.Item><InlineMath>{`\\theta \\in \\mathbb{R}^d`}</InlineMath>: Parameter vector in d-dimensional space</List.Item>
+                  <List.Item><InlineMath>{`W \\in \\mathbb{R}^{m \\times n}`}</InlineMath>: Weight matrix (m outputs, n inputs)</List.Item>
+                  <List.Item><InlineMath>{`b \\in \\mathbb{R}^m`}</InlineMath>: Bias vector</List.Item>
+                  <List.Item><InlineMath>{`f(x; \\theta)`}</InlineMath>: Function parameterized by <InlineMath>{`\\theta`}</InlineMath></List.Item>
                 </List>
               </Grid.Col>
               
@@ -102,8 +109,12 @@ print(f"Parameter space dimension: {theta.shape[0]}")`} />
           <Paper className="p-6 bg-gray-50 mb-6">
             <Title order={3} className="mb-4">Loss Function Theory</Title>
             <Text className="mb-4">
-              A loss function L(y, ŷ) measures the discrepancy between true labels y and predictions ŷ. 
-              The empirical risk is: R_emp(θ) = (1/n) Σᵢ L(yᵢ, f(xᵢ; θ))
+              A loss function <InlineMath>{`\\mathcal{L}(y, \\hat{y})`}</InlineMath> measures the discrepancy between true labels <InlineMath>y</InlineMath> and predictions <InlineMath>{`\\hat{y}`}</InlineMath>. 
+              The empirical risk is:
+            </Text>
+            <BlockMath>{`\\mathcal{R}_{\\text{emp}}(\\theta) = \\frac{1}{n} \\sum_{i=1}^n \\mathcal{L}(y_i, f(x_i; \\theta))`}</BlockMath>
+            <Text className="mb-4">
+              The goal of learning is to find <InlineMath>{`\\theta^* = \\arg\\min_{\\theta \\in \\Theta} \\mathcal{R}_{\\text{emp}}(\\theta)`}</InlineMath>
             </Text>
             
             <Grid gutter="lg">
@@ -188,7 +199,7 @@ def focal_loss(pred, target, alpha=1.0, gamma=2.0):
                 <List size="sm">
                   <List.Item><strong>MSE:</strong> Smooth everywhere</List.Item>
                   <List.Item><strong>MAE:</strong> Not differentiable at zero</List.Item>
-                  <List.Item><strong>Cross-Entropy:</strong> Smooth for probabilities > 0</List.Item>
+                  <List.Item><strong>Cross-Entropy:</strong> Smooth for probabilities &gt; 0</List.Item>
                 </List>
               </Grid.Col>
             </Grid>
@@ -202,8 +213,11 @@ def focal_loss(pred, target, alpha=1.0, gamma=2.0):
           <Paper className="p-6 bg-blue-50 mb-6">
             <Title order={3} className="mb-4">Gradient Descent Mathematics</Title>
             <Text className="mb-4">
-              Gradient descent updates parameters by moving in the direction of steepest descent: 
-              θₜ₊₁ = θₜ - η∇L(θₜ)
+              Gradient descent updates parameters by moving in the direction of steepest descent:
+            </Text>
+            <BlockMath>{`\\theta_{t+1} = \\theta_t - \\eta \\nabla_{\\theta} \\mathcal{L}(\\theta_t)`}</BlockMath>
+            <Text className="mb-4">
+              where <InlineMath>{`\\eta > 0`}</InlineMath> is the learning rate and <InlineMath>{`\\nabla_{\\theta} \\mathcal{L}`}</InlineMath> is the gradient of the loss with respect to parameters.
             </Text>
             
             <CodeBlock language="python" code={`import torch
