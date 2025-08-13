@@ -3,11 +3,11 @@ import { Container, Grid } from '@mantine/core';
 import DataInteractionPanel from "components/DataInteractionPanel";
 import CodeBlock from "components/CodeBlock";
 const Exercise0 = () => {
-  const trainDataUrl = process.env.PUBLIC_URL + "/modules/module3/exercise/module3_exercise_train.csv";
-  const testDataUrl = process.env.PUBLIC_URL + "/modules/module3/exercise/module3_exercise_test.csv";
-  const notebookUrl = process.env.PUBLIC_URL + "/modules/module3/exercise/module3_exercise0.ipynb";
-  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/module3/exercise/module3_exercise0.html";
-  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/module3/exercise/module3_exercise0.ipynb";
+  const trainDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module3/exercise/module3_exercise_train.csv";
+  const testDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module3/exercise/module3_exercise_test.csv";
+  const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module3/exercise/module3_exercise0.ipynb";
+  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module3/exercise/module3_exercise0.html";
+  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/data-science-practice/module3/exercise/module3_exercise0.ipynb";
   const metadata = {
     description: "This dataset includes various property metrics crucial for analyzing real estate sales, features, and pricing.",
     source: "Real Estate Transaction Records",

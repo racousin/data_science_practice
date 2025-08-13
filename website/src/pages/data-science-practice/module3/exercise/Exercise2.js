@@ -3,11 +3,11 @@ import { Container, Grid } from '@mantine/core';
 import DataInteractionPanel from "components/DataInteractionPanel";
 import CodeBlock from "components/CodeBlock";
 const Exercise2 = () => {
-  const trainDataUrl = process.env.PUBLIC_URL + "/modules/module3/exercise/module3_exercise2_train.csv";
-  const testDataUrl = process.env.PUBLIC_URL + "/modules/module3/exercise/module3_exercise2_test.csv";
-  const notebookUrl = process.env.PUBLIC_URL + "/modules/module3/exercise/module3_exercise2.ipynb";
-  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/module3/exercise/module3_exercise2.html";
-  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/module3/exercise/module3_exercise2.ipynb";
+  const trainDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module3/exercise/module3_exercise2_train.csv";
+  const testDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module3/exercise/module3_exercise2_test.csv";
+  const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module3/exercise/module3_exercise2.ipynb";
+  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module3/exercise/module3_exercise2.html";
+  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/data-science-practice/module3/exercise/module3_exercise2.ipynb";
   const metadata = {
     description: "This dataset includes various health metrics crucial for predicting diabetes in Pima Indian women.",
     source: "National Institute of Diabetes and Digestive and Kidney Diseases",

@@ -4,11 +4,11 @@ import DataInteractionPanel from 'components/DataInteractionPanel';
 import CodeBlock from 'components/CodeBlock';
 
 const Exercise1 = () => {
-  const trainDataUrl = process.env.PUBLIC_URL + "/modules/module7/exercise/module7_exercise_train.zip";
-  const testDataUrl = process.env.PUBLIC_URL + "/modules/module7/exercise/module7_exercise_test_features.csv";
-  const notebookUrl = process.env.PUBLIC_URL + "/modules/module7/exercise/module7_exercise1.ipynb";
-  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/module7/exercise/module7_exercise1.html";
-  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/module7/exercise/module7_exercise1.ipynb";
+  const trainDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/exercise/module7_exercise_train.zip";
+  const testDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/exercise/module7_exercise_test_features.csv";
+  const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/exercise/module7_exercise1.ipynb";
+  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/exercise/module7_exercise1.html";
+  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/data-science-practice/module7/exercise/module7_exercise1.ipynb";
   
   const metadata = {
     description: "The Fashion MNIST dataset contains grayscale images of clothing items, serving as a more challenging drop-in replacement for MNIST.",

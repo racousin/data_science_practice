@@ -4,12 +4,12 @@ import CodeBlock from "components/CodeBlock";
 import DataInteractionPanel from "components/DataInteractionPanel";
 
 const CaseStudy = () => {
-  const trainDataUrl = process.env.PUBLIC_URL + "/modules/module6/course/module6_course_train.csv";
-  const testDataUrl = process.env.PUBLIC_URL + "/modules/module6/course/module6_course_test.csv";
-  const requirementsUrl = process.env.PUBLIC_URL + "/modules/module6/course/module6_requirements.txt";
-  const notebookUrl = process.env.PUBLIC_URL + "/modules/module6/course/module6_course.ipynb";
-  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/module6/course/module6_course.html";
-  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/module6/course/module6_course.ipynb";
+  const trainDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module6/course/module6_course_train.csv";
+  const testDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module6/course/module6_course_test.csv";
+  const requirementsUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module6/course/module6_requirements.txt";
+  const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module6/course/module6_course.ipynb";
+  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module6/course/module6_course.html";
+  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/data-science-practice/module6/course/module6_course.ipynb";
 
   const metadata = {
     description: "This dataset contains information about environmental conditions and well-being scores in a workplace setting.",

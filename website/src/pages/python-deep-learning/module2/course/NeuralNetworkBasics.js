@@ -41,7 +41,7 @@ const NeuralNetworkBasics = () => {
               <Paper className="p-4 bg-green-50">
                 <Title order={4} className="mb-3">Mathematical Model</Title>
                 <Text className="mb-3">A perceptron computes:</Text>
-                <BlockMath>y = f(\sum_{i=1}^n w_i x_i + b)</BlockMath>
+                <BlockMath>{`y = f(\\sum_{i=1}^n w_i x_i + b)`}</BlockMath>
                 <Text className="mb-3">Where:</Text>
                 <List size="sm">
                   <List.Item><InlineMath>x_i</InlineMath> = input features</List.Item>

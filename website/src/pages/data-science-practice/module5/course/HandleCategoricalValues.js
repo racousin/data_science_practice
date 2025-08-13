@@ -390,11 +390,11 @@ model.fit(train_pool)
       </Stack>
       <div id="notebook-example"></div>
       <DataInteractionPanel
-        dataUrl="/modules/module5/course/module5_course_handling_categorical.csv"
-        notebookUrl="/modules/module5/course/handling_categorical.ipynb"
-        notebookHtmlUrl="/modules/module5/course/handling_categorical.html"
-        notebookColabUrl="/website/public/modules/module5/course/handling_categorical.ipynb"
-        requirementsUrl="/modules/module5/course/module5_requirements.txt"
+        dataUrl="/modules/data-science-practice/module5/course/module5_course_handling_categorical.csv"
+        notebookUrl="/modules/data-science-practice/module5/course/handling_categorical.ipynb"
+        notebookHtmlUrl="/modules/data-science-practice/module5/course/handling_categorical.html"
+        notebookColabUrl="/website/public/modules/data-science-practice/module5/course/handling_categorical.ipynb"
+        requirementsUrl="/modules/data-science-practice/module5/course/module5_requirements.txt"
         metadata={metadata}
       />
     </Container>

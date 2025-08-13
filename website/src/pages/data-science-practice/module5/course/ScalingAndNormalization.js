@@ -237,11 +237,11 @@ print(X_normalized)
       </Stack>
       <div id="notebook-example"></div>
       <DataInteractionPanel
-        dataUrl="/modules/module5/course/module5_course_scaling_and_normalization"
-        notebookUrl="/modules/module5/course/scaling_and_normalization.ipynb"
-        notebookHtmlUrl="/modules/module5/course/scaling_and_normalization.html"
-        notebookColabUrl="/website/public/modules/module5/course/scaling_and_normalization.ipynb"
-        requirementsUrl="/modules/module5/course/module5_requirements.txt"
+        dataUrl="/modules/data-science-practice/module5/course/module5_course_scaling_and_normalization"
+        notebookUrl="/modules/data-science-practice/module5/course/scaling_and_normalization.ipynb"
+        notebookHtmlUrl="/modules/data-science-practice/module5/course/scaling_and_normalization.html"
+        notebookColabUrl="/website/public/modules/data-science-practice/module5/course/scaling_and_normalization.ipynb"
+        requirementsUrl="/modules/data-science-practice/module5/course/module5_requirements.txt"
         metadata={metadata}
       />
     </Container>

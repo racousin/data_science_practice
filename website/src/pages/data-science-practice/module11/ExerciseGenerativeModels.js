@@ -9,9 +9,9 @@ const ExerciseGenerativeModels = () => {
     // Add links to other exercises as needed
   ];const module = 11;
 
-  const notebookUrl = process.env.PUBLIC_URL + "/modules/module11/TP_gen.ipynb";
-  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/module11/TP_gen.html";
-  const notebookColabUrl = process.env.PUBLIC_URL + "/website/public/modules/module11/TP_gen.ipynb";
+  const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module11/TP_gen.ipynb";
+  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module11/TP_gen.html";
+  const notebookColabUrl = process.env.PUBLIC_URL + "/website/public/modules/data-science-practice/module11/TP_gen.ipynb";
 
   return (
     <ModuleFrame

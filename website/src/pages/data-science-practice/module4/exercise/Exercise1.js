@@ -5,11 +5,11 @@ import DataInteractionPanel from 'components/DataInteractionPanel';
 import CodeBlock from 'components/CodeBlock';
 
 const Exercise1 = () => {
-  const trainDataUrl = process.env.PUBLIC_URL + "/modules/module4/exercise/module4_exercise_train.zip";
-  const testDataUrl = process.env.PUBLIC_URL + "/modules/module4/exercise/Neighborhood_Market_data.csv";
-  const notebookUrl = process.env.PUBLIC_URL + "/modules/module4/exercise/module4_exercise1.ipynb";
-  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/module4/exercise/module4_exercise1.html";
-  const notebookColabUrl = process.env.PUBLIC_URL + "/modules/module4/exercise/module4_exercise1.ipynb";
+  const trainDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module4/exercise/module4_exercise_train.zip";
+  const testDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module4/exercise/Neighborhood_Market_data.csv";
+  const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module4/exercise/module4_exercise1.ipynb";
+  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module4/exercise/module4_exercise1.html";
+  const notebookColabUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module4/exercise/module4_exercise1.ipynb";
 
   const metadata = {
     description: "This dataset contains sales information from multiple stores to predict sales for Neighborhood_Market.",

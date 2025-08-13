@@ -5,11 +5,11 @@ import DataInteractionPanel from "components/DataInteractionPanel";
 import CodeBlock from "components/CodeBlock";
 
 const Exercise1 = () => {
-  const trainDataUrl = process.env.PUBLIC_URL + "/modules/module6/exercise/module6_exercise_train.csv";
-  const testDataUrl = process.env.PUBLIC_URL + "/modules/module6/exercise/module6_exercise_test.csv";
-  const notebookUrl = process.env.PUBLIC_URL + "/modules/module6/exercise/module6_exercise.ipynb";
-  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/module6/exercise/module6_exercise.html";
-  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/module6/exercise/module6_exercise.ipynb";
+  const trainDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module6/exercise/module6_exercise_train.csv";
+  const testDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module6/exercise/module6_exercise_test.csv";
+  const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module6/exercise/module6_exercise.ipynb";
+  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module6/exercise/module6_exercise.html";
+  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/data-science-practice/module6/exercise/module6_exercise.ipynb";
 
   const metadata = {
     description: "This dataset represents market movements at 20-minute intervals throughout the trading day, with the goal of predicting the end-of-day return.",

@@ -5,19 +5,19 @@ import CodeBlock from "components/CodeBlock";
 const Exercise1 = () => {
   const trainDataUrl =
     process.env.PUBLIC_URL +
-    "/modules/module12/exercise/module11_exercise_train.csv";
+    "/modules/data-science-practice/module12/exercise/module11_exercise_train.csv";
   const testDataUrl =
     process.env.PUBLIC_URL +
-    "/modules/module12/exercise/module11_exercise_test.csv";
+    "/modules/data-science-practice/module12/exercise/module11_exercise_test.csv";
   const notebookUrl =
     process.env.PUBLIC_URL +
-    "/modules/module12/exercise/module11_exercise.ipynb";
+    "/modules/data-science-practice/module12/exercise/module11_exercise.ipynb";
   const notebookHtmlUrl =
     process.env.PUBLIC_URL +
-    "/modules/module12/exercise/module11_exercise.html";
+    "/modules/data-science-practice/module12/exercise/module11_exercise.html";
   const notebookColabUrl =
     process.env.PUBLIC_URL +
-    "website/public/modules/module12/exercise/module11_exercise.ipynb";
+    "website/public/modules/data-science-practice/module12/exercise/module11_exercise.ipynb";
   const metadata = {
     description:
       "This dataset includes various property metrics crucial for analyzing real estate sales, features, and pricing.",

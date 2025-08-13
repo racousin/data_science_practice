@@ -5,19 +5,19 @@ import DataInteractionPanel from "components/DataInteractionPanel";
 
 const HandleMissingValues = () => {
   const requirementsUrl =
-    process.env.PUBLIC_URL + "/modules/module5/course/module5_requirements.txt";
+    process.env.PUBLIC_URL + "/modules/data-science-practice/module5/course/module5_requirements.txt";
   const dataUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/module5_course_handling_missing_values";
+    "/modules/data-science-practice/module5/course/module5_course_handling_missing_values";
   const notebookUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/Handling_Missing_Values.ipynb";
+    "/modules/data-science-practice/module5/course/Handling_Missing_Values.ipynb";
   const notebookHtmlUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/Handling_Missing_Values.html";
+    "/modules/data-science-practice/module5/course/Handling_Missing_Values.html";
   const notebookColabUrl =
     process.env.PUBLIC_URL +
-    "website/public/modules/module5/course/Handling_Missing_Values.ipynb";
+    "website/public/modules/data-science-practice/module5/course/Handling_Missing_Values.ipynb";
   const metadata = {
     description:
       "This dataset contains operational metrics from wind turbines, capturing various aspects of turbine performance and environmental conditions.",

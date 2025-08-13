@@ -219,12 +219,12 @@ df['column_imputed'] = impute_outliers(df['column'], method='median')
       </Stack>
       <div id="notebook-example"></div>
       <DataInteractionPanel
-        trainDataUrl="/modules/module5/course/module5_course_handling_outliers_train.csv"
-        testDataUrl="/modules/module5/course/module5_course_handling_outliers_test.csv"
-        notebookUrl="/modules/module5/course/handling_outliers.ipynb"
-        notebookHtmlUrl="/modules/module5/course/handling_outliers.html"
-        notebookColabUrl="/website/public/modules/module5/course/handling_outliers.ipynb"
-        requirementsUrl="/modules/module5/course/module5_requirements.txt"
+        trainDataUrl="/modules/data-science-practice/module5/course/module5_course_handling_outliers_train.csv"
+        testDataUrl="/modules/data-science-practice/module5/course/module5_course_handling_outliers_test.csv"
+        notebookUrl="/modules/data-science-practice/module5/course/handling_outliers.ipynb"
+        notebookHtmlUrl="/modules/data-science-practice/module5/course/handling_outliers.html"
+        notebookColabUrl="/website/public/modules/data-science-practice/module5/course/handling_outliers.ipynb"
+        requirementsUrl="/modules/data-science-practice/module5/course/module5_requirements.txt"
         metadata={metadata}
       />
     </Container>

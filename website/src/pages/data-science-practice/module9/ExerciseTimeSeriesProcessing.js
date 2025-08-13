@@ -9,9 +9,9 @@ const ExerciseTimeSeriesProcessing = () => {
     // Add links to other exercises as needed
   ];const module = 9;
 
-  const notebookUrl = process.env.PUBLIC_URL + "/modules/module9/TP_ts.ipynb";
-  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/module9/TP_ts.html";
-  const notebookColabUrl = process.env.PUBLIC_URL + "/website/public/modules/module9/TP_ts.ipynb";
+  const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module9/TP_ts.ipynb";
+  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module9/TP_ts.html";
+  const notebookColabUrl = process.env.PUBLIC_URL + "/website/public/modules/data-science-practice/module9/TP_ts.ipynb";
 
   return (
     <ModuleFrame

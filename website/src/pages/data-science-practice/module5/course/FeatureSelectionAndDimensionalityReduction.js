@@ -7,19 +7,19 @@ import DataInteractionPanel from 'components/DataInteractionPanel';
 
 const FeatureSelectionAndDimensionalityReduction = () => {
   const requirementsUrl =
-    process.env.PUBLIC_URL + "/modules/module5/course/module5_requirements.txt";
+    process.env.PUBLIC_URL + "/modules/data-science-practice/module5/course/module5_requirements.txt";
   const dataUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/module5_course_feature_selection_and_dimensionality_reduction.csv";
+    "/modules/data-science-practice/module5/course/module5_course_feature_selection_and_dimensionality_reduction.csv";
   const notebookUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/feature_selection_and_dimensionality_reduction.ipynb";
+    "/modules/data-science-practice/module5/course/feature_selection_and_dimensionality_reduction.ipynb";
   const notebookHtmlUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/feature_selection_and_dimensionality_reduction.html";
+    "/modules/data-science-practice/module5/course/feature_selection_and_dimensionality_reduction.html";
   const notebookColabUrl =
     process.env.PUBLIC_URL +
-    "website/public/modules/module5/course/feature_selection_and_dimensionality_reduction.ipynb";
+    "website/public/modules/data-science-practice/module5/course/feature_selection_and_dimensionality_reduction.ipynb";
 
   const metadata = {
     description:
@@ -411,11 +411,11 @@ print("Explained variance ratio:", lda.explained_variance_ratio_)
       </Stack>
       <div id="notebook-example"></div>
       <DataInteractionPanel
-        dataUrl="/modules/module5/course/module5_course_feature_selection_and_dimensionality_reduction.csv"
-        notebookUrl="/modules/module5/course/feature_selection_and_dimensionality_reduction.ipynb"
-        notebookHtmlUrl="/modules/module5/course/feature_selection_and_dimensionality_reduction.html"
-        notebookColabUrl="/website/public/modules/module5/course/feature_selection_and_dimensionality_reduction.ipynb"
-        requirementsUrl="/modules/module5/course/module5_requirements.txt"
+        dataUrl="/modules/data-science-practice/module5/course/module5_course_feature_selection_and_dimensionality_reduction.csv"
+        notebookUrl="/modules/data-science-practice/module5/course/feature_selection_and_dimensionality_reduction.ipynb"
+        notebookHtmlUrl="/modules/data-science-practice/module5/course/feature_selection_and_dimensionality_reduction.html"
+        notebookColabUrl="/website/public/modules/data-science-practice/module5/course/feature_selection_and_dimensionality_reduction.ipynb"
+        requirementsUrl="/modules/data-science-practice/module5/course/module5_requirements.txt"
         metadata={metadata}
       />
     </Container>

@@ -5,20 +5,20 @@ import DataInteractionPanel from "components/DataInteractionPanel";
 
 const HandleDuplicates = () => {
   const requirementsUrl =
-    process.env.PUBLIC_URL + "/modules/module5/course/module5_requirements.txt";
+    process.env.PUBLIC_URL + "/modules/data-science-practice/module5/course/module5_requirements.txt";
   const trainDataUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/module5_course_handling_duplicate_train.csv";
+    "/modules/data-science-practice/module5/course/module5_course_handling_duplicate_train.csv";
   const testDataUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/module5_course_handling_duplicate_test.csv";
+    "/modules/data-science-practice/module5/course/module5_course_handling_duplicate_test.csv";
   const notebookUrl =
-    process.env.PUBLIC_URL + "/modules/module5/course/handling_duplicate.ipynb";
+    process.env.PUBLIC_URL + "/modules/data-science-practice/module5/course/handling_duplicate.ipynb";
   const notebookHtmlUrl =
-    process.env.PUBLIC_URL + "/modules/module5/course/handling_duplicate.html";
+    process.env.PUBLIC_URL + "/modules/data-science-practice/module5/course/handling_duplicate.html";
   const notebookColabUrl =
     process.env.PUBLIC_URL +
-    "website/public/modules/module5/course/handling_duplicate.ipynb";
+    "website/public/modules/data-science-practice/module5/course/handling_duplicate.ipynb";
   const metadata = {
     description:
       "This dataset contains detailed meteorological measurements from various weather stations, capturing daily climatic conditions aimed at aiding weather forecasting and climatic research.",

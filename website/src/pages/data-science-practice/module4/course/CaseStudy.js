@@ -6,18 +6,18 @@ import CodeBlock from 'components/CodeBlock';
 
 const CaseStudy = () => {
   const trainDataUrl =
-    process.env.PUBLIC_URL + "/modules/module4/course/module4_course_train.zip";
+    process.env.PUBLIC_URL + "/modules/data-science-practice/module4/course/module4_course_train.zip";
   const testDataUrl =
-    process.env.PUBLIC_URL + "/modules/module4/course/StoreE_data.csv";
+    process.env.PUBLIC_URL + "/modules/data-science-practice/module4/course/StoreE_data.csv";
   const requirementsUrl =
-    process.env.PUBLIC_URL + "/modules/module4/course/module4_requirements.txt";
+    process.env.PUBLIC_URL + "/modules/data-science-practice/module4/course/module4_requirements.txt";
   const notebookUrl =
-    process.env.PUBLIC_URL + "/modules/module4/course/module4_course_model.ipynb";
+    process.env.PUBLIC_URL + "/modules/data-science-practice/module4/course/module4_course_model.ipynb";
   const notebookHtmlUrl =
-    process.env.PUBLIC_URL + "/modules/module4/course/module4_course_model.html";
+    process.env.PUBLIC_URL + "/modules/data-science-practice/module4/course/module4_course_model.html";
   const notebookColabUrl =
     process.env.PUBLIC_URL +
-    "website/public/modules/module4/course/module4_course_model.ipynb";
+    "website/public/modules/data-science-practice/module4/course/module4_course_model.ipynb";
   const metadata = {
     description: "This dataset contains sales information from multiple stores to predict sales for StoreE.",
     source: "Multiple store sales records",

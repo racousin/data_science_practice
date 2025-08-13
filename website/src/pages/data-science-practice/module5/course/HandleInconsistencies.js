@@ -5,19 +5,19 @@ import DataInteractionPanel from "components/DataInteractionPanel";
 
 const HandleInconsistencies = () => {
   const requirementsUrl =
-    process.env.PUBLIC_URL + "/modules/module5/course/module5_requirements.txt";
+    process.env.PUBLIC_URL + "/modules/data-science-practice/module5/course/module5_requirements.txt";
   const dataUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/module5_course_handle_inconsistencies.csv";
+    "/modules/data-science-practice/module5/course/module5_course_handle_inconsistencies.csv";
   const notebookUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/handle_inconsistencies.ipynb";
+    "/modules/data-science-practice/module5/course/handle_inconsistencies.ipynb";
   const notebookHtmlUrl =
     process.env.PUBLIC_URL +
-    "/modules/module5/course/handle_inconsistencies.html";
+    "/modules/data-science-practice/module5/course/handle_inconsistencies.html";
   const notebookColabUrl =
     process.env.PUBLIC_URL +
-    "website/public/modules/module5/course/handle_inconsistencies.ipynb";
+    "website/public/modules/data-science-practice/module5/course/handle_inconsistencies.ipynb";
   const metadata = {
     description:
       "This dataset contains demographic information including state, country, age, and date.",

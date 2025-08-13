@@ -6,11 +6,11 @@ import CodeBlock from "components/CodeBlock";
 
 
 const Exercise1 = () => {
-  const trainDataUrl = process.env.PUBLIC_URL + "/modules/module5/exercise/module5_exercise_train.csv";
-  const testDataUrl = process.env.PUBLIC_URL + "/modules/module5/exercise/module5_exercise_test.csv";
-  const notebookUrl = process.env.PUBLIC_URL + "/modules/module5/exercise/module5_exercise.ipynb";
-  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/module5/exercise/module5_exercise.html";
-  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/module5/exercise/module5_exercise.ipynb";
+  const trainDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module5/exercise/module5_exercise_train.csv";
+  const testDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module5/exercise/module5_exercise_test.csv";
+  const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module5/exercise/module5_exercise.ipynb";
+  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module5/exercise/module5_exercise.html";
+  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/data-science-practice/module5/exercise/module5_exercise.ipynb";
 
   const metadata = {
     description: "This dataset represents aggregated daily electricity consumption in a major office zone in the United States from January 2015 to December 2019.",

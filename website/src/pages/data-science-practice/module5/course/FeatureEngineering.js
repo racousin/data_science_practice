@@ -393,11 +393,11 @@ print(df)
       </Stack>
       <div id="notebook-example"></div>
       <DataInteractionPanel
-        dataUrl="/modules/module5/course/module5_course_feature_engineering.csv"
-        notebookUrl="/modules/module5/course/feature_engineering.ipynb"
-        notebookHtmlUrl="/modules/module5/course/feature_engineering.html"
-        notebookColabUrl="/website/public/modules/module5/course/feature_engineering.ipynb"
-        requirementsUrl="/modules/module5/course/module5_requirements.txt"
+        dataUrl="/modules/data-science-practice/module5/course/module5_course_feature_engineering.csv"
+        notebookUrl="/modules/data-science-practice/module5/course/feature_engineering.ipynb"
+        notebookHtmlUrl="/modules/data-science-practice/module5/course/feature_engineering.html"
+        notebookColabUrl="/website/public/modules/data-science-practice/module5/course/feature_engineering.ipynb"
+        requirementsUrl="/modules/data-science-practice/module5/course/module5_requirements.txt"
         metadata={metadata}
       />
     </Container>

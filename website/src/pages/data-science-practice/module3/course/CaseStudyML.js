@@ -4,18 +4,18 @@ import DataInteractionPanel from "components/DataInteractionPanel";
 import CodeBlock from "components/CodeBlock";
 const CaseStudy = () => {
   const trainDataUrl =
-    process.env.PUBLIC_URL + "/modules/module3/course/module3_course_train.csv";
+    process.env.PUBLIC_URL + "/modules/data-science-practice/module3/course/module3_course_train.csv";
   const testDataUrl =
-    process.env.PUBLIC_URL + "/modules/module3/course/module3_course_test.csv";
+    process.env.PUBLIC_URL + "/modules/data-science-practice/module3/course/module3_course_test.csv";
   const requirementsUrl =
-    process.env.PUBLIC_URL + "/modules/module3/course/module3_requirements.txt";
+    process.env.PUBLIC_URL + "/modules/data-science-practice/module3/course/module3_requirements.txt";
   const notebookUrl =
-    process.env.PUBLIC_URL + "/modules/module3/course/module3_course_model.ipynb";
+    process.env.PUBLIC_URL + "/modules/data-science-practice/module3/course/module3_course_model.ipynb";
   const notebookHtmlUrl =
-    process.env.PUBLIC_URL + "/modules/module3/course/module3_course_model.html";
+    process.env.PUBLIC_URL + "/modules/data-science-practice/module3/course/module3_course_model.html";
   const notebookColabUrl =
     process.env.PUBLIC_URL +
-    "website/public/modules/module3/course/module3_course_model.ipynb";
+    "website/public/modules/data-science-practice/module3/course/module3_course_model.ipynb";
   const metadata = {
     description:
       "This dataset contains information about passengers aboard the Titanic, including various demographic and travel details, as well as their survival status.",
