@@ -21,7 +21,6 @@ import {
   IconRobot,
   IconBrandDocker,
   IconCloud,
-  IconCube,
   IconMathFunction,
   IconCpu,
   IconCode
@@ -219,130 +218,85 @@ export const exerciseContentData = {
 // PyTorch course content links for modules with hierarchical structure
 export const pytorchCourseContentData = {
   'module1': [
-    { to: '/Introduction', label: 'Introduction to PyTorch', subLinks: [
+    { to: '/deep-learning-introduction', label: 'Deep Learning Introduction', subLinks: [
+      { id: 'what-is-deep-learning', label: 'What is Deep Learning?' },
       { id: 'pytorch-ecosystem', label: 'PyTorch Ecosystem Overview' },
-      { id: 'installation-setup', label: 'Installation & Environment Setup' },
-      { id: 'first-tensor', label: 'Your First Tensor Operations' }
+      { id: 'comparison-frameworks', label: 'Comparison with Other Frameworks' }
     ]},
-    { to: '/tensor-fundamentals', label: 'Tensor Fundamentals', subLinks: [
-      { id: 'tensor-creation', label: 'Tensor Creation Methods' },
-      { id: 'data-types', label: 'Data Types & Precision' },
-      { id: 'tensor-attributes', label: 'Tensor Attributes & Properties' },
-      { id: 'indexing-slicing', label: 'Indexing & Slicing' }
+    { to: '/mathematical-prerequisites', label: 'Mathematical Prerequisites', subLinks: [
+      { id: 'model-parameters', label: 'Model Parameters & Parameter Spaces' },
+      { id: 'loss-functions', label: 'Loss Functions from Mathematical Perspective' },
+      { id: 'gradient-descent', label: 'Gradient Descent Variants' },
+      { id: 'convergence-theory', label: 'Convergence Theory Basics' }
     ]},
-    { to: '/tensor-operations', label: 'Tensor Operations', subLinks: [
-      { id: 'element-wise-ops', label: 'Element-wise Operations' },
-      { id: 'reduction-ops', label: 'Reduction Operations' },
-      { id: 'broadcasting', label: 'Broadcasting Mechanics' },
-      { id: 'tensor-manipulation', label: 'Shape Manipulation' }
-    ]},
-    { to: '/linear-algebra', label: 'Linear Algebra Operations', subLinks: [
-      { id: 'matrix-multiplication', label: 'Matrix Multiplication Variants' },
-      { id: 'decompositions', label: 'Matrix Decompositions' },
-      { id: 'eigenvalues', label: 'Eigenvalues & Eigenvectors' },
-      { id: 'norms', label: 'Vector & Matrix Norms' }
-    ]},
-    { to: '/memory-management', label: 'Memory Management', subLinks: [
-      { id: 'storage-views', label: 'Storage & Views' },
-      { id: 'contiguous-tensors', label: 'Contiguous vs Non-contiguous' },
-      { id: 'memory-layout', label: 'Memory Layout & Strides' },
-      { id: 'in-place-operations', label: 'In-place Operations' }
-    ]},
-    { to: '/advanced-indexing', label: 'Advanced Indexing', subLinks: [
-      { id: 'fancy-indexing', label: 'Fancy Indexing' },
-      { id: 'boolean-indexing', label: 'Boolean Indexing' },
-      { id: 'gather-scatter', label: 'Gather & Scatter Operations' },
-      { id: 'masked-operations', label: 'Masked Operations' }
+    { to: '/tensor-operations-computational-graphs', label: 'Tensor Operations & Computational Graphs', subLinks: [
+      { id: 'tensor-algebra', label: 'Tensor Algebra and Operations' },
+      { id: 'broadcasting', label: 'Broadcasting Mechanics & Memory' },
+      { id: 'storage-views', label: 'Storage, Views & Memory Layout' },
+      { id: 'computational-graphs', label: 'Introduction to Computational Graphs' }
     ]}
   ],
   'module2': [
-    { to: '/neural-network-basics', label: 'Neural Network Basics', subLinks: [
-      { id: 'perceptron', label: 'The Perceptron' },
-      { id: 'multilayer', label: 'Multilayer Perceptrons' },
-      { id: 'activation-functions', label: 'Activation Functions' },
-      { id: 'loss-functions', label: 'Loss Functions' },
-      { id: 'backpropagation', label: 'Backpropagation Algorithm' }
+    { to: '/autograd-deep-dive', label: 'Autograd Deep Dive', subLinks: [
+      { id: 'forward-reverse-mode', label: 'Forward & Reverse Mode Differentiation' },
+      { id: 'computational-graph-construction', label: 'Computational Graph Construction' },
+      { id: 'chain-rule-backpropagation', label: 'Chain Rule & Backpropagation Mathematics' },
+      { id: 'gradient-accumulation', label: 'Gradient Accumulation & Zeroing' }
     ]},
-    { to: '/pytorch-nn-module', label: 'PyTorch nn.Module', subLinks: [
-      { id: 'module-basics', label: 'Module Basics' },
-      { id: 'custom-layers', label: 'Creating Custom Layers' },
-      { id: 'parameter-management', label: 'Parameter Management' },
-      { id: 'forward-method', label: 'Forward Method' },
-      { id: 'model-composition', label: 'Model Composition' }
+    { to: '/advanced-gradient-mechanics', label: 'Advanced Gradient Mechanics', subLinks: [
+      { id: 'gradient-flow', label: 'Gradient Flow & Vanishing/Exploding' },
+      { id: 'gradient-clipping', label: 'Gradient Clipping & Normalization' },
+      { id: 'higher-order-derivatives', label: 'Higher-order Derivatives & Hessians' },
+      { id: 'custom-backward-passes', label: 'Custom Backward Passes' }
     ]},
-    { to: '/training-neural-networks', label: 'Training Neural Networks', subLinks: [
-      { id: 'training-loop', label: 'The Training Loop' },
-      { id: 'optimizers', label: 'Optimizers' },
-      { id: 'learning-rate-scheduling', label: 'Learning Rate Scheduling' },
-      { id: 'regularization', label: 'Regularization Techniques' },
-      { id: 'monitoring-training', label: 'Monitoring Training' }
-    ]},
-    { to: '/advanced-architectures', label: 'Advanced Architectures', subLinks: [
-      { id: 'residual-networks', label: 'Residual Networks' },
-      { id: 'attention-mechanisms', label: 'Attention Mechanisms' },
-      { id: 'normalization', label: 'Normalization Techniques' },
-      { id: 'skip-connections', label: 'Skip Connections' },
-      { id: 'architectural-patterns', label: 'Architectural Patterns' }
+    { to: '/optimization-algorithms', label: 'Optimization Algorithms', subLinks: [
+      { id: 'modern-optimizers', label: 'Mathematical Foundations of Modern Optimizers' },
+      { id: 'adam-rmsprop-adagrad', label: 'Adam, RMSprop, AdaGrad Derivations' },
+      { id: 'learning-rate-scheduling', label: 'Learning Rate Scheduling Strategies' },
+      { id: 'second-order-optimization', label: 'Second-order Optimization Methods' }
     ]}
   ],
   'module3': [
-    { to: '/convolutional-networks', label: 'Convolutional Neural Networks', subLinks: [
-      { id: 'convolution-operation', label: 'Convolution Operation' },
-      { id: 'cnn-architectures', label: 'CNN Architectures' },
-      { id: 'pooling-layers', label: 'Pooling Layers' },
-      { id: 'transfer-learning', label: 'Transfer Learning' },
-      { id: 'computer-vision', label: 'Computer Vision Applications' }
+    { to: '/mlp-architecture-components', label: 'MLP Architecture & Components', subLinks: [
+      { id: 'multilayer-perceptron', label: 'Multilayer Perceptron Mathematics' },
+      { id: 'universal-approximation', label: 'Universal Approximation Theorem' },
+      { id: 'activation-functions', label: 'Activation Functions: Mathematical Properties' },
+      { id: 'weight-initialization', label: 'Weight Initialization Theory' },
+      { id: 'regularization-techniques', label: 'Regularization Techniques (Dropout, L2, Batch Norm)' }
     ]},
-    { to: '/recurrent-networks', label: 'Recurrent Neural Networks', subLinks: [
-      { id: 'rnn-basics', label: 'RNN Basics' },
-      { id: 'lstm-gru', label: 'LSTM and GRU' },
-      { id: 'sequence-to-sequence', label: 'Sequence-to-Sequence Models' },
-      { id: 'attention-mechanism', label: 'Attention Mechanisms' },
-      { id: 'nlp-applications', label: 'NLP Applications' }
+    { to: '/data-pipeline-training-loop', label: 'Data Pipeline & Training Loop', subLinks: [
+      { id: 'dataloader-architecture', label: 'DataLoader Architecture & Multiprocessing' },
+      { id: 'batch-sampling', label: 'Batch Sampling Strategies' },
+      { id: 'training-dynamics', label: 'Training Dynamics & Loss Landscapes' },
+      { id: 'early-stopping', label: 'Early Stopping & Convergence Criteria' }
     ]},
-    { to: '/transformers', label: 'Transformer Architecture', subLinks: [
-      { id: 'self-attention', label: 'Self-Attention' },
-      { id: 'multi-head-attention', label: 'Multi-Head Attention' },
-      { id: 'positional-encoding', label: 'Positional Encoding' },
-      { id: 'transformer-blocks', label: 'Transformer Blocks' },
-      { id: 'pre-trained-models', label: 'Pre-trained Models' }
-    ]},
-    { to: '/generative-models', label: 'Generative Models', subLinks: [
-      { id: 'autoencoders', label: 'Autoencoders' },
-      { id: 'variational-autoencoders', label: 'Variational Autoencoders' },
-      { id: 'gans', label: 'Generative Adversarial Networks' },
-      { id: 'diffusion-models', label: 'Diffusion Models' },
-      { id: 'applications', label: 'Applications' }
+    { to: '/monitoring-visualization', label: 'Monitoring & Visualization', subLinks: [
+      { id: 'tensorboard-integration', label: 'TensorBoard Integration' },
+      { id: 'metrics-visualization', label: 'Metrics Visualization Strategies' },
+      { id: 'model-interpretability', label: 'Model Interpretability Basics' },
+      { id: 'debugging-networks', label: 'Debugging Neural Networks' },
+      { id: 'checkpoint-saving', label: 'Checkpoint Saving/Loading Strategies' }
     ]}
   ],
   'module4': [
+    { to: '/device-management-resources', label: 'Device Management & Resources', subLinks: [
+      { id: 'gpu-architecture', label: 'GPU Architecture for Deep Learning' },
+      { id: 'memory-management', label: 'Memory Management Strategies' },
+      { id: 'flops-memory-calculation', label: 'Calculate FLOPs & Memory Requirements' },
+      { id: 'mixed-precision', label: 'Mixed Precision Training Mathematics' }
+    ]},
     { to: '/model-optimization', label: 'Model Optimization', subLinks: [
-      { id: 'quantization', label: 'Quantization' },
-      { id: 'pruning', label: 'Model Pruning' },
-      { id: 'knowledge-distillation', label: 'Knowledge Distillation' },
-      { id: 'onnx', label: 'ONNX Export' },
-      { id: 'torchscript', label: 'TorchScript' }
+      { id: 'model-compression', label: 'Model Compression Techniques' },
+      { id: 'computational-complexity', label: 'Computational Complexity Analysis' },
+      { id: 'torchscript-serialization', label: 'TorchScript & Model Serialization' },
+      { id: 'jit-compilation', label: 'JIT Compilation Basics' }
     ]},
-    { to: '/deployment-strategies', label: 'Deployment Strategies', subLinks: [
-      { id: 'serving-models', label: 'Model Serving' },
-      { id: 'batch-inference', label: 'Batch Inference' },
-      { id: 'real-time-inference', label: 'Real-time Inference' },
-      { id: 'edge-deployment', label: 'Edge Deployment' },
-      { id: 'cloud-deployment', label: 'Cloud Deployment' }
-    ]},
-    { to: '/monitoring-maintenance', label: 'Monitoring and Maintenance', subLinks: [
-      { id: 'model-monitoring', label: 'Model Monitoring' },
-      { id: 'performance-metrics', label: 'Performance Metrics' },
-      { id: 'data-drift', label: 'Data Drift Detection' },
-      { id: 'model-versioning', label: 'Model Versioning' },
-      { id: 'continuous-integration', label: 'CI/CD for ML' }
-    ]},
-    { to: '/best-practices', label: 'Production Best Practices', subLinks: [
-      { id: 'experiment-tracking', label: 'Experiment Tracking' },
-      { id: 'reproducibility', label: 'Reproducibility' },
-      { id: 'testing-ml', label: 'Testing ML Models' },
-      { id: 'security', label: 'Security Considerations' },
-      { id: 'ethics', label: 'Ethics and Fairness' }
+    { to: '/advanced-pytorch-architecture', label: 'Advanced PyTorch & Architecture Overview', subLinks: [
+      { id: 'hooks-applications', label: 'Hooks & Their Applications' },
+      { id: 'dynamic-computation-graphs', label: 'Dynamic Computation Graphs' },
+      { id: 'cnn-convolution-mathematics', label: 'CNN Convolution Mathematics (Brief)' },
+      { id: 'attention-mechanism-mathematics', label: 'Attention Mechanism Mathematics (Brief)' },
+      { id: 'custom-cpp-extensions', label: 'Custom C++ Extensions Overview' }
     ]}
   ]
 };
@@ -350,20 +304,24 @@ export const pytorchCourseContentData = {
 // PyTorch exercise content data
 export const pytorchExerciseContentData = {
   'module1': [
-    { to: '/exercise1', label: 'Exercise 1: Tensor Basics' },
-    { to: '/exercise2', label: 'Exercise 2: PyTorch Operations' }
+    { to: '/exercise1', label: 'Exercise 1.1: Environment & Basics' },
+    { to: '/exercise2', label: 'Exercise 1.2: Mathematical Implementation' },
+    { to: '/exercise3', label: 'Exercise 1.3: Tensor Mastery' }
   ],
   'module2': [
-    { to: '/exercise1', label: 'Exercise 1: Building Neural Networks' },
-    { to: '/exercise2', label: 'Exercise 2: Training Networks' }
+    { to: '/exercise1', label: 'Exercise 2.1: Autograd Exploration' },
+    { to: '/exercise2', label: 'Exercise 2.2: Gradient Analysis' },
+    { to: '/exercise3', label: 'Exercise 2.3: Optimizer Implementation' }
   ],
   'module3': [
-    { to: '/exercise1', label: 'Exercise 1: Advanced Architectures' },
-    { to: '/exercise2', label: 'Exercise 2: Specialized Networks' }
+    { to: '/exercise1', label: 'Exercise 3.1: Build Custom MLP' },
+    { to: '/exercise2', label: 'Exercise 3.2: Complete Training Pipeline' },
+    { to: '/exercise3', label: 'Exercise 3.3: Data & Optimization' }
   ],
   'module4': [
-    { to: '/exercise1', label: 'Exercise 1: Model Deployment' },
-    { to: '/exercise2', label: 'Exercise 2: Production Monitoring' }
+    { to: '/exercise1', label: 'Exercise 4.1: Performance Profiling' },
+    { to: '/exercise2', label: 'Exercise 4.2: Advanced Features' },
+    { to: '/exercise3', label: 'Exercise 4.3: Mini-Project' }
   ]
 };
 
@@ -394,10 +352,10 @@ export const coursesData = {
   'python-deep-learning': {
     name: 'Python for Deep Learning (PyTorch)',
     modules: [
-      { id: 'module1', name: 'PyTorch Core Components & Tensor Mathematics', icon: IconCube },
-      { id: 'module2', name: 'Automatic Differentiation & Gradient Mechanics', icon: IconMathFunction },
-      { id: 'module3', name: 'Infrastructure & Performance Optimization', icon: IconCpu },
-      { id: 'module4', name: 'Advanced PyTorch Features & Custom Operations', icon: IconCode },
+      { id: 'module1', name: 'Foundations & Mathematical Framework', icon: IconMathFunction },
+      { id: 'module2', name: 'Automatic Differentiation & Optimization', icon: IconCpu },
+      { id: 'module3', name: 'Neural Networks & Training Infrastructure', icon: IconBrain },
+      { id: 'module4', name: 'Performance Optimization & Advanced Features', icon: IconCode },
     ]
   },
   'data-science-practice': {
@@ -538,6 +496,7 @@ const SideNavigation = ({ onClose }) => {
         <Text fw={700} size="lg" mb="md">
           {courseInfo.name}
         </Text>
+        
         
         {/* Back to course overview */}
         <NavLink

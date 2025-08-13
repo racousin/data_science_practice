@@ -7,51 +7,36 @@ import { useLocation } from "react-router-dom";
 const CourseNeuralNetworks = () => {
   const courseLinks = [
     {
-      to: "/neural-network-basics",
-      label: "Neural Network Basics",
-      component: lazy(() => import("./course/NeuralNetworkBasics")),
+      to: "/autograd-deep-dive",
+      label: "Autograd Deep Dive",
+      component: lazy(() => import("./course/AutogradDeepDive")),
       subLinks: [
-        { id: "perceptron", label: "The Perceptron" },
-        { id: "multilayer", label: "Multilayer Perceptrons" },
-        { id: "activation-functions", label: "Activation Functions" },
-        { id: "loss-functions", label: "Loss Functions" },
-        { id: "backpropagation", label: "Backpropagation Algorithm" }
+        { id: "forward-reverse-mode", label: "Forward & Reverse Mode Differentiation" },
+        { id: "computational-graph-construction", label: "Computational Graph Construction" },
+        { id: "chain-rule-backpropagation", label: "Chain Rule & Backpropagation Mathematics" },
+        { id: "gradient-accumulation", label: "Gradient Accumulation & Zeroing" }
       ],
     },
     {
-      to: "/pytorch-nn-module",
-      label: "PyTorch nn.Module",
-      component: lazy(() => import("./course/PyTorchNNModule")),
+      to: "/advanced-gradient-mechanics",
+      label: "Advanced Gradient Mechanics",
+      component: lazy(() => import("./course/AdvancedGradientMechanics")),
       subLinks: [
-        { id: "module-basics", label: "Module Basics" },
-        { id: "custom-layers", label: "Creating Custom Layers" },
-        { id: "parameter-management", label: "Parameter Management" },
-        { id: "forward-method", label: "Forward Method" },
-        { id: "model-composition", label: "Model Composition" }
+        { id: "gradient-flow", label: "Gradient Flow & Vanishing/Exploding" },
+        { id: "gradient-clipping", label: "Gradient Clipping & Normalization" },
+        { id: "higher-order-derivatives", label: "Higher-order Derivatives & Hessians" },
+        { id: "custom-backward-passes", label: "Custom Backward Passes" }
       ],
     },
     {
-      to: "/training-neural-networks",
-      label: "Training Neural Networks",
-      component: lazy(() => import("./course/TrainingNeuralNetworks")),
+      to: "/optimization-algorithms",
+      label: "Optimization Algorithms",
+      component: lazy(() => import("./course/OptimizationAlgorithms")),
       subLinks: [
-        { id: "training-loop", label: "The Training Loop" },
-        { id: "optimizers", label: "Optimizers" },
-        { id: "learning-rate-scheduling", label: "Learning Rate Scheduling" },
-        { id: "regularization", label: "Regularization Techniques" },
-        { id: "monitoring-training", label: "Monitoring Training" }
-      ],
-    },
-    {
-      to: "/advanced-architectures",
-      label: "Advanced Architectures",
-      component: lazy(() => import("./course/AdvancedArchitectures")),
-      subLinks: [
-        { id: "residual-networks", label: "Residual Networks" },
-        { id: "attention-mechanisms", label: "Attention Mechanisms" },
-        { id: "normalization", label: "Normalization Techniques" },
-        { id: "skip-connections", label: "Skip Connections" },
-        { id: "architectural-patterns", label: "Architectural Patterns" }
+        { id: "modern-optimizers", label: "Mathematical Foundations of Modern Optimizers" },
+        { id: "adam-rmsprop-adagrad", label: "Adam, RMSprop, AdaGrad Derivations" },
+        { id: "learning-rate-scheduling", label: "Learning Rate Scheduling Strategies" },
+        { id: "second-order-optimization", label: "Second-order Optimization Methods" }
       ],
     }
   ];
@@ -63,7 +48,7 @@ const CourseNeuralNetworks = () => {
     <ModuleFrame
       module={module}
       isCourse={true}
-      title="Module 2: Neural Network Architectures"
+      title="Module 2: Automatic Differentiation & Optimization"
       courseLinks={courseLinks}
       enableSlides={true}
     >
@@ -71,7 +56,7 @@ const CourseNeuralNetworks = () => {
         <>
           <Grid>
             <Grid.Col>
-              <p>Master neural network architectures and PyTorch's nn.Module system.</p>
+              <p>Master automatic differentiation and optimization algorithms for deep learning.</p>
             </Grid.Col>
           </Grid>
           <Grid>

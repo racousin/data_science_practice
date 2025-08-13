@@ -7,51 +7,38 @@ import { useLocation } from "react-router-dom";
 const CourseAdvancedDL = () => {
   const courseLinks = [
     {
-      to: "/convolutional-networks",
-      label: "Convolutional Neural Networks",
-      component: lazy(() => import("./course/ConvolutionalNetworks")),
+      to: "/mlp-architecture-components",
+      label: "MLP Architecture & Components",
+      component: lazy(() => import("./course/MLPArchitectureComponents")),
       subLinks: [
-        { id: "convolution-operation", label: "Convolution Operation" },
-        { id: "cnn-architectures", label: "CNN Architectures" },
-        { id: "pooling-layers", label: "Pooling Layers" },
-        { id: "transfer-learning", label: "Transfer Learning" },
-        { id: "computer-vision", label: "Computer Vision Applications" }
+        { id: "multilayer-perceptron", label: "Multilayer Perceptron Mathematics" },
+        { id: "universal-approximation", label: "Universal Approximation Theorem" },
+        { id: "activation-functions", label: "Activation Functions: Mathematical Properties" },
+        { id: "weight-initialization", label: "Weight Initialization Theory" },
+        { id: "regularization-techniques", label: "Regularization Techniques (Dropout, L2, Batch Norm)" }
       ],
     },
     {
-      to: "/recurrent-networks",
-      label: "Recurrent Neural Networks",
-      component: lazy(() => import("./course/RecurrentNetworks")),
+      to: "/data-pipeline-training-loop",
+      label: "Data Pipeline & Training Loop",
+      component: lazy(() => import("./course/DataPipelineTrainingLoop")),
       subLinks: [
-        { id: "rnn-basics", label: "RNN Basics" },
-        { id: "lstm-gru", label: "LSTM and GRU" },
-        { id: "sequence-to-sequence", label: "Sequence-to-Sequence Models" },
-        { id: "attention-mechanism", label: "Attention Mechanisms" },
-        { id: "nlp-applications", label: "NLP Applications" }
+        { id: "dataloader-architecture", label: "DataLoader Architecture & Multiprocessing" },
+        { id: "batch-sampling", label: "Batch Sampling Strategies" },
+        { id: "training-dynamics", label: "Training Dynamics & Loss Landscapes" },
+        { id: "early-stopping", label: "Early Stopping & Convergence Criteria" }
       ],
     },
     {
-      to: "/transformers",
-      label: "Transformer Architecture",
-      component: lazy(() => import("./course/Transformers")),
+      to: "/monitoring-visualization",
+      label: "Monitoring & Visualization",
+      component: lazy(() => import("./course/MonitoringVisualization")),
       subLinks: [
-        { id: "self-attention", label: "Self-Attention" },
-        { id: "multi-head-attention", label: "Multi-Head Attention" },
-        { id: "positional-encoding", label: "Positional Encoding" },
-        { id: "transformer-blocks", label: "Transformer Blocks" },
-        { id: "pre-trained-models", label: "Pre-trained Models" }
-      ],
-    },
-    {
-      to: "/generative-models",
-      label: "Generative Models",
-      component: lazy(() => import("./course/GenerativeModels")),
-      subLinks: [
-        { id: "autoencoders", label: "Autoencoders" },
-        { id: "variational-autoencoders", label: "Variational Autoencoders" },
-        { id: "gans", label: "Generative Adversarial Networks" },
-        { id: "diffusion-models", label: "Diffusion Models" },
-        { id: "applications", label: "Applications" }
+        { id: "tensorboard-integration", label: "TensorBoard Integration" },
+        { id: "metrics-visualization", label: "Metrics Visualization Strategies" },
+        { id: "model-interpretability", label: "Model Interpretability Basics" },
+        { id: "debugging-networks", label: "Debugging Neural Networks" },
+        { id: "checkpoint-saving", label: "Checkpoint Saving/Loading Strategies" }
       ],
     }
   ];
@@ -63,7 +50,7 @@ const CourseAdvancedDL = () => {
     <ModuleFrame
       module={module}
       isCourse={true}
-      title="Module 3: Advanced Deep Learning"
+      title="Module 3: Neural Networks & Training Infrastructure"
       courseLinks={courseLinks}
       enableSlides={true}
     >
@@ -71,7 +58,7 @@ const CourseAdvancedDL = () => {
         <>
           <Grid>
             <Grid.Col>
-              <p>Explore advanced deep learning architectures: CNNs, RNNs, Transformers, and Generative Models.</p>
+              <p>Build complete neural network training infrastructure with monitoring and visualization.</p>
             </Grid.Col>
           </Grid>
           <Grid>

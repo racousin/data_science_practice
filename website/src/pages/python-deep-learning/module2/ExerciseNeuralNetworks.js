@@ -7,13 +7,18 @@ const ExerciseNeuralNetworks = () => {
   const exerciseLinks = [
     {
       to: "/exercise1",
-      label: "Exercise 1: Building Neural Networks",
+      label: "Exercise 2.1: Autograd Exploration",
       component: lazy(() => import("./exercise/Exercise1")),
     },
     {
       to: "/exercise2", 
-      label: "Exercise 2: Training Networks",
+      label: "Exercise 2.2: Gradient Analysis",
       component: lazy(() => import("./exercise/Exercise2")),
+    },
+    {
+      to: "/exercise3", 
+      label: "Exercise 2.3: Optimizer Implementation",
+      component: lazy(() => import("./exercise/Exercise3")),
     },
   ];
   
@@ -23,7 +28,7 @@ const ExerciseNeuralNetworks = () => {
     <ModuleFrame
       module={module}
       isCourse={false}
-      title="Module 2: Neural Network Architectures Exercises"
+      title="Module 2: Automatic Differentiation & Optimization - Exercises"
       courseLinks={exerciseLinks}
     >
       <Grid>

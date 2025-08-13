@@ -7,40 +7,35 @@ import { useLocation } from "react-router-dom";
 const CourseTensors = () => {
   const courseLinks = [
     {
-      to: "/tensor-fundamentals",
-      label: "Tensor Fundamentals",
-      component: lazy(() => import("./course/TensorFundamentals")),
+      to: "/deep-learning-introduction",
+      label: "Deep Learning Introduction",
+      component: lazy(() => import("./course/DeepLearningIntroduction")),
       subLinks: [
-        { id: "dimensions", label: "Understanding Dimensions" },
-        { id: "creation", label: "Creating Tensors" },
-        { id: "operations", label: "Tensor Operations" },
-        { id: "gpu", label: "GPU Acceleration" },
-        { id: "autograd", label: "Automatic Differentiation" },
-        { id: "broadcasting", label: "Broadcasting" }
+        { id: "what-is-deep-learning", label: "What is Deep Learning?" },
+        { id: "pytorch-ecosystem", label: "PyTorch Ecosystem Overview" },
+        { id: "comparison-frameworks", label: "Comparison with Other Frameworks" }
       ],
     },
     {
-      to: "/pytorch-basics",
-      label: "PyTorch Basics",
-      component: lazy(() => import("./course/PyTorchBasics")),
+      to: "/mathematical-prerequisites",
+      label: "Mathematical Prerequisites",
+      component: lazy(() => import("./course/MathematicalPrerequisites")),
       subLinks: [
-        { id: "installation", label: "Installation and Setup" },
-        { id: "tensors-vs-numpy", label: "Tensors vs NumPy Arrays" },
-        { id: "tensor-attributes", label: "Tensor Attributes" },
-        { id: "indexing-slicing", label: "Indexing and Slicing" },
-        { id: "tensor-math", label: "Mathematical Operations" }
+        { id: "model-parameters", label: "Model Parameters & Parameter Spaces" },
+        { id: "loss-functions", label: "Loss Functions from Mathematical Perspective" },
+        { id: "gradient-descent", label: "Gradient Descent Variants" },
+        { id: "convergence-theory", label: "Convergence Theory Basics" }
       ],
     },
     {
-      to: "/automatic-differentiation",
-      label: "Automatic Differentiation Deep Dive",
-      component: lazy(() => import("./course/AutomaticDifferentiation")),
+      to: "/tensor-operations-computational-graphs",
+      label: "Tensor Operations & Computational Graphs",
+      component: lazy(() => import("./course/TensorOperationsComputationalGraphs")),
       subLinks: [
-        { id: "computation-graph", label: "Computation Graphs" },
-        { id: "gradient-computation", label: "Gradient Computation" },
-        { id: "backward-pass", label: "Backward Pass" },
-        { id: "gradient-accumulation", label: "Gradient Accumulation" },
-        { id: "higher-order-gradients", label: "Higher-order Gradients" }
+        { id: "tensor-algebra", label: "Tensor Algebra and Operations" },
+        { id: "broadcasting", label: "Broadcasting Mechanics & Memory" },
+        { id: "storage-views", label: "Storage, Views & Memory Layout" },
+        { id: "computational-graphs", label: "Introduction to Computational Graphs" }
       ],
     }
   ];
@@ -52,7 +47,7 @@ const CourseTensors = () => {
     <ModuleFrame
       module={module}
       isCourse={true}
-      title="Module 1: PyTorch Fundamentals"
+      title="Module 1: Foundations & Mathematical Framework"
       courseLinks={courseLinks}
       enableSlides={true}
     >

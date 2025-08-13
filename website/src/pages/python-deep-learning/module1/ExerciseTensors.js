@@ -7,13 +7,18 @@ const ExerciseTensors = () => {
   const exerciseLinks = [
     {
       to: "/exercise1",
-      label: "Exercise 1: Tensor Basics",
+      label: "Exercise 1.1: Environment & Basics",
       component: lazy(() => import("./exercise/Exercise1")),
     },
     {
       to: "/exercise2", 
-      label: "Exercise 2: PyTorch Operations",
+      label: "Exercise 1.2: Mathematical Implementation",
       component: lazy(() => import("./exercise/Exercise2")),
+    },
+    {
+      to: "/exercise3", 
+      label: "Exercise 1.3: Tensor Mastery",
+      component: lazy(() => import("./exercise/Exercise3")),
     },
   ];
   
@@ -23,7 +28,7 @@ const ExerciseTensors = () => {
     <ModuleFrame
       module={module}
       isCourse={false}
-      title="Module 1: PyTorch Fundamentals Exercises"
+      title="Module 1: Foundations & Mathematical Framework - Exercises"
       courseLinks={exerciseLinks}
     >
       <Grid>

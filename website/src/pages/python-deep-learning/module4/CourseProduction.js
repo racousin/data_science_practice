@@ -7,51 +7,37 @@ import { useLocation } from "react-router-dom";
 const CourseProduction = () => {
   const courseLinks = [
     {
+      to: "/device-management-resources",
+      label: "Device Management & Resources",
+      component: lazy(() => import("./course/DeviceManagementResources")),
+      subLinks: [
+        { id: "gpu-architecture", label: "GPU Architecture for Deep Learning" },
+        { id: "memory-management", label: "Memory Management Strategies" },
+        { id: "flops-memory-calculation", label: "Calculate FLOPs & Memory Requirements" },
+        { id: "mixed-precision", label: "Mixed Precision Training Mathematics" }
+      ],
+    },
+    {
       to: "/model-optimization",
       label: "Model Optimization",
       component: lazy(() => import("./course/ModelOptimization")),
       subLinks: [
-        { id: "quantization", label: "Quantization" },
-        { id: "pruning", label: "Model Pruning" },
-        { id: "knowledge-distillation", label: "Knowledge Distillation" },
-        { id: "onnx", label: "ONNX Export" },
-        { id: "torchscript", label: "TorchScript" }
+        { id: "model-compression", label: "Model Compression Techniques" },
+        { id: "computational-complexity", label: "Computational Complexity Analysis" },
+        { id: "torchscript-serialization", label: "TorchScript & Model Serialization" },
+        { id: "jit-compilation", label: "JIT Compilation Basics" }
       ],
     },
     {
-      to: "/deployment-strategies",
-      label: "Deployment Strategies",
-      component: lazy(() => import("./course/DeploymentStrategies")),
+      to: "/advanced-pytorch-architecture",
+      label: "Advanced PyTorch & Architecture Overview",
+      component: lazy(() => import("./course/AdvancedPyTorchArchitecture")),
       subLinks: [
-        { id: "serving-models", label: "Model Serving" },
-        { id: "batch-inference", label: "Batch Inference" },
-        { id: "real-time-inference", label: "Real-time Inference" },
-        { id: "edge-deployment", label: "Edge Deployment" },
-        { id: "cloud-deployment", label: "Cloud Deployment" }
-      ],
-    },
-    {
-      to: "/monitoring-maintenance",
-      label: "Monitoring and Maintenance",
-      component: lazy(() => import("./course/MonitoringMaintenance")),
-      subLinks: [
-        { id: "model-monitoring", label: "Model Monitoring" },
-        { id: "performance-metrics", label: "Performance Metrics" },
-        { id: "data-drift", label: "Data Drift Detection" },
-        { id: "model-versioning", label: "Model Versioning" },
-        { id: "continuous-integration", label: "CI/CD for ML" }
-      ],
-    },
-    {
-      to: "/best-practices",
-      label: "Production Best Practices",
-      component: lazy(() => import("./course/BestPractices")),
-      subLinks: [
-        { id: "experiment-tracking", label: "Experiment Tracking" },
-        { id: "reproducibility", label: "Reproducibility" },
-        { id: "testing-ml", label: "Testing ML Models" },
-        { id: "security", label: "Security Considerations" },
-        { id: "ethics", label: "Ethics and Fairness" }
+        { id: "hooks-applications", label: "Hooks & Their Applications" },
+        { id: "dynamic-computation-graphs", label: "Dynamic Computation Graphs" },
+        { id: "cnn-convolution-mathematics", label: "CNN Convolution Mathematics (Brief)" },
+        { id: "attention-mechanism-mathematics", label: "Attention Mechanism Mathematics (Brief)" },
+        { id: "custom-cpp-extensions", label: "Custom C++ Extensions Overview" }
       ],
     }
   ];
@@ -63,7 +49,7 @@ const CourseProduction = () => {
     <ModuleFrame
       module={module}
       isCourse={true}
-      title="Module 4: Production and Deployment"
+      title="Module 4: Performance Optimization & Advanced Features"
       courseLinks={courseLinks}
       enableSlides={true}
     >
@@ -71,7 +57,7 @@ const CourseProduction = () => {
         <>
           <Grid>
             <Grid.Col>
-              <p>Learn to deploy, optimize, and maintain deep learning models in production environments.</p>
+              <p>Master performance optimization and advanced PyTorch features for production systems.</p>
             </Grid.Col>
           </Grid>
           <Grid>

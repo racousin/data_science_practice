@@ -7,13 +7,18 @@ const ExerciseProduction = () => {
   const exerciseLinks = [
     {
       to: "/exercise1",
-      label: "Exercise 1: Model Deployment",
+      label: "Exercise 4.1: Performance Profiling",
       component: lazy(() => import("./exercise/Exercise1")),
     },
     {
       to: "/exercise2", 
-      label: "Exercise 2: Production Monitoring",
+      label: "Exercise 4.2: Advanced Features",
       component: lazy(() => import("./exercise/Exercise2")),
+    },
+    {
+      to: "/exercise3", 
+      label: "Exercise 4.3: Mini-Project",
+      component: lazy(() => import("./exercise/Exercise3")),
     },
   ];
   
@@ -23,7 +28,7 @@ const ExerciseProduction = () => {
     <ModuleFrame
       module={module}
       isCourse={false}
-      title="Module 4: Production and Deployment Exercises"
+      title="Module 4: Performance Optimization & Advanced Features - Exercises"
       courseLinks={exerciseLinks}
     >
       <Grid>
