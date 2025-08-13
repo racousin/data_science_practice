@@ -61,10 +61,10 @@ make clean
 # Set up Python environment
 python3 -m venv venv
 source venv/bin/activate
-pip install -r tests/requirements.txt
+pip install -r tests/data-science-practice/requirements.txt
 
 # Run tests for specific module (example for module 1)
-./tests/module1/exercise1.sh <username> <timestamp> <aws_key> <aws_secret> <aws_region>
+./tests/data-science-practice/module1/exercise1.sh <username> <timestamp> <aws_key> <aws_secret> <aws_region>
 ```
 
 ## Architecture

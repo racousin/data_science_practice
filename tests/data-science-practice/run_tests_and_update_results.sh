@@ -10,7 +10,7 @@ GITHUB_REPOSITORY_NAME=$6
 
 
 # Directory where test scripts are located
-TEST_DIR="./tests"
+TEST_DIR="./tests/data-science-practice"
 RESULTS_DIR="./results"
 FINAL_JSON="$RESULTS_DIR/${USER}_final_results.json"
 S3_BUCKET="www.raphaelcousin.com"
@@ -29,7 +29,7 @@ mkdir -p $RESULTS_DIR  # Ensure results directory exists
 # Aggregate results and upload to S3
 python3 -m venv venv
 source venv/bin/activate
-pip install -r tests/requirements.txt
+pip install -r tests/data-science-practice/requirements.txt
 
 echo $CHANGED_MODULES
 IFS=' ' read -r -a modules <<< "$CHANGED_MODULES"  # Split CHANGED_MODULES into an array
@@ -51,7 +51,7 @@ for module in "${modules[@]}"; do
     fi
 done
 
-python tests/aggregate_results.py $RESULTS_DIR $FINAL_JSON $S3_BUCKET $S3_KEY $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY $AWS_DEFAULT_REGION
+python tests/data-science-practice/aggregate_results.py $RESULTS_DIR $FINAL_JSON $S3_BUCKET $S3_KEY $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY $AWS_DEFAULT_REGION
 deactivate
 # rm -rf venv
 # Cleanup local results

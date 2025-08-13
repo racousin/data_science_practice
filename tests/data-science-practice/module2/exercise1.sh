@@ -16,7 +16,7 @@ AWS_DEFAULT_REGION=$5
 MODULE_NUMBER="2"
 RESULTS_DIR="./results"  # Directory to store results
 RESULT_FILE="${RESULTS_DIR}/module${MODULE_NUMBER}_exercise1.json"  # File to store this exercise's results
-TESTS_DIR="./tests/module2"
+TESTS_DIR="./tests/data-science-practice/module2"
 
 mkdir -p $RESULTS_DIR  # Ensure results directory exists
 
@@ -64,7 +64,7 @@ fi
 # TODO remove the pkg installed and be sure we don't loose the current pkg
 # pip uninstall $PACKAGE_DIR
 pip uninstall -y mysupertools
-pip install -r tests/requirements.txt
+pip install -r tests/data-science-practice/requirements.txt
 
 # Deactivate the virtual environment
 deactivate
