@@ -137,7 +137,7 @@ class Agent:
           </Text>
           <div align="center">
           <Image
-  src="/assets/module13/tikz_images_2/explore_vs_exploit.jpeg"
+  src="/assets/data-science-practice/module13/tikz_images_2/explore_vs_exploit.jpeg"
   alt="Exploration vs Exploitation trade-off"
       h={400}
       w="auto"
@@ -161,7 +161,7 @@ class Agent:
           </Text>
           <div align="center">
           <Image
-            src="/assets/module13/model-based-free.jpg"
+            src="/assets/data-science-practice/module13/model-based-free.jpg"
             alt="Model-based vs Model-free RL"
             className="my-4"
                   h={400}
@@ -180,7 +180,7 @@ class Agent:
           </Text>
           <div align="center">
           <Image
-            src="/assets/module13/tikz_images_2/tax.png"
+            src="/assets/data-science-practice/module13/tikz_images_2/tax.png"
             alt="Taxonomy of RL algorithms"
             className="my-4"
                   h={400}

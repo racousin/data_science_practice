@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, Accordion, Text, Box, Divider, ScrollArea, Collapse } from '@mantine/core';
 import { useLocation, Link } from 'react-router-dom';
 import { 
@@ -393,7 +393,16 @@ export const coursesData = {
 
 // Course content section with hierarchical sublinks
 const CourseContentSection = ({ courseContentLinks, currentCourseId, moduleId, currentPath, onClose }) => {
-  const [openSections, setOpenSections] = useState({});
+  // Initialize open sections based on current path
+  const [openSections, setOpenSections] = useState(() => {
+    const initial = {};
+    courseContentLinks.forEach((link, index) => {
+      if (currentPath.includes(`/course${link.to}`)) {
+        initial[index] = true;
+      }
+    });
+    return initial;
+  });
 
   const toggleSection = (index) => {
     setOpenSections(prev => ({
@@ -499,6 +508,16 @@ const SideNavigation = ({ onClose }) => {
   // Extract current module info
   const currentModuleId = pathParts.length > 2 ? pathParts[2] : null;
   
+  // State for accordion - initialized with current module but allows user control
+  const [expandedModule, setExpandedModule] = useState(currentModuleId);
+  
+  // Update expanded module when navigation changes
+  useEffect(() => {
+    if (currentModuleId) {
+      setExpandedModule(currentModuleId);
+    }
+  }, [currentModuleId]);
+  
   return (
     <ScrollArea h="100%">
       <Box p="md">
@@ -534,7 +553,7 @@ const SideNavigation = ({ onClose }) => {
         <Divider my="sm" />
         
         {/* Modules accordion */}
-        <Accordion defaultValue={currentModuleId} variant="filled">
+        <Accordion value={expandedModule} onChange={setExpandedModule} variant="filled">
           {courseInfo.modules.map(module => {
             const isCurrentModule = currentModuleId === module.id;
             const courseContentLinks = getCourseContentLinks(module.id, currentCourseId);

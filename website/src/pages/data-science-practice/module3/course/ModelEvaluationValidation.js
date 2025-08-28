@@ -105,7 +105,7 @@ test_error = mean_squared_error(y_test, model.predict(X_test))
             <li>Poor generalization to new data</li>
           </ul>
           <Image
-              src="/assets/module3/overfitting_illustration.png"
+              src="/assets/data-science-practice/module3/overfitting_illustration.png"
               alt="overfitting_illustration"
               fluid
             />
@@ -138,7 +138,7 @@ test_error = np.mean((y_test - y_test_pred)**2)
             <li>Poor performance on all datasets</li>
           </ul>
           <Image
-              src="/assets/module3/underfitting_illustration.png"
+              src="/assets/data-science-practice/module3/underfitting_illustration.png"
               alt="underfitting_illustration"
               fluid
             />

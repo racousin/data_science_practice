@@ -64,7 +64,7 @@ def apply_convolution(image_tensor):
           <Title order={2} id="digital-representation">Digital Image Representation</Title>
           <Group spacing="xs" className="bg-gray-100 p-4 rounded-lg">
             <Stack spacing={0}>
-              <Image src="/assets/module8/gray.png" alt="Grayscale representation" />
+              <Image src="/assets/data-science-practice/module8/gray.png" alt="Grayscale representation" />
               <Text size="sm" className="mt-2">
                 Single channel grayscale image: each pixel represents intensity from 0 (black) to max value 8 (white)
               </Text>
@@ -80,7 +80,7 @@ def apply_convolution(image_tensor):
           <Title order={3}>Color Depth</Title>
           <Group spacing="xs" className="bg-gray-100 p-4 rounded-lg">
             <Stack spacing={0}>
-              <Image src="/assets/module8/bit-depth-representation.png" alt="Bit depth visualization" />
+              <Image src="/assets/data-science-practice/module8/bit-depth-representation.png" alt="Bit depth visualization" />
               <Text size="sm" className="mt-2">
                 Bit depth determines the range of possible values:
                 • 2-bit: 2 levels (0-1)
@@ -94,7 +94,7 @@ def apply_convolution(image_tensor):
           <Title order={3}>Color Channels</Title>
           <Group spacing="xs" className="bg-gray-100 p-4 rounded-lg">
             <Stack spacing={0}>
-              <Image src="/assets/module8/rgb.png" alt="RGB channel separation" />
+              <Image src="/assets/data-science-practice/module8/rgb.png" alt="RGB channel separation" />
               <Text size="sm" className="mt-2">
                 RGB images consist of three channels, each representing the intensity of Red, Green, and Blue components (usually on 8-bit)
               </Text>
@@ -105,7 +105,7 @@ def apply_convolution(image_tensor):
           <Title order={3}>Extended Channel Applications</Title>
           <Group spacing="xs" className="bg-gray-100 p-4 rounded-lg">
             <Stack spacing={0}>
-              <Image src="/assets/module8/satelite.png" alt="Multi-spectral satellite imagery" />
+              <Image src="/assets/data-science-practice/module8/satelite.png" alt="Multi-spectral satellite imagery" />
               <Text size="sm" className="mt-2">
                 Images can contain multiple layers beyond RGB:
                 • Satellite imagery: Near Infrared, Thermal, Altitude, etc.
@@ -228,7 +228,7 @@ def apply_convolution(image_tensor):
               code={convolutionCode}
             />
 
-          <Image src="/assets/module8/conv2.png" alt="conv" />
+          <Image src="/assets/data-science-practice/module8/conv2.png" alt="conv" />
           <Text>
             Concertly, a 2D convolution is the operation that computes a weighted sum between 
             two matrices: an input matrix (typically an image or feature map) and a kernel 
@@ -265,7 +265,7 @@ def apply_convolution(image_tensor):
           Convolutional Neural Networks (CNNs) are specialized deep learning models that process grid-like data using convolutional layers. Unlike traditional neural networks, CNNs automatically learn spatial hierarchies of features through multiple layers of convolutions.
         </Text>
 
-        <Image src="/assets/module8/cnn-network.jpg" alt="conv" />
+        <Image src="/assets/data-science-practice/module8/cnn-network.jpg" alt="conv" />
 
         <Text>
           The backpropagation process in CNNs follows the same principles as in fully connected networks, but with kernel weight sharing and local connectivity constraints.

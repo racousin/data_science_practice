@@ -187,7 +187,7 @@ const Introduction = () => {
           </p>
           <div className="text-center">
             <Image
-              src="/assets/module3/job-type.png"
+              src="/assets/data-science-practice/module3/job-type.png"
               alt="Jobs in Data Science"
               fluid
             />

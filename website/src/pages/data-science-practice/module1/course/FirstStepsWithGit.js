@@ -202,7 +202,7 @@ Changes to be committed:
         <Grid.Col span={{ xs: 12 }} md={10} lg={8}>
           <div className="text-center">
             <Image
-              src="/assets/module1/Git_Workflow.png"
+              src="/assets/data-science-practice/module1/Git_Workflow.png"
               alt="Git Workflow Diagram"
               fluid
             />
@@ -326,7 +326,7 @@ ncept into refacto/multi_ml
         <Grid.Col span={{ xs: 12 }} md={10} lg={8}>
           <div className="text-center">
             <Image
-              src="/assets/module1/Git_Commit_History.png"
+              src="/assets/data-science-practice/module1/Git_Commit_History.png"
               alt="Git_Commit_History"
               fluid
             />
@@ -445,7 +445,7 @@ index 8430408..9201842 100644
         <Grid.Col span={{ xs: 12 }} md={10} lg={8}>
           <div className="text-center">
             <Image
-              src="/assets/module1/Git_Commit_History_Revert.png"
+              src="/assets/data-science-practice/module1/Git_Commit_History_Revert.png"
               alt="Git_Commit_History_Revert"
               fluid
             />

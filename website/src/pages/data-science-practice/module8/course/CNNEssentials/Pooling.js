@@ -38,7 +38,7 @@ const PoolingExamples = () => {
   const examples = [
     {
       title: "Basic Max Pooling",
-      image: { src: "/assets/module8/maxpool.png", alt: "maxpool" },
+      image: { src: "/assets/data-science-practice/module8/maxpool.png", alt: "maxpool" },
       params: {
         "Pool Size": "2 × 2",
         "Input Size": "4 × 4",
@@ -50,7 +50,7 @@ const PoolingExamples = () => {
     },
     {
       title: "Global Average Pooling",
-      image: { src: "/assets/module8/globalpool.png", alt: "globalpool" },
+      image: { src: "/assets/data-science-practice/module8/globalpool.png", alt: "globalpool" },
       params: {
         "Pool Size": "Input size",
         "Input Size": "4 × 4",
@@ -61,7 +61,7 @@ const PoolingExamples = () => {
     },
     {
       title: "Overlapping Max Pooling",
-      image: { src: "/assets/module8/overlappool.png", alt: "overlappool" },
+      image: { src: "/assets/data-science-practice/module8/overlappool.png", alt: "overlappool" },
       params: {
         "Pool Size": "3 × 3",
         "Input Size": "5 × 5",
@@ -159,7 +159,7 @@ const Pooling = () => {
         Where <InlineMath>{`R_{i,j}`}</InlineMath> represents the pooling region centered
         at position <InlineMath>(i,j)</InlineMath>.
       </Text>
-      <Image src="/assets/module8/pooling.png" alt="pooling" />
+      <Image src="/assets/data-science-practice/module8/pooling.png" alt="pooling" />
       <Text weight={700}>2. Implementation Examples</Text>
       
 

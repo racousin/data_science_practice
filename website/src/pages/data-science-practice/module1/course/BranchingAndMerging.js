@@ -140,7 +140,7 @@ git merge --no-ff feature-branch`}
         <Grid.Col span={{ xs: 12 }} md={10} lg={8}>
           <div className="text-center">
             <Image
-              src="/assets/module1/Git_Fast-forward_Merge.png"
+              src="/assets/data-science-practice/module1/Git_Fast-forward_Merge.png"
               alt="Git_Fast-forward_Merge"
               fluid
             />
@@ -152,7 +152,7 @@ git merge --no-ff feature-branch`}
         <Grid.Col span={{ xs: 12 }} md={10} lg={8}>
           <div className="text-center">
             <Image
-              src="/assets/module1/Git_Rebase_Merge.png"
+              src="/assets/data-science-practice/module1/Git_Rebase_Merge.png"
               alt="Git_Rebase_Merge"
               fluid
             />
@@ -164,7 +164,7 @@ git merge --no-ff feature-branch`}
         <Grid.Col span={{ xs: 12 }} md={10} lg={8}>
           <div className="text-center">
             <Image
-              src="/assets/module1/Git_Squash_Merge.png"
+              src="/assets/data-science-practice/module1/Git_Squash_Merge.png"
               alt="Git_Squash_Merge"
               fluid
             />
@@ -176,7 +176,7 @@ git merge --no-ff feature-branch`}
         <Grid.Col span={{ xs: 12 }} md={10} lg={8}>
           <div className="text-center">
             <Image
-              src="/assets/module1/Git_Three-way_Merge.png"
+              src="/assets/data-science-practice/module1/Git_Three-way_Merge.png"
               alt="Git_Three-way_Merge"
               fluid
             />

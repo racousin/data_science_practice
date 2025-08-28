@@ -71,7 +71,7 @@ const LearnedEmbeddings = () => {
   </Text>
 </Card>
 <Image
-              src="/assets/module10/word_embeddings.png"
+              src="/assets/data-science-practice/module10/word_embeddings.png"
               alt="Word Embedding Example"
               caption="Word Embedding Example"
             />

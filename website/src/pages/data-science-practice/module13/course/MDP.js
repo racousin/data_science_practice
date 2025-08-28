@@ -148,7 +148,7 @@ const MDP = () => {
         <Grid.Col xs={12} md={10} lg={8}>
           <div align="center">
             <Image
-              src="/assets/module13/mdp.jpg"
+              src="/assets/data-science-practice/module13/mdp.jpg"
               alt="MDP Illustration"
                           w="75%"
             h="auto"
@@ -198,7 +198,7 @@ const MDP = () => {
           </p>
           <div align="center">
             <Image
-              src="/assets/module13/tikz_picture_1.png"
+              src="/assets/data-science-practice/module13/tikz_picture_1.png"
               alt="Grid World"
                           w="45%"
             h="auto"
@@ -215,7 +215,7 @@ const MDP = () => {
           </h3>
           <p>16 discrete states.</p>
           <Image
-            src="/assets/module13/tikz_picture_2.png"
+            src="/assets/data-science-practice/module13/tikz_picture_2.png"
             alt="State Space"
             w="100%"
             h="auto"
@@ -227,7 +227,7 @@ const MDP = () => {
           </h3>
           <p>4 discrete actions (Up, Down, Left, Right).</p>
           <Image
-            src="/assets/module13/tikz_picture_3.png"
+            src="/assets/data-science-practice/module13/tikz_picture_3.png"
             alt="Action Space"
             w="100%"
             h="auto"
@@ -245,7 +245,7 @@ const MDP = () => {
             <Grid.Col span={6}>
               <p>Deterministic environment.</p>
               <Image
-                src="/assets/module13/tikz_picture_4.png"
+                src="/assets/data-science-practice/module13/tikz_picture_4.png"
                 alt="Deterministic Transition"
                 w="100%"
                 h="auto"
@@ -254,7 +254,7 @@ const MDP = () => {
             <Grid.Col span={6}>
               <p>Stochastic environment.</p>
               <Image
-                src="/assets/module13/tikz_picture_5.png"
+                src="/assets/data-science-practice/module13/tikz_picture_5.png"
                 alt="Stochastic Transition"
                 w="100%"
                 h="auto"
@@ -273,7 +273,7 @@ const MDP = () => {
             <Grid.Col span={6}>
               <p>Simple goal reward.</p>
               <Image
-                src="/assets/module13/tikz_picture_6.png"
+                src="/assets/data-science-practice/module13/tikz_picture_6.png"
                 alt="Simple Reward"
                 w="100%"
                 h="auto"
@@ -282,7 +282,7 @@ const MDP = () => {
             <Grid.Col span={6}>
               <p>Other example of environment reward function.</p>
               <Image
-                src="/assets/module13/tikz_picture_7.png"
+                src="/assets/data-science-practice/module13/tikz_picture_7.png"
                 alt="Complex Reward"
                 w="100%"
                 h="auto"
@@ -302,7 +302,7 @@ const MDP = () => {
             deterministic/stochastic
           </p>
           <div align="center">
-          <Image src="/assets/module13/tikz_picture_8.png" alt="Policy"             w="45%"
+          <Image src="/assets/data-science-practice/module13/tikz_picture_8.png" alt="Policy"             w="45%"
             h="auto" />
             </div>
         </Grid.Col>
@@ -316,7 +316,7 @@ const MDP = () => {
 </h3>
 <div align="center">
           <Image
-            src="/assets/module13/tikz_picture_9.png"
+            src="/assets/data-science-practice/module13/tikz_picture_9.png"
             alt="Trajectory"
             w="45%"
             h="auto"
@@ -335,7 +335,7 @@ const MDP = () => {
           <Grid.Col span={6}>
             <p>Cumulative rewards</p>
             <Image
-              src="/assets/module13/tikz_picture_10.png"
+              src="/assets/data-science-practice/module13/tikz_picture_10.png"
               alt="Return"
               w="100%"
               h="auto"
@@ -344,7 +344,7 @@ const MDP = () => {
           <Grid.Col span={6}>
             <p>Discounted rewards ( <InlineMath math="\gamma = 0.95"/>)</p>
             <Image
-              src="/assets/module13/tikz_picture_11.png"
+              src="/assets/data-science-practice/module13/tikz_picture_11.png"
               alt="Optimal Policy"
               w="100%"
               h="auto"
@@ -361,7 +361,7 @@ const MDP = () => {
           
         <div align="center">
           <Image
-            src="/assets/module13/tikz_picture_12.png"
+            src="/assets/data-science-practice/module13/tikz_picture_12.png"
             alt="Optimal Policy"
             w="45%"
             h="auto"
@@ -400,7 +400,7 @@ const MDP = () => {
           </p>
           <div align="center">
           <Image
-            src="/assets/module13/tikz_picture_13.png"
+            src="/assets/data-science-practice/module13/tikz_picture_13.png"
             alt="Value Function"
             w="45%"
             h="auto"
@@ -420,7 +420,7 @@ const MDP = () => {
           </p>
           <div align="center">
           <Image
-            src="/assets/module13/tikz_picture_14.png"
+            src="/assets/data-science-practice/module13/tikz_picture_14.png"
             alt="Action Value Function"
             w="45%"
             h="auto"
@@ -461,7 +461,7 @@ const MDP = () => {
           </p>
           <div align="center">
             <Image
-              src="/assets/module13/tikz_picture_15.png"
+              src="/assets/data-science-practice/module13/tikz_picture_15.png"
               alt="Value Function Decomposition"
                           w="45%"
             h="auto"

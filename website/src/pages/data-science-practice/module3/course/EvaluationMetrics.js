@@ -119,7 +119,7 @@ roc_auc = roc_auc_score(y_true, y_pred_proba)
       <Grid className="justify-content-center">
         <Grid.Col span={{ xs: 12 }} md={10} lg={8}>
           <div className="text-center">
-            <Image src="/assets/module3/roc_auc.png" alt="roc_auc" fluid />
+            <Image src="/assets/data-science-practice/module3/roc_auc.png" alt="roc_auc" fluid />
             <p>ROC AUC Curve</p>
           </div>
         </Grid.Col>

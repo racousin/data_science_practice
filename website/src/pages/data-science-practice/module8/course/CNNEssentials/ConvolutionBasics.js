@@ -40,7 +40,7 @@ const ConvolutionExamples = () => {
   const examples = [
     {
       title: "Basic 2x2 Convolution",
-      image: { src: "/assets/module8/conv_kern1.png", alt: "conv_kern1" },
+      image: { src: "/assets/data-science-practice/module8/conv_kern1.png", alt: "conv_kern1" },
       params: {
         "Kernel Size": "2 × 2",
         "Input Size": "6 × 6",
@@ -54,7 +54,7 @@ const ConvolutionExamples = () => {
     },
     {
       title: "Strided Convolution",
-      image: { src: "/assets/module8/conv_kern2.png", alt: "conv_kern2" },
+      image: { src: "/assets/data-science-practice/module8/conv_kern2.png", alt: "conv_kern2" },
       params: {
         "Kernel Size": "2 × 2",
         "Input Size": "6 × 6",
@@ -68,7 +68,7 @@ const ConvolutionExamples = () => {
     },
     {
       title: "Padded Strided Convolution",
-      image: { src: "/assets/module8/conv_kern3.png", alt: "conv_kern3" },
+      image: { src: "/assets/data-science-practice/module8/conv_kern3.png", alt: "conv_kern3" },
       params: {
         "Kernel Size": "2 × 2",
         "Input Size": "6 × 6",
@@ -82,7 +82,7 @@ const ConvolutionExamples = () => {
     },
     {
       title: "Multi-channel Output Convolution",
-      image: { src: "/assets/module8/conv_c1.gif", alt: "conv_c1" },
+      image: { src: "/assets/data-science-practice/module8/conv_c1.gif", alt: "conv_c1" },
       params: {
         "Kernel Size": "3 × 3",
         "Input Size": "7 × 7",
@@ -96,7 +96,7 @@ const ConvolutionExamples = () => {
     },
     {
       title: "Multi-channel Input/Output Convolution",
-      image: { src: "/assets/module8/conv_c2.gif", alt: "conv_c2" },
+      image: { src: "/assets/data-science-practice/module8/conv_c2.gif", alt: "conv_c2" },
       params: {
         "Kernel Size": "3 × 3",
         "Input Size": "7 × 7",

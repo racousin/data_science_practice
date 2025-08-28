@@ -137,19 +137,19 @@ def apply_perspective(image_path, intensity=0.2):
   const transformContent = {
     rotate: {
       code: rotationCode,
-      image: "/assets/module8/rotate.png"
+      image: "/assets/data-science-practice/module8/rotate.png"
     },
     flip: {
       code: flipCode,
-      image: "/assets/module8/flip.png"
+      image: "/assets/data-science-practice/module8/flip.png"
     },
     scale: {
       code: scaleCode,
-      image: "/assets/module8/scale.png"
+      image: "/assets/data-science-practice/module8/scale.png"
     },
     perspective: {
       code: perspectiveCode,
-      image: "/assets/module8/perspective.png"
+      image: "/assets/data-science-practice/module8/perspective.png"
     }
   };
 

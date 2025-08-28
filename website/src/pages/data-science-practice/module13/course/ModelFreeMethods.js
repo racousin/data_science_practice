@@ -194,7 +194,7 @@ class Agent:
           <Grid>
             <Grid.Col span={{ md: 4 }}>
               <Image
-                src="/assets/module13/tikz_images_2/tikz_picture_1.png"
+                src="/assets/data-science-practice/module13/tikz_images_2/tikz_picture_1.png"
                 alt="Generate Episode"
                 fluid
               />
@@ -205,7 +205,7 @@ class Agent:
             </Grid.Col>
             <Grid.Col span={{ md: 4 }}>
               <Image
-                src="/assets/module13/tikz_images_2/tikz_picture_2.png"
+                src="/assets/data-science-practice/module13/tikz_images_2/tikz_picture_2.png"
                 alt="Evaluate Q"
                 fluid
               />
@@ -213,7 +213,7 @@ class Agent:
             </Grid.Col>
             <Grid.Col span={{ md: 4 }}>
               <Image
-                src="/assets/module13/tikz_images_2/tikz_picture_3.png"
+                src="/assets/data-science-practice/module13/tikz_images_2/tikz_picture_3.png"
                 alt="Iterate"
                 fluid
               />
@@ -272,7 +272,7 @@ class Agent:
           <Grid>
             <Grid.Col span={{ md: 3 }}>
               <Image
-                src="/assets/module13/tikz_images_2/tikz_picture_4.png"
+                src="/assets/data-science-practice/module13/tikz_images_2/tikz_picture_4.png"
                 alt="SARSA Step 1"
                 fluid
               />
@@ -282,7 +282,7 @@ class Agent:
             </Grid.Col>
             <Grid.Col span={{ md: 3 }}>
               <Image
-                src="/assets/module13/tikz_images_2/tikz_picture_5.png"
+                src="/assets/data-science-practice/module13/tikz_images_2/tikz_picture_5.png"
                 alt="SARSA Step 2"
                 fluid
               />
@@ -293,7 +293,7 @@ class Agent:
             </Grid.Col>
             <Grid.Col span={{ md: 3 }}>
               <Image
-                src="/assets/module13/tikz_images_2/tikz_picture_6.png"
+                src="/assets/data-science-practice/module13/tikz_images_2/tikz_picture_6.png"
                 alt="SARSA Step 3"
                 fluid
               />
@@ -303,7 +303,7 @@ class Agent:
             </Grid.Col>
             <Grid.Col span={{ md: 3 }}>
               <Image
-                src="/assets/module13/tikz_images_2/tikz_picture_7.png"
+                src="/assets/data-science-practice/module13/tikz_images_2/tikz_picture_7.png"
                 alt="SARSA Step 4"
                 fluid
               />
@@ -348,7 +348,7 @@ class Agent:
           <Grid>
             <Grid.Col span={{ md: 3 }}>
               <Image
-                src="/assets/module13/tikz_images_2/tikz_picture_8.png"
+                src="/assets/data-science-practice/module13/tikz_images_2/tikz_picture_8.png"
                 alt="Q-Learning Step 1"
                 fluid
               />
@@ -358,7 +358,7 @@ class Agent:
             </Grid.Col>
             <Grid.Col span={{ md: 3 }}>
               <Image
-                src="/assets/module13/tikz_images_2/tikz_picture_9.png"
+                src="/assets/data-science-practice/module13/tikz_images_2/tikz_picture_9.png"
                 alt="Q-Learning Step 2"
                 fluid
               />
@@ -369,7 +369,7 @@ class Agent:
             </Grid.Col>
             <Grid.Col span={{ md: 3 }}>
               <Image
-                src="/assets/module13/tikz_images_2/tikz_picture_10.png"
+                src="/assets/data-science-practice/module13/tikz_images_2/tikz_picture_10.png"
                 alt="Q-Learning Step 3"
                 fluid
               />
@@ -379,7 +379,7 @@ class Agent:
             </Grid.Col>
             <Grid.Col span={{ md: 3 }}>
               <Image
-                src="/assets/module13/tikz_images_2/tikz_picture_11.png"
+                src="/assets/data-science-practice/module13/tikz_images_2/tikz_picture_11.png"
                 alt="Q-Learning Step 4"
                 fluid
               />

@@ -24,7 +24,7 @@ const Collaborating = () => {
             <li>Add a title and description for your pull request, explaining the changes you've made.</li>
             <li>Click "Create pull request" to submit it.</li>
           </ol>
-          <Image src="/assets/module1/createPR.png" alt="Creating a Pull Request on GitHub" fluid className="my-3" />
+          <Image src="/assets/data-science-practice/module1/createPR.png" alt="Creating a Pull Request on GitHub" fluid className="my-3" />
         </Grid.Col>
       </Grid>
       <Grid className="mt-4">
@@ -36,11 +36,11 @@ const Collaborating = () => {
           <ol>
             <li>
               <strong>Request reviewers:</strong> Click on the gear icon in the "Reviewers" section of your pull request and select team members to review your code.
-              <Image src="/assets/module1/askReview.png" alt="Reviewing a Pull Request on GitHub" fluid className="my-3" />
+              <Image src="/assets/data-science-practice/module1/askReview.png" alt="Reviewing a Pull Request on GitHub" fluid className="my-3" />
             </li>
             <li>
               <strong>Reviewers examine the code:</strong> They will look at your changes, leave comments, and suggest improvements.
-              <Image src="/assets/module1/review.png" alt="Reviewing a Pull Request on GitHub" fluid className="my-3" />
+              <Image src="/assets/data-science-practice/module1/review.png" alt="Reviewing a Pull Request on GitHub" fluid className="my-3" />
             </li>
             <li>
               <strong>Address feedback:</strong> Make any necessary changes based on the reviews and push new commits to your branch.
@@ -63,7 +63,7 @@ const Collaborating = () => {
             <li>Click "Merge pull request".</li>
             <li>Confirm the merge by clicking "Confirm merge".</li>
           </ol>
-          <Image src="/assets/module1/mergePR.png" alt="Merging a Pull Request on GitHub" fluid className="my-3" />
+          <Image src="/assets/data-science-practice/module1/mergePR.png" alt="Merging a Pull Request on GitHub" fluid className="my-3" />
         </Grid.Col>
       </Grid>
       <Grid className="mt-4">

@@ -310,7 +310,7 @@ const DynamicProgramming = () => {
           <Grid>
             <Grid.Col span={{ md: 4 }}>
               <Image
-                src="/assets/module13/tikz_picture_16.png"
+                src="/assets/data-science-practice/module13/tikz_picture_16.png"
                 alt="Initial Policy"
                 fluid
               />
@@ -318,7 +318,7 @@ const DynamicProgramming = () => {
             </Grid.Col>
             <Grid.Col span={{ md: 4 }}>
               <Image
-                src="/assets/module13/tikz_picture_17.png"
+                src="/assets/data-science-practice/module13/tikz_picture_17.png"
                 alt="Q-values"
                 fluid
               />
@@ -328,7 +328,7 @@ const DynamicProgramming = () => {
             </Grid.Col>
             <Grid.Col span={{ md: 4 }}>
               <Image
-                src="/assets/module13/tikz_picture_18.png"
+                src="/assets/data-science-practice/module13/tikz_picture_18.png"
                 alt="Improved Policy"
                 fluid
               />

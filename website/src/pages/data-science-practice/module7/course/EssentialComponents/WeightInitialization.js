@@ -93,7 +93,7 @@ model.apply(initialize_weights)`}
         </div>
         <div>
           <Image
-            src="/assets/module7/weight_distributions.png"
+            src="/assets/data-science-practice/module7/weight_distributions.png"
             alt="Weight initialization distributions comparison"
             radius="md"
           />

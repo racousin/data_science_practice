@@ -137,7 +137,7 @@ const RLApplications = () => {
           <div className="bg-gray-100 w-full p-8 rounded-lg flex items-center justify-center min-h-[400px]">
             <div className="w-full relative">
               <Image
-                src="/assets/module13/game.png"
+                src="/assets/data-science-practice/module13/game.png"
                 alt="RL in Gaming"
                 className="w-full h-full object-contain"
                 fit="contain"
@@ -157,7 +157,7 @@ const Introduction = () => {
       <Stack spacing="xl">
         <div data-slide className="relative w-full h-64 bg-gray-100 rounded-lg overflow-hidden mb-8">
           <Image
-            src="/assets/module13/alphago.jpg"
+            src="/assets/data-science-practice/module13/alphago.jpg"
             alt="AlphaGo vs Ke Jie match"
             className="w-full h-full object-cover"
           />
@@ -206,7 +206,7 @@ const Introduction = () => {
             <Grid.Col span={6}>
               <div className="bg-gray-100 p-6 rounded-lg h-full flex items-center justify-center">
                 <Image
-                  src="/assets/module13/rl.png"
+                  src="/assets/data-science-practice/module13/rl.png"
                   alt="RL Framework Diagram"
                   className="max-w-full h-auto"
                 />
