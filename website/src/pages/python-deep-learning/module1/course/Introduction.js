@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Title, Text, Stack, Grid, Image, Paper, List } from '@mantine/core';
+import { Flex, Container, Title, Text, Stack, Grid, Image, Paper, List } from '@mantine/core';
 import { InlineMath, BlockMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 import CodeBlock from 'components/CodeBlock';
@@ -10,10 +10,22 @@ const Introduction = () => {
       <Stack spacing="xl">
         
         {/* Part 1: Historical Context and Applications */}
-        <div data-slide>
-          <Title order={1} className="mb-6">
-            Part 1: Historical Context and Applications
-          </Title>
+          <div data-slide>
+            <Title order={1} className="mb-6">
+              Historical Context and Applications
+            </Title>
+            <Flex direction="column" align="center">
+              <Image
+                src="/assets/python-deep-learning/module1/intro.jpg"
+                alt="Yutong Liu & The Bigger Picture"
+                w={{ base: 400, sm: 600, md: 800 }}
+                h="auto"
+                fluid
+              />
+              <Text component="p" ta="center" mt="xs">
+                Yutong Liu & The Bigger Picture
+              </Text>
+            </Flex>
           </div>
           <div data-slide>
           {/* Introduction Section */}
