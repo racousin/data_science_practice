@@ -11,7 +11,7 @@ const Introduction = () => {
         
         {/* Part 1: Historical Context and Applications */}
           <div data-slide>
-            <Title order={1} className="mb-6">
+            <Title order={1} mb="xl">
               Historical Context and Applications
             </Title>
             <Flex direction="column" align="center">
@@ -33,7 +33,18 @@ const Introduction = () => {
             <Title order={2} className="mb-6" id="introduction">
               Introduction to Deep Learning
             </Title>
-            
+                     <Flex direction="column" align="center">
+              <Image
+                src="/assets/python-deep-learning/module1/intro.jpg"
+                alt="Yutong Liu & The Bigger Picture"
+                w={{ base: 400, sm: 600, md: 800 }}
+                h="auto"
+                fluid
+              />
+              <Text component="p" ta="center" mt="xs">
+                Yutong Liu & The Bigger Picture
+              </Text>
+            </Flex>   
             <Paper className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 mb-6">
               <Title order={3} className="mb-4">What is Deep Learning?</Title>
               <Text size="lg" className="mb-4">

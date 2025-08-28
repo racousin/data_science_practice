@@ -11,7 +11,7 @@ const MathematicalFramework = () => {
         
         {/* Part 2: Mathematical Framework */}
         <div data-slide>
-          <Title order={1} className="mb-6">
+          <Title order={1} mb="xl">
             Part 2: Mathematical Framework
           </Title>
           

@@ -6,7 +6,7 @@ const DataPipelineTrainingLoop = () => {
     <Container size="xl">
       <Stack spacing="xl">
         <div>
-          <Title order={1} className="mb-6">
+          <Title order={1} mb="xl">
             Data Pipeline & Training Loop
           </Title>
           <Text size="xl" className="mb-6">

@@ -11,7 +11,7 @@ const PyTorchOverview = () => {
         
         {/* Part 4: Deep Learning Frameworks Overview */}
         <div data-slide>
-          <Title order={1} className="mb-6">
+          <Title order={1} mb="xl">
             Part 4: Deep Learning Frameworks Overview
           </Title>
           

@@ -73,7 +73,7 @@ for episode in range(100):
 
   return (
     <Container fluid>
-      <Title order={1} className="mb-6">Environment, Agent Components</Title>
+      <Title order={1} mb="xl">Environment, Agent Components</Title>
 
       <Title order={2} className="mb-4">Environment</Title>
       <Text className="mb-4">

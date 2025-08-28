@@ -5,7 +5,7 @@ import CodeBlock from 'components/CodeBlock';
 const AdvancedPettingZooTraining = () => {
   return (
 <>
-      <Title order={1} className="mb-6">Advanced Multi-Opponent Training in PettingZoo</Title>
+      <Title order={1} mb="xl">Advanced Multi-Opponent Training in PettingZoo</Title>
       
       
       <Text className="mb-4">

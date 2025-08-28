@@ -88,7 +88,7 @@ const VectorizedEnvironmentsPage = () => {
   return (
     <>
     
-      <Title order={1} className="mb-6">Understanding Vectorized Environments</Title>
+      <Title order={1} mb="xl">Understanding Vectorized Environments</Title>
       
       <Text className="mb-6 text-lg">
         Vectorized environments are a powerful technique in reinforcement learning that allows

@@ -11,7 +11,7 @@ const TensorFundamentals = () => {
         
         {/* Introduction */}
         <div id="introduction">
-          <Title order={1} className="mb-6">
+          <Title order={1} mb="xl">
             Tensor Fundamentals in PyTorch
           </Title>
           <Text size="xl" className="mb-6">

@@ -6,7 +6,7 @@ const MonitoringVisualization = () => {
     <Container size="xl">
       <Stack spacing="xl">
         <div>
-          <Title order={1} className="mb-6">
+          <Title order={1} mb="xl">
             Monitoring & Visualization
           </Title>
           <Text size="xl" className="mb-6">

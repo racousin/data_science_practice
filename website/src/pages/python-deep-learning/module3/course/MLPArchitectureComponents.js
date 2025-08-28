@@ -8,7 +8,7 @@ const MLPArchitectureComponents = () => {
       <Stack spacing="xl">
         
         <div id="multilayer-perceptron">
-          <Title order={1} className="mb-6">
+          <Title order={1} mb="xl">
             MLP Architecture & Components
           </Title>
           <Text size="xl" className="mb-6">

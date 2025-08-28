@@ -8,7 +8,7 @@ const AdvancedGradientMechanics = () => {
       <Stack spacing="xl">
         
         <div id="gradient-flow">
-          <Title order={1} className="mb-6">
+          <Title order={1} mb="xl">
             Advanced Gradient Mechanics
           </Title>
           <Text size="xl" className="mb-6">

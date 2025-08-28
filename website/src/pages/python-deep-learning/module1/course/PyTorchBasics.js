@@ -9,7 +9,7 @@ const PyTorchBasics = () => {
         
         {/* Introduction */}
         <div id="installation">
-          <Title order={1} className="mb-6">
+          <Title order={1} mb="xl">
             PyTorch Basics
           </Title>
           <Text size="xl" className="mb-6">

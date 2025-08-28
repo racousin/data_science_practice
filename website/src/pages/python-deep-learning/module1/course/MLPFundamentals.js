@@ -11,7 +11,7 @@ const MLPFundamentals = () => {
         
         {/* Part 3: Multi-Layer Perceptron Fundamentals */}
         <div data-slide>
-          <Title order={1} className="mb-6">
+          <Title order={1} mb="xl">
             Part 3: Multi-Layer Perceptron Fundamentals
           </Title>
           

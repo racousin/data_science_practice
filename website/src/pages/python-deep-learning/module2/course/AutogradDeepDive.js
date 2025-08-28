@@ -9,7 +9,7 @@ const AutogradDeepDive = () => {
         
         {/* Forward and Reverse Mode */}
         <div id="forward-reverse-mode">
-          <Title order={1} className="mb-6">
+          <Title order={1} mb="xl">
             Autograd Deep Dive
           </Title>
           <Text size="xl" className="mb-6">
