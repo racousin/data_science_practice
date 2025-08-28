@@ -218,22 +218,31 @@ export const exerciseContentData = {
 // PyTorch course content links for modules with hierarchical structure
 export const pytorchCourseContentData = {
   'module1': [
-    { to: '/deep-learning-introduction', label: 'Deep Learning Introduction', subLinks: [
-      { id: 'what-is-deep-learning', label: 'What is Deep Learning?' },
-      { id: 'pytorch-ecosystem', label: 'PyTorch Ecosystem Overview' },
-      { id: 'comparison-frameworks', label: 'Comparison with Other Frameworks' }
+    { to: '/introduction', label: 'Part 1: Historical Context & Applications', subLinks: [
+      { id: 'introduction', label: 'Introduction to Deep Learning' },
+      { id: 'history', label: 'Historical Evolution' },
+      { id: 'applications', label: 'Real-World Applications' },
+      { id: 'data', label: 'Data: The Fuel of Deep Learning' }
     ]},
-    { to: '/mathematical-prerequisites', label: 'Mathematical Prerequisites', subLinks: [
-      { id: 'model-parameters', label: 'Model Parameters & Parameter Spaces' },
-      { id: 'loss-functions', label: 'Loss Functions from Mathematical Perspective' },
-      { id: 'gradient-descent', label: 'Gradient Descent Variants' },
-      { id: 'convergence-theory', label: 'Convergence Theory Basics' }
+    { to: '/mathematical-framework', label: 'Part 2: Mathematical Framework', subLinks: [
+      { id: 'ml-objective', label: 'The Machine Learning Objective' },
+      { id: 'models-parameters', label: 'Models and Parameters' },
+      { id: 'loss-functions', label: 'Loss Functions and Optimization' },
+      { id: 'gradient-descent', label: 'Gradient Descent' },
+      { id: 'linear-algebra', label: 'Essential Linear Algebra' }
     ]},
-    { to: '/tensor-operations-computational-graphs', label: 'Tensor Operations & Computational Graphs', subLinks: [
-      { id: 'tensor-algebra', label: 'Tensor Algebra and Operations' },
-      { id: 'broadcasting', label: 'Broadcasting Mechanics & Memory' },
-      { id: 'storage-views', label: 'Storage, Views & Memory Layout' },
-      { id: 'computational-graphs', label: 'Introduction to Computational Graphs' }
+    { to: '/mlp-fundamentals', label: 'Part 3: Multi-Layer Perceptron Fundamentals', subLinks: [
+      { id: 'neuron', label: 'Neuron as Computational Unit' },
+      { id: 'network-architecture', label: 'Network Architecture' },
+      { id: 'parameters', label: 'Parameters to Optimize' },
+      { id: 'implementation', label: 'Complete Implementation' }
+    ]},
+    { to: '/pytorch-overview', label: 'Part 4: Deep Learning Frameworks', subLinks: [
+      { id: 'pytorch-intro', label: 'PyTorch Overview' },
+      { id: 'tensors', label: 'Tensors: The Foundation' },
+      { id: 'autograd', label: 'Automatic Differentiation' },
+      { id: 'ecosystem', label: 'PyTorch Ecosystem' },
+      { id: 'resources', label: 'Resources and Best Practices' }
     ]}
   ],
   'module2': [
@@ -352,7 +361,7 @@ export const coursesData = {
   'python-deep-learning': {
     name: 'Python for Deep Learning (PyTorch)',
     modules: [
-      { id: 'module1', name: 'Foundations & Mathematical Framework', icon: IconMathFunction },
+      { id: 'module1', name: 'Foundations of Deep Learning', icon: IconMathFunction },
       { id: 'module2', name: 'Automatic Differentiation & Optimization', icon: IconCpu },
       { id: 'module3', name: 'Neural Networks & Training Infrastructure', icon: IconBrain },
       { id: 'module4', name: 'Performance Optimization & Advanced Features', icon: IconCode },
