@@ -171,11 +171,7 @@ const FeatureSelectionAndDimensionalityReduction = () => {
       </Text>
 
       <Stack spacing="xl" mt="xl">
-        <Section
-          icon={<IconFilter size={24} />}
-          title="Feature Selection Techniques"
-          id="feature-selection"
-        >
+        <Title order={3} id="feature-selection">Feature Selection Techniques</Title>
           <Text>
             Feature selection is the process of selecting a subset of relevant features for use in model construction. It's used to simplify models, reduce training times, and improve generalization by reducing overfitting.
           </Text>
@@ -255,13 +251,9 @@ plt.tight_layout()
 plt.show()
             `}
           />
-        </Section>
+        
 
-        <Section
-          icon={<IconFold size={24} />}
-          title="Dimensionality Reduction Techniques"
-          id="dimensionality-reduction"
-        >
+        <Title order={3} id="dimensionality-reduction">Dimensionality Reduction Techniques</Title>
           <Text>
             Dimensionality reduction techniques transform the data from a high-dimensional space into a lower-dimensional space, retaining meaningful properties of the original data.
           </Text>
@@ -339,13 +331,9 @@ plt.show()
 print("Explained variance ratio:", lda.explained_variance_ratio_)
             `}
           />
-        </Section>
+        
 
-        <Section
-          icon={<IconChartDots3 size={24} />}
-          title="Comparison of Techniques"
-          id="comparison"
-        >
+        <Title order={3} id="comparison">Comparison of Techniques</Title>
           <Table>
             <thead>
               <tr>
@@ -394,20 +382,16 @@ print("Explained variance ratio:", lda.explained_variance_ratio_)
               </tr>
             </tbody>
           </Table>
-        </Section>
+        
 
-        <Section
-          icon={<IconChartBar size={24} />}
-          title="Best Practices"
-          id="best-practices"
-        >
+        <Title order={3} id="best-practices">Best Practices</Title>
           <List>
             <List.Item><span style={{ fontWeight: 700 }}>Understand Your Data:</span> Thoroughly explore your dataset before applying any technique.</List.Item>
             <List.Item><span style={{ fontWeight: 700 }}>Combine Multiple Techniques:</span> Often, a combination of techniques can yield better results.</List.Item>
             <List.Item><span style={{ fontWeight: 700 }}>Consider Interpretability:</span> If model interpretability is important, favor feature selection over dimensionality reduction.</List.Item>
             <List.Item><span style={{ fontWeight: 700 }}>Scale Your Data:</span> Normalize or standardize your data before applying dimensionality reduction techniques.</List.Item>
           </List>
-        </Section>
+        
       </Stack>
       <div id="notebook-example"></div>
       <DataInteractionPanel
@@ -422,14 +406,6 @@ print("Explained variance ratio:", lda.explained_variance_ratio_)
   );
 };
 
-const Section = ({ icon, title, id, children }) => (
-  <Stack spacing="sm">
-    <Group spacing="xs">
-      {icon}
-      <Title order={2} id={id}>{title}</Title>
-    </Group>
-    {children}
-  </Stack>
-);
+
 
 export default FeatureSelectionAndDimensionalityReduction;

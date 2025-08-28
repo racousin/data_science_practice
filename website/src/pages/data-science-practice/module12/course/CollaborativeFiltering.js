@@ -6,17 +6,15 @@ const CollaborativeFiltering = () => {
   return (
     <Container>
       <h1>Collaborative Filtering</h1>
-      <section id="definition">
-        <h2>Definition</h2>
+        <h2 id="definition">Definition</h2>
         <p>
           Collaborative filtering is a recommendation technique that makes
           predictions about a user's interests by collecting preferences from
           many users. It operates on the assumption that users who agreed in the
           past tend to agree again in the future.
         </p>
-      </section>
-      <section id="user-based-cf">
-        <h2>User-Based Collaborative Filtering</h2>
+      
+        <h2 id="user-based-cf">User-Based Collaborative Filtering</h2>
         <p>
           User-based CF finds users with similar rating patterns to the target
           user and uses their ratings to predict preferences for the target
@@ -47,9 +45,8 @@ const CollaborativeFiltering = () => {
             <InlineMath>N(u)</InlineMath>: Set of users similar to u
           </li>
         </ul>
-      </section>
-      <section id="item-based-cf">
-        <h2>Item-Based Collaborative Filtering</h2>
+      
+        <h2 id="item-based-cf">Item-Based Collaborative Filtering</h2>
         <p>
           Item-based CF computes similarities between items based on user rating
           patterns and uses these to make predictions.
@@ -76,9 +73,8 @@ const CollaborativeFiltering = () => {
             <InlineMath>N(i)</InlineMath>: Set of items similar to i
           </li>
         </ul>
-      </section>
-      <section id="matrix-factorization">
-        <h2>Matrix Factorization</h2>
+      
+        <h2 id="matrix-factorization">Matrix Factorization</h2>
         <p>
           Matrix factorization is a latent factor model that represents users
           and items as vectors in a lower-dimensional space.
@@ -103,9 +99,8 @@ const CollaborativeFiltering = () => {
         <BlockMath>
           {`\\min_{P,Q} \\sum_{(u,i) \\in K} (r_{ui} - p_u \\cdot q_i)^2 + \\lambda(\\|p_u\\|^2 + \\|q_i\\|^2)`}
         </BlockMath>
-      </section>
-      <section id="implementing-collaborative">
-        <h2>Implementing Collaborative Filtering</h2>
+      
+        <h2 id="implementing-collaborative">Implementing Collaborative Filtering</h2>
         <p>
           Here's a basic implementation of matrix factorization using Python and
           NumPy:
@@ -148,7 +143,7 @@ mf.train()
 print(mf.predict(user=1, item=2))  # Predict rating for user 1, item 2
           `}
         />
-      </section>
+      
     </Container>
   );
 };

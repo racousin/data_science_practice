@@ -6,17 +6,17 @@ const HybridMethods = () => {
   return (
     <Container>
       <h1>Hybrid Methods in Recommendation Systems</h1>
-      <section id="definition">
-        <h2>Definition</h2>
+      
+        <h2 id="definition">Definition</h2>
         <p>
           Hybrid methods in recommendation systems combine multiple
           recommendation techniques to leverage their strengths and mitigate
           their weaknesses. These methods aim to provide more accurate and
           robust recommendations than single-technique approaches.
         </p>
-      </section>
-      <section id="weighted-hybrid">
-        <h2>Weighted Hybrid</h2>
+      
+      
+        <h2 id="weighted-hybrid">Weighted Hybrid</h2>
         <p>
           Weighted hybrid methods combine the outputs of different
           recommendation techniques using a weighted sum.
@@ -44,9 +44,9 @@ const HybridMethods = () => {
             <InlineMath>w_1 + w_2 = 1</InlineMath>)
           </li>
         </ul>
-      </section>
-      <section id="switching-hybrid">
-        <h2>Switching Hybrid</h2>
+      
+      
+        <h2 id="switching-hybrid">Switching Hybrid</h2>
         <p>
           Switching hybrid methods choose between different recommendation
           techniques based on certain criteria.
@@ -67,9 +67,9 @@ def switching_hybrid(user, item):
 # threshold: A predefined confidence threshold
           `}
         />
-      </section>
-      <section id="feature-combination">
-        <h2>Feature Combination</h2>
+      
+      
+        <h2 id="feature-combination">Feature Combination</h2>
         <p>
           Feature combination methods incorporate features from different
           recommendation techniques into a single algorithm.
@@ -89,9 +89,9 @@ prediction = ML_model(feature_vector)
 # ML_model: A machine learning model (e.g., neural network, random forest)
           `}
         />
-      </section>
-      <section id="implementing-hybrid">
-        <h2>Implementing Hybrid Methods</h2>
+      
+      
+        <h2 id="implementing-hybrid">Implementing Hybrid Methods</h2>
         <p>
           Here's a basic implementation of a weighted hybrid method using
           Python:
@@ -120,9 +120,9 @@ prediction = hybrid_model.predict(user=1, item=2)
 print(f"Hybrid prediction: {prediction}")
           `}
         />
-      </section>
-      <section id="evaluation">
-        <h2>Evaluating Hybrid Methods</h2>
+      
+      
+        <h2 id="evaluation">Evaluating Hybrid Methods</h2>
         <p>
           Hybrid methods are typically evaluated using standard recommendation
           system metrics, with a focus on comparing their performance to the
@@ -135,7 +135,7 @@ print(f"Hybrid prediction: {prediction}")
           <li>Precision@k and Recall@k</li>
           <li>Normalized Discounted Cumulative Gain (NDCG)</li>
         </ul>
-      </section>
+      
     </Container>
   );
 };

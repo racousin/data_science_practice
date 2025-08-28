@@ -16,7 +16,7 @@ const MathematicalFramework = () => {
           </Title>
           
           {/* Machine Learning Objective */}
-          <section className="mb-12">
+          
             <Title order={2} className="mb-6" id="ml-objective">
               The Machine Learning Objective
             </Title>
@@ -145,12 +145,12 @@ const MathematicalFramework = () => {
                 </Grid.Col>
               </Grid>
             </Paper>
-          </section>
+          
         </div>
 
         {/* Models and Parameters */}
         <div data-slide>
-          <section className="mb-12">
+          
             <Title order={2} className="mb-6" id="models-parameters">
               Models and Parameters
             </Title>
@@ -280,12 +280,12 @@ conv = nn.Conv2d(in_channels=3, out_channels=64,
                 </div>
               </Paper>
             </Paper>
-          </section>
+          
         </div>
 
         {/* Loss Functions and Optimization */}
         <div data-slide>
-          <section className="mb-12">
+          
             <Title order={2} className="mb-6" id="loss-functions">
               Loss Functions and Optimization Problems
             </Title>
@@ -431,12 +431,12 @@ class FocalLoss(nn.Module):
                 </Grid.Col>
               </Grid>
             </Paper>
-          </section>
+          
         </div>
 
         {/* Gradient Descent */}
         <div data-slide>
-          <section className="mb-12">
+          
             <Title order={2} className="mb-6" id="gradient-descent">
               Gradient Descent and Optimization
             </Title>
@@ -621,12 +621,12 @@ for epoch in range(num_epochs):
                 </Grid.Col>
               </Grid>
             </Paper>
-          </section>
+          
         </div>
 
         {/* Linear Algebra Concepts */}
         <div data-slide>
-          <section className="mb-12">
+          
             <Title order={2} className="mb-6" id="linear-algebra">
               Essential Linear Algebra Concepts
             </Title>
@@ -864,12 +864,12 @@ print(x.grad)  # tensor([2., 4., 6.])
 # Gradient computation: dz/dx = d(sum(x^2))/dx = 2x`} />
               </Paper>
             </Paper>
-          </section>
+          
         </div>
 
         {/* Summary */}
         <div data-slide>
-          <section>
+          
             <Title order={2} className="mb-6">Part 2 Summary: Mathematical Framework</Title>
             
             <Grid gutter="lg">
@@ -908,7 +908,7 @@ print(x.grad)  # tensor([2., 4., 6.])
                 combine to create neural networks.
               </Text>
             </Paper>
-          </section>
+          
         </div>
 
       </Stack>

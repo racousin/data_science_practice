@@ -72,7 +72,7 @@ const MLParadigmsComparison = () => {
   ];
 
   return (
-    <section className="mb-12">
+    <>
       <Title order={2} className="mb-6" id="ml-paradigms">
         Machine Learning Paradigms Comparison
       </Title>
@@ -83,7 +83,7 @@ const MLParadigmsComparison = () => {
           </Grid.Col>
         ))}
       </Grid>
-    </section>
+    </>
   );
 };
 
@@ -108,7 +108,7 @@ const applications = [
 
 const RLApplications = () => {
   return (
-    <section className="w-full">
+    <>
       <Title order={2} id="applications" className="mb-6">
         Applications of RL
       </Title>
@@ -146,7 +146,7 @@ const RLApplications = () => {
           </div>
         </Grid.Col>
       </Grid>
-    </section>
+    </>
   );
 };
 
@@ -173,7 +173,7 @@ const Introduction = () => {
 </div>
 
         {/* RL Framework */}
-        <section data-slide className="mb-12">
+        
           <Title order={2} className="mb-6" id="rl-framework">
             The RL Framework
           </Title>
@@ -213,14 +213,14 @@ const Introduction = () => {
               </div>
             </Grid.Col>
           </Grid>
-        </section>
+        
 
 <div data-slide>
   <RLApplications/>
 </div>
 
 {/* Limitations and Challenges */}
-<section data-slide>
+<div data-slide>
   <Title order={2} className="mb-6" id="limitations">
     Key Limitations and Practical Challenges
   </Title>
@@ -282,7 +282,7 @@ const Introduction = () => {
       </Stack>
     </Grid.Col>
   </Grid>
-</section>
+</div>
 </Stack>
 </Container>
 );

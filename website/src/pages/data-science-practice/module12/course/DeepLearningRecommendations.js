@@ -6,8 +6,8 @@ const DeepLearningRecommendations = () => {
   return (
     <Container>
       <h1>Deep Learning for Recommendations</h1>
-      <section id="introduction">
-        <h2>Introduction</h2>
+      
+        <h2 id="introduction">Introduction</h2>
         <p>
           Deep learning models have shown significant promise in recommendation
           systems due to their ability to learn complex patterns and
@@ -15,9 +15,9 @@ const DeepLearningRecommendations = () => {
           non-linear relationships and latent features that traditional methods
           might miss.
         </p>
-      </section>
-      <section id="neural-collaborative-filtering">
-        <h2>Neural Collaborative Filtering (NCF)</h2>
+      
+      
+        <h2 id="neural-collaborative-filtering">Neural Collaborative Filtering (NCF)</h2>
         <p>
           NCF replaces the inner product in matrix factorization with a neural
           architecture to learn the user-item interaction function.
@@ -41,9 +41,9 @@ const DeepLearningRecommendations = () => {
             <InlineMath>f</InlineMath>: Neural network function
           </li>
         </ul>
-      </section>
-      <section id="autoencoders-for-recommendations">
-        <h2>Autoencoders for Recommendations</h2>
+      
+      
+        <h2 id="autoencoders-for-recommendations">Autoencoders for Recommendations</h2>
         <p>
           Autoencoders can be used to learn compressed representations of
           user-item interactions and reconstruct the rating matrix.
@@ -61,9 +61,9 @@ W, W': Weight matrices
 b, b': Bias vectors
           `}
         />
-      </section>
-      <section id="sequence-models-for-recommendations">
-        <h2>Sequence Models for Recommendations</h2>
+      
+      
+        <h2 id="sequence-models-for-recommendations">Sequence Models for Recommendations</h2>
         <p>
           Recurrent Neural Networks (RNNs) and Transformers can model sequential
           user behavior for session-based recommendations.
@@ -94,9 +94,9 @@ h_t = \\tanh(W_h x_t + U_h h_{t-1} + b_h)
             probabilities
           </li>
         </ul>
-      </section>
-      <section id="implementing-deep-learning">
-        <h2>Implementing Deep Learning Models</h2>
+      
+      
+        <h2 id="implementing-deep-learning">Implementing Deep Learning Models</h2>
         <p>
           Here's a basic implementation of a Neural Collaborative Filtering
           model using PyTorch:
@@ -139,9 +139,9 @@ for epoch in range(num_epochs):
         optimizer.step()
           `}
         />
-      </section>
-      <section id="challenges">
-        <h2>Challenges and Considerations</h2>
+      
+      
+        <h2 id="challenges">Challenges and Considerations</h2>
         <p>Deep learning models for recommendations face several challenges:</p>
         <ul>
           <li>Cold-start problem for new users/items</li>
@@ -150,7 +150,7 @@ for epoch in range(num_epochs):
           <li>Overfitting on sparse data</li>
           <li>Balancing exploration and exploitation</li>
         </ul>
-      </section>
+      
     </Container>
   );
 };

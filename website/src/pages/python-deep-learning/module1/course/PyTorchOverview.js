@@ -16,7 +16,7 @@ const PyTorchOverview = () => {
           </Title>
           
           {/* Introduction to PyTorch */}
-          <section className="mb-12">
+          
             <Title order={2} className="mb-6" id="pytorch-intro">
               PyTorch: A Modern Deep Learning Framework
             </Title>
@@ -107,12 +107,12 @@ const PyTorchOverview = () => {
                 </table>
               </div>
             </Paper>
-          </section>
+          
         </div>
 
         {/* Tensors: The Foundation */}
         <div data-slide>
-          <section className="mb-12">
+          
             <Title order={2} className="mb-6" id="tensors">
               Tensors: The Foundation of PyTorch
             </Title>
@@ -319,12 +319,12 @@ x.zero_()  # Set all elements to zero
 # Warning: in-place operations can cause issues with autograd
 # Generally avoid them unless memory is critical`} />
             </Paper>
-          </section>
+          
         </div>
 
         {/* Automatic Differentiation */}
         <div data-slide>
-          <section className="mb-12">
+          
             <Title order={2} className="mb-6" id="autograd">
               Automatic Differentiation with Autograd
             </Title>
@@ -516,12 +516,12 @@ optimizer.zero_grad()`} />
                 </Grid.Col>
               </Grid>
             </Paper>
-          </section>
+          
         </div>
 
         {/* PyTorch Ecosystem */}
         <div data-slide>
-          <section className="mb-12">
+          
             <Title order={2} className="mb-6" id="ecosystem">
               The PyTorch Ecosystem
             </Title>
@@ -837,12 +837,12 @@ torch.onnx.export(model, dummy_input, "model.onnx",
                 </Grid.Col>
               </Grid>
             </Paper>
-          </section>
+          
         </div>
 
         {/* Resources and Best Practices */}
         <div data-slide>
-          <section className="mb-12">
+          
             <Title order={2} className="mb-6" id="resources">
               Resources and Best Practices
             </Title>
@@ -976,12 +976,12 @@ x.register_hook(print_grad("x"))
 # - Check against numerical gradients`} />
               </Paper>
             </Paper>
-          </section>
+          
         </div>
 
         {/* Summary */}
         <div data-slide>
-          <section>
+          
             <Title order={2} className="mb-6">Module 1 Complete Summary</Title>
             
             <Grid gutter="lg">
@@ -1025,7 +1025,7 @@ x.register_hook(print_grad("x"))
                 and explore advanced topics like CNNs, RNNs, and Transformers.
               </Text>
             </Paper>
-          </section>
+          
         </div>
 
       </Stack>

@@ -8,21 +8,21 @@ const ParallelTrainingSection = () => {
     <div style={{ maxWidth: '64rem', margin: '0 auto' }}>
       <Title order={1} mb="md">Parallel Environment Training</Title>
       
-      <section>
+      
         <Title order={2} mb="sm">Asynchronous Environment Execution</Title>
         <Text size="lg" mb="lg">
           In parallel RL training, environments operate independently with different termination times. 
           AsyncVectorEnv manages this through non-blocking execution, while SyncVectorEnv waits for all 
           environments to complete their steps.
         </Text>
-      </section>
+      
 
       <Alert icon={<Info size={16} />} mb="lg">
         Vector environments return batched observations (num_envs × obs_dim) and expect batched actions,
         enabling parallel policy evaluation and environment stepping.
       </Alert>
 
-      <section>
+      
         <Title order={2} mb="md">Episode Length Management</Title>
         <Paper p="md" radius="md" withBorder mb="lg">
           <Title order={3} mb="md">Handling Variable Lengths</Title>
@@ -50,9 +50,9 @@ const ParallelTrainingSection = () => {
             </List.Item>
           </List>
         </Paper>
-      </section>
+      
 
-      <section>
+      
         <Title order={2} mb="md">Memory Management</Title>
         <Grid>
           <Grid.Col span={6}>
@@ -78,7 +78,7 @@ const ParallelTrainingSection = () => {
             </Paper>
           </Grid.Col>
         </Grid>
-      </section>
+      
     </div>
   );
 };

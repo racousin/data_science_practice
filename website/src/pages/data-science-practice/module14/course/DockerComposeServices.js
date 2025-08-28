@@ -5,8 +5,8 @@ const DockerComposeServices = () => {
   return (
     <Container>
       <h1>Docker Compose and Services</h1>
-      <section id="docker-compose-intro">
-        <h2>Introduction to Docker Compose</h2>
+      
+        <h2 id="docker-compose-intro">Introduction to Docker Compose</h2>
         <p>
           Docker Compose is a tool for defining and running multi-container
           Docker applications. With Compose, you use a YAML file to configure
@@ -19,9 +19,9 @@ const DockerComposeServices = () => {
           <li>Environment variable management</li>
           <li>Service dependencies and scaling</li>
         </ul>
-      </section>
-      <section id="compose-file-structure">
-        <h2>Docker Compose File Structure</h2>
+      
+      
+        <h2 id="compose-file-structure">Docker Compose File Structure</h2>
         <p>
           A Docker Compose file (typically named docker-compose.yml) defines the
           services, networks, and volumes for a Docker application. Here's a
@@ -49,9 +49,9 @@ networks:
           This example defines two services (web and redis), a volume, and two
           networks.
         </p>
-      </section>
-      <section id="multi-container-apps">
-        <h2>Creating Multi-Container Applications</h2>
+      
+      
+        <h2 id="multi-container-apps">Creating Multi-Container Applications</h2>
         <p>
           Let's create a more complex example with a web application, a
           database, and a redis cache:
@@ -99,9 +99,9 @@ docker-compose up -d --scale web=3
           `}
           language="bash"
         />
-      </section>
-      <section id="docker-services">
-        <h2>Docker Services and Swarm Mode</h2>
+      
+      
+        <h2 id="docker-services">Docker Services and Swarm Mode</h2>
         <p>
           Docker Swarm mode allows you to manage a cluster of Docker engines.
           Services are the core concept in Swarm mode, representing a group of
@@ -137,9 +137,9 @@ docker stack rm my_stack
           `}
           language="bash"
         />
-      </section>
-      <section id="networking-compose">
-        <h2>Networking in Docker Compose</h2>
+      
+      
+        <h2 id="networking-compose">Networking in Docker Compose</h2>
         <p>
           Docker Compose sets up a single network for your app by default, but
           you can also specify custom networks:
@@ -167,16 +167,16 @@ networks:
           This setup creates two networks and connects the web service to both,
           while the db service is only connected to the backend network.
         </p>
-      </section>
-      <section id="conclusion">
-        <h2>Conclusion</h2>
+      
+      
+        <h2 id="conclusion">Conclusion</h2>
         <p>
           Docker Compose and Services provide powerful tools for defining,
           running, and scaling multi-container applications. They simplify the
           process of managing complex applications and are essential for both
           development and production environments.
         </p>
-      </section>
+      
     </Container>
   );
 };

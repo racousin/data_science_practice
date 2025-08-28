@@ -9,7 +9,6 @@ const Introduction = () => {
     <Container size="xl" className="py-6">
       <Stack spacing="xl">
         
-        {/* Part 1: Historical Context and Applications */}
           <div data-slide>
             <Title order={1} mb="xl">
               Historical Context and Applications
@@ -27,59 +26,67 @@ const Introduction = () => {
               </Text>
             </Flex>
           </div>
-          <div data-slide>
-          {/* Introduction Section */}
-          <section className="mb-12">
-            <Title order={2} className="mb-6" id="introduction">
-              Introduction to Deep Learning
-            </Title>
-                     <Flex direction="column" align="center">
-              <Image
-                src="/assets/python-deep-learning/module1/intro.jpg"
-                alt="Yutong Liu & The Bigger Picture"
-                w={{ base: 400, sm: 600, md: 800 }}
-                h="auto"
-                fluid
-              />
-              <Text component="p" ta="center" mt="xs">
-                Yutong Liu & The Bigger Picture
-              </Text>
-            </Flex>   
-            <Paper className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 mb-6">
-              <Title order={3} className="mb-4">What is Deep Learning?</Title>
-              <Text size="lg" className="mb-4">
-                Deep Learning represents a revolutionary approach to artificial intelligence that has transformed how 
-                machines understand and interact with the world. Unlike traditional programming where we explicitly 
-                code rules, deep learning systems learn patterns directly from data through multi-layered neural networks.
-              </Text>
-              
-              <Grid gutter="lg" className="mt-6">
-                <Grid.Col span={6}>
-                  <Paper className="p-4 bg-white shadow-sm">
-                    <Title order={4} className="mb-3">Core Characteristics</Title>
-                    <List>
-                      <List.Item><strong>Hierarchical Learning:</strong> Features are learned at multiple levels of abstraction</List.Item>
-                      <List.Item><strong>End-to-End Optimization:</strong> Direct mapping from raw inputs to desired outputs</List.Item>
-                      <List.Item><strong>Automatic Feature Extraction:</strong> No manual feature engineering required</List.Item>
-                      <List.Item><strong>Scalability:</strong> Performance improves with more data and computation</List.Item>
-                    </List>
-                  </Paper>
-                </Grid.Col>
-                
-                <Grid.Col span={6}>
-                  <Paper className="p-4 bg-white shadow-sm">
-                    <Title order={4} className="mb-3">Key Advantages</Title>
-                    <List>
-                      <List.Item><strong>Representation Power:</strong> Can model complex non-linear relationships</List.Item>
-                      <List.Item><strong>Transfer Learning:</strong> Knowledge from one task benefits others</List.Item>
-                      <List.Item><strong>Generalization:</strong> Learns patterns that extend to unseen data</List.Item>
-                      <List.Item><strong>Versatility:</strong> Applicable across diverse domains and modalities</List.Item>
-                    </List>
-                  </Paper>
-                </Grid.Col>
-              </Grid>
-            </Paper>
+          <div data-slide>    <Title order={2} className="mb-6" id="introduction">
+      Introduction to Deep Learning
+    </Title></div>
+<div data-slide>
+<Title order={3} className="mb-4">What is Deep Learning?</Title>
+    
+    <Flex direction="column" align="center">
+      <Image
+        src="/assets/python-deep-learning/module1/ai_segmentation.png"
+        alt="AI Fields Segmentation Diagram"
+        w={{ base: 400, sm: 600, md: 800 }}
+        h="auto"
+        fluid
+      />
+      <Text component="p" ta="center" mt="xs" size="sm" c="dimmed">
+        col_jung
+      </Text>
+    </Flex>
 
+    {/* Field Definitions */}
+<div className="mt-8 mb-8">
+  <Grid>
+    <Grid.Col span={{ base: 12, md: 4 }}>
+        <Title order={4} className="mb-3">
+          AI (Artificial Intelligence)
+        </Title>
+        <Text size="sm" className="mb-3">
+          Automation involving algorithms to reproduce cognitive capabilities such as reasoning, perception, and decision-making.
+        </Text>
+        <Text size="xs" c="dimmed" fs="italic">
+          Example: Expert systems, rule-based engines, calculators - human-created logical systems that have existed for decades
+        </Text>
+    </Grid.Col>
+    
+    <Grid.Col span={{ base: 12, md: 4 }}>
+        <Title order={4} className="mb-3">
+          ML (Machine Learning)
+        </Title>
+        <Text size="sm" className="mb-3">
+          Statistical algorithms that automatically learn patterns from data without being explicitly programmed for each task.
+        </Text>
+        <Text size="xs" c="dimmed" fs="italic">
+          Example: Linear regression for house prices, decision trees for loan approval, clustering for customer segmentation
+        </Text>
+    </Grid.Col>
+    
+    <Grid.Col span={{ base: 12, md: 4 }}>
+        <Title order={4} className="mb-3">
+          DL (Deep Learning)
+        </Title>
+        <Text size="sm" className="mb-3">
+          Neural networks with multiple layers (millions of parameters) that can learn complex representations from raw data.
+        </Text>
+        <Text size="xs" c="dimmed" fs="italic">
+          Example: Protein folding prediction (AlphaFold), language modeling (GPT), computer vision for medical imaging
+        </Text>
+    </Grid.Col>
+  </Grid>
+</div>
+</div>
+<div data-slide>
             <Paper className="p-6 bg-gray-50 mb-6">
               <Title order={3} className="mb-4">The Deep Learning Revolution</Title>
               <Text className="mb-4">
@@ -121,16 +128,29 @@ const Introduction = () => {
                 </Grid.Col>
               </Grid>
             </Paper>
-          </section>
+          
         </div>
 
         {/* Historical Evolution */}
         <div data-slide>
-          <section className="mb-12">
             <Title order={2} className="mb-6" id="history">
               Historical Evolution of Deep Learning
             </Title>
-            
+                      <div data-slide>
+
+            <Flex direction="column" align="center">
+              <Image
+                src="/assets/python-deep-learning/module1/ai_history.png"
+                alt="Yutong Liu & The Bigger Picture"
+                w={{ base: 400, sm: 600, md: 800 }}
+                h="auto"
+                fluid
+              />
+              <Text component="p" ta="center" mt="xs">
+                wikipedia
+              </Text>
+            </Flex>
+          </div>
             <Paper className="p-6 bg-gradient-to-r from-purple-50 to-pink-50 mb-8">
               <Title order={3} className="mb-4">Timeline of Major Milestones</Title>
               
@@ -260,12 +280,10 @@ model = nn.Sequential(
                 </div>
               </div>
             </Paper>
-          </section>
         </div>
 
         {/* Real-World Applications */}
         <div data-slide>
-          <section className="mb-12">
             <Title order={2} className="mb-6" id="applications">
               Real-World Applications
             </Title>
@@ -437,12 +455,10 @@ scores = predictions[0]['scores']  # Confidence scores`} />
                 </Grid.Col>
               </Grid>
             </Paper>
-          </section>
         </div>
 
         {/* Data in Deep Learning */}
         <div data-slide>
-          <section className="mb-12">
             <Title order={2} className="mb-6" id="data">
               Data: The Fuel of Deep Learning
             </Title>
@@ -462,7 +478,7 @@ scores = predictions[0]['scores']  # Confidence scores`} />
                       <List.Item>
                         <strong>Volume:</strong> Deep networks typically need thousands to millions of examples
                         <BlockMath>{`N \\propto d^2`}</BlockMath>
-                        <Text size="sm" color="dimmed">Sample complexity grows with model capacity</Text>
+                        <Text size="sm" c="dimmed">Sample complexity grows with model capacity</Text>
                       </List.Item>
                       <List.Item>
                         <strong>Quality:</strong> Clean labels, consistent annotations, minimal noise
@@ -659,13 +675,11 @@ dataloader = DataLoader(
                 </Grid.Col>
               </Grid>
             </Paper>
-          </section>
         </div>
 
         {/* Summary */}
         <div data-slide>
-          <section>
-            <Title order={2} className="mb-6">Part 1 Summary: Historical Context and Applications</Title>
+    <Title order={2} className="mb-6">Part 1 Summary: Historical Context and Applications</Title>
             
             <Grid gutter="lg">
               <Grid.Col span={6}>
@@ -701,7 +715,6 @@ dataloader = DataLoader(
                 for participating in this transformation.
               </Text>
             </Paper>
-          </section>
         </div>
 
       </Stack>

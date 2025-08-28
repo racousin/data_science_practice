@@ -32,11 +32,7 @@ const ScalingAndNormalization = () => {
       </Text>
 
       <Stack spacing="xl" mt="xl">
-        <Section
-          icon={<IconScale size={24} />}
-          title="Why Scale and Normalize?"
-          id="why-scale-normalize"
-        >
+        <Title order={3} id="why-scale-normalize">Why Scale and Normalize?</Title>
           <Text>
             Different features in a dataset often have varying scales, units, and ranges. Scaling and normalization address several issues:
           </Text>
@@ -57,13 +53,9 @@ const ScalingAndNormalization = () => {
             <List.Item>Gradient descent-based algorithms may converge slowly or struggle to find the optimal solution</List.Item>
             <List.Item>Some models (e.g., neural networks) may struggle to learn effectively from features with widely different scales</List.Item>
           </List>
-        </Section>
+        
 
-        <Section
-          icon={<IconMathFunction size={24} />}
-          title="Scaling Methods"
-          id="scaling-methods"
-        >
+        <Title order={3} id="scaling-methods">Scaling Methods</Title>
           <Text>
             Scaling methods transform features to a common scale without distorting differences in the ranges of values.
           </Text>
@@ -133,13 +125,9 @@ X_scaled = scaler.fit_transform(X)
 print(X_scaled)
             `}
           />
-        </Section>
+        
 
-        <Section
-          icon={<IconChartBar size={24} />}
-          title="Normalization Methods"
-          id="normalization-methods"
-        >
+        <Title order={3} id="normalization-methods">Normalization Methods</Title>
           <Text>
             Normalization typically refers to adjusting values measured on different scales to a common scale, often scaling the length of vectors to unity.
           </Text>
@@ -189,13 +177,9 @@ X_normalized = max_normalize(X)
 print(X_normalized)
             `}
           />
-        </Section>
+        
 
-        <Section
-          icon={<IconAdjustments size={24} />}
-          title="Choosing the Right Method"
-          id="choosing-method"
-        >
+        <Title order={3} id="choosing-method">Choosing the Right Method</Title>
           <Text>
             The choice between scaling and normalization methods depends on the specific requirements of your data and the algorithm you're using:
           </Text>
@@ -212,12 +196,9 @@ print(X_normalized)
           <Text mt="md">
             It's often beneficial to experiment with different scaling and normalization techniques to determine which works best for your specific dataset and machine learning task.
           </Text>
-        </Section>
+        
 
-        <Section
-  title="Practical Considerations"
-  id="practical-considerations"
->
+        <Title order={3} id="practical-considerations">Practical Considerations</Title>
   <List>
     <List.Item>
       <Text><span style={{ fontWeight: 700 }}>Apply to Training and Test Data:</span> Always fit the scaler on the training data and apply the same transformation to both training and test data.</Text>
@@ -232,7 +213,7 @@ print(X_normalized)
       <Text><span style={{ fontWeight: 700 }}>Model Requirements:</span> Some models (e.g., tree-based models) may not require feature scaling, while others (e.g., neural networks) often benefit greatly from it.</Text>
     </List.Item>
   </List>
-</Section>
+
 
       </Stack>
       <div id="notebook-example"></div>
@@ -248,14 +229,6 @@ print(X_normalized)
   );
 };
 
-const Section = ({ icon, title, id, children }) => (
-  <Stack spacing="sm">
-    <Group spacing="xs">
-      {icon}
-      <Title order={2} id={id}>{title}</Title>
-    </Group>
-    {children}
-  </Stack>
-);
+
 
 export default ScalingAndNormalization;

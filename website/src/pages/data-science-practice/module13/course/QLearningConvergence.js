@@ -11,7 +11,7 @@ const QLearningConvergence = () => {
       </Title>
 
       {/* Preliminaries */}
-      <section className="space-y-4">
+      
         <Title order={2} className="text-2xl font-semibold">1. Preliminaries</Title>
         <Text>
           We denote a Markov decision process as a tuple (X, A, P, r), where:
@@ -33,10 +33,10 @@ const QLearningConvergence = () => {
             We admit r to be a bounded, deterministic function.
           </Text>
         </div>
-      </section>
+      
 
       {/* Value Function Definition */}
-      <section className="space-y-4">
+      
         <Title order={2} className="text-2xl font-semibold">2. Value Function</Title>
         <Text>
           The value of a state x is defined, for a sequence of controls {'{At}'}, as:
@@ -50,10 +50,10 @@ const QLearningConvergence = () => {
           <Text className="mt-4">and verifies:</Text>
           <BlockMath>{`V^*(x) = \\max_{a\\in A} \\sum_{y\\in X} P_a(x,y)[r(x,a,y) + \\gamma V^*(y)]`}</BlockMath>
         </div>
-      </section>
+      
 
       {/* Q-Function Definition */}
-      <section className="space-y-4">
+      
         <Title order={2} className="text-2xl font-semibold">3. Optimal Q-Function</Title>
         <Text>
           From here we define the optimal Q-function, Q* as:
@@ -64,10 +64,10 @@ const QLearningConvergence = () => {
           <Text className="mt-4">The optimal Q-function is a fixed point of a contraction operator H:</Text>
           <BlockMath>{`(Hq)(x,a) = \\sum_{y\\in X} P_a(x,y)[r(x,a,y) + \\gamma \\max_{b\\in A} q(y,b)]`}</BlockMath>
         </div>
-      </section>
+      
 
       {/* Contraction Property */}
-      <section className="space-y-4">
+      
         <Title order={2} className="text-2xl font-semibold">4. Contraction Property</Title>
         <Text>
           This operator is a contraction in the sup-norm:
@@ -84,10 +84,10 @@ const QLearningConvergence = () => {
 &= \\gamma \\|q_1 - q_2\\|_\\infty
 \\end{align*}`}</BlockMath>
         </div>
-      </section>
+      
 
       {/* Q-Learning Algorithm */}
-      <section className="space-y-4">
+      
         <Title order={2} className="text-2xl font-semibold">5. Q-Learning Algorithm</Title>
         <Text>
         Let <InlineMath>{`\\pi`}</InlineMath> be some random policy such that <InlineMath>{`\\mathbb{P}[A_t = a | X_t = x] > 0`}</InlineMath> for all state-action pairs <InlineMath>{`(x, a)`}</InlineMath>. 
@@ -99,10 +99,10 @@ const QLearningConvergence = () => {
         where the step-sizes <InlineMath>{`\\alpha_t(x,a)`}</InlineMath> verify <InlineMath>{`0 \\leq \\alpha_t(x,a) \\leq 1`}</InlineMath>
       </Text>
         </div>
-      </section>
+      
 
       {/* Convergence Theorem */}
-      <section className="space-y-4">
+      
         <Title order={2} className="text-2xl font-semibold">6. Convergence Theorem</Title>
         <div className="bg-purple-50 p-6 rounded-lg">
           <Text className="font-semibold">Theorem 1:</Text>
@@ -115,10 +115,10 @@ const QLearningConvergence = () => {
         for all <InlineMath>{`(x,a) \\in \\mathcal{X} \\times \\mathcal{A}`}</InlineMath>.
       </Text>
         </div>
-      </section>
+      
 
       {/* Auxiliary Result */}
-      <section className="space-y-4">
+      
         <Title order={2} className="text-2xl font-semibold">7. Auxiliary Result</Title>
         <div className="bg-gray-50 p-6 rounded-lg">
           <Text className="font-semibold">Theorem 2:</Text>
@@ -145,10 +145,10 @@ const QLearningConvergence = () => {
       </li>
     </ul>
         </div>
-      </section>
+      
 
       {/* Final Proof */}
-      <section className="space-y-4">
+      
         <Title order={2} className="text-2xl font-semibold">8. Final Proof</Title>
         <div className="bg-blue-50 p-6 rounded-lg">
           <Text>We start by rewriting the Q-learning update as:</Text>
@@ -161,7 +161,7 @@ const QLearningConvergence = () => {
           <BlockMath>{`\\|\\mathbb{E}[F_t(x,a)|\\mathcal{F}_t]\\|_\\infty \\leq \\gamma \\|Q_t - Q^*\\|_\\infty = \\gamma \\|\\Delta_t\\|_\\infty`}</BlockMath>
           <Text className="mt-4">Therefore, by Theorem 2, Δt converges to zero with probability 1, i.e., Qt converges to Q* with probability 1.</Text>
         </div>
-      </section>
+      
     </div>
   );
 };

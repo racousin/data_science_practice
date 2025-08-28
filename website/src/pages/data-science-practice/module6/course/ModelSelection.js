@@ -82,11 +82,7 @@ const ModelSelection = () => {
   <text x="420" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="12">metric(model.predict(X_te), y_te)</text>
 </svg>
       <Stack spacing="xl" mt="xl">
-        <Section
-          icon={<IconArrowsSplit size={28} />}
-          title="Train-Test Split"
-          id="train-test-split"
-        >
+        <Title order={3} id="train-test-split">Train-Test Split</Title>
           <Text>
             The train-test split is a fundamental technique in model selection. It involves dividing the dataset into two parts:
           </Text>
@@ -137,14 +133,10 @@ print(f"Decision Tree RMSE: {rmse_tree:.2f}")
 # Best model Decision Tree: 
             `}
           />
-        </Section>
+        
 
 
-    <Section
-      icon={<IconRefresh size={28} />}
-      title="Cross-Validation Methods"
-      id="cross-validation"
-    >
+    <Title order={3} id="cross-validation">Cross-Validation Methods</Title>
       <Text>
         Cross-validation is a robust method for model evaluation, especially when dealing with limited data. It provides a better estimate of the model's performance on unseen data.
       </Text>
@@ -350,13 +342,9 @@ print(f"Mean MSE: {np.mean(mse_scores):.2f}")
 print(f"Standard deviation of MSE: {np.std(mse_scores):.2f}")
 `}
       />
-    </Section>
+    
 
-        <Section
-          icon={<IconChartBar size={28} />}
-          title="Model Comparison Example"
-          id="model-comparison"
-        >
+        <Title order={3} id="model-comparison">Model Comparison Example</Title>
           <Text>
             Let's compare a Linear Regression model with a Random Forest model using cross-validation.
           </Text>
@@ -415,12 +403,9 @@ print(f"Standard deviation of RMSE: {np.std(rf_rmse):.2f}")`}
           <Text mt="md">
             This example demonstrates how to compare two different models using cross-validation. The model with the lower mean RMSE and lower standard deviation of RMSE will be considered better.
           </Text>
-        </Section>
+        
 
-        <Section
-          title="Best Practices"
-          id="best-practices"
-        >
+        <Title order={3} id="best-practices">Best Practices</Title>
           <List>
             <List.Item>
               <Text><span style={{ fontWeight: 700 }}>Choose an appropriate number of folds</span> (typically 5 or 10) based on dataset size and computational resources.</Text>
@@ -432,20 +417,12 @@ print(f"Standard deviation of RMSE: {np.std(rf_rmse):.2f}")`}
               <Text><span style={{ fontWeight: 700 }}>Be cautious of data leakage</span> ensure that the test set remains completely unseen during the entire model selection process.</Text>
             </List.Item>
           </List>
-        </Section>
+        
       </Stack>
     </Container>
   );
 };
 
-const Section = ({ icon, title, id, children }) => (
-  <Stack spacing="sm">
-    <Group spacing="xs">
-      {icon}
-      <Title order={2} id={id}>{title}</Title>
-    </Group>
-    {children}
-  </Stack>
-);
+
 
 export default ModelSelection;

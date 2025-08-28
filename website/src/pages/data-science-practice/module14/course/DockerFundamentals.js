@@ -5,8 +5,8 @@ const DockerFundamentals = () => {
   return (
     <Container>
       <h1>Docker Fundamentals</h1>
-      <section id="docker-architecture">
-        <h2>Docker Architecture</h2>
+      
+        <h2 id="docker-architecture">Docker Architecture</h2>
         <p>
           Docker uses a client-server architecture. The Docker client
           communicates with the Docker daemon, which does the heavy lifting of
@@ -28,9 +28,9 @@ const DockerFundamentals = () => {
             is a public registry that anyone can use.
           </li>
         </ul>
-      </section>
-      <section id="docker-objects">
-        <h2>Docker Objects</h2>
+      
+      
+        <h2 id="docker-objects">Docker Objects</h2>
         <h3>Images</h3>
         <p>
           An image is a read-only template with instructions for creating a
@@ -88,9 +88,9 @@ docker run -d --network my-net nginx:latest
           `}
           language="bash"
         />
-      </section>
-      <section id="dockerfile-basics">
-        <h2>Dockerfile Basics</h2>
+      
+      
+        <h2 id="dockerfile-basics">Dockerfile Basics</h2>
         <p>
           A Dockerfile is a text document that contains all the commands a user
           could call on the command line to assemble an image.
@@ -114,9 +114,9 @@ CMD ["python", "app.py"]
           `}
           language="dockerfile"
         />
-      </section>
-      <section id="docker-cli">
-        <h2>Docker CLI Commands</h2>
+      
+      
+        <h2 id="docker-cli">Docker CLI Commands</h2>
         <p>
           The Docker command line interface (CLI) is the primary way that many
           users interact with Docker. Here are some essential commands:
@@ -140,16 +140,16 @@ docker exec -it <container_id> /bin/bash
           `}
           language="bash"
         />
-      </section>
-      <section id="conclusion">
-        <h2>Conclusion</h2>
+      
+      
+        <h2 id="conclusion">Conclusion</h2>
         <p>
           Understanding these Docker fundamentals is crucial for effectively
           working with containers. In the next sections, we'll dive deeper into
           working with containers, Docker Compose, and more advanced Docker
           techniques.
         </p>
-      </section>
+      
     </Container>
   );
 };

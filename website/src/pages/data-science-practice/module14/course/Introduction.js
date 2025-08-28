@@ -5,17 +5,17 @@ const Introduction = () => {
   return (
     <Container>
       <h1>Introduction to Containerization</h1>
-      <section id="what-is-containerization">
-        <h2>What is Containerization?</h2>
+      
+        <h2 id="what-is-containerization">What is Containerization?</h2>
         <p>
           Containerization is a lightweight form of virtualization that packages
           an application and its dependencies into a standalone, portable unit
           called a container. This container can run consistently across
           different computing environments.
         </p>
-      </section>
-      <section id="benefits-of-containerization">
-        <h2>Benefits of Containerization</h2>
+      
+      
+        <h2 id="benefits-of-containerization">Benefits of Containerization</h2>
         <ul>
           <li>
             <strong>Consistency:</strong> Containers ensure that applications
@@ -38,9 +38,8 @@ const Introduction = () => {
             between applications, improving security and resource management.
           </li>
         </ul>
-      </section>
-      <section id="containers-vs-vms">
-        <h2>Containers vs. Virtual Machines</h2>
+      
+        <h2 id="containers-vs-vms">Containers vs. Virtual Machines</h2>
         <p>
           While both containers and virtual machines (VMs) are used for
           virtualization, they have key differences:
@@ -65,9 +64,9 @@ const Introduction = () => {
             </ul>
           </Grid.Col>
         </Grid>
-      </section>
-      <section id="docker-overview">
-        <h2>Docker Overview</h2>
+      
+      
+        <h2  id="docker-overview">Docker Overview</h2>
         <p>
           Docker is a popular platform for developing, shipping, and running
           applications in containers. It provides tools and services to manage
@@ -106,16 +105,16 @@ docker rm <container_id>
           `}
           language="bash"
         />
-      </section>
-      <section id="conclusion">
-        <h2>Conclusion</h2>
+      
+      
+        <h2 id="conclusion">Conclusion</h2>
         <p>
           Containerization, and Docker in particular, has revolutionized how we
           develop, deploy, and scale applications. As we progress through this
           course, we'll dive deeper into Docker's features and best practices
           for using containers in various scenarios.
         </p>
-      </section>
+      
     </Container>
   );
 };

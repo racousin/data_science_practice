@@ -48,11 +48,7 @@ const HandleCategoricalValues = () => {
       <Title order={1} id="handle-categorical-values" mt="xl" mb="md">Handling Categorical Values</Title>
       
       <Stack spacing="xl">
-        <Section
-          icon={<IconTags size={24} />}
-          title="Types of Categorical Data"
-          id="types-of-categorical-data"
-        >
+        <Title order={3} id="types-of-categorical-data">Types of Categorical Data</Title>
           <Text>
             Categorical data can be classified into two main types:
           </Text>
@@ -107,13 +103,9 @@ for column in df.columns:
 # rating: 3 - ['low' 'medium' 'high']
             `}
           />
-        </Section>
+        
 
-        <Section
-          icon={<IconChartBar size={24} />}
-          title="Identify and Visualize Categorical Values"
-          id="identify-and-visualize-categorical-values"
-        >
+        <Title order={3} id="identify-and-visualize-categorical-values">Identify and Visualize Categorical Values</Title>
           <Text>
             Identifying and visualizing categorical data is crucial for understanding distribution and influences within the dataset. Use techniques like count plots and bar plots to gain insights.
           </Text>
@@ -160,14 +152,10 @@ plt.tight_layout()
 plt.show()
             `}
           />
-        </Section>
+        
 
         <Group grow align="flex-start" spacing="xl">
-          <Section
-            icon={<IconHash size={24} />}
-            title="One-Hot Encoding"
-            id="one-hot-encoding"
-          >
+          <Title order={3} id="one-hot-encoding">One-Hot Encoding</Title>
             <Text>
               One-hot encoding creates a new binary column for each category. It's useful for nominal data and models expecting numerical input.
             </Text>
@@ -210,13 +198,9 @@ print(df_encoded)
 # 4           1            0          0           0            0           1
               `}
             />
-          </Section>
+          
 
-          <Section
-            icon={<IconBinaryTree size={24} />}
-            title="Label Encoding"
-            id="label-encoding"
-          >
+          <Title order={3} id="label-encoding">Label Encoding</Title>
             <Text>
               Label encoding converts each category to a number. It's particularly useful for ordinal data where the order matters.
             </Text>
@@ -270,13 +254,10 @@ print("Size:", dict(zip(le.classes_, le.transform(le.classes_))))
 # Size: {'large': 0, 'medium': 1, 'small': 2}
               `}
             />
-          </Section>
+          
         </Group>
 
-        <Section
-          title="Advanced Techniques"
-          id="advanced-techniques"
-        >
+        <Title order={3} id="advanced-techniques">Advanced Techniques</Title>
           <Stack spacing="md">
               <Title order={4}>Handling Unseen Categories</Title>
               <Text>
@@ -363,12 +344,9 @@ model.fit(train_pool)
                 `}
               />
           </Stack>
-        </Section>
+        
 
-        <Section
-          title="Considerations and Best Practices"
-          id="considerations-and-best-practices"
-        >
+        <Title order={3} id="considerations-and-best-practices">Considerations and Best Practices</Title>
           <List>
             <List.Item>
               <Text><span style={{ fontWeight: 700 }}>Cardinality:</span> For high-cardinality categorical variables (many unique values), consider grouping less frequent categories or using embedding techniques.</Text>
@@ -386,7 +364,7 @@ model.fit(train_pool)
               <Text><span style={{ fontWeight: 700 }}>Consistency:</span> Apply the same encoding strategy to both training and test datasets to ensure consistency.</Text>
             </List.Item>
           </List>
-        </Section>
+        
       </Stack>
       <div id="notebook-example"></div>
       <DataInteractionPanel
@@ -401,14 +379,6 @@ model.fit(train_pool)
   );
 };
 
-const Section = ({ icon, title, id, children }) => (
-  <Stack spacing="sm">
-    <Group spacing="xs">
-      {icon}
-      <Title order={2} id={id}>{title}</Title>
-    </Group>
-    {children}
-  </Stack>
-);
+
 
 export default HandleCategoricalValues;

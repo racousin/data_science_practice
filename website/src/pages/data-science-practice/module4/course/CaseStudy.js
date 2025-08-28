@@ -41,13 +41,10 @@ const CaseStudy = () => {
       <Title order={1} mb="md">Course Data Collection Case Study</Title>
 
       <Box w="100%">
-        <Section title="Objective">
           <Text>
             We want to predict the sales of <Text span fw={700}>StoreE</Text> based on the sales of other stores. We need to aggregate their data.
           </Text>
-        </Section>
-
-        <Section title="Data Sources">
+        
           <List
             spacing="sm"
             icon={<IconDatabase size={16} />}
@@ -68,7 +65,7 @@ const CaseStudy = () => {
               and need to be scraped.
             </List.Item>
           </List>
-        </Section>
+        
 
         <DataInteractionPanel
           trainDataUrl={trainDataUrl}
@@ -84,11 +81,6 @@ const CaseStudy = () => {
   );
 };
 
-const Section = ({ title, children }) => (
-  <Stack spacing="sm">
-    <Title order={2}>{title}</Title>
-    {children}
-  </Stack>
-);
+
 
 export default CaseStudy;

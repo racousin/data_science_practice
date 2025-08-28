@@ -8,7 +8,7 @@ import CodeBlock from "components/CodeBlock";
 
 const BanditParadigms = () => {
   return (
-    <section className="space-y-6">
+    <>
       <Text className="mb-4">
         The multi-armed bandit problem represents the simplest form of the exploration-exploitation 
         dilemma.
@@ -70,7 +70,7 @@ const BanditParadigms = () => {
           Key distinction: The next state depends on the current state and action - creating a sequential decision process.
         </Text>
       </div>
-    </section>
+    </>
   );
 };
 
@@ -105,7 +105,7 @@ class Agent:
       </Title>
 
       <Stack spacing="xl">
-        <section>
+        
           <Title order={2} className="mb-4" id="mdp-connection">
           From MDP to RL 
           </Title>
@@ -123,9 +123,9 @@ class Agent:
             J(\\pi) &= \\mathbb{E}_{\\tau\\sim\\pi}[G(\\tau)] = \\int_{\\tau} \\mathbb{P}(\\tau|\\pi) G(\\tau)
             \\end{align*}`}
           </BlockMath>
-        </section>
+        
 
-        <section>
+        
           <Title order={2} className="mb-4" id="exploration-exploitation">
             The Exploration vs. Exploitation Dilemma
           </Title>
@@ -142,7 +142,7 @@ class Agent:
       h={400}
       w="auto"
 /></div>
-        </section>
+        
 
           <Title order={2} className="mb-4" id="bandit-vs-rl">
             From Bandits to RL
@@ -150,7 +150,7 @@ class Agent:
 
 <BanditParadigms/>
 
-        <section>
+        
           <Title order={2} className="mb-4" id="model-based-vs-free">
             Model-Based vs Model-Free Approaches
           </Title>
@@ -191,9 +191,9 @@ class Agent:
             It exists a big variety of algorithms.
           </Text>
 
-        </section>
+        
 
-        <section>
+        
           <Title order={2} className="mb-4" id="epsilon-greedy">
             Simple Exploration Strategy: ε-Greedy
           </Title>
@@ -206,8 +206,8 @@ class Agent:
 
           <CodeBlock code={agentCode} language="python" />
 
-        </section>
-        {/* <section>
+        
+        {/* 
         <Title order={2} className="mb-4" id="epsilon-greedy">
           Implementation Q ε-Greedy Policy
         </Title>
@@ -215,7 +215,7 @@ class Agent:
 
 <CodeBlock code={agentCode} language="python" />
 
-</section> */}
+ */}
       </Stack>
     </Container>
   );

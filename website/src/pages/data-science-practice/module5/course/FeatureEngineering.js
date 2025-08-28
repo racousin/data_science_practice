@@ -30,10 +30,9 @@ const FeatureEngineering = () => {
 
 
     <Stack spacing="xl" mt="xl">
-      <Section
-        title="Decomposition and Feature Extraction"
-        id="decomposition-extraction"
-      >
+      <Title order={3} id="decomposition-extraction"> "Decomposition and Feature Extraction"</Title>
+        
+        
         <Text>
           Decomposition involves breaking down complex features into simpler components to reveal additional insights. Feature extraction creates new features from existing ones to capture important information more effectively.
         </Text>
@@ -112,12 +111,9 @@ print(df)
 # 3    28        65         27.521250
           `}
         />
-      </Section>
+      
 
-              <Section
-        title="Mathematical Transformations"
-        id="mathematical-transformations"
-      >
+              <Title order={3} id="mathematical-transformations">Mathematical Transformations</Title>
         <Text>
           Mathematical transformations can help normalize data distributions, handle skewness, or create more informative features.
         </Text>
@@ -193,12 +189,9 @@ print(df)
 # 5    500      8.965784
           `}
         />
-      </Section>
+      
 
-      <Section
-        title="Binning and Aggregation"
-        id="binning-aggregation"
-      >
+      <Title order={3} id="binning-aggregation">Binning and Aggregation</Title>
         <Text>
           Binning transforms continuous data into categorical data, while aggregation provides summary statistics for groups.
         </Text>
@@ -278,11 +271,8 @@ print(daily_agg)
 # 2023-05-03   57.500000         65         50  23.750000
           `}
         />
-      </Section>
-      <Section
-          title="Time Series Features"
-          id="time-series-features"
-        >
+      
+      <Title order={3} id="time-series-features">Time Series Features</Title>
         <Text>
           Time series data often requires specific feature engineering techniques to capture temporal patterns and dependencies.
         </Text>
@@ -369,12 +359,9 @@ print(df)
 # 6 2023-05-07          127            18       0.225806
           `}
         />
-      </Section>
+      
 
-        <Section
-          title="Considerations and Best Practices"
-          id="considerations-best-practices"
-        >
+        <Title order={3} id="considerations-best-practices">Considerations and Best Practices</Title>
           <List>
             <List.Item>
               <Text><span style={{ fontWeight: 700 }}>Domain Knowledge:</span> Leverage industry expertise to create meaningful features that capture important aspects of the data.</Text>
@@ -389,7 +376,7 @@ print(df)
               <Text><span style={{ fontWeight: 700 }}>Interpretability:</span> Consider the trade-off between complex feature engineering and model interpretability.</Text>
             </List.Item>
           </List>
-        </Section>
+        
       </Stack>
       <div id="notebook-example"></div>
       <DataInteractionPanel
@@ -404,14 +391,6 @@ print(df)
   );
 };
 
-const Section = ({ icon, title, id, children }) => (
-  <Stack spacing="sm">
-    <Group spacing="xs">
-      {icon}
-      <Title order={2} id={id}>{title}</Title>
-    </Group>
-    {children}
-  </Stack>
-);
+
 
 export default FeatureEngineering;

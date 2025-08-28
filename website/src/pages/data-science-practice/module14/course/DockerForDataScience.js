@@ -5,8 +5,8 @@ const DockerForDataScience = () => {
   return (
     <Container>
       <h1>Docker for Data Science and Machine Learning</h1>
-      <section id="data-science-workflows">
-        <h2>Containerizing Data Science Workflows</h2>
+      
+        <h2 id="data-science-workflows">Containerizing Data Science Workflows</h2>
         <p>
           Docker can significantly improve reproducibility and portability in
           data science projects. Here's an example Dockerfile for a Python-based
@@ -28,9 +28,9 @@ CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--al
           This Dockerfile sets up a Python environment with common data science
           libraries and Jupyter Notebook.
         </p>
-      </section>
-      <section id="ml-model-deployment">
-        <h2>Deploying Machine Learning Models</h2>
+      
+      
+        <h2 id="ml-model-deployment">Deploying Machine Learning Models</h2>
         <p>
           Docker simplifies the deployment of machine learning models. Here's an
           example using Flask to serve a model:
@@ -63,9 +63,9 @@ if __name__ == '__main__':
           `}
           language="python"
         />
-      </section>
-      <section id="gpu-support">
-        <h2>GPU Support in Docker</h2>
+      
+      
+        <h2 id="gpu-support">GPU Support in Docker</h2>
         <p>
           For GPU-accelerated computing, you can use NVIDIA Container Toolkit:
         </p>
@@ -86,9 +86,9 @@ docker run --gpus all nvidia/cuda:10.0-base nvidia-smi
           Note: GPU support requires a compatible NVIDIA GPU and drivers on the
           host system.
         </Alert>
-      </section>
-      <section id="jupyter-notebooks">
-        <h2>Running Jupyter Notebooks in Docker</h2>
+      
+      
+        <h2 id="jupyter-notebooks">Running Jupyter Notebooks in Docker</h2>
         <p>To run Jupyter Notebooks in a Docker container:</p>
         <CodeBlock
           code={`
@@ -100,9 +100,9 @@ docker run -p 8888:8888 -v $(pwd):/home/jovyan/work jupyter/datascience-notebook
           This command runs a Jupyter Notebook server, maps port 8888, and
           mounts the current directory to the container's work directory.
         </p>
-      </section>
-      <section id="data-pipelines">
-        <h2>Building Data Pipelines with Docker</h2>
+      
+      
+        <h2 id="data-pipelines">Building Data Pipelines with Docker</h2>
         <p>
           Docker can be used to create scalable data pipelines. Here's an
           example using Apache Airflow:
@@ -133,9 +133,9 @@ services:
           This docker-compose file sets up an Airflow webserver and a Postgres
           database for managing data workflows.
         </p>
-      </section>
-      <section id="best-practices">
-        <h2>Best Practices for Data Science with Docker</h2>
+      
+      
+        <h2 id="best-practices">Best Practices for Data Science with Docker</h2>
         <ul>
           <li>
             Use specific versions for base images and dependencies to ensure
@@ -154,9 +154,9 @@ services:
             Use docker-compose for complex setups involving multiple services
           </li>
         </ul>
-      </section>
-      <section id="conclusion">
-        <h2>Conclusion</h2>
+      
+      
+        <h2 id="conclusion">Conclusion</h2>
         <p>
           Docker provides powerful tools for data scientists and machine
           learning engineers to create reproducible, scalable, and deployable
@@ -165,7 +165,7 @@ services:
           development and production environments, simplify collaboration, and
           streamline the deployment process.
         </p>
-      </section>
+      
     </Container>
   );
 };

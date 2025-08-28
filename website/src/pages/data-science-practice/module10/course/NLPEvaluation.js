@@ -16,7 +16,7 @@ const NLPEvaluation = () => {
           </p>
         </Grid.Col>
       </Grid>
-      <section id="fundamentals" className="mb-5">
+      
         <h2>1. LLM Evaluation Fundamentals</h2>
         <Grid className="mb-4">
           <Grid.Col>
@@ -43,9 +43,8 @@ const NLPEvaluation = () => {
             </Card>
           </Grid.Col>
         </Grid>
-      </section>
-      <section id="translation-eval" className="mb-5">
-        <h2>2. Translation Evaluation Challenges</h2>
+      
+        <h2 id="translation-eval">2. Translation Evaluation Challenges</h2>
         <p>
           Measuring translation accuracy goes beyond word-level correspondence to capture meaning, fluency, and cultural nuance.
         </p>
@@ -129,9 +128,8 @@ def llm_translation_evaluation(source_text, translation, reference, source_langu
     return evaluation`} />
           </Card.Body>
         </Card>
-      </section>
-      <section id="reasoning-eval" className="mb-5">
-        <h2>3. Evaluating Reasoning Accuracy</h2>
+      
+        <h2 id="reasoning-eval">3. Evaluating Reasoning Accuracy</h2>
         <p>
           Assessing LLMs' reasoning abilities is particularly challenging as it involves logical thinking,
           step-by-step problem solving, and consistency.
@@ -233,9 +231,8 @@ def llm_translation_evaluation(source_text, translation, reference, source_langu
             </Card>
           </Grid.Col>
         </Grid>
-      </section>
-      <section id="leaderboards" className="mb-5">
-        <h2>4. LLM Leaderboards and Comparative Evaluation</h2>
+
+        <h2 id="leaderboards">4. LLM Leaderboards and Comparative Evaluation</h2>
         <p>
           Leaderboards offer standardized comparisons across models, though they come with limitations.
         </p>
@@ -300,7 +297,7 @@ def llm_translation_evaluation(source_text, translation, reference, source_langu
             </Card>
           </Grid.Col>
         </Grid>
-      </section>
+      
     </Container>
   );
 };

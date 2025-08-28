@@ -16,7 +16,7 @@ const MLPFundamentals = () => {
           </Title>
           
           {/* The Neuron as Computational Unit */}
-          <section className="mb-12">
+          
             <Title order={2} className="mb-6" id="neuron">
               The Neuron as a Computational Unit
             </Title>
@@ -245,12 +245,12 @@ plt.xlabel('z')
 plt.ylabel('activation(z)')
 plt.title('Activation Functions Comparison')`} />
             </Paper>
-          </section>
+          
         </div>
 
         {/* Network Architecture and Forward Propagation */}
         <div data-slide>
-          <section className="mb-12">
+          
             <Title order={2} className="mb-6" id="network-architecture">
               Network Architecture and Forward Propagation
             </Title>
@@ -464,12 +464,12 @@ print(f"Output shape: {output.shape}")  # [32, 10]`} />
                 </List>
               </Paper>
             </Paper>
-          </section>
+          
         </div>
 
         {/* Parameters to Optimize */}
         <div data-slide>
-          <section className="mb-12">
+          
             <Title order={2} className="mb-6" id="parameters">
               Parameters to Optimize: Weights and Biases
             </Title>
@@ -716,12 +716,12 @@ for name, param in model.named_parameters():
         # After backward(), param.grad contains gradients`} />
               </Paper>
             </Paper>
-          </section>
+          
         </div>
 
         {/* Practical Implementation */}
         <div data-slide>
-          <section className="mb-12">
+          
             <Title order={2} className="mb-6" id="implementation">
               Complete MLP Implementation Example
             </Title>
@@ -945,12 +945,12 @@ if __name__ == "__main__":
                 </Grid.Col>
               </Grid>
             </Paper>
-          </section>
+          
         </div>
 
         {/* Summary */}
         <div data-slide>
-          <section>
+          
             <Title order={2} className="mb-6">Part 3 Summary: MLP Fundamentals</Title>
             
             <Grid gutter="lg">
@@ -989,7 +989,7 @@ if __name__ == "__main__":
                 of neurons, layers, and gradient-based learning.
               </Text>
             </Paper>
-          </section>
+          
         </div>
 
       </Stack>

@@ -6,17 +6,15 @@ const ContentBasedFiltering = () => {
   return (
     <Container>
       <h1>Content-Based Filtering</h1>
-      <section id="definition">
-        <h2>Definition</h2>
+        <h2 id="definition">Definition</h2>
         <p>
           Content-based filtering is a recommendation technique that uses item
           features to suggest similar items to users based on their previous
           preferences. This method creates a profile for each item and user,
           then uses similarity measures to match users with items.
         </p>
-      </section>
-      <section id="item-representation">
-        <h2>Item Representation</h2>
+      
+        <h2 id="item-representation">Item Representation</h2>
         <p>
           Items are represented as feature vectors. For example, a movie could
           be represented as:
@@ -34,9 +32,8 @@ movie = {
 }
           `}
         />
-      </section>
-      <section id="user-profiles">
-        <h2>User Profiles</h2>
+      
+        <h2 id="user-profiles">User Profiles</h2>
         <p>
           User profiles are typically constructed by aggregating the features of
           items the user has interacted with. This can be represented as a
@@ -51,9 +48,9 @@ user\\_profile = \\frac{\\sum_{i} w_i \\cdot item\\_i\\_features}{\\sum_{i} w_i}
           where <InlineMath>w_i</InlineMath> is the weight (e.g., rating) given
           by the user to item i
         </p>
-      </section>
-      <section id="similarity-measures">
-        <h2>Similarity Measures</h2>
+      
+
+        <h2 id="similarity-measures">Similarity Measures</h2>
         <p>
           Cosine similarity is commonly used to measure the similarity between
           user profiles and item features:
@@ -67,9 +64,8 @@ cosine\\_similarity(A, B) = \\frac{A \\cdot B}{\\|A\\| \\cdot \\|B\\|}
           where A and B are feature vectors, · denotes dot product, and ||x|| is
           the magnitude of vector x
         </p>
-      </section>
-      <section id="implementing-content-based">
-        <h2>Implementing Content-Based Filtering</h2>
+      
+        <h2 id="implementing-content-based">Implementing Content-Based Filtering</h2>
         <p>Here's a basic implementation using Python and scikit-learn:</p>
         <CodeBlock
           language="python"
@@ -95,7 +91,7 @@ recommendations = get_recommendations(0)
 print(recommendations)
           `}
         />
-      </section>
+      
     </Container>
   );
 };

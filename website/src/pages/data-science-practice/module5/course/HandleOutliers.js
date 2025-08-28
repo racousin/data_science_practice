@@ -22,11 +22,7 @@ const HandleOutliers = () => {
       <Title order={1} id="handling-outliers" mt="xl" mb="md">Handling Outliers</Title>
       
       <Stack spacing="xl">
-        <Section
-          icon={<IconAlertTriangle size={24} />}
-          title="Types of Outliers"
-          id="types-of-outliers"
-        >
+        <Title order={3} id="types-of-outliers">Types of Outliers</Title>
           <Text>
             Outliers are data points that significantly differ from other observations. Understanding the types of outliers is crucial for proper detection and management:
           </Text>
@@ -38,13 +34,9 @@ const HandleOutliers = () => {
           <Text mt="md">
             Outliers can arise due to various reasons, including measurement errors, experimental variability, or genuine anomalies in the data.
           </Text>
-        </Section>
+        
 
-        <Section
-          icon={<IconChartBar size={24} />}
-          title="Detecting and Visualizing Outliers"
-          id="detecting-visualizing-outliers"
-        >
+        <Title order={3} id="detecting-visualizing-outliers">Detecting and Visualizing Outliers</Title>
           <Text>
             Different techniques can be employed to detect and visualize outliers, depending on the data distribution and the type of outliers:
           </Text>
@@ -118,13 +110,9 @@ plt.show()
               />
             </List.Item>
           </List>
-        </Section>
+        
 
-        <Section
-          icon={<IconAdjustments size={24} />}
-          title="Managing Outliers"
-          id="managing-outliers"
-        >
+        <Title order={3} id="managing-outliers">Managing Outliers</Title>
           <Text>
             Once outliers are detected, there are several strategies to manage them:
           </Text>
@@ -198,12 +186,9 @@ df['column_imputed'] = impute_outliers(df['column'], method='median')
               />
             </List.Item>
           </List>
-        </Section>
+        
 
-        <Section
-          title="Considerations and Best Practices"
-          id="considerations-best-practices"
-        >
+        <Title order={3} id="considerations-best-practices">Considerations and Best Practices</Title>
           <List>
             <List.Item>
               <Text><span style={{ fontWeight: 700 }}>Domain Knowledge:</span> Incorporate domain expertise to determine if outliers are genuine anomalies or errors.</Text>
@@ -215,7 +200,7 @@ df['column_imputed'] = impute_outliers(df['column'], method='median')
               <Text><span style={{ fontWeight: 700 }}>Multiple Approaches:</span> Use a combination of methods to detect and manage outliers for robust results.</Text>
             </List.Item>
           </List>
-        </Section>
+        
       </Stack>
       <div id="notebook-example"></div>
       <DataInteractionPanel
@@ -231,14 +216,6 @@ df['column_imputed'] = impute_outliers(df['column'], method='median')
   );
 };
 
-const Section = ({ icon, title, id, children }) => (
-  <Stack spacing="sm">
-    <Group spacing="xs">
-      {icon}
-      <Title order={2} id={id}>{title}</Title>
-    </Group>
-    {children}
-  </Stack>
-);
+
 
 export default HandleOutliers;

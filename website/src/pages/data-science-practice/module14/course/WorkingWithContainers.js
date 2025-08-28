@@ -5,8 +5,8 @@ const WorkingWithContainers = () => {
   return (
     <Container>
       <h1>Working with Docker Containers</h1>
-      <section id="running-containers">
-        <h2>Running Containers</h2>
+      
+        <h2 id="running-containers">Running Containers</h2>
         <p>
           Running containers is the core functionality of Docker. Here are some
           common ways to run containers:
@@ -26,9 +26,9 @@ docker run -d -v /host/path:/container/path nginx
           `}
           language="bash"
         />
-      </section>
-      <section id="managing-containers">
-        <h2>Managing Containers</h2>
+      
+
+        <h2 id="managing-containers">Managing Containers</h2>
         <p>
           Docker provides various commands to manage the lifecycle of
           containers:
@@ -52,9 +52,9 @@ docker container prune
           `}
           language="bash"
         />
-      </section>
-      <section id="container-lifecycle">
-        <h2>Container Lifecycle</h2>
+      
+      
+        <h2 id="container-lifecycle">Container Lifecycle</h2>
         <p>
           Understanding the container lifecycle is crucial for effective
           container management:
@@ -89,9 +89,9 @@ docker container prune
             </tr>
           </tbody>
         </Table>
-      </section>
-      <section id="container-networking">
-        <h2>Container Networking</h2>
+      
+      
+        <h2 id="container-networking">Container Networking</h2>
         <p>
           Docker provides powerful networking capabilities to connect containers
           to each other and to the outside world:
@@ -111,9 +111,9 @@ docker network disconnect my-network <container_id>
           `}
           language="bash"
         />
-      </section>
-      <section id="data-management">
-        <h2>Data Management and Volumes</h2>
+      
+      
+        <h2 id="data-management">Data Management and Volumes</h2>
         <p>
           Managing data in Docker containers is crucial for persistence and
           sharing data between containers:
@@ -140,9 +140,9 @@ docker volume prune
           They are managed by Docker and are isolated from the core
           functionality of the host machine.
         </p>
-      </section>
-      <section id="container-logs">
-        <h2>Container Logs and Debugging</h2>
+      
+      
+        <h2 id="container-logs">Container Logs and Debugging</h2>
         <p>
           Accessing logs and debugging containers is essential for
           troubleshooting:
@@ -162,16 +162,16 @@ docker stats <container_id>
           `}
           language="bash"
         />
-      </section>
-      <section id="conclusion">
-        <h2>Conclusion</h2>
+      
+      
+        <h2 id="conclusion">Conclusion</h2>
         <p>
           Working with Docker containers involves understanding how to run,
           manage, network, and debug them. These skills form the foundation of
           using Docker effectively in various scenarios, from development to
           production environments.
         </p>
-      </section>
+      
     </Container>
   );
 };

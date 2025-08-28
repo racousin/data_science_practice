@@ -94,7 +94,7 @@ const Activation = () => {
       
 
       {/* Common Functions Section */}
-      <section>
+      
         
         <Grid mb="lg">
           <Grid.Col span={{ base: 12, md: 6 }}>
@@ -145,10 +145,10 @@ model = nn.Sequential(
     nn.Tanh()         # Alternative to ReLU
 )`}
         />
-      </section>
+      
 
       {/* Mathematical Properties Section */}
-      <section>
+      
         
         <Table>
           <thead>
@@ -186,10 +186,10 @@ model = nn.Sequential(
             </tr>
           </tbody>
         </Table>
-      </section>
+      
 
       {/* Usage Guidelines Section */}
-      {/* <section>
+      {/* 
         <Title order={2} id="usage-guidelines" mb="md">Usage Guidelines</Title>
         
         <Table mb="lg">
@@ -252,7 +252,7 @@ x = torch.randn(32, 784)  # Batch of 32 samples
 output = model(x)
 print(f"Output shape: {output.shape}")  # Should be (32, 10)`}
         />
-      </section> */}
+       */}
     </Stack>
   );
 };

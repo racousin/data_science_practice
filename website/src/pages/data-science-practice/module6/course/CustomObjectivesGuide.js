@@ -10,13 +10,9 @@ const CustomObjectivesGuide = () => {
       <Stack spacing="xl">
         <Title order={1} id="custom-objectives">Custom Objectives Guide</Title>
 
-        <Section
-          title=""
-          id="understanding-objective"
-          description="Before modifying model behavior, it's crucial to clearly define what constitutes a 'good' prediction in your specific context."
-        >
+        <Title order={3} id="understanding-objective">Understanding the Objective</Title>
+        <Text mb="md">Before modifying model behavior, it's crucial to clearly define what constitutes a 'good' prediction in your specific context.</Text>
           <Stack spacing="lg">
-            <Title order={3}>Understanding the Objective</Title>
             <Table withBorder withColumnBorders>
               <thead>
                 <tr>
@@ -55,13 +51,8 @@ const CustomObjectivesGuide = () => {
               </tbody>
             </Table>
           </Stack>
-        </Section>
 
-        <Section
-          title="Customization Techniques"
-          id="customization-techniques"
-          description=""
-        >
+        <Title order={3} id="customization-techniques">Customization Techniques</Title>
           <Stack spacing="lg">
             <SubSection
               title="Sample Weights"
@@ -115,13 +106,9 @@ model = xgb.train(params, dtrain)
               />
             </SubSection>
           </Stack>
-        </Section>
+        
 
-        <Section
-          title="Model Combinations"
-          id="model-combinations"
-          description=""
-        >
+        <Title order={3} id="model-combinations">Model Combinations</Title>
           <Stack spacing="lg">
             <Table withBorder withColumnBorders>
               <thead>
@@ -161,19 +148,13 @@ model = xgb.train(params, dtrain)
               </List.Item>
             </List>
           </Stack>
-        </Section>
+        
       </Stack>
     </Container>
   );
 };
 
-const Section = ({ title, id, description, children }) => (
-  <Stack spacing="md">
-    <Title order={2} id={id}>{title}</Title>
-    <Text>{description}</Text>
-    {children}
-  </Stack>
-);
+
 
 const SubSection = ({ title, description, children }) => (
   <Stack spacing="sm">

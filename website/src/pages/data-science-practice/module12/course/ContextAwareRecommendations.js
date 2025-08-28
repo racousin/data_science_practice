@@ -6,17 +6,17 @@ const ContextAwareRecommendations = () => {
   return (
     <Container>
       <h1>Context-Aware Recommendations</h1>
-      <section id="introduction">
-        <h2>Introduction</h2>
+      
+        <h2 id="introduction">Introduction</h2>
         <p>
           Context-aware recommendation systems (CARS) incorporate contextual
           information into the recommendation process. This approach aims to
           provide more relevant recommendations by considering factors such as
           time, location, or user mood.
         </p>
-      </section>
-      <section id="contextual-information">
-        <h2>Contextual Information</h2>
+      
+      
+        <h2 id="contextual-information">Contextual Information</h2>
         <p>Contextual information can be categorized into different types:</p>
         <ul>
           <li>Temporal context (e.g., time of day, season)</li>
@@ -25,9 +25,9 @@ const ContextAwareRecommendations = () => {
           <li>User state (e.g., mood, goal)</li>
           <li>Device context (e.g., mobile, desktop)</li>
         </ul>
-      </section>
-      <section id="pre-filtering">
-        <h2>Pre-filtering</h2>
+      
+      
+        <h2 id="pre-filtering">Pre-filtering</h2>
         <p>
           Pre-filtering approaches filter the data before applying traditional
           recommendation algorithms.
@@ -41,9 +41,9 @@ recommendations = traditional_recommender(filtered_data)
           `}
           language="python"
         />
-      </section>
-      <section id="post-filtering">
-        <h2>Post-filtering</h2>
+      
+      
+        <h2 id="post-filtering">Post-filtering</h2>
         <p>
           Post-filtering approaches apply context-based filtering after
           generating recommendations.
@@ -57,9 +57,9 @@ final_recommendations = post_filter(initial_recommendations, current_context)
           `}
           language="python"
         />
-      </section>
-      <section id="contextual-modeling">
-        <h2>Contextual Modeling</h2>
+      
+      
+        <h2 id="contextual-modeling">Contextual Modeling</h2>
         <p>
           Contextual modeling incorporates context directly into the
           recommendation algorithm.
@@ -93,9 +93,9 @@ model.train(ratings)
           `}
           language="python"
         />
-      </section>
-      <section id="evaluation">
-        <h2>Evaluation</h2>
+      
+      
+        <h2 id="evaluation">Evaluation</h2>
         <p>
           Evaluating context-aware recommender systems often requires special
           considerations:
@@ -113,7 +113,7 @@ model.train(ratings)
           Where <InlineMath>contextRelevance_i</InlineMath> is a measure of how
           relevant the item is in the given context.
         </p>
-      </section>
+      
     </Container>
   );
 };

@@ -15,11 +15,7 @@ const HyperparameterOptimization = () => {
       </Text>
 
       <Stack spacing="xl" mt="xl">
-        <Section
-          icon={<IconAdjustments size={28} />}
-          title="Grid Search"
-          id="grid-search"
-        >
+        <Title order={3} id="grid-search">Grid Search</Title>
           <Text>
             Grid search is an exhaustive search through a manually specified subset of the hyperparameter space. It tries all possible combinations of the specified hyperparameter values.
           </Text>
@@ -58,13 +54,9 @@ print("Best cross-validation score:", grid_search.best_score_)
           <Text mt="md">
             Grid search is comprehensive but can be computationally expensive, especially with a large number of hyperparameters or a wide range of values.
           </Text>
-        </Section>
+        
 
-        <Section
-          icon={<IconArrowsShuffle size={28} />}
-          title="Random Search"
-          id="random-search"
-        >
+        <Title order={3} id="random-search">Random Search</Title>
           <Text>
             Random search samples random combinations of hyperparameters from specified distributions. It can be more efficient than grid search, especially when not all hyperparameters are equally important.
           </Text>
@@ -106,13 +98,9 @@ print("Best cross-validation score:", random_search.best_score_)
           <Text mt="md">
             Random search can often find good hyperparameters in fewer iterations than grid search, making it a popular choice for many applications.
           </Text>
-        </Section>
+        
 
-        <Section
-  icon={<IconBrain size={28} />}
-  title="Bayesian Optimization"
-  id="bayesian-optimization"
->
+        <Title order={3} id="bayesian-optimization">Bayesian Optimization</Title>
   <Text>
     Bayesian optimization uses probabilistic models to guide the search for optimal hyperparameters. It tries to balance exploration of unknown regions and exploitation of known good regions.
   </Text>
@@ -206,13 +194,9 @@ print("Best cross-validation score:", opt.best_score_)
     Bayesian optimization can be more efficient than both grid and random search, especially for expensive-to-evaluate objective functions. The choice of prior can significantly impact the efficiency of the optimization process.
   </Text>
 
-</Section>
 
-<Section
-  icon={<IconChartBar size={28} />}
-  title="Scoring Methods"
-  id="scoring-methods"
->
+
+<Title order={3} id="scoring-methods">Scoring Methods</Title>
   <Text>
     Scoring methods define how we evaluate model performance during hyperparameter optimization. scikit-learn provides built-in scoring metrics, and you can also create custom scoring functions.
   </Text>
@@ -255,13 +239,9 @@ param_search = GridSearchCV(
 
 `}
   />
-</Section>
 
-<Section
-  icon={<IconFold size={28} />}
-  title="Cross-validation Strategies"
-  id="cv-strategies"
->
+
+<Title order={3} id="cv-strategies">Cross-validation Strategies</Title>
   <Text>
     Cross-validation strategies determine how the data is split during hyperparameter optimization. Different problems may require different CV strategies.
   </Text>
@@ -300,11 +280,8 @@ param_search = GridSearchCV(
 )
 `}
   />
-</Section>
-        <Section
-          title="Best Practices"
-          id="best-practices"
-        >
+
+        <Title order={3} id="best-practices">Best Practices</Title>
           <List>
             <List.Item>
               <Text><span style={{ fontWeight: 700 }}>Start with a broad search:</span> Begin with a wide range of hyperparameters and gradually narrow down.</Text>
@@ -316,20 +293,12 @@ param_search = GridSearchCV(
               <Text><span style={{ fontWeight: 700 }}>Be cautious of data leakage</span> ensure that the test set remains completely unseen during the entire model selection process.</Text>
             </List.Item>
           </List>
-        </Section>
+        
       </Stack>
     </Container>
   );
 };
 
-const Section = ({ icon, title, id, children }) => (
-  <Stack spacing="sm">
-    <Group spacing="xs">
-      {icon}
-      <Title order={2} id={id}>{title}</Title>
-    </Group>
-    {children}
-  </Stack>
-);
+
 
 export default HyperparameterOptimization;

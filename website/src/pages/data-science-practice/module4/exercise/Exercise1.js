@@ -38,14 +38,12 @@ const Exercise1 = () => {
       <Title order={1} mb="md">Exercise 1: Multi-Sources Sales Prediction</Title>
 
       <Stack spacing="xl">
-        <Section title="Objective">
           <Text>
             In this exercise, you will develop a baseline model to predict the <Code>quantity sold </Code> for 
             <Text span fw={700}> Neighborhood_Market</Text> based on sales data from multiple stores.
           </Text>
-        </Section>
+        
 
-        <Section title="Data Sources">
           <List
             spacing="sm"
             icon={<IconDatabase size={16} />}
@@ -66,9 +64,8 @@ const Exercise1 = () => {
               and need to be scraped.
             </List.Item>
           </List>
-        </Section>
+        
 
-        <Section title="Task Overview">
           <List type="ordered">
             <List.Item>Load and combine data from multiple sources (files, API, web scraping).</List.Item>
             <List.Item>Perform exploratory data analysis (EDA) on the combined dataset.</List.Item>
@@ -76,17 +73,15 @@ const Exercise1 = () => {
             <List.Item>Develop and evaluate a baseline model.</List.Item>
             <List.Item>Generate predictions for the test dataset Neighborhood_Market.</List.Item>
           </List>
-        </Section>
+        
 
-        <Section title="Expected Output">
           <Text>You are expected to submit two files:</Text>
           <List>
             <List.Item>A Jupyter Notebook named <Code>exercise1.ipynb</Code> containing your data processing, model development, and evaluation.</List.Item>
             <List.Item>A CSV file named <Code>submission.csv</Code> with your predictions.</List.Item>
           </List>
-        </Section>
+        
 
-        <Section title="Submission Requirements">
           <List type="ordered">
             <List.Item>
               A CSV file named <Code>submission.csv</Code> with two columns:
@@ -110,12 +105,12 @@ A003,100
               Save both the <Code>exercise1.ipynb</Code> notebook and the <Code>submission.csv</Code> file in the <Code>module4</Code> directory under your username folder.
             </List.Item>
           </List>
-        </Section>
+        
 
-        <Section title="Evaluation">
+
           <Text>Your baseline model and predictions will be evaluated based on the Mean Absolute Error (MAE).</Text>
           <Text fw={700}>The error threshold for this exercise is an MAE of 20. Ensure your predictions are accurate enough to meet this threshold.</Text>
-        </Section>
+        
         </Stack>
         <DataInteractionPanel
           trainDataUrl={trainDataUrl}
@@ -130,11 +125,6 @@ A003,100
   );
 };
 
-const Section = ({ title, children }) => (
-  <Stack spacing="sm">
-    <Title order={2}>{title}</Title>
-    {children}
-  </Stack>
-);
+
 
 export default Exercise1;

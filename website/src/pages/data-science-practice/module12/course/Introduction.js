@@ -6,8 +6,8 @@ const Introduction = () => {
   return (
     <Container fluid>
       <h1 className="my-4">Introduction to Recommendation Systems</h1>
-      <section id="what-are-recommendation-systems">
-        <h2>What are Recommendation Systems?</h2>
+      
+        <h2 id="what-are-recommendation-systems">What are Recommendation Systems?</h2>
         <p>
           Recommendation systems are sophisticated algorithms designed to
           predict user preferences and suggest relevant items or content.
@@ -29,9 +29,9 @@ const Introduction = () => {
             </li>
           </ul>
         </p>
-      </section>
-      <section id="types-of-recommendation-systems">
-        <h2>Types of Recommendation Systems</h2>
+      
+      
+        <h2 id="types-of-recommendation-systems">Types of Recommendation Systems</h2>
         <ol>
           <li>
             <strong>Content-Based Filtering:</strong> Recommends items similar
@@ -48,9 +48,9 @@ const Introduction = () => {
             techniques.
           </li>
         </ol>
-      </section>
-      <section id="applications">
-        <h2>Applications of Recommendation Systems</h2>
+      
+      
+        <h2 id="applications">Applications of Recommendation Systems</h2>
         <ul>
           <li>E-commerce product recommendations</li>
           <li>Streaming service content suggestions</li>
@@ -58,9 +58,9 @@ const Introduction = () => {
           <li>News article personalization</li>
           <li>Job and career recommendations</li>
         </ul>
-      </section>
-      <section id="basic-implementation">
-        <h2>Basic Implementation Example</h2>
+      
+      
+        <h2 id="basic-implementation">Basic Implementation Example</h2>
         <p>
           Here's a simple content-based recommendation system using cosine
           similarity:
@@ -85,9 +85,9 @@ recommendations = similarities.argsort()[0][::-1]
 print("Recommended items (by index):", recommendations)
           `}
         />
-      </section>
-      <section id="challenges">
-        <h2>Challenges in Recommendation Systems</h2>
+      
+      
+        <h2 id="challenges">Challenges in Recommendation Systems</h2>
         <ul>
           <li>
             <strong>Cold Start Problem:</strong> Difficulty in recommending to
@@ -106,7 +106,7 @@ print("Recommended items (by index):", recommendations)
             user privacy.
           </li>
         </ul>
-      </section>
+      
     </Container>
   );
 };

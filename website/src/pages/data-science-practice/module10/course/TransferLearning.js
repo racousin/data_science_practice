@@ -8,7 +8,6 @@ const TransferLearning = () => {
     <Container className="py-4">
       <h1>Transfer Learning in NLP</h1>
       {/* Section 1: Introduction */}
-      <section className="my-5">
         <h2>1. Why Transfer Learning?</h2>
         <Card className="my-4">
           <Card.Body>
@@ -45,9 +44,9 @@ const TransferLearning = () => {
             </ul>
           </div>
         </Alert>
-      </section>
+      
       {/* Section 2: Using Pre-trained Models */}
-      <section className="my-5">
+      
         <h2>2. Using Pre-trained Models</h2>
         <p>
           Let's see how to use popular pre-trained models in practice:
@@ -183,9 +182,9 @@ print(f"Response: {response}")
             </Alert>
           </Card.Body>
         </Card>
-      </section>
+      
       {/* Section 3: Fine-tuning Models */}
-      <section className="my-5">
+      
         <h2>3. Fine-tuning Pre-trained Models</h2>
         <p>
           While pre-trained models provide strong capabilities out-of-the-box, fine-tuning them on domain-specific data often yields significant performance improvements.
@@ -507,7 +506,7 @@ qlora_model = get_peft_model(model, lora_config)
             </table>
           </Card.Body>
         </Card>
-      </section>
+      
     </Container>
   );
 };

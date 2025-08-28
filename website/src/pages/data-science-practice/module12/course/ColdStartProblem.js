@@ -6,16 +6,14 @@ const ColdStartProblem = () => {
   return (
     <Container>
       <h1>Cold Start Problem in Recommendation Systems</h1>
-      <section id="introduction">
-        <h2>Introduction</h2>
+        <h2 id="introduction">Introduction</h2>
         <p>
           The cold start problem is a common challenge in recommendation
           systems. It occurs when the system doesn't have enough information to
           make reliable recommendations for new users or items.
         </p>
-      </section>
-      <section id="types-of-cold-start">
-        <h2>Types of Cold Start Problems</h2>
+      
+        <h2 id="types-of-cold-start">Types of Cold Start Problems</h2>
         <ul>
           <li>
             <strong>New User Problem:</strong> When a new user joins the system
@@ -30,9 +28,8 @@ const ColdStartProblem = () => {
             and lacks sufficient data for any users or items.
           </li>
         </ul>
-      </section>
-      <section id="new-user-problem">
-        <h2>New User Problem</h2>
+      
+        <h2 id="new-user-problem">New User Problem</h2>
         <p>Strategies to address the new user problem:</p>
         <ol>
           <li>
@@ -75,9 +72,8 @@ print(recommendations)
           `}
           language="python"
         />
-      </section>
-      <section id="new-item-problem">
-        <h2>New Item Problem</h2>
+      
+        <h2 id="new-item-problem">New Item Problem</h2>
         <p>Strategies to address the new item problem:</p>
         <ol>
           <li>
@@ -121,9 +117,8 @@ print(recommendations)
           `}
           language="python"
         />
-      </section>
-      <section id="evaluation">
-        <h2>Evaluating Cold Start Solutions</h2>
+      
+        <h2 id="evaluation">Evaluating Cold Start Solutions</h2>
         <p>Evaluating cold start solutions requires special considerations:</p>
         <ul>
           <li>Use of hold-out sets specifically for new users or items</li>
@@ -161,9 +156,8 @@ time_based_cold_start_evaluation(ratings, 'timestamp', 'user_id', 'item_id', 'ra
           `}
           language="python"
         />
-      </section>
-      <section id="advanced-techniques">
-        <h2>Advanced Techniques</h2>
+      
+        <h2 id="advanced-techniques">Advanced Techniques</h2>
         <p>
           Some advanced techniques to address the cold start problem include:
         </p>
@@ -186,7 +180,7 @@ time_based_cold_start_evaluation(ratings, 'timestamp', 'user_id', 'item_id', 'ra
             items.
           </li>
         </ul>
-      </section>
+      
     </Container>
   );
 };

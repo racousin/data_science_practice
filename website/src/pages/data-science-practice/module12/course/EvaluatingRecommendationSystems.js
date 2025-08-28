@@ -6,17 +6,17 @@ const EvaluationMetrics = () => {
   return (
     <Container>
       <h1>Evaluation Metrics for Recommendation Systems</h1>
-      <section id="introduction">
-        <h2>Introduction</h2>
+      
+        <h2 id="introduction">Introduction</h2>
         <p>
           Evaluating recommendation systems is crucial to assess their
           performance and compare different approaches. Various metrics are used
           depending on the type of recommendation task and the specific goals of
           the system.
         </p>
-      </section>
-      <section id="accuracy-metrics">
-        <h2>Accuracy Metrics</h2>
+      
+      
+        <h2 id="accuracy-metrics">Accuracy Metrics</h2>
         <h3>Mean Absolute Error (MAE)</h3>
         <p>
           MAE measures the average absolute difference between predicted and
@@ -45,9 +45,9 @@ print(f"RMSE: {rmse(y_true, y_pred):.4f}")
           `}
           language="python"
         />
-      </section>
-      <section id="ranking-metrics">
-        <h2>Ranking Metrics</h2>
+      
+      
+        <h2 id="ranking-metrics">Ranking Metrics</h2>
         <h3>Precision@k and Recall@k</h3>
         <p>
           These metrics evaluate the relevance of the top-k recommended items.
@@ -96,9 +96,9 @@ print(f"NDCG@{k}: {ndcg_at_k(y_true, y_pred, k):.4f}")
           `}
           language="python"
         />
-      </section>
-      <section id="diversity-and-novelty">
-        <h2>Diversity and Novelty</h2>
+      
+      
+        <h2 id="diversity-and-novelty">Diversity and Novelty</h2>
         <h3>Intra-List Diversity</h3>
         <p>Measures how different the recommended items are from each other.</p>
         <BlockMath>
@@ -119,9 +119,9 @@ print(f"NDCG@{k}: {ndcg_at_k(y_true, y_pred, k):.4f}")
           Where <InlineMath>p(i)</InlineMath> is the probability of item i being
           known to the user (often estimated from the training data).
         </p>
-      </section>
-      <section id="coverage">
-        <h2>Coverage</h2>
+      
+      
+        <h2 id="coverage">Coverage</h2>
         <p>
           Coverage measures the proportion of items that the recommender system
           is able to recommend.
@@ -129,9 +129,9 @@ print(f"NDCG@{k}: {ndcg_at_k(y_true, y_pred, k):.4f}")
         <BlockMath>
           {`Coverage = \\frac{|\\text{Unique recommended items}|}{|\\text{All items}|}`}
         </BlockMath>
-      </section>
-      <section id="user-studies">
-        <h2>User Studies</h2>
+      
+      
+        <h2 id="user-studies">User Studies</h2>
         <p>
           While offline metrics are useful, user studies provide invaluable
           insights into the real-world performance of recommendation systems.
@@ -143,9 +143,9 @@ print(f"NDCG@{k}: {ndcg_at_k(y_true, y_pred, k):.4f}")
           <li>System usability</li>
           <li>User engagement and retention</li>
         </ul>
-      </section>
-      <section id="online-evaluation">
-        <h2>Online Evaluation</h2>
+      
+      
+        <h2 id="online-evaluation">Online Evaluation</h2>
         <p>
           A/B testing is a common method for online evaluation of recommendation
           systems. Key metrics in online evaluation include:
@@ -156,7 +156,7 @@ print(f"NDCG@{k}: {ndcg_at_k(y_true, y_pred, k):.4f}")
           <li>User engagement time</li>
           <li>Revenue or other business-specific metrics</li>
         </ul>
-      </section>
+      
     </Container>
   );
 };

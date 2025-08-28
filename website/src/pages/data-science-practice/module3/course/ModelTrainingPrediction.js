@@ -42,7 +42,7 @@ const ModelTrainingPrediction = () => {
 </svg>
       <Grid className="mb-4">
         <Grid.Col span={{ md: 6 }}>
-          <section>
+          
             <h2 id="model-fitting">Training</h2>
             <p>
               In supervised learning, we typically have:
@@ -93,10 +93,10 @@ joblib.dump(model, 'linear_model.joblib')
 joblib.dump(scaler, 'scaler.joblib')
               `}
             />
-          </section>
+          
         </Grid.Col>
         <Grid.Col span={{ md: 6 }}>
-          <section>
+          
             <h2 id="prediction">Prediction</h2>
             <p>
               Once the model is trained, we can use it to make predictions on new data. This process involves:
@@ -122,10 +122,9 @@ predictions = loaded_model.predict(X_new_scaled)
 print("Predictions:", predictions)
               `}
             />
-          </section>
+          
         </Grid.Col>
       </Grid>
-      <section className="mb-4">
         <h2 id="considerations">Key Considerations</h2>
         <ul>
           <li>Ensure consistency in data processing between training and prediction phases</li>
@@ -133,7 +132,7 @@ print("Predictions:", predictions)
           <li>Monitor model performance in production to detect drift or degradation</li>
           <li>Consider model versioning for tracking changes and facilitating rollbacks if needed</li>
         </ul>
-      </section>
+      
     </Container>
   );
 };
