@@ -497,18 +497,10 @@ const SideNavigation = ({ onClose }) => {
   const pathParts = path.split('/').filter(Boolean);
   const inCoursesSection = pathParts[0] === 'courses';
   
-  // If not in courses section or on the courses index page, don't show the side nav
-  if (!inCoursesSection || pathParts.length <= 1) return null;
-  
-  const currentCourseId = pathParts[1];
-  const courseInfo = coursesData[currentCourseId];
-  
-  if (!courseInfo) return null;
-  
-  // Extract current module info
+  const currentCourseId = pathParts.length > 1 ? pathParts[1] : null;
   const currentModuleId = pathParts.length > 2 ? pathParts[2] : null;
   
-  // State for accordion - initialized with current module but allows user control
+  // State for accordion - must be declared before any returns
   const [expandedModule, setExpandedModule] = useState(currentModuleId);
   
   // Update expanded module when navigation changes
@@ -517,6 +509,13 @@ const SideNavigation = ({ onClose }) => {
       setExpandedModule(currentModuleId);
     }
   }, [currentModuleId]);
+  
+  // If not in courses section or on the courses index page, don't show the side nav
+  if (!inCoursesSection || pathParts.length <= 1) return null;
+  
+  const courseInfo = coursesData[currentCourseId];
+  
+  if (!courseInfo) return null;
   
   return (
     <ScrollArea h="100%">
