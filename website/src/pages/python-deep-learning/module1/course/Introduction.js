@@ -102,7 +102,7 @@ const Introduction = () => {
                 The convergence of three critical factors enabled the deep learning revolution:
               </Text>
               </div>
-              <div datta-slide>
+              <div data-slide>
                         <Flex direction="column" align="center">
       <Image
         src="/assets/python-deep-learning/module1/bigdata1.png"
@@ -151,14 +151,25 @@ const Introduction = () => {
         h="auto"
         fluid
       />
+            <Text component="p" ta="center" mt="xs" size="sm" c="dimmed">
+        Source: https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture)      </Text>
+
+                                          <Image
+        src="/assets/python-deep-learning/module1/Pytorch_logo.png"
+        alt="AI Fields Segmentation Diagram"
+        w={{ base: 400, sm: 600, md: 800 }}
+        h="auto"
+        fluid
+      />
+            <Text component="p" ta="center" mt="xs" size="sm" c="dimmed">
+        Source: https://pytorch.org/     </Text>
                     <Title order={4} className="mb-3">3. Algorithmic Innovation</Title>
                     <Text size="sm">
                       Breakthrough techniques like ReLU activation, batch normalization, dropout, and 
                       attention mechanisms solved critical training challenges. These innovations made 
-                      it practical to train networks with dozens or even hundreds of layers.
+                      it practical to train networks with dozens or even hundreds of layers. Open source code with big communities.
                     </Text>
-      <Text component="p" ta="center" mt="xs" size="sm" c="dimmed">
-        Source: https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture)      </Text>
+
 </div>
           
 
@@ -167,7 +178,7 @@ const Introduction = () => {
             <Title order={2} className="mb-6" id="history">
               Historical Evolution of Deep Learning
             </Title>
-                      <div data-slide>
+                     
 
             <Flex direction="column" align="center">
               <Image
@@ -182,12 +193,9 @@ const Introduction = () => {
               </Text>
             </Flex>
           </div>
-            <Paper className="p-6 bg-gradient-to-r from-purple-50 to-pink-50 mb-8">
+<div data-slide>
               <Title order={3} className="mb-4">Timeline of Major Milestones</Title>
-              
-              <div className="space-y-6">
-                {/* 1940s-1960s: The Birth of Neural Networks */}
-                <div className="border-l-4 border-purple-500 pl-6">
+
                   <Title order={4} className="mb-2">1940s-1960s: The Birth of Neural Networks</Title>
                   <Grid gutter="lg">
                     <Grid.Col span={12}>
@@ -196,20 +204,23 @@ const Introduction = () => {
                           <strong>1943 - McCulloch-Pitts Neuron:</strong> Warren McCulloch and Walter Pitts create the first 
                           mathematical model of a neuron, showing how neurons might perform logical computations.
                           <BlockMath>{`y = \\begin{cases} 1 & \\text{if } \\sum_{i} w_i x_i \\geq \\theta \\\\ 0 & \\text{otherwise} \\end{cases}`}</BlockMath>
+                          <a href="https://www.cs.cmu.edu/~epxing/Class/10715/reading/McCulloch.and.Pitts.pdf" target="_blank" rel="noopener noreferrer">[Original Paper]</a>
                         </List.Item>
                         <List.Item>
                           <strong>1958 - Perceptron:</strong> Frank Rosenblatt develops the perceptron, the first algorithm 
                           that could learn from data. It could solve linearly separable problems through iterative weight updates.
+                          <a href="https://www.semanticscholar.org/paper/The-perceptron:-a-probabilistic-model-for-storage-Rosenblatt/5d11aad09f65431b5d3cb1d85328743c9e53ba96" target="_blank" rel="noopener noreferrer">[Rosenblatt 1958]</a>
                         </List.Item>
                         <List.Item>
                           <strong>1969 - Perceptrons Book:</strong> Minsky and Papert publish "Perceptrons", highlighting limitations 
                           like the XOR problem, leading to the first "AI Winter" and reduced funding for neural network research.
+                          <a href="https://mitpress.mit.edu/9780262630221/perceptrons/" target="_blank" rel="noopener noreferrer">[MIT Press]</a>
                         </List.Item>
                       </List>
                     </Grid.Col>
                   </Grid>
                 </div>
-
+<div data-slide>
                 {/* 1980s-1990s: The Backpropagation Era */}
                 <div className="border-l-4 border-blue-500 pl-6">
                   <Title order={4} className="mb-2">1980s-1990s: The Backpropagation Era</Title>
@@ -219,22 +230,30 @@ const Introduction = () => {
                       backpropagation's effectiveness, enabling training of multi-layer networks. This algorithm computes 
                       gradients efficiently using the chain rule:
                       <BlockMath>{`\\frac{\\partial L}{\\partial w_{ij}} = \\frac{\\partial L}{\\partial a_j} \\cdot \\frac{\\partial a_j}{\\partial z_j} \\cdot \\frac{\\partial z_j}{\\partial w_{ij}}`}</BlockMath>
+                      <a href="https://www.nature.com/articles/323533a0" target="_blank" rel="noopener noreferrer">[Nature Paper]</a>
                     </List.Item>
                     <List.Item>
                       <strong>1989 - Universal Approximation Theorem:</strong> Cybenko proves that neural networks with one 
                       hidden layer can approximate any continuous function, providing theoretical foundation for deep learning.
+                      <a href="https://arxiv.org/html/2407.12895v1" target="_blank" rel="noopener noreferrer">[Survey on UAT]</a> | 
+                      <a href="https://www.sciencedirect.com/science/article/abs/pii/0893608089900208" target="_blank" rel="noopener noreferrer">[Hornik et al.]</a>
                     </List.Item>
                     <List.Item>
                       <strong>1989 - Convolutional Neural Networks:</strong> Yann LeCun develops LeNet for handwritten digit 
                       recognition, introducing convolutional layers that exploit spatial structure in images.
+                      <a href="http://vision.stanford.edu/cs598_spring07/papers/Lecun98.pdf" target="_blank" rel="noopener noreferrer">[LeCun et al. 1998]</a> | 
+                      <a href="http://yann.lecun.com/exdb/publis/pdf/lecun-89e.pdf" target="_blank" rel="noopener noreferrer">[1989 Original]</a>
                     </List.Item>
                     <List.Item>
                       <strong>1997 - LSTM:</strong> Hochreiter and Schmidhuber introduce Long Short-Term Memory networks, 
                       solving the vanishing gradient problem in recurrent neural networks.
+                      <a href="https://dl.acm.org/doi/10.1162/neco.1997.9.8.1735" target="_blank" rel="noopener noreferrer">[Neural Computation]</a> | 
+                      <a href="https://www.bioinf.jku.at/publications/older/2604.pdf" target="_blank" rel="noopener noreferrer">[Original PDF]</a>
                     </List.Item>
                   </List>
                 </div>
-
+</div>
+<div data-slide>
                 {/* 2006-2012: The Deep Learning Renaissance */}
                 <div className="border-l-4 border-green-500 pl-6">
                   <Title order={4} className="mb-2">2006-2012: The Deep Learning Renaissance</Title>
@@ -242,30 +261,24 @@ const Introduction = () => {
                     <List.Item>
                       <strong>2006 - Deep Belief Networks:</strong> Geoffrey Hinton introduces layer-wise pretraining using 
                       Restricted Boltzmann Machines, making it practical to train deep networks for the first time.
+                      <a href="https://www.cs.toronto.edu/~hinton/" target="_blank" rel="noopener noreferrer">[Hinton's Publications]</a>
                     </List.Item>
                     <List.Item>
                       <strong>2009 - ImageNet Dataset:</strong> Fei-Fei Li creates ImageNet with 14 million labeled images 
                       across 20,000 categories, providing the benchmark that would drive computer vision progress.
+                      <a href="http://www.image-net.org/" target="_blank" rel="noopener noreferrer">[ImageNet]</a>
                     </List.Item>
                     <List.Item>
                       <strong>2012 - AlexNet Breakthrough:</strong> Alex Krizhevsky's CNN wins ImageNet with 15.3% error rate 
                       (vs 26.2% for second place), using GPUs, ReLU activations, and dropout. This marked the definitive 
                       arrival of deep learning.
-                      <CodeBlock language="python" code={`# AlexNet Architecture (simplified)
-model = nn.Sequential(
-    nn.Conv2d(3, 96, kernel_size=11, stride=4),
-    nn.ReLU(),
-    nn.MaxPool2d(kernel_size=3, stride=2),
-    nn.Conv2d(96, 256, kernel_size=5, padding=2),
-    nn.ReLU(),
-    nn.MaxPool2d(kernel_size=3, stride=2),
-    # ... more layers
-    nn.Linear(4096, 1000)  # 1000 ImageNet classes
-)`} />
+                      <a href="https://proceedings.neurips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf" target="_blank" rel="noopener noreferrer">[NIPS 2012]</a> | 
+                      <a href="https://dl.acm.org/doi/10.1145/3065386" target="_blank" rel="noopener noreferrer">[Communications ACM]</a>
                     </List.Item>
                   </List>
                 </div>
-
+</div>
+<div data-slide>
                 {/* 2014-2017: The Architecture Revolution */}
                 <div className="border-l-4 border-orange-500 pl-6">
                   <Title order={4} className="mb-2">2014-2017: The Architecture Revolution</Title>
@@ -273,20 +286,25 @@ model = nn.Sequential(
                     <List.Item>
                       <strong>2014 - Generative Adversarial Networks:</strong> Ian Goodfellow introduces GANs, enabling 
                       unprecedented image generation through adversarial training between generator and discriminator networks.
+                      <a href="https://arxiv.org/abs/1406.2661" target="_blank" rel="noopener noreferrer">[arXiv:1406.2661]</a>
                     </List.Item>
                     <List.Item>
                       <strong>2015 - ResNet:</strong> Kaiming He introduces residual connections, enabling training of networks 
                       with hundreds of layers by solving the degradation problem:
                       <BlockMath>{`F(x) + x`}</BlockMath>
+                      <a href="https://arxiv.org/abs/1512.03385" target="_blank" rel="noopener noreferrer">[arXiv:1512.03385]</a>
                     </List.Item>
                     <List.Item>
                       <strong>2017 - Transformer Architecture:</strong> Vaswani et al. publish "Attention is All You Need", 
                       introducing self-attention mechanism that would revolutionize NLP:
                       <BlockMath>{`\\text{Attention}(Q, K, V) = \\text{softmax}\\left(\\frac{QK^T}{\\sqrt{d_k}}\\right)V`}</BlockMath>
+                      <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener noreferrer">[arXiv:1706.03762]</a> | 
+                      <a href="https://papers.nips.cc/paper/7181-attention-is-all-you-need" target="_blank" rel="noopener noreferrer">[NIPS 2017]</a>
                     </List.Item>
                   </List>
                 </div>
-
+</div>
+<div data-slide>
                 {/* 2018-Present: The Scale Era */}
                 <div className="border-l-4 border-red-500 pl-6">
                   <Title order={4} className="mb-2">2018-Present: The Scale Era</Title>
@@ -294,25 +312,28 @@ model = nn.Sequential(
                     <List.Item>
                       <strong>2018 - BERT:</strong> Google's Bidirectional Encoder Representations from Transformers achieves 
                       state-of-the-art on 11 NLP tasks through self-supervised pretraining on massive text corpora.
+                      <a href="https://arxiv.org/abs/1810.04805" target="_blank" rel="noopener noreferrer">[arXiv:1810.04805]</a>
                     </List.Item>
                     <List.Item>
                       <strong>2020 - GPT-3:</strong> OpenAI releases 175-billion parameter model showing emergent capabilities 
                       like few-shot learning, code generation, and reasoning without task-specific training.
+                      <a href="https://arxiv.org/abs/2005.14165" target="_blank" rel="noopener noreferrer">[arXiv:2005.14165]</a>
                     </List.Item>
                     <List.Item>
                       <strong>2022 - Diffusion Models:</strong> DALL-E 2, Midjourney, and Stable Diffusion democratize 
                       AI art generation through denoising diffusion probabilistic models.
+                      <a href="https://arxiv.org/abs/2006.11239" target="_blank" rel="noopener noreferrer">[DDPM arXiv:2006.11239]</a> | 
+                      <a href="https://arxiv.org/abs/2112.10752" target="_blank" rel="noopener noreferrer">[DALL-E 2 arXiv:2112.10752]</a>
                     </List.Item>
                     <List.Item>
                       <strong>2023-2024 - Multimodal Foundation Models:</strong> GPT-4V, Gemini, and Claude demonstrate 
                       understanding across text, images, code, and audio, approaching artificial general intelligence.
+                      <a href="https://arxiv.org/abs/2303.08774" target="_blank" rel="noopener noreferrer">[GPT-4 arXiv:2303.08774]</a> | 
+                      <a href="https://arxiv.org/abs/2312.11805" target="_blank" rel="noopener noreferrer">[Gemini arXiv:2312.11805]</a>
                     </List.Item>
                   </List>
                 </div>
               </div>
-            </Paper>
-        </div>
-
         {/* Real-World Applications */}
         <div data-slide>
             <Title order={2} className="mb-6" id="applications">

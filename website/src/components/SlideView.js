@@ -12,36 +12,39 @@ const SlideView = ({ children, enabled = false }) => {
   useEffect(() => {
     if (!enabled) return;
 
+    let isDetecting = false; // Prevent recursive calls
+
     const detectSlides = () => {
+      if (isDetecting) return;
+      isDetecting = true;
+      
       const slideElements = document.querySelectorAll('[data-slide], .slide');
       
       if (slideElements.length > 0) {
         const slidesArray = Array.from(slideElements).map((el, index) => {
+          // Clone the element to avoid DOM mutations
+          const clonedEl = el.cloneNode(true);
           return (
-            <div key={index} dangerouslySetInnerHTML={{ __html: el.outerHTML }} />
+            <div key={index} dangerouslySetInnerHTML={{ __html: clonedEl.outerHTML }} />
           );
         });
         setSlides(slidesArray);
       }
+      
+      isDetecting = false;
     };
 
-    // Initial detection
-    const timer = setTimeout(detectSlides, 200);
-
-    // Watch for DOM changes
-    const observer = new MutationObserver(detectSlides);
-    setTimeout(() => {
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true
-      });
-    }, 100);
+    // Initial detection with multiple attempts to catch dynamic content
+    const timer1 = setTimeout(detectSlides, 100);
+    const timer2 = setTimeout(detectSlides, 500);
+    const timer3 = setTimeout(detectSlides, 1000);
 
     return () => {
-      clearTimeout(timer);
-      observer.disconnect();
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
     };
-  }, [children, enabled]);
+  }, [enabled]);
 
   const handleKeyPress = useCallback((e) => {
     // Start presentation with 'S' key
