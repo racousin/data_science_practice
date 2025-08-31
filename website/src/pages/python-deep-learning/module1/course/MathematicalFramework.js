@@ -1,8 +1,7 @@
 import React from 'react';
-import { Container, Title, Text, Stack, Grid, Paper, List } from '@mantine/core';
+import { Container, Title, Text, Stack, Grid, Paper, List, Flex, Image } from '@mantine/core';
 import { InlineMath, BlockMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
-import CodeBlock from 'components/CodeBlock';
 
 const MathematicalFramework = () => {
   return (
@@ -34,26 +33,99 @@ const MathematicalFramework = () => {
                         Example : predict the future
                       </Text>
           </div>
-          <div data-slide>
-            X : Variables explicatives (features/caractéristiques)
-Y : Variable à expliquer (target/cible)
-Concrètement on aimerait trouver une relation Y = f(X)
-
-Exemple f(année, latitude, altitude) = température prédite
-
-Phase d'entraînement
-Nous disposons de couples (X, Y) observés/mesurés
-Le modèle apprend la relation entre X et Y
-Phase de prédiction
-Nous recevons de nouveaux X 
-Prédire les Y correspondants
-
+          <div data-slide data-tag="ml-variables">
+            <Text size="lg" className="mb-4">
+              <strong>X:</strong> Explanatory variables (features/characteristics)<br/>
+              <strong>Y:</strong> Variable to explain (target)<br/>
+              Concretely, we want to find a relationship Y = f(X)
+            </Text>
+            
+            <Text className="mb-4">
+              <strong>Example:</strong> f(year, latitude, altitude) = predicted temperature
+            </Text>
+            
+            <Grid gutter="lg">
+              <Grid.Col span={6}>
+                <Paper className="p-4 bg-blue-50">
+                  <Title order={4} className="mb-2">Training Phase</Title>
+                  <List size="sm">
+                    <List.Item>We have observed/measured (X, Y) pairs</List.Item>
+                    <List.Item>The model learns the relationship between X and Y</List.Item>
+                  </List>
+                </Paper>
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <Paper className="p-4 bg-green-50">
+                  <Title order={4} className="mb-2">Prediction Phase</Title>
+                  <List size="sm">
+                    <List.Item>We receive new X values</List.Item>
+                    <List.Item>Predict the corresponding Y values</List.Item>
+                  </List>
+                </Paper>
+              </Grid.Col>
+            </Grid>
           </div>
           <div data-slide>
-            //TODO add example, explantion regression / classification with y = 1 dim, multiple dim
+            <Title order={3} className="mb-4">Regression, Classification & Mixed Problems</Title>
+            
+            <Grid gutter="lg">
+              <Grid.Col span={4}>
+                <Paper className="p-4 bg-blue-50 h-full">
+                  <Title order={4} className="mb-3">Regression Problems</Title>
+                  <Text size="sm" className="mb-3">Predict continuous values</Text>
+                  <BlockMath>{`y \\in \\mathbb{R}^m`}</BlockMath>
+                  
+                  <div className="mt-3">
+                    <Text className="font-semibold text-sm">Examples:</Text>
+                    <List size="sm">
+                      <List.Item><strong>1D:</strong> House price (y ∈ ℝ)</List.Item>
+                      <List.Item><strong>2D:</strong> 2D coordinates (x,y)</List.Item>
+                      <List.Item><strong>Multi-dim:</strong> Stock portfolio values</List.Item>
+                      <List.Item><strong>High-dim:</strong> Image generation (pixel values)</List.Item>
+                    </List>
+                  </div>
+                </Paper>
+              </Grid.Col>
+              
+              <Grid.Col span={4}>
+                <Paper className="p-4 bg-green-50 h-full">
+                  <Title order={4} className="mb-3">Classification Problems</Title>
+                  <Text size="sm" className="mb-3">Predict discrete categories</Text>
+                  <BlockMath>{`y \\in \\{1, 2, ..., K\\}`}</BlockMath>
+                  
+                  <div className="mt-3">
+                    <Text className="font-semibold text-sm">Examples:</Text>
+                    <List size="sm">
+                      <List.Item><strong>Binary:</strong> Spam detection (y ∈ {`{0,1}`})</List.Item>
+                      <List.Item><strong>Multi-class:</strong> Image recognition (10 classes)</List.Item>
+                      <List.Item><strong>Multi-label:</strong> Document tagging</List.Item>
+                      <List.Item><strong>Hierarchical:</strong> Species classification</List.Item>
+                    </List>
+                  </div>
+                </Paper>
+              </Grid.Col>
+              
+              <Grid.Col span={4}>
+                <Paper className="p-4 bg-purple-50 h-full">
+                  <Title order={4} className="mb-3">Mixed Problems</Title>
+                  <Text size="sm" className="mb-3">Combine regression & classification</Text>
+                  <BlockMath>{`y = [y_{reg}, y_{cls}]`}</BlockMath>
+                  
+                  <div className="mt-3">
+                    <Text className="font-semibold text-sm">Examples:</Text>
+                    <List size="sm">
+                      <List.Item><strong>Object detection:</strong> Bounding box + class</List.Item>
+                      <List.Item><strong>Facial analysis:</strong> Age (reg) + gender (cls)</List.Item>
+                      <List.Item><strong>Medical diagnosis:</strong> Severity + disease type</List.Item>
+                      <List.Item><strong>Autonomous driving:</strong> Distance + object type</List.Item>
+                    </List>
+                  </div>
+                </Paper>
+              </Grid.Col>
+            </Grid>
           </div>
-                      <div data-slide>
-              <Title order={3} className="mb-4">Data caracteristic</Title>
+                      <div data-slide >
+              <Title order={3} className="mb-4">Data Characteristics</Title>
                                   <Flex direction="column" align="center" className="mb-4">
                       <Image
                         src="/assets/python-deep-learning/module1/ai_obj2.png"
@@ -77,10 +149,18 @@ Prédire les Y correspondants
                         9 observations, 3 dimensions
                       </Text>
                       
-Quantity
-Taille d'échantillon : nombre nombre d'observations
-Dimension
-Dimensionnalité : nombre de variables par observation (features)
+            <Paper className="p-4 bg-white mt-4">
+              <Grid gutter="lg">
+                <Grid.Col span={6}>
+                  <Title order={4} className="mb-2">Quantity</Title>
+                  <Text size="sm">Sample size: number of observations</Text>
+                </Grid.Col>
+                <Grid.Col span={6}>
+                  <Title order={4} className="mb-2">Dimension</Title>
+                  <Text size="sm">Dimensionality: number of variables per observation (features)</Text>
+                </Grid.Col>
+              </Grid>
+            </Paper>
               </div>
             <div data-slide>
               <Title order={3} className="mb-4">The Fundamental Learning Problem</Title>
@@ -114,7 +194,7 @@ Dimensionnalité : nombre de variables par observation (features)
                   <div>
                     <Text className="font-semibold mb-2">Mathematical Formulation:</Text>
                     <BlockMath>{`\\min_{f \\in \\mathcal{F}} \\mathbb{E}_{(x,y) \\sim P_{data}}[\\ell(f(x), y)]`}</BlockMath>
-                    <Text size="sm" color="dimmed">
+                    <Text size="sm" c="dimmed">
                       where <InlineMath>{`\\mathcal{F}`}</InlineMath> is the hypothesis class, 
                       and <InlineMath>{`\\ell`}</InlineMath> is the loss function
                     </Text>
@@ -257,20 +337,31 @@ Dimensionnalité : nombre de variables par observation (features)
                       />
                     </Flex>
                                       <Text component="p" ta="center" mt="xs">
-                        Quadatruc function R2 to R 5 params
+                        Quadratic function R² to R, 5 params
                       </Text>
-            Paramètres (Parameters)
-Nombre de valeurs : que le modèle doit apprendre
-Dimension entrée/sortie (Input/Output Dimension)
-Dimension d'entrée : dimension des variables explicatives (features)
-Dimension de sortie : nombre de variables à prédire (target/cible)
-Opérations entre les paramètres et les données d'entrée
-Addition, multiplication, autres opérations
-
-
+            
+            <Paper className="p-4 bg-white mt-6">
+              <Grid gutter="lg">
+                <Grid.Col span={4}>
+                  <Title order={4} className="mb-2">Parameters</Title>
+                  <Text size="sm">Number of values the model must learn</Text>
+                </Grid.Col>
+                <Grid.Col span={4}>
+                  <Title order={4} className="mb-2">Input/Output Dimension</Title>
+                  <List size="sm">
+                    <List.Item><strong>Input dimension:</strong> dimension of explanatory variables (features)</List.Item>
+                    <List.Item><strong>Output dimension:</strong> number of variables to predict (target)</List.Item>
+                  </List>
+                </Grid.Col>
+                <Grid.Col span={4}>
+                  <Title order={4} className="mb-2">Operations</Title>
+                  <Text size="sm">Between parameters and input data:<br/>Addition, multiplication, other operations</Text>
+                </Grid.Col>
+              </Grid>
+            </Paper>
         </div>
         {/* Models and Parameters */}
-        <div data-slide>
+        <div data-slide data-tag="parametric-models">
           
 
             
@@ -288,7 +379,7 @@ Addition, multiplication, autres opérations
                     <Text size="sm" className="mb-3">The simplest parametric model:</Text>
                     <BlockMath>{`f_\\theta(x) = w^T x + b`}</BlockMath>
                     <Text size="sm" className="mb-2">Parameters: <InlineMath>{`\\theta = \\{w \\in \\mathbb{R}^d, b \\in \\mathbb{R}\\}`}</InlineMath></Text>
-                    <Text size="sm" color="dimmed">
+                    <Text size="sm" c="dimmed">
                       Limited to linear decision boundaries, cannot capture complex patterns
                     </Text>
                   </Paper>
@@ -300,7 +391,7 @@ Addition, multiplication, autres opérations
                     <Text size="sm" className="mb-3">Composition of linear and non-linear functions:</Text>
                     <BlockMath>{`f_\\theta(x) = W_L \\cdot \\sigma(W_{L-1} \\cdot ... \\cdot \\sigma(W_1 x + b_1) ... + b_{L-1}) + b_L`}</BlockMath>
                     <Text size="sm" className="mb-2">Parameters: <InlineMath>{`\\theta = \\{W_1, b_1, ..., W_L, b_L\\}`}</InlineMath></Text>
-                    <Text size="sm" color="dimmed">
+                    <Text size="sm" c="dimmed">
                       Can approximate any continuous function (universal approximation)
                     </Text>
                   </Paper>
@@ -352,13 +443,13 @@ Addition, multiplication, autres opérations
                       <div>
                         <Text className="font-semibold text-sm">Mean Squared Error (MSE):</Text>
                         <BlockMath>{`\\ell_{MSE}(y, \\hat{y}) = \\frac{1}{n}\\sum_{i=1}^n (y_i - \\hat{y}_i)^2`}</BlockMath>
-                        <Text size="xs" color="dimmed">Penalizes large errors heavily, sensitive to outliers</Text>
+                        <Text size="xs" c="dimmed">Penalizes large errors heavily, sensitive to outliers</Text>
                       </div>
                       
                       <div>
                         <Text className="font-semibold text-sm">Mean Absolute Error (MAE):</Text>
                         <BlockMath>{`\\ell_{MAE}(y, \\hat{y}) = \\frac{1}{n}\\sum_{i=1}^n |y_i - \\hat{y}_i|`}</BlockMath>
-                        <Text size="xs" color="dimmed">Robust to outliers, non-differentiable at zero</Text>
+                        <Text size="xs" c="dimmed">Robust to outliers, non-differentiable at zero</Text>
                       </div>
                       
                       <div>
@@ -367,7 +458,7 @@ Addition, multiplication, autres opérations
                           \\frac{1}{2}(y - \\hat{y})^2 & \\text{if } |y - \\hat{y}| \\leq \\delta \\\\
                           \\delta|y - \\hat{y}| - \\frac{1}{2}\\delta^2 & \\text{otherwise}
                         \\end{cases}`}</BlockMath>
-                        <Text size="xs" color="dimmed">Combines MSE and MAE benefits</Text>
+                        <Text size="xs" c="dimmed">Combines MSE and MAE benefits</Text>
                       </div>
                     </div>
                   </Paper>
@@ -382,19 +473,19 @@ Addition, multiplication, autres opérations
                       <div>
                         <Text className="font-semibold text-sm">Cross-Entropy Loss:</Text>
                         <BlockMath>{`\\ell_{CE}(y, \\hat{p}) = -\\sum_{i=1}^n \\sum_{c=1}^C y_{ic} \\log(\\hat{p}_{ic})`}</BlockMath>
-                        <Text size="xs" color="dimmed">Standard for multi-class classification</Text>
+                        <Text size="xs" c="dimmed">Standard for multi-class classification</Text>
                       </div>
                       
                       <div>
                         <Text className="font-semibold text-sm">Binary Cross-Entropy:</Text>
                         <BlockMath>{`\\ell_{BCE}(y, \\hat{p}) = -[y\\log(\\hat{p}) + (1-y)\\log(1-\\hat{p})]`}</BlockMath>
-                        <Text size="xs" color="dimmed">For binary classification problems</Text>
+                        <Text size="xs" c="dimmed">For binary classification problems</Text>
                       </div>
                       
                       <div>
                         <Text className="font-semibold text-sm">Focal Loss:</Text>
                         <BlockMath>{`\\ell_{FL}(p_t) = -\\alpha_t(1-p_t)^\\gamma \\log(p_t)`}</BlockMath>
-                        <Text size="xs" color="dimmed">Addresses class imbalance by focusing on hard examples</Text>
+                        <Text size="xs" c="dimmed">Addresses class imbalance by focusing on hard examples</Text>
                       </div>
                     </div>
                   </Paper>
@@ -474,19 +565,54 @@ Addition, multiplication, autres opérations
                                       <Text component="p" ta="center" mt="xs">
                         Example: Compute error
                       </Text>
-  Processus d'entraînement d'un modèle
-0. Initialisation
-- Choisir un type de modèle (ex: régression linéaire)
-- Initialiser les paramètres aléatoirement
-1. Prédiction
-- Prédire Y à partir de X avec le modèle actuel
-2. Calcul de l'erreur
-- Comparer Y_prédit vs Y_réel
-3. Ajustement
-- Modifier les paramètres pour réduire l'erreur (descente de gradient)
-4. Itération
-- Répéter depuis 1 jusqu'à ce que l'erreur ne réduise plus
-Objectif : Minimiser l'erreur de prédiction en optimisant les paramètres.
+            <Paper className="p-6 bg-gray-50 mt-6">
+              <Title order={3} className="mb-4">Model Training Process</Title>
+              
+              <Grid gutter="lg">
+                <Grid.Col span={6}>
+                  <Paper className="p-4 bg-white">
+                    <Title order={4} className="mb-3">0. Initialization</Title>
+                    <List size="sm">
+                      <List.Item>Choose a model type (e.g., linear regression)</List.Item>
+                      <List.Item>Initialize parameters randomly</List.Item>
+                    </List>
+                  </Paper>
+                </Grid.Col>
+                
+                <Grid.Col span={6}>
+                  <Paper className="p-4 bg-white">
+                    <Title order={4} className="mb-3">1. Prediction</Title>
+                    <List size="sm">
+                      <List.Item>Predict Y from X with current model</List.Item>
+                    </List>
+                  </Paper>
+                </Grid.Col>
+                
+                <Grid.Col span={6}>
+                  <Paper className="p-4 bg-white">
+                    <Title order={4} className="mb-3">2. Error Calculation</Title>
+                    <List size="sm">
+                      <List.Item>Compare Y_predicted vs Y_actual</List.Item>
+                    </List>
+                  </Paper>
+                </Grid.Col>
+                
+                <Grid.Col span={6}>
+                  <Paper className="p-4 bg-white">
+                    <Title order={4} className="mb-3">3. Adjustment</Title>
+                    <List size="sm">
+                      <List.Item>Modify parameters to reduce error (gradient descent)</List.Item>
+                    </List>
+                  </Paper>
+                </Grid.Col>
+              </Grid>
+              
+              <Paper className="p-4 bg-blue-50 mt-4">
+                <Title order={4} className="mb-2">4. Iteration</Title>
+                <Text size="sm" className="mb-2">Repeat from step 1 until error no longer decreases</Text>
+                <Text size="sm" className="font-semibold">Objective: Minimize prediction error by optimizing parameters</Text>
+              </Paper>
+            </Paper>
 
 </div>
 
@@ -511,7 +637,7 @@ Objectif : Minimiser l'erreur de prédiction en optimisant les paramètres.
                       />
                     </Flex>
                                       <Text component="p" ta="center" mt="xs">
-                        gradent_descent vizualisation
+                        Gradient descent visualization
                       </Text>
 </div>
 

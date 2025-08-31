@@ -181,3 +181,65 @@ div.mytab .tab-content {
   border-left: 4px solid #f39c12; /* Add a colored border to differentiate */
   padding-left: 10px;
 }
+
+/* Slide Mode Styling */
+.slide-content {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.slide-content [data-slide] {
+  width: 100%;
+  max-width: none;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.slide-content h1 {
+  font-size: 3rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.slide-content h2 {
+  font-size: 2.5rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 1.2rem !important;
+}
+
+.slide-content h3 {
+  font-size: 2rem !important;
+  font-weight: 500 !important;
+  margin-bottom: 1rem !important;
+}
+
+.slide-content h4 {
+  font-size: 1.5rem !important;
+  font-weight: 500 !important;
+  margin-bottom: 0.8rem !important;
+}
+
+.slide-content p, .slide-content li {
+  font-size: 1.2rem !important;
+  line-height: 1.6 !important;
+  margin-bottom: 0.8rem !important;
+}
+
+.slide-content .mantine-Paper-root {
+  padding: 2rem !important;
+}
+
+.slide-content .mantine-Container-root {
+  max-width: none !important;
+  width: 100% !important;
+}
+
+.slide-content pre {
+  font-size: 1rem !important;
+}
+
+.slide-content code {
+  font-size: 1rem !important;
+}

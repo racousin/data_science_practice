@@ -236,11 +236,17 @@ export const pytorchCourseContentData = {
       { id: 'network-architecture', label: 'Network Architecture' },
       { id: 'parameters', label: 'Parameters to Optimize' },
     ]},
-    { to: '/pytorch-overview', label: 'Pytorch in a nutshell', subLinks: [
-      { id: 'pytorch-intro', label: 'PyTorch Overview' },
+    { to: '/pytorch-introduction', label: 'PyTorch: Introduction & Philosophy', subLinks: [
+      { id: 'philosophy', label: 'PyTorch Philosophy' },
       { id: 'tensors', label: 'Tensors: The Foundation' },
-      { id: 'ecosystem', label: 'PyTorch Ecosystem' },
-      { id: 'resources', label: 'Resources and Best Practices' }
+      { id: 'device-management', label: 'Device Management and GPU Acceleration' },
+      { id: 'autograd-intro', label: 'Introduction to Automatic Differentiation' }
+    ]},
+    { to: '/pytorch-data-and-models', label: 'PyTorch: Data & Neural Networks', subLinks: [
+      { id: 'datasets-dataloaders', label: 'Datasets and DataLoaders' },
+      { id: 'transforms', label: 'Data Transforms and Preprocessing' },
+      { id: 'neural-networks', label: 'Building Neural Networks' },
+      { id: 'training-integration', label: 'Training Pipeline Integration' }
     ]}
   ],
   'module2': [ // Todo we will add backprpagation Here and migrate data-pipeline-training-loop

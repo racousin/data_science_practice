@@ -89,7 +89,7 @@ const Introduction = () => {
 <div data-slide>
               <Title order={3} className="mb-4">The Deep Learning Revolution</Title>
                                       <Image
-        src="/assets/python-deep-learning/module1/bigdata0.png"
+        src="/assets/python-deep-learning/module1/big_data0.png"
         alt="AI Fields Segmentation Diagram"
         w={{ base: 400, sm: 600, md: 800 }}
         h="auto"
@@ -192,6 +192,21 @@ const Introduction = () => {
                 https://en.wikipedia.org/wiki/Timeline_of_artificial_intelligence
               </Text>
             </Flex>
+          </div>
+          <div data-slide>
+                        <Flex direction="column" align="center">
+              <Image
+                src="/assets/python-deep-learning/module1/agi_buble.png"
+                alt="Yutong Liu & The Bigger Picture"
+                w={{ base: 400, sm: 600, md: 800 }}
+                h="auto"
+                fluid
+              />
+              <Text component="p" ta="center" mt="xs">
+                https://marketoonist.com/2023/04/navigating-ai-hype.html
+              </Text>
+            </Flex>
+            Artificial general intelligence (AGI) refers to the hypothetical intelligence of a machine that possesses the ability to understand or learn any intellectual task that a human being can. However, deep learning excels at pattern recognition tasks but struggles with theoretical breakthroughs in physics, proving mathematical theorems like the Riemann Hypothesis, and understanding consciousness - areas requiring new abstractions rather than data pattern matching, while also being highly energy-intensive with massive computational resource requirements.
           </div>
 <div data-slide>
               <Title order={3} className="mb-4">Timeline of Major Milestones</Title>

@@ -171,8 +171,22 @@ const SlideView = ({ children, enabled = false }) => {
         >
           {slides.map((slide, index) => (
             <Carousel.Slide key={index}>
-              <div className="h-full w-full flex items-center justify-center overflow-auto p-8">
-                <div className="max-w-6xl w-full">
+              <div 
+                className="slide-content h-full w-full flex items-center justify-center"
+                style={{ 
+                  overflow: 'auto',
+                  padding: '2rem',
+                  minHeight: '100vh',
+                  boxSizing: 'border-box'
+                }}
+              >
+                <div 
+                  className="w-full"
+                  style={{
+                    maxWidth: 'none',
+                    width: '100%'
+                  }}
+                >
                   {slide}
                 </div>
               </div>
