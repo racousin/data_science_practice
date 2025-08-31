@@ -361,6 +361,9 @@ const Introduction = () => {
             fluid
           />
         </Flex>
+                          <Text component="p" ta="center" mt="xs">
+            Source: ImageNet
+          </Text>
         
         <List>
           <List.Item>
@@ -582,7 +585,6 @@ const Introduction = () => {
         </List>
       </Paper>
     </div>
-</div>
 <div data-slide>
       <Title order={2} className="mb-6" id="data">Data: The Fuel of Deep Learning</Title>
       
