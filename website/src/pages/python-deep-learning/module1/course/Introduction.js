@@ -334,441 +334,383 @@ const Introduction = () => {
                   </List>
                 </div>
               </div>
-        {/* Real-World Applications */}
+                   {/* Real-World Applications */}
         <div data-slide>
-            <Title order={2} className="mb-6" id="applications">
-              Real-World Applications
-            </Title>
-            
-            <Text size="lg" className="mb-6">
-              Deep learning has transformed virtually every field it has touched, enabling capabilities 
-              that seemed like science fiction just a decade ago.
-            </Text>
 
-            {/* Computer Vision Applications */}
-            <Paper className="p-6 bg-blue-50 mb-6">
-              <Title order={3} className="mb-4">Computer Vision</Title>
-              
-              <Grid gutter="lg">
-                <Grid.Col span={6}>
-                  <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Medical Imaging</Title>
-                    <List size="sm">
-                      <List.Item><strong>Cancer Detection:</strong> CNNs match or exceed radiologist performance in detecting breast cancer, skin cancer, and lung nodules</List.Item>
-                      <List.Item><strong>Retinal Disease:</strong> Diabetic retinopathy screening preventing blindness in millions</List.Item>
-                      <List.Item><strong>Medical Segmentation:</strong> Precise tumor boundary detection for radiation therapy planning</List.Item>
-                      <List.Item><strong>Drug Discovery:</strong> Predicting molecular properties from chemical structures</List.Item>
-                    </List>
-                  </Paper>
-                </Grid.Col>
-                
-                <Grid.Col span={6}>
-                  <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Autonomous Systems</Title>
-                    <List size="sm">
-                      <List.Item><strong>Self-Driving Cars:</strong> Real-time object detection, lane detection, path planning</List.Item>
-                      <List.Item><strong>Drone Navigation:</strong> Obstacle avoidance and terrain mapping</List.Item>
-                      <List.Item><strong>Industrial Robotics:</strong> Quality control, defect detection, assembly verification</List.Item>
-                      <List.Item><strong>Agriculture:</strong> Crop disease detection, yield prediction, precision farming</List.Item>
-                    </List>
-                  </Paper>
-                </Grid.Col>
-              </Grid>
+      <Title order={2} className="mb-6">Real-World Applications</Title>
+      
+      <Text size="lg" className="mb-6">
+        Deep learning has revolutionized virtually every field it has touched, enabling capabilities 
+        that seemed impossible just a decade ago.
+      </Text>
+<div/>
+<div data-slide>
+      {/* Computer Vision */}
+      <Paper className="p-6 mb-6">
+        <Title order={3} className="mb-2">Computer Vision</Title>
+        <Text size="sm" className="mb-4" color="dimmed">
+          Enabling machines to understand and interpret visual information from the world
+        </Text>
+        
+        <Flex direction="column" align="center" className="mb-4">
+          <Image
+            src="/assets/python-deep-learning/module1/object_detetcion.png"
+            alt="Computer Vision Applications"
+            w={{ base: 400, sm: 600, md: 800 }}
+            h="auto"
+            fluid
+          />
+        </Flex>
+        
+        <List>
+          <List.Item>
+            <strong>Medical Imaging:</strong> Cancer detection, radiology AI, pathology analysis
+            <a href="https://www.nature.com/articles/s41591-020-0842-3" target="_blank" rel="noopener noreferrer">[Nature Medicine 2020]</a>
+          </List.Item>
+          <List.Item>
+            <strong>Autonomous Vehicles:</strong> Self-driving cars, drones, robotic navigation
+            <a href="https://arxiv.org/abs/2308.05731" target="_blank" rel="noopener noreferrer">[Survey 2023]</a>
+          </List.Item>
+          <List.Item><strong>Face Recognition:</strong> Security systems, device authentication, photo organization</List.Item>
+          <List.Item><strong>Industrial QC:</strong> Defect detection, assembly verification, quality control</List.Item>
+          <List.Item><strong>Agriculture:</strong> Crop monitoring, disease detection, yield prediction</List.Item>
+        </List>
+      </Paper>
+</div>
+<div data-slide>
+      {/* Natural Language Processing */}
+      <Paper className="p-6 mb-6">
+        <Title order={3} className="mb-2">Natural Language Processing</Title>
+        <Text size="sm" className="mb-4" color="dimmed">
+          Understanding, generating, and translating human language
+        </Text>
+        
+        <Flex direction="column" align="center" className="mb-4">
+          <Image
+            src="/assets/python-deep-learning/module1/ai_chatbot.png"
+            alt="NLP Applications"
+            w={{ base: 400, sm: 600, md: 800 }}
+            h="auto"
+            fluid
+          />
+        </Flex>
+                  <Text component="p" ta="center" mt="xs">
+            Source: https://openai.com/
+          </Text>
+        <List>
+          <List.Item>
+            <strong>Language Models:</strong> ChatGPT, Claude, Gemini for conversation and assistance
+            <a href="https://arxiv.org/abs/2303.08774" target="_blank" rel="noopener noreferrer">[GPT-4]</a>
+            <a href="https://arxiv.org/abs/2312.11805" target="_blank" rel="noopener noreferrer">[Gemini]</a>
+          </List.Item>
+          <List.Item>
+            <strong>Machine Translation:</strong> Real-time translation across 100+ languages
+            <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener noreferrer">[Transformer]</a>
+          </List.Item>
+          <List.Item>
+            <strong>Code Generation:</strong> GitHub Copilot, automated programming assistance
+            <a href="https://arxiv.org/abs/2107.03374" target="_blank" rel="noopener noreferrer">[Codex]</a>
+          </List.Item>
+          <List.Item><strong>Text Analytics:</strong> Sentiment analysis, summarization, information extraction</List.Item>
+          <List.Item>
+            <strong>Search Engines:</strong> Semantic search, question answering, knowledge retrieval
+            <a href="https://arxiv.org/abs/1810.04805" target="_blank" rel="noopener noreferrer">[BERT]</a>
+          </List.Item>
+        </List>
+      </Paper>
 
-              <CodeBlock language="python" code={`# Example: Object Detection with Pre-trained Model
-import torch
-import torchvision
+</div>
+<div data-slide>
+      {/* Signal Processing */}
+      <Paper className="p-6 mb-6">
+        <Title order={3} className="mb-2">Signal Processing</Title>
+        <Text size="sm" className="mb-4" color="dimmed">
+          Analyzing and transforming temporal data from sensors and recordings
+        </Text>
+        
+        <Flex direction="column" align="center" className="mb-4">
+          <Image
+            src="/assets/python-deep-learning/module1/signal_processing.png"
+            alt="Signal Processing Applications"
+            w={{ base: 400, sm: 600, md: 800 }}
+            h="auto"
+            fluid
+          />
+          <Text component="p" ta="center" mt="xs">
+            Source: https://www.edgeimpulse.com/blog/dsp-key-embedded-ml/
+          </Text>
+        </Flex>
+        
+        <List>
+          <List.Item>
+            <strong>Speech Recognition:</strong> Voice assistants, transcription, real-time captioning
+            <a href="https://arxiv.org/abs/2212.04356" target="_blank" rel="noopener noreferrer">[Whisper]</a>
+          </List.Item>
+          <List.Item>
+            <strong>Audio Synthesis:</strong> Text-to-speech, voice cloning, music generation
+            <a href="https://arxiv.org/abs/2301.11325" target="_blank" rel="noopener noreferrer">[MusicLM]</a>
+          </List.Item>
+          <List.Item><strong>Time Series:</strong> Stock prediction, weather forecasting, demand planning</List.Item>
+          <List.Item><strong>Healthcare Signals:</strong> ECG/EEG analysis, vital sign monitoring</List.Item>
+          <List.Item><strong>IoT Analytics:</strong> Predictive maintenance, anomaly detection, sensor fusion</List.Item>
+        </List>
+      </Paper>
+</div>
+<div data-slide>
+      {/* Agent Systems */}
+      <Paper className="p-6 mb-6">
+        <Title order={3} className="mb-2">Agent Systems</Title>
+        <Text size="sm" className="mb-4" color="dimmed">
+          Intelligent agents that can perceive, decide, and act in complex environments
+        </Text>
+        
+        <Flex direction="column" align="center" className="mb-4">
+          <Image
+            src="/assets/python-deep-learning/module1/agentic.gif"
+            alt="Agent Systems Applications"
+            w={{ base: 400, sm: 600, md: 800 }}
+            h="auto"
+            fluid
+          />
+          <Text component="p" ta="center" mt="xs">
+            Source: https://blog.dailydoseofds.com/p/rag-vs-agentic-rag
+          </Text>
+        </Flex>
+        
+        <List>
+          <List.Item>
+            <strong>Game AI:</strong> AlphaGo, StarCraft II, Dota 2, chess engines
+            <a href="https://www.nature.com/articles/nature16961" target="_blank" rel="noopener noreferrer">[AlphaGo]</a>
+            <a href="https://www.nature.com/articles/s41586-019-1724-z" target="_blank" rel="noopener noreferrer">[AlphaStar]</a>
+          </List.Item>
+          <List.Item><strong>Robotics:</strong> Manipulation, grasping, assembly, warehouse automation</List.Item>
+          <List.Item><strong>Navigation:</strong> Path planning, SLAM, obstacle avoidance</List.Item>
+          <List.Item>
+            <strong>Multi-Agent Systems:</strong> Swarm robotics, traffic optimization, resource allocation
+          </List.Item>
+          <List.Item>
+            <strong>Recommendation:</strong> Content suggestions, personalization, ranking systems
+            <a href="https://arxiv.org/abs/1606.07792" target="_blank" rel="noopener noreferrer">[Deep Neural Networks for YouTube]</a>
+          </List.Item>
+        </List>
+      </Paper>
 
-# Load pre-trained Faster R-CNN model
-model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True)
-model.eval()
+</div>
+<div data-slide>
+      {/* Generative AI */}
+      <Paper className="p-6 mb-6">
+        <Title order={3} className="mb-2">Generative AI</Title>
+        <Text size="sm" className="mb-4" color="dimmed">
+          Creating new content across text, images, audio, and video modalities
+        </Text>
+        
+        <Flex direction="column" align="center" className="mb-4">
+          <Image
+            src="/assets/python-deep-learning/module1/not_exist.jpg"
+            alt="Generative AI Applications"
+            w={{ base: 400, sm: 600, md: 800 }}
+            h="auto"
+            fluid
+          />
+          <Text component="p" ta="center" mt="xs">
+            https://this-person-does-not-exist.com/en
+          </Text>
+        </Flex>
+        
+        <List>
+          <List.Item>
+            <strong>Image Generation:</strong> DALL-E, Midjourney, Stable Diffusion art creation
+            <a href="https://arxiv.org/abs/2112.10752" target="_blank" rel="noopener noreferrer">[DALL-E 2]</a>
+            <a href="https://arxiv.org/abs/2112.10741" target="_blank" rel="noopener noreferrer">[Stable Diffusion]</a>
+          </List.Item>
+          <List.Item>
+            <strong>Video Synthesis:</strong> Sora, Runway, animation and film production
+            <a href="https://openai.com/research/video-generation-models-as-world-simulators" target="_blank" rel="noopener noreferrer">[Sora]</a>
+          </List.Item>
+          <List.Item>
+            <strong>3D Generation:</strong> NeRF, 3D model creation, virtual environments
+            <a href="https://arxiv.org/abs/2003.08934" target="_blank" rel="noopener noreferrer">[NeRF]</a>
+          </List.Item>
+          <List.Item>
+            <strong>Music Composition:</strong> AI composers, style transfer, sound design
+            <a href="https://arxiv.org/abs/2306.05284" target="_blank" rel="noopener noreferrer">[MusicGen]</a>
+          </List.Item>
+          <List.Item><strong>Synthetic Data:</strong> Training data generation, privacy-preserving datasets</List.Item>
+        </List>
+      </Paper>
 
-# Detect objects in image
-predictions = model(image_tensor)
-boxes = predictions[0]['boxes']  # Bounding boxes
-labels = predictions[0]['labels']  # Class labels  
-scores = predictions[0]['scores']  # Confidence scores`} />
-            </Paper>
-
-            {/* Natural Language Processing */}
-            <Paper className="p-6 bg-green-50 mb-6">
-              <Title order={3} className="mb-4">Natural Language Processing</Title>
-              
-              <Grid gutter="lg">
-                <Grid.Col span={4}>
-                  <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-2">Language Understanding</Title>
-                    <List size="sm">
-                      <List.Item>Machine Translation (Google Translate)</List.Item>
-                      <List.Item>Sentiment Analysis</List.Item>
-                      <List.Item>Named Entity Recognition</List.Item>
-                      <List.Item>Question Answering Systems</List.Item>
-                    </List>
-                  </Paper>
-                </Grid.Col>
-                
-                <Grid.Col span={4}>
-                  <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-2">Language Generation</Title>
-                    <List size="sm">
-                      <List.Item>ChatGPT and Conversational AI</List.Item>
-                      <List.Item>Code Generation (GitHub Copilot)</List.Item>
-                      <List.Item>Content Creation</List.Item>
-                      <List.Item>Summarization</List.Item>
-                    </List>
-                  </Paper>
-                </Grid.Col>
-                
-                <Grid.Col span={4}>
-                  <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-2">Speech Processing</Title>
-                    <List size="sm">
-                      <List.Item>Speech Recognition (Siri, Alexa)</List.Item>
-                      <List.Item>Text-to-Speech Synthesis</List.Item>
-                      <List.Item>Voice Cloning</List.Item>
-                      <List.Item>Real-time Translation</List.Item>
-                    </List>
-                  </Paper>
-                </Grid.Col>
-              </Grid>
-            </Paper>
-
-            {/* Scientific Applications */}
-            <Paper className="p-6 bg-yellow-50 mb-6">
-              <Title order={3} className="mb-4">Scientific Breakthroughs</Title>
-              
-              <Grid gutter="lg">
-                <Grid.Col span={6}>
-                  <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">AlphaFold: Protein Structure Prediction</Title>
-                    <Text size="sm" className="mb-3">
-                      DeepMind's AlphaFold solved the 50-year protein folding problem, predicting 3D structures 
-                      from amino acid sequences with atomic accuracy. This breakthrough accelerates drug discovery 
-                      and our understanding of biological processes.
-                    </Text>
-                    <BlockMath>{`\\text{RMSD} < 1.0 \\text{ Å for } 95\\% \\text{ of proteins}`}</BlockMath>
-                  </Paper>
-                </Grid.Col>
-                
-                <Grid.Col span={6}>
-                  <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Climate and Weather Prediction</Title>
-                    <Text size="sm" className="mb-3">
-                      Neural networks now outperform traditional numerical weather prediction models, providing 
-                      accurate forecasts at a fraction of the computational cost. Applications include:
-                    </Text>
-                    <List size="sm">
-                      <List.Item>GraphCast: 10-day weather forecasting</List.Item>
-                      <List.Item>Climate change modeling</List.Item>
-                      <List.Item>Extreme weather event prediction</List.Item>
-                    </List>
-                  </Paper>
-                </Grid.Col>
-              </Grid>
-            </Paper>
-
-            {/* Generative AI */}
-            <Paper className="p-6 bg-purple-50 mb-6">
-              <Title order={3} className="mb-4">Generative AI Revolution</Title>
-              
-              <Grid gutter="lg">
-                <Grid.Col span={12}>
-                  <div className="grid grid-cols-3 gap-4">
-                    <Paper className="p-4 bg-white">
-                      <Title order={4} className="mb-2">Image Generation</Title>
-                      <List size="sm">
-                        <List.Item>DALL-E, Midjourney, Stable Diffusion</List.Item>
-                        <List.Item>Photorealistic face generation</List.Item>
-                        <List.Item>Style transfer and artistic creation</List.Item>
-                        <List.Item>Image editing and inpainting</List.Item>
-                      </List>
-                    </Paper>
-                    
-                    <Paper className="p-4 bg-white">
-                      <Title order={4} className="mb-2">Video & Animation</Title>
-                      <List size="sm">
-                        <List.Item>Text-to-video generation (Runway, Pika)</List.Item>
-                        <List.Item>Deepfakes and face swapping</List.Item>
-                        <List.Item>Motion capture and animation</List.Item>
-                        <List.Item>Video enhancement and restoration</List.Item>
-                      </List>
-                    </Paper>
-                    
-                    <Paper className="p-4 bg-white">
-                      <Title order={4} className="mb-2">Audio & Music</Title>
-                      <List size="sm">
-                        <List.Item>Music generation (MuseNet, Jukebox)</List.Item>
-                        <List.Item>Voice synthesis and cloning</List.Item>
-                        <List.Item>Audio enhancement and separation</List.Item>
-                        <List.Item>Real-time audio effects</List.Item>
-                      </List>
-                    </Paper>
-                  </div>
-                </Grid.Col>
-              </Grid>
-            </Paper>
-        </div>
-
-        {/* Data in Deep Learning */}
-        <div data-slide>
-            <Title order={2} className="mb-6" id="data">
-              Data: The Fuel of Deep Learning
-            </Title>
-            
-            <Paper className="p-6 bg-gradient-to-r from-indigo-50 to-purple-50 mb-6">
-              <Title order={3} className="mb-4">The Critical Role of Data</Title>
-              <Text size="lg" className="mb-4">
-                Data is the foundation upon which all deep learning systems are built. The quality, quantity, 
-                and diversity of training data directly determine model performance and capabilities.
-              </Text>
-              
-              <Grid gutter="lg">
-                <Grid.Col span={6}>
-                  <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Data Requirements</Title>
-                    <List>
-                      <List.Item>
-                        <strong>Volume:</strong> Deep networks typically need thousands to millions of examples
-                        <BlockMath>{`N \\propto d^2`}</BlockMath>
-                        <Text size="sm" c="dimmed">Sample complexity grows with model capacity</Text>
-                      </List.Item>
-                      <List.Item>
-                        <strong>Quality:</strong> Clean labels, consistent annotations, minimal noise
-                      </List.Item>
-                      <List.Item>
-                        <strong>Diversity:</strong> Representative of real-world distribution
-                      </List.Item>
-                      <List.Item>
-                        <strong>Balance:</strong> Adequate representation of all classes/scenarios
-                      </List.Item>
-                    </List>
-                  </Paper>
-                </Grid.Col>
-                
-                <Grid.Col span={6}>
-                  <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Data Challenges</Title>
-                    <List>
-                      <List.Item>
-                        <strong>Annotation Cost:</strong> Manual labeling is expensive and time-consuming
-                      </List.Item>
-                      <List.Item>
-                        <strong>Privacy Concerns:</strong> GDPR, HIPAA compliance for sensitive data
-                      </List.Item>
-                      <List.Item>
-                        <strong>Bias and Fairness:</strong> Historical biases encoded in training data
-                      </List.Item>
-                      <List.Item>
-                        <strong>Distribution Shift:</strong> Training and deployment distributions differ
-                      </List.Item>
-                    </List>
-                  </Paper>
-                </Grid.Col>
-              </Grid>
-            </Paper>
-
-            {/* Major Datasets */}
-            <Paper className="p-6 bg-gray-50 mb-6">
-              <Title order={3} className="mb-4">Landmark Datasets in Deep Learning</Title>
-              
-              <div style={{ overflowX: 'auto' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                  <thead>
-                    <tr style={{ backgroundColor: '#f8f9fa' }}>
-                      <th style={{ border: '1px solid #dee2e6', padding: '12px', textAlign: 'left' }}>Dataset</th>
-                      <th style={{ border: '1px solid #dee2e6', padding: '12px', textAlign: 'left' }}>Domain</th>
-                      <th style={{ border: '1px solid #dee2e6', padding: '12px', textAlign: 'left' }}>Size</th>
-                      <th style={{ border: '1px solid #dee2e6', padding: '12px', textAlign: 'left' }}>Impact</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td style={{ border: '1px solid #dee2e6', padding: '8px' }}><strong>ImageNet</strong></td>
-                      <td style={{ border: '1px solid #dee2e6', padding: '8px' }}>Computer Vision</td>
-                      <td style={{ border: '1px solid #dee2e6', padding: '8px' }}>14M images, 20K classes</td>
-                      <td style={{ border: '1px solid #dee2e6', padding: '8px' }}>Enabled CNN revolution, transfer learning</td>
-                    </tr>
-                    <tr>
-                      <td style={{ border: '1px solid #dee2e6', padding: '8px' }}><strong>COCO</strong></td>
-                      <td style={{ border: '1px solid #dee2e6', padding: '8px' }}>Object Detection</td>
-                      <td style={{ border: '1px solid #dee2e6', padding: '8px' }}>330K images, 80 classes</td>
-                      <td style={{ border: '1px solid #dee2e6', padding: '8px' }}>Standard for detection, segmentation</td>
-                    </tr>
-                    <tr>
-                      <td style={{ border: '1px solid #dee2e6', padding: '8px' }}><strong>Common Crawl</strong></td>
-                      <td style={{ border: '1px solid #dee2e6', padding: '8px' }}>NLP</td>
-                      <td style={{ border: '1px solid #dee2e6', padding: '8px' }}>Petabytes of web text</td>
-                      <td style={{ border: '1px solid #dee2e6', padding: '8px' }}>Training data for GPT, BERT</td>
-                    </tr>
-                    <tr>
-                      <td style={{ border: '1px solid #dee2e6', padding: '8px' }}><strong>LibriSpeech</strong></td>
-                      <td style={{ border: '1px solid #dee2e6', padding: '8px' }}>Speech</td>
-                      <td style={{ border: '1px solid #dee2e6', padding: '8px' }}>1000 hours audio</td>
-                      <td style={{ border: '1px solid #dee2e6', padding: '8px' }}>ASR model development</td>
-                    </tr>
-                    <tr>
-                      <td style={{ border: '1px solid #dee2e6', padding: '8px' }}><strong>LAION-5B</strong></td>
-                      <td style={{ border: '1px solid #dee2e6', padding: '8px' }}>Multimodal</td>
-                      <td style={{ border: '1px solid #dee2e6', padding: '8px' }}>5.85B image-text pairs</td>
-                      <td style={{ border: '1px solid #dee2e6', padding: '8px' }}>Enabled open-source DALL-E alternatives</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </Paper>
-
-            {/* Data Processing Pipeline */}
-            <Paper className="p-6 bg-blue-50 mb-6">
-              <Title order={3} className="mb-4">Data Processing Pipeline</Title>
-              
-              <CodeBlock language="python" code={`import torch
-from torch.utils.data import DataLoader, Dataset
-import torchvision.transforms as transforms
-
-# Data Augmentation Pipeline
-transform = transforms.Compose([
-    transforms.RandomResizedCrop(224),
-    transforms.RandomHorizontalFlip(p=0.5),
-    transforms.ColorJitter(brightness=0.2, contrast=0.2),
-    transforms.RandomRotation(degrees=15),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406],  # ImageNet statistics
-                        std=[0.229, 0.224, 0.225])
-])
-
-# Custom Dataset Class
-class CustomDataset(Dataset):
-    def __init__(self, data_path, transform=None):
-        self.data_path = data_path
-        self.transform = transform
-        self.samples = self.load_samples()
-    
-    def __len__(self):
-        return len(self.samples)
-    
-    def __getitem__(self, idx):
-        sample = self.samples[idx]
-        if self.transform:
-            sample = self.transform(sample)
-        return sample
-
-# DataLoader for Batch Processing
-dataset = CustomDataset('path/to/data', transform=transform)
-dataloader = DataLoader(
-    dataset,
-    batch_size=32,
-    shuffle=True,
-    num_workers=4,
-    pin_memory=True  # Faster GPU transfer
-)`} />
-            </Paper>
-
-            {/* Data Efficiency Techniques */}
-            <Paper className="p-6 bg-green-50">
-              <Title order={3} className="mb-4">Modern Data Efficiency Techniques</Title>
-              
-              <Grid gutter="lg">
-                <Grid.Col span={6}>
-                  <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Self-Supervised Learning</Title>
-                    <Text size="sm" className="mb-3">
-                      Learning from unlabeled data through pretext tasks:
-                    </Text>
-                    <List size="sm">
-                      <List.Item><strong>Contrastive Learning:</strong> SimCLR, MoCo - learning by comparing augmented views</List.Item>
-                      <List.Item><strong>Masked Prediction:</strong> BERT (masked language), MAE (masked images)</List.Item>
-                      <List.Item><strong>Generative Pretraining:</strong> GPT learns by predicting next tokens</List.Item>
-                    </List>
-                  </Paper>
-                </Grid.Col>
-                
-                <Grid.Col span={6}>
-                  <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Data Augmentation</Title>
-                    <Text size="sm" className="mb-3">
-                      Artificially expanding dataset diversity:
-                    </Text>
-                    <List size="sm">
-                      <List.Item><strong>Classical:</strong> Rotations, flips, crops, color jittering</List.Item>
-                      <List.Item><strong>Advanced:</strong> MixUp, CutMix, AutoAugment</List.Item>
-                      <List.Item><strong>Synthetic:</strong> GANs for generating training data</List.Item>
-                    </List>
-                  </Paper>
-                </Grid.Col>
-              </Grid>
-              
-              <Grid gutter="lg" className="mt-4">
-                <Grid.Col span={6}>
-                  <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Transfer Learning</Title>
-                    <Text size="sm" className="mb-3">
-                      Leveraging pre-trained models:
-                    </Text>
-                    <List size="sm">
-                      <List.Item><strong>Feature Extraction:</strong> Use pre-trained features as-is</List.Item>
-                      <List.Item><strong>Fine-tuning:</strong> Adapt pre-trained weights to new task</List.Item>
-                      <List.Item><strong>Domain Adaptation:</strong> Bridge distribution gaps</List.Item>
-                    </List>
-                  </Paper>
-                </Grid.Col>
-                
-                <Grid.Col span={6}>
-                  <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Few-Shot Learning</Title>
-                    <Text size="sm" className="mb-3">
-                      Learning from limited examples:
-                    </Text>
-                    <List size="sm">
-                      <List.Item><strong>Meta-Learning:</strong> Learning to learn from few examples</List.Item>
-                      <List.Item><strong>Prototypical Networks:</strong> Classification via prototype matching</List.Item>
-                      <List.Item><strong>Prompt Engineering:</strong> Leveraging large models with examples</List.Item>
-                    </List>
-                  </Paper>
-                </Grid.Col>
-              </Grid>
-            </Paper>
-        </div>
-
-        {/* Summary */}
-        <div data-slide>
-    <Title order={2} className="mb-6">Part 1 Summary: Historical Context and Applications</Title>
-            
-            <Grid gutter="lg">
-              <Grid.Col span={6}>
-                <Paper className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 h-full">
-                  <Title order={3} className="mb-4">Key Historical Insights</Title>
-                  <List spacing="md">
-                    <List.Item>Deep learning evolved through multiple waves, each driven by algorithmic breakthroughs</List.Item>
-                    <List.Item>The 2012 AlexNet moment marked the definitive arrival of the deep learning era</List.Item>
-                    <List.Item>Modern progress driven by scale: bigger models, more data, more compute</List.Item>
-                    <List.Item>Transformers and attention mechanisms revolutionized both NLP and computer vision</List.Item>
-                  </List>
-                </Paper>
-              </Grid.Col>
-              
-              <Grid.Col span={6}>
-                <Paper className="p-6 bg-gradient-to-br from-green-50 to-green-100 h-full">
-                  <Title order={3} className="mb-4">Application Landscape</Title>
-                  <List spacing="md">
-                    <List.Item>Deep learning has achieved superhuman performance in many domains</List.Item>
-                    <List.Item>Real-world deployment spans healthcare, autonomous systems, science, and creativity</List.Item>
-                    <List.Item>Generative AI represents a paradigm shift in human-computer interaction</List.Item>
-                    <List.Item>Data quality and quantity remain critical factors for success</List.Item>
-                  </List>
-                </Paper>
-              </Grid.Col>
-            </Grid>
-            
-            <Paper className="p-6 bg-gradient-to-r from-purple-50 to-pink-50 mt-6">
-              <Title order={3} className="mb-4 text-center">The Deep Learning Revolution Continues</Title>
-              <Text size="lg" className="text-center">
-                We are witnessing the early stages of a technological revolution that will reshape society. 
-                Understanding the mathematical foundations and practical techniques of deep learning is essential 
-                for participating in this transformation.
-              </Text>
-            </Paper>
-        </div>
-
+</div>
+<div data-slide>
+      {/* Scientific & Specialized Domains */}
+      <Paper className="p-6 mb-6">
+        <Title order={3} className="mb-2">Scientific & Specialized Domains</Title>
+        <Text size="sm" className="mb-4" color="dimmed">
+          Accelerating scientific discovery and solving domain-specific challenges
+        </Text>
+        
+        <Flex direction="column" align="center" className="mb-4">
+          <Image
+            src="/assets/python-deep-learning/module1/alphafold.png"
+            alt="Scientific Applications"
+            w={{ base: 400, sm: 600, md: 800 }}
+            h="auto"
+            fluid
+          />
+          <Text component="p" ta="center" mt="xs">
+            Source: https://deepmind.google/science/alphafold/
+          </Text>
+        </Flex>
+        
+        <List>
+          <List.Item>
+            <strong>Protein Folding:</strong> AlphaFold revolutionizing structural biology
+            <a href="https://www.nature.com/articles/s41586-021-03819-2" target="_blank" rel="noopener noreferrer">[AlphaFold 2]</a>
+          </List.Item>
+          <List.Item>
+            <strong>Drug Discovery:</strong> Molecular design, clinical trial optimization
+            <a href="https://www.nature.com/articles/s41587-022-01618-2" target="_blank" rel="noopener noreferrer">[Nature Biotech]</a>
+          </List.Item>
+          <List.Item>
+            <strong>Climate Science:</strong> Weather prediction, climate modeling, carbon tracking
+            <a href="https://www.science.org/doi/10.1126/science.adi2336" target="_blank" rel="noopener noreferrer">[GraphCast]</a>
+          </List.Item>
+          <List.Item>
+            <strong>Materials Science:</strong> Crystal structure prediction, property optimization
+            <a href="https://www.nature.com/articles/s41586-022-05761-3" target="_blank" rel="noopener noreferrer">[GNoME]</a>
+          </List.Item>
+          <List.Item><strong>Astronomy:</strong> Exoplanet detection, galaxy classification, data analysis</List.Item>
+        </List>
+      </Paper>
+    </div>
+</div>
+<div data-slide>
+      <Title order={2} className="mb-6">Data: The Fuel of Deep Learning</Title>
+      
+      <Text size="lg" className="mb-6">
+        Data is the foundation upon which all deep learning systems are built. The quality, quantity, 
+        and diversity of training data directly determine model performance and capabilities.
+      </Text>
+</div>
+<div data-slide>
+      {/* Core Data Requirements */}
+      <Paper className="p-6 mb-6">
+        <Title order={3} className="mb-2">Core Data Requirements</Title>
+        
+        <Flex direction="column" align="center" className="mb-4">
+          <Image
+            src="/assets/python-deep-learning/module1/data_requirements.png"
+            alt="Data Requirements in Deep Learning"
+            w={{ base: 400, sm: 600, md: 800 }}
+            h="auto"
+            fluid
+          />
+          <Text component="p" ta="center" mt="xs">
+            The Data Pipeline in Deep Learning
+          </Text>
+        </Flex>
+        
+        <List>
+          <List.Item>
+            <strong>Volume:</strong> Deep networks typically require thousands to millions of training examples. 
+            The sample complexity grows quadratically with model dimensionality (N ∝ d²). While simple tasks 
+            might work with 1000s of examples, complex vision or NLP models often need millions.
+          </List.Item>
+          <List.Item>
+            <strong>Quality:</strong> Clean, accurate labels are crucial - a 5% label error rate can reduce 
+            model accuracy by 10-20%. Consistent annotation guidelines, inter-annotator agreement, and 
+            quality control processes directly impact final model performance.
+          </List.Item>
+          <List.Item>
+            <strong>Diversity:</strong> Training data must capture the full spectrum of real-world scenarios. 
+            Models trained on limited demographics, lighting conditions, or contexts fail to generalize. 
+            Geographic, temporal, and domain diversity are essential.
+          </List.Item>
+          <List.Item>
+            <strong>Balance:</strong> Class imbalance is a major issue - a dataset with 99% negative and 1% 
+            positive examples will bias predictions. Techniques like oversampling, undersampling, or weighted 
+            losses are needed to ensure fair representation.
+          </List.Item>
+          <List.Item>
+            <strong>Temporal Consistency:</strong> Data distributions shift over time (concept drift). Models 
+            trained on 2020 data may fail on 2024 scenarios. Continuous retraining and monitoring are 
+            essential for production systems.
+          </List.Item>
+        </List>
+      </Paper>
+</div>
+<div data-slide>
+      {/* Data Challenges */}
+      <Paper className="p-6 mb-6">
+        <Title order={3} className="mb-2">Key Challenges</Title>
+        <Text size="sm" className="mb-4" color="dimmed">
+          Critical issues that teams face when building real-world deep learning systems
+        </Text>
+        
+        <List>
+          <List.Item>
+            <strong>Annotation Cost:</strong> Labeling ImageNet's 14M images took 2.5 years and millions of 
+            dollars. Medical imaging annotation requires expert radiologists at $100+/hour. Active learning 
+            and semi-supervised methods can reduce costs by 50-90%.
+          </List.Item>
+          <List.Item>
+            <strong>Privacy & Compliance:</strong> GDPR fines can reach 4% of global revenue. Healthcare data 
+            requires HIPAA compliance. Techniques like federated learning, differential privacy, and synthetic 
+            data generation help navigate regulatory requirements.
+          </List.Item>
+          <List.Item>
+            <strong>Bias & Fairness:</strong> Face recognition systems show 35% higher error rates on darker 
+            skin tones. Language models perpetuate gender stereotypes. Careful dataset curation, bias metrics, 
+            and fairness constraints are essential for ethical AI.
+          </List.Item>
+          <List.Item>
+            <strong>Distribution Shift:</strong> Models trained in labs fail in production - self-driving cars 
+            trained in California struggle in snow. Domain adaptation, robust training, and continuous 
+            monitoring help bridge the gap between training and deployment.
+          </List.Item>
+          <List.Item>
+            <strong>Long Tail:</strong> Rare events (0.01% of data) often matter most - detecting rare diseases, 
+            fraud, or safety-critical failures. Techniques like focal loss, hard negative mining, and synthetic 
+            data augmentation address imbalanced distributions.
+          </List.Item>
+        </List>
+      </Paper>
+</div>
+<div data-slide>
+      {/* Open Source Datasets */}
+      <Paper className="p-6 mb-6">
+        <Title order={3} className="mb-2">Open Source Dataset Repositories</Title>
+        <Text size="sm" className="mb-4" color="dimmed">
+          Major platforms providing free datasets for research and development
+        </Text>
+        
+        <List>
+          <List.Item>
+            <strong>Hugging Face Datasets:</strong> 70,000+ datasets across all modalities with standardized loading
+            <a href="https://huggingface.co/datasets" target="_blank" rel="noopener noreferrer">[huggingface.co/datasets]</a>
+          </List.Item>
+          <List.Item>
+            <strong>Kaggle:</strong> Competition datasets with kernels, discussions, and leaderboards
+            <a href="https://www.kaggle.com/datasets" target="_blank" rel="noopener noreferrer">[kaggle.com/datasets]</a>
+          </List.Item>
+          <List.Item>
+            <strong>Google Dataset Search:</strong> Search engine for datasets across the web
+            <a href="https://datasetsearch.research.google.com" target="_blank" rel="noopener noreferrer">[datasetsearch.research.google.com]</a>
+          </List.Item>
+          <List.Item>
+            <strong>UCI ML Repository:</strong> Classic datasets for machine learning research since 1987
+            <a href="https://archive.ics.uci.edu" target="_blank" rel="noopener noreferrer">[archive.ics.uci.edu]</a>
+          </List.Item>
+          <List.Item>
+            <strong>OpenML:</strong> Collaborative platform with 20,000+ datasets and experiments
+            <a href="https://www.openml.org" target="_blank" rel="noopener noreferrer">[openml.org]</a>
+          </List.Item>
+          <List.Item>
+            <strong>AWS Open Data:</strong> Large-scale datasets on AWS S3 (satellite, genomics, climate)
+            <a href="https://registry.opendata.aws" target="_blank" rel="noopener noreferrer">[registry.opendata.aws]</a>
+          </List.Item>
+        </List>
+      </Paper>
+    </div>
       </Stack>
     </Container>
   );
