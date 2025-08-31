@@ -452,7 +452,28 @@ Addition, multiplication, autres opérations
             </div>
 
 <div data-slide>
-
+                                  <Flex direction="column" align="center" className="mb-4">
+                      <Image
+                        src="/assets/python-deep-learning/module1/ai_obj10.png"
+                        w={{ base: 400, sm: 600, md: 800 }}
+                        h="auto"
+                        fluid
+                      />
+                    </Flex>
+                                      <Text component="p" ta="center" mt="xs">
+                        Example: Initial linear regression params
+                      </Text>
+                                                        <Flex direction="column" align="center" className="mb-4">
+                      <Image
+                        src="/assets/python-deep-learning/module1/ai_obj5.png"
+                        w={{ base: 400, sm: 600, md: 800 }}
+                        h="auto"
+                        fluid
+                      />
+                    </Flex>
+                                      <Text component="p" ta="center" mt="xs">
+                        Example: Compute error
+                      </Text>
   Processus d'entraînement d'un modèle
 0. Initialisation
 - Choisir un type de modèle (ex: régression linéaire)
@@ -469,7 +490,30 @@ Objectif : Minimiser l'erreur de prédiction en optimisant les paramètres.
 
 </div>
 
-
+<div data-slide>
+                                                          <Flex direction="column" align="center" className="mb-4">
+                      <Image
+                        src="/assets/python-deep-learning/module1/error_loss_evolution.png"
+                        w={{ base: 400, sm: 600, md: 800 }}
+                        h="auto"
+                        fluid
+                      />
+                    </Flex>
+                                      <Text component="p" ta="center" mt="xs">
+                        Example: error_loss_evolution
+                      </Text>
+                                                                                <Flex direction="column" align="center" className="mb-4">
+                      <Image
+                        src="/assets/python-deep-learning/module1/gradent_descent.png"
+                        w={{ base: 400, sm: 600, md: 800 }}
+                        h="auto"
+                        fluid
+                      />
+                    </Flex>
+                                      <Text component="p" ta="center" mt="xs">
+                        gradent_descent vizualisation
+                      </Text>
+</div>
 
 <div data-slide>
             {/* Variants of Gradient Descent */}
