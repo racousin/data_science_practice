@@ -41,7 +41,7 @@ const Introduction = () => {
         fluid
       />
       <Text component="p" ta="center" mt="xs" size="sm" c="dimmed">
-        col_jung
+        https://medium.com/geekculture/ai-revolution-your-fast-paced-introduction-to-machine-learning-914ce9b6ddf
       </Text>
     </Flex>
 
@@ -87,49 +87,80 @@ const Introduction = () => {
 </div>
 </div>
 <div data-slide>
-            <Paper className="p-6 bg-gray-50 mb-6">
               <Title order={3} className="mb-4">The Deep Learning Revolution</Title>
+                                      <Image
+        src="/assets/python-deep-learning/module1/bigdata0.png"
+        alt="AI Fields Segmentation Diagram"
+        w={{ base: 400, sm: 600, md: 800 }}
+        h="auto"
+        fluid
+      />
+      <Text component="p" ta="center" mt="xs" size="sm" c="dimmed">
+        Source: https://trends.google.fr/trends/explore?date=all&q=deep%20learning&hl=en
+      </Text>
               <Text className="mb-4">
                 The convergence of three critical factors enabled the deep learning revolution:
               </Text>
-              
-              <Grid gutter="lg">
-                <Grid.Col span={4}>
-                  <Paper className="p-4 bg-yellow-50 h-full">
+              </div>
+              <div datta-slide>
+                        <Flex direction="column" align="center">
+      <Image
+        src="/assets/python-deep-learning/module1/bigdata1.png"
+        alt="AI Fields Segmentation Diagram"
+        w={{ base: 400, sm: 600, md: 800 }}
+        h="auto"
+        fluid
+      />
+      <Text component="p" ta="center" mt="xs" size="sm" c="dimmed">
+        Source: https://www.domo.com/learn/datanever-sleeps-7
+      </Text>
+    </Flex>
                     <Title order={4} className="mb-3">1. Big Data</Title>
                     <Text size="sm">
                       The internet era generated massive datasets: billions of images, text documents, 
                       videos, and user interactions. This data explosion provided the fuel needed to train 
                       complex models that require millions of examples to learn robust patterns.
                     </Text>
-                  </Paper>
-                </Grid.Col>
-                
-                <Grid.Col span={4}>
-                  <Paper className="p-4 bg-green-50 h-full">
+
+</div>
+<div data-slide>
+
+                        <Image
+        src="/assets/python-deep-learning/module1/bigdata2.png"
+        alt="AI Fields Segmentation Diagram"
+        w={{ base: 400, sm: 600, md: 800 }}
+        h="auto"
+        fluid
+      />
+      <Text component="p" ta="center" mt="xs" size="sm" c="dimmed">
+        Source: https://www.researchgate.net/figure/The-exponential-progress-of-computing-power-from-1900-to-2013-with-projections-into_fig1_335422453
+      </Text>
                     <Title order={4} className="mb-3">2. Computational Power</Title>
                     <Text size="sm">
                       GPUs originally designed for gaming proved perfect for neural network computations. 
                       A single modern GPU can perform trillions of operations per second, enabling training 
                       of models with billions of parameters in days rather than years.
                     </Text>
-                  </Paper>
-                </Grid.Col>
-                
-                <Grid.Col span={4}>
-                  <Paper className="p-4 bg-blue-50 h-full">
+</div>
+<div data-slide>
+
+                                          <Image
+        src="/assets/python-deep-learning/module1/bigdata3.png"
+        alt="AI Fields Segmentation Diagram"
+        w={{ base: 400, sm: 600, md: 800 }}
+        h="auto"
+        fluid
+      />
                     <Title order={4} className="mb-3">3. Algorithmic Innovation</Title>
                     <Text size="sm">
                       Breakthrough techniques like ReLU activation, batch normalization, dropout, and 
                       attention mechanisms solved critical training challenges. These innovations made 
                       it practical to train networks with dozens or even hundreds of layers.
                     </Text>
-                  </Paper>
-                </Grid.Col>
-              </Grid>
-            </Paper>
+      <Text component="p" ta="center" mt="xs" size="sm" c="dimmed">
+        Source: https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture)      </Text>
+</div>
           
-        </div>
 
         {/* Historical Evolution */}
         <div data-slide>
@@ -147,7 +178,7 @@ const Introduction = () => {
                 fluid
               />
               <Text component="p" ta="center" mt="xs">
-                wikipedia
+                https://en.wikipedia.org/wiki/Timeline_of_artificial_intelligence
               </Text>
             </Flex>
           </div>
