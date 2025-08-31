@@ -147,6 +147,18 @@ const SlideView = ({ children, enabled = false }) => {
           controlSize={40}
           className="h-full"
           styles={{
+            root: {
+              height: '100vh',
+              width: '100vw'
+            },
+            viewport: {
+              height: '100vh',
+              width: '100vw'
+            },
+            container: {
+              height: '100vh',
+              width: '100vw'
+            },
             control: {
               backgroundColor: 'rgba(0, 0, 0, 0.6)',
               border: 'none',
@@ -172,19 +184,22 @@ const SlideView = ({ children, enabled = false }) => {
           {slides.map((slide, index) => (
             <Carousel.Slide key={index}>
               <div 
-                className="slide-content h-full w-full flex items-center justify-center"
+                className="slide-content"
                 style={{ 
-                  overflow: 'auto',
+                  height: '100vh',
+                  width: '100vw',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   padding: '2rem',
-                  minHeight: '100vh',
-                  boxSizing: 'border-box'
+                  boxSizing: 'border-box',
+                  overflow: 'auto'
                 }}
               >
                 <div 
-                  className="w-full"
                   style={{
-                    maxWidth: 'none',
-                    width: '100%'
+                    width: '100%',
+                    maxWidth: 'none'
                   }}
                 >
                   {slide}
