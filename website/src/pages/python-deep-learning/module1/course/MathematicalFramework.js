@@ -10,23 +10,25 @@ const MathematicalFramework = () => {
       <Stack spacing="xl">
         
         {/* Part 2: Mathematical Framework */}
-        <div data-slide>
+          <div data-slide>
           <Title order={1} mb="xl">
-            Part 2: Mathematical Framework
+            Machine Learning in a nutshell
           </Title>
           
           {/* Machine Learning Objective */}
-          
+          </div>
+          <div data-slide>
             <Title order={2} className="mb-6" id="ml-objective">
               The Machine Learning Objective
             </Title>
-            
-            <Paper className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 mb-6">
+          </div>
+            <div data-slide>
               <Title order={3} className="mb-4">The Fundamental Learning Problem</Title>
               <Text size="lg" className="mb-4">
                 At its core, machine learning seeks to find a function <InlineMath>f</InlineMath> that maps inputs to outputs 
                 by learning from data. Deep learning extends this by using highly expressive neural network functions.
               </Text>
+
               
               <Paper className="p-4 bg-white mb-4">
                 <Title order={4} className="mb-3">The Learning Framework</Title>
@@ -59,7 +61,8 @@ const MathematicalFramework = () => {
                   </div>
                 </div>
               </Paper>
-
+</div>
+<div data-slide>
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-yellow-50">
@@ -90,8 +93,9 @@ const MathematicalFramework = () => {
                   </Paper>
                 </Grid.Col>
               </Grid>
-            </Paper>
 
+</div>
+<div data-slide>
             {/* Types of Learning Problems */}
             <Paper className="p-6 bg-gray-50 mb-6">
               <Title order={3} className="mb-4">Types of Learning Problems</Title>
@@ -885,30 +889,9 @@ print(x.grad)  # tensor([2., 4., 6.])
                   </List>
                 </Paper>
               </Grid.Col>
-              
-              <Grid.Col span={6}>
-                <Paper className="p-6 bg-gradient-to-br from-green-50 to-green-100 h-full">
-                  <Title order={3} className="mb-4">Key Optimization Insights</Title>
-                  <List spacing="md">
-                    <List.Item>Mini-batch SGD balances efficiency and stability</List.Item>
-                    <List.Item>Modern optimizers (Adam) adapt learning rates per parameter</List.Item>
-                    <List.Item>Regularization prevents overfitting</List.Item>
-                    <List.Item>Learning rate scheduling improves convergence</List.Item>
-                    <List.Item>Automatic differentiation enables efficient gradient computation</List.Item>
-                  </List>
-                </Paper>
-              </Grid.Col>
+
             </Grid>
             
-            <Paper className="p-6 bg-gradient-to-r from-purple-50 to-pink-50 mt-6">
-              <Title order={3} className="mb-4 text-center">Mathematical Foundation Complete</Title>
-              <Text size="lg" className="text-center">
-                These mathematical principles—optimization, linear algebra, and gradient-based learning—form the 
-                foundation upon which all deep learning architectures are built. Next, we'll see how these concepts 
-                combine to create neural networks.
-              </Text>
-            </Paper>
-          
         </div>
 
       </Stack>

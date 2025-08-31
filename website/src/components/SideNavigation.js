@@ -218,34 +218,32 @@ export const exerciseContentData = {
 // PyTorch course content links for modules with hierarchical structure
 export const pytorchCourseContentData = {
   'module1': [
-    { to: '/introduction', label: 'Part 1: Historical Context & Applications', subLinks: [
+    { to: '/introduction', label: 'Historical Context & Applications', subLinks: [
       { id: 'introduction', label: 'Introduction to Deep Learning' },
       { id: 'history', label: 'Historical Evolution' },
       { id: 'applications', label: 'Real-World Applications' },
       { id: 'data', label: 'Data: The Fuel of Deep Learning' }
     ]},
-    { to: '/mathematical-framework', label: 'Part 2: Mathematical Framework', subLinks: [
+    { to: '/mathematical-framework', label: 'Machine Learning in a nutshell', subLinks: [
       { id: 'ml-objective', label: 'The Machine Learning Objective' },
       { id: 'models-parameters', label: 'Models and Parameters' },
       { id: 'loss-functions', label: 'Loss Functions and Optimization' },
       { id: 'gradient-descent', label: 'Gradient Descent' },
       { id: 'linear-algebra', label: 'Essential Linear Algebra' }
     ]},
-    { to: '/mlp-fundamentals', label: 'Part 3: Multi-Layer Perceptron Fundamentals', subLinks: [
+    { to: '/mlp-fundamentals', label: 'Multi layer perceptron in a nutshell', subLinks: [
       { id: 'neuron', label: 'Neuron as Computational Unit' },
       { id: 'network-architecture', label: 'Network Architecture' },
       { id: 'parameters', label: 'Parameters to Optimize' },
-      { id: 'implementation', label: 'Complete Implementation' }
     ]},
-    { to: '/pytorch-overview', label: 'Part 4: Deep Learning Frameworks', subLinks: [
+    { to: '/pytorch-overview', label: 'Pytorch in a nutshell', subLinks: [
       { id: 'pytorch-intro', label: 'PyTorch Overview' },
       { id: 'tensors', label: 'Tensors: The Foundation' },
-      { id: 'autograd', label: 'Automatic Differentiation' },
       { id: 'ecosystem', label: 'PyTorch Ecosystem' },
       { id: 'resources', label: 'Resources and Best Practices' }
     ]}
   ],
-  'module2': [
+  'module2': [ // Todo we will add backprpagation Here and migrate data-pipeline-training-loop
     { to: '/autograd-deep-dive', label: 'Autograd Deep Dive', subLinks: [
       { id: 'forward-reverse-mode', label: 'Forward & Reverse Mode Differentiation' },
       { id: 'computational-graph-construction', label: 'Computational Graph Construction' },
@@ -273,7 +271,7 @@ export const pytorchCourseContentData = {
       { id: 'weight-initialization', label: 'Weight Initialization Theory' },
       { id: 'regularization-techniques', label: 'Regularization Techniques (Dropout, L2, Batch Norm)' }
     ]},
-    { to: '/data-pipeline-training-loop', label: 'Data Pipeline & Training Loop', subLinks: [
+    { to: '/data-pipeline-training-loop', label: 'Data Pipeline & Training Loop', subLinks: [ // todo this will migrate to previous section
       { id: 'dataloader-architecture', label: 'DataLoader Architecture & Multiprocessing' },
       { id: 'batch-sampling', label: 'Batch Sampling Strategies' },
       { id: 'training-dynamics', label: 'Training Dynamics & Loss Landscapes' },

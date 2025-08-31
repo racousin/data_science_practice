@@ -337,13 +337,13 @@ const Introduction = () => {
                    {/* Real-World Applications */}
         <div data-slide>
 
-      <Title order={2} className="mb-6">Real-World Applications</Title>
+      <Title order={2} className="mb-6" id="introduction">Real-World Applications</Title>
       
       <Text size="lg" className="mb-6">
         Deep learning has revolutionized virtually every field it has touched, enabling capabilities 
         that seemed impossible just a decade ago.
       </Text>
-<div/>
+</div>
 <div data-slide>
       {/* Computer Vision */}
       <Paper className="p-6 mb-6">
@@ -584,7 +584,7 @@ const Introduction = () => {
     </div>
 </div>
 <div data-slide>
-      <Title order={2} className="mb-6">Data: The Fuel of Deep Learning</Title>
+      <Title order={2} className="mb-6" id="data">Data: The Fuel of Deep Learning</Title>
       
       <Text size="lg" className="mb-6">
         Data is the foundation upon which all deep learning systems are built. The quality, quantity, 
