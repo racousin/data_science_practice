@@ -25,7 +25,7 @@ const AdvancedGradientMechanics = () => {
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Vanishing Gradients</Title>
+                  <Title order={4} mb="sm">Vanishing Gradients</Title>
                   <CodeBlock language="python" code={`import torch
 import torch.nn as nn
 import matplotlib.pyplot as plt
@@ -66,7 +66,7 @@ print(f"Gradient ratio (first/last): {grad_norms[0]/grad_norms[-1]:.2e}")`} />
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Exploding Gradients</Title>
+                  <Title order={4} mb="sm">Exploding Gradients</Title>
                   <CodeBlock language="python" code={`# Demonstrate exploding gradients
 class UnstableNetwork(nn.Module):
     def __init__(self):
@@ -123,7 +123,7 @@ except RuntimeError as e:
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-blue-50">
-                  <Title order={4} className="mb-3">Norm-based Clipping</Title>
+                  <Title order={4} mb="sm">Norm-based Clipping</Title>
                   <CodeBlock language="python" code={`import torch.nn.utils as utils
 
 # Gradient clipping by norm
@@ -170,7 +170,7 @@ print(f"Actual gradient norm after clipping: {utils.clip_grad_norm_(model.parame
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-yellow-50">
-                  <Title order={4} className="mb-3">Value-based Clipping</Title>
+                  <Title order={4} mb="sm">Value-based Clipping</Title>
                   <CodeBlock language="python" code={`# Gradient clipping by value
 def clip_grad_value_(parameters, clip_value):
     """Clip gradients by value"""
@@ -233,7 +233,7 @@ print("Gradient statistics:", clipper.get_statistics())`} />
           <Title order={2} className="mb-6">Higher-order Derivatives & Hessians</Title>
           
           <Paper className="p-4 bg-purple-50">
-            <Title order={4} className="mb-3">Computing Second-order Derivatives</Title>
+            <Title order={4} mb="sm">Computing Second-order Derivatives</Title>
             <CodeBlock language="python" code={`# Higher-order derivatives in PyTorch
 def compute_hessian(func, inputs):
     """Compute Hessian matrix for scalar function"""
@@ -276,7 +276,7 @@ print(f"Expected Hessian:\\n{torch.tensor([[2., 1.], [1., 2.]])}")`} />
           <Title order={2} className="mb-6">Custom Backward Passes</Title>
           
           <Paper className="p-4 bg-green-50">
-            <Title order={4} className="mb-3">Implementing Custom Autograd Functions</Title>
+            <Title order={4} mb="sm">Implementing Custom Autograd Functions</Title>
             <CodeBlock language="python" code={`# Custom autograd function
 class CustomReLU(torch.autograd.Function):
     @staticmethod

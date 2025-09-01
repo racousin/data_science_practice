@@ -18,7 +18,7 @@ const AutomaticDifferentiation = () => {
             Understanding PyTorch's Autograd Engine
           </Text>
           <Paper className="p-6 bg-gradient-to-r from-blue-50 to-purple-50 mb-6">
-            <Text size="lg" className="mb-4">
+            <Text size="lg" mb="md">
               Automatic differentiation (AD) is the backbone of modern deep learning frameworks.
               It enables efficient computation of gradients through the chain rule, making
               backpropagation both automatic and computationally efficient.
@@ -36,7 +36,7 @@ const AutomaticDifferentiation = () => {
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Dynamic vs Static Graphs</Title>
+                <Title order={4} mb="sm">Dynamic vs Static Graphs</Title>
                 <Text className="mb-3">
                   <strong>PyTorch (Dynamic):</strong> Computation graph is built on-the-fly during forward pass
                 </Text>
@@ -58,7 +58,7 @@ for i in range(3):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Building Computation Graphs</Title>
+                <Title order={4} mb="sm">Building Computation Graphs</Title>
                 <CodeBlock language="python" code={`import torch
 
 # Create leaf nodes (inputs)
@@ -82,7 +82,7 @@ print(f"loss.grad_fn: {loss.grad_fn}")  # PowBackward`} />
           </Grid>
           
           <Paper className="p-4 bg-yellow-50 mt-4">
-            <Title order={4} className="mb-3">Graph Visualization Example</Title>
+            <Title order={4} mb="sm">Graph Visualization Example</Title>
             <Text className="mb-3">For the computation: <InlineMath>loss = (w \cdot x + b)^2</InlineMath></Text>
             <div className="text-center font-mono bg-white p-4 rounded">
               <div>x(3.0) ──┐</div>
@@ -98,7 +98,7 @@ print(f"loss.grad_fn: {loss.grad_fn}")  # PowBackward`} />
           <Title order={2} mb="lg">Gradient Computation Process</Title>
           
           <Paper className="p-4 bg-purple-50 mb-4">
-            <Title order={4} className="mb-3">Forward and Backward Pass</Title>
+            <Title order={4} mb="sm">Forward and Backward Pass</Title>
             <CodeBlock language="python" code={`import torch
 
 # Example: f(x) = 3x² + 2x + 1
@@ -121,7 +121,7 @@ print(f"Manual gradient: {manual_gradient}")  # Should match!`} />
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Chain Rule in Action</Title>
+                <Title order={4} mb="sm">Chain Rule in Action</Title>
                 <CodeBlock language="python" code={`# Composite function: h(x) = sin(x²)
 x = torch.tensor(1.5, requires_grad=True)
 
@@ -147,7 +147,7 @@ print(f"Manual gradient: {manual_grad}")`} />
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Multiple Variables</Title>
+                <Title order={4} mb="sm">Multiple Variables</Title>
                 <CodeBlock language="python" code={`# Function: f(x,y) = x²y + xy² + x + y
 x = torch.tensor(2.0, requires_grad=True)
 y = torch.tensor(3.0, requires_grad=True)
@@ -176,7 +176,7 @@ print("Manual: ∂f/∂x = 22, ∂f/∂y = 17")`} />
           <Title order={2} mb="lg">The Backward Pass in Detail</Title>
           
           <Paper className="p-4 bg-gray-50 mb-4">
-            <Title order={4} className="mb-3">Step-by-step Backward Computation</Title>
+            <Title order={4} mb="sm">Step-by-step Backward Computation</Title>
             <CodeBlock language="python" code={`# Example: y = (x + 2) * 3
 x = torch.tensor(1.0, requires_grad=True)
 
@@ -212,7 +212,7 @@ print(f"Autograd result: {x.grad}")`} />
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Gradient Functions</Title>
+                <Title order={4} mb="sm">Gradient Functions</Title>
                 <CodeBlock language="python" code={`# Each operation has a gradient function
 x = torch.tensor(2.0, requires_grad=True)
 y = torch.tensor(3.0, requires_grad=True)
@@ -239,7 +239,7 @@ print(f"\\nGradients: x.grad={x.grad:.4f}, y.grad={y.grad:.4f}")`} />
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-yellow-50">
-                <Title order={4} className="mb-3">Gradient Flow Visualization</Title>
+                <Title order={4} mb="sm">Gradient Flow Visualization</Title>
                 <div className="font-mono text-sm bg-white p-3 rounded">
                   <div>Forward Pass:</div>
                   <div>x(2) ──┐</div>
@@ -269,7 +269,7 @@ print(f"\\nGradients: x.grad={x.grad:.4f}, y.grad={y.grad:.4f}")`} />
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-red-50">
-                <Title order={4} className="mb-3">Why Gradients Accumulate</Title>
+                <Title order={4} mb="sm">Why Gradients Accumulate</Title>
                 <CodeBlock language="python" code={`# Gradients accumulate by default!
 x = torch.tensor(3.0, requires_grad=True)
 
@@ -297,7 +297,7 @@ print(f"Fresh gradient: {x.grad}")  # 27.0`} />
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Training Loop Pattern</Title>
+                <Title order={4} mb="sm">Training Loop Pattern</Title>
                 <CodeBlock language="python" code={`import torch.optim as optim
 
 # Typical training loop structure
@@ -346,7 +346,7 @@ for epoch in range(3):
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-purple-50">
-                <Title order={4} className="mb-3">Second Derivatives</Title>
+                <Title order={4} mb="sm">Second Derivatives</Title>
                 <CodeBlock language="python" code={`# Computing second derivatives
 x = torch.tensor(2.0, requires_grad=True)
 
@@ -367,7 +367,7 @@ print(f"Second derivative at x=2: {grad_second}")  # 12.0
               </Paper>
               
               <Paper className="p-4 bg-blue-50 mt-4">
-                <Title order={4} className="mb-3">Hessian Matrix</Title>
+                <Title order={4} mb="sm">Hessian Matrix</Title>
                 <CodeBlock language="python" code={`# Hessian for multivariate functions
 def compute_hessian(f, vars):
     """Compute Hessian matrix of scalar function f w.r.t. vars"""
@@ -393,7 +393,7 @@ print(f"Hessian matrix:\\n{hessian}")
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Practical Applications</Title>
+                <Title order={4} mb="sm">Practical Applications</Title>
                 <List spacing="sm" className="mb-4">
                   <List.Item><strong>Newton's Optimization:</strong> Uses second derivatives for faster convergence</List.Item>
                   <List.Item><strong>Adversarial Training:</strong> Computing gradients of gradients</List.Item>

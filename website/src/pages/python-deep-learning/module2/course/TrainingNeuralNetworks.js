@@ -3,7 +3,7 @@ import { Container, Title, Text, Stack, Grid, Paper, Code, List } from '@mantine
 
 const TrainingNeuralNetworks = () => {
   return (
-    <Container size="xl" className="py-6">
+    <Container size="xl" py="xl">
       <Stack spacing="xl">
         
         {/* Slide 1: Title and Introduction */}
@@ -16,7 +16,7 @@ const TrainingNeuralNetworks = () => {
           </Text>
           <div className="max-w-3xl mx-auto">
             <Paper className="p-6 bg-blue-50">
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 Training neural networks involves finding optimal weights through iterative optimization.
                 This process requires careful consideration of loss functions, optimizers, and training procedures.
               </Text>
@@ -44,7 +44,7 @@ const TrainingNeuralNetworks = () => {
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Classification Losses</Title>
+                <Title order={4} mb="sm">Classification Losses</Title>
                 <Code block language="python">{`import torch
 import torch.nn.functional as F
 
@@ -62,7 +62,7 @@ loss = F.binary_cross_entropy(sigmoid_output, binary_targets)`}</Code>
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Regression Losses</Title>
+                <Title order={4} mb="sm">Regression Losses</Title>
                 <Code block language="python">{`# Mean squared error
 predictions = torch.randn(32, 1)
 targets = torch.randn(32, 1)
@@ -85,7 +85,7 @@ smooth_l1_loss = F.smooth_l1_loss(predictions, targets)`}</Code>
           <Grid gutter="lg">
             <Grid.Col span={12}>
               <Paper className="p-4 bg-purple-50 mb-4">
-                <Title order={4} className="mb-3">Common Optimizers in PyTorch</Title>
+                <Title order={4} mb="sm">Common Optimizers in PyTorch</Title>
                 <Code block language="python">{`import torch.optim as optim
 
 # SGD with momentum
@@ -104,7 +104,7 @@ optimizer = optim.RMSprop(model.parameters(), lr=0.01, alpha=0.99)`}</Code>
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-yellow-50">
-                <Title order={4} className="mb-3">Learning Rate Scheduling</Title>
+                <Title order={4} mb="sm">Learning Rate Scheduling</Title>
                 <Code block language="python">{`# Step learning rate decay
 scheduler = optim.lr_scheduler.StepLR(
     optimizer, step_size=30, gamma=0.1
@@ -124,7 +124,7 @@ scheduler = optim.lr_scheduler.CosineAnnealingLR(
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-orange-50">
-                <Title order={4} className="mb-3">Optimizer Usage</Title>
+                <Title order={4} mb="sm">Optimizer Usage</Title>
                 <Code block language="python">{`# Training step
 optimizer.zero_grad()  # Clear gradients
 loss = criterion(outputs, targets)
@@ -209,7 +209,7 @@ for epoch in range(num_epochs):
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-red-50">
-                <Title order={4} className="mb-3">Dropout</Title>
+                <Title order={4} mb="sm">Dropout</Title>
                 <Code block language="python">{`import torch.nn as nn
 
 class MLP(nn.Module):
@@ -229,7 +229,7 @@ class MLP(nn.Module):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Weight Decay</Title>
+                <Title order={4} mb="sm">Weight Decay</Title>
                 <Code block language="python">{`# L2 regularization via weight decay
 optimizer = optim.Adam(
     model.parameters(), 
@@ -248,7 +248,7 @@ def l2_regularization(model, lambda_reg):
           </Grid>
           
           <Paper className="p-4 bg-blue-50 mt-4">
-            <Title order={4} className="mb-3">Early Stopping</Title>
+            <Title order={4} mb="sm">Early Stopping</Title>
             <Code block language="python">{`class EarlyStopping:
     def __init__(self, patience=7, min_delta=0):
         self.patience = patience
@@ -274,7 +274,7 @@ def l2_regularization(model, lambda_reg):
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">✅ Do's</Title>
+                <Title order={4} mb="sm">✅ Do's</Title>
                 <List>
                   <List.Item>Monitor both training and validation metrics</List.Item>
                   <List.Item>Use appropriate learning rate scheduling</List.Item>
@@ -288,7 +288,7 @@ def l2_regularization(model, lambda_reg):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-red-50">
-                <Title order={4} className="mb-3">❌ Don'ts</Title>
+                <Title order={4} mb="sm">❌ Don'ts</Title>
                 <List>
                   <List.Item>Don't use learning rates that are too high or too low</List.Item>
                   <List.Item>Don't ignore validation loss trends</List.Item>

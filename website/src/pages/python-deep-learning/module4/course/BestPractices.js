@@ -3,7 +3,7 @@ import { Container, Title, Text, Stack, Grid, Paper, Code, List } from '@mantine
 
 const BestPractices = () => {
   return (
-    <Container size="xl" className="py-6">
+    <Container size="xl" py="xl">
       <Stack spacing="xl">
         
         {/* Slide 1: Title and Introduction */}
@@ -16,7 +16,7 @@ const BestPractices = () => {
           </Text>
           <div className="max-w-3xl mx-auto">
             <Paper className="p-6 bg-blue-50">
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 Building production-ready ML systems requires adherence to software engineering best practices
                 combined with ML-specific considerations. This includes code quality, testing strategies,
                 documentation, security, and operational excellence.
@@ -45,7 +45,7 @@ const BestPractices = () => {
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Project Structure</Title>
+                <Title order={4} mb="sm">Project Structure</Title>
                 <Code block>{`ml-project/
 ├── README.md
 ├── requirements.txt
@@ -136,7 +136,7 @@ const BestPractices = () => {
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Configuration Management</Title>
+                <Title order={4} mb="sm">Configuration Management</Title>
                 <Code block language="python">{`# config/base.py
 import os
 import yaml
@@ -244,7 +244,7 @@ config = config_manager.config`}</Code>
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-purple-50">
-                <Title order={4} className="mb-3">Unit Testing</Title>
+                <Title order={4} mb="sm">Unit Testing</Title>
                 <Code block language="python">{`# tests/unit/test_preprocessing.py
 import pytest
 import numpy as np
@@ -373,7 +373,7 @@ class TestDataValidation:
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-orange-50">
-                <Title order={4} className="mb-3">Integration and E2E Testing</Title>
+                <Title order={4} mb="sm">Integration and E2E Testing</Title>
                 <Code block language="python">{`# tests/integration/test_training_pipeline.py
 import pytest
 import tempfile
@@ -590,7 +590,7 @@ class TestPerformance:
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-red-50">
-                <Title order={4} className="mb-3">Security Best Practices</Title>
+                <Title order={4} mb="sm">Security Best Practices</Title>
                 <Code block language="python">{`# Security configuration
 import secrets
 import hashlib
@@ -788,7 +788,7 @@ class AuditLogger:
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-yellow-50">
-                <Title order={4} className="mb-3">Data Privacy and Compliance</Title>
+                <Title order={4} mb="sm">Data Privacy and Compliance</Title>
                 <Code block language="python">{`# GDPR compliance utilities
 from typing import List, Dict, Any
 import json
@@ -1043,7 +1043,7 @@ class SecureModelServer:
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-indigo-50">
-                <Title order={4} className="mb-3">Code Documentation</Title>
+                <Title order={4} mb="sm">Code Documentation</Title>
                 <Code block language="python">{`"""
 Machine Learning Model Training Module
 
@@ -1319,7 +1319,7 @@ def generate_model_card(model: nn.Module,
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">API Documentation</Title>
+                <Title order={4} mb="sm">API Documentation</Title>
                 <Code block language="python">{`# API documentation with OpenAPI/Swagger
 from flask import Flask, request, jsonify
 from flask_restx import Api, Resource, fields, marshal_with
@@ -1618,7 +1618,7 @@ RUNBOOK_TEMPLATE = """
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Development Phase</Title>
+                <Title order={4} mb="sm">Development Phase</Title>
                 <List spacing="xs" size="sm">
                   <List.Item>✅ Code follows consistent style guidelines (PEP 8, Black)</List.Item>
                   <List.Item>✅ Project structure follows established conventions</List.Item>
@@ -1650,7 +1650,7 @@ RUNBOOK_TEMPLATE = """
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Production Phase</Title>
+                <Title order={4} mb="sm">Production Phase</Title>
                 <List spacing="xs" size="sm">
                   <List.Item>✅ Security scanning and vulnerability assessment</List.Item>
                   <List.Item>✅ Authentication and authorization implemented</List.Item>

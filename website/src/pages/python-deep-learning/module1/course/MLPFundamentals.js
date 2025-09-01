@@ -5,7 +5,7 @@ import 'katex/dist/katex.min.css';
 
 const MLPFundamentals = () => {
   return (
-    <Container size="xl" className="py-6">
+    <Container size="xl" py="xl">
       <Stack spacing="xl">
         
         {/* Part 3: Multi Layer Perceptron in a nutshell */}
@@ -22,16 +22,16 @@ const MLPFundamentals = () => {
             
             <Paper className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 mb-6">
               <Title order={3} className="mb-4">From Biology to Mathematics</Title>
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 The artificial neuron is the fundamental building block of neural networks. It's a mathematical 
                 abstraction inspired by biological neurons, but operates purely through linear algebra.
               </Text>
               
               <Paper className="p-4 bg-white mb-4">
-                <Title order={4} className="mb-3">Mathematical Definition of a Neuron</Title>
+                <Title order={4} mb="sm">Mathematical Definition of a Neuron</Title>
                 <div className="space-y-4">
                   <div>
-                    <Text className="font-semibold mb-2">Basic Neuron Operation:</Text>
+                    <Text fw="bold" mb="xs">Basic Neuron Operation:</Text>
                     <BlockMath>{`y = \\sigma(w^T x + b)`}</BlockMath>
                     <List>
                       <List.Item><InlineMath>{`x \\in \\mathbb{R}^n`}</InlineMath> - Input vector</List.Item>
@@ -42,7 +42,7 @@ const MLPFundamentals = () => {
                   </div>
                   
                   <div>
-                    <Text className="font-semibold mb-2">Two-Step Process:</Text>
+                    <Text fw="bold" mb="xs">Two-Step Process:</Text>
                     <List>
                       <List.Item><strong>Linear Transformation:</strong> <InlineMath>{`z = w^T x + b`}</InlineMath></List.Item>
                       <List.Item><strong>Non-linear Activation:</strong> <InlineMath>{`y = \\sigma(z)`}</InlineMath></List.Item>
@@ -54,7 +54,7 @@ const MLPFundamentals = () => {
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-yellow-50">
-                    <Title order={4} className="mb-3">Neuron with Linear Activation</Title>
+                    <Title order={4} mb="sm">Neuron with Linear Activation</Title>
                     <Text size="sm" className="mb-3">
                       When <InlineMath>{`\\sigma(z) = z`}</InlineMath> (identity function):
                     </Text>
@@ -68,7 +68,7 @@ const MLPFundamentals = () => {
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-green-50">
-                    <Title order={4} className="mb-3">Neuron with Sigmoid Activation</Title>
+                    <Title order={4} mb="sm">Neuron with Sigmoid Activation</Title>
                     <Text size="sm" className="mb-3">
                       When <InlineMath>{`\\sigma(z) = \\frac{1}{1 + e^{-z}}`}</InlineMath>:
                     </Text>
@@ -89,7 +89,7 @@ const MLPFundamentals = () => {
               <Grid gutter="lg">
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-blue-50 h-full">
-                    <Title order={4} className="mb-3">Linear (Identity)</Title>
+                    <Title order={4} mb="sm">Linear (Identity)</Title>
                     <BlockMath>{`\\sigma(z) = z`}</BlockMath>
                     <Text size="sm" className="mb-2">Range: <InlineMath>{`(-\\infty, +\\infty)`}</InlineMath></Text>
                     <Text size="xs">Used in: Regression output layers</Text>
@@ -98,7 +98,7 @@ const MLPFundamentals = () => {
                 
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-green-50 h-full">
-                    <Title order={4} className="mb-3">Sigmoid</Title>
+                    <Title order={4} mb="sm">Sigmoid</Title>
                     <BlockMath>{`\\sigma(z) = \\frac{1}{1 + e^{-z}}`}</BlockMath>
                     <Text size="sm" className="mb-2">Range: <InlineMath>{`(0, 1)`}</InlineMath></Text>
                     <Text size="xs">Used in: Binary classification, gates in LSTM</Text>
@@ -107,7 +107,7 @@ const MLPFundamentals = () => {
                 
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-purple-50 h-full">
-                    <Title order={4} className="mb-3">ReLU</Title>
+                    <Title order={4} mb="sm">ReLU</Title>
                     <BlockMath>{`\\sigma(z) = \\max(0, z)`}</BlockMath>
                     <Text size="sm" className="mb-2">Range: <InlineMath>{`[0, +\\infty)`}</InlineMath></Text>
                     <Text size="xs">Used in: Hidden layers (most popular)</Text>
@@ -115,8 +115,8 @@ const MLPFundamentals = () => {
                 </Grid.Col>
               </Grid>
               
-              <Paper className="p-4 bg-white mt-4">
-                <Title order={4} className="mb-3">Why Activation Functions?</Title>
+              <Paper p="md" bg="white" mt="md">
+                <Title order={4} mb="sm">Why Activation Functions?</Title>
                 <Text size="sm" className="mb-3">
                   Without activation functions, multiple layers would collapse to a single linear transformation:
                 </Text>
@@ -138,7 +138,7 @@ const MLPFundamentals = () => {
             
             <Paper className="p-6 bg-blue-50 mb-6">
               <Title order={3} className="mb-4">From Single Neuron to Multi-Layer Networks</Title>
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 A Multi-Layer Perceptron (MLP) stacks multiple layers of neurons, where each layer transforms 
                 the input through the same mathematical operations we've seen in traditional ML models.
               </Text>
@@ -146,7 +146,7 @@ const MLPFundamentals = () => {
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Single Layer (Linear Model)</Title>
+                    <Title order={4} mb="sm">Single Layer (Linear Model)</Title>
                     <BlockMath>{`y = W x + b`}</BlockMath>
                     <Text size="sm" className="mb-2">
                       Where <InlineMath>{`W \\in \\mathbb{R}^{m \\times n}`}</InlineMath>, <InlineMath>{`x \\in \\mathbb{R}^n`}</InlineMath>
@@ -159,7 +159,7 @@ const MLPFundamentals = () => {
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Multi-Layer Perceptron</Title>
+                    <Title order={4} mb="sm">Multi-Layer Perceptron</Title>
                     <BlockMath>{`h_1 = \\sigma_1(W_1 x + b_1)`}</BlockMath>
                     <BlockMath>{`h_2 = \\sigma_2(W_2 h_1 + b_2)`}</BlockMath>
                     <BlockMath>{`y = W_3 h_2 + b_3`}</BlockMath>
@@ -176,7 +176,7 @@ const MLPFundamentals = () => {
               <Title order={3} className="mb-4">Why Multiple Layers?</Title>
               
               <Paper className="p-4 bg-white mb-4">
-                <Title order={4} className="mb-3">The Limitation of Linear Models</Title>
+                <Title order={4} mb="sm">The Limitation of Linear Models</Title>
                 <Text size="sm" className="mb-3">
                   Traditional machine learning models are fundamentally limited by their linearity:
                 </Text>
@@ -190,7 +190,7 @@ const MLPFundamentals = () => {
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-yellow-50">
-                    <Title order={4} className="mb-3">Linear Decision Boundary</Title>
+                    <Title order={4} mb="sm">Linear Decision Boundary</Title>
                     <Text size="sm" className="mb-3">
                       Single layer can only separate data with a straight line:
                     </Text>
@@ -205,7 +205,7 @@ const MLPFundamentals = () => {
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-blue-50">
-                    <Title order={4} className="mb-3">Non-Linear Decision Boundary</Title>
+                    <Title order={4} mb="sm">Non-Linear Decision Boundary</Title>
                     <Text size="sm" className="mb-3">
                       Multiple layers can create complex decision boundaries:
                     </Text>
@@ -218,8 +218,8 @@ const MLPFundamentals = () => {
                 </Grid.Col>
               </Grid>
               
-              <Paper className="p-4 bg-white mt-4">
-                <Title order={4} className="mb-3">Mathematical Intuition</Title>
+              <Paper p="md" bg="white" mt="md">
+                <Title order={4} mb="sm">Mathematical Intuition</Title>
                 <Text size="sm" className="mb-3">
                   Each layer performs a geometric transformation of the input space:
                 </Text>
@@ -242,7 +242,7 @@ const MLPFundamentals = () => {
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">XOR Problem</Title>
+                    <Title order={4} mb="sm">XOR Problem</Title>
                     <Text size="sm" className="mb-3">
                       Classic example of non-linear separability:
                     </Text>
@@ -287,7 +287,7 @@ const MLPFundamentals = () => {
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Concentric Circles</Title>
+                    <Title order={4} mb="sm">Concentric Circles</Title>
                     <Text size="sm" className="mb-3">
                       Points inside inner circle vs. points in outer ring:
                     </Text>
@@ -302,10 +302,10 @@ const MLPFundamentals = () => {
                 </Grid.Col>
               </Grid>
               
-              <Paper className="p-4 bg-white mt-4">
-                <Title order={4} className="mb-3">Real-World Complex Patterns</Title>
+              <Paper p="md" bg="white" mt="md">
+                <Title order={4} mb="sm">Real-World Complex Patterns</Title>
                 
-                <Flex direction="column" align="center" className="mb-4">
+                <Flex direction="column" align="center" mb="md">
                   <Image
                     src="/assets/python-deep-learning/module1/signal_processing.png"
                     alt="Signal Processing Applications"
@@ -341,13 +341,13 @@ const MLPFundamentals = () => {
             
             <Paper className="p-6 bg-gradient-to-r from-orange-50 to-red-50 mb-6">
               <Title order={3} className="mb-4">Understanding the Parameter Space</Title>
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 Neural networks learn by optimizing millions of parameters. Understanding what these parameters 
                 represent and how they scale is crucial for designing and training networks effectively.
               </Text>
               
               <Paper className="p-4 bg-white">
-                <Title order={4} className="mb-3">Complete Parameter Set</Title>
+                <Title order={4} mb="sm">Complete Parameter Set</Title>
                 <Text size="sm" className="mb-3">
                   For an L-layer MLP with layer sizes <InlineMath>{`[n_0, n_1, n_2, ..., n_L]`}</InlineMath>:
                 </Text>
@@ -370,7 +370,7 @@ const MLPFundamentals = () => {
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-blue-50">
-                    <Title order={4} className="mb-3">Per-Layer Parameters</Title>
+                    <Title order={4} mb="sm">Per-Layer Parameters</Title>
                     <Text size="sm" className="mb-3">
                       For a layer with <InlineMath>{`n_{in}`}</InlineMath> inputs and <InlineMath>{`n_{out}`}</InlineMath> outputs:
                     </Text>
@@ -384,7 +384,7 @@ const MLPFundamentals = () => {
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-green-50">
-                    <Title order={4} className="mb-3">Total Network Parameters</Title>
+                    <Title order={4} mb="sm">Total Network Parameters</Title>
                     <BlockMath>{`\text{Total} = \\sum_{l=1}^L (n_{l-1} \\times n_l + n_l)`}</BlockMath>
                     <Text size="sm" className="mb-2">
                       Example: 784 → 128 → 64 → 10
@@ -400,7 +400,7 @@ const MLPFundamentals = () => {
               </Grid>
               
               <Paper className="p-4 bg-yellow-50 mt-4">
-                <Title order={4} className="mb-3">Parameter Scaling</Title>
+                <Title order={4} mb="sm">Parameter Scaling</Title>
                 <Text size="sm" className="mb-3">
                   Parameter count grows quadratically with layer width:
                 </Text>
@@ -447,7 +447,7 @@ const MLPFundamentals = () => {
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Forward Pass</Title>
+                    <Title order={4} mb="sm">Forward Pass</Title>
                     <Text size="sm" className="mb-3">
                       Compute predictions by propagating inputs through layers:
                     </Text>
@@ -460,7 +460,7 @@ const MLPFundamentals = () => {
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Parameter Updates</Title>
+                    <Title order={4} mb="sm">Parameter Updates</Title>
                     <Text size="sm" className="mb-3">
                       Use gradient descent to minimize loss:
                     </Text>
@@ -471,8 +471,8 @@ const MLPFundamentals = () => {
                 </Grid.Col>
               </Grid>
               
-              <Paper className="p-4 bg-white mt-4">
-                <Title order={4} className="mb-3">Key Insight: Gradient-Based Optimization</Title>
+              <Paper p="md" bg="white" mt="md">
+                <Title order={4} mb="sm">Key Insight: Gradient-Based Optimization</Title>
                 <Text size="sm" className="mb-3">
                   MLPs use the same gradient descent principles from traditional ML:
                 </Text>

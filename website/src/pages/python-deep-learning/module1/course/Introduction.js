@@ -6,7 +6,7 @@ import CodeBlock from 'components/CodeBlock';
 
 const Introduction = () => {
   return (
-    <Container size="xl" className="py-6">
+    <Container size="xl" py="xl">
       <Stack spacing="xl">
         
           <div data-slide>
@@ -49,7 +49,7 @@ const Introduction = () => {
 <div className="mt-8 mb-8">
   <Grid>
     <Grid.Col span={{ base: 12, md: 4 }}>
-        <Title order={4} className="mb-3">
+        <Title order={4} mb="sm">
           AI (Artificial Intelligence)
         </Title>
         <Text size="sm" className="mb-3">
@@ -61,7 +61,7 @@ const Introduction = () => {
     </Grid.Col>
     
     <Grid.Col span={{ base: 12, md: 4 }}>
-        <Title order={4} className="mb-3">
+        <Title order={4} mb="sm">
           ML (Machine Learning)
         </Title>
         <Text size="sm" className="mb-3">
@@ -73,7 +73,7 @@ const Introduction = () => {
     </Grid.Col>
     
     <Grid.Col span={{ base: 12, md: 4 }}>
-        <Title order={4} className="mb-3">
+        <Title order={4} mb="sm">
           DL (Deep Learning)
         </Title>
         <Text size="sm" className="mb-3">
@@ -115,7 +115,7 @@ const Introduction = () => {
         Source: https://www.domo.com/learn/datanever-sleeps-7
       </Text>
     </Flex>
-                    <Title order={4} className="mb-3">1. Big Data</Title>
+                    <Title order={4} mb="sm">1. Big Data</Title>
                     <Text size="sm">
                       The internet era generated massive datasets: billions of images, text documents, 
                       videos, and user interactions. This data explosion provided the fuel needed to train 
@@ -135,7 +135,7 @@ const Introduction = () => {
       <Text component="p" ta="center" mt="xs" size="sm" c="dimmed">
         Source: https://www.researchgate.net/figure/The-exponential-progress-of-computing-power-from-1900-to-2013-with-projections-into_fig1_335422453
       </Text>
-                    <Title order={4} className="mb-3">2. Computational Power</Title>
+                    <Title order={4} mb="sm">2. Computational Power</Title>
                     <Text size="sm">
                       GPUs originally designed for gaming proved perfect for neural network computations. 
                       A single modern GPU can perform trillions of operations per second, enabling training 
@@ -163,7 +163,7 @@ const Introduction = () => {
       />
             <Text component="p" ta="center" mt="xs" size="sm" c="dimmed">
         Source: https://pytorch.org/     </Text>
-                    <Title order={4} className="mb-3">3. Algorithmic Innovation</Title>
+                    <Title order={4} mb="sm">3. Algorithmic Innovation</Title>
                     <Text size="sm">
                       Breakthrough techniques like ReLU activation, batch normalization, dropout, and 
                       attention mechanisms solved critical training challenges. These innovations made 
@@ -367,7 +367,7 @@ const Introduction = () => {
           Enabling machines to understand and interpret visual information from the world
         </Text>
         
-        <Flex direction="column" align="center" className="mb-4">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/python-deep-learning/module1/object_detetcion.png"
             alt="Computer Vision Applications"
@@ -403,7 +403,7 @@ const Introduction = () => {
           Understanding, generating, and translating human language
         </Text>
         
-        <Flex direction="column" align="center" className="mb-4">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/python-deep-learning/module1/ai_chatbot.png"
             alt="NLP Applications"
@@ -446,7 +446,7 @@ const Introduction = () => {
           Analyzing and transforming temporal data from sensors and recordings
         </Text>
         
-        <Flex direction="column" align="center" className="mb-4">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/python-deep-learning/module1/signal_processing.png"
             alt="Signal Processing Applications"
@@ -482,7 +482,7 @@ const Introduction = () => {
           Intelligent agents that can perceive, decide, and act in complex environments
         </Text>
         
-        <Flex direction="column" align="center" className="mb-4">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/python-deep-learning/module1/agentic.gif"
             alt="Agent Systems Applications"
@@ -522,7 +522,7 @@ const Introduction = () => {
           Creating new content across text, images, audio, and video modalities
         </Text>
         
-        <Flex direction="column" align="center" className="mb-4">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/python-deep-learning/module1/not_exist.jpg"
             alt="Generative AI Applications"
@@ -566,7 +566,7 @@ const Introduction = () => {
           Accelerating scientific discovery and solving domain-specific challenges
         </Text>
         
-        <Flex direction="column" align="center" className="mb-4">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/python-deep-learning/module1/alphafold.png"
             alt="Scientific Applications"
@@ -613,7 +613,7 @@ const Introduction = () => {
       <Paper className="p-6 mb-6">
         <Title order={3} className="mb-2">Core Data Requirements</Title>
         
-        <Flex direction="column" align="center" className="mb-4">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/python-deep-learning/module1/data_requirements.png"
             alt="Data Requirements in Deep Learning"

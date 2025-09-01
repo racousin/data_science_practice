@@ -10,7 +10,7 @@
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Momentum SGD</Title>
+                    <Title order={4} mb="sm">Momentum SGD</Title>
                     <BlockMath>{`v_{t+1} = \\beta v_t + (1-\\beta) \\nabla_\\theta \\mathcal{L}`}</BlockMath>
                     <BlockMath>{`\\theta_{t+1} = \\theta_t - \\eta v_{t+1}`}</BlockMath>
                     <Text size="sm" className="mt-2">
@@ -21,7 +21,7 @@
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Adam (Adaptive Moment Estimation)</Title>
+                    <Title order={4} mb="sm">Adam (Adaptive Moment Estimation)</Title>
                     <BlockMath>{`m_t = \\beta_1 m_{t-1} + (1-\\beta_1) \\nabla_\\theta \\mathcal{L}`}</BlockMath>
                     <BlockMath>{`v_t = \\beta_2 v_{t-1} + (1-\\beta_2) (\\nabla_\\theta \\mathcal{L})^2`}</BlockMath>
                     <BlockMath>{`\\theta_{t+1} = \\theta_t - \\frac{\\eta}{\\sqrt{v_t} + \\epsilon} m_t`}</BlockMath>
@@ -73,7 +73,7 @@ for epoch in range(num_epochs):
               <Grid gutter="lg">
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Step Decay</Title>
+                    <Title order={4} mb="sm">Step Decay</Title>
                     <BlockMath>{`\\eta_t = \\eta_0 \\cdot \\gamma^{\\lfloor t/s \\rfloor}`}</BlockMath>
                     <Text size="sm">Decrease by factor γ every s epochs</Text>
                   </Paper>
@@ -81,7 +81,7 @@ for epoch in range(num_epochs):
                 
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Cosine Annealing</Title>
+                    <Title order={4} mb="sm">Cosine Annealing</Title>
                     <BlockMath>{`\\eta_t = \\eta_{min} + \\frac{1}{2}(\\eta_{max} - \\eta_{min})(1 + \\cos(\\frac{t\\pi}{T}))`}</BlockMath>
                     <Text size="sm">Smooth cosine decay over T epochs</Text>
                   </Paper>
@@ -89,7 +89,7 @@ for epoch in range(num_epochs):
                 
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Warmup</Title>
+                    <Title order={4} mb="sm">Warmup</Title>
                     <BlockMath>{`\\eta_t = \\begin{cases} \\frac{t}{T_{warmup}} \\eta_0 & t < T_{warmup} \\\\ \\eta_0 & \\text{otherwise} \\end{cases}`}</BlockMath>
                     <Text size="sm">Gradual increase to prevent instability</Text>
                   </Paper>
@@ -108,7 +108,7 @@ for epoch in range(num_epochs):
             
             <Paper className="p-6 bg-gradient-to-r from-green-50 to-teal-50 mb-6">
               <Title order={3} className="mb-4">Vectors, Matrices, and Tensors</Title>
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 Deep learning operates on multi-dimensional arrays. Understanding their properties and operations 
                 is crucial for implementing and debugging neural networks.
               </Text>
@@ -116,7 +116,7 @@ for epoch in range(num_epochs):
               <Grid gutter="lg">
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Vectors</Title>
+                    <Title order={4} mb="sm">Vectors</Title>
                     <BlockMath>{`x \\in \\mathbb{R}^n`}</BlockMath>
                     <Text size="sm" className="mb-2">1D array of numbers</Text>
                     <CodeBlock language="python" code={`import torch
@@ -128,7 +128,7 @@ print(x.shape)  # torch.Size([5])`} />
                 
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Matrices</Title>
+                    <Title order={4} mb="sm">Matrices</Title>
                     <BlockMath>{`W \\in \\mathbb{R}^{m \\times n}`}</BlockMath>
                     <Text size="sm" className="mb-2">2D array (rows × columns)</Text>
                     <CodeBlock language="python" code={`# Matrix of size 3×4
@@ -139,7 +139,7 @@ print(W.shape)  # torch.Size([3, 4])`} />
                 
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Tensors</Title>
+                    <Title order={4} mb="sm">Tensors</Title>
                     <BlockMath>{`T \\in \\mathbb{R}^{d_1 \\times d_2 \\times ... \\times d_k}`}</BlockMath>
                     <Text size="sm" className="mb-2">k-dimensional array</Text>
                     <CodeBlock language="python" code={`# 4D tensor (batch, channels, height, width)
@@ -157,7 +157,7 @@ print(T.shape)  # torch.Size([32, 3, 224, 224])`} />
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-blue-50">
-                    <Title order={4} className="mb-3">Matrix Multiplication</Title>
+                    <Title order={4} mb="sm">Matrix Multiplication</Title>
                     <BlockMath>{`C = AB \\text{ where } C_{ij} = \\sum_k A_{ik}B_{kj}`}</BlockMath>
                     <Text size="sm" className="mb-2">Dimensions: <InlineMath>{`(m \\times n) \\cdot (n \\times p) = (m \\times p)`}</InlineMath></Text>
                     
@@ -177,7 +177,7 @@ print(C_batch.shape)  # torch.Size([32, 10, 3])`} />
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-green-50">
-                    <Title order={4} className="mb-3">Element-wise Operations</Title>
+                    <Title order={4} mb="sm">Element-wise Operations</Title>
                     <BlockMath>{`C = A \\odot B \\text{ where } C_{ij} = A_{ij} \\cdot B_{ij}`}</BlockMath>
                     <Text size="sm" className="mb-2">Hadamard product (element-wise multiplication)</Text>
                     
@@ -201,7 +201,7 @@ E = A + v  # [[2, 4], [4, 6]]`} />
               <Grid gutter="lg" className="mt-4">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-yellow-50">
-                    <Title order={4} className="mb-3">Dot Product</Title>
+                    <Title order={4} mb="sm">Dot Product</Title>
                     <BlockMath>{`x \\cdot y = x^T y = \\sum_{i=1}^n x_i y_i`}</BlockMath>
                     <Text size="sm" className="mb-2">Measures similarity between vectors</Text>
                     
@@ -219,7 +219,7 @@ cos_sim = torch.nn.functional.cosine_similarity(
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-purple-50">
-                    <Title order={4} className="mb-3">Transpose and Reshape</Title>
+                    <Title order={4} mb="sm">Transpose and Reshape</Title>
                     <BlockMath>{`A^T \\text{ where } (A^T)_{ij} = A_{ji}`}</BlockMath>
                     <Text size="sm" className="mb-2">Swapping dimensions</Text>
                     
@@ -244,21 +244,21 @@ z = x.reshape(-1)  # Flatten to 1D`} />
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Norms and Distances</Title>
+                    <Title order={4} mb="sm">Norms and Distances</Title>
                     
                     <div className="space-y-3">
                       <div>
-                        <Text className="font-semibold text-sm">L2 Norm (Euclidean):</Text>
+                        <Text fw="bold" size="sm">L2 Norm (Euclidean):</Text>
                         <BlockMath>{`||x||_2 = \\sqrt{\\sum_{i=1}^n x_i^2}`}</BlockMath>
                       </div>
                       
                       <div>
-                        <Text className="font-semibold text-sm">L1 Norm (Manhattan):</Text>
+                        <Text fw="bold" size="sm">L1 Norm (Manhattan):</Text>
                         <BlockMath>{`||x||_1 = \\sum_{i=1}^n |x_i|`}</BlockMath>
                       </div>
                       
                       <div>
-                        <Text className="font-semibold text-sm">Frobenius Norm (matrices):</Text>
+                        <Text fw="bold" size="sm">Frobenius Norm (matrices):</Text>
                         <BlockMath>{`||A||_F = \\sqrt{\\sum_{i,j} A_{ij}^2}`}</BlockMath>
                       </div>
                     </div>
@@ -267,7 +267,7 @@ z = x.reshape(-1)  # Flatten to 1D`} />
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Broadcasting Rules</Title>
+                    <Title order={4} mb="sm">Broadcasting Rules</Title>
                     
                     <Text size="sm" className="mb-3">
                       PyTorch automatically broadcasts tensors for element-wise operations:
@@ -299,7 +299,7 @@ Z = X + Y                  # Shape: [2, 4, 3]`} />
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Gradient Vector</Title>
+                    <Title order={4} mb="sm">Gradient Vector</Title>
                     <Text size="sm" className="mb-3">
                       For scalar function <InlineMath>{`f: \\mathbb{R}^n \\rightarrow \\mathbb{R}`}</InlineMath>:
                     </Text>
@@ -310,7 +310,7 @@ Z = X + Y                  # Shape: [2, 4, 3]`} />
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Jacobian Matrix</Title>
+                    <Title order={4} mb="sm">Jacobian Matrix</Title>
                     <Text size="sm" className="mb-3">
                       For vector function <InlineMath>{`f: \\mathbb{R}^n \\rightarrow \\mathbb{R}^m`}</InlineMath>:
                     </Text>
@@ -320,8 +320,8 @@ Z = X + Y                  # Shape: [2, 4, 3]`} />
                 </Grid.Col>
               </Grid>
               
-              <Paper className="p-4 bg-white mt-4">
-                <Title order={4} className="mb-3">Chain Rule for Backpropagation</Title>
+              <Paper p="md" bg="white" mt="md">
+                <Title order={4} mb="sm">Chain Rule for Backpropagation</Title>
                 <Text size="sm" className="mb-3">
                   For composite function <InlineMath>{`h(x) = f(g(x))`}</InlineMath>:
                 </Text>

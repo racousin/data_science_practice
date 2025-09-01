@@ -25,7 +25,7 @@ const MLPArchitectureComponents = () => {
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">MLP Forward Pass</Title>
+                  <Title order={4} mb="sm">MLP Forward Pass</Title>
                   <CodeBlock language="python" code={`import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -95,7 +95,7 @@ print(f"Manual forward pass matches: {torch.allclose(output, manual_output)}")`}
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Parameter Counting</Title>
+                  <Title order={4} mb="sm">Parameter Counting</Title>
                   <CodeBlock language="python" code={`def count_parameters(model):
     """Count parameters in a neural network"""
     total_params = 0

@@ -18,7 +18,7 @@ const TensorFundamentals = () => {
             Understanding the Building Blocks of Deep Learning
           </Text>
           <Paper className="p-6 bg-blue-50 mb-6">
-            <Text size="lg" className="mb-4">
+            <Text size="lg" mb="md">
               Tensors are the fundamental data structure in deep learning frameworks.
               They generalize matrices to arbitrary dimensions and enable efficient computation on GPUs.
             </Text>
@@ -42,7 +42,7 @@ const TensorFundamentals = () => {
           <Grid gutter="xl">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-gray-50 mb-4">
-                <Title order={4} className="mb-3">Scalar (0D)</Title>
+                <Title order={4} mb="sm">Scalar (0D)</Title>
                 <CodeBlock 
                   language="python" 
                   code={`import torch
@@ -55,7 +55,7 @@ print(scalar.ndim)   # 0`}
               </Paper>
               
               <Paper className="p-4 bg-gray-50">
-                <Title order={4} className="mb-3">Vector (1D)</Title>
+                <Title order={4} mb="sm">Vector (1D)</Title>
                 <CodeBlock 
                   language="python" 
                   code={`# Vector - array of values
@@ -68,7 +68,7 @@ print(vector.ndim)   # 1`}
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-gray-50 mb-4">
-                <Title order={4} className="mb-3">Matrix (2D)</Title>
+                <Title order={4} mb="sm">Matrix (2D)</Title>
                 <CodeBlock 
                   language="python" 
                   code={`# Matrix - 2D array
@@ -80,7 +80,7 @@ print(matrix.ndim)   # 2`}
               </Paper>
               
               <Paper className="p-4 bg-gray-50">
-                <Title order={4} className="mb-3">3D Tensor</Title>
+                <Title order={4} mb="sm">3D Tensor</Title>
                 <CodeBlock 
                   language="python" 
                   code={`# 3D Tensor - e.g., RGB image
@@ -102,7 +102,7 @@ print(tensor_3d.ndim)   # 3`}
             <Grid.Col span={6}>
               <Stack spacing="md">
                 <Paper className="p-4 bg-green-50">
-                  <Title order={4} className="mb-3">From Python Lists</Title>
+                  <Title order={4} mb="sm">From Python Lists</Title>
                   <CodeBlock 
                     language="python" 
                     code={`# From list
@@ -115,7 +115,7 @@ matrix = torch.tensor([[1, 2],
                 </Paper>
                 
                 <Paper className="p-4 bg-blue-50">
-                  <Title order={4} className="mb-3">Random Initialization</Title>
+                  <Title order={4} mb="sm">Random Initialization</Title>
                   <CodeBlock 
                     language="python" 
                     code={`# Uniform random [0, 1)
@@ -134,7 +134,7 @@ randint_tensor = torch.randint(0, 10, (3, 4))`}
             <Grid.Col span={6}>
               <Stack spacing="md">
                 <Paper className="p-4 bg-purple-50">
-                  <Title order={4} className="mb-3">Special Tensors</Title>
+                  <Title order={4} mb="sm">Special Tensors</Title>
                   <CodeBlock 
                     language="python" 
                     code={`# Zeros
@@ -152,7 +152,7 @@ full = torch.full((3, 4), 7.0)`}
                 </Paper>
                 
                 <Paper className="p-4 bg-orange-50">
-                  <Title order={4} className="mb-3">From NumPy</Title>
+                  <Title order={4} mb="sm">From NumPy</Title>
                   <CodeBlock 
                     language="python" 
                     code={`import numpy as np
@@ -178,7 +178,7 @@ np_array = tensor.numpy()`}
           <Grid gutter="lg">
             <Grid.Col span={12}>
               <Paper className="p-4 bg-gray-50 mb-4">
-                <Title order={4} className="mb-3">Arithmetic Operations</Title>
+                <Title order={4} mb="sm">Arithmetic Operations</Title>
                 <Text className="mb-3">
                   <strong>Element-wise operations:</strong> Applied component-wise using broadcasting rules.
                 </Text>
@@ -210,7 +210,7 @@ z = torch.mm(x, y)  # or x @ y  # Result: (2, 4)`}
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Reshaping Operations</Title>
+                <Title order={4} mb="sm">Reshaping Operations</Title>
                 <CodeBlock 
                   language="python" 
                   code={`# Reshape
@@ -228,7 +228,7 @@ z = y.unsqueeze(0)  # Add dim at position 0`}
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Aggregation Operations</Title>
+                <Title order={4} mb="sm">Aggregation Operations</Title>
                 <CodeBlock 
                   language="python" 
                   code={`# Aggregations
@@ -253,7 +253,7 @@ sum_cols = x.sum(dim=1)    # Sum of each row`}
           <Title order={2} className="mb-6">GPU Acceleration with CUDA</Title>
           
           <Paper className="p-6 bg-yellow-50 mb-6">
-            <Text size="lg" className="mb-4">
+            <Text size="lg" mb="md">
               PyTorch tensors can leverage GPU acceleration for massive speedups in computation.
               Moving tensors to GPU memory enables parallel processing of operations.
             </Text>
@@ -262,7 +262,7 @@ sum_cols = x.sum(dim=1)    # Sum of each row`}
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-gray-50">
-                <Title order={4} className="mb-3">Device Management</Title>
+                <Title order={4} mb="sm">Device Management</Title>
                 <CodeBlock 
                   language="python" 
                   code={`# Check CUDA availability
@@ -284,7 +284,7 @@ if torch.cuda.is_available():
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-gray-50">
-                <Title order={4} className="mb-3">Moving Tensors to GPU</Title>
+                <Title order={4} mb="sm">Moving Tensors to GPU</Title>
                 <CodeBlock 
                   language="python" 
                   code={`# Create tensor on GPU
@@ -307,7 +307,7 @@ result = gpu_tensor @ gpu_tensor.T`}
           </Grid>
           
           <Paper className="p-4 bg-red-50 mt-4">
-            <Title order={4} className="mb-3">⚠️ Important Notes</Title>
+            <Title order={4} mb="sm">⚠️ Important Notes</Title>
             <List>
               <List.Item>All tensors in an operation must be on the same device</List.Item>
               <List.Item>Moving data between CPU and GPU has overhead - minimize transfers</List.Item>
@@ -335,7 +335,7 @@ result = gpu_tensor @ gpu_tensor.T`}
           <Grid gutter="lg">
             <Grid.Col span={12}>
               <Paper className="p-4 bg-gray-50">
-                <Title order={4} className="mb-3">Basic Autograd Example</Title>
+                <Title order={4} mb="sm">Basic Autograd Example</Title>
                 <Text className="mb-3">
                   <strong>Chain Rule Application:</strong> For <InlineMath>{`f(g(x))`}</InlineMath>, autograd computes <InlineMath>{`\\frac{df}{dx} = \\frac{df}{dg} \\cdot \\frac{dg}{dx}`}</InlineMath>
                 </Text>
@@ -362,7 +362,7 @@ print(f"Gradient of x: {x.grad}")
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Gradient Control</Title>
+                <Title order={4} mb="sm">Gradient Control</Title>
                 <CodeBlock 
                   language="python" 
                   code={`# Detach from computation graph
@@ -383,7 +383,7 @@ def inference(x):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Gradient Accumulation</Title>
+                <Title order={4} mb="sm">Gradient Accumulation</Title>
                 <CodeBlock 
                   language="python" 
                   code={`# Gradients accumulate by default
@@ -412,7 +412,7 @@ x.grad.zero_()`}
           <Title order={2} className="mb-6">Tensor Broadcasting</Title>
           
           <Paper className="p-6 bg-indigo-50 mb-6">
-            <Text size="lg" className="mb-4">
+            <Text size="lg" mb="md">
               Broadcasting allows operations between tensors of different shapes by automatically
               expanding the smaller tensor to match the larger one's shape.
             </Text>
@@ -433,7 +433,7 @@ x.grad.zero_()`}
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-gray-50">
-                <Title order={4} className="mb-3">Broadcasting Examples</Title>
+                <Title order={4} mb="sm">Broadcasting Examples</Title>
                 <CodeBlock 
                   language="python" 
                   code={`# Scalar and tensor
@@ -456,7 +456,7 @@ z = x + y  # Result shape: (2, 3, 4)`}
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-gray-50">
-                <Title order={4} className="mb-3">Common Broadcasting Patterns</Title>
+                <Title order={4} mb="sm">Common Broadcasting Patterns</Title>
                 <CodeBlock 
                   language="python" 
                   code={`# Normalize by mean and std

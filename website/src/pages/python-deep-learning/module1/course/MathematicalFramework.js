@@ -5,7 +5,7 @@ import 'katex/dist/katex.min.css';
 
 const MathematicalFramework = () => {
   return (
-    <Container size="xl" className="py-6">
+    <Container size="xl" py="xl">
       <Stack spacing="xl">
         
         {/* Part 2: Mathematical Framework */}
@@ -17,15 +17,18 @@ const MathematicalFramework = () => {
           {/* Machine Learning Objective */}
           </div>
           <div data-slide>
-            <Title order={2} className="mb-6" id="ml-objective">
+            <Title order={2} className="mb-6 slide-title"  id="ml-objective">
               The Machine Learning Objective
             </Title>
-                    <Flex direction="column" align="center" className="mb-4">
+                        <Text size="lg" mb="xl">
+Machine learning is a field of artificial intelligence that enables systems to automatically learn patterns from data.
+            </Text>
+            
+                    <Flex direction="column" align="center" mb="md">
                       <Image
                         src="/assets/python-deep-learning/module1/ai_obj1.png"
                         alt="Computer Vision Applications"
-                        w={{ base: 400, sm: 600, md: 800 }}
-                        h="auto"
+                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
                         fluid
                       />
                     </Flex>
@@ -33,14 +36,15 @@ const MathematicalFramework = () => {
                         Example : predict the future
                       </Text>
           </div>
-          <div data-slide data-tag="ml-variables">
-            <Text size="lg" className="mb-4">
+          <div data-slide>
+            <Title order={4} mb="xs" className="slide-title">Features and Target</Title>
+            <Text size="lg" mb="xl">
               <strong>X:</strong> Explanatory variables (features/characteristics)<br/>
               <strong>Y:</strong> Variable to explain (target)<br/>
               Concretely, we want to find a relationship Y = f(X)
             </Text>
             
-            <Text className="mb-4">
+            <Text mb="xl">
               <strong>Example:</strong> f(year, latitude, altitude) = predicted temperature
             </Text>
             
@@ -66,17 +70,17 @@ const MathematicalFramework = () => {
             </Grid>
           </div>
           <div data-slide>
-            <Title order={3} className="mb-4">Regression, Classification & Mixed Problems</Title>
+            <Title order={3} mb="md" className="slide-title">Regression, Classification</Title>
             
             <Grid gutter="lg">
               <Grid.Col span={4}>
                 <Paper className="p-4 bg-blue-50 h-full">
-                  <Title order={4} className="mb-3">Regression Problems</Title>
+                  <Title order={4} mb="sm">Regression Problems</Title>
                   <Text size="sm" className="mb-3">Predict continuous values</Text>
                   <BlockMath>{`y \\in \\mathbb{R}^m`}</BlockMath>
                   
                   <div className="mt-3">
-                    <Text className="font-semibold text-sm">Examples:</Text>
+                    <Text fw="bold" size="sm">Examples:</Text>
                     <List size="sm">
                       <List.Item><strong>1D:</strong> House price (y ∈ ℝ)</List.Item>
                       <List.Item><strong>2D:</strong> 2D coordinates (x,y)</List.Item>
@@ -89,12 +93,12 @@ const MathematicalFramework = () => {
               
               <Grid.Col span={4}>
                 <Paper className="p-4 bg-green-50 h-full">
-                  <Title order={4} className="mb-3">Classification Problems</Title>
+                  <Title order={4} mb="sm">Classification Problems</Title>
                   <Text size="sm" className="mb-3">Predict discrete categories</Text>
                   <BlockMath>{`y \\in \\{1, 2, ..., K\\}`}</BlockMath>
                   
                   <div className="mt-3">
-                    <Text className="font-semibold text-sm">Examples:</Text>
+                    <Text fw="bold" size="sm">Examples:</Text>
                     <List size="sm">
                       <List.Item><strong>Binary:</strong> Spam detection (y ∈ {`{0,1}`})</List.Item>
                       <List.Item><strong>Multi-class:</strong> Image recognition (10 classes)</List.Item>
@@ -107,12 +111,12 @@ const MathematicalFramework = () => {
               
               <Grid.Col span={4}>
                 <Paper className="p-4 bg-purple-50 h-full">
-                  <Title order={4} className="mb-3">Mixed Problems</Title>
+                  <Title order={4} mb="sm">Mixed Problems</Title>
                   <Text size="sm" className="mb-3">Combine regression & classification</Text>
                   <BlockMath>{`y = [y_{reg}, y_{cls}]`}</BlockMath>
                   
                   <div className="mt-3">
-                    <Text className="font-semibold text-sm">Examples:</Text>
+                    <Text fw="bold" size="sm">Examples:</Text>
                     <List size="sm">
                       <List.Item><strong>Object detection:</strong> Bounding box + class</List.Item>
                       <List.Item><strong>Facial analysis:</strong> Age (reg) + gender (cls)</List.Item>
@@ -125,56 +129,58 @@ const MathematicalFramework = () => {
             </Grid>
           </div>
                       <div data-slide >
-              <Title order={3} className="mb-4">Data Characteristics</Title>
-                                  <Flex direction="column" align="center" className="mb-4">
-                      <Image
-                        src="/assets/python-deep-learning/module1/ai_obj2.png"
-                        w={{ base: 400, sm: 600, md: 800 }}
-                        h="auto"
-                        fluid
-                      />
-                    </Flex>
-                                      <Text component="p" ta="center" mt="xs">
-                        44 observations/samples, 2 dimensions
-                      </Text>
-                                                        <Flex direction="column" align="center" className="mb-4">
-                      <Image
-                        src="/assets/python-deep-learning/module1/ai_obj3.png"
-                        w={{ base: 400, sm: 600, md: 800 }}
-                        h="auto"
-                        fluid
-                      />
-                    </Flex>
-                                      <Text component="p" ta="center" mt="xs">
-                        9 observations, 3 dimensions
-                      </Text>
+              <Title order={3} mb="md" className="slide-title">Data Characteristics</Title>
+
                       
-            <Paper className="p-4 bg-white mt-4">
+            <Paper p="md" bg="white" mt="md">
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Title order={4} className="mb-2">Quantity</Title>
                   <Text size="sm">Sample size: number of observations</Text>
+                  
+                  <Flex direction="column" align="center" mb="md">
+                    <Image
+                      src="/assets/python-deep-learning/module1/ai_obj3.png"
+                      style={{ maxWidth: 'min(400px, 90vw)', height: 'auto' }}
+                      fluid
+                    />
+                  </Flex>
+                  <Text component="p" ta="center" mt="xs">
+                    9 observations, 3 dimensions
+                  </Text>
+                                                    
                 </Grid.Col>
                 <Grid.Col span={6}>
                   <Title order={4} className="mb-2">Dimension</Title>
                   <Text size="sm">Dimensionality: number of variables per observation (features)</Text>
+                  
+                  <Flex direction="column" align="center" mb="md">
+                    <Image
+                      src="/assets/python-deep-learning/module1/ai_obj2.png"
+                      style={{ maxWidth: 'min(400px, 90vw)', height: 'auto' }}
+                      fluid
+                    />
+                  </Flex>
+                  <Text component="p" ta="center" mt="xs">
+                    44 observations/samples, 2 dimensions
+                  </Text>
                 </Grid.Col>
               </Grid>
             </Paper>
               </div>
             <div data-slide>
-              <Title order={3} className="mb-4">The Fundamental Learning Problem</Title>
-              <Text size="lg" className="mb-4">
+              <Title order={3} mb="md" className="slide-title">The Fundamental Learning Problem</Title>
+              <Text size="lg" mb="md">
                 At its core, machine learning seeks to find a function <InlineMath>f</InlineMath> that maps inputs to outputs 
                 by learning from data. Deep learning extends this by using highly expressive neural network functions.
               </Text>
 
               
               <Paper className="p-4 bg-white mb-4">
-                <Title order={4} className="mb-3">The Learning Framework</Title>
+                <Title order={4} mb="sm">The Learning Framework</Title>
                 <div className="space-y-4">
                   <div>
-                    <Text className="font-semibold mb-2">Given:</Text>
+                    <Text fw="bold" mb="xs">Given:</Text>
                     <List>
                       <List.Item>Training dataset: <InlineMath>{`\\mathcal{D} = \\{(x_1, y_1), (x_2, y_2), ..., (x_n, y_n)\\}`}</InlineMath></List.Item>
                       <List.Item>Input space: <InlineMath>{`x_i \\in \\mathcal{X} \\subseteq \\mathbb{R}^d`}</InlineMath></List.Item>
@@ -183,7 +189,7 @@ const MathematicalFramework = () => {
                   </div>
                   
                   <div>
-                    <Text className="font-semibold mb-2">Objective:</Text>
+                    <Text fw="bold" mb="xs">Objective:</Text>
                     <Text>Find a function <InlineMath>{`f: \\mathcal{X} \\rightarrow \\mathcal{Y}`}</InlineMath> that:</Text>
                     <List>
                       <List.Item>Minimizes error on training data (empirical risk)</List.Item>
@@ -192,7 +198,7 @@ const MathematicalFramework = () => {
                   </div>
                   
                   <div>
-                    <Text className="font-semibold mb-2">Mathematical Formulation:</Text>
+                    <Text fw="bold" mb="xs">Mathematical Formulation:</Text>
                     <BlockMath>{`\\min_{f \\in \\mathcal{F}} \\mathbb{E}_{(x,y) \\sim P_{data}}[\\ell(f(x), y)]`}</BlockMath>
                     <Text size="sm" c="dimmed">
                       where <InlineMath>{`\\mathcal{F}`}</InlineMath> is the hypothesis class, 
@@ -206,7 +212,7 @@ const MathematicalFramework = () => {
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-yellow-50">
-                    <Title order={4} className="mb-3">Empirical Risk Minimization</Title>
+                    <Title order={4} mb="sm">Empirical Risk Minimization</Title>
                     <Text size="sm" className="mb-3">
                       Since we don't know the true data distribution <InlineMath>{`P_{data}`}</InlineMath>, 
                       we approximate with the empirical risk:
@@ -220,7 +226,7 @@ const MathematicalFramework = () => {
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-green-50">
-                    <Title order={4} className="mb-3">The Bias-Variance Tradeoff</Title>
+                    <Title order={4} mb="sm">The Bias-Variance Tradeoff</Title>
                     <Text size="sm" className="mb-3">
                       Expected prediction error decomposes into:
                     </Text>
@@ -243,17 +249,17 @@ const MathematicalFramework = () => {
               <Grid gutter="lg">
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-blue-50 h-full">
-                    <Title order={4} className="mb-3">Supervised Learning</Title>
+                    <Title order={4} mb="sm">Supervised Learning</Title>
                     <Text size="sm" className="mb-3">Learning from labeled pairs <InlineMath>{`(x, y)`}</InlineMath></Text>
                     
                     <div className="mb-3">
-                      <Text className="font-semibold text-sm">Classification:</Text>
+                      <Text fw="bold" size="sm">Classification:</Text>
                       <BlockMath>{`y \\in \\{1, 2, ..., K\\}`}</BlockMath>
                       <Text size="xs">Examples: Image recognition, spam detection</Text>
                     </div>
                     
                     <div>
-                      <Text className="font-semibold text-sm">Regression:</Text>
+                      <Text fw="bold" size="sm">Regression:</Text>
                       <BlockMath>{`y \\in \\mathbb{R}^m`}</BlockMath>
                       <Text size="xs">Examples: Price prediction, weather forecasting</Text>
                     </div>
@@ -262,7 +268,7 @@ const MathematicalFramework = () => {
                 
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-green-50 h-full">
-                    <Title order={4} className="mb-3">Unsupervised Learning</Title>
+                    <Title order={4} mb="sm">Unsupervised Learning</Title>
                     <Text size="sm" className="mb-3">Learning structure from unlabeled data <InlineMath>{`x`}</InlineMath></Text>
                     
                     <List size="sm">
@@ -276,7 +282,7 @@ const MathematicalFramework = () => {
                 
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-purple-50 h-full">
-                    <Title order={4} className="mb-3">Reinforcement Learning</Title>
+                    <Title order={4} mb="sm">Reinforcement Learning</Title>
                     <Text size="sm" className="mb-3">Learning through interaction and rewards</Text>
                     
                     <Text size="sm" className="mb-2">Maximize expected return:</Text>
@@ -295,44 +301,40 @@ const MathematicalFramework = () => {
             <Title order={2} className="mb-6" id="models-parameters">
               Models and Parameters
             </Title>
-                                  <Flex direction="column" align="center" className="mb-4">
+                                  <Flex direction="column" align="center" mb="md">
                       <Image
                         src="/assets/python-deep-learning/module1/ai_obj8.png"
-                        w={{ base: 400, sm: 600, md: 800 }}
-                        h="auto"
+                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
                         fluid
                       />
                     </Flex>
                                       <Text component="p" ta="center" mt="xs">
                         Example: Linear function R to R 2 params
                       </Text>
-                                                        <Flex direction="column" align="center" className="mb-4">
+                                                        <Flex direction="column" align="center" mb="md">
                       <Image
                         src="/assets/python-deep-learning/module1/ai_obj6.png"
-                        w={{ base: 400, sm: 600, md: 800 }}
-                        h="auto"
+                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
                         fluid
                       />
                     </Flex>
                                       <Text component="p" ta="center" mt="xs">
                         Polynomial function R to R 3 params
                       </Text>
-                                                          <Flex direction="column" align="center" className="mb-4">
+                                                          <Flex direction="column" align="center" mb="md">
                       <Image
                         src="/assets/python-deep-learning/module1/ai_obj15.png"
-                        w={{ base: 400, sm: 600, md: 800 }}
-                        h="auto"
+                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
                         fluid
                       />
                     </Flex>
                                       <Text component="p" ta="center" mt="xs">
                         Linear function R2 to R 3 params
                       </Text>
-                                                                                <Flex direction="column" align="center" className="mb-4">
+                                                                                <Flex direction="column" align="center" mb="md">
                       <Image
                         src="/assets/python-deep-learning/module1/ai_obj16.png"
-                        w={{ base: 400, sm: 600, md: 800 }}
-                        h="auto"
+                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
                         fluid
                       />
                     </Flex>
@@ -361,13 +363,13 @@ const MathematicalFramework = () => {
             </Paper>
         </div>
         {/* Models and Parameters */}
-        <div data-slide data-tag="parametric-models">
+        <div data-slide>
           
 
             
             <Paper className="p-6 bg-blue-50 mb-6">
               <Title order={3} className="mb-4">Parametric Models</Title>
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 Deep learning models are parametric: they learn a fixed set of parameters <InlineMath>{`\\theta`}</InlineMath> 
                 from training data. The model function becomes <InlineMath>{`f_\\theta(x)`}</InlineMath>.
               </Text>
@@ -375,7 +377,7 @@ const MathematicalFramework = () => {
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Linear Models (Baseline)</Title>
+                    <Title order={4} mb="sm">Linear Models (Baseline)</Title>
                     <Text size="sm" className="mb-3">The simplest parametric model:</Text>
                     <BlockMath>{`f_\\theta(x) = w^T x + b`}</BlockMath>
                     <Text size="sm" className="mb-2">Parameters: <InlineMath>{`\\theta = \\{w \\in \\mathbb{R}^d, b \\in \\mathbb{R}\\}`}</InlineMath></Text>
@@ -387,7 +389,7 @@ const MathematicalFramework = () => {
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Neural Networks</Title>
+                    <Title order={4} mb="sm">Neural Networks</Title>
                     <Text size="sm" className="mb-3">Composition of linear and non-linear functions:</Text>
                     <BlockMath>{`f_\\theta(x) = W_L \\cdot \\sigma(W_{L-1} \\cdot ... \\cdot \\sigma(W_1 x + b_1) ... + b_{L-1}) + b_L`}</BlockMath>
                     <Text size="sm" className="mb-2">Parameters: <InlineMath>{`\\theta = \\{W_1, b_1, ..., W_L, b_L\\}`}</InlineMath></Text>
@@ -410,7 +412,7 @@ const MathematicalFramework = () => {
             
             <Paper className="p-6 bg-gradient-to-r from-purple-50 to-pink-50 mb-6">
               <Title order={3} className="mb-4">The Role of Loss Functions</Title>
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 Loss functions quantify how wrong our predictions are. They transform the learning problem into an 
                 optimization problem that can be solved with gradient descent.
               </Text>
@@ -437,23 +439,23 @@ const MathematicalFramework = () => {
                 {/* Regression Losses */}
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-blue-50">
-                    <Title order={4} className="mb-3">Regression Losses</Title>
+                    <Title order={4} mb="sm">Regression Losses</Title>
                     
                     <div className="space-y-4">
                       <div>
-                        <Text className="font-semibold text-sm">Mean Squared Error (MSE):</Text>
+                        <Text fw="bold" size="sm">Mean Squared Error (MSE):</Text>
                         <BlockMath>{`\\ell_{MSE}(y, \\hat{y}) = \\frac{1}{n}\\sum_{i=1}^n (y_i - \\hat{y}_i)^2`}</BlockMath>
                         <Text size="xs" c="dimmed">Penalizes large errors heavily, sensitive to outliers</Text>
                       </div>
                       
                       <div>
-                        <Text className="font-semibold text-sm">Mean Absolute Error (MAE):</Text>
+                        <Text fw="bold" size="sm">Mean Absolute Error (MAE):</Text>
                         <BlockMath>{`\\ell_{MAE}(y, \\hat{y}) = \\frac{1}{n}\\sum_{i=1}^n |y_i - \\hat{y}_i|`}</BlockMath>
                         <Text size="xs" c="dimmed">Robust to outliers, non-differentiable at zero</Text>
                       </div>
                       
                       <div>
-                        <Text className="font-semibold text-sm">Huber Loss:</Text>
+                        <Text fw="bold" size="sm">Huber Loss:</Text>
                         <BlockMath>{`\\ell_{Huber}(y, \\hat{y}) = \\begin{cases} 
                           \\frac{1}{2}(y - \\hat{y})^2 & \\text{if } |y - \\hat{y}| \\leq \\delta \\\\
                           \\delta|y - \\hat{y}| - \\frac{1}{2}\\delta^2 & \\text{otherwise}
@@ -467,23 +469,23 @@ const MathematicalFramework = () => {
                 {/* Classification Losses */}
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-green-50">
-                    <Title order={4} className="mb-3">Classification Losses</Title>
+                    <Title order={4} mb="sm">Classification Losses</Title>
                     
                     <div className="space-y-4">
                       <div>
-                        <Text className="font-semibold text-sm">Cross-Entropy Loss:</Text>
+                        <Text fw="bold" size="sm">Cross-Entropy Loss:</Text>
                         <BlockMath>{`\\ell_{CE}(y, \\hat{p}) = -\\sum_{i=1}^n \\sum_{c=1}^C y_{ic} \\log(\\hat{p}_{ic})`}</BlockMath>
                         <Text size="xs" c="dimmed">Standard for multi-class classification</Text>
                       </div>
                       
                       <div>
-                        <Text className="font-semibold text-sm">Binary Cross-Entropy:</Text>
+                        <Text fw="bold" size="sm">Binary Cross-Entropy:</Text>
                         <BlockMath>{`\\ell_{BCE}(y, \\hat{p}) = -[y\\log(\\hat{p}) + (1-y)\\log(1-\\hat{p})]`}</BlockMath>
                         <Text size="xs" c="dimmed">For binary classification problems</Text>
                       </div>
                       
                       <div>
-                        <Text className="font-semibold text-sm">Focal Loss:</Text>
+                        <Text fw="bold" size="sm">Focal Loss:</Text>
                         <BlockMath>{`\\ell_{FL}(p_t) = -\\alpha_t(1-p_t)^\\gamma \\log(p_t)`}</BlockMath>
                         <Text size="xs" c="dimmed">Addresses class imbalance by focusing on hard examples</Text>
                       </div>
@@ -506,7 +508,7 @@ const MathematicalFramework = () => {
             
             <Paper className="p-6 bg-gradient-to-r from-blue-50 to-cyan-50 mb-6">
               <Title order={3} className="mb-4">The Gradient Descent Algorithm</Title>
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 Gradient descent is the workhorse of deep learning optimization. It iteratively updates parameters 
                 in the direction that reduces the loss function.
               </Text>
@@ -514,7 +516,7 @@ const MathematicalFramework = () => {
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Basic Update Rule</Title>
+                    <Title order={4} mb="sm">Basic Update Rule</Title>
                     <BlockMath>{`\\theta_{t+1} = \\theta_t - \\eta \\nabla_\\theta \\mathcal{L}(\\theta_t)`}</BlockMath>
                     <List size="sm" className="mt-3">
                       <List.Item><InlineMath>{`\\eta`}</InlineMath> - Learning rate (step size)</List.Item>
@@ -526,7 +528,7 @@ const MathematicalFramework = () => {
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Intuition</Title>
+                    <Title order={4} mb="sm">Intuition</Title>
                     <Text size="sm" className="mb-3">
                       Imagine minimizing loss as finding the lowest point in a landscape:
                     </Text>
@@ -543,22 +545,20 @@ const MathematicalFramework = () => {
             </div>
 
 <div data-slide>
-                                  <Flex direction="column" align="center" className="mb-4">
+                                  <Flex direction="column" align="center" mb="md">
                       <Image
                         src="/assets/python-deep-learning/module1/ai_obj10.png"
-                        w={{ base: 400, sm: 600, md: 800 }}
-                        h="auto"
+                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
                         fluid
                       />
                     </Flex>
                                       <Text component="p" ta="center" mt="xs">
                         Example: Initial linear regression params
                       </Text>
-                                                        <Flex direction="column" align="center" className="mb-4">
+                                                        <Flex direction="column" align="center" mb="md">
                       <Image
                         src="/assets/python-deep-learning/module1/ai_obj5.png"
-                        w={{ base: 400, sm: 600, md: 800 }}
-                        h="auto"
+                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
                         fluid
                       />
                     </Flex>
@@ -571,7 +571,7 @@ const MathematicalFramework = () => {
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">0. Initialization</Title>
+                    <Title order={4} mb="sm">0. Initialization</Title>
                     <List size="sm">
                       <List.Item>Choose a model type (e.g., linear regression)</List.Item>
                       <List.Item>Initialize parameters randomly</List.Item>
@@ -581,7 +581,7 @@ const MathematicalFramework = () => {
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">1. Prediction</Title>
+                    <Title order={4} mb="sm">1. Prediction</Title>
                     <List size="sm">
                       <List.Item>Predict Y from X with current model</List.Item>
                     </List>
@@ -590,7 +590,7 @@ const MathematicalFramework = () => {
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">2. Error Calculation</Title>
+                    <Title order={4} mb="sm">2. Error Calculation</Title>
                     <List size="sm">
                       <List.Item>Compare Y_predicted vs Y_actual</List.Item>
                     </List>
@@ -599,7 +599,7 @@ const MathematicalFramework = () => {
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">3. Adjustment</Title>
+                    <Title order={4} mb="sm">3. Adjustment</Title>
                     <List size="sm">
                       <List.Item>Modify parameters to reduce error (gradient descent)</List.Item>
                     </List>
@@ -617,22 +617,20 @@ const MathematicalFramework = () => {
 </div>
 
 <div data-slide>
-                                                          <Flex direction="column" align="center" className="mb-4">
+                                                          <Flex direction="column" align="center" mb="md">
                       <Image
                         src="/assets/python-deep-learning/module1/error_loss_evolution.png"
-                        w={{ base: 400, sm: 600, md: 800 }}
-                        h="auto"
+                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
                         fluid
                       />
                     </Flex>
                                       <Text component="p" ta="center" mt="xs">
                         Example: error_loss_evolution
                       </Text>
-                                                                                <Flex direction="column" align="center" className="mb-4">
+                                                                                <Flex direction="column" align="center" mb="md">
                       <Image
                         src="/assets/python-deep-learning/module1/gradent_descent.png"
-                        w={{ base: 400, sm: 600, md: 800 }}
-                        h="auto"
+                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
                         fluid
                       />
                     </Flex>
@@ -649,7 +647,7 @@ const MathematicalFramework = () => {
               <Grid gutter="lg">
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-blue-50 h-full">
-                    <Title order={4} className="mb-3">Batch Gradient Descent</Title>
+                    <Title order={4} mb="sm">Batch Gradient Descent</Title>
                     <BlockMath>{`\\nabla_\\theta \\mathcal{L} = \\frac{1}{n}\\sum_{i=1}^n \\nabla_\\theta \\ell(f_\\theta(x_i), y_i)`}</BlockMath>
                     <List size="sm" className="mt-3">
                       <List.Item>Uses entire dataset per update</List.Item>
@@ -662,7 +660,7 @@ const MathematicalFramework = () => {
                 
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-green-50 h-full">
-                    <Title order={4} className="mb-3">Stochastic GD (SGD)</Title>
+                    <Title order={4} mb="sm">Stochastic GD (SGD)</Title>
                     <BlockMath>{`\\nabla_\\theta \\mathcal{L} \\approx \\nabla_\\theta \\ell(f_\\theta(x_i), y_i)`}</BlockMath>
                     <List size="sm" className="mt-3">
                       <List.Item>One sample per update</List.Item>
@@ -675,7 +673,7 @@ const MathematicalFramework = () => {
                 
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-yellow-50 h-full">
-                    <Title order={4} className="mb-3">Mini-batch SGD</Title>
+                    <Title order={4} mb="sm">Mini-batch SGD</Title>
                     <BlockMath>{`\\nabla_\\theta \\mathcal{L} \\approx \\frac{1}{m}\\sum_{i \\in \\mathcal{B}} \\nabla_\\theta \\ell(f_\\theta(x_i), y_i)`}</BlockMath>
                     <List size="sm" className="mt-3">
                       <List.Item>Batch size m (typically 32-512)</List.Item>

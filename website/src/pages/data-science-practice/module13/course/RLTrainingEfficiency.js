@@ -12,7 +12,7 @@ const RLTrainingEfficiency = () => {
   //     return scipy.signal.lfilter([1], [1, float(-discount)], x[::-1], axis=0)[::-1]
 
   return (
-    <Container size="xl" className="py-6">
+    <Container size="xl" py="xl">
       <Stack spacing="xl">
         <div>
           <Title order={1} id="rl-training-efficiency" className="mb-4">

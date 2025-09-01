@@ -16,7 +16,7 @@ const PyTorchBasics = () => {
             Getting Started with PyTorch Framework
           </Text>
           <Paper className="p-6 bg-blue-50 mb-6">
-            <Text size="lg" className="mb-4">
+            <Text size="lg" mb="md">
               PyTorch is a dynamic, flexible deep learning framework that provides:
             </Text>
             <List>
@@ -36,7 +36,7 @@ const PyTorchBasics = () => {
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50 mb-4">
-                <Title order={4} className="mb-3">CPU Version</Title>
+                <Title order={4} mb="sm">CPU Version</Title>
                 <CodeBlock language="bash" code={`# Using pip
 pip install torch torchvision torchaudio
 
@@ -45,7 +45,7 @@ conda install pytorch torchvision torchaudio -c pytorch`} />
               </Paper>
               
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Verify Installation</Title>
+                <Title order={4} mb="sm">Verify Installation</Title>
                 <CodeBlock language="python" code={`import torch
 import torchvision
 print(f"PyTorch version: {torch.__version__}")
@@ -59,7 +59,7 @@ if torch.cuda.is_available():
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-yellow-50 mb-4">
-                <Title order={4} className="mb-3">GPU Version (CUDA)</Title>
+                <Title order={4} mb="sm">GPU Version (CUDA)</Title>
                 <CodeBlock language="bash" code={`# CUDA 11.8
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
@@ -70,7 +70,7 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
               </Paper>
               
               <Paper className="p-4 bg-purple-50">
-                <Title order={4} className="mb-3">Environment Setup</Title>
+                <Title order={4} mb="sm">Environment Setup</Title>
                 <CodeBlock language="python" code={`# Recommended imports
 import torch
 import torch.nn as nn
@@ -94,7 +94,7 @@ if torch.cuda.is_available():
           <Title order={2} className="mb-6">Tensors vs NumPy Arrays</Title>
           
           <Paper className="p-4 bg-gray-50 mb-4">
-            <Title order={4} className="mb-3">Key Differences</Title>
+            <Title order={4} mb="sm">Key Differences</Title>
             <Table>
               <Table.Thead>
                 <Table.Tr>
@@ -131,7 +131,7 @@ if torch.cuda.is_available():
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">NumPy to Tensor</Title>
+                <Title order={4} mb="sm">NumPy to Tensor</Title>
                 <CodeBlock language="python" code={`import numpy as np
 import torch
 
@@ -154,7 +154,7 @@ print(f"After modifying NumPy: {tensor}")`} />
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Tensor to NumPy</Title>
+                <Title order={4} mb="sm">Tensor to NumPy</Title>
                 <CodeBlock language="python" code={`# Tensor to NumPy array
 tensor = torch.tensor([[1, 2, 3], [4, 5, 6]])
 np_array = tensor.numpy()
@@ -181,7 +181,7 @@ detached_array = tensor.detach().numpy()`} />
           <Title order={2} className="mb-6">Tensor Attributes</Title>
           
           <Paper className="p-4 bg-gray-50 mb-4">
-            <Title order={4} className="mb-3">Understanding Tensor Properties</Title>
+            <Title order={4} mb="sm">Understanding Tensor Properties</Title>
             <CodeBlock language="python" code={`import torch
 
 # Create a sample tensor
@@ -201,7 +201,7 @@ print(f"Element size (bytes): {tensor.element_size()}")`} />
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Data Types</Title>
+                <Title order={4} mb="sm">Data Types</Title>
                 <CodeBlock language="python" code={`# Common data types
 float_tensor = torch.tensor([1.0, 2.0], dtype=torch.float32)
 double_tensor = torch.tensor([1.0, 2.0], dtype=torch.float64)
@@ -225,7 +225,7 @@ print(f"New dtype: {x.dtype}")`} />
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Device Management</Title>
+                <Title order={4} mb="sm">Device Management</Title>
                 <CodeBlock language="python" code={`# Device specification
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
@@ -258,7 +258,7 @@ print(f"Tensor device: {tensor.device}")`} />
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-gray-50 mb-4">
-                <Title order={4} className="mb-3">Basic Indexing</Title>
+                <Title order={4} mb="sm">Basic Indexing</Title>
                 <CodeBlock language="python" code={`# Create sample tensor
 x = torch.tensor([[1, 2, 3, 4],
                   [5, 6, 7, 8],
@@ -281,7 +281,7 @@ print(f"Last 2 columns: {x[:, -2:]}")`} />
               </Paper>
               
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Advanced Indexing</Title>
+                <Title order={4} mb="sm">Advanced Indexing</Title>
                 <CodeBlock language="python" code={`# Boolean indexing
 x = torch.randn(3, 4)
 mask = x > 0
@@ -301,7 +301,7 @@ print(f"Selected rows:\\n{selected_rows}")`} />
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50 mb-4">
-                <Title order={4} className="mb-3">Slicing Patterns</Title>
+                <Title order={4} mb="sm">Slicing Patterns</Title>
                 <CodeBlock language="python" code={`x = torch.arange(24).reshape(4, 6)
 print(f"Original:\\n{x}")
 
@@ -323,7 +323,7 @@ print(f"Equivalent to: {tensor_3d[:, :, 0].shape}")`} />
               </Paper>
               
               <Paper className="p-4 bg-yellow-50">
-                <Title order={4} className="mb-3">In-place Operations</Title>
+                <Title order={4} mb="sm">In-place Operations</Title>
                 <CodeBlock language="python" code={`x = torch.tensor([[1, 2], [3, 4]])
 
 # In-place operations (modify original tensor)
@@ -354,7 +354,7 @@ print(f"View: {z}")      # Changed!`} />
           <Grid gutter="lg">
             <Grid.Col span={4}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Element-wise Operations</Title>
+                <Title order={4} mb="sm">Element-wise Operations</Title>
                 <CodeBlock language="python" code={`a = torch.tensor([1, 2, 3])
 b = torch.tensor([4, 5, 6])
 
@@ -379,7 +379,7 @@ print(f"Square root: {sqrt}")`} />
             
             <Grid.Col span={4}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Linear Algebra</Title>
+                <Title order={4} mb="sm">Linear Algebra</Title>
                 <CodeBlock language="python" code={`# Matrix operations
 A = torch.randn(3, 4)
 B = torch.randn(4, 5)
@@ -407,7 +407,7 @@ print(f"Dot product: {dot_product}")`} />
             
             <Grid.Col span={4}>
               <Paper className="p-4 bg-yellow-50">
-                <Title order={4} className="mb-3">Reductions & Statistics</Title>
+                <Title order={4} mb="sm">Reductions & Statistics</Title>
                 <CodeBlock language="python" code={`x = torch.randn(3, 4)
 
 # Reduction operations
@@ -438,7 +438,7 @@ print(f"Mean: {mean_val:.3f}")`} />
           </Grid>
           
           <Paper className="p-4 bg-purple-50 mt-4">
-            <Title order={4} className="mb-3">Advanced Mathematical Operations</Title>
+            <Title order={4} mb="sm">Advanced Mathematical Operations</Title>
             <CodeBlock language="python" code={`# Eigenvalues and eigenvectors
 matrix = torch.randn(3, 3)
 eigenvals, eigenvecs = torch.linalg.eig(matrix)

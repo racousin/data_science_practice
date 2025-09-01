@@ -3,7 +3,7 @@ import { Container, Title, Text, Stack, Grid, Paper, Code, List } from '@mantine
 
 const DeploymentStrategies = () => {
   return (
-    <Container size="xl" className="py-6">
+    <Container size="xl" py="xl">
       <Stack spacing="xl">
         
         <div data-slide className="min-h-[500px] flex flex-col justify-center">
@@ -15,7 +15,7 @@ const DeploymentStrategies = () => {
           </Text>
           <div className="max-w-3xl mx-auto">
             <Paper className="p-6 bg-blue-50">
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 Learn how to deploy machine learning models in production environments,
                 from simple API servers to scalable cloud platforms.
               </Text>
@@ -35,7 +35,7 @@ const DeploymentStrategies = () => {
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">REST API with Flask</Title>
+                <Title order={4} mb="sm">REST API with Flask</Title>
                 <Code block language="python">{`from flask import Flask, request, jsonify
 import torch
 import pickle
@@ -74,7 +74,7 @@ if __name__ == '__main__':
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">FastAPI Alternative</Title>
+                <Title order={4} mb="sm">FastAPI Alternative</Title>
                 <Code block language="python">{`from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import torch
@@ -121,7 +121,7 @@ if __name__ == "__main__":
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-purple-50">
-                <Title order={4} className="mb-3">Dockerfile</Title>
+                <Title order={4} mb="sm">Dockerfile</Title>
                 <Code block language="dockerfile">{`FROM python:3.9-slim
 
 WORKDIR /app
@@ -149,7 +149,7 @@ CMD ["python", "app.py"]`}</Code>
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-orange-50">
-                <Title order={4} className="mb-3">Docker Commands</Title>
+                <Title order={4} mb="sm">Docker Commands</Title>
                 <Code block language="bash">{`# Build the image
 docker build -t ml-model:latest .
 
@@ -190,7 +190,7 @@ CMD ["python", "app.py"]`}</Code>
           <Grid gutter="lg">
             <Grid.Col span={4}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">AWS Deployment</Title>
+                <Title order={4} mb="sm">AWS Deployment</Title>
                 <List size="sm" spacing="sm">
                   <List.Item><strong>Amazon ECS:</strong> Container orchestration</List.Item>
                   <List.Item><strong>AWS Lambda:</strong> Serverless functions</List.Item>
@@ -215,7 +215,7 @@ aws lambda create-function \\
             
             <Grid.Col span={4}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Google Cloud Platform</Title>
+                <Title order={4} mb="sm">Google Cloud Platform</Title>
                 <List size="sm" spacing="sm">
                   <List.Item><strong>Cloud Run:</strong> Serverless containers</List.Item>
                   <List.Item><strong>GKE:</strong> Managed Kubernetes</List.Item>
@@ -240,7 +240,7 @@ gcloud ai-platform versions create v1 \\
             
             <Grid.Col span={4}>
               <Paper className="p-4 bg-purple-50">
-                <Title order={4} className="mb-3">Microsoft Azure</Title>
+                <Title order={4} mb="sm">Microsoft Azure</Title>
                 <List size="sm" spacing="sm">
                   <List.Item><strong>Container Instances:</strong> Simple containers</List.Item>
                   <List.Item><strong>AKS:</strong> Managed Kubernetes</List.Item>

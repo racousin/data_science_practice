@@ -3,7 +3,7 @@ import { Container, Title, Text, Stack, Grid, Paper, Code, List } from '@mantine
 
 const RecurrentNetworks = () => {
   return (
-    <Container size="xl" className="py-6">
+    <Container size="xl" py="xl">
       <Stack spacing="xl">
         
         {/* Slide 1: Title and Introduction */}
@@ -16,7 +16,7 @@ const RecurrentNetworks = () => {
           </Text>
           <div className="max-w-3xl mx-auto">
             <Paper className="p-6 bg-blue-50">
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 Recurrent Neural Networks (RNNs) are designed to handle sequential data by maintaining 
                 hidden states that capture information from previous time steps. They excel at tasks 
                 involving temporal dependencies and variable-length sequences.
@@ -45,7 +45,7 @@ const RecurrentNetworks = () => {
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Vanilla RNN Implementation</Title>
+                <Title order={4} mb="sm">Vanilla RNN Implementation</Title>
                 <Code block language="python">{`import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -89,7 +89,7 @@ class VanillaRNN(nn.Module):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">PyTorch RNN Layers</Title>
+                <Title order={4} mb="sm">PyTorch RNN Layers</Title>
                 <Code block language="python">{`# Using PyTorch's built-in RNN layers
 rnn_layer = nn.RNN(
     input_size=100,
@@ -149,7 +149,7 @@ print(f"LSTM Output shape: {output.shape}")  # (32, 50, 256) bidirectional`}</Co
           <Grid gutter="lg">
             <Grid.Col span={12}>
               <Paper className="p-4 bg-yellow-50">
-                <Title order={4} className="mb-3">LSTM Cell Implementation</Title>
+                <Title order={4} mb="sm">LSTM Cell Implementation</Title>
                 <Code block language="python">{`class LSTMCell(nn.Module):
     def __init__(self, input_size, hidden_size):
         super().__init__()
@@ -225,7 +225,7 @@ class LSTM(nn.Module):
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-red-50">
-                <Title order={4} className="mb-3">GRU Cell Implementation</Title>
+                <Title order={4} mb="sm">GRU Cell Implementation</Title>
                 <Code block language="python">{`class GRUCell(nn.Module):
     def __init__(self, input_size, hidden_size):
         super().__init__()
@@ -259,7 +259,7 @@ class LSTM(nn.Module):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-orange-50">
-                <Title order={4} className="mb-3">Comparison: LSTM vs GRU</Title>
+                <Title order={4} mb="sm">Comparison: LSTM vs GRU</Title>
                 <Code block language="python">{`# LSTM vs GRU comparison
 class RNNComparison:
     def __init__(self, input_size, hidden_size):
@@ -288,10 +288,10 @@ print(comp.parameter_count())
           </Grid>
           
           <Paper className="p-4 bg-indigo-50 mt-4">
-            <Title order={4} className="mb-3">When to Use LSTM vs GRU</Title>
+            <Title order={4} mb="sm">When to Use LSTM vs GRU</Title>
             <Grid gutter="lg">
               <Grid.Col span={6}>
-                <Text className="font-semibold mb-2">Use LSTM when:</Text>
+                <Text fw="bold" mb="xs">Use LSTM when:</Text>
                 <List>
                   <List.Item>You need strong long-term memory</List.Item>
                   <List.Item>Working with very long sequences</List.Item>
@@ -300,7 +300,7 @@ print(comp.parameter_count())
                 </List>
               </Grid.Col>
               <Grid.Col span={6}>
-                <Text className="font-semibold mb-2">Use GRU when:</Text>
+                <Text fw="bold" mb="xs">Use GRU when:</Text>
                 <List>
                   <List.Item>You need faster training and inference</List.Item>
                   <List.Item>Working with shorter sequences</List.Item>
@@ -319,7 +319,7 @@ print(comp.parameter_count())
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Bidirectional RNNs</Title>
+                <Title order={4} mb="sm">Bidirectional RNNs</Title>
                 <Code block language="python">{`class BiRNN(nn.Module):
     def __init__(self, input_size, hidden_size, output_size):
         super().__init__()
@@ -354,7 +354,7 @@ multi_bilstm = nn.LSTM(
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Attention Mechanism for RNNs</Title>
+                <Title order={4} mb="sm">Attention Mechanism for RNNs</Title>
                 <Code block language="python">{`class AttentionRNN(nn.Module):
     def __init__(self, input_size, hidden_size, output_size):
         super().__init__()
@@ -412,7 +412,7 @@ class BahdanauAttention(nn.Module):
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-purple-50">
-                <Title order={4} className="mb-3">Sequence Classification</Title>
+                <Title order={4} mb="sm">Sequence Classification</Title>
                 <Code block language="python">{`class SequenceClassifier(nn.Module):
     def __init__(self, vocab_size, embed_dim, hidden_dim, num_classes):
         super().__init__()
@@ -443,7 +443,7 @@ sentiment_model = SequenceClassifier(
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-yellow-50">
-                <Title order={4} className="mb-3">Sequence-to-Sequence</Title>
+                <Title order={4} mb="sm">Sequence-to-Sequence</Title>
                 <Code block language="python">{`class Seq2Seq(nn.Module):
     def __init__(self, src_vocab_size, tgt_vocab_size, embed_dim, hidden_dim):
         super().__init__()
@@ -476,7 +476,7 @@ sentiment_model = SequenceClassifier(
           </Grid>
           
           <Paper className="p-4 bg-orange-50 mt-4">
-            <Title order={4} className="mb-3">Time Series Prediction</Title>
+            <Title order={4} mb="sm">Time Series Prediction</Title>
             <Code block language="python">{`class TimeSeriesPredictor(nn.Module):
     def __init__(self, input_size, hidden_size, num_layers, output_size):
         super().__init__()
@@ -519,7 +519,7 @@ class MultiStepPredictor(nn.Module):
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Gradient Clipping</Title>
+                <Title order={4} mb="sm">Gradient Clipping</Title>
                 <Code block language="python">{`import torch.nn.utils as utils
 
 def train_step(model, data_loader, optimizer, criterion, clip_value=1.0):
@@ -558,7 +558,7 @@ def monitor_gradients(model):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-red-50">
-                <Title order={4} className="mb-3">Handling Variable Sequences</Title>
+                <Title order={4} mb="sm">Handling Variable Sequences</Title>
                 <Code block language="python">{`from torch.nn.utils.rnn import pad_sequence, pack_padded_sequence, pad_packed_sequence
 
 class VariableLengthRNN(nn.Module):

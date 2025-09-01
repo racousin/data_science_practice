@@ -5,7 +5,7 @@ import 'katex/dist/katex.min.css';
 
 const NeuralNetworkBasics = () => {
   return (
-    <Container size="xl" className="py-6">
+    <Container size="xl" py="xl">
       <Stack spacing="xl">
         
         {/* Slide 1: Title */}
@@ -18,7 +18,7 @@ const NeuralNetworkBasics = () => {
           </Text>
           <div className="max-w-3xl mx-auto">
             <Paper className="p-6 bg-blue-50">
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 Neural networks are computational models inspired by biological neurons.
                 They consist of interconnected nodes that process and transmit information.
               </Text>
@@ -39,7 +39,7 @@ const NeuralNetworkBasics = () => {
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Mathematical Model</Title>
+                <Title order={4} mb="sm">Mathematical Model</Title>
                 <Text className="mb-3">A perceptron computes a linear combination followed by an activation:</Text>
                 <BlockMath>{`
                   \\\\begin{aligned}
@@ -58,7 +58,7 @@ const NeuralNetworkBasics = () => {
               </Paper>
               
               <Paper className="p-4 bg-blue-50 mt-4">
-                <Title order={4} className="mb-3">PyTorch Implementation</Title>
+                <Title order={4} mb="sm">PyTorch Implementation</Title>
                 <Code block language="python">{`import torch
 import torch.nn as nn
 
@@ -81,7 +81,7 @@ print(f"Output shape: {output.shape}")  # [32, 1]`}</Code>
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-yellow-50">
-                <Title order={4} className="mb-3">Geometric Interpretation</Title>
+                <Title order={4} mb="sm">Geometric Interpretation</Title>
                 <div className="text-center font-mono bg-white p-4 rounded mb-4">
                   <div>Decision Boundary: w₁x₁ + w₂x₂ + b = 0</div>
                   <br/>
@@ -101,7 +101,7 @@ print(f"Output shape: {output.shape}")  # [32, 1]`}</Code>
               </Paper>
               
               <Paper className="p-4 bg-purple-50 mt-4">
-                <Title order={4} className="mb-3">Learning Algorithm</Title>
+                <Title order={4} mb="sm">Learning Algorithm</Title>
                 <Code block language="python">{`# Perceptron learning rule
 for epoch in range(num_epochs):
     for x, target in dataset:
@@ -131,7 +131,7 @@ for epoch in range(num_epochs):
           <Grid gutter="lg">
             <Grid.Col span={12}>
               <Paper className="p-4 bg-gray-50 mb-4">
-                <Title order={4} className="mb-3">Architecture Overview</Title>
+                <Title order={4} mb="sm">Architecture Overview</Title>
                 <div className="text-center font-mono bg-white p-4 rounded">
                   <div>Input Layer → Hidden Layer(s) → Output Layer</div>
                   <br/>
@@ -145,7 +145,7 @@ for epoch in range(num_epochs):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">PyTorch MLP Implementation</Title>
+                <Title order={4} mb="sm">PyTorch MLP Implementation</Title>
                 <Code block language="python">{`class MLP(nn.Module):
     def __init__(self, input_size, hidden_size, output_size):
         super().__init__()
@@ -174,7 +174,7 @@ print(f"Output shape: {output.shape}")  # [32, 10]`}</Code>
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Universal Approximation Theorem</Title>
+                <Title order={4} mb="sm">Universal Approximation Theorem</Title>
                 <Text className="mb-3">
                   <strong>Theorem:</strong> A feedforward network with a single hidden layer 
                   containing a finite number of neurons can approximate any continuous function 

@@ -32,7 +32,7 @@ const OptimizationAlgorithms = () => {
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Momentum-based Methods</Title>
+                  <Title order={4} mb="sm">Momentum-based Methods</Title>
                   <Text className="mb-3">
                     <strong>SGD with Momentum:</strong> Accelerates convergence by accumulating gradients
                   </Text>
@@ -92,7 +92,7 @@ for step in range(10):
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Adaptive Learning Rates</Title>
+                  <Title order={4} mb="sm">Adaptive Learning Rates</Title>
                   <CodeBlock language="python" code={`# Adagrad: Adaptive learning rates
 # Gₜ = Gₜ₋₁ + ∇f(θₜ)²
 # θₜ₊₁ = θₜ - η/√(Gₜ + ε) · ∇f(θₜ)
@@ -241,7 +241,7 @@ print(f"\\nFinal difference: {torch.norm(x_custom.data - x_builtin.data):.8f}")`
           </Paper>
 
           <Paper className="p-4 bg-yellow-50">
-            <Title order={4} className="mb-3">RMSprop Implementation</Title>
+            <Title order={4} mb="sm">RMSprop Implementation</Title>
             <CodeBlock language="python" code={`# RMSprop: Root Mean Square Propagation
 # E[g²]ₜ = γE[g²]ₜ₋₁ + (1-γ)g²ₜ
 # θₜ₊₁ = θₜ - η/√(E[g²]ₜ + ε) · gₜ
@@ -316,7 +316,7 @@ compare_optimizers()`} />
           <Title order={2} className="mb-6">Learning Rate Scheduling Strategies</Title>
           
           <Paper className="p-4 bg-purple-50">
-            <Title order={4} className="mb-3">Learning Rate Schedules</Title>
+            <Title order={4} mb="sm">Learning Rate Schedules</Title>
             <CodeBlock language="python" code={`# Various learning rate scheduling strategies
 import torch.optim.lr_scheduler as lr_scheduler
 import math
@@ -401,7 +401,7 @@ test_lr_schedules()`} />
           <Title order={2} className="mb-6">Second-order Optimization Methods</Title>
           
           <Paper className="p-4 bg-green-50">
-            <Title order={4} className="mb-3">Newton's Method and BFGS</Title>
+            <Title order={4} mb="sm">Newton's Method and BFGS</Title>
             <CodeBlock language="python" code={`# Second-order optimization methods
 def newton_method(func, x0, max_iter=10, tol=1e-6):
     """Newton's method for optimization"""

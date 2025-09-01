@@ -3,7 +3,7 @@ import { Container, Title, Text, Stack, Grid, Paper, Code, List } from '@mantine
 
 const MonitoringMaintenance = () => {
   return (
-    <Container size="xl" className="py-6">
+    <Container size="xl" py="xl">
       <Stack spacing="xl">
         
         {/* Slide 1: Title and Introduction */}
@@ -16,7 +16,7 @@ const MonitoringMaintenance = () => {
           </Text>
           <div className="max-w-3xl mx-auto">
             <Paper className="p-6 bg-blue-50">
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 Production ML systems require continuous monitoring to ensure optimal performance,
                 detect data drift, identify model degradation, and maintain system reliability.
                 Effective monitoring enables proactive maintenance and quick issue resolution.
@@ -45,7 +45,7 @@ const MonitoringMaintenance = () => {
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Metrics Collection</Title>
+                <Title order={4} mb="sm">Metrics Collection</Title>
                 <Code block language="python">{`import time
 import psutil
 import torch
@@ -220,7 +220,7 @@ async def readiness_check():
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Alerting System</Title>
+                <Title order={4} mb="sm">Alerting System</Title>
                 <Code block language="python">{`import smtplib
 import requests
 from email.mime.text import MimeText
@@ -407,7 +407,7 @@ class SlackNotifier:
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-purple-50">
-                <Title order={4} className="mb-3">Statistical Drift Detection</Title>
+                <Title order={4} mb="sm">Statistical Drift Detection</Title>
                 <Code block language="python">{`import numpy as np
 from scipy import stats
 from sklearn.model_selection import train_test_split
@@ -568,7 +568,7 @@ class MLDriftDetector:
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-orange-50">
-                <Title order={4} className="mb-3">Real-time Drift Monitoring</Title>
+                <Title order={4} mb="sm">Real-time Drift Monitoring</Title>
                 <Code block language="python">{`import asyncio
 from collections import deque
 from datetime import datetime, timedelta
@@ -779,7 +779,7 @@ class ModelPerformanceMonitor:
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-red-50">
-                <Title order={4} className="mb-3">Structured Logging</Title>
+                <Title order={4} mb="sm">Structured Logging</Title>
                 <Code block language="python">{`import logging
 import json
 from datetime import datetime
@@ -969,7 +969,7 @@ def trace_prediction(tracer, model_function):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-yellow-50">
-                <Title order={4} className="mb-3">Dashboard and Visualization</Title>
+                <Title order={4} mb="sm">Dashboard and Visualization</Title>
                 <Code block language="python">{`import plotly.graph_objs as go
 import plotly.express as px
 from dash import Dash, dcc, html, callback, Output, Input
@@ -1219,7 +1219,7 @@ class LogAnalyzer:
           <Grid gutter="lg">
             <Grid.Col span={12}>
               <Paper className="p-4 bg-indigo-50 mb-4">
-                <Title order={4} className="mb-3">Automated Retraining Pipeline</Title>
+                <Title order={4} mb="sm">Automated Retraining Pipeline</Title>
                 <Code block language="python">{`import asyncio
 import torch
 from datetime import datetime, timedelta
@@ -1515,7 +1515,7 @@ class RetrainingConfig:
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Key Principles</Title>
+                <Title order={4} mb="sm">Key Principles</Title>
                 <List spacing="sm">
                   <List.Item><strong>Observability by Design:</strong> Build monitoring into your ML systems from the start</List.Item>
                   <List.Item><strong>Multi-layer Monitoring:</strong> Monitor infrastructure, application, and ML-specific metrics</List.Item>
@@ -1543,7 +1543,7 @@ class RetrainingConfig:
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Common Pitfalls to Avoid</Title>
+                <Title order={4} mb="sm">Common Pitfalls to Avoid</Title>
                 <List spacing="sm">
                   <List.Item><strong>Alert Fatigue:</strong> Too many false positive alerts reduce responsiveness</List.Item>
                   <List.Item><strong>Vanity Metrics:</strong> Focusing on metrics that don't drive business value</List.Item>

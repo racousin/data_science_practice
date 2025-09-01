@@ -3,7 +3,7 @@ import { Container, Title, Text, Stack, Grid, Paper, Code, List } from '@mantine
 
 const PyTorchNNModule = () => {
   return (
-    <Container size="xl" className="py-6">
+    <Container size="xl" py="xl">
       <Stack spacing="xl">
         
         <div data-slide className="min-h-[500px] flex flex-col justify-center">
@@ -15,7 +15,7 @@ const PyTorchNNModule = () => {
           </Text>
           <div className="max-w-3xl mx-auto">
             <Paper className="p-6 bg-blue-50">
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 nn.Module is the base class for all neural network modules in PyTorch.
                 It provides automatic parameter management, device handling, and training/evaluation modes.
               </Text>
@@ -35,7 +35,7 @@ const PyTorchNNModule = () => {
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Basic nn.Module Structure</Title>
+                <Title order={4} mb="sm">Basic nn.Module Structure</Title>
                 <Code block language="python">{`import torch
 import torch.nn as nn
 
@@ -64,7 +64,7 @@ output = model(x)  # Calls forward() automatically`}</Code>
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Parameter Management</Title>
+                <Title order={4} mb="sm">Parameter Management</Title>
                 <Code block language="python">{`# Automatic parameter registration
 print("Model parameters:")
 for name, param in model.named_parameters():

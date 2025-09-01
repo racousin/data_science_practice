@@ -3,7 +3,7 @@ import { Container, Title, Text, Stack, Grid, Paper, Code, List } from '@mantine
 
 const ModelOptimization = () => {
   return (
-    <Container size="xl" className="py-6">
+    <Container size="xl" py="xl">
       <Stack spacing="xl">
         
         {/* Slide 1: Title and Introduction */}
@@ -16,7 +16,7 @@ const ModelOptimization = () => {
           </Text>
           <div className="max-w-3xl mx-auto">
             <Paper className="p-6 bg-blue-50">
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 Model optimization involves reducing computational requirements while maintaining performance.
                 This includes techniques for quantization, pruning, distillation, and efficient architectures
                 to deploy models on resource-constrained devices.
@@ -45,7 +45,7 @@ const ModelOptimization = () => {
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Magnitude-based Pruning</Title>
+                <Title order={4} mb="sm">Magnitude-based Pruning</Title>
                 <Code block language="python">{`import torch
 import torch.nn as nn
 import torch.nn.utils.prune as prune
@@ -116,7 +116,7 @@ check_sparsity(pruned_model)`}</Code>
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Iterative Pruning</Title>
+                <Title order={4} mb="sm">Iterative Pruning</Title>
                 <Code block language="python">{`class IterativePruner:
     def __init__(self, model, dataloader, criterion, device):
         self.model = model
@@ -226,7 +226,7 @@ class GradientPruning:
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-purple-50">
-                <Title order={4} className="mb-3">Post-Training Quantization</Title>
+                <Title order={4} mb="sm">Post-Training Quantization</Title>
                 <Code block language="python">{`import torch.quantization as quantization
 
 def post_training_quantize(model, calibration_loader):
@@ -315,7 +315,7 @@ def replace_linear_with_quantized(model, bits=8):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-orange-50">
-                <Title order={4} className="mb-3">Quantization-Aware Training</Title>
+                <Title order={4} mb="sm">Quantization-Aware Training</Title>
                 <Code block language="python">{`class QATModel(nn.Module):
     """Quantization-Aware Training Model"""
     def __init__(self, num_classes=10):
@@ -406,7 +406,7 @@ def mixed_precision_training(model, train_loader, num_epochs=10):
           <Grid gutter="lg">
             <Grid.Col span={12}>
               <Paper className="p-4 bg-red-50 mb-4">
-                <Title order={4} className="mb-3">Teacher-Student Framework</Title>
+                <Title order={4} mb="sm">Teacher-Student Framework</Title>
                 <Code block language="python">{`class KnowledgeDistillationLoss(nn.Module):
     def __init__(self, alpha=0.7, temperature=4):
         super().__init__()
@@ -524,7 +524,7 @@ class TeacherStudentModel(nn.Module):
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-indigo-50">
-                <Title order={4} className="mb-3">MobileNet Architecture</Title>
+                <Title order={4} mb="sm">MobileNet Architecture</Title>
                 <Code block language="python">{`class DepthwiseSeparableConv(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size=3, stride=1, padding=1):
         super().__init__()
@@ -627,7 +627,7 @@ class MobileNetV2(nn.Module):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-yellow-50">
-                <Title order={4} className="mb-3">EfficientNet Architecture</Title>
+                <Title order={4} mb="sm">EfficientNet Architecture</Title>
                 <Code block language="python">{`class SqueezeExcitation(nn.Module):
     def __init__(self, channels, reduction=16):
         super().__init__()
@@ -756,7 +756,7 @@ class NASBlock(nn.Module):
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">TensorFlow Lite Conversion</Title>
+                <Title order={4} mb="sm">TensorFlow Lite Conversion</Title>
                 <Code block language="python">{`# TensorFlow Lite optimization
 import tensorflow as tf
 
@@ -818,7 +818,7 @@ def optimize_for_mobile(model):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Model Profiling and Analysis</Title>
+                <Title order={4} mb="sm">Model Profiling and Analysis</Title>
                 <Code block language="python">{`import time
 import torch.profiler
 
@@ -930,7 +930,7 @@ class CompressionAnalyzer:
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-purple-50">
-                <Title order={4} className="mb-3">Edge Deployment</Title>
+                <Title order={4} mb="sm">Edge Deployment</Title>
                 <List spacing="sm">
                   <List.Item><strong>Model Size:</strong> Keep models under 10MB for mobile devices</List.Item>
                   <List.Item><strong>Latency:</strong> Target sub-100ms inference for real-time applications</List.Item>
@@ -955,7 +955,7 @@ class CompressionAnalyzer:
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-yellow-50">
-                <Title order={4} className="mb-3">Cloud Deployment</Title>
+                <Title order={4} mb="sm">Cloud Deployment</Title>
                 <Code block language="python">{`# Model serving with batching
 class BatchedModelServer:
     def __init__(self, model, max_batch_size=32, timeout_ms=50):

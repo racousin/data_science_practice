@@ -3,7 +3,7 @@ import { Container, Title, Text, Stack, Grid, Paper, Code, List } from '@mantine
 
 const Transformers = () => {
   return (
-    <Container size="xl" className="py-6">
+    <Container size="xl" py="xl">
       <Stack spacing="xl">
         
         {/* Slide 1: Title and Introduction */}
@@ -16,7 +16,7 @@ const Transformers = () => {
           </Text>
           <div className="max-w-3xl mx-auto">
             <Paper className="p-6 bg-blue-50">
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 Transformers revolutionized deep learning by replacing recurrent connections with 
                 self-attention mechanisms. They enable parallel processing of sequences and have 
                 become the foundation for modern language models and vision architectures.
@@ -45,7 +45,7 @@ const Transformers = () => {
           <Grid gutter="lg">
             <Grid.Col span={12}>
               <Paper className="p-4 bg-purple-50">
-                <Title order={4} className="mb-3">Scaled Dot-Product Attention</Title>
+                <Title order={4} mb="sm">Scaled Dot-Product Attention</Title>
                 <Code block language="python">{`import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -102,7 +102,7 @@ def attention(query, key, value, mask=None, dropout=None):
           <Grid gutter="lg">
             <Grid.Col span={12}>
               <Paper className="p-4 bg-green-50 mb-4">
-                <Title order={4} className="mb-3">Multi-Head Attention Implementation</Title>
+                <Title order={4} mb="sm">Multi-Head Attention Implementation</Title>
                 <Code block language="python">{`class MultiHeadAttention(nn.Module):
     def __init__(self, d_model, n_heads, dropout=0.1):
         super().__init__()
@@ -157,7 +157,7 @@ def attention(query, key, value, mask=None, dropout=None):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Simplified Multi-Head Attention</Title>
+                <Title order={4} mb="sm">Simplified Multi-Head Attention</Title>
                 <Code block language="python">{`class SimpleMultiHeadAttention(nn.Module):
     def __init__(self, embed_dim, num_heads):
         super().__init__()
@@ -190,7 +190,7 @@ def attention(query, key, value, mask=None, dropout=None):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-yellow-50">
-                <Title order={4} className="mb-3">Cross-Attention</Title>
+                <Title order={4} mb="sm">Cross-Attention</Title>
                 <Code block language="python">{`class CrossAttention(nn.Module):
     def __init__(self, embed_dim, num_heads):
         super().__init__()
@@ -229,7 +229,7 @@ def attention(query, key, value, mask=None, dropout=None):
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-orange-50">
-                <Title order={4} className="mb-3">Sinusoidal Positional Encoding</Title>
+                <Title order={4} mb="sm">Sinusoidal Positional Encoding</Title>
                 <Code block language="python">{`class PositionalEncoding(nn.Module):
     def __init__(self, d_model, max_len=5000):
         super().__init__()
@@ -265,7 +265,7 @@ def get_positional_encoding(seq_len, d_model):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-red-50">
-                <Title order={4} className="mb-3">Learnable Positional Embedding</Title>
+                <Title order={4} mb="sm">Learnable Positional Embedding</Title>
                 <Code block language="python">{`class LearnablePositionalEncoding(nn.Module):
     def __init__(self, d_model, max_len=5000):
         super().__init__()
@@ -312,7 +312,7 @@ class RelativePositionalEncoding(nn.Module):
           <Grid gutter="lg">
             <Grid.Col span={12}>
               <Paper className="p-4 bg-indigo-50 mb-4">
-                <Title order={4} className="mb-3">Encoder Block</Title>
+                <Title order={4} mb="sm">Encoder Block</Title>
                 <Code block language="python">{`class TransformerEncoderBlock(nn.Module):
     def __init__(self, d_model, n_heads, d_ff, dropout=0.1):
         super().__init__()
@@ -376,7 +376,7 @@ class TransformerEncoder(nn.Module):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Decoder Block</Title>
+                <Title order={4} mb="sm">Decoder Block</Title>
                 <Code block language="python">{`class TransformerDecoderBlock(nn.Module):
     def __init__(self, d_model, n_heads, d_ff, dropout=0.1):
         super().__init__()
@@ -416,7 +416,7 @@ class TransformerEncoder(nn.Module):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-purple-50">
-                <Title order={4} className="mb-3">Attention Masks</Title>
+                <Title order={4} mb="sm">Attention Masks</Title>
                 <Code block language="python">{`def create_padding_mask(seq, pad_idx=0):
     """Create mask to ignore padding tokens"""
     return (seq != pad_idx).unsqueeze(1).unsqueeze(1)
@@ -521,7 +521,7 @@ print(f"Output shape: {output.shape}")  # (32, 80, 10000)`}</Code>
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-yellow-50">
-                <Title order={4} className="mb-3">BERT-style Encoder</Title>
+                <Title order={4} mb="sm">BERT-style Encoder</Title>
                 <Code block language="python">{`class BERTModel(nn.Module):
     def __init__(self, vocab_size, d_model, n_heads, num_layers, d_ff, max_len):
         super().__init__()
@@ -566,7 +566,7 @@ print(f"Output shape: {output.shape}")  # (32, 80, 10000)`}</Code>
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">GPT-style Decoder</Title>
+                <Title order={4} mb="sm">GPT-style Decoder</Title>
                 <Code block language="python">{`class GPTModel(nn.Module):
     def __init__(self, vocab_size, d_model, n_heads, num_layers, d_ff, max_len):
         super().__init__()
@@ -621,7 +621,7 @@ class GPTBlock(nn.Module):
           </Grid>
           
           <Paper className="p-4 bg-red-50 mt-4">
-            <Title order={4} className="mb-3">Vision Transformer (ViT)</Title>
+            <Title order={4} mb="sm">Vision Transformer (ViT)</Title>
             <Code block language="python">{`class VisionTransformer(nn.Module):
     def __init__(self, img_size=224, patch_size=16, num_classes=1000, d_model=768, 
                  num_layers=12, n_heads=12, d_ff=3072):
@@ -675,7 +675,7 @@ class GPTBlock(nn.Module):
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Learning Rate Scheduling</Title>
+                <Title order={4} mb="sm">Learning Rate Scheduling</Title>
                 <Code block language="python">{`class TransformerLRScheduler:
     def __init__(self, optimizer, d_model, warmup_steps=4000):
         self.optimizer = optimizer
@@ -713,7 +713,7 @@ class LabelSmoothingLoss(nn.Module):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-purple-50">
-                <Title order={4} className="mb-3">Memory Optimization</Title>
+                <Title order={4} mb="sm">Memory Optimization</Title>
                 <Code block language="python">{`# Gradient checkpointing for memory efficiency
 import torch.utils.checkpoint as checkpoint
 

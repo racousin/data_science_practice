@@ -15,7 +15,7 @@ const MLParadigmCard = ({ title, bgColor, description, formula, formulaDesc, cha
     </div>
     
     <div className="mb-4">
-      <Text className="font-semibold mb-2">Key Characteristics:</Text>
+      <Text fw="bold" mb="xs">Key Characteristics:</Text>
       <ul className="list-disc pl-6">
         {characteristics.map((item, idx) => (
           <li key={idx} className="mb-1">{item}</li>
@@ -152,7 +152,7 @@ const RLApplications = () => {
 
 const Introduction = () => {
   return (
-    <Container size="xl" className="py-6">
+    <Container size="xl" py="xl">
       {/* Hero Section with AlphaGo */}
       <Stack spacing="xl">
         <div data-slide className="relative w-full h-64 bg-gray-100 rounded-lg overflow-hidden mb-8">

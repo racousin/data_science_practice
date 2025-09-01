@@ -68,11 +68,11 @@ export default function ConvolutionExplanation() {
             </Text>
           </Stack>
 
-          <Paper className="p-4 bg-white mt-4">
+          <Paper p="md" bg="white" mt="md">
             <Title className="text-lg">Example Calculation</Title>
             <div className="grid grid-cols-3 gap-4 mt-4">
               <div>
-                <Text className="font-semibold mb-2">Input Matrix:</Text>
+                <Text fw="bold" mb="xs">Input Matrix:</Text>
                 <div className="grid grid-cols-4 gap-1">
                   {inputMatrix.map((row, i) => (
                     row.map((val, j) => (
@@ -85,7 +85,7 @@ export default function ConvolutionExplanation() {
               </div>
               
               <div>
-                <Text className="font-semibold mb-2">Kernel:</Text>
+                <Text fw="bold" mb="xs">Kernel:</Text>
                 <div className="grid grid-cols-3 gap-1">
                   {kernel.map((row, i) => (
                     row.map((val, j) => (
@@ -98,7 +98,7 @@ export default function ConvolutionExplanation() {
               </div>
               
               <div>
-                <Text className="font-semibold mb-2">Output Region:</Text>
+                <Text fw="bold" mb="xs">Output Region:</Text>
                 <div className="grid grid-cols-2 gap-1">
                   {[...Array(4)].map((_, i) => (
                     <div key={`output-${i}`} className="w-8 h-8 bg-gray-100 flex items-center justify-center text-sm border">

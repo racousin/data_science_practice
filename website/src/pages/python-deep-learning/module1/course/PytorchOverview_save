@@ -6,7 +6,7 @@ import CodeBlock from 'components/CodeBlock';
 
 const PyTorchOverview = () => {
   return (
-    <Container size="xl" className="py-6">
+    <Container size="xl" py="xl">
       <Stack spacing="xl">
         
         {/* Part 4: Deep Learning Frameworks Overview */}
@@ -23,7 +23,7 @@ const PyTorchOverview = () => {
             
             <Paper className="p-6 bg-gradient-to-r from-orange-50 to-red-50 mb-6">
               <Title order={3} className="mb-4">Why PyTorch?</Title>
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 PyTorch has become the dominant framework in research and increasingly in production due to its 
                 intuitive design, dynamic computation graphs, and seamless Python integration. It provides the 
                 perfect balance between ease of use and performance.
@@ -32,7 +32,7 @@ const PyTorchOverview = () => {
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Design Philosophy</Title>
+                    <Title order={4} mb="sm">Design Philosophy</Title>
                     <List>
                       <List.Item><strong>Pythonic:</strong> Native Python feel, easy debugging</List.Item>
                       <List.Item><strong>Dynamic Graphs:</strong> Define-by-run execution model</List.Item>
@@ -45,7 +45,7 @@ const PyTorchOverview = () => {
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Key Advantages</Title>
+                    <Title order={4} mb="sm">Key Advantages</Title>
                     <List>
                       <List.Item><strong>Automatic Differentiation:</strong> Autograd engine</List.Item>
                       <List.Item><strong>GPU Acceleration:</strong> Seamless CUDA support</List.Item>
@@ -119,7 +119,7 @@ const PyTorchOverview = () => {
             
             <Paper className="p-6 bg-blue-50 mb-6">
               <Title order={3} className="mb-4">Understanding Tensors</Title>
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 Tensors are the fundamental data structure in PyTorch - multi-dimensional arrays that can run on 
                 GPUs and support automatic differentiation. They're similar to NumPy arrays but with superpowers.
               </Text>
@@ -127,7 +127,7 @@ const PyTorchOverview = () => {
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Tensor Properties</Title>
+                    <Title order={4} mb="sm">Tensor Properties</Title>
                     <List size="sm">
                       <List.Item><strong>dtype:</strong> Data type (float32, int64, bool, etc.)</List.Item>
                       <List.Item><strong>device:</strong> CPU or GPU location</List.Item>
@@ -140,7 +140,7 @@ const PyTorchOverview = () => {
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Tensor Dimensions</Title>
+                    <Title order={4} mb="sm">Tensor Dimensions</Title>
                     <List size="sm">
                       <List.Item><strong>0D (Scalar):</strong> Single number</List.Item>
                       <List.Item><strong>1D (Vector):</strong> Array of numbers</List.Item>
@@ -331,7 +331,7 @@ x.zero_()  # Set all elements to zero
             
             <Paper className="p-6 bg-gradient-to-r from-purple-50 to-pink-50 mb-6">
               <Title order={3} className="mb-4">The Magic of Autograd</Title>
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 PyTorch's automatic differentiation engine, autograd, is what makes training neural networks 
                 practical. It automatically computes gradients by tracking operations on tensors and building 
                 a dynamic computational graph.
@@ -340,7 +340,7 @@ x.zero_()  # Set all elements to zero
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">How Autograd Works</Title>
+                    <Title order={4} mb="sm">How Autograd Works</Title>
                     <List size="sm">
                       <List.Item>Records operations on tensors with requires_grad=True</List.Item>
                       <List.Item>Builds dynamic computation graph</List.Item>
@@ -353,7 +353,7 @@ x.zero_()  # Set all elements to zero
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Computational Graph</Title>
+                    <Title order={4} mb="sm">Computational Graph</Title>
                     <Text size="sm" className="mb-3">
                       For <InlineMath>{`z = x^2 + y^3`}</InlineMath>:
                     </Text>
@@ -484,7 +484,7 @@ optimizer.zero_grad()`} />
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Common Gradient Issues</Title>
+                    <Title order={4} mb="sm">Common Gradient Issues</Title>
                     <List size="sm">
                       <List.Item>
                         <strong>Vanishing Gradients:</strong> Gradients become too small
@@ -504,7 +504,7 @@ optimizer.zero_grad()`} />
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Gradient Debugging Tips</Title>
+                    <Title order={4} mb="sm">Gradient Debugging Tips</Title>
                     <List size="sm">
                       <List.Item>Use gradient hooks to monitor flow</List.Item>
                       <List.Item>Check for NaN/Inf values</List.Item>
@@ -532,7 +532,7 @@ optimizer.zero_grad()`} />
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">torch.nn - Neural Network Module</Title>
+                    <Title order={4} mb="sm">torch.nn - Neural Network Module</Title>
                     <CodeBlock language="python" code={`import torch.nn as nn
 import torch.nn.functional as F
 
@@ -561,7 +561,7 @@ bce_loss = nn.BCEWithLogitsLoss()`} />
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">torch.optim - Optimization</Title>
+                    <Title order={4} mb="sm">torch.optim - Optimization</Title>
                     <CodeBlock language="python" code={`import torch.optim as optim
 
 model = MyModel()
@@ -589,7 +589,7 @@ scheduler.step()`} />
               <Grid gutter="lg" className="mt-4">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">torch.utils.data - Data Loading</Title>
+                    <Title order={4} mb="sm">torch.utils.data - Data Loading</Title>
                     <CodeBlock language="python" code={`from torch.utils.data import Dataset, DataLoader
 import torchvision.transforms as transforms
 
@@ -633,7 +633,7 @@ dataloader = DataLoader(
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">TorchScript - Production Deployment</Title>
+                    <Title order={4} mb="sm">TorchScript - Production Deployment</Title>
                     <CodeBlock language="python" code={`import torch
 import torch.jit as jit
 
@@ -669,7 +669,7 @@ loaded_model = torch.jit.load("model.pt")
               <Grid gutter="lg">
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">TorchVision</Title>
+                    <Title order={4} mb="sm">TorchVision</Title>
                     <Text size="sm" className="mb-3">Computer Vision toolkit</Text>
                     <List size="sm">
                       <List.Item>Pre-trained models (ResNet, VGG, etc.)</List.Item>
@@ -692,7 +692,7 @@ cifar10 = torchvision.datasets.CIFAR10(
                 
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">TorchText</Title>
+                    <Title order={4} mb="sm">TorchText</Title>
                     <Text size="sm" className="mb-3">NLP and text processing</Text>
                     <List size="sm">
                       <List.Item>Text datasets and preprocessing</List.Item>
@@ -714,7 +714,7 @@ TEXT.build_vocab(train_data, max_size=10000)`} />
                 
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">TorchAudio</Title>
+                    <Title order={4} mb="sm">TorchAudio</Title>
                     <Text size="sm" className="mb-3">Audio and signal processing</Text>
                     <List size="sm">
                       <List.Item>Audio I/O and transforms</List.Item>
@@ -742,7 +742,7 @@ spec = spectrogram(waveform)`} />
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">PyTorch Lightning</Title>
+                    <Title order={4} mb="sm">PyTorch Lightning</Title>
                     <Text size="sm" className="mb-3">
                       High-level framework for structured training
                     </Text>
@@ -774,7 +774,7 @@ trainer.fit(model, train_dataloader)`} />
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Hugging Face Transformers</Title>
+                    <Title order={4} mb="sm">Hugging Face Transformers</Title>
                     <Text size="sm" className="mb-3">
                       State-of-the-art NLP models
                     </Text>
@@ -800,7 +800,7 @@ with torch.no_grad():
               <Grid gutter="lg" className="mt-4">
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Weights & Biases</Title>
+                    <Title order={4} mb="sm">Weights & Biases</Title>
                     <Text size="sm">Experiment tracking and visualization</Text>
                     <CodeBlock language="python" code={`import wandb
 
@@ -814,7 +814,7 @@ wandb.log({"loss": loss, "acc": accuracy})`} />
                 
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">TensorBoard</Title>
+                    <Title order={4} mb="sm">TensorBoard</Title>
                     <Text size="sm">Training visualization</Text>
                     <CodeBlock language="python" code={`from torch.utils.tensorboard import SummaryWriter
 
@@ -826,7 +826,7 @@ writer.add_histogram('weights', model.fc.weight, epoch)`} />
                 
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">ONNX</Title>
+                    <Title order={4} mb="sm">ONNX</Title>
                     <Text size="sm">Cross-platform model deployment</Text>
                     <CodeBlock language="python" code={`import torch.onnx
 
@@ -853,7 +853,7 @@ torch.onnx.export(model, dummy_input, "model.onnx",
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Official Resources</Title>
+                    <Title order={4} mb="sm">Official Resources</Title>
                     <List>
                       <List.Item>
                         <strong>PyTorch Documentation:</strong> pytorch.org/docs
@@ -876,7 +876,7 @@ torch.onnx.export(model, dummy_input, "model.onnx",
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Community Resources</Title>
+                    <Title order={4} mb="sm">Community Resources</Title>
                     <List>
                       <List.Item>
                         <strong>Fast.ai Courses:</strong> Practical deep learning
@@ -906,7 +906,7 @@ torch.onnx.export(model, dummy_input, "model.onnx",
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Code Organization</Title>
+                    <Title order={4} mb="sm">Code Organization</Title>
                     <CodeBlock language="python" code={`# Recommended project structure
 project/
 ├── data/
@@ -930,7 +930,7 @@ project/
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Training Tips</Title>
+                    <Title order={4} mb="sm">Training Tips</Title>
                     <List size="sm">
                       <List.Item>Always set random seeds for reproducibility</List.Item>
                       <List.Item>Use gradient clipping for RNNs</List.Item>
@@ -946,7 +946,7 @@ project/
               </Grid>
               
               <Paper className="p-4 bg-yellow-50 mt-4">
-                <Title order={4} className="mb-3">Common Debugging Strategies</Title>
+                <Title order={4} mb="sm">Common Debugging Strategies</Title>
                 <CodeBlock language="python" code={`# 1. Check tensor shapes
 print(f"Input shape: {x.shape}")
 print(f"Output shape: {y.shape}")

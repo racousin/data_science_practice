@@ -25,7 +25,7 @@ const TensorOperationsComputationalGraphs = () => {
             
             <Grid gutter="lg">
               <Grid.Col span={6}>
-                <Title order={4} className="mb-3">Tensor Ranks and Notation</Title>
+                <Title order={4} mb="sm">Tensor Ranks and Notation</Title>
                 <List>
                   <List.Item><strong>Scalar (Rank 0):</strong> a ∈ ℝ</List.Item>
                   <List.Item><strong>Vector (Rank 1):</strong> v ∈ ℝⁿ</List.Item>
@@ -53,7 +53,7 @@ print(f"3D Tensor: {tensor_3d.shape}, ndim: {tensor_3d.ndim}")`} />
           </Paper>
 
           <Paper className="p-4 bg-green-50 mb-6">
-            <Title order={4} className="mb-3">Tensor Operations Taxonomy</Title>
+            <Title order={4} mb="sm">Tensor Operations Taxonomy</Title>
             <Grid gutter="lg">
               <Grid.Col span={4}>
                 <Paper className="p-3 bg-white">
@@ -147,7 +147,7 @@ print(f"L2 norm: {l2_norm:.4f}")`} />
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-blue-50">
-                  <Title order={4} className="mb-3">Broadcasting Examples</Title>
+                  <Title order={4} mb="sm">Broadcasting Examples</Title>
                   <CodeBlock language="python" code={`import torch
 
 # Example 1: Vector + Scalar
@@ -174,7 +174,7 @@ print(f"Matrix + Row Vector:\\n{result3}")`} />
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-yellow-50">
-                  <Title order={4} className="mb-3">Broadcasting Step-by-Step</Title>
+                  <Title order={4} mb="sm">Broadcasting Step-by-Step</Title>
                   <CodeBlock language="python" code={`# Step-by-step broadcasting analysis
 def analyze_broadcasting(a_shape, b_shape):
     """Analyze if two shapes can be broadcast together"""
@@ -219,7 +219,7 @@ analyze_broadcasting([2, 3], [3, 2])   # Incompatible`} />
           </Paper>
 
           <Paper className="p-4 bg-purple-50">
-            <Title order={4} className="mb-3">Memory Implications of Broadcasting</Title>
+            <Title order={4} mb="sm">Memory Implications of Broadcasting</Title>
             <CodeBlock language="python" code={`# Memory analysis of broadcasting
 def memory_analysis():
     # Large matrix
@@ -259,7 +259,7 @@ memory_analysis()`} />
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Storage and Views</Title>
+                  <Title order={4} mb="sm">Storage and Views</Title>
                   <CodeBlock language="python" code={`import torch
 
 # Create original tensor
@@ -289,7 +289,7 @@ print(f"Same storage: {x.data_ptr() == z.data_ptr()}")`} />
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Contiguous vs Non-contiguous</Title>
+                  <Title order={4} mb="sm">Contiguous vs Non-contiguous</Title>
                   <CodeBlock language="python" code={`# Contiguous tensor
 x = torch.arange(12).reshape(3, 4)
 print(f"x is contiguous: {x.is_contiguous()}")
@@ -328,7 +328,7 @@ print(f"Non-contiguous sum time: {time.time() - start:.4f}s")`} />
           </Paper>
 
           <Paper className="p-4 bg-green-50">
-            <Title order={4} className="mb-3">Memory Layout and Strides</Title>
+            <Title order={4} mb="sm">Memory Layout and Strides</Title>
             <CodeBlock language="python" code={`# Understanding strides
 def explain_strides(tensor):
     """Explain how strides work for a tensor"""
@@ -379,7 +379,7 @@ explain_strides(z)`} />
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-blue-50">
-                  <Title order={4} className="mb-3">Basic Graph Construction</Title>
+                  <Title order={4} mb="sm">Basic Graph Construction</Title>
                   <CodeBlock language="python" code={`import torch
 import torch.nn.functional as F
 
@@ -405,7 +405,7 @@ print(f"z.grad_fn.next_functions: {z.grad_fn.next_functions}")`} />
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-yellow-50">
-                  <Title order={4} className="mb-3">Graph Properties</Title>
+                  <Title order={4} mb="sm">Graph Properties</Title>
                   <CodeBlock language="python" code={`# Analyze graph properties
 def analyze_graph(tensor):
     """Analyze computational graph properties"""
@@ -438,7 +438,7 @@ analyze_graph(w)`} />
           </Paper>
 
           <Paper className="p-4 bg-purple-50">
-            <Title order={4} className="mb-3">Advanced Graph Operations</Title>
+            <Title order={4} mb="sm">Advanced Graph Operations</Title>
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-3 bg-white">

@@ -3,7 +3,7 @@ import { Container, Title, Text, Stack, Grid, Paper, Code, List } from '@mantine
 
 const AdvancedArchitectures = () => {
   return (
-    <Container size="xl" className="py-6">
+    <Container size="xl" py="xl">
       <Stack spacing="xl">
         
         {/* Slide 1: Title and Introduction */}
@@ -16,7 +16,7 @@ const AdvancedArchitectures = () => {
           </Text>
           <div className="max-w-3xl mx-auto">
             <Paper className="p-6 bg-blue-50">
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 Modern deep learning employs sophisticated architectures that go beyond simple feedforward networks.
                 These architectures incorporate specialized components and design patterns for improved performance.
               </Text>
@@ -44,7 +44,7 @@ const AdvancedArchitectures = () => {
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Basic Residual Block</Title>
+                <Title order={4} mb="sm">Basic Residual Block</Title>
                 <Code block language="python">{`import torch
 import torch.nn as nn
 
@@ -78,7 +78,7 @@ class ResidualBlock(nn.Module):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">ResNet Architecture</Title>
+                <Title order={4} mb="sm">ResNet Architecture</Title>
                 <Code block language="python">{`class ResNet(nn.Module):
     def __init__(self, input_size, num_classes):
         super().__init__()
@@ -114,7 +114,7 @@ class ResidualBlock(nn.Module):
           <Grid gutter="lg">
             <Grid.Col span={12}>
               <Paper className="p-4 bg-purple-50 mb-4">
-                <Title order={4} className="mb-3">Self-Attention Implementation</Title>
+                <Title order={4} mb="sm">Self-Attention Implementation</Title>
                 <Code block language="python">{`class SelfAttention(nn.Module):
     def __init__(self, embed_dim, num_heads=8):
         super().__init__()
@@ -153,7 +153,7 @@ class ResidualBlock(nn.Module):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-yellow-50">
-                <Title order={4} className="mb-3">Multi-Head Attention Block</Title>
+                <Title order={4} mb="sm">Multi-Head Attention Block</Title>
                 <Code block language="python">{`class AttentionBlock(nn.Module):
     def __init__(self, embed_dim, num_heads, ff_dim):
         super().__init__()
@@ -182,7 +182,7 @@ class ResidualBlock(nn.Module):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-orange-50">
-                <Title order={4} className="mb-3">Transformer Architecture</Title>
+                <Title order={4} mb="sm">Transformer Architecture</Title>
                 <Code block language="python">{`class TransformerEncoder(nn.Module):
     def __init__(self, vocab_size, embed_dim, num_heads, 
                  num_layers, ff_dim, max_seq_len):
@@ -220,7 +220,7 @@ class ResidualBlock(nn.Module):
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Batch Normalization</Title>
+                <Title order={4} mb="sm">Batch Normalization</Title>
                 <Code block language="python">{`# Batch Normalization
 class BatchNormMLP(nn.Module):
     def __init__(self, input_size, hidden_sizes, output_size):
@@ -246,7 +246,7 @@ class BatchNormMLP(nn.Module):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Layer Normalization</Title>
+                <Title order={4} mb="sm">Layer Normalization</Title>
                 <Code block language="python">{`# Layer Normalization
 class LayerNormMLP(nn.Module):
     def __init__(self, input_size, hidden_sizes, output_size):
@@ -272,7 +272,7 @@ class LayerNormMLP(nn.Module):
           </Grid>
           
           <Paper className="p-4 bg-purple-50 mt-4">
-            <Title order={4} className="mb-3">Group Normalization</Title>
+            <Title order={4} mb="sm">Group Normalization</Title>
             <Code block language="python">{`# Group Normalization (typically used in CNNs, but can be adapted)
 class GroupNorm1d(nn.Module):
     def __init__(self, num_groups, num_channels, eps=1e-5):
@@ -305,7 +305,7 @@ class GroupNorm1d(nn.Module):
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-yellow-50">
-                <Title order={4} className="mb-3">Modern Activations</Title>
+                <Title order={4} mb="sm">Modern Activations</Title>
                 <Code block language="python">{`# GELU (Gaussian Error Linear Unit)
 class GELU(nn.Module):
     def forward(self, x):
@@ -328,7 +328,7 @@ class Mish(nn.Module):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-red-50">
-                <Title order={4} className="mb-3">Gated Linear Units</Title>
+                <Title order={4} mb="sm">Gated Linear Units</Title>
                 <Code block language="python">{`class GLU(nn.Module):
     def __init__(self, input_dim, output_dim):
         super().__init__()
@@ -359,7 +359,7 @@ class GeGLU(nn.Module):
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Key Design Principles</Title>
+                <Title order={4} mb="sm">Key Design Principles</Title>
                 <List>
                   <List.Item><strong>Skip Connections:</strong> Enable gradient flow in deep networks</List.Item>
                   <List.Item><strong>Normalization:</strong> Stabilize training and reduce internal covariate shift</List.Item>
@@ -372,7 +372,7 @@ class GeGLU(nn.Module):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Implementation Tips</Title>
+                <Title order={4} mb="sm">Implementation Tips</Title>
                 <List>
                   <List.Item>Start simple and add complexity gradually</List.Item>
                   <List.Item>Use proven architectural patterns as building blocks</List.Item>

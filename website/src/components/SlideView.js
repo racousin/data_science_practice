@@ -9,6 +9,26 @@ const SlideView = ({ children, enabled = false }) => {
   const { sidebarOpened, toggleSidebar, slideMode, setSlideMode } = useSidebar();
   const [slides, setSlides] = useState([]);
 
+  // Helper function to extract slide titles and separate content
+  const extractTitleAndContent = (element) => {
+    const clonedEl = element.cloneNode(true);
+    
+    let title = null;
+    
+    // Look for elements with slide-title class
+    const titleEl = clonedEl.querySelector('.slide-title');
+    
+    if (titleEl) {
+      title = titleEl.outerHTML;
+      titleEl.remove(); // Remove from content
+    }
+    
+    return {
+      title,
+      content: clonedEl.outerHTML
+    };
+  };
+
   useEffect(() => {
     if (!enabled) return;
 
@@ -22,11 +42,13 @@ const SlideView = ({ children, enabled = false }) => {
       
       if (slideElements.length > 0) {
         const slidesArray = Array.from(slideElements).map((el, index) => {
-          // Clone the element to avoid DOM mutations
-          const clonedEl = el.cloneNode(true);
-          return (
-            <div key={index} dangerouslySetInnerHTML={{ __html: clonedEl.outerHTML }} />
-          );
+          const { title, content } = extractTitleAndContent(el);
+          
+          return {
+            key: index,
+            title,
+            content
+          };
         });
         setSlides(slidesArray);
       }
@@ -96,6 +118,7 @@ const SlideView = ({ children, enabled = false }) => {
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [handleKeyPress]);
+
 
   if (!enabled || slides.length === 0) {
     return <>{children}</>;
@@ -181,28 +204,53 @@ const SlideView = ({ children, enabled = false }) => {
             }
           }}
         >
-          {slides.map((slide, index) => (
-            <Carousel.Slide key={index}>
+          {slides.map((slide) => (
+            <Carousel.Slide key={slide.key}>
               <div 
                 className="slide-content"
                 style={{ 
                   height: '100vh',
                   width: '100vw',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  display: 'grid',
+                  gridTemplateRows: 'auto 1fr',
+                  gridTemplateAreas: `
+                    "header"
+                    "content"
+                  `,
                   padding: '2rem',
                   boxSizing: 'border-box',
                   overflow: 'auto'
                 }}
               >
+                {/* Header section for Title order={3} */}
+                {slide.title && (
+                  <div 
+                    style={{
+                      gridArea: 'header',
+                      textAlign: 'center',
+                      marginBottom: '2rem'
+                    }}
+                    dangerouslySetInnerHTML={{ __html: slide.title }}
+                  />
+                )}
+                
+                {/* Main content - vertically centered */}
                 <div 
                   style={{
-                    width: '100%',
-                    maxWidth: 'none'
+                    gridArea: 'content',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '100%'
                   }}
                 >
-                  {slide}
+                  <div 
+                    style={{
+                      width: '100%',
+                      maxWidth: 'none'
+                    }}
+                    dangerouslySetInnerHTML={{ __html: slide.content }}
+                  />
                 </div>
               </div>
             </Carousel.Slide>

@@ -3,7 +3,7 @@ import { Container, Title, Text, Stack, Grid, Paper, Code, List } from '@mantine
 
 const GenerativeModels = () => {
   return (
-    <Container size="xl" className="py-6">
+    <Container size="xl" py="xl">
       <Stack spacing="xl">
         
         {/* Slide 1: Title and Introduction */}
@@ -16,7 +16,7 @@ const GenerativeModels = () => {
           </Text>
           <div className="max-w-3xl mx-auto">
             <Paper className="p-6 bg-blue-50">
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 Generative models learn to create new data samples that resemble the training data.
                 They capture the underlying data distribution and can generate novel, realistic samples
                 across various domains including images, text, and audio.
@@ -45,7 +45,7 @@ const GenerativeModels = () => {
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Basic Autoencoder</Title>
+                <Title order={4} mb="sm">Basic Autoencoder</Title>
                 <Code block language="python">{`import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -101,7 +101,7 @@ autoencoder = Autoencoder(
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Convolutional Autoencoder</Title>
+                <Title order={4} mb="sm">Convolutional Autoencoder</Title>
                 <Code block language="python">{`class ConvAutoencoder(nn.Module):
     def __init__(self, channels=3, latent_dim=128):
         super().__init__()
@@ -158,7 +158,7 @@ autoencoder = Autoencoder(
           <Grid gutter="lg">
             <Grid.Col span={12}>
               <Paper className="p-4 bg-yellow-50">
-                <Title order={4} className="mb-3">VAE Implementation</Title>
+                <Title order={4} mb="sm">VAE Implementation</Title>
                 <Code block language="python">{`class VAE(nn.Module):
     def __init__(self, input_dim, hidden_dim, latent_dim):
         super().__init__()
@@ -232,7 +232,7 @@ def vae_loss(recon_x, x, mu, logvar, beta=1.0):
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-red-50">
-                <Title order={4} className="mb-3">Basic GAN</Title>
+                <Title order={4} mb="sm">Basic GAN</Title>
                 <Code block language="python">{`class Generator(nn.Module):
     def __init__(self, noise_dim, hidden_dim, output_dim):
         super().__init__()
@@ -309,7 +309,7 @@ def train_gan(generator, discriminator, dataloader, num_epochs):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-orange-50">
-                <Title order={4} className="mb-3">DCGAN (Deep Convolutional GAN)</Title>
+                <Title order={4} mb="sm">DCGAN (Deep Convolutional GAN)</Title>
                 <Code block language="python">{`class DCGANGenerator(nn.Module):
     def __init__(self, noise_dim, num_channels=3, feature_maps=64):
         super().__init__()
@@ -386,7 +386,7 @@ class DCGANDiscriminator(nn.Module):
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-indigo-50">
-                <Title order={4} className="mb-3">Wasserstein GAN</Title>
+                <Title order={4} mb="sm">Wasserstein GAN</Title>
                 <Code block language="python">{`class WGANCritic(nn.Module):
     def __init__(self, input_dim, hidden_dim):
         super().__init__()
@@ -468,7 +468,7 @@ def train_wgan_gp(generator, critic, dataloader, lambda_gp=10):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Conditional GAN</Title>
+                <Title order={4} mb="sm">Conditional GAN</Title>
                 <Code block language="python">{`class ConditionalGenerator(nn.Module):
     def __init__(self, noise_dim, num_classes, hidden_dim, output_dim):
         super().__init__()
@@ -565,7 +565,7 @@ class ProgressiveGenerator(nn.Module):
           <Grid gutter="lg">
             <Grid.Col span={12}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Simple Diffusion Model</Title>
+                <Title order={4} mb="sm">Simple Diffusion Model</Title>
                 <Code block language="python">{`class SimpleDiffusion(nn.Module):
     def __init__(self, timesteps=1000):
         super().__init__()
@@ -696,7 +696,7 @@ class DoubleConv(nn.Module):
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-yellow-50">
-                <Title order={4} className="mb-3">Evaluation Metrics</Title>
+                <Title order={4} mb="sm">Evaluation Metrics</Title>
                 <Code block language="python">{`import numpy as np
 from scipy import linalg
 from sklearn.metrics.pairwise import polynomial_kernel
@@ -759,7 +759,7 @@ def perceptual_path_length(generator, num_samples=1000, epsilon=1e-4):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-red-50">
-                <Title order={4} className="mb-3">Applications</Title>
+                <Title order={4} mb="sm">Applications</Title>
                 <List spacing="sm">
                   <List.Item><strong>Image Generation:</strong> Creating realistic photos, artwork, and synthetic datasets</List.Item>
                   <List.Item><strong>Data Augmentation:</strong> Generating additional training samples to improve model performance</List.Item>

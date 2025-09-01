@@ -6,7 +6,7 @@ import CodeBlock from 'components/CodeBlock';
 
 const MLPFundamentals = () => {
   return (
-    <Container size="xl" className="py-6">
+    <Container size="xl" py="xl">
       <Stack spacing="xl">
         
         {/* Part 3: Multi-Layer Perceptron Fundamentals */}
@@ -23,7 +23,7 @@ const MLPFundamentals = () => {
             
             <Paper className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 mb-6">
               <Title order={3} className="mb-4">Biological Inspiration</Title>
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 Artificial neurons are loosely inspired by biological neurons in the brain. While the biological 
                 reality is far more complex, the mathematical abstraction captures the essential computational principle: 
                 weighted integration of inputs followed by non-linear activation.
@@ -32,7 +32,7 @@ const MLPFundamentals = () => {
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Biological Neuron</Title>
+                    <Title order={4} mb="sm">Biological Neuron</Title>
                     <List size="sm">
                       <List.Item><strong>Dendrites:</strong> Receive signals from other neurons</List.Item>
                       <List.Item><strong>Cell Body (Soma):</strong> Integrates incoming signals</List.Item>
@@ -45,7 +45,7 @@ const MLPFundamentals = () => {
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Artificial Neuron</Title>
+                    <Title order={4} mb="sm">Artificial Neuron</Title>
                     <List size="sm">
                       <List.Item><strong>Inputs:</strong> Feature values <InlineMath>{`x_1, x_2, ..., x_n`}</InlineMath></List.Item>
                       <List.Item><strong>Weights:</strong> Connection strengths <InlineMath>{`w_1, w_2, ..., w_n`}</InlineMath></List.Item>
@@ -63,14 +63,14 @@ const MLPFundamentals = () => {
               <Title order={3} className="mb-4">Mathematical Model of a Neuron</Title>
               
               <Paper className="p-4 bg-white mb-4">
-                <Title order={4} className="mb-3">The Perceptron Model</Title>
+                <Title order={4} mb="sm">The Perceptron Model</Title>
                 <Text className="mb-3">
                   A single neuron computes a weighted sum of inputs, adds a bias term, and applies an activation function:
                 </Text>
                 
                 <div className="space-y-4">
                   <div>
-                    <Text className="font-semibold mb-2">Step 1: Linear Combination</Text>
+                    <Text fw="bold" mb="xs">Step 1: Linear Combination</Text>
                     <BlockMath>{`z = \\sum_{i=1}^n w_i x_i + b = w^T x + b`}</BlockMath>
                     <Text size="sm" color="dimmed">
                       where <InlineMath>{`w \\in \\mathbb{R}^n`}</InlineMath> are weights, 
@@ -80,7 +80,7 @@ const MLPFundamentals = () => {
                   </div>
                   
                   <div>
-                    <Text className="font-semibold mb-2">Step 2: Activation</Text>
+                    <Text fw="bold" mb="xs">Step 2: Activation</Text>
                     <BlockMath>{`a = \\sigma(z)`}</BlockMath>
                     <Text size="sm" color="dimmed">
                       where <InlineMath>{`\\sigma`}</InlineMath> is a non-linear activation function
@@ -122,7 +122,7 @@ print(f"Neuron output: {output.item():.4f}")`} />
 
               {/* Why Non-linearity is Essential */}
               <Paper className="p-4 bg-yellow-50">
-                <Title order={4} className="mb-3">Why Non-linearity is Essential</Title>
+                <Title order={4} mb="sm">Why Non-linearity is Essential</Title>
                 <Text className="mb-3">
                   Without activation functions, stacking linear layers would be pointless:
                 </Text>
@@ -143,7 +143,7 @@ print(f"Neuron output: {output.item():.4f}")`} />
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">ReLU (Rectified Linear Unit)</Title>
+                    <Title order={4} mb="sm">ReLU (Rectified Linear Unit)</Title>
                     <BlockMath>{`\\text{ReLU}(z) = \\max(0, z)`}</BlockMath>
                     
                     <List size="sm" className="mt-3">
@@ -160,7 +160,7 @@ print(f"Neuron output: {output.item():.4f}")`} />
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Sigmoid</Title>
+                    <Title order={4} mb="sm">Sigmoid</Title>
                     <BlockMath>{`\\sigma(z) = \\frac{1}{1 + e^{-z}}`}</BlockMath>
                     
                     <List size="sm" className="mt-3">
@@ -179,7 +179,7 @@ print(f"Neuron output: {output.item():.4f}")`} />
               <Grid gutter="lg" className="mt-4">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Tanh (Hyperbolic Tangent)</Title>
+                    <Title order={4} mb="sm">Tanh (Hyperbolic Tangent)</Title>
                     <BlockMath>{`\\tanh(z) = \\frac{e^z - e^{-z}}{e^z + e^{-z}}`}</BlockMath>
                     
                     <List size="sm" className="mt-3">
@@ -195,17 +195,17 @@ print(f"Neuron output: {output.item():.4f}")`} />
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Modern Variants</Title>
+                    <Title order={4} mb="sm">Modern Variants</Title>
                     
                     <div className="space-y-3">
                       <div>
-                        <Text className="font-semibold text-sm">Leaky ReLU:</Text>
+                        <Text fw="bold" size="sm">Leaky ReLU:</Text>
                         <BlockMath>{`\\text{LeakyReLU}(z) = \\begin{cases} z & z > 0 \\\\ \\alpha z & z \\leq 0 \\end{cases}`}</BlockMath>
                         <Text size="xs" color="dimmed">Small slope α (e.g., 0.01) prevents dead neurons</Text>
                       </div>
                       
                       <div>
-                        <Text className="font-semibold text-sm">GELU (Gaussian Error Linear Unit):</Text>
+                        <Text fw="bold" size="sm">GELU (Gaussian Error Linear Unit):</Text>
                         <BlockMath>{`\\text{GELU}(z) = z \\cdot \\Phi(z)`}</BlockMath>
                         <Text size="xs" color="dimmed">Smooth approximation of ReLU, used in transformers</Text>
                       </div>
@@ -257,7 +257,7 @@ plt.title('Activation Functions Comparison')`} />
             
             <Paper className="p-6 bg-gradient-to-r from-green-50 to-teal-50 mb-6">
               <Title order={3} className="mb-4">Multi-Layer Perceptron Architecture</Title>
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 A Multi-Layer Perceptron (MLP) consists of multiple layers of neurons, where each neuron in a layer 
                 is connected to all neurons in the previous layer (fully connected or dense layers).
               </Text>
@@ -265,7 +265,7 @@ plt.title('Activation Functions Comparison')`} />
               <Grid gutter="lg">
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Input Layer</Title>
+                    <Title order={4} mb="sm">Input Layer</Title>
                     <Text size="sm" className="mb-2">
                       Dimension: <InlineMath>{`\\mathbb{R}^{d_{in}}`}</InlineMath>
                     </Text>
@@ -279,7 +279,7 @@ plt.title('Activation Functions Comparison')`} />
                 
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Hidden Layers</Title>
+                    <Title order={4} mb="sm">Hidden Layers</Title>
                     <Text size="sm" className="mb-2">
                       Dimension: <InlineMath>{`\\mathbb{R}^{h_1}, \\mathbb{R}^{h_2}, ...`}</InlineMath>
                     </Text>
@@ -293,7 +293,7 @@ plt.title('Activation Functions Comparison')`} />
                 
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Output Layer</Title>
+                    <Title order={4} mb="sm">Output Layer</Title>
                     <Text size="sm" className="mb-2">
                       Dimension: <InlineMath>{`\\mathbb{R}^{d_{out}}`}</InlineMath>
                     </Text>
@@ -316,17 +316,17 @@ plt.title('Activation Functions Comparison')`} />
               </Text>
               
               <Paper className="p-4 bg-white mb-4">
-                <Title order={4} className="mb-3">Layer-wise Computation</Title>
+                <Title order={4} mb="sm">Layer-wise Computation</Title>
                 
                 <div className="space-y-4">
                   <div>
-                    <Text className="font-semibold mb-2">For layer <InlineMath>{`l`}</InlineMath> with input <InlineMath>{`h^{(l-1)}`}</InlineMath>:</Text>
+                    <Text fw="bold" mb="xs">For layer <InlineMath>{`l`}</InlineMath> with input <InlineMath>{`h^{(l-1)}`}</InlineMath>:</Text>
                     <BlockMath>{`z^{(l)} = W^{(l)} h^{(l-1)} + b^{(l)}`}</BlockMath>
                     <BlockMath>{`h^{(l)} = \\sigma^{(l)}(z^{(l)})`}</BlockMath>
                   </div>
                   
                   <div>
-                    <Text className="font-semibold mb-2">Complete forward pass for L layers:</Text>
+                    <Text fw="bold" mb="xs">Complete forward pass for L layers:</Text>
                     <BlockMath>{`\\begin{align}
                       h^{(0)} &= x \\quad \\text{(input)} \\\\
                       h^{(1)} &= \\sigma^{(1)}(W^{(1)} h^{(0)} + b^{(1)}) \\\\
@@ -339,7 +339,7 @@ plt.title('Activation Functions Comparison')`} />
               </Paper>
 
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Vectorized Implementation</Title>
+                <Title order={4} mb="sm">Vectorized Implementation</Title>
                 <Text size="sm" className="mb-3">
                   For batch processing with B samples:
                 </Text>
@@ -401,7 +401,7 @@ print(f"Output shape: {output.shape}")  # [32, 10]`} />
               <Grid gutter="lg">
                 <Grid.Col span={12}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Feature Hierarchy in Vision Tasks</Title>
+                    <Title order={4} mb="sm">Feature Hierarchy in Vision Tasks</Title>
                     
                     <div className="space-y-3">
                       <div className="flex items-center space-x-4">
@@ -441,7 +441,7 @@ print(f"Output shape: {output.shape}")  # [32, 10]`} />
               </Grid>
               
               <Paper className="p-4 bg-yellow-50 mt-4">
-                <Title order={4} className="mb-3">Universal Approximation Theorem</Title>
+                <Title order={4} mb="sm">Universal Approximation Theorem</Title>
                 <Text size="sm" className="mb-3">
                   A foundational result showing MLPs can approximate any continuous function:
                 </Text>
@@ -477,7 +477,7 @@ print(f"Output shape: {output.shape}")  # [32, 10]`} />
             <Paper className="p-6 bg-gradient-to-r from-orange-50 to-red-50 mb-6">
               <Title order={3} className="mb-4">Understanding Network Parameters</Title>
               
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 The learnable parameters of a neural network are the weights and biases that determine how 
                 information flows and transforms through the network.
               </Text>
@@ -485,7 +485,7 @@ print(f"Output shape: {output.shape}")  # [32, 10]`} />
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Weights <InlineMath>{`W`}</InlineMath></Title>
+                    <Title order={4} mb="sm">Weights <InlineMath>{`W`}</InlineMath></Title>
                     <Text size="sm" className="mb-3">
                       Control the strength of connections between neurons:
                     </Text>
@@ -504,7 +504,7 @@ print(f"Output shape: {output.shape}")  # [32, 10]`} />
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Biases <InlineMath>{`b`}</InlineMath></Title>
+                    <Title order={4} mb="sm">Biases <InlineMath>{`b`}</InlineMath></Title>
                     <Text size="sm" className="mb-3">
                       Shift the activation threshold of neurons:
                     </Text>
@@ -534,7 +534,7 @@ print(f"Output shape: {output.shape}")  # [32, 10]`} />
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-blue-50">
-                    <Title order={4} className="mb-3">Xavier/Glorot Initialization</Title>
+                    <Title order={4} mb="sm">Xavier/Glorot Initialization</Title>
                     <Text size="sm" className="mb-3">For sigmoid/tanh activations:</Text>
                     <BlockMath>{`W_{ij} \\sim \\mathcal{N}\\left(0, \\frac{2}{n_{in} + n_{out}}\\right)`}</BlockMath>
                     <Text size="sm" className="mt-2">or uniform:</Text>
@@ -547,7 +547,7 @@ print(f"Output shape: {output.shape}")  # [32, 10]`} />
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-green-50">
-                    <Title order={4} className="mb-3">He/Kaiming Initialization</Title>
+                    <Title order={4} mb="sm">He/Kaiming Initialization</Title>
                     <Text size="sm" className="mb-3">For ReLU activations:</Text>
                     <BlockMath>{`W_{ij} \\sim \\mathcal{N}\\left(0, \\frac{2}{n_{in}}\\right)`}</BlockMath>
                     <Text size="sm" className="mt-2">or uniform:</Text>
@@ -596,7 +596,7 @@ with torch.no_grad():
               <Title order={3} className="mb-4">Parameter Counting and Memory Requirements</Title>
               
               <Paper className="p-4 bg-white mb-4">
-                <Title order={4} className="mb-3">Calculating Total Parameters</Title>
+                <Title order={4} mb="sm">Calculating Total Parameters</Title>
                 
                 <Text className="mb-3">
                   For an MLP with layer sizes <InlineMath>{`[d_0, d_1, d_2, ..., d_L]`}</InlineMath>:
@@ -626,7 +626,7 @@ with torch.no_grad():
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-orange-50">
-                    <Title order={4} className="mb-3">Memory Considerations</Title>
+                    <Title order={4} mb="sm">Memory Considerations</Title>
                     <List size="sm">
                       <List.Item><strong>FP32:</strong> 4 bytes per parameter</List.Item>
                       <List.Item><strong>FP16:</strong> 2 bytes per parameter</List.Item>
@@ -639,7 +639,7 @@ with torch.no_grad():
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-pink-50">
-                    <Title order={4} className="mb-3">Efficiency Insights</Title>
+                    <Title order={4} mb="sm">Efficiency Insights</Title>
                     <List size="sm">
                       <List.Item>Deep narrow networks often better than shallow wide</List.Item>
                       <List.Item>Parameter sharing (CNNs, RNNs) reduces count</List.Item>
@@ -661,29 +661,29 @@ with torch.no_grad():
               </Text>
               
               <Paper className="p-4 bg-white">
-                <Title order={4} className="mb-3">The Backpropagation Algorithm</Title>
+                <Title order={4} mb="sm">The Backpropagation Algorithm</Title>
                 
                 <div className="space-y-4">
                   <div>
-                    <Text className="font-semibold mb-2">1. Forward Pass:</Text>
+                    <Text fw="bold" mb="xs">1. Forward Pass:</Text>
                     <Text size="sm">Compute activations layer by layer, storing intermediate values</Text>
                     <BlockMath>{`h^{(l)} = \\sigma(W^{(l)} h^{(l-1)} + b^{(l)})`}</BlockMath>
                   </div>
                   
                   <div>
-                    <Text className="font-semibold mb-2">2. Compute Loss:</Text>
+                    <Text fw="bold" mb="xs">2. Compute Loss:</Text>
                     <Text size="sm">Calculate error between prediction and target</Text>
                     <BlockMath>{`\\mathcal{L} = \\ell(\\hat{y}, y)`}</BlockMath>
                   </div>
                   
                   <div>
-                    <Text className="font-semibold mb-2">3. Backward Pass:</Text>
+                    <Text fw="bold" mb="xs">3. Backward Pass:</Text>
                     <Text size="sm">Propagate gradients from output to input</Text>
                     <BlockMath>{`\\frac{\\partial \\mathcal{L}}{\\partial W^{(l)}} = \\frac{\\partial \\mathcal{L}}{\\partial h^{(l)}} \\cdot \\frac{\\partial h^{(l)}}{\\partial z^{(l)}} \\cdot \\frac{\\partial z^{(l)}}{\\partial W^{(l)}}`}</BlockMath>
                   </div>
                   
                   <div>
-                    <Text className="font-semibold mb-2">4. Update Parameters:</Text>
+                    <Text fw="bold" mb="xs">4. Update Parameters:</Text>
                     <Text size="sm">Apply gradient descent update rule</Text>
                     <BlockMath>{`W^{(l)} \\leftarrow W^{(l)} - \\eta \\frac{\\partial \\mathcal{L}}{\\partial W^{(l)}}`}</BlockMath>
                   </div>
@@ -906,7 +906,7 @@ if __name__ == "__main__":
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Training Issues</Title>
+                    <Title order={4} mb="sm">Training Issues</Title>
                     <List size="sm">
                       <List.Item>
                         <strong>Vanishing Gradients:</strong> Use ReLU, proper initialization, batch norm
@@ -926,7 +926,7 @@ if __name__ == "__main__":
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} className="mb-3">Architecture Choices</Title>
+                    <Title order={4} mb="sm">Architecture Choices</Title>
                     <List size="sm">
                       <List.Item>
                         <strong>Width vs Depth:</strong> Start with 2-3 hidden layers, tune width

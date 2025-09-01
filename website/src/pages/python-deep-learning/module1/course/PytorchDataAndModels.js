@@ -6,7 +6,7 @@ import CodeBlock from 'components/CodeBlock';
 
 const PytorchDataAndModels = () => {
   return (
-    <Container size="xl" className="py-6">
+    <Container size="xl" py="xl">
       <Stack spacing="xl">
         
         {/* Introduction */}
@@ -17,14 +17,14 @@ const PytorchDataAndModels = () => {
           
           <Paper className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 mb-6">
             <Title order={2} className="mb-4">From Data to Models</Title>
-            <Text size="lg" className="mb-4">
+            <Text size="lg" mb="md">
               Building effective deep learning systems requires mastering three core components: 
               efficient data loading and preprocessing, powerful data transformations, and 
               well-architected neural network models. This section covers PyTorch's tools 
               for each of these essential elements.
             </Text>
             
-            <Flex direction="column" align="center" className="mb-4">
+            <Flex direction="column" align="center" mb="md">
               <Image
                 src="/assets/python-deep-learning/module1/data_pipeline.png"
                 alt="PyTorch Data Pipeline"
@@ -47,7 +47,7 @@ const PytorchDataAndModels = () => {
           
           <Paper className="p-6 bg-green-50 mb-6">
             <Title order={3} className="mb-4">The Dataset Abstraction</Title>
-            <Text size="lg" className="mb-4">
+            <Text size="lg" mb="md">
               PyTorch's Dataset class provides a clean abstraction for working with data. 
               It handles indexing, loading, and preprocessing, making it easy to work with 
               any type of data - images, text, audio, or tabular data.
@@ -56,7 +56,7 @@ const PytorchDataAndModels = () => {
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Dataset Interface</Title>
+                  <Title order={4} mb="sm">Dataset Interface</Title>
                   <Text size="sm" className="mb-3">
                     Every PyTorch Dataset must implement two key methods:
                   </Text>
@@ -89,7 +89,7 @@ class CustomDataset(Dataset):
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Built-in Datasets</Title>
+                  <Title order={4} mb="sm">Built-in Datasets</Title>
                   <Text size="sm" className="mb-3">
                     PyTorch provides many pre-built datasets for common tasks:
                   </Text>
@@ -125,7 +125,7 @@ print(f"Sample shape: {sample.shape}")  # [3, 32, 32]`} />
               batching, shuffling, parallel loading, and memory management.
             </Text>
             
-            <Flex direction="column" align="center" className="mb-4">
+            <Flex direction="column" align="center" mb="md">
               <Image
                 src="/assets/python-deep-learning/module1/dataloader_process.png"
                 alt="DataLoader Process"
@@ -182,7 +182,7 @@ for epoch in range(5):
             <Grid gutter="lg" className="mt-4">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Key DataLoader Parameters</Title>
+                  <Title order={4} mb="sm">Key DataLoader Parameters</Title>
                   <List size="sm">
                     <List.Item><strong>batch_size:</strong> Number of samples per batch</List.Item>
                     <List.Item><strong>shuffle:</strong> Randomize sample order</List.Item>
@@ -196,7 +196,7 @@ for epoch in range(5):
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Performance Tips</Title>
+                  <Title order={4} mb="sm">Performance Tips</Title>
                   <List size="sm">
                     <List.Item>Use num_workers=4-8 for faster loading</List.Item>
                     <List.Item>Enable pin_memory for GPU training</List.Item>
@@ -219,7 +219,7 @@ for epoch in range(5):
           
           <Paper className="p-6 bg-gradient-to-r from-green-50 to-teal-50 mb-6">
             <Title order={3} className="mb-4">Fundamental Operations for Deep Learning</Title>
-            <Text size="lg" className="mb-4">
+            <Text size="lg" mb="md">
               Deep learning operates on multi-dimensional arrays. Understanding their properties and operations 
               is crucial for implementing and debugging neural networks.
             </Text>
@@ -227,7 +227,7 @@ for epoch in range(5):
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-blue-50">
-                  <Title order={4} className="mb-3">Matrix Multiplication</Title>
+                  <Title order={4} mb="sm">Matrix Multiplication</Title>
                   <BlockMath>{`C = AB \\text{ where } C_{ij} = \\sum_k A_{ik}B_{kj}`}</BlockMath>
                   <Text size="sm" className="mb-2">Dimensions: <InlineMath>{`(m \\times n) \\cdot (n \\times p) = (m \\times p)`}</InlineMath></Text>
                   
@@ -241,7 +241,7 @@ print(C.shape)  # torch.Size([10, 3])`} />
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-green-50">
-                  <Title order={4} className="mb-3">Element-wise Operations</Title>
+                  <Title order={4} mb="sm">Element-wise Operations</Title>
                   <BlockMath>{`C = A \\odot B \\text{ where } C_{ij} = A_{ij} \\cdot B_{ij}`}</BlockMath>
                   <Text size="sm" className="mb-2">Hadamard product (element-wise multiplication)</Text>
                   
@@ -266,7 +266,7 @@ E = A + v  # [[2, 4], [4, 6]]`} />
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Broadcasting Rules</Title>
+                  <Title order={4} mb="sm">Broadcasting Rules</Title>
                   <Text size="sm" className="mb-3">
                     PyTorch automatically broadcasts tensors for element-wise operations:
                   </Text>
@@ -285,15 +285,15 @@ C = A + b                  # Shape: [5, 3]`} />
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Vector Norms</Title>
+                  <Title order={4} mb="sm">Vector Norms</Title>
                   <div className="space-y-3">
                     <div>
-                      <Text className="font-semibold text-sm">L2 Norm (Euclidean):</Text>
+                      <Text fw="bold" size="sm">L2 Norm (Euclidean):</Text>
                       <BlockMath>{`||x||_2 = \\sqrt{\\sum_{i=1}^n x_i^2}`}</BlockMath>
                     </div>
                     
                     <div>
-                      <Text className="font-semibold text-sm">L1 Norm (Manhattan):</Text>
+                      <Text fw="bold" size="sm">L1 Norm (Manhattan):</Text>
                       <BlockMath>{`||x||_1 = \\sum_{i=1}^n |x_i|`}</BlockMath>
                     </div>
                   </div>
@@ -311,13 +311,13 @@ C = A + b                  # Shape: [5, 3]`} />
           
           <Paper className="p-6 bg-purple-50 mb-6">
             <Title order={3} className="mb-4">The Power of Data Augmentation</Title>
-            <Text size="lg" className="mb-4">
+            <Text size="lg" mb="md">
               Data transforms are essential for preprocessing and augmenting your data. 
               They can normalize inputs, apply augmentations for better generalization, 
               and convert between data formats. PyTorch transforms are composable and efficient.
             </Text>
             
-            <Flex direction="column" align="center" className="mb-4">
+            <Flex direction="column" align="center" mb="md">
               <Image
                 src="/assets/python-deep-learning/module1/data_augmentation.png"
                 alt="Data Augmentation Examples"
@@ -333,7 +333,7 @@ C = A + b                  # Shape: [5, 3]`} />
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Basic Transforms</Title>
+                  <Title order={4} mb="sm">Basic Transforms</Title>
                   
                   <CodeBlock language="python" code={`import torchvision.transforms as transforms
 from PIL import Image
@@ -357,7 +357,7 @@ print(f"Transformed shape: {tensor.shape}")  # [3, 224, 224]`} />
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Augmentation Transforms</Title>
+                  <Title order={4} mb="sm">Augmentation Transforms</Title>
                   
                   <CodeBlock language="python" code={`# Data augmentation for training
 train_transforms = transforms.Compose([
@@ -447,7 +447,7 @@ val_dataset = CustomDataset(val_data, val_labels, val_transform)`} />
             <Grid gutter="lg" className="mt-4">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Why Normalization Matters</Title>
+                  <Title order={4} mb="sm">Why Normalization Matters</Title>
                   <Text size="sm" className="mb-3">
                     Normalization helps with training stability and convergence:
                   </Text>
@@ -465,7 +465,7 @@ val_dataset = CustomDataset(val_data, val_labels, val_transform)`} />
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Augmentation Benefits</Title>
+                  <Title order={4} mb="sm">Augmentation Benefits</Title>
                   <Text size="sm" className="mb-3">
                     Data augmentation improves model generalization:
                   </Text>
@@ -490,12 +490,12 @@ val_dataset = CustomDataset(val_data, val_labels, val_transform)`} />
           
           <Paper className="p-6 bg-gradient-to-r from-rose-50 to-pink-50 mb-6">
             <Title order={3} className="mb-4">PyTorch Neural Network Module</Title>
-            <Text size="lg" className="mb-4">
+            <Text size="lg" mb="md">
               PyTorch provides the torch.nn module for building neural networks. Understanding 
               the basic building blocks and how they connect is essential for creating models.
             </Text>
             
-            <Flex direction="column" align="center" className="mb-4">
+            <Flex direction="column" align="center" mb="md">
               <Image
                 src="/assets/python-deep-learning/module1/simple_mlp.png"
                 alt="Simple Multi-Layer Perceptron"
@@ -519,7 +519,7 @@ val_dataset = CustomDataset(val_data, val_labels, val_transform)`} />
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Mathematical Operation</Title>
+                  <Title order={4} mb="sm">Mathematical Operation</Title>
                   <BlockMath>{`y = xW^T + b`}</BlockMath>
                   <Text size="sm" className="mb-3">
                     Where:
@@ -535,7 +535,7 @@ val_dataset = CustomDataset(val_data, val_labels, val_transform)`} />
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Dimension Example</Title>
+                  <Title order={4} mb="sm">Dimension Example</Title>
                   <Text size="sm" className="mb-2">
                     For a linear layer with 784 inputs and 128 outputs:
                   </Text>
@@ -600,7 +600,7 @@ print(f"Predicted class: {y_pred}")`} />
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Accessing Parameters</Title>
+                  <Title order={4} mb="sm">Accessing Parameters</Title>
                   <CodeBlock language="python" code={`# Iterate through model parameters
 for name, param in model.named_parameters():
     print(f"Layer: {name} | Size: {param.size()}")
@@ -618,7 +618,7 @@ print(f"First layer bias: {first_linear.bias.shape}")`} />
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Common Activation Functions</Title>
+                  <Title order={4} mb="sm">Common Activation Functions</Title>
                   <CodeBlock language="python" code={`# ReLU: most common activation
 relu = nn.ReLU()
 
@@ -647,7 +647,7 @@ softmax_output = softmax(x)  # Probabilities sum to 1`} />
           
           <Paper className="p-6 bg-gradient-to-r from-emerald-50 to-teal-50">
             <Title order={3} className="mb-4">What's Coming Next</Title>
-            <Text size="lg" className="mb-4">
+            <Text size="lg" mb="md">
               You now understand the fundamental components of PyTorch: datasets, transforms, 
               and neural network building blocks. In the next sections, we'll cover:
             </Text>
@@ -655,7 +655,7 @@ softmax_output = softmax(x)  # Probabilities sum to 1`} />
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Automatic Differentiation</Title>
+                  <Title order={4} mb="sm">Automatic Differentiation</Title>
                   <List size="sm">
                     <List.Item>Mathematical foundations of autograd</List.Item>
                     <List.Item>Computational graphs and backpropagation</List.Item>
@@ -667,7 +667,7 @@ softmax_output = softmax(x)  # Probabilities sum to 1`} />
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Complete Training Pipeline</Title>
+                  <Title order={4} mb="sm">Complete Training Pipeline</Title>
                   <List size="sm">
                     <List.Item>Optimization algorithms and schedulers</List.Item>
                     <List.Item>Training loops and best practices</List.Item>

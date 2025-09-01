@@ -5,7 +5,7 @@ import 'katex/dist/katex.min.css';
 
 const ConvolutionalNetworks = () => {
   return (
-    <Container size="xl" className="py-6">
+    <Container size="xl" py="xl">
       <Stack spacing="xl">
         
         {/* Slide 1: Title and Introduction */}
@@ -18,7 +18,7 @@ const ConvolutionalNetworks = () => {
           </Text>
           <div className="max-w-3xl mx-auto">
             <Paper className="p-6 bg-blue-50">
-              <Text size="lg" className="mb-4">
+              <Text size="lg" mb="md">
                 Convolutional Neural Networks (CNNs) are specialized architectures designed for processing 
                 grid-like data such as images. They leverage spatial locality and parameter sharing to 
                 efficiently learn visual patterns.
@@ -52,7 +52,7 @@ const ConvolutionalNetworks = () => {
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Basic Convolution Layer</Title>
+                <Title order={4} mb="sm">Basic Convolution Layer</Title>
                 <Code block language="python">{`import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -95,7 +95,7 @@ def conv2d_manual(input_tensor, kernel, stride=1, padding=0):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">Convolution Parameters</Title>
+                <Title order={4} mb="sm">Convolution Parameters</Title>
                 <Code block language="python">{`# Different convolution configurations
 conv_configs = [
     # Standard convolution
@@ -133,7 +133,7 @@ output_size = conv_output_size(224, 3, 1, 1)  # 224`}</Code>
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-purple-50">
-                <Title order={4} className="mb-3">Max and Average Pooling</Title>
+                <Title order={4} mb="sm">Max and Average Pooling</Title>
                 <Code block language="python">{`# Max pooling
 max_pool = nn.MaxPool2d(
     kernel_size=2, 
@@ -165,7 +165,7 @@ global_pooled = global_avg_pool(x)  # (32, 64, 1, 1)`}</Code>
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-orange-50">
-                <Title order={4} className="mb-3">Custom Pooling Operations</Title>
+                <Title order={4} mb="sm">Custom Pooling Operations</Title>
                 <Code block language="python">{`class StochasticPooling(nn.Module):
     def __init__(self, kernel_size, stride):
         super().__init__()
@@ -203,7 +203,7 @@ class MixedPooling(nn.Module):
           <Grid gutter="lg">
             <Grid.Col span={12}>
               <Paper className="p-4 bg-yellow-50 mb-4">
-                <Title order={4} className="mb-3">LeNet-5 Style Architecture</Title>
+                <Title order={4} mb="sm">LeNet-5 Style Architecture</Title>
                 <Code block language="python">{`class LeNet5(nn.Module):
     def __init__(self, num_classes=10):
         super().__init__()
@@ -237,7 +237,7 @@ class MixedPooling(nn.Module):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">VGG-Style Architecture</Title>
+                <Title order={4} mb="sm">VGG-Style Architecture</Title>
                 <Code block language="python">{`class VGGBlock(nn.Module):
     def __init__(self, in_channels, out_channels, num_convs):
         super().__init__()
@@ -285,7 +285,7 @@ class VGG(nn.Module):
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-blue-50">
-                <Title order={4} className="mb-3">ResNet Block</Title>
+                <Title order={4} mb="sm">ResNet Block</Title>
                 <Code block language="python">{`class BasicBlock(nn.Module):
     expansion = 1
     
@@ -328,7 +328,7 @@ class VGG(nn.Module):
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-4 bg-red-50">
-                <Title order={4} className="mb-3">Separable Convolutions</Title>
+                <Title order={4} mb="sm">Separable Convolutions</Title>
                 <Code block language="python">{`class SeparableConv2d(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0):
         super().__init__()
@@ -356,7 +356,7 @@ group_conv = nn.Conv2d(64, 128, kernel_size=3, padding=1, groups=4)`}</Code>
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-purple-50">
-                <Title order={4} className="mb-3">Squeeze-and-Excitation</Title>
+                <Title order={4} mb="sm">Squeeze-and-Excitation</Title>
                 <Code block language="python">{`class SEBlock(nn.Module):
     def __init__(self, channels, reduction=16):
         super().__init__()
@@ -408,7 +408,7 @@ class SEBottleneck(nn.Module):
           <Grid gutter="lg">
             <Grid.Col span={12}>
               <Paper className="p-4 bg-indigo-50 mb-4">
-                <Title order={4} className="mb-3">Using Torchvision Pre-trained Models</Title>
+                <Title order={4} mb="sm">Using Torchvision Pre-trained Models</Title>
                 <Code block language="python">{`import torchvision.models as models
 import torch.nn as nn
 
@@ -456,7 +456,7 @@ model.fc = CustomHead(model.fc.in_features, num_classes)`}</Code>
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-green-50">
-                <Title order={4} className="mb-3">Different Learning Rates</Title>
+                <Title order={4} mb="sm">Different Learning Rates</Title>
                 <Code block language="python">{`# Different learning rates for different parts
 backbone_params = []
 classifier_params = []
@@ -476,7 +476,7 @@ optimizer = torch.optim.SGD([
             
             <Grid.Col span={6}>
               <Paper className="p-4 bg-yellow-50">
-                <Title order={4} className="mb-3">Progressive Unfreezing</Title>
+                <Title order={4} mb="sm">Progressive Unfreezing</Title>
                 <Code block language="python">{`def unfreeze_layers(model, num_layers_to_unfreeze):
     # Get all layer names in reverse order
     layer_names = [name for name, _ in model.named_parameters()]

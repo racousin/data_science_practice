@@ -26,7 +26,7 @@ const AutogradDeepDive = () => {
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Forward Mode AD</Title>
+                  <Title order={4} mb="sm">Forward Mode AD</Title>
                   <Text className="mb-3">Computes derivatives alongside forward computation:</Text>
                   <List size="sm">
                     <List.Item>Propagates derivatives from inputs to outputs</List.Item>
@@ -61,7 +61,7 @@ print(f"f'(3) = {result.derivative}") # 6`} />
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Reverse Mode AD (Backpropagation)</Title>
+                  <Title order={4} mb="sm">Reverse Mode AD (Backpropagation)</Title>
                   <Text className="mb-3">Computes derivatives by traversing computation graph backwards:</Text>
                   <List size="sm">
                     <List.Item>Forward pass computes function values</List.Item>
@@ -111,7 +111,7 @@ print(f"Complex function gradient: {x.grad}")`} />
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-blue-50">
-                  <Title order={4} className="mb-3">Graph Node Structure</Title>
+                  <Title order={4} mb="sm">Graph Node Structure</Title>
                   <CodeBlock language="python" code={`import torch
 
 # Create leaf tensors (inputs)
@@ -141,7 +141,7 @@ print(f"loss.grad_fn.next_functions: {loss.grad_fn.next_functions}")`} />
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-yellow-50">
-                  <Title order={4} className="mb-3">Graph Traversal and Dependencies</Title>
+                  <Title order={4} mb="sm">Graph Traversal and Dependencies</Title>
                   <CodeBlock language="python" code={`# Visualize graph dependencies
 def print_graph(tensor, depth=0):
     """Recursively print computation graph structure"""
@@ -175,7 +175,7 @@ print_graph(result)`} />
           </Paper>
 
           <Paper className="p-4 bg-purple-50">
-            <Title order={4} className="mb-3">Graph Memory Management</Title>
+            <Title order={4} mb="sm">Graph Memory Management</Title>
             <CodeBlock language="python" code={`# Graph lifecycle and memory management
 import torch
 
@@ -226,7 +226,7 @@ analyze_graph_memory()`} />
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Scalar Chain Rule</Title>
+                  <Title order={4} mb="sm">Scalar Chain Rule</Title>
                   <CodeBlock language="python" code={`import torch
 
 # Example: f(x) = sin(x²)
@@ -258,7 +258,7 @@ print(f"Match: {torch.allclose(x.grad, expected_grad)}")`} />
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Vector Chain Rule</Title>
+                  <Title order={4} mb="sm">Vector Chain Rule</Title>
                   <CodeBlock language="python" code={`# Multivariable chain rule
 # f(x,y) = x*y + x²
 # ∂f/∂x = y + 2x, ∂f/∂y = x
@@ -293,7 +293,7 @@ print(f"Expected y.grad: {expected_y_grad}")`} />
           </Paper>
 
           <Paper className="p-4 bg-green-50">
-            <Title order={4} className="mb-3">Jacobian and Vector-Jacobian Products</Title>
+            <Title order={4} mb="sm">Jacobian and Vector-Jacobian Products</Title>
             <CodeBlock language="python" code={`# Understanding Jacobian matrices and VJPs
 import torch
 
@@ -353,7 +353,7 @@ print(f"Match: {torch.allclose(J, expected_J)}")`} />
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-blue-50">
-                  <Title order={4} className="mb-3">Gradient Accumulation</Title>
+                  <Title order={4} mb="sm">Gradient Accumulation</Title>
                   <CodeBlock language="python" code={`import torch
 
 # Gradient accumulation example
@@ -392,7 +392,7 @@ print(f"Fresh backward: x.grad = {x.grad}")  # Should be 4x³ = 32`} />
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-yellow-50">
-                  <Title order={4} className="mb-3">Practical Gradient Management</Title>
+                  <Title order={4} mb="sm">Practical Gradient Management</Title>
                   <CodeBlock language="python" code={`# Practical gradient management in training loops
 import torch
 import torch.nn as nn
@@ -454,7 +454,7 @@ for epoch in range(2):
           </Paper>
 
           <Paper className="p-4 bg-purple-50">
-            <Title order={4} className="mb-3">Advanced Gradient Manipulation</Title>
+            <Title order={4} mb="sm">Advanced Gradient Manipulation</Title>
             <CodeBlock language="python" code={`# Advanced gradient manipulation techniques
 import torch
 
