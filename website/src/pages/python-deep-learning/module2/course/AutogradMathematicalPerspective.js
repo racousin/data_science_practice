@@ -10,6 +10,8 @@ const AutogradMathematicalPerspective = () => {
       <Stack spacing="xl">
         <Title order={2} id="gradient-methods">Gradient Computation Methods</Title>
 
+We see in previous section a way to optimize a parametric model. For that we need the gradient. For deep learning modeles with millions of parameters, how we do compute the gradient?
+<BlockMath>{`\\theta_{t+1} = \\theta_t - \\eta \\nabla_\\theta \\mathcal{L}(\\theta_t)`}</BlockMath>
 
   <Table withTableBorder withColumnBorders>
     <Table.Thead>

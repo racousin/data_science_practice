@@ -250,23 +250,17 @@ export const pytorchCourseContentData = {
     ]}
   ],
   'module2': [
-    { to: '/autograd-mathematical-perspective', label: 'Autograd Deep Dive', subLinks: [
+    { to: '/autograd-mathematical-perspective', label: 'Autograd mathematical perspective', subLinks: [
       { id: 'forward-reverse-mode', label: 'Forward & Reverse Mode Differentiation' },
       { id: 'computational-graph-construction', label: 'Computational Graph Construction' },
       { id: 'chain-rule-backpropagation', label: 'Chain Rule & Backpropagation Mathematics' },
       { id: 'gradient-accumulation', label: 'Gradient Accumulation & Zeroing' }
     ]},
-        { to: '/autograd-torch-perspective', label: 'Autograd Deep Dive', subLinks: [
+        { to: '/autograd-torch-perspective', label: 'Autograd torch perspective', subLinks: [
       { id: 'forward-reverse-mode', label: 'Forward & Reverse Mode Differentiation' },
       { id: 'computational-graph-construction', label: 'Computational Graph Construction' },
       { id: 'chain-rule-backpropagation', label: 'Chain Rule & Backpropagation Mathematics' },
       { id: 'gradient-accumulation', label: 'Gradient Accumulation & Zeroing' }
-    ]},
-    { to: '/data-pipeline-training-loop', label: 'Data Pipeline & Training Loop', subLinks: [
-      { id: 'dataloader-architecture', label: 'DataLoader Architecture & Multiprocessing' },
-      { id: 'batch-sampling', label: 'Batch Sampling Strategies' },
-      { id: 'training-dynamics', label: 'Training Dynamics & Loss Landscapes' },
-      { id: 'early-stopping', label: 'Early Stopping & Convergence Criteria' }
     ]},
     { to: '/advanced-gradient-mechanics', label: 'Advanced Gradient Mechanics', subLinks: [
       { id: 'gradient-flow', label: 'Gradient Flow & Vanishing/Exploding' },
