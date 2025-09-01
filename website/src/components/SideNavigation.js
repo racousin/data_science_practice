@@ -250,7 +250,7 @@ export const pytorchCourseContentData = {
     ]}
   ],
   'module2': [
-    { to: '/autograd-mathematical-perspective', label: 'Autograd mathematical perspective', subLinks: [
+    { to: '/automatic-differentiation-mathematical-perspective', label: 'Autograd mathematical perspective', subLinks: [
       { id: 'forward-reverse-mode', label: 'Forward & Reverse Mode Differentiation' },
       { id: 'computational-graph-construction', label: 'Computational Graph Construction' },
       { id: 'chain-rule-backpropagation', label: 'Chain Rule & Backpropagation Mathematics' },

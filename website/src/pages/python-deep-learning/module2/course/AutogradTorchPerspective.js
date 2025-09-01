@@ -8,6 +8,7 @@ const AutogradTorchPerspective = () => {
   return (
     <Container size="xl">
       <Stack spacing="xl">
+        Autograd is the name of Reverse Automatic Differentiation method implemented in pytorch.
         <Title order={2} id="gradient-methods">Gradient Computation Methods</Title>
 
 
@@ -71,40 +72,7 @@ for name, param in model.named_parameters():
             </Text>
             
             <Grid gutter="lg">
-              <Grid.Col span={6}>
-                <Paper className="p-4 bg-white">
-                  <Title order={4} mb="sm">Forward Mode AD</Title>
-                  <Text className="mb-3">Computes derivatives alongside forward computation:</Text>
-                  <List size="sm">
-                    <List.Item>Propagates derivatives from inputs to outputs</List.Item>
-                    <List.Item>Efficient for functions with few inputs, many outputs</List.Item>
-                    <List.Item>Each variable carries its derivative (dual number)</List.Item>
-                    <List.Item>Cost: O(n) for n input variables</List.Item>
-                  </List>
-                  
-                  <CodeBlock language="python" code={`# Forward mode example for f(x) = x²
-class DualNumber:
-    def __init__(self, value, derivative=0):
-        self.value = value
-        self.derivative = derivative
-    
-    def __mul__(self, other):
-        if isinstance(other, DualNumber):
-            # Product rule: (uv)' = u'v + uv'
-            return DualNumber(
-                self.value * other.value,
-                self.derivative * other.value + self.value * other.derivative
-            )
-        else:
-            return DualNumber(self.value * other, self.derivative * other)
 
-# Compute f(x) = x² and f'(x) at x=3
-x = DualNumber(3, 1)  # value=3, derivative=1 (dx/dx = 1)
-result = x * x
-print(f"f(3) = {result.value}")      # 9
-print(f"f'(3) = {result.derivative}") # 6`} />
-                </Paper>
-              </Grid.Col>
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
@@ -551,45 +519,6 @@ print(f"x.grad: {x.grad}")  # Should be doubled`} />
           </Paper>
         </div>
 
-        {/* Summary */}
-        <div>
-          <Title order={2} className="mb-8">Summary: Autograd Deep Dive</Title>
-          
-          <Grid gutter="lg">
-            <Grid.Col span={6}>
-              <Paper className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 h-full">
-                <Title order={3} mb="md">Key Concepts</Title>
-                <List spacing="md">
-                  <List.Item>Forward mode AD: efficient for few inputs, many outputs</List.Item>
-                  <List.Item>Reverse mode AD (backprop): efficient for many inputs, few outputs</List.Item>
-                  <List.Item>Dynamic computational graphs enable flexible architectures</List.Item>
-                  <List.Item>Chain rule enables gradient computation through compositions</List.Item>
-                </List>
-              </Paper>
-            </Grid.Col>
-            
-            <Grid.Col span={6}>
-              <Paper className="p-6 bg-gradient-to-br from-green-50 to-green-100 h-full">
-                <Title order={3} mb="md">Practical Implications</Title>
-                <List spacing="md">
-                  <List.Item>Always zero gradients before backward pass in training</List.Item>
-                  <List.Item>Gradient accumulation enables large effective batch sizes</List.Item>
-                  <List.Item>Graph memory management affects training efficiency</List.Item>
-                  <List.Item>Custom gradient manipulation enables advanced techniques</List.Item>
-                </List>
-              </Paper>
-            </Grid.Col>
-          </Grid>
-          
-          <Paper className="p-6 bg-gradient-to-r from-purple-50 to-pink-50 mt-6 text-center">
-            <Text size="lg" className="font-semibold">
-              Mastering autograd is essential for understanding and debugging deep learning models
-            </Text>
-            <Text className="mt-2">
-              These concepts form the mathematical foundation of all neural network training
-            </Text>
-          </Paper>
-        </div>
 
       </Stack>
     </Container>

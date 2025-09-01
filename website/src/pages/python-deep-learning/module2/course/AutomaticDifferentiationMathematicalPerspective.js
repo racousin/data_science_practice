@@ -4,7 +4,7 @@ import CodeBlock from 'components/CodeBlock';
 import { InlineMath, BlockMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 
-const AutogradMathematicalPerspective = () => {
+const AutomaticDifferentiationMathematicalPerspective = () => {
   return (
     <Container size="xl">
       <Stack spacing="xl">
@@ -476,4 +476,4 @@ We see in previous section a way to optimize a parametric model. For that we nee
   );
 };
 
-export default AutogradMathematicalPerspective;
+export default AutomaticDifferentiationMathematicalPerspective;

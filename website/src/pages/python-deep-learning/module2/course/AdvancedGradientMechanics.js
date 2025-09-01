@@ -314,35 +314,7 @@ print(f"Match: {torch.allclose(y, y_builtin)}")`} />
           </Paper>
         </div>
 
-        <div>
-          <Title order={2} className="mb-8">Summary: Advanced Gradient Mechanics</Title>
-          
-          <Grid gutter="lg">
-            <Grid.Col span={6}>
-              <Paper className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 h-full">
-                <Title order={3} mb="md">Gradient Flow Issues</Title>
-                <List spacing="md">
-                  <List.Item>Vanishing gradients prevent deep layer learning</List.Item>
-                  <List.Item>Exploding gradients cause training instability</List.Item>
-                  <List.Item>Activation functions significantly affect gradient flow</List.Item>
-                  <List.Item>Weight initialization impacts gradient propagation</List.Item>
-                </List>
-              </Paper>
-            </Grid.Col>
-            
-            <Grid.Col span={6}>
-              <Paper className="p-6 bg-gradient-to-br from-green-50 to-green-100 h-full">
-                <Title order={3} mb="md">Solutions and Tools</Title>
-                <List spacing="md">
-                  <List.Item>Gradient clipping prevents explosion</List.Item>
-                  <List.Item>Better architectures (ResNet, LSTM) help flow</List.Item>
-                  <List.Item>Custom autograd functions enable precise control</List.Item>
-                  <List.Item>Higher-order derivatives enable advanced optimization</List.Item>
-                </List>
-              </Paper>
-            </Grid.Col>
-          </Grid>
-        </div>
+       
 
       </Stack>
     </Container>
