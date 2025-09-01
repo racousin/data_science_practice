@@ -28,9 +28,8 @@ const PytorchDataAndModels = () => {
               <Image
                 src="/assets/python-deep-learning/module1/data_pipeline.png"
                 alt="PyTorch Data Pipeline"
-                w={{ base: 400, sm: 600, md: 800 }}
-                h="auto"
-                fluid
+              style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
+              fluid
               />
             </Flex>
             <Text component="p" ta="center" mt="xs">
@@ -230,8 +229,7 @@ for epoch in range(5):
               <Image
                 src="/assets/python-deep-learning/module1/data_augmentation.png"
                 alt="Data Augmentation Examples"
-                w={{ base: 400, sm: 600, md: 800 }}
-                h="auto"
+                style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
                 fluid
               />
             </Flex>

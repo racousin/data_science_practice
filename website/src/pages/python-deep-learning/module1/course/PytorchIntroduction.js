@@ -25,16 +25,12 @@ const PytorchIntroduction = () => {
             
             <Flex direction="column" align="center" mb="md">
               <Image
-                src="/assets/python-deep-learning/module1/pytorch_ecosystem.png"
+                src="/assets/python-deep-learning/module1/Pytorch_logo.png"
                 alt="PyTorch Ecosystem"
-                w={{ base: 400, sm: 600, md: 800 }}
-                h="auto"
+                style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
                 fluid
               />
             </Flex>
-            <Text component="p" ta="center" mt="xs">
-              The PyTorch ecosystem for deep learning
-            </Text>
           </Paper>
         </div>
 
