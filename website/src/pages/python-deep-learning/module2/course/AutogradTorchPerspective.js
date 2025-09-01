@@ -1,12 +1,59 @@
 import React from 'react';
-import { Container, Title, Text, Stack, Grid, Paper, List } from '@mantine/core';
+import { Container, Title, Text, Stack, Grid, Paper, List, Table, Box, Divider,Accordion  } from '@mantine/core';
 import CodeBlock from 'components/CodeBlock';
+import { InlineMath, BlockMath } from 'react-katex';
+import 'katex/dist/katex.min.css';
 
-const AutogradDeepDive = () => {
+const AutogradTorchPerspective = () => {
   return (
     <Container size="xl">
       <Stack spacing="xl">
+        <Title order={2} id="gradient-methods">Gradient Computation Methods</Title>
+
+
+        {/* PyTorch Implementation */}
+        <Title order={2} id="implementation">Implementation in PyTorch</Title>
+        <CodeBlock
+          language="python"
+          code={`
+import torch
+import torch.nn as nn
+
+# Define a simple network
+class SimpleNet(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.linear1 = nn.Linear(2, 3)  # 2 inputs, 3 hidden units
+        self.activation = nn.ReLU()
+        self.linear2 = nn.Linear(3, 1)  # 3 hidden units, 1 output
         
+    def forward(self, x):
+        # Forward pass with intermediate values
+        z1 = self.linear1(x)
+        a1 = self.activation(z1)
+        z2 = self.linear2(a1)
+        return z2
+
+# Example usage
+x = torch.tensor([[1., 2.]], requires_grad=True)
+y = torch.tensor([[3.]], requires_grad=True)
+
+model = SimpleNet()
+criterion = nn.MSELoss()
+
+# Forward pass
+output = model(x)
+loss = criterion(output, y)
+
+# Backward pass
+loss.backward()
+
+# Print gradients
+for name, param in model.named_parameters():
+    print(f"{name} grad:", param.grad)
+`}
+        />
+
         {/* Forward and Reverse Mode */}
         <div id="forward-reverse-mode">
           <Title order={1} mb="xl">
@@ -549,4 +596,4 @@ print(f"x.grad: {x.grad}")  # Should be doubled`} />
   );
 };
 
-export default AutogradDeepDive;
+export default AutogradTorchPerspective;

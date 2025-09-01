@@ -249,24 +249,30 @@ export const pytorchCourseContentData = {
       { id: 'training-integration', label: 'Training Pipeline Integration' }
     ]}
   ],
-  'module2': [ // Todo we will add backprpagation Here and migrate data-pipeline-training-loop
-    { to: '/autograd-deep-dive', label: 'Autograd Deep Dive', subLinks: [
+  'module2': [
+    { to: '/autograd-mathematical-perspective', label: 'Autograd Deep Dive', subLinks: [
       { id: 'forward-reverse-mode', label: 'Forward & Reverse Mode Differentiation' },
       { id: 'computational-graph-construction', label: 'Computational Graph Construction' },
       { id: 'chain-rule-backpropagation', label: 'Chain Rule & Backpropagation Mathematics' },
       { id: 'gradient-accumulation', label: 'Gradient Accumulation & Zeroing' }
+    ]},
+        { to: '/autograd-torch-perspective', label: 'Autograd Deep Dive', subLinks: [
+      { id: 'forward-reverse-mode', label: 'Forward & Reverse Mode Differentiation' },
+      { id: 'computational-graph-construction', label: 'Computational Graph Construction' },
+      { id: 'chain-rule-backpropagation', label: 'Chain Rule & Backpropagation Mathematics' },
+      { id: 'gradient-accumulation', label: 'Gradient Accumulation & Zeroing' }
+    ]},
+    { to: '/data-pipeline-training-loop', label: 'Data Pipeline & Training Loop', subLinks: [
+      { id: 'dataloader-architecture', label: 'DataLoader Architecture & Multiprocessing' },
+      { id: 'batch-sampling', label: 'Batch Sampling Strategies' },
+      { id: 'training-dynamics', label: 'Training Dynamics & Loss Landscapes' },
+      { id: 'early-stopping', label: 'Early Stopping & Convergence Criteria' }
     ]},
     { to: '/advanced-gradient-mechanics', label: 'Advanced Gradient Mechanics', subLinks: [
       { id: 'gradient-flow', label: 'Gradient Flow & Vanishing/Exploding' },
       { id: 'gradient-clipping', label: 'Gradient Clipping & Normalization' },
       { id: 'higher-order-derivatives', label: 'Higher-order Derivatives & Hessians' },
       { id: 'custom-backward-passes', label: 'Custom Backward Passes' }
-    ]},
-    { to: '/optimization-algorithms', label: 'Optimization Algorithms', subLinks: [
-      { id: 'modern-optimizers', label: 'Mathematical Foundations of Modern Optimizers' },
-      { id: 'adam-rmsprop-adagrad', label: 'Adam, RMSprop, AdaGrad Derivations' },
-      { id: 'learning-rate-scheduling', label: 'Learning Rate Scheduling Strategies' },
-      { id: 'second-order-optimization', label: 'Second-order Optimization Methods' }
     ]}
   ],
   'module3': [
@@ -277,12 +283,7 @@ export const pytorchCourseContentData = {
       { id: 'weight-initialization', label: 'Weight Initialization Theory' },
       { id: 'regularization-techniques', label: 'Regularization Techniques (Dropout, L2, Batch Norm)' }
     ]},
-    { to: '/data-pipeline-training-loop', label: 'Data Pipeline & Training Loop', subLinks: [ // todo this will migrate to previous section
-      { id: 'dataloader-architecture', label: 'DataLoader Architecture & Multiprocessing' },
-      { id: 'batch-sampling', label: 'Batch Sampling Strategies' },
-      { id: 'training-dynamics', label: 'Training Dynamics & Loss Landscapes' },
-      { id: 'early-stopping', label: 'Early Stopping & Convergence Criteria' }
-    ]},
+
     { to: '/monitoring-visualization', label: 'Monitoring & Visualization', subLinks: [
       { id: 'tensorboard-integration', label: 'TensorBoard Integration' },
       { id: 'metrics-visualization', label: 'Metrics Visualization Strategies' },
