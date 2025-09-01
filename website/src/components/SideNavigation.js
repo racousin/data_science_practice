@@ -237,7 +237,7 @@ export const pytorchCourseContentData = {
       { id: 'parameters', label: 'Parameters to Optimize' },
     ]},
     { to: '/pytorch-introduction', label: 'PyTorch: Introduction & Philosophy', subLinks: [
-      { id: 'philosophy', label: 'PyTorch Philosophy' },
+      { id: 'philosophy', label: 'PyTorch' },
       { id: 'tensors', label: 'Tensors: The Foundation' },
       { id: 'device-management', label: 'Device Management and GPU Acceleration' },
       { id: 'autograd-intro', label: 'Introduction to Automatic Differentiation' }

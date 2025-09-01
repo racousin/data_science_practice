@@ -490,93 +490,96 @@ if cuda_available:
           </Paper>
         </div>
 
-        {/* Autograd Introduction */}
+
+        {/* Linear Algebra Operations */}
         <div data-slide>
-          <Title order={2} mb="xl" id="autograd-intro">
-            Introduction to Automatic Differentiation
+          <Title order={2} mb="xl" id="linear-algebra">
+            Essential Linear Algebra Operations
           </Title>
           
-          <Paper className="p-6 bg-gradient-to-r from-emerald-50 to-teal-50 mb-6">
-            <Title order={3} mb="md">The Magic Behind Deep Learning</Title>
+          <Paper className="p-6 bg-gradient-to-r from-green-50 to-teal-50 mb-6">
+            <Title order={3} mb="md">Fundamental Operations for Deep Learning</Title>
             <Text size="lg" mb="md">
-              Automatic differentiation (autograd) is what makes training neural networks practical. 
-              PyTorch's autograd engine automatically computes gradients by tracking operations 
-              and building a dynamic computational graph.
+              Deep learning operates on multi-dimensional arrays. Understanding their properties and operations 
+              is crucial for implementing and debugging neural networks.
             </Text>
             
-            <Flex direction="column" align="center" mb="md">
-              <Image
-                src="/assets/python-deep-learning/module1/computation_graph.png"
-                alt="Computation Graph"
-                w={{ base: 400, sm: 600, md: 800 }}
-                h="auto"
-                fluid
-              />
-            </Flex>
-            <Text component="p" ta="center" mt="xs">
-              Dynamic computation graph for automatic differentiation
-            </Text>
-            
-            <Paper p="md" bg="white" mt="md">
-              <Text className="mb-3">
-                <strong>Note:</strong> This is just an introduction to autograd. We'll cover automatic 
-                differentiation in much more detail in the next section, including the mathematical 
-                foundations, chain rule implementation, and advanced gradient computation techniques.
-              </Text>
+            <Grid gutter="lg">
+              <Grid.Col span={6}>
+                <Paper className="p-4 bg-blue-50">
+                  <Title order={4} mb="sm">Matrix Multiplication</Title>
+                  <BlockMath>{`C = AB \\text{ where } C_{ij} = \\sum_k A_{ik}B_{kj}`}</BlockMath>
+                  <Text size="sm" className="mb-2">Dimensions: <InlineMath>{`(m \\times n) \\cdot (n \\times p) = (m \\times p)`}</InlineMath></Text>
+                  
+                  <CodeBlock language="python" code={`# Matrix multiplication
+A = torch.randn(10, 5)
+B = torch.randn(5, 3)
+C = torch.matmul(A, B)  # or A @ B
+print(C.shape)  # torch.Size([10, 3])`} />
+                </Paper>
+              </Grid.Col>
               
-              <CodeBlock language="python" code={`# Simple autograd example
-x = torch.tensor(2.0, requires_grad=True)
-y = torch.tensor(3.0, requires_grad=True)
+              <Grid.Col span={6}>
+                <Paper className="p-4 bg-green-50">
+                  <Title order={4} mb="sm">Element-wise Operations</Title>
+                  <BlockMath>{`C = A \\odot B \\text{ where } C_{ij} = A_{ij} \\cdot B_{ij}`}</BlockMath>
+                  <Text size="sm" className="mb-2">Hadamard product (element-wise multiplication)</Text>
+                  
+                  <CodeBlock language="python" code={`# Element-wise operations
+A = torch.tensor([[1, 2], [3, 4]])
+B = torch.tensor([[5, 6], [7, 8]])
 
-# Forward pass: compute function
-z = x**2 + y**3
-print(f"z = {z.item()}")  # z = 31.0
+# Element-wise multiplication
+C = A * B  # [[5, 12], [21, 32]]
 
-# Backward pass: compute gradients automatically
-z.backward()
-
-# Gradients computed via chain rule
-print(f"dz/dx = {x.grad}")  # dz/dx = 4.0 (derivative of x^2 is 2x)
-print(f"dz/dy = {y.grad}")  # dz/dy = 27.0 (derivative of y^3 is 3y^2)`} />
-            </Paper>
+# Broadcasting example
+v = torch.tensor([1, 2])
+E = A + v  # [[2, 4], [4, 6]]`} />
+                </Paper>
+              </Grid.Col>
+            </Grid>
           </Paper>
 
-          <Paper className="p-6 bg-amber-50">
-            <Title order={3} mb="md">Why Autograd Matters</Title>
+          <Paper className="p-6 bg-gray-50 mb-6">
+            <Title order={3} mb="md">Broadcasting and Norms</Title>
             
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} mb="sm">Before Autograd</Title>
+                  <Title order={4} mb="sm">Broadcasting Rules</Title>
+                  <Text size="sm" className="mb-3">
+                    PyTorch automatically broadcasts tensors for element-wise operations:
+                  </Text>
                   <List size="sm">
-                    <List.Item>Manual gradient computation</List.Item>
-                    <List.Item>Error-prone derivative calculations</List.Item>
-                    <List.Item>Limited to simple architectures</List.Item>
-                    <List.Item>Difficult to experiment with new models</List.Item>
-                    <List.Item>Time-consuming development</List.Item>
+                    <List.Item>Compare shapes element-wise from right to left</List.Item>
+                    <List.Item>Dimensions are compatible if equal or one is 1</List.Item>
+                    <List.Item>Missing dimensions treated as 1</List.Item>
                   </List>
+                  
+                  <CodeBlock language="python" code={`# Broadcasting examples
+A = torch.randn(5, 3)     # Shape: [5, 3]
+b = torch.randn(3)         # Shape: [3]
+C = A + b                  # Shape: [5, 3]`} />
                 </Paper>
               </Grid.Col>
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} mb="sm">With Autograd</Title>
-                  <List size="sm">
-                    <List.Item>Automatic gradient computation</List.Item>
-                    <List.Item>Correct derivatives guaranteed</List.Item>
-                    <List.Item>Complex architectures possible</List.Item>
-                    <List.Item>Easy to try new ideas</List.Item>
-                    <List.Item>Focus on model design, not math</List.Item>
-                  </List>
+                  <Title order={4} mb="sm">Vector Norms</Title>
+                  <div className="space-y-3">
+                    <div>
+                      <Text fw="bold" size="sm">L2 Norm (Euclidean):</Text>
+                      <BlockMath>{`||x||_2 = \\sqrt{\\sum_{i=1}^n x_i^2}`}</BlockMath>
+                    </div>
+                    
+                    <div>
+                      <Text fw="bold" size="sm">L1 Norm (Manhattan):</Text>
+                      <BlockMath>{`||x||_1 = \\sum_{i=1}^n |x_i|`}</BlockMath>
+                    </div>
+                  </div>
                 </Paper>
               </Grid.Col>
             </Grid>
-            
-            <Text className="mt-4" style={{ fontStyle: 'italic' }}>
-              Next up: We'll dive deep into how autograd works mathematically, explore the 
-              computational graph mechanics, and learn advanced techniques for gradient computation 
-              and debugging.
-            </Text>
           </Paper>
         </div>
 
