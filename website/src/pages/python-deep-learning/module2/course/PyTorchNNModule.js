@@ -30,7 +30,7 @@ const PyTorchNNModule = () => {
         </div>
 
         <div data-slide className="min-h-[500px]" id="module-basics">
-          <Title order={2} className="mb-6">Module Basics</Title>
+          <Title order={2} mb="xl">Module Basics</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>

@@ -17,7 +17,7 @@ const MathematicalFramework = () => {
           {/* Machine Learning Objective */}
           </div>
           <div data-slide>
-            <Title order={2} className="mb-6 slide-title"  id="ml-objective">
+            <Title order={2} mb="xl" className="slide-title"  id="ml-objective">
               The Machine Learning Objective
             </Title>
                         <Text size="lg" mb="xl">
@@ -69,7 +69,51 @@ Machine learning is a field of artificial intelligence that enables systems to a
               </Grid.Col>
             </Grid>
           </div>
-          <div data-slide>
+          
+<Title order={3} mb="md" className="slide-title">Data Characteristics</Title>
+
+<Paper p="md" bg="white" mt="md">
+  <Grid gutter="lg">
+    <Grid.Col span={6}>
+      <Title order={4} className="mb-2">Quantity</Title>
+      <Text size="sm" mb="xs">Sample size: number of observations</Text>
+      <Text size="sm" className="text-gray-600" mb="md">
+        Number of samples: <InlineMath>{`n \\in \\mathbb{N}`}</InlineMath>
+      </Text>
+      
+      <Flex direction="column" align="center" mb="md">
+        <Image
+          src="/assets/python-deep-learning/module1/ai_obj3.png"
+          style={{ maxWidth: 'min(400px, 90vw)', height: 'auto' }}
+          fluid
+        />
+      </Flex>
+      <Text component="p" ta="center" mt="xs">
+        <InlineMath>{`n = 9`}</InlineMath> observations, <InlineMath>{`d = 3`}</InlineMath> dimensions
+      </Text>
+                                            
+    </Grid.Col>
+    <Grid.Col span={6}>
+      <Title order={4} className="mb-2">Dimension</Title>
+      <Text size="sm" mb="xs">Dimensionality: number of variables per observation (features)</Text>
+      <Text size="sm" className="text-gray-600" mb="md">
+        Number of features: <InlineMath>{`d \\in \\mathbb{N}`}</InlineMath>
+      </Text>
+      
+      <Flex direction="column" align="center" mb="md">
+        <Image
+          src="/assets/python-deep-learning/module1/ai_obj2.png"
+          style={{ maxWidth: 'min(400px, 90vw)', height: 'auto' }}
+          fluid
+        />
+      </Flex>
+      <Text component="p" ta="center" mt="xs">
+        <InlineMath>{`n = 44`}</InlineMath> observations/samples, <InlineMath>{`d = 2`}</InlineMath> dimensions
+      </Text>
+    </Grid.Col>
+  </Grid>
+</Paper>
+<div data-slide>
             <Title order={3} mb="md" className="slide-title">Regression, Classification</Title>
             
             <Grid gutter="lg">
@@ -77,7 +121,7 @@ Machine learning is a field of artificial intelligence that enables systems to a
                 <Paper className="p-4 bg-blue-50 h-full">
                   <Title order={4} mb="sm">Regression Problems</Title>
                   <Text size="sm" className="mb-3">Predict continuous values</Text>
-                  <BlockMath>{`y \\in \\mathbb{R}^m`}</BlockMath>
+                  <BlockMath>{`y \\in \\mathbb{R}^k`}</BlockMath>
                   
                   <div className="mt-3">
                     <Text fw="bold" size="sm">Examples:</Text>
@@ -128,179 +172,56 @@ Machine learning is a field of artificial intelligence that enables systems to a
               </Grid.Col>
             </Grid>
           </div>
-                      <div data-slide >
-              <Title order={3} mb="md" className="slide-title">Data Characteristics</Title>
-
-                      
-            <Paper p="md" bg="white" mt="md">
-              <Grid gutter="lg">
-                <Grid.Col span={6}>
-                  <Title order={4} className="mb-2">Quantity</Title>
-                  <Text size="sm">Sample size: number of observations</Text>
-                  
-                  <Flex direction="column" align="center" mb="md">
-                    <Image
-                      src="/assets/python-deep-learning/module1/ai_obj3.png"
-                      style={{ maxWidth: 'min(400px, 90vw)', height: 'auto' }}
-                      fluid
-                    />
-                  </Flex>
-                  <Text component="p" ta="center" mt="xs">
-                    9 observations, 3 dimensions
-                  </Text>
-                                                    
-                </Grid.Col>
-                <Grid.Col span={6}>
-                  <Title order={4} className="mb-2">Dimension</Title>
-                  <Text size="sm">Dimensionality: number of variables per observation (features)</Text>
-                  
-                  <Flex direction="column" align="center" mb="md">
-                    <Image
-                      src="/assets/python-deep-learning/module1/ai_obj2.png"
-                      style={{ maxWidth: 'min(400px, 90vw)', height: 'auto' }}
-                      fluid
-                    />
-                  </Flex>
-                  <Text component="p" ta="center" mt="xs">
-                    44 observations/samples, 2 dimensions
-                  </Text>
-                </Grid.Col>
-              </Grid>
-            </Paper>
-              </div>
-            <div data-slide>
-              <Title order={3} mb="md" className="slide-title">The Fundamental Learning Problem</Title>
-              <Text size="lg" mb="md">
-                At its core, machine learning seeks to find a function <InlineMath>f</InlineMath> that maps inputs to outputs 
-                by learning from data. Deep learning extends this by using highly expressive neural network functions.
-              </Text>
-
-              
-              <Paper className="p-4 bg-white mb-4">
-                <Title order={4} mb="sm">The Learning Framework</Title>
-                <div className="space-y-4">
-                  <div>
-                    <Text fw="bold" mb="xs">Given:</Text>
-                    <List>
-                      <List.Item>Training dataset: <InlineMath>{`\\mathcal{D} = \\{(x_1, y_1), (x_2, y_2), ..., (x_n, y_n)\\}`}</InlineMath></List.Item>
-                      <List.Item>Input space: <InlineMath>{`x_i \\in \\mathcal{X} \\subseteq \\mathbb{R}^d`}</InlineMath></List.Item>
-                      <List.Item>Output space: <InlineMath>{`y_i \\in \\mathcal{Y}`}</InlineMath> (continuous for regression, discrete for classification)</List.Item>
-                    </List>
-                  </div>
-                  
-                  <div>
-                    <Text fw="bold" mb="xs">Objective:</Text>
-                    <Text>Find a function <InlineMath>{`f: \\mathcal{X} \\rightarrow \\mathcal{Y}`}</InlineMath> that:</Text>
-                    <List>
-                      <List.Item>Minimizes error on training data (empirical risk)</List.Item>
-                      <List.Item>Generalizes well to unseen data (expected risk)</List.Item>
-                    </List>
-                  </div>
-                  
-                  <div>
-                    <Text fw="bold" mb="xs">Mathematical Formulation:</Text>
-                    <BlockMath>{`\\min_{f \\in \\mathcal{F}} \\mathbb{E}_{(x,y) \\sim P_{data}}[\\ell(f(x), y)]`}</BlockMath>
-                    <Text size="sm" c="dimmed">
-                      where <InlineMath>{`\\mathcal{F}`}</InlineMath> is the hypothesis class, 
-                      and <InlineMath>{`\\ell`}</InlineMath> is the loss function
-                    </Text>
-                  </div>
-                </div>
-              </Paper>
-</div>
 <div data-slide>
+  <Title order={2} mb="xl" className="slide-title" id="models-parameters">
+    Parametric Models
+  </Title>
+  <Text size="lg" mb="md">
+    Parametric Models are defined by 3 characteristics:
+  </Text>
+  
+  <Paper className="p-4 bg-white mt-6">
+    <Grid gutter="lg">
+      <Grid.Col span={4}>
+        <Title order={4} className="mb-2">Parameters</Title>
+        <Text size="sm" mb="xs">Number of values the model must learn</Text>
+        <Text size="sm" className="text-gray-600">
+          Parameter vector: <InlineMath>{`\\theta \\in \\mathbb{R}^p`}</InlineMath>
+          <br />
+          where <InlineMath>{`p`}</InlineMath> is the number of parameters
+        </Text>
+      </Grid.Col>
+      <Grid.Col span={4}>
+        <Title order={4} className="mb-2">Input/Output Dimension</Title>
+        <List size="sm">
+          <List.Item>
+            <strong>Input dimension:</strong> <InlineMath>{`x \\in \\mathbb{R}^d`}</InlineMath> 
+            <br />
+            <Text size="xs" className="text-gray-600">dimension of explanatory variables (features)</Text>
+          </List.Item>
+          <List.Item>
+            <strong>Output dimension:</strong> <InlineMath>{`y \\in \\mathbb{R}^k`}</InlineMath>
+            <br />
+            <Text size="xs" className="text-gray-600">number of variables to predict (target)</Text>
+          </List.Item>
+        </List>
+      </Grid.Col>
+      <Grid.Col span={4}>
+        <Title order={4} className="mb-2">Operations</Title>
+        <Text size="sm" mb="xs">Between parameters and input data</Text>
+        <Text size="sm" className="text-gray-600">
+          Model function: <InlineMath>{`f_{\\theta}: \\mathbb{R}^d \\to \\mathbb{R}^k`}</InlineMath>
+          <br />
+          <InlineMath>{`\\hat{y} = f_{\\theta}(x)`}</InlineMath>
+          <br />
+          Operations: addition, multiplication, composition
+        </Text>
+      </Grid.Col>
+    </Grid>
+  </Paper>
+                                    <Paper className="p-4 bg-white mt-6">
               <Grid gutter="lg">
                 <Grid.Col span={6}>
-                  <Paper className="p-4 bg-yellow-50">
-                    <Title order={4} mb="sm">Empirical Risk Minimization</Title>
-                    <Text size="sm" className="mb-3">
-                      Since we don't know the true data distribution <InlineMath>{`P_{data}`}</InlineMath>, 
-                      we approximate with the empirical risk:
-                    </Text>
-                    <BlockMath>{`\\hat{R}(f) = \\frac{1}{n} \\sum_{i=1}^n \\ell(f(x_i), y_i)`}</BlockMath>
-                    <Text size="sm" className="mt-2">
-                      This is what we actually optimize in practice using gradient descent.
-                    </Text>
-                  </Paper>
-                </Grid.Col>
-                
-                <Grid.Col span={6}>
-                  <Paper className="p-4 bg-green-50">
-                    <Title order={4} mb="sm">The Bias-Variance Tradeoff</Title>
-                    <Text size="sm" className="mb-3">
-                      Expected prediction error decomposes into:
-                    </Text>
-                    <BlockMath>{`\\mathbb{E}[(y - f(x))^2] = \\text{Bias}^2 + \\text{Variance} + \\text{Noise}`}</BlockMath>
-                    <List size="sm">
-                      <List.Item><strong>Bias:</strong> Error from wrong assumptions</List.Item>
-                      <List.Item><strong>Variance:</strong> Error from sensitivity to data</List.Item>
-                      <List.Item><strong>Noise:</strong> Irreducible error</List.Item>
-                    </List>
-                  </Paper>
-                </Grid.Col>
-              </Grid>
-
-</div>
-<div data-slide>
-            {/* Types of Learning Problems */}
-            <Paper className="p-6 bg-gray-50 mb-6">
-              <Title order={3} className="mb-4">Types of Learning Problems</Title>
-              
-              <Grid gutter="lg">
-                <Grid.Col span={4}>
-                  <Paper className="p-4 bg-blue-50 h-full">
-                    <Title order={4} mb="sm">Supervised Learning</Title>
-                    <Text size="sm" className="mb-3">Learning from labeled pairs <InlineMath>{`(x, y)`}</InlineMath></Text>
-                    
-                    <div className="mb-3">
-                      <Text fw="bold" size="sm">Classification:</Text>
-                      <BlockMath>{`y \\in \\{1, 2, ..., K\\}`}</BlockMath>
-                      <Text size="xs">Examples: Image recognition, spam detection</Text>
-                    </div>
-                    
-                    <div>
-                      <Text fw="bold" size="sm">Regression:</Text>
-                      <BlockMath>{`y \\in \\mathbb{R}^m`}</BlockMath>
-                      <Text size="xs">Examples: Price prediction, weather forecasting</Text>
-                    </div>
-                  </Paper>
-                </Grid.Col>
-                
-                <Grid.Col span={4}>
-                  <Paper className="p-4 bg-green-50 h-full">
-                    <Title order={4} mb="sm">Unsupervised Learning</Title>
-                    <Text size="sm" className="mb-3">Learning structure from unlabeled data <InlineMath>{`x`}</InlineMath></Text>
-                    
-                    <List size="sm">
-                      <List.Item><strong>Clustering:</strong> Group similar data points</List.Item>
-                      <List.Item><strong>Dimensionality Reduction:</strong> Find low-dimensional representations</List.Item>
-                      <List.Item><strong>Density Estimation:</strong> Model data distribution</List.Item>
-                      <List.Item><strong>Generation:</strong> Sample new data points</List.Item>
-                    </List>
-                  </Paper>
-                </Grid.Col>
-                
-                <Grid.Col span={4}>
-                  <Paper className="p-4 bg-purple-50 h-full">
-                    <Title order={4} mb="sm">Reinforcement Learning</Title>
-                    <Text size="sm" className="mb-3">Learning through interaction and rewards</Text>
-                    
-                    <Text size="sm" className="mb-2">Maximize expected return:</Text>
-                    <BlockMath>{`G_t = \\sum_{k=0}^\\infty \\gamma^k R_{t+k+1}`}</BlockMath>
-                    <Text size="xs">
-                      Agent learns policy <InlineMath>{`\\pi(a|s)`}</InlineMath> through 
-                      trial and error
-                    </Text>
-                  </Paper>
-                </Grid.Col>
-              </Grid>
-            </Paper>
-          
-        </div>
-        <div data-slide>
-            <Title order={2} className="mb-6" id="models-parameters">
-              Models and Parameters
-            </Title>
                                   <Flex direction="column" align="center" mb="md">
                       <Image
                         src="/assets/python-deep-learning/module1/ai_obj8.png"
@@ -311,7 +232,10 @@ Machine learning is a field of artificial intelligence that enables systems to a
                                       <Text component="p" ta="center" mt="xs">
                         Example: Linear function R to R 2 params
                       </Text>
-                                                        <Flex direction="column" align="center" mb="md">
+
+                </Grid.Col>
+                <Grid.Col span={6}>
+                                                           <Flex direction="column" align="center" mb="md">
                       <Image
                         src="/assets/python-deep-learning/module1/ai_obj6.png"
                         style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
@@ -321,7 +245,22 @@ Machine learning is a field of artificial intelligence that enables systems to a
                                       <Text component="p" ta="center" mt="xs">
                         Polynomial function R to R 3 params
                       </Text>
-                                                          <Flex direction="column" align="center" mb="md">
+                </Grid.Col>
+              </Grid>
+            </Paper>
+
+
+
+            
+
+        </div>
+        {/* Models and Parameters */}
+        <div data-slide>
+          
+                                    <Paper className="p-4 bg-white mt-6">
+              <Grid gutter="lg">
+                <Grid.Col span={6}>
+                                                       <Flex direction="column" align="center" mb="md">
                       <Image
                         src="/assets/python-deep-learning/module1/ai_obj15.png"
                         style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
@@ -331,6 +270,8 @@ Machine learning is a field of artificial intelligence that enables systems to a
                                       <Text component="p" ta="center" mt="xs">
                         Linear function R2 to R 3 params
                       </Text>
+                </Grid.Col>
+                <Grid.Col span={6}>
                                                                                 <Flex direction="column" align="center" mb="md">
                       <Image
                         src="/assets/python-deep-learning/module1/ai_obj16.png"
@@ -341,61 +282,28 @@ Machine learning is a field of artificial intelligence that enables systems to a
                                       <Text component="p" ta="center" mt="xs">
                         Quadratic function R² to R, 5 params
                       </Text>
-            
-            <Paper className="p-4 bg-white mt-6">
-              <Grid gutter="lg">
-                <Grid.Col span={4}>
-                  <Title order={4} className="mb-2">Parameters</Title>
-                  <Text size="sm">Number of values the model must learn</Text>
-                </Grid.Col>
-                <Grid.Col span={4}>
-                  <Title order={4} className="mb-2">Input/Output Dimension</Title>
-                  <List size="sm">
-                    <List.Item><strong>Input dimension:</strong> dimension of explanatory variables (features)</List.Item>
-                    <List.Item><strong>Output dimension:</strong> number of variables to predict (target)</List.Item>
-                  </List>
-                </Grid.Col>
-                <Grid.Col span={4}>
-                  <Title order={4} className="mb-2">Operations</Title>
-                  <Text size="sm">Between parameters and input data:<br/>Addition, multiplication, other operations</Text>
                 </Grid.Col>
               </Grid>
             </Paper>
-        </div>
-        {/* Models and Parameters */}
-        <div data-slide>
-          
-
             
             <Paper className="p-6 bg-blue-50 mb-6">
-              <Title order={3} className="mb-4">Parametric Models</Title>
-              <Text size="lg" mb="md">
-                Deep learning models are parametric: they learn a fixed set of parameters <InlineMath>{`\\theta`}</InlineMath> 
-                from training data. The model function becomes <InlineMath>{`f_\\theta(x)`}</InlineMath>.
-              </Text>
               
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} mb="sm">Linear Models (Baseline)</Title>
+                    <Title order={4} mb="sm">Linear Models</Title>
                     <Text size="sm" className="mb-3">The simplest parametric model:</Text>
                     <BlockMath>{`f_\\theta(x) = w^T x + b`}</BlockMath>
                     <Text size="sm" className="mb-2">Parameters: <InlineMath>{`\\theta = \\{w \\in \\mathbb{R}^d, b \\in \\mathbb{R}\\}`}</InlineMath></Text>
-                    <Text size="sm" c="dimmed">
-                      Limited to linear decision boundaries, cannot capture complex patterns
-                    </Text>
                   </Paper>
                 </Grid.Col>
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} mb="sm">Neural Networks</Title>
+                    <Title order={4} mb="sm">Not linear Models (eg : Neural Networks)</Title>
                     <Text size="sm" className="mb-3">Composition of linear and non-linear functions:</Text>
                     <BlockMath>{`f_\\theta(x) = W_L \\cdot \\sigma(W_{L-1} \\cdot ... \\cdot \\sigma(W_1 x + b_1) ... + b_{L-1}) + b_L`}</BlockMath>
                     <Text size="sm" className="mb-2">Parameters: <InlineMath>{`\\theta = \\{W_1, b_1, ..., W_L, b_L\\}`}</InlineMath></Text>
-                    <Text size="sm" c="dimmed">
-                      Can approximate any continuous function (universal approximation)
-                    </Text>
                   </Paper>
                 </Grid.Col>
               </Grid>
@@ -406,34 +314,28 @@ Machine learning is a field of artificial intelligence that enables systems to a
         {/* Loss Functions and Optimization */}
         <div data-slide>
           
-            <Title order={2} className="mb-6" id="loss-functions">
+            <Title order={2} mb="xl" className="slide-title" id="loss-functions">
               Loss Functions and Optimization Problems
             </Title>
             
             <Paper className="p-6 bg-gradient-to-r from-purple-50 to-pink-50 mb-6">
-              <Title order={3} className="mb-4">The Role of Loss Functions</Title>
-              <Text size="lg" mb="md">
-                Loss functions quantify how wrong our predictions are. They transform the learning problem into an 
-                optimization problem that can be solved with gradient descent.
-              </Text>
-              
-              <Paper className="p-4 bg-white">
-                <Text className="font-semibold mb-3">General Optimization Problem:</Text>
-                <BlockMath>{`\\theta^* = \\arg\\min_\\theta \\frac{1}{n} \\sum_{i=1}^n \\ell(f_\\theta(x_i), y_i) + \\lambda \\Omega(\\theta)`}</BlockMath>
-                <Grid gutter="lg" className="mt-4">
-                  <Grid.Col span={6}>
-                    <Text size="sm"><InlineMath>{`\\ell(f_\\theta(x_i), y_i)`}</InlineMath> - Loss on sample i</Text>
-                  </Grid.Col>
-                  <Grid.Col span={6}>
-                    <Text size="sm"><InlineMath>{`\\lambda \\Omega(\\theta)`}</InlineMath> - Regularization term</Text>
-                  </Grid.Col>
-                </Grid>
-              </Paper>
+              <Title order={3} mb="md">The Role of Loss Functions</Title>
+<Text size="lg" mb="md">
+  Loss functions quantify the error/distance between real targets <InlineMath>{`y`}</InlineMath> and our model outputs <InlineMath>{`\\hat{y} = f_{\\theta}(x)`}</InlineMath>.
+</Text>   
+<BlockMath>
+{`
+\\begin{cases}
+l: \\mathbb{R}^{k \\times n} \\times \\mathbb{R}^{k \\times n} & \\to \\mathbb{R} \\\\
+(Y, \\hat{Y}) & \\mapsto l(Y, \\hat{Y})
+\\end{cases}
+`}
+</BlockMath>
             </Paper>
 
             {/* Common Loss Functions */}
             <Paper className="p-6 bg-gray-50 mb-6">
-              <Title order={3} className="mb-4">Common Loss Functions</Title>
+              <Title order={3} mb="md">Common Loss Functions</Title>
               
               <Grid gutter="lg">
                 {/* Regression Losses */}
@@ -454,14 +356,6 @@ Machine learning is a field of artificial intelligence that enables systems to a
                         <Text size="xs" c="dimmed">Robust to outliers, non-differentiable at zero</Text>
                       </div>
                       
-                      <div>
-                        <Text fw="bold" size="sm">Huber Loss:</Text>
-                        <BlockMath>{`\\ell_{Huber}(y, \\hat{y}) = \\begin{cases} 
-                          \\frac{1}{2}(y - \\hat{y})^2 & \\text{if } |y - \\hat{y}| \\leq \\delta \\\\
-                          \\delta|y - \\hat{y}| - \\frac{1}{2}\\delta^2 & \\text{otherwise}
-                        \\end{cases}`}</BlockMath>
-                        <Text size="xs" c="dimmed">Combines MSE and MAE benefits</Text>
-                      </div>
                     </div>
                   </Paper>
                 </Grid.Col>
@@ -472,23 +366,19 @@ Machine learning is a field of artificial intelligence that enables systems to a
                     <Title order={4} mb="sm">Classification Losses</Title>
                     
                     <div className="space-y-4">
+                                            <div>
+                        <Text fw="bold" size="sm">Binary Cross-Entropy:</Text>
+                        <BlockMath>{`\\ell_{BCE}(y, \\hat{p}) = -[y\\log(\\hat{p}) + (1-y)\\log(1-\\hat{p})]`}</BlockMath>
+                        <Text size="xs" c="dimmed">For binary classification problems</Text>
+                      </div>
                       <div>
                         <Text fw="bold" size="sm">Cross-Entropy Loss:</Text>
                         <BlockMath>{`\\ell_{CE}(y, \\hat{p}) = -\\sum_{i=1}^n \\sum_{c=1}^C y_{ic} \\log(\\hat{p}_{ic})`}</BlockMath>
                         <Text size="xs" c="dimmed">Standard for multi-class classification</Text>
                       </div>
                       
-                      <div>
-                        <Text fw="bold" size="sm">Binary Cross-Entropy:</Text>
-                        <BlockMath>{`\\ell_{BCE}(y, \\hat{p}) = -[y\\log(\\hat{p}) + (1-y)\\log(1-\\hat{p})]`}</BlockMath>
-                        <Text size="xs" c="dimmed">For binary classification problems</Text>
-                      </div>
+
                       
-                      <div>
-                        <Text fw="bold" size="sm">Focal Loss:</Text>
-                        <BlockMath>{`\\ell_{FL}(p_t) = -\\alpha_t(1-p_t)^\\gamma \\log(p_t)`}</BlockMath>
-                        <Text size="xs" c="dimmed">Addresses class imbalance by focusing on hard examples</Text>
-                      </div>
                     </div>
                   </Paper>
                 </Grid.Col>
@@ -498,16 +388,50 @@ Machine learning is a field of artificial intelligence that enables systems to a
 
           
         </div>
+<div data-slide>
+  <Title order={3} mb="md" className="slide-title">The Fundamental Learning Problem</Title>
+  
+  <Text size="lg" mb="md">
+    For a given parametric model <InlineMath>{`f_{\\theta}`}</InlineMath>, machine learning seeks to find the best function <InlineMath>{`f_{\\theta}`}</InlineMath> that maps inputs to outputs.
+  </Text>
+  
+  <Text size="lg" mb="md">
+    Concretely, we will try to find the <InlineMath>{`\\theta`}</InlineMath> that minimizes the loss.
+  </Text>
+  
+  <Text size="lg" mb="md">
+    Fixing the observations <InlineMath>{`X`}</InlineMath> and <InlineMath>{`Y`}</InlineMath>, the loss becomes a function from <InlineMath>{`\\theta \\in \\mathbb{R}^p`}</InlineMath> to <InlineMath>{`\\mathbb{R}`}</InlineMath>:
+  </Text>
+  
+  <BlockMath>
+  {`
+  \\begin{cases}
+  \\ell: \\mathbb{R}^p & \\to \\mathbb{R} \\\\
+  \\theta & \\mapsto \\ell(\\theta) = l(Y, f_{\\theta}(X))
+  \\end{cases}
+  `}
+  </BlockMath>
+  
+  <Text size="lg" mb="md">
+    And the machine learning problem becomes:
+  </Text>
+  
+  <BlockMath>
+  {`
+  \\theta^* = \\arg\\min_{\\theta \\in \\mathbb{R}^p} \\ell(\\theta) = \\arg\\min_{\\theta \\in \\mathbb{R}^p} l(Y, f_{\\theta}(X))
+  `}
+  </BlockMath>
+</div>
 
         {/* Gradient Descent */}
         <div data-slide>
           
-            <Title order={2} className="mb-6" id="gradient-descent">
+            <Title order={2} className="slide-title" mb="xl" id="gradient-descent">
               Gradient Descent and Optimization
             </Title>
             
             <Paper className="p-6 bg-gradient-to-r from-blue-50 to-cyan-50 mb-6">
-              <Title order={3} className="mb-4">The Gradient Descent Algorithm</Title>
+              <Title order={3} mb="md">The Gradient Descent Algorithm</Title>
               <Text size="lg" mb="md">
                 Gradient descent is the workhorse of deep learning optimization. It iteratively updates parameters 
                 in the direction that reduces the loss function.
@@ -566,7 +490,7 @@ Machine learning is a field of artificial intelligence that enables systems to a
                         Example: Compute error
                       </Text>
             <Paper className="p-6 bg-gray-50 mt-6">
-              <Title order={3} className="mb-4">Model Training Process</Title>
+              <Title order={3} mb="md">Model Training Process</Title>
               
               <Grid gutter="lg">
                 <Grid.Col span={6}>
@@ -639,10 +563,13 @@ Machine learning is a field of artificial intelligence that enables systems to a
                       </Text>
 </div>
 
+
+
+
 <div data-slide>
             {/* Variants of Gradient Descent */}
             <Paper className="p-6 bg-gray-50 mb-6">
-              <Title order={3} className="mb-4">Gradient Descent Variants</Title>
+              <Title order={3} mb="md" className="slide-title">Gradient Descent Variants</Title>
               
               <Grid gutter="lg">
                 <Grid.Col span={4}>
@@ -686,29 +613,65 @@ Machine learning is a field of artificial intelligence that enables systems to a
               </Grid>
             </Paper>
 </div>
-        {/* Summary */}
-        <div data-slide>
-          
-            <Title order={2} className="mb-6">Part 2 Summary: Mathematical Framework</Title>
-            
-            <Grid gutter="lg">
-              <Grid.Col span={6}>
-                <Paper className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 h-full">
-                  <Title order={3} className="mb-4">Core Mathematical Concepts</Title>
-                  <List spacing="md">
-                    <List.Item>Machine learning as function approximation from data</List.Item>
-                    <List.Item>Parametric models with learnable weights <InlineMath>{`\\theta`}</InlineMath></List.Item>
-                    <List.Item>Loss functions quantify prediction errors</List.Item>
-                    <List.Item>Gradient descent iteratively minimizes loss</List.Item>
-                    <List.Item>Linear algebra operations form computational backbone</List.Item>
-                  </List>
-                </Paper>
-              </Grid.Col>
 
-            </Grid>
-            
+<div data-slide>
+            {/* Types of Learning Problems */}
+            <Paper className="p-6 bg-gray-50 mb-6">
+              <Title order={3} mb="md" className="slide-title">Types of Learning Problems</Title>
+              
+              <Grid gutter="lg">
+                <Grid.Col span={4}>
+                  <Paper className="p-4 bg-blue-50 h-full">
+                    <Title order={4} mb="sm">Supervised Learning</Title>
+                    <Text size="sm" className="mb-3">Learning from labeled pairs <InlineMath>{`(x, y)`}</InlineMath></Text>
+                    
+                    <div className="mb-3">
+                      <Text fw="bold" size="sm">Classification:</Text>
+                      <BlockMath>{`y \\in \\{1, 2, ..., K\\}`}</BlockMath>
+                      <Text size="xs">Examples: Image recognition, spam detection</Text>
+                    </div>
+                    
+                    <div>
+                      <Text fw="bold" size="sm">Regression:</Text>
+                      <BlockMath>{`y \\in \\mathbb{R}^m`}</BlockMath>
+                      <Text size="xs">Examples: Price prediction, weather forecasting</Text>
+                    </div>
+                  </Paper>
+                </Grid.Col>
+                
+                <Grid.Col span={4}>
+                  <Paper className="p-4 bg-green-50 h-full">
+                    <Title order={4} mb="sm">Unsupervised Learning</Title>
+                    <Text size="sm" className="mb-3">Learning structure from unlabeled data <InlineMath>{`x`}</InlineMath></Text>
+                    
+                    <List size="sm">
+                      <List.Item><strong>Clustering:</strong> Group similar data points</List.Item>
+                      <List.Item><strong>Dimensionality Reduction:</strong> Find low-dimensional representations</List.Item>
+                      <List.Item><strong>Density Estimation:</strong> Model data distribution</List.Item>
+                      <List.Item><strong>Generation:</strong> Sample new data points</List.Item>
+                    </List>
+                  </Paper>
+                </Grid.Col>
+                
+                <Grid.Col span={4}>
+                  <Paper className="p-4 bg-purple-50 h-full">
+                    <Title order={4} mb="sm">Reinforcement Learning</Title>
+                    <Text size="sm" className="mb-3">Learning through interaction and rewards</Text>
+                    
+                    <Text size="sm" className="mb-2">Maximize expected return:</Text>
+                    <BlockMath>{`G_t = \\sum_{k=0}^\\infty \\gamma^k R_{t+k+1}`}</BlockMath>
+                    <Text size="xs">
+                      Agent learns policy <InlineMath>{`\\pi(a|s)`}</InlineMath> through 
+                      trial and error
+                    </Text>
+                  </Paper>
+                </Grid.Col>
+              </Grid>
+            </Paper>
+          
         </div>
 
+      
       </Stack>
     </Container>
   );

@@ -14,7 +14,7 @@ const MonitoringVisualization = () => {
           </Text>
           
           <Paper className="p-6 bg-blue-50 mb-6">
-            <Title order={3} className="mb-4">Course Content</Title>
+            <Title order={3} mb="md">Course Content</Title>
             <Text>
               This section covers TensorBoard integration, metrics visualization strategies,
               model interpretability, debugging neural networks, and checkpoint management.

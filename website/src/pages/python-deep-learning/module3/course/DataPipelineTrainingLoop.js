@@ -14,7 +14,7 @@ const DataPipelineTrainingLoop = () => {
           </Text>
           
           <Paper className="p-6 bg-blue-50 mb-6">
-            <Title order={3} className="mb-4">Course Content</Title>
+            <Title order={3} mb="md">Course Content</Title>
             <Text>
               This section covers PyTorch's data loading infrastructure, training loop design,
               and batch sampling strategies for efficient neural network training.

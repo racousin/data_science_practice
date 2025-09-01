@@ -83,7 +83,7 @@ const RLObjectiveSection = () => {
 
       <Stack fluid>
         <div>
-          <Title order={3} className="mb-4">Reinforcement Learning Objective</Title>
+          <Title order={3} mb="md">Reinforcement Learning Objective</Title>
           <Text className="mb-4">
             RL aims to optimize decision-making in environments without a known
             transition model <InlineMath math="P" />.

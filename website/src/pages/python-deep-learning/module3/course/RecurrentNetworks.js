@@ -33,7 +33,7 @@ const RecurrentNetworks = () => {
 
         {/* Slide 2: Basic RNN */}
         <div data-slide className="min-h-[500px]" id="basic-rnn">
-          <Title order={2} className="mb-6">Basic RNN Architecture</Title>
+          <Title order={2} mb="xl">Basic RNN Architecture</Title>
           
           <Paper className="p-6 bg-gray-50 mb-6">
             <Text size="lg">
@@ -137,7 +137,7 @@ print(f"LSTM Output shape: {output.shape}")  # (32, 50, 256) bidirectional`}</Co
 
         {/* Slide 3: LSTM Networks */}
         <div data-slide className="min-h-[500px]" id="lstm-networks">
-          <Title order={2} className="mb-6">LSTM (Long Short-Term Memory)</Title>
+          <Title order={2} mb="xl">LSTM (Long Short-Term Memory)</Title>
           
           <Paper className="p-6 bg-purple-50 mb-6">
             <Text size="lg">
@@ -220,7 +220,7 @@ class LSTM(nn.Module):
 
         {/* Slide 4: GRU Networks */}
         <div data-slide className="min-h-[500px]" id="gru-networks">
-          <Title order={2} className="mb-6">GRU (Gated Recurrent Unit)</Title>
+          <Title order={2} mb="xl">GRU (Gated Recurrent Unit)</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -314,7 +314,7 @@ print(comp.parameter_count())
 
         {/* Slide 5: Advanced RNN Techniques */}
         <div data-slide className="min-h-[500px]" id="advanced-techniques">
-          <Title order={2} className="mb-6">Advanced RNN Techniques</Title>
+          <Title order={2} mb="xl">Advanced RNN Techniques</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -407,7 +407,7 @@ class BahdanauAttention(nn.Module):
 
         {/* Slide 6: RNN Applications */}
         <div data-slide className="min-h-[500px]" id="applications">
-          <Title order={2} className="mb-6">RNN Applications and Examples</Title>
+          <Title order={2} mb="xl">RNN Applications and Examples</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -514,7 +514,7 @@ class MultiStepPredictor(nn.Module):
 
         {/* Slide 7: Training and Optimization */}
         <div data-slide className="min-h-[500px]" id="training-optimization">
-          <Title order={2} className="mb-6">Training RNNs: Best Practices</Title>
+          <Title order={2} mb="xl">Training RNNs: Best Practices</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>

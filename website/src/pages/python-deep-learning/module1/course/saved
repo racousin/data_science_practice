@@ -1,7 +1,7 @@
 
             {/* Advanced Optimizers */}
             <Paper className="p-6 bg-purple-50 mb-6">
-              <Title order={3} className="mb-4">Modern Optimization Algorithms</Title>
+              <Title order={3} mb="md">Modern Optimization Algorithms</Title>
               
               <Text className="mb-4">
                 Simple SGD often struggles with complex loss landscapes. Modern optimizers add momentum and adaptive learning rates:
@@ -64,7 +64,7 @@ for epoch in range(num_epochs):
 
             {/* Learning Rate Schedules */}
             <Paper className="p-6 bg-orange-50 mb-6">
-              <Title order={3} className="mb-4">Learning Rate Scheduling</Title>
+              <Title order={3} mb="md">Learning Rate Scheduling</Title>
               
               <Text className="mb-4">
                 The learning rate is crucial for convergence. Too high causes divergence, too low causes slow convergence:
@@ -102,12 +102,12 @@ for epoch in range(num_epochs):
         {/* Linear Algebra Concepts */}
         <div data-slide>
           
-            <Title order={2} className="mb-6" id="linear-algebra">
+            <Title order={2} mb="xl" id="linear-algebra">
               Essential Linear Algebra Concepts
             </Title>
             
             <Paper className="p-6 bg-gradient-to-r from-green-50 to-teal-50 mb-6">
-              <Title order={3} className="mb-4">Vectors, Matrices, and Tensors</Title>
+              <Title order={3} mb="md">Vectors, Matrices, and Tensors</Title>
               <Text size="lg" mb="md">
                 Deep learning operates on multi-dimensional arrays. Understanding their properties and operations 
                 is crucial for implementing and debugging neural networks.
@@ -152,7 +152,7 @@ print(T.shape)  # torch.Size([32, 3, 224, 224])`} />
 
             {/* Matrix Operations */}
             <Paper className="p-6 bg-gray-50 mb-6">
-              <Title order={3} className="mb-4">Fundamental Operations</Title>
+              <Title order={3} mb="md">Fundamental Operations</Title>
               
               <Grid gutter="lg">
                 <Grid.Col span={6}>
@@ -239,7 +239,7 @@ z = x.reshape(-1)  # Flatten to 1D`} />
 
             {/* Important Properties */}
             <Paper className="p-6 bg-indigo-50 mb-6">
-              <Title order={3} className="mb-4">Key Linear Algebra Properties for Deep Learning</Title>
+              <Title order={3} mb="md">Key Linear Algebra Properties for Deep Learning</Title>
               
               <Grid gutter="lg">
                 <Grid.Col span={6}>
@@ -294,7 +294,7 @@ Z = X + Y                  # Shape: [2, 4, 3]`} />
 
             {/* Gradients and Derivatives */}
             <Paper className="p-6 bg-pink-50">
-              <Title order={3} className="mb-4">Gradients and Jacobians</Title>
+              <Title order={3} mb="md">Gradients and Jacobians</Title>
               
               <Grid gutter="lg">
                 <Grid.Col span={6}>

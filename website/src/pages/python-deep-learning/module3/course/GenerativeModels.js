@@ -33,7 +33,7 @@ const GenerativeModels = () => {
 
         {/* Slide 2: Autoencoders */}
         <div data-slide className="min-h-[500px]" id="autoencoders">
-          <Title order={2} className="mb-6">Autoencoders</Title>
+          <Title order={2} mb="xl">Autoencoders</Title>
           
           <Paper className="p-6 bg-gray-50 mb-6">
             <Text size="lg">
@@ -146,7 +146,7 @@ autoencoder = Autoencoder(
 
         {/* Slide 3: Variational Autoencoders */}
         <div data-slide className="min-h-[500px]" id="variational-autoencoders">
-          <Title order={2} className="mb-6">Variational Autoencoders (VAEs)</Title>
+          <Title order={2} mb="xl">Variational Autoencoders (VAEs)</Title>
           
           <Paper className="p-6 bg-purple-50 mb-6">
             <Text size="lg">
@@ -227,7 +227,7 @@ def vae_loss(recon_x, x, mu, logvar, beta=1.0):
 
         {/* Slide 4: Generative Adversarial Networks */}
         <div data-slide className="min-h-[500px]" id="gans">
-          <Title order={2} className="mb-6">Generative Adversarial Networks (GANs)</Title>
+          <Title order={2} mb="xl">Generative Adversarial Networks (GANs)</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -381,7 +381,7 @@ class DCGANDiscriminator(nn.Module):
 
         {/* Slide 5: Advanced GAN Techniques */}
         <div data-slide className="min-h-[500px]" id="advanced-gans">
-          <Title order={2} className="mb-6">Advanced GAN Techniques</Title>
+          <Title order={2} mb="xl">Advanced GAN Techniques</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -553,7 +553,7 @@ class ProgressiveGenerator(nn.Module):
 
         {/* Slide 6: Diffusion Models */}
         <div data-slide className="min-h-[500px]" id="diffusion-models">
-          <Title order={2} className="mb-6">Diffusion Models</Title>
+          <Title order={2} mb="xl">Diffusion Models</Title>
           
           <Paper className="p-6 bg-purple-50 mb-6">
             <Text size="lg">
@@ -691,7 +691,7 @@ class DoubleConv(nn.Module):
 
         {/* Slide 7: Evaluation and Applications */}
         <div data-slide className="min-h-[500px]" id="evaluation-applications">
-          <Title order={2} className="mb-6">Evaluation and Applications</Title>
+          <Title order={2} mb="xl">Evaluation and Applications</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>

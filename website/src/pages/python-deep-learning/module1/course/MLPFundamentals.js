@@ -16,12 +16,12 @@ const MLPFundamentals = () => {
           
           {/* Neuron as Computational Unit */}
           
-            <Title order={2} className="mb-6" id="neuron">
+            <Title order={2} mb="xl" id="neuron">
               Neuron as Computational Unit
             </Title>
             
             <Paper className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 mb-6">
-              <Title order={3} className="mb-4">From Biology to Mathematics</Title>
+              <Title order={3} mb="md">From Biology to Mathematics</Title>
               <Text size="lg" mb="md">
                 The artificial neuron is the fundamental building block of neural networks. It's a mathematical 
                 abstraction inspired by biological neurons, but operates purely through linear algebra.
@@ -84,7 +84,7 @@ const MLPFundamentals = () => {
 
             {/* Activation Functions */}
             <Paper className="p-6 bg-gray-50 mb-6">
-              <Title order={3} className="mb-4">Common Activation Functions</Title>
+              <Title order={3} mb="md">Common Activation Functions</Title>
               
               <Grid gutter="lg">
                 <Grid.Col span={4}>
@@ -132,12 +132,12 @@ const MLPFundamentals = () => {
         {/* Network Architecture */}
         <div data-slide>
           
-            <Title order={2} className="mb-6" id="network-architecture">
+            <Title order={2} mb="xl" id="network-architecture">
               Network Architecture
             </Title>
             
             <Paper className="p-6 bg-blue-50 mb-6">
-              <Title order={3} className="mb-4">From Single Neuron to Multi-Layer Networks</Title>
+              <Title order={3} mb="md">From Single Neuron to Multi-Layer Networks</Title>
               <Text size="lg" mb="md">
                 A Multi-Layer Perceptron (MLP) stacks multiple layers of neurons, where each layer transforms 
                 the input through the same mathematical operations we've seen in traditional ML models.
@@ -173,7 +173,7 @@ const MLPFundamentals = () => {
 
             {/* Why Multi-Layer? */}
             <Paper className="p-6 bg-green-50 mb-6">
-              <Title order={3} className="mb-4">Why Multiple Layers?</Title>
+              <Title order={3} mb="md">Why Multiple Layers?</Title>
               
               <Paper className="p-4 bg-white mb-4">
                 <Title order={4} mb="sm">The Limitation of Linear Models</Title>
@@ -233,7 +233,7 @@ const MLPFundamentals = () => {
 
             {/* Non-Linear Problem Examples */}
             <Paper className="p-6 bg-purple-50 mb-6">
-              <Title order={3} className="mb-4">Examples of Non-Linear Problems</Title>
+              <Title order={3} mb="md">Examples of Non-Linear Problems</Title>
               
               <Text className="mb-4">
                 Multi-layer networks excel at problems that single-layer models cannot solve:
@@ -335,12 +335,12 @@ const MLPFundamentals = () => {
         {/* Parameters to Optimize */}
         <div data-slide>
           
-            <Title order={2} className="mb-6" id="parameters">
+            <Title order={2} mb="xl" id="parameters">
               Parameters to Optimize
             </Title>
             
             <Paper className="p-6 bg-gradient-to-r from-orange-50 to-red-50 mb-6">
-              <Title order={3} className="mb-4">Understanding the Parameter Space</Title>
+              <Title order={3} mb="md">Understanding the Parameter Space</Title>
               <Text size="lg" mb="md">
                 Neural networks learn by optimizing millions of parameters. Understanding what these parameters 
                 represent and how they scale is crucial for designing and training networks effectively.
@@ -365,7 +365,7 @@ const MLPFundamentals = () => {
 
             {/* Parameter Counting */}
             <Paper className="p-6 bg-gray-50 mb-6">
-              <Title order={3} className="mb-4">Parameter Count Analysis</Title>
+              <Title order={3} mb="md">Parameter Count Analysis</Title>
               
               <Grid gutter="lg">
                 <Grid.Col span={6}>
@@ -442,7 +442,7 @@ const MLPFundamentals = () => {
 
             {/* Learning Process */}
             <Paper className="p-6 bg-indigo-50 mb-6">
-              <Title order={3} className="mb-4">The Learning Process</Title>
+              <Title order={3} mb="md">The Learning Process</Title>
               
               <Grid gutter="lg">
                 <Grid.Col span={6}>
@@ -490,12 +490,12 @@ const MLPFundamentals = () => {
         {/* Summary */}
         <div data-slide>
           
-            <Title order={2} className="mb-6">Part 3 Summary: Multi Layer Perceptron in a nutshell</Title>
+            <Title order={2} mb="xl">Part 3 Summary: Multi Layer Perceptron in a nutshell</Title>
             
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 h-full">
-                  <Title order={3} className="mb-4">Core Architectural Concepts</Title>
+                  <Title order={3} mb="md">Core Architectural Concepts</Title>
                   <List spacing="md">
                     <List.Item>Neurons are mathematical units: <InlineMath>{`y = \\sigma(w^T x + b)`}</InlineMath></List.Item>
                     <List.Item>Linear activation = linear regression</List.Item>
@@ -508,7 +508,7 @@ const MLPFundamentals = () => {
               
               <Grid.Col span={6}>
                 <Paper className="p-6 bg-gradient-to-br from-green-50 to-green-100 h-full">
-                  <Title order={3} className="mb-4">Key Learning Insights</Title>
+                  <Title order={3} mb="md">Key Learning Insights</Title>
                   <List spacing="md">
                     <List.Item>MLPs solve problems linear models cannot</List.Item>
                     <List.Item>Parameter count grows quadratically with layer width</List.Item>

@@ -17,12 +17,12 @@ const MLPFundamentals = () => {
           
           {/* The Neuron as Computational Unit */}
           
-            <Title order={2} className="mb-6" id="neuron">
+            <Title order={2} mb="xl" id="neuron">
               The Neuron as a Computational Unit
             </Title>
             
             <Paper className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 mb-6">
-              <Title order={3} className="mb-4">Biological Inspiration</Title>
+              <Title order={3} mb="md">Biological Inspiration</Title>
               <Text size="lg" mb="md">
                 Artificial neurons are loosely inspired by biological neurons in the brain. While the biological 
                 reality is far more complex, the mathematical abstraction captures the essential computational principle: 
@@ -60,7 +60,7 @@ const MLPFundamentals = () => {
 
             {/* Mathematical Model of a Neuron */}
             <Paper className="p-6 bg-gray-50 mb-6">
-              <Title order={3} className="mb-4">Mathematical Model of a Neuron</Title>
+              <Title order={3} mb="md">Mathematical Model of a Neuron</Title>
               
               <Paper className="p-4 bg-white mb-4">
                 <Title order={4} mb="sm">The Perceptron Model</Title>
@@ -138,7 +138,7 @@ print(f"Neuron output: {output.item():.4f}")`} />
 
             {/* Activation Functions */}
             <Paper className="p-6 bg-blue-50 mb-6">
-              <Title order={3} className="mb-4">Common Activation Functions</Title>
+              <Title order={3} mb="md">Common Activation Functions</Title>
               
               <Grid gutter="lg">
                 <Grid.Col span={6}>
@@ -251,12 +251,12 @@ plt.title('Activation Functions Comparison')`} />
         {/* Network Architecture and Forward Propagation */}
         <div data-slide>
           
-            <Title order={2} className="mb-6" id="network-architecture">
+            <Title order={2} mb="xl" id="network-architecture">
               Network Architecture and Forward Propagation
             </Title>
             
             <Paper className="p-6 bg-gradient-to-r from-green-50 to-teal-50 mb-6">
-              <Title order={3} className="mb-4">Multi-Layer Perceptron Architecture</Title>
+              <Title order={3} mb="md">Multi-Layer Perceptron Architecture</Title>
               <Text size="lg" mb="md">
                 A Multi-Layer Perceptron (MLP) consists of multiple layers of neurons, where each neuron in a layer 
                 is connected to all neurons in the previous layer (fully connected or dense layers).
@@ -309,7 +309,7 @@ plt.title('Activation Functions Comparison')`} />
 
             {/* Forward Propagation Mathematics */}
             <Paper className="p-6 bg-gray-50 mb-6">
-              <Title order={3} className="mb-4">Forward Propagation Mathematics</Title>
+              <Title order={3} mb="md">Forward Propagation Mathematics</Title>
               
               <Text className="mb-4">
                 Forward propagation computes the network output by sequentially applying transformations through each layer:
@@ -392,7 +392,7 @@ print(f"Output shape: {output.shape}")  # [32, 10]`} />
 
             {/* Representation Learning */}
             <Paper className="p-6 bg-purple-50 mb-6">
-              <Title order={3} className="mb-4">Hierarchical Representation Learning</Title>
+              <Title order={3} mb="md">Hierarchical Representation Learning</Title>
               
               <Text className="mb-4">
                 Deep networks learn increasingly abstract representations through layers:
@@ -470,12 +470,12 @@ print(f"Output shape: {output.shape}")  # [32, 10]`} />
         {/* Parameters to Optimize */}
         <div data-slide>
           
-            <Title order={2} className="mb-6" id="parameters">
+            <Title order={2} mb="xl" id="parameters">
               Parameters to Optimize: Weights and Biases
             </Title>
             
             <Paper className="p-6 bg-gradient-to-r from-orange-50 to-red-50 mb-6">
-              <Title order={3} className="mb-4">Understanding Network Parameters</Title>
+              <Title order={3} mb="md">Understanding Network Parameters</Title>
               
               <Text size="lg" mb="md">
                 The learnable parameters of a neural network are the weights and biases that determine how 
@@ -524,7 +524,7 @@ print(f"Output shape: {output.shape}")  # [32, 10]`} />
 
             {/* Parameter Initialization */}
             <Paper className="p-6 bg-gray-50 mb-6">
-              <Title order={3} className="mb-4">Parameter Initialization Strategies</Title>
+              <Title order={3} mb="md">Parameter Initialization Strategies</Title>
               
               <Text className="mb-4">
                 Proper initialization is crucial for training deep networks. Poor initialization can lead to 
@@ -593,7 +593,7 @@ with torch.no_grad():
 
             {/* Parameter Counting and Memory */}
             <Paper className="p-6 bg-yellow-50 mb-6">
-              <Title order={3} className="mb-4">Parameter Counting and Memory Requirements</Title>
+              <Title order={3} mb="md">Parameter Counting and Memory Requirements</Title>
               
               <Paper className="p-4 bg-white mb-4">
                 <Title order={4} mb="sm">Calculating Total Parameters</Title>
@@ -654,7 +654,7 @@ with torch.no_grad():
 
             {/* Backpropagation Preview */}
             <Paper className="p-6 bg-gradient-to-r from-purple-50 to-pink-50 mb-6">
-              <Title order={3} className="mb-4">How Parameters are Learned: Backpropagation</Title>
+              <Title order={3} mb="md">How Parameters are Learned: Backpropagation</Title>
               
               <Text className="mb-4">
                 Backpropagation efficiently computes gradients of the loss with respect to all parameters using the chain rule:
@@ -722,12 +722,12 @@ for name, param in model.named_parameters():
         {/* Practical Implementation */}
         <div data-slide>
           
-            <Title order={2} className="mb-6" id="implementation">
+            <Title order={2} mb="xl" id="implementation">
               Complete MLP Implementation Example
             </Title>
             
             <Paper className="p-6 bg-gradient-to-r from-blue-50 to-purple-50 mb-6">
-              <Title order={3} className="mb-4">Building and Training an MLP from Scratch</Title>
+              <Title order={3} mb="md">Building and Training an MLP from Scratch</Title>
               
               <CodeBlock language="python" code={`import torch
 import torch.nn as nn
@@ -901,7 +901,7 @@ if __name__ == "__main__":
 
             {/* Common Pitfalls and Solutions */}
             <Paper className="p-6 bg-red-50">
-              <Title order={3} className="mb-4">Common Pitfalls and Solutions</Title>
+              <Title order={3} mb="md">Common Pitfalls and Solutions</Title>
               
               <Grid gutter="lg">
                 <Grid.Col span={6}>
@@ -951,12 +951,12 @@ if __name__ == "__main__":
         {/* Summary */}
         <div data-slide>
           
-            <Title order={2} className="mb-6">Part 3 Summary: MLP Fundamentals</Title>
+            <Title order={2} mb="xl">Part 3 Summary: MLP Fundamentals</Title>
             
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 h-full">
-                  <Title order={3} className="mb-4">Core MLP Concepts</Title>
+                  <Title order={3} mb="md">Core MLP Concepts</Title>
                   <List spacing="md">
                     <List.Item>Neurons perform weighted sum + non-linear activation</List.Item>
                     <List.Item>Deep networks learn hierarchical representations</List.Item>
@@ -969,7 +969,7 @@ if __name__ == "__main__":
               
               <Grid.Col span={6}>
                 <Paper className="p-6 bg-gradient-to-br from-green-50 to-green-100 h-full">
-                  <Title order={3} className="mb-4">Practical Insights</Title>
+                  <Title order={3} mb="md">Practical Insights</Title>
                   <List spacing="md">
                     <List.Item>ReLU activation default choice for hidden layers</List.Item>
                     <List.Item>Batch normalization stabilizes training</List.Item>

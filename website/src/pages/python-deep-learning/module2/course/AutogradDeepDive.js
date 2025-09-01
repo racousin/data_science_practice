@@ -17,7 +17,7 @@ const AutogradDeepDive = () => {
           </Text>
           
           <Paper className="p-6 bg-blue-50 mb-6">
-            <Title order={3} className="mb-4">Automatic Differentiation Theory</Title>
+            <Title order={3} mb="md">Automatic Differentiation Theory</Title>
             <Text className="mb-4">
               Automatic differentiation computes derivatives by applying the chain rule to elementary operations. 
               There are two main modes: forward mode and reverse mode (backpropagation).
@@ -99,10 +99,10 @@ print(f"Complex function gradient: {x.grad}")`} />
 
         {/* Computational Graph Construction */}
         <div id="computational-graph-construction">
-          <Title order={2} className="mb-6">Computational Graph Construction</Title>
+          <Title order={2} mb="xl">Computational Graph Construction</Title>
           
           <Paper className="p-6 bg-gray-50 mb-6">
-            <Title order={3} className="mb-4">Dynamic Graph Building in PyTorch</Title>
+            <Title order={3} mb="md">Dynamic Graph Building in PyTorch</Title>
             <Text className="mb-4">
               PyTorch builds computational graphs dynamically during the forward pass. Each operation creates nodes 
               that track the operations and their inputs for gradient computation.
@@ -214,10 +214,10 @@ analyze_graph_memory()`} />
 
         {/* Chain Rule and Backpropagation */}
         <div id="chain-rule-backpropagation">
-          <Title order={2} className="mb-6">Chain Rule & Backpropagation Mathematics</Title>
+          <Title order={2} mb="xl">Chain Rule & Backpropagation Mathematics</Title>
           
           <Paper className="p-6 bg-blue-50 mb-6">
-            <Title order={3} className="mb-4">Mathematical Foundation</Title>
+            <Title order={3} mb="md">Mathematical Foundation</Title>
             <Text className="mb-4">
               The chain rule states that for composite functions f(g(x)), the derivative is:
               (f ∘ g)'(x) = f'(g(x)) · g'(x)
@@ -341,10 +341,10 @@ print(f"Match: {torch.allclose(J, expected_J)}")`} />
 
         {/* Gradient Accumulation */}
         <div id="gradient-accumulation">
-          <Title order={2} className="mb-6">Gradient Accumulation & Zeroing</Title>
+          <Title order={2} mb="xl">Gradient Accumulation & Zeroing</Title>
           
           <Paper className="p-6 bg-gray-50 mb-6">
-            <Title order={3} className="mb-4">Gradient Lifecycle Management</Title>
+            <Title order={3} mb="md">Gradient Lifecycle Management</Title>
             <Text className="mb-4">
               PyTorch accumulates gradients in the .grad attribute of tensors. Understanding when to zero gradients 
               is crucial for correct training.
@@ -511,7 +511,7 @@ print(f"x.grad: {x.grad}")  # Should be doubled`} />
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 h-full">
-                <Title order={3} className="mb-4">Key Concepts</Title>
+                <Title order={3} mb="md">Key Concepts</Title>
                 <List spacing="md">
                   <List.Item>Forward mode AD: efficient for few inputs, many outputs</List.Item>
                   <List.Item>Reverse mode AD (backprop): efficient for many inputs, few outputs</List.Item>
@@ -523,7 +523,7 @@ print(f"x.grad: {x.grad}")  # Should be doubled`} />
             
             <Grid.Col span={6}>
               <Paper className="p-6 bg-gradient-to-br from-green-50 to-green-100 h-full">
-                <Title order={3} className="mb-4">Practical Implications</Title>
+                <Title order={3} mb="md">Practical Implications</Title>
                 <List spacing="md">
                   <List.Item>Always zero gradients before backward pass in training</List.Item>
                   <List.Item>Gradient accumulation enables large effective batch sizes</List.Item>

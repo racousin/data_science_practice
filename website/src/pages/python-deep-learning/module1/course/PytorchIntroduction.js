@@ -6,7 +6,7 @@ import CodeBlock from 'components/CodeBlock';
 
 const PytorchIntroduction = () => {
   return (
-    <Container size="xl" className="py-6">
+    <Container size="xl" py="xl">
       <Stack spacing="xl">
         
         {/* Introduction */}
@@ -17,13 +17,13 @@ const PytorchIntroduction = () => {
           
           <Paper className="p-6 bg-gradient-to-r from-orange-50 to-red-50 mb-6">
             <Title order={2} className="mb-4">Why PyTorch?</Title>
-            <Text size="lg" className="mb-4">
+            <Text size="lg" mb="md">
               PyTorch has become the dominant framework in deep learning research due to its 
               intuitive design, dynamic computation graphs, and seamless Python integration. 
               It provides the perfect balance between ease of use and performance.
             </Text>
             
-            <Flex direction="column" align="center" className="mb-4">
+            <Flex direction="column" align="center" mb="md">
               <Image
                 src="/assets/python-deep-learning/module1/pytorch_ecosystem.png"
                 alt="PyTorch Ecosystem"
@@ -40,13 +40,13 @@ const PytorchIntroduction = () => {
 
         {/* Philosophy */}
         <div data-slide>
-          <Title order={2} className="mb-6" id="philosophy">
+          <Title order={2} mb="xl" id="philosophy">
             PyTorch Philosophy
           </Title>
           
           <Paper className="p-6 bg-blue-50 mb-6">
-            <Title order={3} className="mb-4">Design Principles</Title>
-            <Text size="lg" className="mb-4">
+            <Title order={3} mb="md">Design Principles</Title>
+            <Text size="lg" mb="md">
               PyTorch was designed with specific philosophical principles that make it 
               particularly well-suited for research and experimentation in deep learning.
             </Text>
@@ -54,7 +54,7 @@ const PytorchIntroduction = () => {
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Pythonic Design</Title>
+                  <Title order={4} mb="sm">Pythonic Design</Title>
                   <List>
                     <List.Item><strong>Native Python Feel:</strong> Follows Python conventions and idioms</List.Item>
                     <List.Item><strong>Easy Debugging:</strong> Standard Python debugging tools work seamlessly</List.Item>
@@ -79,7 +79,7 @@ print(y)  # tensor([2, 4, 6, 8])`} />
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Dynamic Computation Graphs</Title>
+                  <Title order={4} mb="sm">Dynamic Computation Graphs</Title>
                   <List>
                     <List.Item><strong>Define-by-Run:</strong> Graph built dynamically during execution</List.Item>
                     <List.Item><strong>Control Flow:</strong> Natural Python control structures</List.Item>
@@ -103,12 +103,12 @@ result = dynamic_network(input_data, some_condition)`} />
           </Paper>
 
           <Paper className="p-6 bg-green-50 mb-6">
-            <Title order={3} className="mb-4">Research-First Approach</Title>
+            <Title order={3} mb="md">Research-First Approach</Title>
             
             <Grid gutter="lg">
               <Grid.Col span={4}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Eager Execution</Title>
+                  <Title order={4} mb="sm">Eager Execution</Title>
                   <Text size="sm" className="mb-3">
                     Operations execute immediately, making development interactive and intuitive.
                   </Text>
@@ -124,7 +124,7 @@ print(y.item())  # 2.1453...`} />
               
               <Grid.Col span={4}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Flexible Experimentation</Title>
+                  <Title order={4} mb="sm">Flexible Experimentation</Title>
                   <Text size="sm" className="mb-3">
                     Easy to modify architectures, try new ideas, and prototype quickly.
                   </Text>
@@ -138,7 +138,7 @@ for num_layers in [2, 4, 6]:
               
               <Grid.Col span={4}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Production Ready</Title>
+                  <Title order={4} mb="sm">Production Ready</Title>
                   <Text size="sm" className="mb-3">
                     TorchScript enables deployment while maintaining development flexibility.
                   </Text>
@@ -155,7 +155,7 @@ torch.jit.save(optimized_model, "model.pt")`} />
           </Paper>
 
           <Paper className="p-6 bg-yellow-50">
-            <Title order={3} className="mb-4">Framework Comparison</Title>
+            <Title order={3} mb="md">Framework Comparison</Title>
             
             <div style={{ overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -195,19 +195,19 @@ torch.jit.save(optimized_model, "model.pt")`} />
 
         {/* Tensors Foundation */}
         <div data-slide>
-          <Title order={2} className="mb-6" id="tensors">
+          <Title order={2} mb="xl" id="tensors">
             Tensors: The Foundation
           </Title>
           
           <Paper className="p-6 bg-gradient-to-r from-purple-50 to-pink-50 mb-6">
-            <Title order={3} className="mb-4">Understanding Tensors</Title>
-            <Text size="lg" className="mb-4">
+            <Title order={3} mb="md">Understanding Tensors</Title>
+            <Text size="lg" mb="md">
               Tensors are the fundamental data structure in PyTorch - multi-dimensional arrays 
               that can run on GPUs and support automatic differentiation. They are similar to 
               NumPy arrays but with additional capabilities for deep learning.
             </Text>
             
-            <Flex direction="column" align="center" className="mb-4">
+            <Flex direction="column" align="center" mb="md">
               <Image
                 src="/assets/python-deep-learning/module1/tensor_dimensions.png"
                 alt="Tensor Dimensions"
@@ -223,7 +223,7 @@ torch.jit.save(optimized_model, "model.pt")`} />
             <Grid gutter="lg" className="mt-6">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Tensor Properties</Title>
+                  <Title order={4} mb="sm">Tensor Properties</Title>
                   <List size="sm">
                     <List.Item><strong>dtype:</strong> Data type (float32, int64, bool, etc.)</List.Item>
                     <List.Item><strong>device:</strong> CPU or GPU location</List.Item>
@@ -236,7 +236,7 @@ torch.jit.save(optimized_model, "model.pt")`} />
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Common Dimensions</Title>
+                  <Title order={4} mb="sm">Common Dimensions</Title>
                   <List size="sm">
                     <List.Item><strong>0D (Scalar):</strong> Single number - <InlineMath>{`\\mathbb{R}`}</InlineMath></List.Item>
                     <List.Item><strong>1D (Vector):</strong> Array of numbers - <InlineMath>{`\\mathbb{R}^n`}</InlineMath></List.Item>
@@ -250,7 +250,7 @@ torch.jit.save(optimized_model, "model.pt")`} />
           </Paper>
 
           <Paper className="p-6 bg-gray-50 mb-6">
-            <Title order={3} className="mb-4">Tensor Creation and Basic Operations</Title>
+            <Title order={3} mb="md">Tensor Creation and Basic Operations</Title>
             
             <CodeBlock language="python" code={`import torch
 import numpy as np
@@ -302,7 +302,7 @@ print(f"Mean: {mean_val}, Sum: {sum_val}, Max: {max_val}")`} />
           </Paper>
 
           <Paper className="p-6 bg-teal-50">
-            <Title order={3} className="mb-4">Tensor Memory and Storage</Title>
+            <Title order={3} mb="md">Tensor Memory and Storage</Title>
             <Text className="mb-4">
               Understanding PyTorch's tensor memory model is crucial for writing efficient code.
               PyTorch uses a sophisticated storage system that allows multiple tensors to share 
@@ -312,7 +312,7 @@ print(f"Mean: {mean_val}, Sum: {sum_val}, Max: {max_val}")`} />
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Storage and Strides</Title>
+                  <Title order={4} mb="sm">Storage and Strides</Title>
                   <Text size="sm" className="mb-3">
                     Tensors consist of data (storage) and metadata (strides, shape, offset). 
                     Strides determine how logical indices map to physical memory locations.
@@ -335,7 +335,7 @@ print(f"Same storage: {x.storage().data_ptr() == y.storage().data_ptr()}")`} />
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Views vs Copies</Title>
+                  <Title order={4} mb="sm">Views vs Copies</Title>
                   <Text size="sm" className="mb-3">
                     Views provide different interpretations of the same memory, while copies 
                     create new storage. Understanding this distinction prevents memory issues.
@@ -360,7 +360,7 @@ print(f"Copy unaffected: {x_copy[0, 0]}")  # 0`} />
             </Grid>
             
             <Paper className="p-4 bg-blue-50 mt-4">
-              <Title order={4} className="mb-3">Memory Efficiency</Title>
+              <Title order={4} mb="sm">Memory Efficiency</Title>
               <CodeBlock language="python" code={`# Memory-efficient operations
 x = torch.randn(1000, 1000)
 
@@ -384,18 +384,18 @@ print(f"Memory usage: {x.element_size() * x.numel() / 1024**2:.2f} MB")`} />
 
         {/* Device Management */}
         <div data-slide>
-          <Title order={2} className="mb-6" id="device-management">
+          <Title order={2} mb="xl" id="device-management">
             Device Management and GPU Acceleration
           </Title>
           
           <Paper className="p-6 bg-indigo-50 mb-6">
-            <Title order={3} className="mb-4">Working with GPUs</Title>
-            <Text size="lg" className="mb-4">
+            <Title order={3} mb="md">Working with GPUs</Title>
+            <Text size="lg" mb="md">
               PyTorch provides seamless GPU acceleration for deep learning computations. 
               Understanding device management is crucial for performance optimization.
             </Text>
             
-            <Flex direction="column" align="center" className="mb-4">
+            <Flex direction="column" align="center" mb="md">
               <Image
                 src="/assets/python-deep-learning/module1/gpu_acceleration.png"
                 alt="GPU Acceleration"
@@ -463,7 +463,7 @@ if cuda_available:
             <Grid gutter="lg" className="mt-4">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Best Practices</Title>
+                  <Title order={4} mb="sm">Best Practices</Title>
                   <List size="sm">
                     <List.Item>Always use device-agnostic code</List.Item>
                     <List.Item>Move models and data to same device</List.Item>
@@ -476,7 +476,7 @@ if cuda_available:
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Common Pitfalls</Title>
+                  <Title order={4} mb="sm">Common Pitfalls</Title>
                   <List size="sm">
                     <List.Item>Tensors on different devices cause errors</List.Item>
                     <List.Item>Moving tensors unnecessarily hurts performance</List.Item>
@@ -492,19 +492,19 @@ if cuda_available:
 
         {/* Autograd Introduction */}
         <div data-slide>
-          <Title order={2} className="mb-6" id="autograd-intro">
+          <Title order={2} mb="xl" id="autograd-intro">
             Introduction to Automatic Differentiation
           </Title>
           
           <Paper className="p-6 bg-gradient-to-r from-emerald-50 to-teal-50 mb-6">
-            <Title order={3} className="mb-4">The Magic Behind Deep Learning</Title>
-            <Text size="lg" className="mb-4">
+            <Title order={3} mb="md">The Magic Behind Deep Learning</Title>
+            <Text size="lg" mb="md">
               Automatic differentiation (autograd) is what makes training neural networks practical. 
               PyTorch's autograd engine automatically computes gradients by tracking operations 
               and building a dynamic computational graph.
             </Text>
             
-            <Flex direction="column" align="center" className="mb-4">
+            <Flex direction="column" align="center" mb="md">
               <Image
                 src="/assets/python-deep-learning/module1/computation_graph.png"
                 alt="Computation Graph"
@@ -517,7 +517,7 @@ if cuda_available:
               Dynamic computation graph for automatic differentiation
             </Text>
             
-            <Paper className="p-4 bg-white mt-4">
+            <Paper p="md" bg="white" mt="md">
               <Text className="mb-3">
                 <strong>Note:</strong> This is just an introduction to autograd. We'll cover automatic 
                 differentiation in much more detail in the next section, including the mathematical 
@@ -542,12 +542,12 @@ print(f"dz/dy = {y.grad}")  # dz/dy = 27.0 (derivative of y^3 is 3y^2)`} />
           </Paper>
 
           <Paper className="p-6 bg-amber-50">
-            <Title order={3} className="mb-4">Why Autograd Matters</Title>
+            <Title order={3} mb="md">Why Autograd Matters</Title>
             
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">Before Autograd</Title>
+                  <Title order={4} mb="sm">Before Autograd</Title>
                   <List size="sm">
                     <List.Item>Manual gradient computation</List.Item>
                     <List.Item>Error-prone derivative calculations</List.Item>
@@ -560,7 +560,7 @@ print(f"dz/dy = {y.grad}")  # dz/dy = 27.0 (derivative of y^3 is 3y^2)`} />
               
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
-                  <Title order={4} className="mb-3">With Autograd</Title>
+                  <Title order={4} mb="sm">With Autograd</Title>
                   <List size="sm">
                     <List.Item>Automatic gradient computation</List.Item>
                     <List.Item>Correct derivatives guaranteed</List.Item>

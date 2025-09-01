@@ -18,7 +18,7 @@ const OptimizationAlgorithms = () => {
           </Text>
           
           <Paper className="p-6 bg-blue-50 mb-6">
-            <Title order={3} className="mb-4">Optimization Theory</Title>
+            <Title order={3} mb="md">Optimization Theory</Title>
             <Text className="mb-4">
               Modern optimizers adapt learning rates and incorporate momentum to improve convergence.
               Understanding their mathematical foundations is crucial for effective training.
@@ -152,10 +152,10 @@ for step in range(5):
         </div>
 
         <div id="adam-rmsprop-adagrad">
-          <Title order={2} className="mb-6">Adam, RMSprop, AdaGrad Derivations</Title>
+          <Title order={2} mb="xl">Adam, RMSprop, AdaGrad Derivations</Title>
           
           <Paper className="p-6 bg-gray-50 mb-6">
-            <Title order={3} className="mb-4">Adam Optimizer Implementation</Title>
+            <Title order={3} mb="md">Adam Optimizer Implementation</Title>
             <Text className="mb-4">
               Adam combines momentum with adaptive learning rates using bias-corrected moving averages.
             </Text>
@@ -313,7 +313,7 @@ compare_optimizers()`} />
         </div>
 
         <div id="learning-rate-scheduling">
-          <Title order={2} className="mb-6">Learning Rate Scheduling Strategies</Title>
+          <Title order={2} mb="xl">Learning Rate Scheduling Strategies</Title>
           
           <Paper className="p-4 bg-purple-50">
             <Title order={4} mb="sm">Learning Rate Schedules</Title>
@@ -398,7 +398,7 @@ test_lr_schedules()`} />
         </div>
 
         <div id="second-order-optimization">
-          <Title order={2} className="mb-6">Second-order Optimization Methods</Title>
+          <Title order={2} mb="xl">Second-order Optimization Methods</Title>
           
           <Paper className="p-4 bg-green-50">
             <Title order={4} mb="sm">Newton's Method and BFGS</Title>
@@ -521,7 +521,7 @@ print(f"Expected optimum: [1.0, 2.0]")`} />
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 h-full">
-                <Title order={3} className="mb-4">First-order Methods</Title>
+                <Title order={3} mb="md">First-order Methods</Title>
                 <List spacing="md">
                   <List.Item>SGD with momentum improves convergence</List.Item>
                   <List.Item>Adaptive methods (Adam, RMSprop) handle different scales</List.Item>
@@ -533,7 +533,7 @@ print(f"Expected optimum: [1.0, 2.0]")`} />
             
             <Grid.Col span={6}>
               <Paper className="p-6 bg-gradient-to-br from-green-50 to-green-100 h-full">
-                <Title order={3} className="mb-4">Advanced Techniques</Title>
+                <Title order={3} mb="md">Advanced Techniques</Title>
                 <List spacing="md">
                   <List.Item>Second-order methods use curvature information</List.Item>
                   <List.Item>L-BFGS approximates Newton's method efficiently</List.Item>

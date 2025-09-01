@@ -26,11 +26,11 @@ const Introduction = () => {
               </Text>
             </Flex>
           </div>
-          <div data-slide>    <Title order={2} className="mb-6" id="introduction">
+          <div data-slide>    <Title order={2} mb="xl" id="introduction">
       Introduction to Deep Learning
     </Title></div>
 <div data-slide>
-<Title order={3} className="mb-4">What is Deep Learning?</Title>
+<Title order={3} mb="md">What is Deep Learning?</Title>
     
     <Flex direction="column" align="center">
       <Image
@@ -87,7 +87,7 @@ const Introduction = () => {
 </div>
 </div>
 <div data-slide>
-              <Title order={3} className="mb-4">The Deep Learning Revolution</Title>
+              <Title order={3} mb="md">The Deep Learning Revolution</Title>
                                       <Image
         src="/assets/python-deep-learning/module1/big_data0.png"
         alt="AI Fields Segmentation Diagram"
@@ -175,7 +175,7 @@ const Introduction = () => {
 
         {/* Historical Evolution */}
         <div data-slide>
-            <Title order={2} className="mb-6" id="history">
+            <Title order={2} mb="xl" id="history">
               Historical Evolution of Deep Learning
             </Title>
                      
@@ -209,7 +209,7 @@ const Introduction = () => {
             Artificial general intelligence (AGI) refers to the hypothetical intelligence of a machine that possesses the ability to understand or learn any intellectual task that a human being can. However, deep learning excels at pattern recognition tasks but struggles with theoretical breakthroughs in physics, proving mathematical theorems like the Riemann Hypothesis, and understanding consciousness - areas requiring new abstractions rather than data pattern matching, while also being highly energy-intensive with massive computational resource requirements.
           </div>
 <div data-slide>
-              <Title order={3} className="mb-4">Timeline of Major Milestones</Title>
+              <Title order={3} mb="md">Timeline of Major Milestones</Title>
 
                   <Title order={4} className="mb-2">1940s-1960s: The Birth of Neural Networks</Title>
                   <Grid gutter="lg">
@@ -352,7 +352,7 @@ const Introduction = () => {
                    {/* Real-World Applications */}
         <div data-slide>
 
-      <Title order={2} className="mb-6" id="introduction">Real-World Applications</Title>
+      <Title order={2} mb="xl" id="introduction">Real-World Applications</Title>
       
       <Text size="lg" className="mb-6">
         Deep learning has revolutionized virtually every field it has touched, enabling capabilities 
@@ -601,7 +601,7 @@ const Introduction = () => {
       </Paper>
     </div>
 <div data-slide>
-      <Title order={2} className="mb-6" id="data">Data: The Fuel of Deep Learning</Title>
+      <Title order={2} mb="xl" id="data">Data: The Fuel of Deep Learning</Title>
       
       <Text size="lg" className="mb-6">
         Data is the foundation upon which all deep learning systems are built. The quality, quantity, 

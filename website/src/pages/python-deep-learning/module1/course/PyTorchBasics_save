@@ -31,7 +31,7 @@ const PyTorchBasics = () => {
 
         {/* Installation and Setup */}
         <div id="installation">
-          <Title order={2} className="mb-6">Installation and Setup</Title>
+          <Title order={2} mb="xl">Installation and Setup</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -91,7 +91,7 @@ if torch.cuda.is_available():
 
         {/* Tensors vs NumPy Arrays */}
         <div id="tensors-vs-numpy">
-          <Title order={2} className="mb-6">Tensors vs NumPy Arrays</Title>
+          <Title order={2} mb="xl">Tensors vs NumPy Arrays</Title>
           
           <Paper className="p-4 bg-gray-50 mb-4">
             <Title order={4} mb="sm">Key Differences</Title>
@@ -178,7 +178,7 @@ detached_array = tensor.detach().numpy()`} />
 
         {/* Tensor Attributes */}
         <div id="tensor-attributes">
-          <Title order={2} className="mb-6">Tensor Attributes</Title>
+          <Title order={2} mb="xl">Tensor Attributes</Title>
           
           <Paper className="p-4 bg-gray-50 mb-4">
             <Title order={4} mb="sm">Understanding Tensor Properties</Title>
@@ -253,7 +253,7 @@ print(f"Tensor device: {tensor.device}")`} />
 
         {/* Indexing and Slicing */}
         <div id="indexing-slicing">
-          <Title order={2} className="mb-6">Indexing and Slicing</Title>
+          <Title order={2} mb="xl">Indexing and Slicing</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -349,7 +349,7 @@ print(f"View: {z}")      # Changed!`} />
 
         {/* Mathematical Operations */}
         <div id="tensor-math">
-          <Title order={2} className="mb-6">Mathematical Operations</Title>
+          <Title order={2} mb="xl">Mathematical Operations</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={4}>
@@ -470,7 +470,7 @@ print(f"Solution shape: {x.shape}")`} />
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 h-full">
-                <Title order={3} className="mb-4">Key Concepts Covered</Title>
+                <Title order={3} mb="md">Key Concepts Covered</Title>
                 <List spacing="md">
                   <List.Item>PyTorch installation and setup</List.Item>
                   <List.Item>Tensors vs NumPy arrays</List.Item>
@@ -484,7 +484,7 @@ print(f"Solution shape: {x.shape}")`} />
             
             <Grid.Col span={6}>
               <Paper className="p-6 bg-gradient-to-br from-green-50 to-green-100 h-full">
-                <Title order={3} className="mb-4">Best Practices</Title>
+                <Title order={3} mb="md">Best Practices</Title>
                 <List spacing="md">
                   <List.Item>Use appropriate data types for memory efficiency</List.Item>
                   <List.Item>Keep tensors on same device for operations</List.Item>

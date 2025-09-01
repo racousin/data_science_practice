@@ -33,7 +33,7 @@ const ModelOptimization = () => {
 
         {/* Slide 2: Model Pruning */}
         <div data-slide className="min-h-[500px]" id="model-pruning">
-          <Title order={2} className="mb-6">Model Pruning</Title>
+          <Title order={2} mb="xl">Model Pruning</Title>
           
           <Paper className="p-6 bg-gray-50 mb-6">
             <Text size="lg">
@@ -221,7 +221,7 @@ class GradientPruning:
 
         {/* Slide 3: Quantization */}
         <div data-slide className="min-h-[500px]" id="quantization">
-          <Title order={2} className="mb-6">Model Quantization</Title>
+          <Title order={2} mb="xl">Model Quantization</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -401,7 +401,7 @@ def mixed_precision_training(model, train_loader, num_epochs=10):
 
         {/* Slide 4: Knowledge Distillation */}
         <div data-slide className="min-h-[500px]" id="knowledge-distillation">
-          <Title order={2} className="mb-6">Knowledge Distillation</Title>
+          <Title order={2} mb="xl">Knowledge Distillation</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={12}>
@@ -519,7 +519,7 @@ class TeacherStudentModel(nn.Module):
 
         {/* Slide 5: Efficient Architectures */}
         <div data-slide className="min-h-[500px]" id="efficient-architectures">
-          <Title order={2} className="mb-6">Efficient Architectures</Title>
+          <Title order={2} mb="xl">Efficient Architectures</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -751,7 +751,7 @@ class NASBlock(nn.Module):
 
         {/* Slide 6: Model Compression Tools */}
         <div data-slide className="min-h-[500px]" id="compression-tools">
-          <Title order={2} className="mb-6">Model Compression Tools and Frameworks</Title>
+          <Title order={2} mb="xl">Model Compression Tools and Frameworks</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -925,7 +925,7 @@ class CompressionAnalyzer:
 
         {/* Slide 7: Production Deployment */}
         <div data-slide className="min-h-[500px]" id="production-deployment">
-          <Title order={2} className="mb-6">Production Deployment Strategies</Title>
+          <Title order={2} mb="xl">Production Deployment Strategies</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>

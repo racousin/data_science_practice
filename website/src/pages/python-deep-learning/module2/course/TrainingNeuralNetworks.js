@@ -32,7 +32,7 @@ const TrainingNeuralNetworks = () => {
 
         {/* Slide 2: Loss Functions */}
         <div data-slide className="min-h-[500px]" id="loss-functions">
-          <Title order={2} className="mb-6">Loss Functions</Title>
+          <Title order={2} mb="xl">Loss Functions</Title>
           
           <Paper className="p-6 bg-gray-50 mb-6">
             <Text size="lg">
@@ -80,7 +80,7 @@ smooth_l1_loss = F.smooth_l1_loss(predictions, targets)`}</Code>
 
         {/* Slide 3: Optimizers */}
         <div data-slide className="min-h-[500px]" id="optimizers">
-          <Title order={2} className="mb-6">Optimization Algorithms</Title>
+          <Title order={2} mb="xl">Optimization Algorithms</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={12}>
@@ -142,7 +142,7 @@ for epoch in range(num_epochs):
 
         {/* Slide 4: Training Loop */}
         <div data-slide className="min-h-[500px]" id="training-loop">
-          <Title order={2} className="mb-6">Complete Training Loop</Title>
+          <Title order={2} mb="xl">Complete Training Loop</Title>
           
           <Paper className="p-4 bg-gray-50">
             <Code block language="python">{`def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs):
@@ -204,7 +204,7 @@ for epoch in range(num_epochs):
 
         {/* Slide 5: Regularization */}
         <div data-slide className="min-h-[500px]" id="regularization">
-          <Title order={2} className="mb-6">Regularization Techniques</Title>
+          <Title order={2} mb="xl">Regularization Techniques</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -269,7 +269,7 @@ def l2_regularization(model, lambda_reg):
 
         {/* Slide 6: Best Practices */}
         <div data-slide className="min-h-[500px]" id="best-practices">
-          <Title order={2} className="mb-6">Training Best Practices</Title>
+          <Title order={2} mb="xl">Training Best Practices</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>

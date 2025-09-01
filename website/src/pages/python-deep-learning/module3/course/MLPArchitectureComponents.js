@@ -16,7 +16,7 @@ const MLPArchitectureComponents = () => {
           </Text>
           
           <Paper className="p-6 bg-blue-50 mb-6">
-            <Title order={3} className="mb-4">Mathematical Foundation of MLPs</Title>
+            <Title order={3} mb="md">Mathematical Foundation of MLPs</Title>
             <Text className="mb-4">
               A multilayer perceptron (MLP) is a feedforward neural network with multiple layers of neurons.
               Each layer applies an affine transformation followed by a nonlinear activation function.
@@ -158,10 +158,10 @@ memory_usage = estimate_memory_usage(mlp, (784,), batch_size=32)`} />
         </div>
 
         <div id="universal-approximation">
-          <Title order={2} className="mb-6">Universal Approximation Theorem</Title>
+          <Title order={2} mb="xl">Universal Approximation Theorem</Title>
           
           <Paper className="p-6 bg-gray-50 mb-6">
-            <Title order={3} className="mb-4">Theoretical Foundation</Title>
+            <Title order={3} mb="md">Theoretical Foundation</Title>
             <Text className="mb-4">
               The Universal Approximation Theorem states that a feedforward network with a single hidden layer 
               can approximate any continuous function on a compact subset of ℝⁿ to arbitrary accuracy.
@@ -248,7 +248,7 @@ print("Note: With enough hidden units and training, any continuous function can 
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 h-full">
-                <Title order={3} className="mb-4">Key Concepts</Title>
+                <Title order={3} mb="md">Key Concepts</Title>
                 <List spacing="md">
                   <List.Item>MLPs use affine transformations with nonlinear activations</List.Item>
                   <List.Item>Parameter count grows quadratically with layer width</List.Item>
@@ -260,7 +260,7 @@ print("Note: With enough hidden units and training, any continuous function can 
             
             <Grid.Col span={6}>
               <Paper className="p-6 bg-gradient-to-br from-green-50 to-green-100 h-full">
-                <Title order={3} className="mb-4">Practical Implications</Title>
+                <Title order={3} mb="md">Practical Implications</Title>
                 <List spacing="md">
                   <List.Item>Depth vs. width trade-offs affect representational capacity</List.Item>
                   <List.Item>Activation functions critically impact gradient flow</List.Item>

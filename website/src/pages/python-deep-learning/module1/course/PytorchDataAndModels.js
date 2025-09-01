@@ -41,12 +41,12 @@ const PytorchDataAndModels = () => {
 
         {/* Datasets and DataLoaders */}
         <div data-slide>
-          <Title order={2} className="mb-6" id="datasets-dataloaders">
+          <Title order={2} mb="xl" id="datasets-dataloaders">
             Datasets and DataLoaders
           </Title>
           
           <Paper className="p-6 bg-green-50 mb-6">
-            <Title order={3} className="mb-4">The Dataset Abstraction</Title>
+            <Title order={3} mb="md">The Dataset Abstraction</Title>
             <Text size="lg" mb="md">
               PyTorch's Dataset class provides a clean abstraction for working with data. 
               It handles indexing, loading, and preprocessing, making it easy to work with 
@@ -119,7 +119,7 @@ print(f"Sample shape: {sample.shape}")  # [3, 32, 32]`} />
           </Paper>
 
           <Paper className="p-6 bg-orange-50 mb-6">
-            <Title order={3} className="mb-4">DataLoader: Efficient Batch Processing</Title>
+            <Title order={3} mb="md">DataLoader: Efficient Batch Processing</Title>
             <Text className="mb-4">
               The DataLoader wraps a Dataset and provides powerful features for training: 
               batching, shuffling, parallel loading, and memory management.
@@ -213,12 +213,12 @@ for epoch in range(5):
 
         {/* Linear Algebra Operations */}
         <div data-slide>
-          <Title order={2} className="mb-6" id="linear-algebra">
+          <Title order={2} mb="xl" id="linear-algebra">
             Essential Linear Algebra Operations
           </Title>
           
           <Paper className="p-6 bg-gradient-to-r from-green-50 to-teal-50 mb-6">
-            <Title order={3} className="mb-4">Fundamental Operations for Deep Learning</Title>
+            <Title order={3} mb="md">Fundamental Operations for Deep Learning</Title>
             <Text size="lg" mb="md">
               Deep learning operates on multi-dimensional arrays. Understanding their properties and operations 
               is crucial for implementing and debugging neural networks.
@@ -261,7 +261,7 @@ E = A + v  # [[2, 4], [4, 6]]`} />
           </Paper>
 
           <Paper className="p-6 bg-gray-50 mb-6">
-            <Title order={3} className="mb-4">Broadcasting and Norms</Title>
+            <Title order={3} mb="md">Broadcasting and Norms</Title>
             
             <Grid gutter="lg">
               <Grid.Col span={6}>
@@ -305,12 +305,12 @@ C = A + b                  # Shape: [5, 3]`} />
 
         {/* Transforms */}
         <div data-slide>
-          <Title order={2} className="mb-6" id="transforms">
+          <Title order={2} mb="xl" id="transforms">
             Data Transforms and Preprocessing
           </Title>
           
           <Paper className="p-6 bg-purple-50 mb-6">
-            <Title order={3} className="mb-4">The Power of Data Augmentation</Title>
+            <Title order={3} mb="md">The Power of Data Augmentation</Title>
             <Text size="lg" mb="md">
               Data transforms are essential for preprocessing and augmenting your data. 
               They can normalize inputs, apply augmentations for better generalization, 
@@ -382,7 +382,7 @@ train_transforms = transforms.Compose([
           </Paper>
 
           <Paper className="p-6 bg-teal-50 mb-6">
-            <Title order={3} className="mb-4">Custom Transforms</Title>
+            <Title order={3} mb="md">Custom Transforms</Title>
             <Text className="mb-4">
               You can create custom transforms for specific preprocessing needs. Custom transforms 
               should be callable objects that take an input and return a transformed output.
@@ -484,12 +484,12 @@ val_dataset = CustomDataset(val_data, val_labels, val_transform)`} />
 
         {/* Building Neural Networks */}
         <div data-slide>
-          <Title order={2} className="mb-6" id="neural-networks">
+          <Title order={2} mb="xl" id="neural-networks">
             Building Neural Networks with torch.nn
           </Title>
           
           <Paper className="p-6 bg-gradient-to-r from-rose-50 to-pink-50 mb-6">
-            <Title order={3} className="mb-4">PyTorch Neural Network Module</Title>
+            <Title order={3} mb="md">PyTorch Neural Network Module</Title>
             <Text size="lg" mb="md">
               PyTorch provides the torch.nn module for building neural networks. Understanding 
               the basic building blocks and how they connect is essential for creating models.
@@ -510,7 +510,7 @@ val_dataset = CustomDataset(val_data, val_labels, val_transform)`} />
           </Paper>
 
           <Paper className="p-6 bg-blue-50 mb-6">
-            <Title order={3} className="mb-4">Understanding Linear Layers</Title>
+            <Title order={3} mb="md">Understanding Linear Layers</Title>
             <Text className="mb-4">
               Linear layers are the fundamental building blocks of neural networks. They perform 
               matrix multiplication followed by bias addition.
@@ -560,7 +560,7 @@ y = layer(x)              # Output: [32, 128]`} />
           </Paper>
 
           <Paper className="p-6 bg-green-50 mb-6">
-            <Title order={3} className="mb-4">Simple Multi-Layer Perceptron</Title>
+            <Title order={3} mb="md">Simple Multi-Layer Perceptron</Title>
             
             <CodeBlock language="python" code={`import torch
 import torch.nn as nn
@@ -595,7 +595,7 @@ print(f"Predicted class: {y_pred}")`} />
           </Paper>
 
           <Paper className="p-6 bg-amber-50 mb-6">
-            <Title order={3} className="mb-4">Model Parameters and Components</Title>
+            <Title order={3} mb="md">Model Parameters and Components</Title>
             
             <Grid gutter="lg">
               <Grid.Col span={6}>
@@ -641,12 +641,12 @@ softmax_output = softmax(x)  # Probabilities sum to 1`} />
 
         {/* Next Steps */}
         <div data-slide>
-          <Title order={2} className="mb-6" id="next-steps">
+          <Title order={2} mb="xl" id="next-steps">
             Next Steps: Complete Training Pipeline
           </Title>
           
           <Paper className="p-6 bg-gradient-to-r from-emerald-50 to-teal-50">
-            <Title order={3} className="mb-4">What's Coming Next</Title>
+            <Title order={3} mb="md">What's Coming Next</Title>
             <Text size="lg" mb="md">
               You now understand the fundamental components of PyTorch: datasets, transforms, 
               and neural network building blocks. In the next sections, we'll cover:

@@ -16,7 +16,7 @@ const AdvancedGradientMechanics = () => {
           </Text>
           
           <Paper className="p-6 bg-blue-50 mb-6">
-            <Title order={3} className="mb-4">Understanding Gradient Flow</Title>
+            <Title order={3} mb="md">Understanding Gradient Flow</Title>
             <Text className="mb-4">
               Gradient flow refers to how gradients propagate through network layers during backpropagation.
               Poor gradient flow can lead to vanishing or exploding gradients.
@@ -115,10 +115,10 @@ except RuntimeError as e:
         </div>
 
         <div id="gradient-clipping">
-          <Title order={2} className="mb-6">Gradient Clipping & Normalization</Title>
+          <Title order={2} mb="xl">Gradient Clipping & Normalization</Title>
           
           <Paper className="p-6 bg-gray-50 mb-6">
-            <Title order={3} className="mb-4">Gradient Clipping Techniques</Title>
+            <Title order={3} mb="md">Gradient Clipping Techniques</Title>
             
             <Grid gutter="lg">
               <Grid.Col span={6}>
@@ -230,7 +230,7 @@ print("Gradient statistics:", clipper.get_statistics())`} />
         </div>
 
         <div id="higher-order-derivatives">
-          <Title order={2} className="mb-6">Higher-order Derivatives & Hessians</Title>
+          <Title order={2} mb="xl">Higher-order Derivatives & Hessians</Title>
           
           <Paper className="p-4 bg-purple-50">
             <Title order={4} mb="sm">Computing Second-order Derivatives</Title>
@@ -273,7 +273,7 @@ print(f"Expected Hessian:\\n{torch.tensor([[2., 1.], [1., 2.]])}")`} />
         </div>
 
         <div id="custom-backward-passes">
-          <Title order={2} className="mb-6">Custom Backward Passes</Title>
+          <Title order={2} mb="xl">Custom Backward Passes</Title>
           
           <Paper className="p-4 bg-green-50">
             <Title order={4} mb="sm">Implementing Custom Autograd Functions</Title>
@@ -320,7 +320,7 @@ print(f"Match: {torch.allclose(y, y_builtin)}")`} />
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 h-full">
-                <Title order={3} className="mb-4">Gradient Flow Issues</Title>
+                <Title order={3} mb="md">Gradient Flow Issues</Title>
                 <List spacing="md">
                   <List.Item>Vanishing gradients prevent deep layer learning</List.Item>
                   <List.Item>Exploding gradients cause training instability</List.Item>
@@ -332,7 +332,7 @@ print(f"Match: {torch.allclose(y, y_builtin)}")`} />
             
             <Grid.Col span={6}>
               <Paper className="p-6 bg-gradient-to-br from-green-50 to-green-100 h-full">
-                <Title order={3} className="mb-4">Solutions and Tools</Title>
+                <Title order={3} mb="md">Solutions and Tools</Title>
                 <List spacing="md">
                   <List.Item>Gradient clipping prevents explosion</List.Item>
                   <List.Item>Better architectures (ResNet, LSTM) help flow</List.Item>

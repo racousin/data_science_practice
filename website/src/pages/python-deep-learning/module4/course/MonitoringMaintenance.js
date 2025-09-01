@@ -33,7 +33,7 @@ const MonitoringMaintenance = () => {
 
         {/* Slide 2: Performance Monitoring */}
         <div data-slide className="min-h-[500px]" id="performance-monitoring">
-          <Title order={2} className="mb-6">Performance Monitoring</Title>
+          <Title order={2} mb="xl">Performance Monitoring</Title>
           
           <Paper className="p-6 bg-gray-50 mb-6">
             <Text size="lg">
@@ -402,7 +402,7 @@ class SlackNotifier:
 
         {/* Slide 3: Data Drift Detection */}
         <div data-slide className="min-h-[500px]" id="data-drift-detection">
-          <Title order={2} className="mb-6">Data Drift Detection</Title>
+          <Title order={2} mb="xl">Data Drift Detection</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -774,7 +774,7 @@ class ModelPerformanceMonitor:
 
         {/* Slide 4: Logging and Observability */}
         <div data-slide className="min-h-[500px]" id="logging-observability">
-          <Title order={2} className="mb-6">Logging and Observability</Title>
+          <Title order={2} mb="xl">Logging and Observability</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -1214,7 +1214,7 @@ class LogAnalyzer:
 
         {/* Slide 5: Automated Model Updates */}
         <div data-slide className="min-h-[500px]" id="automated-updates">
-          <Title order={2} className="mb-6">Automated Model Updates</Title>
+          <Title order={2} mb="xl">Automated Model Updates</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={12}>
@@ -1510,7 +1510,7 @@ class RetrainingConfig:
 
         {/* Slide 6: Best Practices Summary */}
         <div data-slide className="min-h-[500px]" id="best-practices">
-          <Title order={2} className="mb-6">Monitoring Best Practices</Title>
+          <Title order={2} mb="xl">Monitoring Best Practices</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>

@@ -37,7 +37,7 @@ const TensorFundamentals = () => {
 
         {/* Tensor Dimensions */}
         <div id="dimensions">
-          <Title order={2} className="mb-6">Understanding Tensor Dimensions</Title>
+          <Title order={2} mb="xl">Understanding Tensor Dimensions</Title>
           
           <Grid gutter="xl">
             <Grid.Col span={6}>
@@ -96,7 +96,7 @@ print(tensor_3d.ndim)   # 3`}
 
         {/* Creating Tensors */}
         <div id="creation">
-          <Title order={2} className="mb-6">Creating Tensors in PyTorch</Title>
+          <Title order={2} mb="xl">Creating Tensors in PyTorch</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -173,7 +173,7 @@ np_array = tensor.numpy()`}
 
         {/* Tensor Operations */}
         <div id="operations">
-          <Title order={2} className="mb-6">Essential Tensor Operations</Title>
+          <Title order={2} mb="xl">Essential Tensor Operations</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={12}>
@@ -250,7 +250,7 @@ sum_cols = x.sum(dim=1)    # Sum of each row`}
 
         {/* GPU Acceleration */}
         <div id="gpu">
-          <Title order={2} className="mb-6">GPU Acceleration with CUDA</Title>
+          <Title order={2} mb="xl">GPU Acceleration with CUDA</Title>
           
           <Paper className="p-6 bg-yellow-50 mb-6">
             <Text size="lg" mb="md">
@@ -318,7 +318,7 @@ result = gpu_tensor @ gpu_tensor.T`}
 
         {/* Automatic Differentiation */}
         <div id="autograd">
-          <Title order={2} className="mb-6">Automatic Differentiation (Autograd)</Title>
+          <Title order={2} mb="xl">Automatic Differentiation (Autograd)</Title>
           
           <Paper className="p-6 bg-purple-50 mb-6">
             <Text size="lg">
@@ -409,7 +409,7 @@ x.grad.zero_()`}
 
         {/* Broadcasting */}
         <div id="broadcasting">
-          <Title order={2} className="mb-6">Tensor Broadcasting</Title>
+          <Title order={2} mb="xl">Tensor Broadcasting</Title>
           
           <Paper className="p-6 bg-indigo-50 mb-6">
             <Text size="lg" mb="md">
@@ -487,7 +487,7 @@ result = batch * weights  # Applied to each sample`}
           <Grid gutter="lg">
             <Grid.Col span={6}>
               <Paper className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 h-full">
-                <Title order={3} className="mb-4">Key Concepts Covered</Title>
+                <Title order={3} mb="md">Key Concepts Covered</Title>
                 <List spacing="md">
                   <List.Item>Tensor dimensions and shapes</List.Item>
                   <List.Item>Creating and initializing tensors</List.Item>
@@ -501,7 +501,7 @@ result = batch * weights  # Applied to each sample`}
             
             <Grid.Col span={6}>
               <Paper className="p-6 bg-gradient-to-br from-green-50 to-green-100 h-full">
-                <Title order={3} className="mb-4">Next Steps</Title>
+                <Title order={3} mb="md">Next Steps</Title>
                 <List spacing="md">
                   <List.Item>Practice tensor manipulations</List.Item>
                   <List.Item>Build simple neural network layers</List.Item>

@@ -14,7 +14,7 @@ const AdvancedPyTorchArchitecture = () => {
           </Text>
           
           <Paper className="p-6 bg-blue-50 mb-6">
-            <Title order={3} className="mb-4">Course Content</Title>
+            <Title order={3} mb="md">Course Content</Title>
             <Text>
               This section covers hooks and their applications, dynamic computation graphs,
               CNN convolution mathematics, attention mechanism mathematics, and custom C++ extensions.

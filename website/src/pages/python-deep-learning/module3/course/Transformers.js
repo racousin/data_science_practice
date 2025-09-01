@@ -33,7 +33,7 @@ const Transformers = () => {
 
         {/* Slide 2: Attention Mechanism */}
         <div data-slide className="min-h-[500px]" id="attention-mechanism">
-          <Title order={2} className="mb-6">Self-Attention Mechanism</Title>
+          <Title order={2} mb="xl">Self-Attention Mechanism</Title>
           
           <Paper className="p-6 bg-gray-50 mb-6">
             <Text size="lg">
@@ -97,7 +97,7 @@ def attention(query, key, value, mask=None, dropout=None):
 
         {/* Slide 3: Multi-Head Attention */}
         <div data-slide className="min-h-[500px]" id="multi-head-attention">
-          <Title order={2} className="mb-6">Multi-Head Attention</Title>
+          <Title order={2} mb="xl">Multi-Head Attention</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={12}>
@@ -224,7 +224,7 @@ def attention(query, key, value, mask=None, dropout=None):
 
         {/* Slide 4: Positional Encoding */}
         <div data-slide className="min-h-[500px]" id="positional-encoding">
-          <Title order={2} className="mb-6">Positional Encoding</Title>
+          <Title order={2} mb="xl">Positional Encoding</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -307,7 +307,7 @@ class RelativePositionalEncoding(nn.Module):
 
         {/* Slide 5: Transformer Block */}
         <div data-slide className="min-h-[500px]" id="transformer-block">
-          <Title order={2} className="mb-6">Transformer Block Architecture</Title>
+          <Title order={2} mb="xl">Transformer Block Architecture</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={12}>
@@ -448,7 +448,7 @@ src_mask, tgt_mask = create_masks(src, tgt, pad_idx=0)`}</Code>
 
         {/* Slide 6: Complete Transformer */}
         <div data-slide className="min-h-[500px]" id="complete-transformer">
-          <Title order={2} className="mb-6">Complete Transformer Model</Title>
+          <Title order={2} mb="xl">Complete Transformer Model</Title>
           
           <Paper className="p-4 bg-gray-50">
             <Code block language="python">{`class Transformer(nn.Module):
@@ -516,7 +516,7 @@ print(f"Output shape: {output.shape}")  # (32, 80, 10000)`}</Code>
 
         {/* Slide 7: Modern Transformer Variants */}
         <div data-slide className="min-h-[500px]" id="modern-variants">
-          <Title order={2} className="mb-6">Modern Transformer Variants</Title>
+          <Title order={2} mb="xl">Modern Transformer Variants</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -670,7 +670,7 @@ class GPTBlock(nn.Module):
 
         {/* Slide 8: Training and Optimization */}
         <div data-slide className="min-h-[500px]" id="training-optimization">
-          <Title order={2} className="mb-6">Training Transformers: Best Practices</Title>
+          <Title order={2} mb="xl">Training Transformers: Best Practices</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>

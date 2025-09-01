@@ -35,7 +35,7 @@ const ConvolutionalNetworks = () => {
 
         {/* Slide 2: Convolution Fundamentals */}
         <div data-slide className="min-h-[500px]" id="convolution-fundamentals">
-          <Title order={2} className="mb-6">Convolution Operation</Title>
+          <Title order={2} mb="xl">Convolution Operation</Title>
           
           <Paper className="p-6 bg-gray-50 mb-6">
             <Text size="lg">
@@ -128,7 +128,7 @@ output_size = conv_output_size(224, 3, 1, 1)  # 224`}</Code>
 
         {/* Slide 3: Pooling Operations */}
         <div data-slide className="min-h-[500px]" id="pooling-operations">
-          <Title order={2} className="mb-6">Pooling Operations</Title>
+          <Title order={2} mb="xl">Pooling Operations</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -198,7 +198,7 @@ class MixedPooling(nn.Module):
 
         {/* Slide 4: CNN Architectures */}
         <div data-slide className="min-h-[500px]" id="cnn-architectures">
-          <Title order={2} className="mb-6">Classic CNN Architectures</Title>
+          <Title order={2} mb="xl">Classic CNN Architectures</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={12}>
@@ -323,7 +323,7 @@ class VGG(nn.Module):
 
         {/* Slide 5: Modern CNN Techniques */}
         <div data-slide className="min-h-[500px]" id="modern-techniques">
-          <Title order={2} className="mb-6">Modern CNN Techniques</Title>
+          <Title order={2} mb="xl">Modern CNN Techniques</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -403,7 +403,7 @@ class SEBottleneck(nn.Module):
 
         {/* Slide 6: Transfer Learning */}
         <div data-slide className="min-h-[500px]" id="transfer-learning">
-          <Title order={2} className="mb-6">Transfer Learning with Pre-trained Models</Title>
+          <Title order={2} mb="xl">Transfer Learning with Pre-trained Models</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={12}>
@@ -509,7 +509,7 @@ def progressive_training(model, train_loader, epochs_per_stage):
 
         {/* Slide 7: Data Augmentation */}
         <div data-slide className="min-h-[500px]" id="data-augmentation">
-          <Title order={2} className="mb-6">Data Augmentation for CNNs</Title>
+          <Title order={2} mb="xl">Data Augmentation for CNNs</Title>
           
           <Paper className="p-4 bg-gray-50">
             <Code block language="python">{`import torchvision.transforms as transforms

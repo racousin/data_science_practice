@@ -17,12 +17,12 @@ const PyTorchOverview = () => {
           
           {/* Introduction to PyTorch */}
           
-            <Title order={2} className="mb-6" id="pytorch-intro">
+            <Title order={2} mb="xl" id="pytorch-intro">
               PyTorch: A Modern Deep Learning Framework
             </Title>
             
             <Paper className="p-6 bg-gradient-to-r from-orange-50 to-red-50 mb-6">
-              <Title order={3} className="mb-4">Why PyTorch?</Title>
+              <Title order={3} mb="md">Why PyTorch?</Title>
               <Text size="lg" mb="md">
                 PyTorch has become the dominant framework in research and increasingly in production due to its 
                 intuitive design, dynamic computation graphs, and seamless Python integration. It provides the 
@@ -60,7 +60,7 @@ const PyTorchOverview = () => {
 
             {/* PyTorch vs Other Frameworks */}
             <Paper className="p-6 bg-gray-50 mb-6">
-              <Title order={3} className="mb-4">Framework Comparison</Title>
+              <Title order={3} mb="md">Framework Comparison</Title>
               
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -113,12 +113,12 @@ const PyTorchOverview = () => {
         {/* Tensors: The Foundation */}
         <div data-slide>
           
-            <Title order={2} className="mb-6" id="tensors">
+            <Title order={2} mb="xl" id="tensors">
               Tensors: The Foundation of PyTorch
             </Title>
             
             <Paper className="p-6 bg-blue-50 mb-6">
-              <Title order={3} className="mb-4">Understanding Tensors</Title>
+              <Title order={3} mb="md">Understanding Tensors</Title>
               <Text size="lg" mb="md">
                 Tensors are the fundamental data structure in PyTorch - multi-dimensional arrays that can run on 
                 GPUs and support automatic differentiation. They're similar to NumPy arrays but with superpowers.
@@ -155,7 +155,7 @@ const PyTorchOverview = () => {
 
             {/* Tensor Creation and Manipulation */}
             <Paper className="p-6 bg-green-50 mb-6">
-              <Title order={3} className="mb-4">Creating and Manipulating Tensors</Title>
+              <Title order={3} mb="md">Creating and Manipulating Tensors</Title>
               
               <CodeBlock language="python" code={`import torch
 import numpy as np
@@ -257,7 +257,7 @@ batch_z = torch.bmm(batch_x, batch_y)  # [10, 3, 5]`} />
 
             {/* Broadcasting and Indexing */}
             <Paper className="p-6 bg-yellow-50 mb-6">
-              <Title order={3} className="mb-4">Broadcasting and Advanced Indexing</Title>
+              <Title order={3} mb="md">Broadcasting and Advanced Indexing</Title>
               
               <CodeBlock language="python" code={`# ============ Broadcasting ============
 # PyTorch automatically broadcasts tensors for element-wise ops
@@ -325,12 +325,12 @@ x.zero_()  # Set all elements to zero
         {/* Automatic Differentiation */}
         <div data-slide>
           
-            <Title order={2} className="mb-6" id="autograd">
+            <Title order={2} mb="xl" id="autograd">
               Automatic Differentiation with Autograd
             </Title>
             
             <Paper className="p-6 bg-gradient-to-r from-purple-50 to-pink-50 mb-6">
-              <Title order={3} className="mb-4">The Magic of Autograd</Title>
+              <Title order={3} mb="md">The Magic of Autograd</Title>
               <Text size="lg" mb="md">
                 PyTorch's automatic differentiation engine, autograd, is what makes training neural networks 
                 practical. It automatically computes gradients by tracking operations on tensors and building 
@@ -371,7 +371,7 @@ x.zero_()  # Set all elements to zero
 
             {/* Autograd Examples */}
             <Paper className="p-6 bg-gray-50 mb-6">
-              <Title order={3} className="mb-4">Autograd in Action</Title>
+              <Title order={3} mb="md">Autograd in Action</Title>
               
               <CodeBlock language="python" code={`import torch
 
@@ -479,7 +479,7 @@ optimizer.zero_grad()`} />
 
             {/* Autograd Profiling */}
             <Paper className="p-6 bg-blue-50 mb-6">
-              <Title order={3} className="mb-4">Understanding Gradient Flow</Title>
+              <Title order={3} mb="md">Understanding Gradient Flow</Title>
               
               <Grid gutter="lg">
                 <Grid.Col span={6}>
@@ -522,12 +522,12 @@ optimizer.zero_grad()`} />
         {/* PyTorch Ecosystem */}
         <div data-slide>
           
-            <Title order={2} className="mb-6" id="ecosystem">
+            <Title order={2} mb="xl" id="ecosystem">
               The PyTorch Ecosystem
             </Title>
             
             <Paper className="p-6 bg-gradient-to-r from-green-50 to-teal-50 mb-6">
-              <Title order={3} className="mb-4">Core PyTorch Libraries</Title>
+              <Title order={3} mb="md">Core PyTorch Libraries</Title>
               
               <Grid gutter="lg">
                 <Grid.Col span={6}>
@@ -664,7 +664,7 @@ loaded_model = torch.jit.load("model.pt")
 
             {/* Domain-Specific Libraries */}
             <Paper className="p-6 bg-yellow-50 mb-6">
-              <Title order={3} className="mb-4">Domain-Specific Libraries</Title>
+              <Title order={3} mb="md">Domain-Specific Libraries</Title>
               
               <Grid gutter="lg">
                 <Grid.Col span={4}>
@@ -737,7 +737,7 @@ spec = spectrogram(waveform)`} />
 
             {/* Extended Ecosystem */}
             <Paper className="p-6 bg-purple-50 mb-6">
-              <Title order={3} className="mb-4">Extended Ecosystem</Title>
+              <Title order={3} mb="md">Extended Ecosystem</Title>
               
               <Grid gutter="lg">
                 <Grid.Col span={6}>
@@ -843,12 +843,12 @@ torch.onnx.export(model, dummy_input, "model.onnx",
         {/* Resources and Best Practices */}
         <div data-slide>
           
-            <Title order={2} className="mb-6" id="resources">
+            <Title order={2} mb="xl" id="resources">
               Resources and Best Practices
             </Title>
             
             <Paper className="p-6 bg-gradient-to-r from-indigo-50 to-blue-50 mb-6">
-              <Title order={3} className="mb-4">Learning Resources</Title>
+              <Title order={3} mb="md">Learning Resources</Title>
               
               <Grid gutter="lg">
                 <Grid.Col span={6}>
@@ -901,7 +901,7 @@ torch.onnx.export(model, dummy_input, "model.onnx",
 
             {/* Best Practices */}
             <Paper className="p-6 bg-green-50 mb-6">
-              <Title order={3} className="mb-4">PyTorch Best Practices</Title>
+              <Title order={3} mb="md">PyTorch Best Practices</Title>
               
               <Grid gutter="lg">
                 <Grid.Col span={6}>
@@ -982,12 +982,12 @@ x.register_hook(print_grad("x"))
         {/* Summary */}
         <div data-slide>
           
-            <Title order={2} className="mb-6">Module 1 Complete Summary</Title>
+            <Title order={2} mb="xl">Module 1 Complete Summary</Title>
             
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-6 bg-gradient-to-br from-blue-50 to-blue-100">
-                  <Title order={3} className="mb-4">Foundations Established</Title>
+                  <Title order={3} mb="md">Foundations Established</Title>
                   <List spacing="md">
                     <List.Item>Deep learning evolved from perceptrons to transformers</List.Item>
                     <List.Item>Mathematical framework: optimization and gradients</List.Item>
@@ -1000,7 +1000,7 @@ x.register_hook(print_grad("x"))
               
               <Grid.Col span={6}>
                 <Paper className="p-6 bg-gradient-to-br from-green-50 to-green-100">
-                  <Title order={3} className="mb-4">Key Takeaways</Title>
+                  <Title order={3} mb="md">Key Takeaways</Title>
                   <List spacing="md">
                     <List.Item>Deep learning success driven by data, compute, and algorithms</List.Item>
                     <List.Item>Gradient descent optimizes billions of parameters</List.Item>

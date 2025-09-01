@@ -14,7 +14,7 @@ const DeviceManagementResources = () => {
           </Text>
           
           <Paper className="p-6 bg-blue-50 mb-6">
-            <Title order={3} className="mb-4">Course Content</Title>
+            <Title order={3} mb="md">Course Content</Title>
             <Text>
               This section covers GPU architecture for deep learning, memory management strategies,
               calculating FLOPs and memory requirements, and mixed precision training mathematics.

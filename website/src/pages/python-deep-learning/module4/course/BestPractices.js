@@ -33,7 +33,7 @@ const BestPractices = () => {
 
         {/* Slide 2: Code Organization */}
         <div data-slide className="min-h-[500px]" id="code-organization">
-          <Title order={2} className="mb-6">Code Organization and Architecture</Title>
+          <Title order={2} mb="xl">Code Organization and Architecture</Title>
           
           <Paper className="p-6 bg-gray-50 mb-6">
             <Text size="lg">
@@ -239,7 +239,7 @@ config = config_manager.config`}</Code>
 
         {/* Slide 3: Testing Strategies */}
         <div data-slide className="min-h-[500px]" id="testing-strategies">
-          <Title order={2} className="mb-6">Testing Strategies for ML Systems</Title>
+          <Title order={2} mb="xl">Testing Strategies for ML Systems</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -585,7 +585,7 @@ class TestPerformance:
 
         {/* Slide 4: Security and Compliance */}
         <div data-slide className="min-h-[500px]" id="security-compliance">
-          <Title order={2} className="mb-6">Security and Compliance</Title>
+          <Title order={2} mb="xl">Security and Compliance</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -1038,7 +1038,7 @@ class SecureModelServer:
 
         {/* Slide 5: Documentation and Knowledge Management */}
         <div data-slide className="min-h-[500px]" id="documentation">
-          <Title order={2} className="mb-6">Documentation and Knowledge Management</Title>
+          <Title order={2} mb="xl">Documentation and Knowledge Management</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -1613,7 +1613,7 @@ RUNBOOK_TEMPLATE = """
 
         {/* Slide 6: Summary and Checklist */}
         <div data-slide className="min-h-[500px]" id="summary-checklist">
-          <Title order={2} className="mb-6">ML Engineering Checklist</Title>
+          <Title order={2} mb="xl">ML Engineering Checklist</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>

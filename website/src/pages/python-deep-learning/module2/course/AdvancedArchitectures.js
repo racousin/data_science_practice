@@ -32,7 +32,7 @@ const AdvancedArchitectures = () => {
 
         {/* Slide 2: Residual Networks */}
         <div data-slide className="min-h-[500px]" id="residual-networks">
-          <Title order={2} className="mb-6">Residual Networks (ResNets)</Title>
+          <Title order={2} mb="xl">Residual Networks (ResNets)</Title>
           
           <Paper className="p-6 bg-gray-50 mb-6">
             <Text size="lg">
@@ -109,7 +109,7 @@ class ResidualBlock(nn.Module):
 
         {/* Slide 3: Attention Mechanisms */}
         <div data-slide className="min-h-[500px]" id="attention-mechanisms">
-          <Title order={2} className="mb-6">Attention Mechanisms</Title>
+          <Title order={2} mb="xl">Attention Mechanisms</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={12}>
@@ -215,7 +215,7 @@ class ResidualBlock(nn.Module):
 
         {/* Slide 4: Normalization Techniques */}
         <div data-slide className="min-h-[500px]" id="normalization">
-          <Title order={2} className="mb-6">Normalization Techniques</Title>
+          <Title order={2} mb="xl">Normalization Techniques</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -300,7 +300,7 @@ class GroupNorm1d(nn.Module):
 
         {/* Slide 5: Advanced Activation Functions */}
         <div data-slide className="min-h-[500px]" id="activations">
-          <Title order={2} className="mb-6">Advanced Activation Functions</Title>
+          <Title order={2} mb="xl">Advanced Activation Functions</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -354,7 +354,7 @@ class GeGLU(nn.Module):
 
         {/* Slide 6: Architecture Design Principles */}
         <div data-slide className="min-h-[500px]" id="design-principles">
-          <Title order={2} className="mb-6">Architecture Design Principles</Title>
+          <Title order={2} mb="xl">Architecture Design Principles</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -388,7 +388,7 @@ class GeGLU(nn.Module):
 
         {/* Slide 7: Complete Example */}
         <div data-slide className="min-h-[500px]" id="complete-example">
-          <Title order={2} className="mb-6">Complete Modern Architecture Example</Title>
+          <Title order={2} mb="xl">Complete Modern Architecture Example</Title>
           
           <Paper className="p-4 bg-gray-50">
             <Code block language="python">{`class ModernMLP(nn.Module):

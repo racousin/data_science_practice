@@ -5,7 +5,7 @@ import 'katex/dist/katex.min.css';
 
 const MLParadigmCard = ({ title, bgColor, description, formula, formulaDesc, characteristics, examples, challenges }) => (
   <Paper className={`p-6 ${bgColor} rounded-lg h-full`}>
-    <Title order={3} className="mb-4">{title}</Title>
+    <Title order={3} mb="md">{title}</Title>
     
     <Text className="mb-4">{description}</Text>
     
@@ -73,7 +73,7 @@ const MLParadigmsComparison = () => {
 
   return (
     <>
-      <Title order={2} className="mb-6" id="ml-paradigms">
+      <Title order={2} mb="xl" id="ml-paradigms">
         Machine Learning Paradigms Comparison
       </Title>
       <Grid gutter="lg">
@@ -174,7 +174,7 @@ const Introduction = () => {
 
         {/* RL Framework */}
         
-          <Title order={2} className="mb-6" id="rl-framework">
+          <Title order={2} mb="xl" id="rl-framework">
             The RL Framework
           </Title>
           <Grid gutter="lg">
@@ -221,7 +221,7 @@ const Introduction = () => {
 
 {/* Limitations and Challenges */}
 <div data-slide>
-  <Title order={2} className="mb-6" id="limitations">
+  <Title order={2} mb="xl" id="limitations">
     Key Limitations and Practical Challenges
   </Title>
   <Grid gutter="lg">

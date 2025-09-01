@@ -30,7 +30,7 @@ const DeploymentStrategies = () => {
         </div>
 
         <div data-slide className="min-h-[500px]" id="serving-models">
-          <Title order={2} className="mb-6">Model Serving</Title>
+          <Title order={2} mb="xl">Model Serving</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -116,7 +116,7 @@ if __name__ == "__main__":
         </div>
 
         <div data-slide className="min-h-[500px]" id="containerization">
-          <Title order={2} className="mb-6">Containerization with Docker</Title>
+          <Title order={2} mb="xl">Containerization with Docker</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -185,7 +185,7 @@ CMD ["python", "app.py"]`}</Code>
         </div>
 
         <div data-slide className="min-h-[500px]" id="cloud-deployment">
-          <Title order={2} className="mb-6">Cloud Deployment</Title>
+          <Title order={2} mb="xl">Cloud Deployment</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={4}>

@@ -34,7 +34,7 @@ const NeuralNetworkBasics = () => {
 
         {/* Slide 2: The Perceptron */}
         <div data-slide className="min-h-[500px]" id="perceptron">
-          <Title order={2} className="mb-6">The Perceptron</Title>
+          <Title order={2} mb="xl">The Perceptron</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={6}>
@@ -126,7 +126,7 @@ for epoch in range(num_epochs):
 
         {/* Slide 3: Multilayer Perceptrons */}
         <div data-slide className="min-h-[500px]" id="multilayer">
-          <Title order={2} className="mb-6">Multilayer Perceptrons (MLPs)</Title>
+          <Title order={2} mb="xl">Multilayer Perceptrons (MLPs)</Title>
           
           <Grid gutter="lg">
             <Grid.Col span={12}>

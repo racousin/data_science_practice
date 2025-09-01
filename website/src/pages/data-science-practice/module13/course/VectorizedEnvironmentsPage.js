@@ -146,7 +146,7 @@ envs = make("CartPole-v1", num_envs=4)
 
       <Title order={2} id="key-advantages" className="mb-4 mt-8">Key Advantages</Title>
 
-      <Title order={3} className="mb-4">1. Faster Data Collection</Title>
+      <Title order={3} mb="md">1. Faster Data Collection</Title>
       <CodeBlock 
         language="python" 
         code={`# Single environment:
