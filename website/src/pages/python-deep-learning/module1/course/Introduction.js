@@ -15,14 +15,13 @@ const Introduction = () => {
             </Title>
             <Flex direction="column" align="center">
               <Image
-                src="/assets/python-deep-learning/module1/intro.jpg"
+                src="/assets/python-deep-learning/module1/im0.png"
                 alt="Yutong Liu & The Bigger Picture"
-                w={{ base: 400, sm: 600, md: 800 }}
-                h="auto"
+                style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
                 fluid
               />
               <Text component="p" ta="center" mt="xs">
-                Yutong Liu & The Bigger Picture
+                A simple multi layer perceptron
               </Text>
             </Flex>
           </div>
@@ -36,8 +35,7 @@ const Introduction = () => {
       <Image
         src="/assets/python-deep-learning/module1/ai_segmentation.png"
         alt="AI Fields Segmentation Diagram"
-        w={{ base: 400, sm: 600, md: 800 }}
-        h="auto"
+        style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
         fluid
       />
       <Text component="p" ta="center" mt="xs" size="sm" c="dimmed">
@@ -88,11 +86,14 @@ const Introduction = () => {
 </div>
 <div data-slide>
               <Title order={3} mb="md">The Deep Learning Revolution</Title>
+                      
+        <Flex direction="column" align="center" mb="md">
+
+        
                                       <Image
         src="/assets/python-deep-learning/module1/big_data0.png"
         alt="AI Fields Segmentation Diagram"
-        w={{ base: 400, sm: 600, md: 800 }}
-        h="auto"
+        style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
         fluid
       />
       <Text component="p" ta="center" mt="xs" size="sm" c="dimmed">
@@ -101,14 +102,14 @@ const Introduction = () => {
               <Text className="mb-4">
                 The convergence of three critical factors enabled the deep learning revolution:
               </Text>
+              </Flex>
               </div>
               <div data-slide>
                         <Flex direction="column" align="center">
       <Image
         src="/assets/python-deep-learning/module1/bigdata1.png"
         alt="AI Fields Segmentation Diagram"
-        w={{ base: 400, sm: 600, md: 800 }}
-        h="auto"
+        style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
         fluid
       />
       <Text component="p" ta="center" mt="xs" size="sm" c="dimmed">
@@ -124,18 +125,19 @@ const Introduction = () => {
 
 </div>
 <div data-slide>
-
+<Flex direction="column" align="center">
                         <Image
         src="/assets/python-deep-learning/module1/bigdata2.png"
         alt="AI Fields Segmentation Diagram"
-        w={{ base: 400, sm: 600, md: 800 }}
-        h="auto"
+        style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
         fluid
       />
+      </Flex>
       <Text component="p" ta="center" mt="xs" size="sm" c="dimmed">
         Source: https://www.researchgate.net/figure/The-exponential-progress-of-computing-power-from-1900-to-2013-with-projections-into_fig1_335422453
       </Text>
                     <Title order={4} mb="sm">2. Computational Power</Title>
+                    
                     <Text size="sm">
                       GPUs originally designed for gaming proved perfect for neural network computations. 
                       A single modern GPU can perform trillions of operations per second, enabling training 
@@ -143,26 +145,32 @@ const Introduction = () => {
                     </Text>
 </div>
 <div data-slide>
-
+              <Grid gutter="lg">
+                <Grid.Col span={6}>
                                           <Image
         src="/assets/python-deep-learning/module1/bigdata3.png"
         alt="AI Fields Segmentation Diagram"
-        w={{ base: 400, sm: 600, md: 800 }}
-        h="auto"
+        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
         fluid
       />
             <Text component="p" ta="center" mt="xs" size="sm" c="dimmed">
         Source: https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture)      </Text>
-
+                </Grid.Col>
+                <Grid.Col span={6}>
                                           <Image
         src="/assets/python-deep-learning/module1/Pytorch_logo.png"
         alt="AI Fields Segmentation Diagram"
-        w={{ base: 400, sm: 600, md: 800 }}
-        h="auto"
+        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
         fluid
       />
             <Text component="p" ta="center" mt="xs" size="sm" c="dimmed">
         Source: https://pytorch.org/     </Text>
+                </Grid.Col>
+              </Grid>
+
+
+
+
                     <Title order={4} mb="sm">3. Algorithmic Innovation</Title>
                     <Text size="sm">
                       Breakthrough techniques like ReLU activation, batch normalization, dropout, and 
@@ -184,8 +192,7 @@ const Introduction = () => {
               <Image
                 src="/assets/python-deep-learning/module1/ai_history.png"
                 alt="Yutong Liu & The Bigger Picture"
-                w={{ base: 400, sm: 600, md: 800 }}
-                h="auto"
+                style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
                 fluid
               />
               <Text component="p" ta="center" mt="xs">
@@ -198,8 +205,7 @@ const Introduction = () => {
               <Image
                 src="/assets/python-deep-learning/module1/agi_buble.png"
                 alt="Yutong Liu & The Bigger Picture"
-                w={{ base: 400, sm: 600, md: 800 }}
-                h="auto"
+                style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
                 fluid
               />
               <Text component="p" ta="center" mt="xs">
@@ -371,8 +377,7 @@ const Introduction = () => {
           <Image
             src="/assets/python-deep-learning/module1/object_detetcion.png"
             alt="Computer Vision Applications"
-            w={{ base: 400, sm: 600, md: 800 }}
-            h="auto"
+            style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
             fluid
           />
         </Flex>
@@ -407,8 +412,7 @@ const Introduction = () => {
           <Image
             src="/assets/python-deep-learning/module1/ai_chatbot.png"
             alt="NLP Applications"
-            w={{ base: 400, sm: 600, md: 800 }}
-            h="auto"
+            style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
             fluid
           />
         </Flex>
@@ -450,8 +454,7 @@ const Introduction = () => {
           <Image
             src="/assets/python-deep-learning/module1/signal_processing.png"
             alt="Signal Processing Applications"
-            w={{ base: 400, sm: 600, md: 800 }}
-            h="auto"
+            style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
             fluid
           />
           <Text component="p" ta="center" mt="xs">
@@ -486,8 +489,7 @@ const Introduction = () => {
           <Image
             src="/assets/python-deep-learning/module1/agentic.gif"
             alt="Agent Systems Applications"
-            w={{ base: 400, sm: 600, md: 800 }}
-            h="auto"
+            style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
             fluid
           />
           <Text component="p" ta="center" mt="xs">
@@ -526,8 +528,7 @@ const Introduction = () => {
           <Image
             src="/assets/python-deep-learning/module1/not_exist.jpg"
             alt="Generative AI Applications"
-            w={{ base: 400, sm: 600, md: 800 }}
-            h="auto"
+            style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
             fluid
           />
           <Text component="p" ta="center" mt="xs">
@@ -570,8 +571,7 @@ const Introduction = () => {
           <Image
             src="/assets/python-deep-learning/module1/alphafold.png"
             alt="Scientific Applications"
-            w={{ base: 400, sm: 600, md: 800 }}
-            h="auto"
+            style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
             fluid
           />
           <Text component="p" ta="center" mt="xs">
@@ -617,8 +617,7 @@ const Introduction = () => {
           <Image
             src="/assets/python-deep-learning/module1/data_requirements.png"
             alt="Data Requirements in Deep Learning"
-            w={{ base: 400, sm: 600, md: 800 }}
-            h="auto"
+            style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
             fluid
           />
           <Text component="p" ta="center" mt="xs">

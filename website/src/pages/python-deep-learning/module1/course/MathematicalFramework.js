@@ -433,127 +433,45 @@ l: \\mathbb{R}^{k \\times n} \\times \\mathbb{R}^{k \\times n} & \\to \\mathbb{R
             <Paper className="p-6 bg-gradient-to-r from-blue-50 to-cyan-50 mb-6">
               <Title order={3} mb="md">The Gradient Descent Algorithm</Title>
               <Text size="lg" mb="md">
-                Gradient descent is the workhorse of deep learning optimization. It iteratively updates parameters 
-                in the direction that reduces the loss function.
+                Gradient descent is the workhorse of machine learning optimization. It iteratively updates parameters 
+                in the direction that reduces the loss function <InlineMath>{`l(\\theta) = l(Y, f_{\\theta}(X)`}</InlineMath>. 
               </Text>
               
               <Grid gutter="lg">
-                <Grid.Col span={6}>
-                  <Paper className="p-4 bg-white">
-                    <Title order={4} mb="sm">Basic Update Rule</Title>
-                    <BlockMath>{`\\theta_{t+1} = \\theta_t - \\eta \\nabla_\\theta \\mathcal{L}(\\theta_t)`}</BlockMath>
-                    <List size="sm" className="mt-3">
-                      <List.Item><InlineMath>{`\\eta`}</InlineMath> - Learning rate (step size)</List.Item>
-                      <List.Item><InlineMath>{`\\nabla_\\theta \\mathcal{L}`}</InlineMath> - Gradient of loss w.r.t. parameters</List.Item>
-                      <List.Item>Direction of steepest decrease in loss</List.Item>
-                    </List>
-                  </Paper>
-                </Grid.Col>
                 
-                <Grid.Col span={6}>
-                  <Paper className="p-4 bg-white">
-                    <Title order={4} mb="sm">Intuition</Title>
-                    <Text size="sm" className="mb-3">
-                      Imagine minimizing loss as finding the lowest point in a landscape:
-                    </Text>
-                    <List size="sm">
-                      <List.Item>Gradient points uphill (direction of increase)</List.Item>
-                      <List.Item>Negative gradient points downhill</List.Item>
-                      <List.Item>Learning rate controls step size</List.Item>
-                      <List.Item>Stop when gradient ≈ 0 (local minimum)</List.Item>
-                    </List>
-                  </Paper>
-                </Grid.Col>
-              </Grid>
-            </Paper>
-            </div>
-
-<div data-slide>
-                                  <Flex direction="column" align="center" mb="md">
-                      <Image
-                        src="/assets/python-deep-learning/module1/ai_obj10.png"
-                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
-                        fluid
-                      />
-                    </Flex>
-                                      <Text component="p" ta="center" mt="xs">
-                        Example: Initial linear regression params
-                      </Text>
-                                                        <Flex direction="column" align="center" mb="md">
-                      <Image
-                        src="/assets/python-deep-learning/module1/ai_obj5.png"
-                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
-                        fluid
-                      />
-                    </Flex>
-                                      <Text component="p" ta="center" mt="xs">
-                        Example: Compute error
-                      </Text>
-            <Paper className="p-6 bg-gray-50 mt-6">
-              <Title order={3} mb="md">Model Training Process</Title>
-              
-              <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">0. Initialization</Title>
-                    <List size="sm">
-                      <List.Item>Choose a model type (e.g., linear regression)</List.Item>
-                      <List.Item>Initialize parameters randomly</List.Item>
+                    <List size="sm" mt="sm">
+                      <List.Item>Initialize <InlineMath>{`\\theta_0`}</InlineMath> parameters randomly</List.Item>
+                      <List.Item>Choose a learning rate <InlineMath>{`\\eta`}</InlineMath></List.Item>
                     </List>
                   </Paper>
                 </Grid.Col>
-                
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} mb="sm">1. Prediction</Title>
-                    <List size="sm">
-                      <List.Item>Predict Y from X with current model</List.Item>
-                    </List>
+                    <Title order={4} mb="sm">1. Update Rule</Title>
+                    <BlockMath>{`\\theta_{t+1} = \\theta_t - \\eta \\nabla_\\theta \\mathcal{L}(\\theta_t)`}</BlockMath>
                   </Paper>
+
                 </Grid.Col>
                 
-                <Grid.Col span={6}>
-                  <Paper className="p-4 bg-white">
-                    <Title order={4} mb="sm">2. Error Calculation</Title>
-                    <List size="sm">
-                      <List.Item>Compare Y_predicted vs Y_actual</List.Item>
-                    </List>
-                  </Paper>
-                </Grid.Col>
-                
-                <Grid.Col span={6}>
-                  <Paper className="p-4 bg-white">
-                    <Title order={4} mb="sm">3. Adjustment</Title>
-                    <List size="sm">
-                      <List.Item>Modify parameters to reduce error (gradient descent)</List.Item>
-                    </List>
-                  </Paper>
-                </Grid.Col>
               </Grid>
-              
-              <Paper className="p-4 bg-blue-50 mt-4">
-                <Title order={4} className="mb-2">4. Iteration</Title>
-                <Text size="sm" className="mb-2">Repeat from step 1 until error no longer decreases</Text>
-                <Text size="sm" className="font-semibold">Objective: Minimize prediction error by optimizing parameters</Text>
-              </Paper>
-            </Paper>
+                            <Grid gutter="lg">
+                
+                <Grid.Col span={6}>
+                  <Paper className="p-4 bg-white">
+                    <Title order={4} mb="sm">2. Iterate</Title>
+                                        <List size="sm" mt="sm">
+                      <List.Item>Repeat 1. while <InlineMath>{`l(\\theta_{t+1}) < l(\\theta_t)`}</InlineMath></List.Item></List>
+                   
+                  </Paper>
 
-</div>
-
-<div data-slide>
-                                                          <Flex direction="column" align="center" mb="md">
+                </Grid.Col>
+                <Grid.Col span={6}>
+                                                                                                                      <Flex direction="column" align="center" mb="md">
                       <Image
-                        src="/assets/python-deep-learning/module1/error_loss_evolution.png"
-                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
-                        fluid
-                      />
-                    </Flex>
-                                      <Text component="p" ta="center" mt="xs">
-                        Example: error_loss_evolution
-                      </Text>
-                                                                                <Flex direction="column" align="center" mb="md">
-                      <Image
-                        src="/assets/python-deep-learning/module1/gradent_descent.png"
+                        src="/assets/python-deep-learning/module1/gradient_descent_optimal.png"
                         style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
                         fluid
                       />
@@ -561,22 +479,168 @@ l: \\mathbb{R}^{k \\times n} \\times \\mathbb{R}^{k \\times n} & \\to \\mathbb{R
                                       <Text component="p" ta="center" mt="xs">
                         Gradient descent visualization
                       </Text>
-</div>
-
-
-
+                      </Grid.Col>
+              </Grid>
+            </Paper>
+            </div>
 
 <div data-slide>
+
+            <Paper className="p-6 bg-gray-50 mt-6">
+              <Title order={3} mb="md">Model Training Process</Title>
+              
+                    <List size="sm">
+                      <List.Item>Choose a model type (e.g., linear regression)</List.Item>
+                      <List.Item>Initialize parameters randomly</List.Item>
+                      <List.Item>Train, mimizing the loss using gradient descent</List.Item>
+                    </List>
+                  </Paper>
+                  <Grid>
+                
+                <Grid.Col span={6}>
+<Flex direction="column" align="center" mb="md">
+                      <Image
+                        src="/assets/python-deep-learning/module1/step_000_regression.png"
+                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
+                        fluid
+                      />
+                    </Flex>
+                                      <Text component="p" ta="center" mt="xs">
+                        Model Initial step
+                      </Text>
+                </Grid.Col>
+                
+                <Grid.Col span={6}>
+                                                                                                                              <Flex direction="column" align="center" mb="md">
+                      <Image
+                        src="/assets/python-deep-learning/module1/step_010_regression.png"
+                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
+                        fluid
+                      />
+                    </Flex>
+                                      <Text component="p" ta="center" mt="xs">
+                        Model After some steps
+                      </Text>
+                </Grid.Col>
+                
+                <Grid.Col span={6}>
+                                                                                                        <Flex direction="column" align="center" mb="md">
+                      <Image
+                        src="/assets/python-deep-learning/module1/gradient_descent_path.png"
+                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
+                        fluid
+                      />
+                    </Flex>
+                                      <Text component="p" ta="center" mt="xs">
+                        Loss though steps
+                      </Text>
+                </Grid.Col>
+                                <Grid.Col span={6}>
+                                                                                                        <Flex direction="column" align="center" mb="md">
+                      <Image
+                        src="/assets/python-deep-learning/module1/cost_convergence.png"
+                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
+                        fluid
+                      />
+                    </Flex>
+                                      <Text component="p" ta="center" mt="xs">
+                        Loss though steps
+                      </Text>
+                </Grid.Col>
+              </Grid>
+
+
+</div>
+
+<div data-slide>
+
+                          <Title order={3} mb="md">Learning Rate Importance</Title>                                                                               
+                  <Grid>
+                
+                <Grid.Col span={6}>
+                                                                                                      <Flex direction="column" align="center" mb="md">
+                      <Image
+                        src="/assets/python-deep-learning/module1/gradient_descent_optimal.png"
+                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
+                        fluid
+                      />
+                    </Flex>
+                                      <Text component="p" ta="center" mt="xs">
+                        Gradient descent visualization
+                      </Text>
+                </Grid.Col>
+                
+                <Grid.Col span={6}>
+                                                                                                      <Flex direction="column" align="center" mb="md">
+                      <Image
+                        src="/assets/python-deep-learning/module1/gradient_descent_small_lr.png"
+                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
+                        fluid
+                      />
+                    </Flex>
+                                      <Text component="p" ta="center" mt="xs">
+                        Gradient descent visualization
+                      </Text>
+                </Grid.Col>
+                
+                <Grid.Col span={6}>
+                                                                                <Flex direction="column" align="center" mb="md">
+                      <Image
+                        src="/assets/python-deep-learning/module1/gradient_descent_large_lr.png"
+                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
+                        fluid
+                      />
+                    </Flex>
+                                      <Text component="p" ta="center" mt="xs">
+                        Gradient descent visualization
+                      </Text>
+                </Grid.Col>
+                                <Grid.Col span={6}>
+                                                          <Flex direction="column" align="center" mb="md">
+                      <Image
+                        src="/assets/python-deep-learning/module1/gradient_descent_non_convex.png"
+                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
+                        fluid
+                      />
+                    </Flex>
+                                      <Text component="p" ta="center" mt="xs">
+                        Non-Convex Functions
+                      </Text>
+                </Grid.Col>
+              </Grid>
+
+</div>
+
+<div data-slide>
+
+
+
+
+                      
+</div>
+<div data-slide>
+
+
+                    
             {/* Variants of Gradient Descent */}
             <Paper className="p-6 bg-gray-50 mb-6">
               <Title order={3} mb="md" className="slide-title">Gradient Descent Variants</Title>
-              
+                                                                          <Flex direction="column" align="center" mb="md">
+                      <Image
+                        src="/assets/python-deep-learning/module1/batch_stochastic.png"
+                        style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+                        fluid
+                      />
+                            <Text component="p" ta="center" mt="xs" size="sm" c="dimmed">
+                              Source: https://medium.com/data-science/batch-mini-batch-stochastic-gradient-descent-7a62ecba642a
+                            </Text>
+                    </Flex>
               <Grid gutter="lg">
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-blue-50 h-full">
                     <Title order={4} mb="sm">Batch Gradient Descent</Title>
                     <BlockMath>{`\\nabla_\\theta \\mathcal{L} = \\frac{1}{n}\\sum_{i=1}^n \\nabla_\\theta \\ell(f_\\theta(x_i), y_i)`}</BlockMath>
-                    <List size="sm" className="mt-3">
+                    <List size="sm" mt="sm">
                       <List.Item>Uses entire dataset per update</List.Item>
                       <List.Item>Stable convergence</List.Item>
                       <List.Item>Slow for large datasets</List.Item>
@@ -589,7 +653,7 @@ l: \\mathbb{R}^{k \\times n} \\times \\mathbb{R}^{k \\times n} & \\to \\mathbb{R
                   <Paper className="p-4 bg-green-50 h-full">
                     <Title order={4} mb="sm">Stochastic GD (SGD)</Title>
                     <BlockMath>{`\\nabla_\\theta \\mathcal{L} \\approx \\nabla_\\theta \\ell(f_\\theta(x_i), y_i)`}</BlockMath>
-                    <List size="sm" className="mt-3">
+                    <List size="sm" mt="sm">
                       <List.Item>One sample per update</List.Item>
                       <List.Item>Very noisy updates</List.Item>
                       <List.Item>Fast iterations</List.Item>
@@ -602,7 +666,7 @@ l: \\mathbb{R}^{k \\times n} \\times \\mathbb{R}^{k \\times n} & \\to \\mathbb{R
                   <Paper className="p-4 bg-yellow-50 h-full">
                     <Title order={4} mb="sm">Mini-batch SGD</Title>
                     <BlockMath>{`\\nabla_\\theta \\mathcal{L} \\approx \\frac{1}{m}\\sum_{i \\in \\mathcal{B}} \\nabla_\\theta \\ell(f_\\theta(x_i), y_i)`}</BlockMath>
-                    <List size="sm" className="mt-3">
+                    <List size="sm" mt="sm">
                       <List.Item>Batch size m (typically 32-512)</List.Item>
                       <List.Item>Balance of speed and stability</List.Item>
                       <List.Item>GPU parallelization efficient</List.Item>
@@ -612,6 +676,41 @@ l: \\mathbb{R}^{k \\times n} \\times \\mathbb{R}^{k \\times n} & \\to \\mathbb{R
                 </Grid.Col>
               </Grid>
             </Paper>
+</div>
+
+<div data-slide>
+<Title order={3} mb="md" className="slide-title">More parameters is not necessarly a better model</Title>
+              <Grid gutter="lg">
+                                <Grid.Col span={6}>
+                                                          <Flex direction="column" align="center" mb="md">
+                      <Image
+                        src="/assets/python-deep-learning/module1/ai_obj14.png"
+                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
+                        fluid
+                      />
+                                                           <Text component="p" ta="center" mt="xs">
+                        Small bias, small variance
+                      </Text>
+                    </Flex>
+
+                </Grid.Col>
+                <Grid.Col span={6}>
+                                                          <Flex direction="column" align="center" mb="md">
+                      <Image
+                        src="/assets/python-deep-learning/module1/ai_obj13.png"
+                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
+                        fluid
+                      />
+                    </Flex>
+                                                          <Text component="p" ta="center" mt="xs">
+                        No bias, high variance
+                      </Text>
+ 
+                </Grid.Col>
+                
+
+                
+              </Grid>
 </div>
 
 <div data-slide>
@@ -668,7 +767,7 @@ l: \\mathbb{R}^{k \\times n} \\times \\mathbb{R}^{k \\times n} & \\to \\mathbb{R
                 </Grid.Col>
               </Grid>
             </Paper>
-          
+          For parmaters models, On the other cases (unsupervised, Reinforcment), we will find a way to formulate the problem in a same supervised learning framweork
         </div>
 
       

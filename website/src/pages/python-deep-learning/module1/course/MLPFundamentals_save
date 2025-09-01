@@ -146,7 +146,7 @@ print(f"Neuron output: {output.item():.4f}")`} />
                     <Title order={4} mb="sm">ReLU (Rectified Linear Unit)</Title>
                     <BlockMath>{`\\text{ReLU}(z) = \\max(0, z)`}</BlockMath>
                     
-                    <List size="sm" className="mt-3">
+                    <List size="sm" mt="sm">
                       <List.Item color="green">✓ Simple and efficient computation</List.Item>
                       <List.Item color="green">✓ No vanishing gradient for positive values</List.Item>
                       <List.Item color="green">✓ Sparse activation (biological plausibility)</List.Item>
@@ -163,7 +163,7 @@ print(f"Neuron output: {output.item():.4f}")`} />
                     <Title order={4} mb="sm">Sigmoid</Title>
                     <BlockMath>{`\\sigma(z) = \\frac{1}{1 + e^{-z}}`}</BlockMath>
                     
-                    <List size="sm" className="mt-3">
+                    <List size="sm" mt="sm">
                       <List.Item color="green">✓ Smooth and differentiable</List.Item>
                       <List.Item color="green">✓ Output bounded in [0, 1]</List.Item>
                       <List.Item color="green">✓ Probability interpretation</List.Item>
@@ -182,7 +182,7 @@ print(f"Neuron output: {output.item():.4f}")`} />
                     <Title order={4} mb="sm">Tanh (Hyperbolic Tangent)</Title>
                     <BlockMath>{`\\tanh(z) = \\frac{e^z - e^{-z}}{e^z + e^{-z}}`}</BlockMath>
                     
-                    <List size="sm" className="mt-3">
+                    <List size="sm" mt="sm">
                       <List.Item color="green">✓ Zero-centered output [-1, 1]</List.Item>
                       <List.Item color="green">✓ Stronger gradients than sigmoid</List.Item>
                       <List.Item color="red">✗ Still suffers from vanishing gradients</List.Item>
