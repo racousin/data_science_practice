@@ -262,6 +262,9 @@ export const pytorchCourseContentData = {
       { id: 'chain-rule-backpropagation', label: 'Chain Rule & Backpropagation Mathematics' },
       { id: 'gradient-accumulation', label: 'Gradient Accumulation & Zeroing' }
     ]},
+    { to: '/data-pipeline-training-loop', label: 'DataPipelineTrainingLoop', subLinks: [
+
+    ]},
     { to: '/advanced-gradient-mechanics', label: 'Advanced Gradient Mechanics', subLinks: [
       { id: 'gradient-flow', label: 'Gradient Flow & Vanishing/Exploding' },
       { id: 'gradient-clipping', label: 'Gradient Clipping & Normalization' },
