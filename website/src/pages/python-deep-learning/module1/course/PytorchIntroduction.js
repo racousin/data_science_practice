@@ -385,7 +385,7 @@ E = A + v  # [[2, 4], [4, 6]]`} />
       
       <Flex direction="column" align="center" mt="md">
         <Image
-          src="/assets/python-deep-learning/module1/memory-usage.png"
+          src="/assets/python-deep-learning/module1/dtypememory.png"
           alt="Memory Usage Comparison"
           style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
           fluid
@@ -397,28 +397,18 @@ E = A + v  # [[2, 4], [4, 6]]`} />
       
       <Flex direction="column" align="center" mt="md">
         <Image
-          src="/assets/python-deep-learning/module1/time-operation.png"
+          src="/assets/python-deep-learning/module1/float_error.png"
           alt="Operation Time Comparison"
           style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
           fluid
         />
-        <Text component="p" ta="center" mt="xs">
-          Computation time for matrix multiplication with different data types
-        </Text>
-      </Flex>
-      
-      <Flex direction="column" align="center" mt="md">
-        <Image
-          src="/assets/python-deep-learning/module1/precision-comparison.png"
-          alt="Precision Comparison"
-          style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
-          fluid
-        />
-        <Text component="p" ta="center" mt="xs">
+                <Text component="p" ta="center" mt="xs">
           Precision vs range tradeoffs for different floating-point types
         </Text>
+
       </Flex>
       
+
       <Title order={3} mt="xl">Type Casting</Title>
       
       <Text>
@@ -796,6 +786,17 @@ gpu_time = time.time() - start
 print(f"CPU time: {cpu_time:.4f}s")
 print(f"GPU time: {gpu_time:.4f}s")
 print(f"Speedup: {cpu_time/gpu_time:.1f}x")`} />
+            <Flex direction="column" align="center" mt="md">
+        <Image
+          src="/assets/python-deep-learning/module1/device-time.png"
+          alt="Precision Comparison"
+          style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+          fluid
+        />
+        <Text component="p" ta="center" mt="xs">
+          Computation time for matrix multiplication with different data types
+        </Text>
+      </Flex>
       
       <Text mt="md">
         <strong>Key Points:</strong> GPUs excel at large parallel operations but have transfer overhead. 
