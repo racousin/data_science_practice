@@ -8,7 +8,14 @@ const PytorchIntroduction = () => {
   return (
     <Container fluid>
       <Title order={1} mb="lg">PyTorch Fundamentals</Title>
-
+      <Flex direction="column" align="center" mt="md">
+        <Image
+          src="/assets/python-deep-learning/module1/Pytorch_logo.png"
+          alt="CPU vs GPU Architecture"
+          style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+          fluid
+        />
+      </Flex>
       <Title order={2} mt="xl">1. PyTorch: Deep Learning Computing Context</Title>
       
       <Title order={3} mt="md">Why Deep Learning Needs Specialized Computing</Title>
@@ -75,13 +82,13 @@ const PytorchIntroduction = () => {
 
       <Flex direction="column" align="center" mt="md">
         <Image
-          src="/assets/python-deep-learning/module1/hardware-comparison.png"
+          src="/assets/python-deep-learning/module1/cpu-vs-gpu.png"
           alt="CPU vs GPU Architecture"
           style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
           fluid
         />
         <Text component="p" ta="center" mt="xs">
-          CPU vs GPU Architecture Comparison
+          Source: https://www.tecamin.net/
         </Text>
       </Flex>
       <Title order={3} mt="xl">Linear Algebra</Title>
@@ -134,13 +141,13 @@ const PytorchIntroduction = () => {
       
       <Flex direction="column" align="center" mt="md">
         <Image
-          src="/assets/python-deep-learning/module1/matrix-parallelization.png"
+          src="/assets/python-deep-learning/module1/gpuworkflow.jpg"
           alt="Matrix Multiplication Parallelization"
           style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
           fluid
         />
         <Text component="p" ta="center" mt="xs">
-          Visualization of parallel matrix multiplication decomposition
+          Source: https://www.cse.iitm.ac.in/
         </Text>
       </Flex>
       
@@ -150,7 +157,17 @@ const PytorchIntroduction = () => {
       <Text>
         Python is an interpreted language with significant overhead for numerical computations:
       </Text>
-      
+            <Flex direction="column" align="center" mt="md">
+        <Image
+          src="/assets/python-deep-learning/module1/speed.png"
+          alt="CPU vs GPU Architecture"
+          style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+          fluid
+        />
+        <Text component="p" ta="center" mt="xs">
+          Source: https://github.com/niklas-heer/speed-comparison
+        </Text>
+      </Flex>
       <List>
         <List.Item><strong>Python loop</strong>: ~1000× slower than C++ for numerical operations</List.Item>
         <List.Item><strong>Dynamic typing</strong>: Type checking at runtime adds overhead</List.Item>
@@ -281,7 +298,17 @@ E = A + v  # [[2, 4], [4, 6]]`} />
       <Title order={2} mt="xl">3. Data Types</Title>
       
       <Title order={3} mt="md">Understanding Data Types in Memory</Title>
-      
+            <Flex direction="column" align="center" mt="md">
+        <Image
+          src="/assets/python-deep-learning/module1/float.png"
+          alt="Matrix Multiplication Parallelization"
+          style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+          fluid
+        />
+        <Text component="p" ta="center" mt="xs">
+          Source: https://en.wikipedia.org/wiki/Single-precision_floating-point_format
+        </Text>
+      </Flex>
       <Text>
         A <strong>data type</strong> defines how binary data in memory is interpreted as numbers. Each type specifies:
       </Text>
@@ -326,7 +353,17 @@ E = A + v  # [[2, 4], [4, 6]]`} />
       <Text mt="sm">
         <strong>Example:</strong> The number 3.14 ≈ 1.57 × 2¹ is stored with mantissa ≈ 1.57 and exponent = 1
       </Text>
-      
+                  <Flex direction="column" align="center" mt="md">
+        <Image
+          src="/assets/python-deep-learning/module1/int.png"
+          alt="Matrix Multiplication Parallelization"
+          style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+          fluid
+        />
+        <Text component="p" ta="center" mt="xs">
+          Source: https://vizuara.substack.com/p/4-bit-llm-training-and-primer-on
+        </Text>
+      </Flex>
       <Title order={3} mt="xl">PyTorch Data Types</Title>
       
       <Text><strong>Floating-point types:</strong></Text>
