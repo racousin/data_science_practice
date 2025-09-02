@@ -1,527 +1,269 @@
 import React from 'react';
-import { Container, Title, Text, Stack, Grid, Paper, List, Flex, Image } from '@mantine/core';
+import { Container, Title, Text, Space, List, Flex, Image,Grid, Paper } from '@mantine/core';
+import CodeBlock from 'components/CodeBlock';
 import { InlineMath, BlockMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
-import CodeBlock from 'components/CodeBlock';
 
 const PytorchIntroduction = () => {
   return (
-    <Container size="xl" py="xl">
-      <Stack spacing="xl">
+    <Container fluid>
+      <Title order={1} mb="lg">PyTorch Fundamentals</Title>
+
+      <Title order={2} mt="xl">1. PyTorch: Deep Learning Computing Context</Title>
+      
+      <Title order={3} mt="md">Why Deep Learning Needs Specialized Computing</Title>
+      
+      <Text>
+        Machine learning and deep learning require immense computational power and memory. Even simple operations like matrix multiplication 
+        involve millions of calculations. For example, multiplying two 1000×1000 matrices requires 1 billion multiply-add operations. 
+        Additionally, training neural networks requires computing gradients for every parameter through backpropagation, effectively 
+        doubling the computational requirements.
+      </Text>
+      
+      <Space h="md" />
+      
+      <Text><strong>PyTorch</strong> addresses these challenges by providing:</Text>
+      <List>
+        <List.Item>Efficient tensor operations optimized for parallel hardware</List.Item>
+        <List.Item>Automatic gradient computation (autograd)</List.Item>
+        <List.Item>Seamless GPU acceleration</List.Item>
+        <List.Item>Integration with highly optimized linear algebra libraries</List.Item>
+      </List>
+      
+      <Text mt="md"><strong>Alternatives</strong>: TensorFlow, JAX</Text>
+      
+      <Title order={3} mt="xl">Understanding Performance</Title>
+            <BlockMath>
+        {`\\text{Performance} \\propto \\frac{\\text{Parallelism} \\times \\text{Memory Bandwidth}}{\\text{Data Transfer Overhead}}`}
+      </BlockMath>
+      <Text><strong>Parallelism</strong>: Executing multiple operations simultaneously</Text>
+      <List>
+        <List.Item><strong>Data Parallelism</strong>: Same operation on different data elements</List.Item>
+        <List.Item><strong>Task Parallelism</strong>: Different operations executed concurrently</List.Item>
+      </List>
+      
+      <Text mt="md"><strong>Bandwidth</strong>: Rate of data transfer between processor and memory</Text>
+      <List>
+        <List.Item>CPU-RAM: ~100 GB/s</List.Item>
+        <List.Item>GPU-VRAM: ~1000 GB/s (10× faster)</List.Item>
+        <List.Item>PCIe (CPU↔GPU): ~30 GB/s (bottleneck)</List.Item>
+      </List>
+      
+      <Text mt="md"><strong>Data Transfer</strong>: Movement of data between different memory spaces</Text>
+      <List>
+        <List.Item>Minimize transfers between CPU and GPU</List.Item>
+        <List.Item>Batch operations to amortize transfer costs</List.Item>
+      </List>
+      
+      <Title order={3} mt="xl">Hardware Architecture</Title>
+      
+      <Text><strong>CPU (Central Processing Unit):</strong></Text>
+      <List>
+        <List.Item>4-64 powerful cores optimized for sequential processing</List.Item>
+        <List.Item>Large cache (MB) for complex branching logic</List.Item>
+        <List.Item>Optimized for latency (fast individual operations)</List.Item>
+        <List.Item>Better for: Control flow, small tensors, irregular access patterns</List.Item>
+      </List>
+      
+      <Text mt="md"><strong>GPU (Graphics Processing Unit):</strong></Text>
+      <List>
+        <List.Item>1000s-10000s of simple cores for parallel processing</List.Item>
+        <List.Item>Small cache per core, optimized for throughput</List.Item>
+        <List.Item>SIMD architecture (Single Instruction, Multiple Data)</List.Item>
+        <List.Item>Better for: Large matrix operations, convolutions, element-wise ops</List.Item>
+      </List>
+
+      <Flex direction="column" align="center" mt="md">
+        <Image
+          src="/assets/python-deep-learning/module1/hardware-comparison.png"
+          alt="CPU vs GPU Architecture"
+          style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+          fluid
+        />
+        <Text component="p" ta="center" mt="xs">
+          CPU vs GPU Architecture Comparison
+        </Text>
+      </Flex>
+      <Title order={3} mt="xl">Linear Algebra</Title>
+      
+      <Text>
+        Matrix operations naturally decompose into independent calculations, making them ideal for parallel processing:
+      </Text>
+      
+      <BlockMath>
+        {`C_{ij} = \\sum_{k=1}^{n} A_{ik} \\times B_{kj}`}
+      </BlockMath>
+      
+      <Text>
+        Each element <InlineMath>{`C_{ij}`}</InlineMath> can be computed independently. For a 1000×1000 matrix multiplication:
+      </Text>
+      
+      <List>
+        <List.Item><strong>Total operations</strong>: 1,000,000 dot products (one per output element)</List.Item>
+        <List.Item><strong>Operations per dot product</strong>: 1,000 multiply-adds</List.Item>
+        <List.Item><strong>Total FLOPs</strong>: 2 billion (2×10⁹) floating-point operations</List.Item>
+        <List.Item><strong>Memory needed</strong>: ~12 MB for float32 (3 matrices × 1M elements × 4 bytes)</List.Item>
+      </List>
+      
+      <Text mt="md">
+        <strong>Parallelization potential:</strong> All 1,000,000 dot products can theoretically execute simultaneously:
+      </Text>
+      
+      <List>
+        <List.Item><strong>Sequential (1 core)</strong>: 2 billion operations in sequence</List.Item>
+        <List.Item><strong>CPU (16 cores)</strong>: ~125 million operations per core</List.Item>
+        <List.Item><strong>GPU (10,000 cores)</strong>: ~200,000 operations per core</List.Item>
+      </List>
+      
+      <Text mt="md">
+        <strong>Real-world execution time estimates:</strong>
+      </Text>
+      
+      <List>
+        <List.Item>
+          <strong>Intel i9-13900K (24 cores, 5.8 GHz, ~2 TFLOPS)</strong>: 
+          <InlineMath>{`\\frac{2 \\times 10^9 \\text{ FLOPs}}{2 \\times 10^{12} \\text{ FLOPS}} = 1 \\text{ ms}`}</InlineMath> (theoretical)
+          → ~50 ms (actual with memory overhead)
+        </List.Item>
+        <List.Item>
+          <strong>NVIDIA RTX 4090 (16,384 cores, 82.6 TFLOPS)</strong>: 
+          <InlineMath>{`\\frac{2 \\times 10^9 \\text{ FLOPs}}{82.6 \\times 10^{12} \\text{ FLOPS}} = 0.024 \\text{ ms}`}</InlineMath> (theoretical)
+          → ~0.5 ms (actual with memory overhead)
+        </List.Item>
+      </List>
+      
+      <Flex direction="column" align="center" mt="md">
+        <Image
+          src="/assets/python-deep-learning/module1/matrix-parallelization.png"
+          alt="Matrix Multiplication Parallelization"
+          style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+          fluid
+        />
+        <Text component="p" ta="center" mt="xs">
+          Visualization of parallel matrix multiplication decomposition
+        </Text>
+      </Flex>
+      
+      
+      <Title order={3} mt="xl">Python vs Compiled Languages: The Performance Gap</Title>
+      
+      <Text>
+        Python is an interpreted language with significant overhead for numerical computations:
+      </Text>
+      
+      <List>
+        <List.Item><strong>Python loop</strong>: ~1000× slower than C++ for numerical operations</List.Item>
+        <List.Item><strong>Dynamic typing</strong>: Type checking at runtime adds overhead</List.Item>
+        <List.Item><strong>GIL (Global Interpreter Lock)</strong>: Prevents true multi-threading</List.Item>
+      </List>
+      
+      <Title order={3} mt="xl">Optimized Linear Algebra Libraries</Title>
+      
+      <Text>
+        Linear algebra optimization remains an active research field. Modern libraries provide state-of-the-art implementations:
+      </Text>
+      
+      <List>
+        <List.Item>
+          <strong>BLAS (Basic Linear Algebra Subprograms)</strong>: Standard API for basic operations
+          <List withPadding>
+            <List.Item>Level 1: Vector operations (O(n))</List.Item>
+            <List.Item>Level 2: Matrix-vector operations (O(n²))</List.Item>
+            <List.Item>Level 3: Matrix-matrix operations (O(n³))</List.Item>
+          </List>
+        </List.Item>
         
-        {/* Introduction */}
-        <div data-slide>
-          <Title order={1} mb="xl">
-            PyTorch Introduction
-          </Title>
-          
-          <Paper className="p-6 bg-gradient-to-r from-orange-50 to-red-50 mb-6">
-            <Title order={2} className="mb-4">Why PyTorch?</Title>
-            <Text size="lg" mb="md">
-              PyTorch has become the dominant framework in deep learning research due to its 
-              intuitive design, dynamic computation graphs, and seamless Python integration. 
-              It provides the perfect balance between ease of use and performance.
-            </Text>
-            
-            <Flex direction="column" align="center" mb="md">
-              <Image
-                src="/assets/python-deep-learning/module1/Pytorch_logo.png"
-                alt="PyTorch Ecosystem"
-                style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
-                fluid
-              />
-            </Flex>
-          </Paper>
-        </div>
+        <List.Item>
+          <strong>LAPACK</strong>: Higher-level operations (eigenvalues, decompositions)
+          <Text size="sm" c="dimmed">Reference: <a href="https://www.netlib.org/lapack/" target="_blank" rel="noopener noreferrer">netlib.org/lapack</a></Text>
+        </List.Item>
+        
+        <List.Item>
+          <strong>Intel MKL (Math Kernel Library)</strong>: CPU optimizations for Intel processors
+          <Text size="sm" c="dimmed">Uses AVX-512 instructions, multi-threading, cache optimization</Text>
+          <Text size="sm" c="dimmed">Reference: <a href="https://www.intel.com/content/www/us/en/developer/tools/oneapi/onemkl.html" target="_blank" rel="noopener noreferrer">Intel oneAPI MKL</a></Text>
+        </List.Item>
+        
+        <List.Item>
+          <strong>cuBLAS</strong>: NVIDIA GPU-accelerated BLAS
+          <Text size="sm" c="dimmed">Optimized for different GPU architectures (Ampere, Hopper)</Text>
+          <Text size="sm" c="dimmed">Reference: <a href="https://developer.nvidia.com/cublas" target="_blank" rel="noopener noreferrer">NVIDIA cuBLAS</a></Text>
+        </List.Item>
+        
+        <List.Item>
+          <strong>cuDNN</strong>: Deep learning primitives (convolutions, RNNs)
+          <Text size="sm" c="dimmed">Reference: <a href="https://developer.nvidia.com/cudnn" target="_blank" rel="noopener noreferrer">NVIDIA cuDNN</a></Text>
+        </List.Item>
+      </List>
+      
+      <Text mt="md">
+        <strong>Recent Research:</strong> Algorithms continue to improve. For example, matrix multiplication complexity 
+        has been reduced from O(n³) to O(n^2.373) theoretically, though practical implementations still use optimized O(n³) algorithms.
+      </Text>
+      
+      <Title order={2} mt="xl">2. Tensor Definition</Title>
+      
+      <Text>
+        A tensor is a multi-dimensional array that generalizes scalars, vectors, and matrices to arbitrary dimensions.
+      </Text>
+      
+      <Title order={3} mt="md">Core Attributes</Title>
+      
+      <List>
+        <List.Item><strong>shape</strong>: Dimensions of the tensor (e.g., [3, 4] for a 3×4 matrix)</List.Item>
+        <List.Item><strong>dtype</strong>: Data type of elements (float32, int64, etc.)</List.Item>
+        <List.Item><strong>device</strong>: Computation location (CPU, CUDA GPU, MPS)</List.Item>
+        <List.Item><strong>layout</strong>: Memory arrangement (strided or sparse)</List.Item>
+        <List.Item><strong>storage</strong>: Underlying 1D memory buffer containing the data</List.Item>
+        <List.Item><strong>strides</strong>: Number of elements to skip in storage for each dimension</List.Item>
+      </List>
+      
+      <Title order={3} mt="md">Constructors</Title>
+      
+      <CodeBlock language="python" code={`import torch
 
-        {/* Philosophy */}
-        <div data-slide>
-          <Title order={2} mb="xl" id="philosophy">
-            PyTorch Philosophy
-          </Title>
-          
-          <Paper className="p-6 bg-blue-50 mb-6">
-            <Title order={3} mb="md">Design Principles</Title>
-            <Text size="lg" mb="md">
-              PyTorch was designed with specific philosophical principles that make it 
-              particularly well-suited for research and experimentation in deep learning.
-            </Text>
-            
-            <Grid gutter="lg">
-              <Grid.Col span={6}>
-                <Paper className="p-4 bg-white">
-                  <Title order={4} mb="sm">Pythonic Design</Title>
-                  <List>
-                    <List.Item><strong>Native Python Feel:</strong> Follows Python conventions and idioms</List.Item>
-                    <List.Item><strong>Easy Debugging:</strong> Standard Python debugging tools work seamlessly</List.Item>
-                    <List.Item><strong>Interactive Development:</strong> Works naturally in Jupyter notebooks</List.Item>
-                    <List.Item><strong>Familiar Syntax:</strong> Looks and feels like NumPy</List.Item>
-                  </List>
-                  
-                  <CodeBlock language="python" code={`# Pythonic tensor operations
-import torch
-
-# Creating tensors feels natural
-x = torch.tensor([1, 2, 3, 4])
-y = torch.zeros_like(x)
-
-# Standard Python iteration works
-for i, val in enumerate(x):
-    y[i] = val * 2
-
-print(y)  # tensor([2, 4, 6, 8])`} />
-                </Paper>
-              </Grid.Col>
-              
-              <Grid.Col span={6}>
-                <Paper className="p-4 bg-white">
-                  <Title order={4} mb="sm">Dynamic Computation Graphs</Title>
-                  <List>
-                    <List.Item><strong>Define-by-Run:</strong> Graph built dynamically during execution</List.Item>
-                    <List.Item><strong>Control Flow:</strong> Natural Python control structures</List.Item>
-                    <List.Item><strong>Variable Length:</strong> Dynamic sequence lengths and structures</List.Item>
-                    <List.Item><strong>Debugging Friendly:</strong> Inspect intermediate values easily</List.Item>
-                  </List>
-                  
-                  <CodeBlock language="python" code={`# Dynamic control flow in computation graph
-def dynamic_network(x, condition):
-    if condition:
-        # Different computation path based on runtime condition
-        return torch.relu(x @ W1 + b1)
-    else:
-        return torch.tanh(x @ W2 + b2)
-
-# Graph structure determined at runtime
-result = dynamic_network(input_data, some_condition)`} />
-                </Paper>
-              </Grid.Col>
-            </Grid>
-          </Paper>
-
-          <Paper className="p-6 bg-green-50 mb-6">
-            <Title order={3} mb="md">Research-First Approach</Title>
-            
-            <Grid gutter="lg">
-              <Grid.Col span={4}>
-                <Paper className="p-4 bg-white">
-                  <Title order={4} mb="sm">Eager Execution</Title>
-                  <Text size="sm" className="mb-3">
-                    Operations execute immediately, making development interactive and intuitive.
-                  </Text>
-                  <CodeBlock language="python" code={`# Operations execute immediately
-x = torch.randn(3, 4)
-print(x.mean())  # Computed right away
-
-# No need to build graphs first
-y = x.sum()
-print(y.item())  # 2.1453...`} />
-                </Paper>
-              </Grid.Col>
-              
-              <Grid.Col span={4}>
-                <Paper className="p-4 bg-white">
-                  <Title order={4} mb="sm">Flexible Experimentation</Title>
-                  <Text size="sm" className="mb-3">
-                    Easy to modify architectures, try new ideas, and prototype quickly.
-                  </Text>
-                  <CodeBlock language="python" code={`# Easy to experiment with architectures
-for num_layers in [2, 4, 6]:
-    model = create_model(num_layers)
-    performance = train_and_evaluate(model)
-    print(f"{num_layers} layers: {performance}")`} />
-                </Paper>
-              </Grid.Col>
-              
-              <Grid.Col span={4}>
-                <Paper className="p-4 bg-white">
-                  <Title order={4} mb="sm">Production Ready</Title>
-                  <Text size="sm" className="mb-3">
-                    TorchScript enables deployment while maintaining development flexibility.
-                  </Text>
-                  <CodeBlock language="python" code={`# Convert to production format
-@torch.jit.script
-def optimized_model(x):
-    return torch.relu(x @ weight + bias)
-
-# Save for deployment
-torch.jit.save(optimized_model, "model.pt")`} />
-                </Paper>
-              </Grid.Col>
-            </Grid>
-          </Paper>
-
-          <Paper className="p-6 bg-yellow-50">
-            <Title order={3} mb="md">Framework Comparison</Title>
-            
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                <thead>
-                  <tr style={{ backgroundColor: '#f8f9fa' }}>
-                    <th style={{ border: '1px solid #dee2e6', padding: '12px' }}>Aspect</th>
-                    <th style={{ border: '1px solid #dee2e6', padding: '12px' }}>PyTorch</th>
-                    <th style={{ border: '1px solid #dee2e6', padding: '12px' }}>TensorFlow 2.x</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td style={{ border: '1px solid #dee2e6', padding: '8px' }}><strong>Execution Model</strong></td>
-                    <td style={{ border: '1px solid #dee2e6', padding: '8px' }}>Dynamic (define-by-run)</td>
-                    <td style={{ border: '1px solid #dee2e6', padding: '8px' }}>Eager + Graph mode</td>
-                  </tr>
-                  <tr>
-                    <td style={{ border: '1px solid #dee2e6', padding: '8px' }}><strong>Learning Curve</strong></td>
-                    <td style={{ border: '1px solid #dee2e6', padding: '8px' }}>Gentle, Pythonic</td>
-                    <td style={{ border: '1px solid #dee2e6', padding: '8px' }}>Steeper, more concepts</td>
-                  </tr>
-                  <tr>
-                    <td style={{ border: '1px solid #dee2e6', padding: '8px' }}><strong>Debugging</strong></td>
-                    <td style={{ border: '1px solid #dee2e6', padding: '8px' }}>Standard Python tools</td>
-                    <td style={{ border: '1px solid #dee2e6', padding: '8px' }}>TensorBoard, specialized tools</td>
-                  </tr>
-                  <tr>
-                    <td style={{ border: '1px solid #dee2e6', padding: '8px' }}><strong>Research Adoption</strong></td>
-                    <td style={{ border: '1px solid #dee2e6', padding: '8px' }}>Dominant in research</td>
-                    <td style={{ border: '1px solid #dee2e6', padding: '8px' }}>Strong in industry</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </Paper>
-        </div>
-
-        {/* Tensors Foundation */}
-        <div data-slide>
-          <Title order={2} mb="xl" id="tensors">
-            Tensors: The Foundation
-          </Title>
-          
-          <Paper className="p-6 bg-gradient-to-r from-purple-50 to-pink-50 mb-6">
-            <Title order={3} mb="md">Understanding Tensors</Title>
-            <Text size="lg" mb="md">
-              Tensors are the fundamental data structure in PyTorch - multi-dimensional arrays 
-              that can run on GPUs and support automatic differentiation. They are similar to 
-              NumPy arrays but with additional capabilities for deep learning.
-            </Text>
-            
-            <Flex direction="column" align="center" mb="md">
-              <Image
-                src="/assets/python-deep-learning/module1/tensor_dimensions.png"
-                alt="Tensor Dimensions"
-                w={{ base: 400, sm: 600, md: 700 }}
-                h="auto"
-                fluid
-              />
-            </Flex>
-            <Text component="p" ta="center" mt="xs">
-              Tensor dimensions: from scalars to multi-dimensional arrays
-            </Text>
-            
-            <Grid gutter="lg" className="mt-6">
-              <Grid.Col span={6}>
-                <Paper className="p-4 bg-white">
-                  <Title order={4} mb="sm">Tensor Properties</Title>
-                  <List size="sm">
-                    <List.Item><strong>dtype:</strong> Data type (float32, int64, bool, etc.)</List.Item>
-                    <List.Item><strong>device:</strong> CPU or GPU location</List.Item>
-                    <List.Item><strong>shape:</strong> Dimensions of the tensor</List.Item>
-                    <List.Item><strong>requires_grad:</strong> Track gradients for autograd</List.Item>
-                    <List.Item><strong>grad:</strong> Stores computed gradients</List.Item>
-                  </List>
-                </Paper>
-              </Grid.Col>
-              
-              <Grid.Col span={6}>
-                <Paper className="p-4 bg-white">
-                  <Title order={4} mb="sm">Common Dimensions</Title>
-                  <List size="sm">
-                    <List.Item><strong>0D (Scalar):</strong> Single number - <InlineMath>{`\\mathbb{R}`}</InlineMath></List.Item>
-                    <List.Item><strong>1D (Vector):</strong> Array of numbers - <InlineMath>{`\\mathbb{R}^n`}</InlineMath></List.Item>
-                    <List.Item><strong>2D (Matrix):</strong> Table of numbers - <InlineMath>{`\\mathbb{R}^{m \\times n}`}</InlineMath></List.Item>
-                    <List.Item><strong>3D:</strong> Cube (RGB images, time series)</List.Item>
-                    <List.Item><strong>4D:</strong> Batch of images (B×C×H×W)</List.Item>
-                  </List>
-                </Paper>
-              </Grid.Col>
-            </Grid>
-          </Paper>
-
-          <Paper className="p-6 bg-gray-50 mb-6">
-            <Title order={3} mb="md">Tensor Creation and Basic Operations</Title>
-            
-            <CodeBlock language="python" code={`import torch
-import numpy as np
-
-# ============ Tensor Creation ============
-# From Python data structures
-tensor_from_list = torch.tensor([1, 2, 3, 4])
-tensor_from_nested = torch.tensor([[1, 2], [3, 4]])
-
-# From NumPy arrays
-numpy_array = np.array([1, 2, 3])
-tensor_from_numpy = torch.from_numpy(numpy_array)
-
-# Special constructors
+# Basic tensor creation
+x = torch.tensor([[1, 2], [3, 4]])  # From data
 zeros = torch.zeros(3, 4)           # All zeros
-ones = torch.ones(2, 3)             # All ones
-eye = torch.eye(3)                  # Identity matrix
-arange = torch.arange(0, 10, 2)     # Range: [0, 2, 4, 6, 8]
-linspace = torch.linspace(0, 1, 5)  # Evenly spaced: [0.0, 0.25, 0.5, 0.75, 1.0]
+ones = torch.ones(2, 5)             # All ones
+rand = torch.rand(2, 3, 4)          # Uniform [0, 1)
+randn = torch.randn(3, 3)           # Normal N(0, 1)
+arange = torch.arange(0, 10, 2)     # [0, 2, 4, 6, 8]
+linspace = torch.linspace(0, 1, 5)  # [0, 0.25, 0.5, 0.75, 1]
+eye = torch.eye(3)                  # 3×3 identity matrix
 
-# Random tensors
-uniform = torch.rand(3, 4)          # Uniform [0, 1)
-normal = torch.randn(3, 4)          # Standard normal N(0,1)
-randint = torch.randint(0, 10, (3, 4))  # Random integers [0, 10)
-
-# ============ Tensor Attributes ============
-x = torch.randn(2, 3, 4)
-print(f"Shape: {x.shape}")         # torch.Size([2, 3, 4])
-print(f"Data type: {x.dtype}")     # torch.float32
-print(f"Device: {x.device}")       # cpu
-print(f"Number of dimensions: {x.ndim}")  # 3
-print(f"Total elements: {x.numel()}")     # 24
-
-# ============ Basic Operations ============
-a = torch.tensor([1, 2, 3])
-b = torch.tensor([4, 5, 6])
-
-# Element-wise operations
-c = a + b                          # [5, 7, 9]
-c = a * b                          # [4, 10, 18]
-c = a ** 2                         # [1, 4, 9]
-
-# Reductions
-mean_val = a.float().mean()        # 2.0
-sum_val = a.sum()                  # 6
-max_val = a.max()                  # 3
-
-print(f"Mean: {mean_val}, Sum: {sum_val}, Max: {max_val}")`} />
-          </Paper>
-
-          <Paper className="p-6 bg-teal-50">
-            <Title order={3} mb="md">Tensor Memory and Storage</Title>
-            <Text className="mb-4">
-              Understanding PyTorch's tensor memory model is crucial for writing efficient code.
-              PyTorch uses a sophisticated storage system that allows multiple tensors to share 
-              the same underlying memory.
-            </Text>
-            
-            <Grid gutter="lg">
-              <Grid.Col span={6}>
-                <Paper className="p-4 bg-white">
-                  <Title order={4} mb="sm">Storage and Strides</Title>
-                  <Text size="sm" className="mb-3">
-                    Tensors consist of data (storage) and metadata (strides, shape, offset). 
-                    Strides determine how logical indices map to physical memory locations.
-                  </Text>
-                  
-                  <CodeBlock language="python" code={`# Understanding tensor storage
-x = torch.arange(6).view(2, 3)
-print(f"Shape: {x.shape}")        # [2, 3]
-print(f"Strides: {x.stride()}")   # (3, 1)
-
-# Storage is shared between views
-y = x.t()  # Transpose
-print(f"Y shape: {y.shape}")      # [3, 2]
-print(f"Y strides: {y.stride()}") # (1, 3)
-
-# Both tensors share same storage
-print(f"Same storage: {x.storage().data_ptr() == y.storage().data_ptr()}")`} />
-                </Paper>
-              </Grid.Col>
+# Tensor attributes
+print(f"Shape: {x.shape}")      # torch.Size([2, 2])
+print(f"Device: {x.device}")    # cpu
+print(f"Dtype: {x.dtype}")      # torch.int64
+print(f"Strides: {x.stride()}") # (2, 1)
+print(f"Layout: {x.layout}")    # torch.strided`} />
+      
+      <Title order={3} mt="md">Linear Algebra</Title>
+      
+      <Container fluid px={0}>
+        <Grid gutter="lg">
+          <Grid.Col span={6}>
+            <Paper className="p-4 bg-blue-50">
+              <Title order={4} mb="sm">Matrix Multiplication</Title>
+              <BlockMath>{`C = AB \\text{ where } C_{ij} = \\sum_k A_{ik}B_{kj}`}</BlockMath>
+              <Text size="sm" className="mb-2">Dimensions: <InlineMath>{`(m \\times n) \\cdot (n \\times p) = (m \\times p)`}</InlineMath></Text>
               
-              <Grid.Col span={6}>
-                <Paper className="p-4 bg-white">
-                  <Title order={4} mb="sm">Views vs Copies</Title>
-                  <Text size="sm" className="mb-3">
-                    Views provide different interpretations of the same memory, while copies 
-                    create new storage. Understanding this distinction prevents memory issues.
-                  </Text>
-                  
-                  <CodeBlock language="python" code={`x = torch.arange(12).view(3, 4)
-
-# View operations (share storage)
-y = x.view(4, 3)     # Reshape
-z = x.transpose(0, 1) # Transpose
-w = x[1:, :]         # Slice
-
-# Clone creates a copy
-x_copy = x.clone()
-
-# Modifying original affects views, not copies
-x[0, 0] = 999
-print(f"View affected: {y[0, 0]}")    # 999
-print(f"Copy unaffected: {x_copy[0, 0]}")  # 0`} />
-                </Paper>
-              </Grid.Col>
-            </Grid>
-            
-            <Paper className="p-4 bg-blue-50 mt-4">
-              <Title order={4} mb="sm">Memory Efficiency</Title>
-              <CodeBlock language="python" code={`# Memory-efficient operations
-x = torch.randn(1000, 1000)
-
-# In-place operations (memory efficient)
-x.add_(1)        # Add 1 to all elements in-place
-x.mul_(2)        # Multiply by 2 in-place
-x.relu_()        # Apply ReLU in-place
-
-# Avoid unnecessary copies
-y = x[500:, 500:]  # Slice (view, not copy)
-
-# Use contiguous() when necessary
-if not y.is_contiguous():
-    y = y.contiguous()  # Make memory layout contiguous
-
-# Check memory usage
-print(f"Memory usage: {x.element_size() * x.numel() / 1024**2:.2f} MB")`} />
-            </Paper>
-          </Paper>
-        </div>
-
-        {/* Device Management */}
-        <div data-slide>
-          <Title order={2} mb="xl" id="device-management">
-            Device Management and GPU Acceleration
-          </Title>
-          
-          <Paper className="p-6 bg-indigo-50 mb-6">
-            <Title order={3} mb="md">Working with GPUs</Title>
-            <Text size="lg" mb="md">
-              PyTorch provides seamless GPU acceleration for deep learning computations. 
-              Understanding device management is crucial for performance optimization.
-            </Text>
-            
-            <Flex direction="column" align="center" mb="md">
-              <Image
-                src="/assets/python-deep-learning/module1/gpu_acceleration.png"
-                alt="GPU Acceleration"
-                w={{ base: 400, sm: 600, md: 700 }}
-                h="auto"
-                fluid
-              />
-            </Flex>
-            <Text component="p" ta="center" mt="xs">
-              GPU acceleration dramatically speeds up tensor computations
-            </Text>
-            
-            <CodeBlock language="python" code={`import torch
-
-# ============ Device Detection ============
-# Check if CUDA is available
-cuda_available = torch.cuda.is_available()
-print(f"CUDA available: {cuda_available}")
-
-if cuda_available:
-    print(f"GPU count: {torch.cuda.device_count()}")
-    print(f"Current GPU: {torch.cuda.current_device()}")
-    print(f"GPU name: {torch.cuda.get_device_name(0)}")
-
-# ============ Device-Agnostic Code ============
-# Best practice: automatic device selection
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-print(f"Using device: {device}")
-
-# ============ Moving Tensors to GPU ============
-# Create tensor on CPU
-x_cpu = torch.randn(1000, 1000)
-
-# Move to GPU
-x_gpu = x_cpu.to(device)
-# or equivalently:
-x_gpu = x_cpu.cuda() if cuda_available else x_cpu
-
-# Create tensor directly on GPU
-y_gpu = torch.randn(1000, 1000, device=device)
-
-# ============ GPU Operations ============
-if cuda_available:
-    # Matrix multiplication on GPU
-    start_time = torch.cuda.Event(enable_timing=True)
-    end_time = torch.cuda.Event(enable_timing=True)
-    
-    start_time.record()
-    result = torch.matmul(x_gpu, y_gpu)
-    end_time.record()
-    
-    torch.cuda.synchronize()  # Wait for GPU to finish
-    gpu_time = start_time.elapsed_time(end_time)
-    print(f"GPU computation time: {gpu_time:.2f} ms")
-
-# ============ Memory Management ============
-if cuda_available:
-    # Check GPU memory
-    print(f"Allocated: {torch.cuda.memory_allocated() / 1024**2:.2f} MB")
-    print(f"Reserved: {torch.cuda.memory_reserved() / 1024**2:.2f} MB")
-    
-    # Clear cache when needed
-    torch.cuda.empty_cache()`} />
-            
-            <Grid gutter="lg" className="mt-4">
-              <Grid.Col span={6}>
-                <Paper className="p-4 bg-white">
-                  <Title order={4} mb="sm">Best Practices</Title>
-                  <List size="sm">
-                    <List.Item>Always use device-agnostic code</List.Item>
-                    <List.Item>Move models and data to same device</List.Item>
-                    <List.Item>Monitor GPU memory usage</List.Item>
-                    <List.Item>Use torch.cuda.empty_cache() for memory cleanup</List.Item>
-                    <List.Item>Batch operations for GPU efficiency</List.Item>
-                  </List>
-                </Paper>
-              </Grid.Col>
-              
-              <Grid.Col span={6}>
-                <Paper className="p-4 bg-white">
-                  <Title order={4} mb="sm">Common Pitfalls</Title>
-                  <List size="sm">
-                    <List.Item>Tensors on different devices cause errors</List.Item>
-                    <List.Item>Moving tensors unnecessarily hurts performance</List.Item>
-                    <List.Item>Small tensors may be faster on CPU</List.Item>
-                    <List.Item>GPU memory leaks from unreleased tensors</List.Item>
-                    <List.Item>Forgetting to move models to GPU</List.Item>
-                  </List>
-                </Paper>
-              </Grid.Col>
-            </Grid>
-          </Paper>
-        </div>
-
-
-        {/* Linear Algebra Operations */}
-        <div data-slide>
-          <Title order={2} mb="xl" id="linear-algebra">
-            Essential Linear Algebra Operations
-          </Title>
-          
-          <Paper className="p-6 bg-gradient-to-r from-green-50 to-teal-50 mb-6">
-            <Title order={3} mb="md">Fundamental Operations for Deep Learning</Title>
-            <Text size="lg" mb="md">
-              Deep learning operates on multi-dimensional arrays. Understanding their properties and operations 
-              is crucial for implementing and debugging neural networks.
-            </Text>
-            
-            <Grid gutter="lg">
-              <Grid.Col span={6}>
-                <Paper className="p-4 bg-blue-50">
-                  <Title order={4} mb="sm">Matrix Multiplication</Title>
-                  <BlockMath>{`C = AB \\text{ where } C_{ij} = \\sum_k A_{ik}B_{kj}`}</BlockMath>
-                  <Text size="sm" className="mb-2">Dimensions: <InlineMath>{`(m \\times n) \\cdot (n \\times p) = (m \\times p)`}</InlineMath></Text>
-                  
-                  <CodeBlock language="python" code={`# Matrix multiplication
+              <CodeBlock language="python" code={`# Matrix multiplication
 A = torch.randn(10, 5)
 B = torch.randn(5, 3)
 C = torch.matmul(A, B)  # or A @ B
 print(C.shape)  # torch.Size([10, 3])`} />
-                </Paper>
-              </Grid.Col>
+            </Paper>
+          </Grid.Col>
+          
+          <Grid.Col span={6}>
+            <Paper className="p-4 bg-green-50">
+              <Title order={4} mb="sm">Element-wise Operations</Title>
+              <BlockMath>{`C = A \\odot B \\text{ where } C_{ij} = A_{ij} \\cdot B_{ij}`}</BlockMath>
+              <Text size="sm" className="mb-2">Hadamard product (element-wise multiplication)</Text>
               
-              <Grid.Col span={6}>
-                <Paper className="p-4 bg-green-50">
-                  <Title order={4} mb="sm">Element-wise Operations</Title>
-                  <BlockMath>{`C = A \\odot B \\text{ where } C_{ij} = A_{ij} \\cdot B_{ij}`}</BlockMath>
-                  <Text size="sm" className="mb-2">Hadamard product (element-wise multiplication)</Text>
-                  
-                  <CodeBlock language="python" code={`# Element-wise operations
+              <CodeBlock language="python" code={`# Element-wise operations
 A = torch.tensor([[1, 2], [3, 4]])
 B = torch.tensor([[5, 6], [7, 8]])
 
@@ -531,55 +273,144 @@ C = A * B  # [[5, 12], [21, 32]]
 # Broadcasting example
 v = torch.tensor([1, 2])
 E = A + v  # [[2, 4], [4, 6]]`} />
-                </Paper>
-              </Grid.Col>
-            </Grid>
-          </Paper>
+            </Paper>
+          </Grid.Col>
+        </Grid>
+      </Container>
 
-          <Paper className="p-6 bg-gray-50 mb-6">
-            <Title order={3} mb="md">Broadcasting and Norms</Title>
-            
-            <Grid gutter="lg">
-              <Grid.Col span={6}>
-                <Paper className="p-4 bg-white">
-                  <Title order={4} mb="sm">Broadcasting Rules</Title>
-                  <Text size="sm" className="mb-3">
-                    PyTorch automatically broadcasts tensors for element-wise operations:
-                  </Text>
-                  <List size="sm">
-                    <List.Item>Compare shapes element-wise from right to left</List.Item>
-                    <List.Item>Dimensions are compatible if equal or one is 1</List.Item>
-                    <List.Item>Missing dimensions treated as 1</List.Item>
-                  </List>
-                  
-                  <CodeBlock language="python" code={`# Broadcasting examples
-A = torch.randn(5, 3)     # Shape: [5, 3]
-b = torch.randn(3)         # Shape: [3]
-C = A + b                  # Shape: [5, 3]`} />
-                </Paper>
-              </Grid.Col>
-              
-              <Grid.Col span={6}>
-                <Paper className="p-4 bg-white">
-                  <Title order={4} mb="sm">Vector Norms</Title>
-                  <div className="space-y-3">
-                    <div>
-                      <Text fw="bold" size="sm">L2 Norm (Euclidean):</Text>
-                      <BlockMath>{`||x||_2 = \\sqrt{\\sum_{i=1}^n x_i^2}`}</BlockMath>
-                    </div>
-                    
-                    <div>
-                      <Text fw="bold" size="sm">L1 Norm (Manhattan):</Text>
-                      <BlockMath>{`||x||_1 = \\sum_{i=1}^n |x_i|`}</BlockMath>
-                    </div>
-                  </div>
-                </Paper>
-              </Grid.Col>
-            </Grid>
-          </Paper>
-        </div>
+      <Title order={2} mt="xl">3. Data Types</Title>
+      
+      <Text><strong>Float</strong>: float16 (2B), float32 (4B), float64 (8B), bfloat16</Text>
+      <Text><strong>Int</strong>: int8, int32, int64, uint8, bool</Text>
+      <Text><strong>Memory</strong>: Higher precision = more memory + slower</Text>
+      <Text><strong>Casting</strong>: <InlineMath>.to(dtype)</InlineMath> explicit, automatic promotion in mixed ops</Text>
+      <Text><strong>Priority</strong>: bool &lt; int8 &lt; int32 &lt; int64 &lt; float16 &lt; float32 &lt; float64</Text>
+      
+      <CodeBlock language="python" code={`# Data type operations
+x = torch.tensor([1, 2, 3])  # int64 by default
+y = x.to(torch.float32)      # Explicit casting
+z = x * 1.5                   # Automatic promotion to float
 
-      </Stack>
+# Memory usage comparison
+float16_tensor = torch.rand(1000, 1000, dtype=torch.float16)  # 2MB
+float32_tensor = torch.rand(1000, 1000, dtype=torch.float32)  # 4MB
+float64_tensor = torch.rand(1000, 1000, dtype=torch.float64)  # 8MB`} />
+
+      <Title order={2} mt="xl">4. Memory Layout</Title>
+      
+      <Text><strong>Strides</strong>: Step size between elements <InlineMath>tensor.stride()</InlineMath></Text>
+      <Text><strong>Views</strong>: <InlineMath>reshape()</InlineMath>, <InlineMath>transpose()</InlineMath> - no copy, share storage</Text>
+      <Text><strong>Storage</strong>: Underlying 1D memory buffer <InlineMath>tensor.storage()</InlineMath></Text>
+      <Text><strong>Contiguous</strong>: Sequential memory layout, faster operations</Text>
+
+      <Flex direction="column" align="center" mt="md">
+        <Image
+          src="/assets/python-deep-learning/module1/memory-layout.png"
+          alt="Tensor Memory Layout"
+          style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+          fluid
+        />
+        <Text component="p" ta="center" mt="xs">
+          Tensor Memory Layout and Strides
+        </Text>
+      </Flex>
+      
+      <CodeBlock language="python" code={`# Memory layout examples
+x = torch.rand(3, 4)
+print(f"Strides: {x.stride()}")  # (4, 1)
+
+# View vs Copy
+y = x.reshape(12)       # View - shares storage
+z = x.transpose(0, 1)   # View - different strides
+w = x.clone()           # Copy - new storage
+
+# Contiguous check
+print(f"x is contiguous: {x.is_contiguous()}")  # True
+print(f"z is contiguous: {z.is_contiguous()}")  # False
+z_cont = z.contiguous()  # Make contiguous copy`} />
+
+      <Title order={2} mt="xl">5. Devices & Performance</Title>
+      
+      <Text><strong>Types</strong>: CPU, CUDA, MPS (Apple)</Text>
+      <Text><strong>Transfer</strong>: <InlineMath>.to(device)</InlineMath>, <InlineMath>.cuda()</InlineMath>, <InlineMath>.cpu()</InlineMath></Text>
+      <Text><strong>Performance</strong>: GPU &gt;&gt; CPU for parallel ops, CPU better for small tensors</Text>
+      <Text><strong>Bottleneck</strong>: Host-device transfer ~10-30 GB/s</Text>
+
+      <Flex direction="column" align="center" mt="md">
+        <Image
+          src="/assets/python-deep-learning/module1/performance-comparison.png"
+          alt="Device Performance Comparison"
+          style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+          fluid
+        />
+        <Text component="p" ta="center" mt="xs">
+          Performance Comparison: CPU vs GPU
+        </Text>
+      </Flex>
+      
+      <CodeBlock language="python" code={`# Device management
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+# Create tensor on device
+x = torch.rand(1000, 1000, device=device)
+
+# Transfer between devices
+cpu_tensor = torch.rand(100, 100)
+gpu_tensor = cpu_tensor.cuda()  # CPU -> GPU
+back_to_cpu = gpu_tensor.cpu()  # GPU -> CPU
+
+# Performance comparison
+import time
+
+size = (10000, 10000)
+cpu_a = torch.rand(size)
+cpu_b = torch.rand(size)
+
+gpu_a = cpu_a.cuda()
+gpu_b = cpu_b.cuda()
+
+# CPU multiplication
+start = time.time()
+cpu_c = cpu_a @ cpu_b
+print(f"CPU time: {time.time() - start:.4f}s")
+
+# GPU multiplication
+start = time.time()
+gpu_c = gpu_a @ gpu_b
+torch.cuda.synchronize()  # Wait for completion
+print(f"GPU time: {time.time() - start:.4f}s")`} />
+
+      <Title order={2} mt="xl">6. Functions & NumPy</Title>
+      
+      <Text><strong>Math</strong>: <InlineMath>sin()</InlineMath>, <InlineMath>cos()</InlineMath>, <InlineMath>exp()</InlineMath>, <InlineMath>log()</InlineMath>, <InlineMath>sum()</InlineMath>, <InlineMath>mean()</InlineMath></Text>
+      <Text><strong>NumPy</strong>: <InlineMath>torch.from\_numpy()</InlineMath>, <InlineMath>tensor.numpy()</InlineMath> (zero-copy)</Text>
+      <Text><strong>Compatibility</strong>: Most np.func → torch.func, device-aware</Text>
+      
+      <CodeBlock language="python" code={`# Mathematical operations
+x = torch.linspace(0, 2*torch.pi, 100)
+y = torch.sin(x)
+z = torch.exp(-x)
+
+# Reduction operations
+tensor = torch.rand(3, 4, 5)
+sum_all = tensor.sum()
+mean_dim = tensor.mean(dim=1)
+max_val, max_idx = tensor.max(dim=2)
+
+# NumPy interoperability
+import numpy as np
+
+# NumPy to PyTorch (zero-copy)
+np_array = np.array([1, 2, 3, 4])
+torch_tensor = torch.from_numpy(np_array)
+
+# PyTorch to NumPy (zero-copy if on CPU)
+torch_cpu = torch.rand(3, 4)
+np_view = torch_cpu.numpy()
+
+# Modifying one affects the other
+np_view[0, 0] = 999
+print(torch_cpu[0, 0])  # 999`} />
     </Container>
   );
 };
