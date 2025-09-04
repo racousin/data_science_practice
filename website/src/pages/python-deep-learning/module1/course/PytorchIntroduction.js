@@ -8,7 +8,7 @@ const PytorchIntroduction = () => {
   return (
     <Container fluid>
       <div data-slide>
-      <Title order={1} mb="lg">PyTorch Fundamentals</Title>
+      <Title order={1} mb="lg">PyTorch Introduction</Title>
       <Flex direction="column" align="center" mt="md">
         <Image
           src="/assets/python-deep-learning/module1/Pytorch_logo.png"

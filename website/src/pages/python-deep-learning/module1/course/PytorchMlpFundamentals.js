@@ -8,7 +8,7 @@ const PytorchMlpFundamentals = () => {
   return (
     <Container fluid>
       <div data-slide>
-        <Title order={1} mb="lg">PyTorch MLP Fundamentals</Title>
+        <Title order={1} mb="lg">PyTorch MLP first steps</Title>
         
         <Text>
           A Multi-Layer Perceptron (MLP) in PyTorch consists of three core components: layers, activation functions, and the model container.

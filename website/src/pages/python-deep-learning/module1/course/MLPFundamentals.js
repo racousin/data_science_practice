@@ -11,7 +11,7 @@ const MLPFundamentals = () => {
         {/* Part 3: Multi Layer Perceptron in a nutshell */}
         <div data-slide>
           <Title order={1} mb="xl">
-            Part 3: Multi Layer Perceptron in a nutshell
+            Multi Layer Perceptron in a nutshell
           </Title>
           </div>
           {/* Neuron as Computational Unit */}
