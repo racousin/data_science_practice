@@ -209,13 +209,19 @@ However, the real power of neural networks lies in their depth. While a single h
                 <Text size="sm" mb="md">
                   For an L-layer MLP with layer sizes <InlineMath>{`[n_0, n_1, n_2, ..., n_L]`}</InlineMath>:
                 </Text>
+                <Text size="sm" mb="md">
+                  Example: For MNIST digits (input <InlineMath>{`x \\in \\mathbb{R}^{784}`}</InlineMath>, output <InlineMath>{`y \\in \\mathbb{R}^{10}`}</InlineMath>)
+                </Text>
                 <BlockMath>{`\\theta = \\{W^{(1)}, b^{(1)}, W^{(2)}, b^{(2)}, ..., W^{(L)}, b^{(L)}\\}`}</BlockMath>
                 <Grid gutter="lg" className="mt-4">
                   <Grid.Col span={6}>
                     <Text size="sm"><InlineMath>{`W^{(l)} \\in \\mathbb{R}^{n_l \\times n_{l-1}}`}</InlineMath> - Weight matrix for layer l</Text>
+                    <Text size="xs" color="dimmed">• <InlineMath>{`n_{l-1}`}</InlineMath> (input dimension) determines the number of columns</Text>
+                    <Text size="xs" color="dimmed">• <InlineMath>{`n_l`}</InlineMath> (number of neurons) determines the number of rows</Text>
                   </Grid.Col>
                   <Grid.Col span={6}>
                     <Text size="sm"><InlineMath>{`b^{(l)} \\in \\mathbb{R}^{n_l}`}</InlineMath> - Bias vector for layer l</Text>
+                    <Text size="xs" color="dimmed">• Size equals the number of neurons in layer l</Text>
                   </Grid.Col>
                 </Grid>
               </Paper>
@@ -232,7 +238,7 @@ However, the real power of neural networks lies in their depth. While a single h
                     <Text size="sm" mb="md">
                       For a layer with <InlineMath>{`n_{in}`}</InlineMath> inputs and <InlineMath>{`n_{out}`}</InlineMath> outputs:
                     </Text>
-                    <BlockMath>{`\text{Parameters} = n_{in} \\times n_{out} + n_{out}`}</BlockMath>
+                    <BlockMath>{`\\text{Parameters} = n_{in} \\times n_{out} + n_{out}`}</BlockMath>
                     <List size="sm">
                       <List.Item><InlineMath>{`n_{in} \\times n_{out}`}</InlineMath> weights in matrix <InlineMath>{`W`}</InlineMath></List.Item>
                       <List.Item><InlineMath>{`n_{out}`}</InlineMath> biases in vector <InlineMath>{`b`}</InlineMath></List.Item>
@@ -243,7 +249,7 @@ However, the real power of neural networks lies in their depth. While a single h
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-green-50">
                     <Title order={4} mb="sm">Total Network Parameters</Title>
-                    <BlockMath>{`\text{Total} = \\sum_{l=1}^L (n_{l-1} \\times n_l + n_l)`}</BlockMath>
+                    <BlockMath>{`\\text{Total} = \\sum_{l=1}^L (n_{l-1} \\times n_l + n_l)`}</BlockMath>
                     <Text size="sm" mb="xs">
                       Example: 784 → 128 → 64 → 10
                     </Text>

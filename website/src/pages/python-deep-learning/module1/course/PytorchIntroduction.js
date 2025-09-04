@@ -7,6 +7,7 @@ import 'katex/dist/katex.min.css';
 const PytorchIntroduction = () => {
   return (
     <Container fluid>
+      <div data-slide>
       <Title order={1} mb="lg">PyTorch Fundamentals</Title>
       <Flex direction="column" align="center" mt="md">
         <Image
@@ -16,20 +17,74 @@ const PytorchIntroduction = () => {
           fluid
         />
       </Flex>
+      </div>
+      <div data-slide>
       <Title order={2} mt="xl">1. PyTorch: Deep Learning Computing Context</Title>
-      
-      <Title order={3} mt="md">Why Deep Learning Needs Specialized Computing</Title>
-      
+      </div>
+      <div data-slide>
+      <Title order={3} mt="md" className="slide-title">Why Deep Learning Needs Specialized Computing</Title>
+            <Flex direction="column" align="center" mt="md">
+        <Image
+          src="/assets/python-deep-learning/module1/flop.jpeg"
+          alt="CPU vs GPU Architecture"
+          style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+          fluid
+        />
+                    <Text component="p" ta="center" mt="xs" size="sm" c="dimmed">
+                Source: https://epoch.ai/blog/tracking-large-scale-ai-models</Text>
+        
+      </Flex>
       <Text>
         Machine learning and deep learning require immense computational power and memory. Even simple operations like matrix multiplication 
         involve millions of calculations. For example, multiplying two 1000×1000 matrices requires 1 billion multiply-add operations. 
-        Additionally, training neural networks requires computing gradients for every parameter through backpropagation, effectively 
-        doubling the computational requirements.
       </Text>
+      </div>
+      <div data-slide>
+      <Text>
+        <strong>FLOP and FLOPS Definitions:</strong>
+      </Text>
+      <List>
+        <List.Item><strong>FLOP</strong>: Floating-Point Operation - a single mathematical operation (addition, multiplication, etc.) on floating-point numbers</List.Item>
+        <List.Item><strong>FLOPS</strong>: Floating-Point Operations Per Second - a measure of computational performance</List.Item>
+      </List>
       
       <Space h="md" />
       
-      <Text><strong>PyTorch</strong> addresses these challenges by providing:</Text>
+      <Text>
+        <strong>Example: Training LLaMA 3.1 405B on a Personal Computer</strong>
+      </Text>
+      
+      <Text>
+        To understand the scale of computational requirements, let's calculate how long it would take to train a large language model on a standard PC:
+      </Text>
+      
+      <Text mt="sm">
+        <strong>Given:</strong>
+      </Text>
+      <List>
+        <List.Item>LLaMA 3.1 405B training requirement: <InlineMath>{`3.8 \\times 10^{25}`}</InlineMath> FLOPs</List.Item>
+        <List.Item>Standard PC CPU capacity: 200 GFLOPS (<InlineMath>{`2 \\times 10^{11}`}</InlineMath> FLOPS/second)</List.Item>
+      </List>
+      
+      <Text mt="sm">
+        <strong>Calculation:</strong>
+      </Text>
+      
+      <BlockMath>
+        {`\\text{Time (seconds)} = \\frac{\\text{Total FLOPs}}{\\text{FLOPS per second}} = \\frac{3.8 \\times 10^{25}}{2 \\times 10^{11}} = 1.9 \\times 10^{14} \\text{ seconds}`}
+      </BlockMath>
+      
+      <Text>
+        Convert to years:
+      </Text>
+      
+      <BlockMath>
+        {`\\frac{1.9 \\times 10^{14} \\text{ seconds}}{365.25 \\times 24 \\times 3600 \\text{ seconds/year}} = 6.0 \\text{ million years}`}
+      </BlockMath>
+      </div>
+      
+      <div data-slide>
+      <Text><strong><a href="https://pytorch.org" target="_blank" rel="noopener noreferrer">PyTorch</a></strong> addresses these challenges by providing:</Text>
       <List>
         <List.Item>Efficient tensor operations optimized for parallel hardware</List.Item>
         <List.Item>Automatic gradient computation (autograd)</List.Item>
@@ -37,8 +92,10 @@ const PytorchIntroduction = () => {
         <List.Item>Integration with highly optimized linear algebra libraries</List.Item>
       </List>
       
-      <Text mt="md"><strong>Alternatives</strong>: TensorFlow, JAX</Text>
+      <Text mt="md"><strong>Alternatives</strong>: <a href="https://www.tensorflow.org" target="_blank" rel="noopener noreferrer">TensorFlow</a>, <a href="https://jax.readthedocs.io" target="_blank" rel="noopener noreferrer">JAX</a></Text>
+      </div>
       
+      <div data-slide>
       <Title order={3} mt="xl">Understanding Performance</Title>
             <BlockMath>
         {`\\text{Performance} \\propto \\frac{\\text{Parallelism} \\times \\text{Memory Bandwidth}}{\\text{Data Transfer Overhead}}`}
@@ -61,7 +118,8 @@ const PytorchIntroduction = () => {
         <List.Item>Minimize transfers between CPU and GPU</List.Item>
         <List.Item>Batch operations to amortize transfer costs</List.Item>
       </List>
-      
+      </div>
+      <div data-slide>
       <Title order={3} mt="xl">Hardware Architecture</Title>
       
       <Text><strong>CPU (Central Processing Unit):</strong></Text>
@@ -91,8 +149,10 @@ const PytorchIntroduction = () => {
           Source: https://www.tecamin.net/
         </Text>
       </Flex>
+      </div>
       <Title order={3} mt="xl">Linear Algebra</Title>
       
+      <div data-slide>
       <Text>
         Matrix operations naturally decompose into independent calculations, making them ideal for parallel processing:
       </Text>
@@ -121,7 +181,8 @@ const PytorchIntroduction = () => {
         <List.Item><strong>CPU (16 cores)</strong>: ~125 million operations per core</List.Item>
         <List.Item><strong>GPU (10,000 cores)</strong>: ~200,000 operations per core</List.Item>
       </List>
-      
+      </div>
+      <div data-slide>
       <Text mt="md">
         <strong>Real-world execution time estimates:</strong>
       </Text>
@@ -150,8 +211,8 @@ const PytorchIntroduction = () => {
           Source: https://www.cse.iitm.ac.in/
         </Text>
       </Flex>
-      
-      
+      </div>
+      <div data-slide>
       <Title order={3} mt="xl">Python vs Compiled Languages: The Performance Gap</Title>
       
       <Text>
@@ -173,7 +234,8 @@ const PytorchIntroduction = () => {
         <List.Item><strong>Dynamic typing</strong>: Type checking at runtime adds overhead</List.Item>
         <List.Item><strong>GIL (Global Interpreter Lock)</strong>: Prevents true multi-threading</List.Item>
       </List>
-      
+      </div>
+      <div data-slide>
       <Title order={3} mt="xl">Optimized Linear Algebra Libraries</Title>
       
       <Text>
@@ -217,7 +279,8 @@ const PytorchIntroduction = () => {
         <strong>Recent Research:</strong> Algorithms continue to improve. For example, matrix multiplication complexity 
         has been reduced from O(n³) to O(n^2.373) theoretically, though practical implementations still use optimized O(n³) algorithms.
       </Text>
-      
+      </div>
+      <div data-slide>
       <Title order={2} mt="xl">2. Tensor Definition</Title>
       
       <Text>
@@ -234,7 +297,8 @@ const PytorchIntroduction = () => {
         <List.Item><strong>storage</strong>: Underlying 1D memory buffer containing the data</List.Item>
         <List.Item><strong>strides</strong>: Number of elements to skip in storage for each dimension</List.Item>
       </List>
-      
+      </div>
+      <div data-slide>
       <Title order={3} mt="md">Constructors</Title>
       
       <CodeBlock language="python" code={`import torch
@@ -255,7 +319,8 @@ print(f"Device: {x.device}")    # cpu
 print(f"Dtype: {x.dtype}")      # torch.int64
 print(f"Strides: {x.stride()}") # (2, 1)
 print(f"Layout: {x.layout}")    # torch.strided`} />
-      
+      </div>
+      <div data-slide>
       <Title order={3} mt="md">Linear Algebra</Title>
       
       <Container fluid px={0}>
@@ -294,19 +359,20 @@ E = A + v  # [[2, 4], [4, 6]]`} />
           </Grid.Col>
         </Grid>
       </Container>
-
+</div>
+<div data-slide>
       <Title order={2} mt="xl">3. Data Types</Title>
       
       <Title order={3} mt="md">Understanding Data Types in Memory</Title>
-            <Flex direction="column" align="center" mt="md">
+                  <Flex direction="column" align="center" mt="md">
         <Image
-          src="/assets/python-deep-learning/module1/float.png"
+          src="/assets/python-deep-learning/module1/int.png"
           alt="Matrix Multiplication Parallelization"
           style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
           fluid
         />
         <Text component="p" ta="center" mt="xs">
-          Source: https://en.wikipedia.org/wiki/Single-precision_floating-point_format
+          Source: https://vizuara.substack.com/p/4-bit-llm-training-and-primer-on
         </Text>
       </Flex>
       <Text>
@@ -318,7 +384,8 @@ E = A + v  # [[2, 4], [4, 6]]`} />
         <List.Item><strong>Interpretation</strong>: How bits represent values (integer vs floating-point)</List.Item>
         <List.Item><strong>Range</strong>: Minimum and maximum representable values</List.Item>
       </List>
-      
+      </div>
+      <div data-slide>
       <Title order={4} mt="md">Integer Representation</Title>
       
       <Text>
@@ -333,9 +400,20 @@ E = A + v  # [[2, 4], [4, 6]]`} />
       <Text mt="sm">
         <strong>Example:</strong> The number 5 in int8 is stored as <code>00000101</code>, while -5 is <code>11111011</code>
       </Text>
-      
+      </div>
+      <div data-slide>
       <Title order={4} mt="md">Floating-Point Representation</Title>
-      
+                        <Flex direction="column" align="center" mt="md">
+        <Image
+          src="/assets/python-deep-learning/module1/float.png"
+          alt="Matrix Multiplication Parallelization"
+          style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+          fluid
+        />
+        <Text component="p" ta="center" mt="xs">
+          Source: https://en.wikipedia.org/wiki/Single-precision_floating-point_format
+        </Text>
+      </Flex>
       <Text>
         Floating-point numbers use scientific notation in binary: <InlineMath>{`\\text{value} = \\text{sign} \\times \\text{mantissa} \\times 2^{\\text{exponent}}`}</InlineMath>
       </Text>
@@ -353,18 +431,12 @@ E = A + v  # [[2, 4], [4, 6]]`} />
       <Text mt="sm">
         <strong>Example:</strong> The number 3.14 ≈ 1.57 × 2¹ is stored with mantissa ≈ 1.57 and exponent = 1
       </Text>
-                  <Flex direction="column" align="center" mt="md">
-        <Image
-          src="/assets/python-deep-learning/module1/int.png"
-          alt="Matrix Multiplication Parallelization"
-          style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
-          fluid
-        />
-        <Text component="p" ta="center" mt="xs">
-          Source: https://vizuara.substack.com/p/4-bit-llm-training-and-primer-on
-        </Text>
-      </Flex>
+
+
+      </div>
+      <div data-slide>
       <Title order={3} mt="xl">PyTorch Data Types</Title>
+      
       
       <Text><strong>Floating-point types:</strong></Text>
       <List>
@@ -382,7 +454,8 @@ E = A + v  # [[2, 4], [4, 6]]`} />
         <List.Item><strong>uint8</strong>: Unsigned 1 byte - Range: 0 to 255</List.Item>
         <List.Item><strong>bool</strong>: 1 byte - Values: True/False</List.Item>
       </List>
-      
+      </div>
+       <div data-slide>
       <Flex direction="column" align="center" mt="md">
         <Image
           src="/assets/python-deep-learning/module1/dtypememory.png"
@@ -407,8 +480,8 @@ E = A + v  # [[2, 4], [4, 6]]`} />
         </Text>
 
       </Flex>
-      
-
+      </div>
+<div data-slide>
       <Title order={3} mt="xl">Type Casting</Title>
       
       <Text>
@@ -429,7 +502,8 @@ high_precision = torch.tensor([3.141592653589793], dtype=torch.float64)
 low_precision = high_precision.to(torch.float16)
 print(f"float64: {high_precision[0]:.15f}")  # 3.141592653589793
 print(f"float16: {low_precision[0]:.15f}")   # 3.140625000000000 (precision lost)`} />
-      
+      </div>
+      <div data-slide>
       <Title order={3} mt="xl">Type Priority and Automatic Promotion</Title>
       
       <Text>
@@ -462,43 +536,22 @@ print(f"bool + int8 = {r1.dtype}")            # torch.int8
 # int8 + float32 -> float32
 r2 = int8_t + float32_t  
 print(f"int8 + float32 = {r2.dtype}")         # torch.float32`} />
-      
-      <Title order={3} mt="xl">Memory and Performance Implications</Title>
-      
-      <CodeBlock language="python" code={`# Memory usage comparison
-size = (1000, 1000)  # 1M elements
-
-# Different precisions
-float16_tensor = torch.rand(size, dtype=torch.float16)  # 2MB
-float32_tensor = torch.rand(size, dtype=torch.float32)  # 4MB
-float64_tensor = torch.rand(size, dtype=torch.float64)  # 8MB
-
-print(f"float16 memory: {float16_tensor.element_size() * float16_tensor.nelement() / 1e6:.1f} MB")
-print(f"float32 memory: {float32_tensor.element_size() * float32_tensor.nelement() / 1e6:.1f} MB")
-print(f"float64 memory: {float64_tensor.element_size() * float64_tensor.nelement() / 1e6:.1f} MB")
-
-# Performance comparison (matrix multiplication)
-import time
-
-a16 = torch.rand(1000, 1000, dtype=torch.float16, device='cuda')
-b16 = torch.rand(1000, 1000, dtype=torch.float16, device='cuda')
-
-a32 = a16.to(torch.float32)
-b32 = b16.to(torch.float32)
-
-# float16 multiplication
-start = time.time()
-c16 = a16 @ b16
-torch.cuda.synchronize()
-print(f"float16 time: {(time.time() - start)*1000:.2f} ms")
-
-# float32 multiplication  
-start = time.time()
-c32 = a32 @ b32
-torch.cuda.synchronize()
-print(f"float32 time: {(time.time() - start)*1000:.2f} ms")`} />
+      </div>
+<div data-slide>
 
       <Title order={2} mt="xl">4. Memory Layout</Title>
+            <Flex direction="column" align="center" mt="md">
+        <Image
+          src="/assets/python-deep-learning/module1/tensor_layout.jpeg"
+          alt="Operation Time Comparison"
+          style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+          fluid
+        />
+                <Text component="p" ta="center" mt="xs">
+          Source: https://blog.ezyang.com/2019/05/pytorch-internals/
+        </Text>
+
+      </Flex>
       
       <Title order={3} mt="md">Understanding Tensor Storage: Logical vs Physical</Title>
       
@@ -518,7 +571,8 @@ print(f"float32 time: {(time.time() - start)*1000:.2f} ms")`} />
       <Text mt="md">
         The connection between these two is managed through <strong>metadata</strong> that describes how to interpret the 1D storage as a multi-dimensional tensor. This separation enables efficient operations without copying data.
       </Text>
-      
+      </div>
+      <div data-slide>
       <Title order={3} mt="xl">Strides: The Bridge Between Logical and Physical</Title>
       
       <Text>
@@ -558,7 +612,8 @@ print(x.stride())          # (4, 1)`} />
       <CodeBlock language="python" code={`y = x.t()  # Transpose
 print(y.stride())  # (1, 4) - strides are swapped!
 print(x.storage().data_ptr() == y.storage().data_ptr())  # True - same memory!`} />
-      
+      </div>
+      <div data-slide>
       <Title order={3} mt="xl">Views: Efficient Tensor Manipulation</Title>
       
       <Text>
@@ -590,7 +645,8 @@ print(x[0, 0])  # 100 - original is modified!`} />
 copy2 = x.numpy().copy()    # NumPy copy
 copy1[0, 0] = 999
 print(x[0, 0])  # 100 - original unchanged`} />
-      
+      </div>
+      <div data-slide>
       <Title order={3} mt="xl">Contiguous Memory Layout</Title>
       
       <Text>
@@ -616,7 +672,8 @@ print(y.stride())         # (1, 4) - not decreasing!`} />
       <CodeBlock language="python" code={`# y.view(-1)  # Error! Non-contiguous
 z = y.contiguous()   # Make contiguous copy
 z.view(-1)          # Now works!`} />
-      
+      </div>
+      <div data-slide>
       <Title order={3} mt="xl">Sparse Tensors: Efficient Storage for Mostly-Zero Data</Title>
       
       <Text>
@@ -631,7 +688,8 @@ z.view(-1)          # Now works!`} />
 dense[10, 20] = 5.0
 dense[100, 200] = 3.0  
 dense[500, 750] = 7.0`} />
-      
+      </div>
+      <div data-slide>
       <Text mt="md">
         Convert to sparse COO (Coordinate) format - stores only indices and values:
       </Text>
@@ -657,7 +715,8 @@ print(sparse._values())         # [5.0, 3.0, 7.0]`} />
     values=[3.0, 4.0],          # values
     size=(3, 3)
 )`} />
-      
+</div>
+      <div data-slide>
       <Title order={2} mt="xl">5. Devices & Performance</Title>
       
       <Title order={3} mt="md">Understanding Computing Devices</Title>
@@ -676,7 +735,8 @@ print(sparse._values())         # [5.0, 3.0, 7.0]`} />
         <strong>MPS (Metal Performance Shaders)</strong>: Apple's GPU acceleration framework for M1/M2 chips. 
         Provides GPU acceleration on Apple Silicon devices.
       </Text>
-      
+      </div>
+      <div data-slide>
       <Title order={3} mt="md">Checking Available Devices</Title>
       
       <CodeBlock language="python" code={`# Check available devices
@@ -693,7 +753,8 @@ else:
     device = torch.device('cpu')
     
 print(f"Using device: {device}")`} />
-      
+      </div>
+      <div data-slide>
       <Title order={3} mt="md">Device Transfers</Title>
       
       <Text>
@@ -721,7 +782,8 @@ cpu_back = gpu_tensor.cpu()     # Shorthand for .to('cpu')`} />
 y = x.to('cuda')  # x stays on CPU, y is new tensor on GPU
 print(x.device)   # cpu
 print(y.device)   # cuda:0`} />
-      
+      </div>
+      <div data-slide>
       <Title order={3} mt="md">GPU Synchronization</Title>
       
       <Text>
@@ -741,51 +803,10 @@ start = time.time()
 gpu_result = gpu_tensor @ gpu_tensor
 torch.cuda.synchronize()  # Wait for GPU to finish
 print(f"Actual time: {time.time() - start:.6f}s")`} />
-      
+      </div>
+      <div data-slide>
       <Title order={3} mt="md">Performance Comparison</Title>
       
-      <Flex direction="column" align="center" mt="md">
-        <Image
-          src="/assets/python-deep-learning/module1/performance-comparison.png"
-          alt="Device Performance Comparison"
-          style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
-          fluid
-        />
-        <Text component="p" ta="center" mt="xs">
-          Performance Comparison: CPU vs GPU for Matrix Operations
-        </Text>
-      </Flex>
-      
-      <CodeBlock language="python" code={`# Complete performance comparison
-import time
-
-size = (5000, 5000)
-
-# Create matrices on CPU
-cpu_a = torch.rand(size)
-cpu_b = torch.rand(size)
-
-# Transfer to GPU (this has a cost!)
-transfer_start = time.time()
-gpu_a = cpu_a.cuda()
-gpu_b = cpu_b.cuda()
-torch.cuda.synchronize()
-print(f"Transfer time: {time.time() - transfer_start:.4f}s")
-
-# CPU multiplication
-start = time.time()
-cpu_c = cpu_a @ cpu_b
-cpu_time = time.time() - start
-
-# GPU multiplication
-start = time.time()
-gpu_c = gpu_a @ gpu_b
-torch.cuda.synchronize()  # Essential for accurate timing
-gpu_time = time.time() - start
-
-print(f"CPU time: {cpu_time:.4f}s")
-print(f"GPU time: {gpu_time:.4f}s")
-print(f"Speedup: {cpu_time/gpu_time:.1f}x")`} />
             <Flex direction="column" align="center" mt="md">
         <Image
           src="/assets/python-deep-learning/module1/device-time.png"
@@ -798,11 +819,9 @@ print(f"Speedup: {cpu_time/gpu_time:.1f}x")`} />
         </Text>
       </Flex>
       
-      <Text mt="md">
-        <strong>Key Points:</strong> GPUs excel at large parallel operations but have transfer overhead. 
-        Use GPU for large matrix operations, training neural networks. Keep small operations on CPU to avoid transfer costs.
-      </Text>
+</div>
 
+<div data-slide>
       <Title order={2} mt="xl">6. Functions & NumPy</Title>
       
       <Title order={3} mt="md">Mathematical Functions</Title>
@@ -811,7 +830,8 @@ print(f"Speedup: {cpu_time/gpu_time:.1f}x")`} />
         PyTorch provides a comprehensive set of mathematical functions that operate element-wise on tensors. 
         These functions are optimized for both CPU and GPU computation.
       </Text>
-      
+      </div>
+      <div data-slide>
       <Title order={4} mt="md">Trigonometric Functions</Title>
       
       <Text>
@@ -836,7 +856,8 @@ print(sines)   # [0.0000, 1.0000, 0.0000, -1.0000, 0.0000]`} />
       <CodeBlock language="python" code={`cosines = torch.cos(angles)  # Cosine values
 tangents = torch.tan(angles)  # Tangent values
 arcsin = torch.asin(sines)    # Inverse sine (returns angles)`} />
-      
+      </div>
+      <div data-slide>
       <Title order={4} mt="md">Exponential and Logarithmic Functions</Title>
       
       <Text>
@@ -861,7 +882,8 @@ print(log_exp_x)  # [1.0, 2.0, 3.0] - recovers original`} />
       <CodeBlock language="python" code={`# log(1 + e^x) computed stably for large x
 x = torch.tensor([100.0, -100.0, 0.0])
 stable = torch.log1p(torch.exp(x))  # More stable than log(1 + exp(x))`} />
-      
+      </div>
+      <div data-slide>
       <Title order={4} mt="md">Power and Root Functions</Title>
       
       <CodeBlock language="python" code={`x = torch.tensor([1.0, 4.0, 9.0, 16.0])
@@ -875,13 +897,15 @@ print(sqrt_x)  # [1.0, 2.0, 3.0, 4.0]`} />
       <CodeBlock language="python" code={`squared = torch.pow(x, 2)   # x^2
 cubed = torch.pow(x, 3)     # x^3
 reciprocal = torch.pow(x, -1)  # 1/x`} />
-      
+      </div>
+      <div data-slide>
       <Title order={3} mt="xl">Reduction Operations</Title>
       
       <Text>
         Reduction operations aggregate tensor values along specified dimensions, reducing the tensor's dimensionality.
       </Text>
-      
+      </div>
+      <div data-slide>
       <Title order={4} mt="md">Sum and Mean</Title>
       
       <Text>
@@ -893,7 +917,8 @@ reciprocal = torch.pow(x, -1)  # 1/x`} />
 # Sum all elements
 total = x.sum()
 print(total)  # 21`} />
-      
+      </div>
+      <div data-slide>
       <Text mt="sm">
         Reduce along specific dimensions:
       </Text>
@@ -913,7 +938,8 @@ print(col_sums)  # [6, 15]  # [1+2+3, 4+5+6]`} />
       <CodeBlock language="python" code={`mean_all = x.mean()           # 3.5 (21/6)
 mean_rows = x.mean(dim=0)     # [2.5, 3.5, 4.5]
 mean_cols = x.mean(dim=1)     # [2.0, 5.0]`} />
-      
+      </div>
+      <div data-slide>
       <Title order={4} mt="md">Min, Max, and ArgMax</Title>
       
       <CodeBlock language="python" code={`x = torch.tensor([[3, 7, 2],
@@ -934,7 +960,8 @@ print(indices)  # [1, 0] - positions of max values`} />
       <CodeBlock language="python" code={`# ArgMax returns only indices
 argmax = x.argmax(dim=1)
 print(argmax)  # [1, 0] - same as indices above`} />
-      
+      </div>
+      <div data-slide>
       <Title order={4} mt="md">Standard Deviation and Variance</Title>
       
       <Text>
@@ -954,7 +981,8 @@ var = x.var()          # Should be close to 1`} />
 # Compute stats across batch dimension
 batch_mean = batch.mean(dim=0)  # Shape: [10, 20]
 batch_std = batch.std(dim=0)    # Shape: [10, 20]`} />
-      
+      </div>
+      <div data-slide>
       <Title order={3} mt="xl">Element-wise Operations</Title>
       
       <Title order={4} mt="md">Arithmetic Operations</Title>
@@ -974,7 +1002,8 @@ mul = torch.mul(a, b)  # [4.0, 10.0, 18.0]`} />
       
       <CodeBlock language="python" code={`# Division: a / b
 div = torch.div(a, b)  # [0.25, 0.40, 0.50]`} />
-      
+      </div>
+      <div data-slide>
       <Title order={4} mt="md">Comparison Operations</Title>
       
       <Text>
@@ -988,35 +1017,8 @@ y = torch.tensor([5, 4, 3, 2, 1])`} />
 greater = x > 3        # [False, False, False, True, True]
 equal = x == y         # [False, False, True, False, False]
 less_equal = x <= y    # [True, True, True, False, False]`} />
-      
-      <Title order={4} mt="md">Activation Functions</Title>
-      
-      <Text>
-        Common activation functions used in neural networks:
-      </Text>
-      
-      <Text mt="sm">
-        ReLU (Rectified Linear Unit): <InlineMath>{`\\text{ReLU}(x) = \\max(0, x)`}</InlineMath>
-      </Text>
-      
-      <CodeBlock language="python" code={`x = torch.tensor([-2, -1, 0, 1, 2], dtype=torch.float)
-relu = torch.relu(x)
-print(relu)  # [0, 0, 0, 1, 2]`} />
-      
-      <Text mt="sm">
-        Sigmoid (Logistic): <InlineMath>{`\\sigma(x) = \\frac{1}{1 + e^{-x}}`}</InlineMath>
-      </Text>
-      
-      <CodeBlock language="python" code={`sigmoid = torch.sigmoid(x)
-print(sigmoid)  # [0.119, 0.269, 0.500, 0.731, 0.881]`} />
-      
-      <Text mt="sm">
-        Tanh (Hyperbolic Tangent): <InlineMath>{`\\tanh(x) = \\frac{e^x - e^{-x}}{e^x + e^{-x}}`}</InlineMath>
-      </Text>
-      
-      <CodeBlock language="python" code={`tanh = torch.tanh(x)
-print(tanh)  # [-0.964, -0.762, 0.000, 0.762, 0.964]`} />
-      
+      </div>
+      <div data-slide>
       <Title order={3} mt="xl">Broadcasting</Title>
       
       <Text>
@@ -1061,7 +1063,8 @@ b = torch.tensor([4, 5, 6])        # Shape: [3]
 # Broadcasting: [3, 1] * [3] → [3, 1] * [1, 3] → [3, 3]
 outer = a * b
 print(outer)  # [[4, 5, 6], [8, 10, 12], [12, 15, 18]]`} />
-      
+      </div>
+      <div data-slide>
       <Title order={3} mt="xl">NumPy Interoperability</Title>
       
       <Text>
@@ -1090,7 +1093,8 @@ print(f"PyTorch dtype: {torch_tensor.dtype}")  # torch.int64`} />
       
       <CodeBlock language="python" code={`np_array[0] = 100
 print(torch_tensor[0])  # 100 - changed!`} />
-      
+      </div>
+      <div data-slide>
       <Title order={4} mt="md">PyTorch to NumPy</Title>
       
       <CodeBlock language="python" code={`# Create PyTorch tensor on CPU
@@ -1125,41 +1129,8 @@ torch_tensor = torch.rand(2, 3)
 np_copy = torch_tensor.numpy().copy()  # Explicit copy
 torch_tensor[0, 0] = 999
 print(np_copy[0, 0])  # Original value - unchanged!`} />
+</div>
       
-      <Title order={3} mt="xl">Function Compatibility</Title>
-      
-      <Text>
-        Most NumPy functions have PyTorch equivalents with similar names and behavior:
-      </Text>
-      
-      <CodeBlock language="python" code={`# NumPy
-np_arr = np.array([1, 2, 3, 4])
-np_mean = np.mean(np_arr)
-np_std = np.std(np_arr)
-np_max = np.max(np_arr)`} />
-      
-      <CodeBlock language="python" code={`# PyTorch equivalents
-torch_tensor = torch.tensor([1, 2, 3, 4])
-torch_mean = torch.mean(torch_tensor.float())
-torch_std = torch.std(torch_tensor.float())
-torch_max = torch.max(torch_tensor)`} />
-      
-      <Text mt="md">
-        <strong>Key differences from NumPy:</strong>
-      </Text>
-      
-      <List>
-        <List.Item>PyTorch is device-aware (CPU/GPU)</List.Item>
-        <List.Item>PyTorch tracks gradients for automatic differentiation</List.Item>
-        <List.Item>Some functions have different default behaviors (e.g., random seed)</List.Item>
-        <List.Item>PyTorch uses float32 by default, NumPy uses float64</List.Item>
-      </List>
-      
-      <CodeBlock language="python" code={`# Example: Different default dtypes
-np_ones = np.ones(3)        # float64 by default
-torch_ones = torch.ones(3)  # float32 by default
-print(f"NumPy: {np_ones.dtype}")    # float64
-print(f"PyTorch: {torch_ones.dtype}")  # torch.float32`} />
     </Container>
   );
 };
