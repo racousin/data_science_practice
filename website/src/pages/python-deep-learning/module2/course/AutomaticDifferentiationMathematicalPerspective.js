@@ -8,11 +8,13 @@ const AutomaticDifferentiationMathematicalPerspective = () => {
   return (
     <Container size="xl">
       <Stack spacing="xl">
+        <div data-slide>
         <Title order={2} id="gradient-methods">Gradient Computation Methods</Title>
 
-We see in previous section a way to optimize a parametric model. For that we need the gradient. For deep learning modeles with millions of parameters, how we do compute the gradient?
-<BlockMath>{`\\theta_{t+1} = \\theta_t - \\eta \\nabla_\\theta \\mathcal{L}(\\theta_t)`}</BlockMath>
-
+In the previous section, we explored how to optimize parametric models using gradient-based methods. However, this raises an important practical question: when working with deep learning models that contain millions or even billions of parameters, how do we efficiently compute the gradients needed for optimization?<BlockMath>{`\\theta_{t+1} = \\theta_t - \\eta \\nabla_\\theta \\mathcal{L}(\\theta_t)`}</BlockMath>
+how do we compute efficiently <InlineMath>{` \\nabla_\\theta \\mathcal{L}`}</InlineMath>?
+</div>
+<div data-slide>
   <Table withTableBorder withColumnBorders>
     <Table.Thead>
       <Table.Tr>
@@ -68,7 +70,8 @@ We see in previous section a way to optimize a parametric model. For that we nee
       </Table.Tr>
     </Table.Tbody>
   </Table>
-
+</div>
+<div data-slide>
   <Title order={3} mt="lg">Automatic Differentiation Modes</Title>
   
   <Grid gutter="xl">
@@ -107,9 +110,12 @@ We see in previous section a way to optimize a parametric model. For that we nee
     Backpropagation is reverse-mode automatic differentiation specialized for scalar outputs (loss function),
     making it ideal for neural networks with millions of parameters but single scalar loss.
   </Text>
-</Stack>
+  </div>
+
       {/* Backpropagation Details */}
       <Stack spacing="md">
+        </Stack>
+<div data-slide>
         <Title order={2} id="backprop-details">Backpropagation: A Reverse-Mode Automatic Differentiation</Title>
         
         <Text>
@@ -181,16 +187,16 @@ We see in previous section a way to optimize a parametric model. For that we nee
         </Table.Tr>
         <Table.Tr>
           <Table.Td>
-            <InlineMath>{`E(X,\\theta)`}</InlineMath>
+            <InlineMath>{`L(X,\\theta)`}</InlineMath>
           </Table.Td>
-          <Table.Td>Error function</Table.Td>
+          <Table.Td>Loss function</Table.Td>
           <Table.Td>
-            <InlineMath>{`E(X,\\theta) = Loss(\\hat{y}, y)`}</InlineMath>
+            <InlineMath>{`L(\\theta) = L(\\hat{y}, y)`}</InlineMath>
           </Table.Td>
         </Table.Tr>
       </Table.Tbody>
     </Table>
-
+</div>
     <Accordion variant="separated">
         {/* Weight Gradient Proof */}
         <Accordion.Item value="weight-gradient">
@@ -209,8 +215,8 @@ We see in previous section a way to optimize a parametric model. For that we nee
 
       <Box className="my-4">
         <BlockMath>{`
-          \\frac{\\partial E}{\\partial w_{ij}^k} = 
-          \\frac{\\partial E}{\\partial a_j^k}
+          \\frac{\\partial L}{\\partial w_{ij}^k} = 
+          \\frac{\\partial L}{\\partial a_j^k}
           \\frac{\\partial a_j^k}{\\partial w_{ij}^k}
         `}</BlockMath>
       </Box>
@@ -222,7 +228,7 @@ We see in previous section a way to optimize a parametric model. For that we nee
 
       <Box className="my-4">
         <BlockMath>{`
-          \\delta_j^k \\equiv \\frac{\\partial E}{\\partial a_j^k}
+          \\delta_j^k \\equiv \\frac{\\partial L}{\\partial a_j^k}
         `}</BlockMath>
       </Box>
 
@@ -242,12 +248,12 @@ We see in previous section a way to optimize a parametric model. For that we nee
 
       {/* Final Derivative Form */}
       <Text>
-        Thus, the partial derivative of the error function <InlineMath>E</InlineMath> with respect to a weight <InlineMath>{`w_{ij}^k`}</InlineMath> is:
+        Thus, the partial derivative of the error function <InlineMath>L</InlineMath> with respect to a weight <InlineMath>{`w_{ij}^k`}</InlineMath> is:
       </Text>
 
       <Box className="my-4">
         <BlockMath>{`
-          \\frac{\\partial E}{\\partial w_{ij}^k} = \\delta_j^k o_i^{k-1}
+          \\frac{\\partial L}{\\partial w_{ij}^k} = \\delta_j^k o_i^{k-1}
         `}</BlockMath>
       </Box>
 
@@ -271,13 +277,13 @@ We see in previous section a way to optimize a parametric model. For that we nee
 
       {/* Error Function Expression */}
       <Text>
-        Expressing the error function <InlineMath>E</InlineMath> in terms of the value <InlineMath>{`a_1^m`}</InlineMath> 
+        Expressing the error function <InlineMath>L</InlineMath> in terms of the value <InlineMath>{`a_1^m`}</InlineMath> 
         (since <InlineMath>{`\\delta_1^m`}</InlineMath> is a partial derivative with respect to <InlineMath>{`a_1^m`}</InlineMath>) gives:
       </Text>
 
       <Box className="my-4">
         <BlockMath>{`
-          E = \\frac{1}{2}(\\hat{y} - y)^2 = \\frac{1}{2}(g^m(a_1^m) - y)^2
+          L = \\frac{1}{2}(\\hat{y} - y)^2 = \\frac{1}{2}(g^m(a_1^m) - y)^2
         `}</BlockMath>
       </Box>
 
@@ -301,14 +307,14 @@ We see in previous section a way to optimize a parametric model. For that we nee
 
       {/* Final Formula */}
       <Text>
-        Putting it all together, the partial derivative of the error function <InlineMath>E</InlineMath> with respect to 
+        Putting it all together, the partial derivative of the error function <InlineMath>L</InlineMath> with respect to 
         a weight in the final layer <InlineMath>{`w_{i1}^m`}</InlineMath> is:
       </Text>
 
       <Box className="my-4">
         <BlockMath>{`
           \\begin{align}
-          \\frac{\\partial E}{\\partial w_{i1}^m} &= \\delta_1^m o_i^{m-1} \\\\
+          \\frac{\\partial L}{\\partial w_{i1}^m} &= \\delta_1^m o_i^{m-1} \\\\
           &= (\\hat{y} - y)g^{m\\prime}(a_1^m) o_i^{m-1}
           \\end{align}
         `}</BlockMath>
@@ -328,8 +334,8 @@ We see in previous section a way to optimize a parametric model. For that we nee
       {/* Initial Error Term Expression */}
       <Box className="my-4">
         <BlockMath>{`
-          \\delta_j^k = \\frac{\\partial E}{\\partial a_j^k} = 
-          \\sum_{l=1}^{r_{k+1}} \\frac{\\partial E}{\\partial a_l^{k+1}}
+          \\delta_j^k = \\frac{\\partial L}{\\partial a_j^k} = 
+          \\sum_{l=1}^{r_{k+1}} \\frac{\\partial L}{\\partial a_l^{k+1}}
           \\frac{\\partial a_l^{k+1}}{\\partial a_j^k}
         `}</BlockMath>
       </Box>
@@ -391,14 +397,14 @@ We see in previous section a way to optimize a parametric model. For that we nee
 
       {/* Final Weight Update Formula */}
       <Text>
-        Putting it all together, the partial derivative of the error function <InlineMath>E</InlineMath> with respect to a weight in 
+        Putting it all together, the partial derivative of the error function <InlineMath>L</InlineMath> with respect to a weight in 
         the hidden layers <InlineMath>{`w_{ij}^k`}</InlineMath> for <InlineMath>{`1 \\leq k < m`}</InlineMath> is:
       </Text>
 
       <Box className="my-4">
         <BlockMath>{`
           \\begin{align}
-          \\frac{\\partial E}{\\partial w_{ij}^k} &= \\delta_j^k o_i^{k-1} \\\\
+          \\frac{\\partial L}{\\partial w_{ij}^k} &= \\delta_j^k o_i^{k-1} \\\\
           &= g^{k\\prime}(a_j^k) o_i^{k-1} \\sum_{l=1}^{r_{k+1}} w_{jl}^{k+1} \\delta_l^{k+1}
           \\end{align}
         `}</BlockMath>
@@ -406,6 +412,7 @@ We see in previous section a way to optimize a parametric model. For that we nee
       </Accordion.Panel>
         </Accordion.Item>
       </Accordion>
+      <div data-slide>
       <Title order={2} id="backpropagation-algorithm" className="mb-4">
         The Backpropagation Algorithm
       </Title>
@@ -434,7 +441,8 @@ We see in previous section a way to optimize a parametric model. For that we nee
       </Box>
 
       <Divider my="lg" />
-
+</div>
+<div data-slide>
       {/* Backward Pass */}
       <Title order={3} id="backward-pass">
         Step 2: Backward Pass
@@ -448,7 +456,7 @@ We see in previous section a way to optimize a parametric model. For that we nee
       <Box className="mt-4">
         <Text weight={500}>1. Partial Derivatives for Weights:</Text>
         <BlockMath>{`
-          \\frac{\\partial E_d}{\\partial w_{ij}^k} = \\delta_j^k o_i^{k-1}
+          \\frac{\\partial L_d}{\\partial w_{ij}^k} = \\delta_j^k o_i^{k-1}
         `}</BlockMath>
       </Box>
 
@@ -459,6 +467,8 @@ We see in previous section a way to optimize a parametric model. For that we nee
           \\delta_1^m = g^{m\\prime}(a_1^m)(\\hat{y}_d - y_d)
         `}</BlockMath>
       </Box>
+      </div>
+      <div data-slide>
       {/* Weight Updates */}
       <Title order={3} id="backward-pass">
         Step 3: Weight Update
@@ -466,11 +476,11 @@ We see in previous section a way to optimize a parametric model. For that we nee
       
       <Box className="mt-4">
         <BlockMath>{`
-          \\Delta w_{ij}^k = -\\alpha \\frac{\\partial E(X,\\theta)}{\\partial w_{ij}^k}
+          \\Delta w_{ij}^k = -\\alpha \\frac{\\partial L(X,\\theta)}{\\partial w_{ij}^k}
         `}</BlockMath>
       </Box>
 
-
+</div>
       </Stack>
     </Container>
   );

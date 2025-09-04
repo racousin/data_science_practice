@@ -1019,7 +1019,6 @@ equal = x == y         # [False, False, True, False, False]
 less_equal = x <= y    # [True, True, True, False, False]`} />
       </div>
       <div data-slide>
-        <div data-slide>
       <Title order={3} mt="xl">Slicing and Indexing</Title>
       
       <Text>
@@ -1152,6 +1151,7 @@ partial_flat = x.flatten(start_dim=1)  # Shape: [2, 12]`} />
       <CodeBlock language="python" code={`flat = torch.arange(24)
 unflat = flat.unflatten(0, (2, 3, 4))  # Shape: [2, 3, 4]`} />
       </div>
+      <div data-slide>
       <Title order={3} mt="xl">Broadcasting</Title>
       
       <Text>
