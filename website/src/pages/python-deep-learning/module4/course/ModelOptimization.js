@@ -35,7 +35,7 @@ const ModelOptimization = () => {
         <div data-slide className="min-h-[500px]" id="model-pruning">
           <Title order={2} mb="xl">Model Pruning</Title>
           
-          <Paper className="p-6 bg-gray-50 mb-6">
+            <Paper mb="xl">
             <Text size="lg">
               Pruning removes unimportant weights or neurons from neural networks to reduce model size
               and computational requirements while maintaining accuracy.

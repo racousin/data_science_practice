@@ -59,7 +59,7 @@ const MLPFundamentals = () => {
             </Paper>
 
             {/* Mathematical Model of a Neuron */}
-            <Paper className="p-6 bg-gray-50 mb-6">
+              <Paper mb="xl">
               <Title order={3} mb="md">Mathematical Model of a Neuron</Title>
               
               <Paper className="p-4 bg-white mb-4">
@@ -266,7 +266,7 @@ plt.title('Activation Functions Comparison')`} />
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">Input Layer</Title>
-                    <Text size="sm" className="mb-2">
+                    <Text size="sm" mb="xs">
                       Dimension: <InlineMath>{`\\mathbb{R}^{d_{in}}`}</InlineMath>
                     </Text>
                     <List size="sm">
@@ -280,7 +280,7 @@ plt.title('Activation Functions Comparison')`} />
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">Hidden Layers</Title>
-                    <Text size="sm" className="mb-2">
+                    <Text size="sm" mb="xs">
                       Dimension: <InlineMath>{`\\mathbb{R}^{h_1}, \\mathbb{R}^{h_2}, ...`}</InlineMath>
                     </Text>
                     <List size="sm">
@@ -294,7 +294,7 @@ plt.title('Activation Functions Comparison')`} />
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">Output Layer</Title>
-                    <Text size="sm" className="mb-2">
+                    <Text size="sm" mb="xs">
                       Dimension: <InlineMath>{`\\mathbb{R}^{d_{out}}`}</InlineMath>
                     </Text>
                     <List size="sm">
@@ -308,7 +308,7 @@ plt.title('Activation Functions Comparison')`} />
             </Paper>
 
             {/* Forward Propagation Mathematics */}
-            <Paper className="p-6 bg-gray-50 mb-6">
+              <Paper mb="xl">
               <Title order={3} mb="md">Forward Propagation Mathematics</Title>
               
               <Text className="mb-4">
@@ -340,7 +340,7 @@ plt.title('Activation Functions Comparison')`} />
 
               <Paper className="p-4 bg-blue-50">
                 <Title order={4} mb="sm">Vectorized Implementation</Title>
-                <Text size="sm" className="mb-3">
+                <Text size="sm" mb="md">
                   For batch processing with B samples:
                 </Text>
                 
@@ -442,7 +442,7 @@ print(f"Output shape: {output.shape}")  # [32, 10]`} />
               
               <Paper className="p-4 bg-yellow-50 mt-4">
                 <Title order={4} mb="sm">Universal Approximation Theorem</Title>
-                <Text size="sm" className="mb-3">
+                <Text size="sm" mb="md">
                   A foundational result showing MLPs can approximate any continuous function:
                 </Text>
                 
@@ -486,7 +486,7 @@ print(f"Output shape: {output.shape}")  # [32, 10]`} />
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">Weights <InlineMath>{`W`}</InlineMath></Title>
-                    <Text size="sm" className="mb-3">
+                    <Text size="sm" mb="md">
                       Control the strength of connections between neurons:
                     </Text>
                     <List size="sm">
@@ -505,7 +505,7 @@ print(f"Output shape: {output.shape}")  # [32, 10]`} />
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">Biases <InlineMath>{`b`}</InlineMath></Title>
-                    <Text size="sm" className="mb-3">
+                    <Text size="sm" mb="md">
                       Shift the activation threshold of neurons:
                     </Text>
                     <List size="sm">
@@ -523,7 +523,7 @@ print(f"Output shape: {output.shape}")  # [32, 10]`} />
             </Paper>
 
             {/* Parameter Initialization */}
-            <Paper className="p-6 bg-gray-50 mb-6">
+              <Paper mb="xl">
               <Title order={3} mb="md">Parameter Initialization Strategies</Title>
               
               <Text className="mb-4">
@@ -535,7 +535,7 @@ print(f"Output shape: {output.shape}")  # [32, 10]`} />
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-blue-50">
                     <Title order={4} mb="sm">Xavier/Glorot Initialization</Title>
-                    <Text size="sm" className="mb-3">For sigmoid/tanh activations:</Text>
+                    <Text size="sm" mb="md">For sigmoid/tanh activations:</Text>
                     <BlockMath>{`W_{ij} \\sim \\mathcal{N}\\left(0, \\frac{2}{n_{in} + n_{out}}\\right)`}</BlockMath>
                     <Text size="sm" className="mt-2">or uniform:</Text>
                     <BlockMath>{`W_{ij} \\sim U\\left[-\\sqrt{\\frac{6}{n_{in} + n_{out}}}, \\sqrt{\\frac{6}{n_{in} + n_{out}}}\\right]`}</BlockMath>
@@ -548,7 +548,7 @@ print(f"Output shape: {output.shape}")  # [32, 10]`} />
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-green-50">
                     <Title order={4} mb="sm">He/Kaiming Initialization</Title>
-                    <Text size="sm" className="mb-3">For ReLU activations:</Text>
+                    <Text size="sm" mb="md">For ReLU activations:</Text>
                     <BlockMath>{`W_{ij} \\sim \\mathcal{N}\\left(0, \\frac{2}{n_{in}}\\right)`}</BlockMath>
                     <Text size="sm" className="mt-2">or uniform:</Text>
                     <BlockMath>{`W_{ij} \\sim U\\left[-\\sqrt{\\frac{6}{n_{in}}}, \\sqrt{\\frac{6}{n_{in}}}\\right]`}</BlockMath>

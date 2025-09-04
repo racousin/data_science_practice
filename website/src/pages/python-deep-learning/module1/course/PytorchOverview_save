@@ -59,7 +59,7 @@ const PyTorchOverview = () => {
             </Paper>
 
             {/* PyTorch vs Other Frameworks */}
-            <Paper className="p-6 bg-gray-50 mb-6">
+              <Paper mb="xl">
               <Title order={3} mb="md">Framework Comparison</Title>
               
               <div style={{ overflowX: 'auto' }}>
@@ -354,7 +354,7 @@ x.zero_()  # Set all elements to zero
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">Computational Graph</Title>
-                    <Text size="sm" className="mb-3">
+                    <Text size="sm" mb="md">
                       For <InlineMath>{`z = x^2 + y^3`}</InlineMath>:
                     </Text>
                     <List size="sm">
@@ -370,7 +370,7 @@ x.zero_()  # Set all elements to zero
             </Paper>
 
             {/* Autograd Examples */}
-            <Paper className="p-6 bg-gray-50 mb-6">
+              <Paper mb="xl">
               <Title order={3} mb="md">Autograd in Action</Title>
               
               <CodeBlock language="python" code={`import torch
@@ -670,7 +670,7 @@ loaded_model = torch.jit.load("model.pt")
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">TorchVision</Title>
-                    <Text size="sm" className="mb-3">Computer Vision toolkit</Text>
+                    <Text size="sm" mb="md">Computer Vision toolkit</Text>
                     <List size="sm">
                       <List.Item>Pre-trained models (ResNet, VGG, etc.)</List.Item>
                       <List.Item>Datasets (CIFAR, ImageNet, COCO)</List.Item>
@@ -693,7 +693,7 @@ cifar10 = torchvision.datasets.CIFAR10(
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">TorchText</Title>
-                    <Text size="sm" className="mb-3">NLP and text processing</Text>
+                    <Text size="sm" mb="md">NLP and text processing</Text>
                     <List size="sm">
                       <List.Item>Text datasets and preprocessing</List.Item>
                       <List.Item>Vocabulary management</List.Item>
@@ -715,7 +715,7 @@ TEXT.build_vocab(train_data, max_size=10000)`} />
                 <Grid.Col span={4}>
                   <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">TorchAudio</Title>
-                    <Text size="sm" className="mb-3">Audio and signal processing</Text>
+                    <Text size="sm" mb="md">Audio and signal processing</Text>
                     <List size="sm">
                       <List.Item>Audio I/O and transforms</List.Item>
                       <List.Item>Feature extraction (MFCC, spectrogram)</List.Item>
@@ -743,7 +743,7 @@ spec = spectrogram(waveform)`} />
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">PyTorch Lightning</Title>
-                    <Text size="sm" className="mb-3">
+                    <Text size="sm" mb="md">
                       High-level framework for structured training
                     </Text>
                     <CodeBlock language="python" code={`import pytorch_lightning as pl
@@ -775,7 +775,7 @@ trainer.fit(model, train_dataloader)`} />
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">Hugging Face Transformers</Title>
-                    <Text size="sm" className="mb-3">
+                    <Text size="sm" mb="md">
                       State-of-the-art NLP models
                     </Text>
                     <CodeBlock language="python" code={`from transformers import AutoModel, AutoTokenizer

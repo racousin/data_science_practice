@@ -50,7 +50,7 @@ const Introduction = () => {
         <Title order={4} mb="sm">
           AI (Artificial Intelligence)
         </Title>
-        <Text size="sm" className="mb-3">
+        <Text size="sm" mb="md">
           Automation involving algorithms to reproduce cognitive capabilities such as reasoning, perception, and decision-making.
         </Text>
         <Text size="xs" c="dimmed" fs="italic">
@@ -62,7 +62,7 @@ const Introduction = () => {
         <Title order={4} mb="sm">
           ML (Machine Learning)
         </Title>
-        <Text size="sm" className="mb-3">
+        <Text size="sm" mb="md">
           Statistical algorithms that automatically learn patterns from data without being explicitly programmed for each task.
         </Text>
         <Text size="xs" c="dimmed" fs="italic">
@@ -74,7 +74,7 @@ const Introduction = () => {
         <Title order={4} mb="sm">
           DL (Deep Learning)
         </Title>
-        <Text size="sm" className="mb-3">
+        <Text size="sm" mb="md">
           Neural networks with multiple layers (millions of parameters) that can learn complex representations from raw data.
         </Text>
         <Text size="xs" c="dimmed" fs="italic">

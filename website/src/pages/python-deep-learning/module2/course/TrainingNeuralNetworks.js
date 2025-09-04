@@ -34,7 +34,7 @@ const TrainingNeuralNetworks = () => {
         <div data-slide className="min-h-[500px]" id="loss-functions">
           <Title order={2} mb="xl">Loss Functions</Title>
           
-          <Paper className="p-6 bg-gray-50 mb-6">
+            <Paper mb="xl">
             <Text size="lg">
               Loss functions quantify how well our model's predictions match the true targets.
               The choice of loss function depends on the task and desired behavior.

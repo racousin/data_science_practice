@@ -137,7 +137,7 @@ print(f"L2 norm: {l2_norm:.4f}")`} />
         <div id="broadcasting">
           <Title order={2} mb="lg">Broadcasting Mechanics & Memory</Title>
           
-          <Paper className="p-6 bg-gray-50 mb-6">
+            <Paper mb="xl">
             <Title order={2} mb="lg">Broadcasting Rules</Title>
             <Text className="mb-4">
               Broadcasting allows operations between tensors of different shapes by virtually expanding smaller tensors. 
@@ -369,7 +369,7 @@ explain_strides(z)`} />
         <div id="computational-graphs">
           <Title order={2} mb="lg">Introduction to Computational Graphs</Title>
           
-          <Paper className="p-6 bg-gray-50 mb-6">
+            <Paper mb="xl">
             <Title order={2} mb="lg">Computational Graph Concepts</Title>
             <Text className="mb-4">
               A computational graph represents the flow of operations in a computation. Nodes represent variables or operations, 

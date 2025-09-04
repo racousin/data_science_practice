@@ -56,7 +56,7 @@ const PytorchDataAndModels = () => {
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
                   <Title order={4} mb="sm">Dataset Interface</Title>
-                  <Text size="sm" className="mb-3">
+                  <Text size="sm" mb="md">
                     Every PyTorch Dataset must implement two key methods:
                   </Text>
                   <List size="sm">
@@ -89,7 +89,7 @@ class CustomDataset(Dataset):
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
                   <Title order={4} mb="sm">Built-in Datasets</Title>
-                  <Text size="sm" className="mb-3">
+                  <Text size="sm" mb="md">
                     PyTorch provides many pre-built datasets for common tasks:
                   </Text>
                   <List size="sm">
@@ -355,7 +355,7 @@ val_dataset = CustomDataset(val_data, val_labels, val_transform)`} />
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
                   <Title order={4} mb="sm">Why Normalization Matters</Title>
-                  <Text size="sm" className="mb-3">
+                  <Text size="sm" mb="md">
                     Normalization helps with training stability and convergence:
                   </Text>
                   <List size="sm">
@@ -373,7 +373,7 @@ val_dataset = CustomDataset(val_data, val_labels, val_transform)`} />
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
                   <Title order={4} mb="sm">Augmentation Benefits</Title>
-                  <Text size="sm" className="mb-3">
+                  <Text size="sm" mb="md">
                     Data augmentation improves model generalization:
                   </Text>
                   <List size="sm">
@@ -428,7 +428,7 @@ val_dataset = CustomDataset(val_data, val_labels, val_transform)`} />
                 <Paper className="p-4 bg-white">
                   <Title order={4} mb="sm">Mathematical Operation</Title>
                   <BlockMath>{`y = xW^T + b`}</BlockMath>
-                  <Text size="sm" className="mb-3">
+                  <Text size="sm" mb="md">
                     Where:
                   </Text>
                   <List size="sm">
@@ -443,7 +443,7 @@ val_dataset = CustomDataset(val_data, val_labels, val_transform)`} />
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
                   <Title order={4} mb="sm">Dimension Example</Title>
-                  <Text size="sm" className="mb-2">
+                  <Text size="sm" mb="xs">
                     For a linear layer with 784 inputs and 128 outputs:
                   </Text>
                   <List size="sm">

@@ -118,9 +118,9 @@ Machine learning is a field of artificial intelligence that enables systems to a
             
             <Grid gutter="lg">
               <Grid.Col span={4}>
-                <Paper className="p-4 bg-blue-50 h-full">
+                  <Paper padding="md">
                   <Title order={4} mb="sm">Regression Problems</Title>
-                  <Text size="sm" className="mb-3">Predict continuous values</Text>
+                  <Text size="sm" mb="md">Predict continuous values</Text>
                   <BlockMath>{`y \\in \\mathbb{R}^k`}</BlockMath>
                   
                   <div className="mt-3">
@@ -138,7 +138,7 @@ Machine learning is a field of artificial intelligence that enables systems to a
               <Grid.Col span={4}>
                 <Paper className="p-4 bg-green-50 h-full">
                   <Title order={4} mb="sm">Classification Problems</Title>
-                  <Text size="sm" className="mb-3">Predict discrete categories</Text>
+                  <Text size="sm" mb="md">Predict discrete categories</Text>
                   <BlockMath>{`y \\in \\{1, 2, ..., K\\}`}</BlockMath>
                   
                   <div className="mt-3">
@@ -156,7 +156,7 @@ Machine learning is a field of artificial intelligence that enables systems to a
               <Grid.Col span={4}>
                 <Paper className="p-4 bg-purple-50 h-full">
                   <Title order={4} mb="sm">Mixed Problems</Title>
-                  <Text size="sm" className="mb-3">Combine regression & classification</Text>
+                  <Text size="sm" mb="md">Combine regression & classification</Text>
                   <BlockMath>{`y = [y_{reg}, y_{cls}]`}</BlockMath>
                   
                   <div className="mt-3">
@@ -292,18 +292,18 @@ Machine learning is a field of artificial intelligence that enables systems to a
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">Linear Models</Title>
-                    <Text size="sm" className="mb-3">The simplest parametric model:</Text>
+                    <Text size="sm" mb="md">The simplest parametric model:</Text>
                     <BlockMath>{`f_\\theta(x) = w^T x + b`}</BlockMath>
-                    <Text size="sm" className="mb-2">Parameters: <InlineMath>{`\\theta = \\{w \\in \\mathbb{R}^d, b \\in \\mathbb{R}\\}`}</InlineMath></Text>
+                    <Text size="sm" mb="xs">Parameters: <InlineMath>{`\\theta = \\{w \\in \\mathbb{R}^d, b \\in \\mathbb{R}\\}`}</InlineMath></Text>
                   </Paper>
                 </Grid.Col>
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">Not linear Models (eg : Neural Networks)</Title>
-                    <Text size="sm" className="mb-3">Composition of linear and non-linear functions:</Text>
+                    <Text size="sm" mb="md">Composition of linear and non-linear functions:</Text>
                     <BlockMath>{`f_\\theta(x) = W_L \\cdot \\sigma(W_{L-1} \\cdot ... \\cdot \\sigma(W_1 x + b_1) ... + b_{L-1}) + b_L`}</BlockMath>
-                    <Text size="sm" className="mb-2">Parameters: <InlineMath>{`\\theta = \\{W_1, b_1, ..., W_L, b_L\\}`}</InlineMath></Text>
+                    <Text size="sm" mb="xs">Parameters: <InlineMath>{`\\theta = \\{W_1, b_1, ..., W_L, b_L\\}`}</InlineMath></Text>
                   </Paper>
                 </Grid.Col>
               </Grid>
@@ -334,7 +334,7 @@ l: \\mathbb{R}^{k \\times n} \\times \\mathbb{R}^{k \\times n} & \\to \\mathbb{R
             </Paper>
 
             {/* Common Loss Functions */}
-            <Paper className="p-6 bg-gray-50 mb-6">
+              <Paper mb="xl">
               <Title order={3} mb="md">Common Loss Functions</Title>
               
               <Grid gutter="lg">
@@ -613,17 +613,9 @@ l: \\mathbb{R}^{k \\times n} \\times \\mathbb{R}^{k \\times n} & \\to \\mathbb{R
 
 <div data-slide>
 
-
-
-
-                      
-</div>
-<div data-slide>
-
-
                     
             {/* Variants of Gradient Descent */}
-            <Paper className="p-6 bg-gray-50 mb-6">
+              <Paper mb="xl">
               <Title order={3} mb="md" className="slide-title">Gradient Descent Variants</Title>
                                                                           <Flex direction="column" align="center" mb="md">
                       <Image
@@ -637,7 +629,7 @@ l: \\mathbb{R}^{k \\times n} \\times \\mathbb{R}^{k \\times n} & \\to \\mathbb{R
                     </Flex>
               <Grid gutter="lg">
                 <Grid.Col span={4}>
-                  <Paper className="p-4 bg-blue-50 h-full">
+                    <Paper padding="md">
                     <Title order={4} mb="sm">Batch Gradient Descent</Title>
                     <BlockMath>{`\\nabla_\\theta \\mathcal{L} = \\frac{1}{n}\\sum_{i=1}^n \\nabla_\\theta \\ell(f_\\theta(x_i), y_i)`}</BlockMath>
                     <List size="sm" mt="sm">
@@ -679,96 +671,93 @@ l: \\mathbb{R}^{k \\times n} \\times \\mathbb{R}^{k \\times n} & \\to \\mathbb{R
 </div>
 
 <div data-slide>
-<Title order={3} mb="md" className="slide-title">More parameters is not necessarly a better model</Title>
-              <Grid gutter="lg">
-                                <Grid.Col span={6}>
-                                                          <Flex direction="column" align="center" mb="md">
-                      <Image
-                        src="/assets/python-deep-learning/module1/ai_obj14.png"
-                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
-                        fluid
-                      />
-                                                           <Text component="p" ta="center" mt="xs">
-                        Small bias, small variance
-                      </Text>
-                    </Flex>
-
-                </Grid.Col>
-                <Grid.Col span={6}>
-                                                          <Flex direction="column" align="center" mb="md">
-                      <Image
-                        src="/assets/python-deep-learning/module1/ai_obj13.png"
-                        style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
-                        fluid
-                      />
-                    </Flex>
-                                                          <Text component="p" ta="center" mt="xs">
-                        No bias, high variance
-                      </Text>
- 
-                </Grid.Col>
-                
-
-                
-              </Grid>
+  <Title order={3} mb="md" className="slide-title">More parameters is not necessarily a better model</Title>
+  <Grid gutter="lg">
+    <Grid.Col span={6}>
+      <Flex direction="column" align="center" mb="md">
+        <Image
+          src="/assets/python-deep-learning/module1/ai_obj14.png"
+          style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
+          fluid
+        />
+        <Text component="p" ta="center" mt="xs">
+          Small bias, small variance
+        </Text>
+      </Flex>
+    </Grid.Col>
+    <Grid.Col span={6}>
+      <Flex direction="column" align="center" mb="md">
+        <Image
+          src="/assets/python-deep-learning/module1/ai_obj13.png"
+          style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
+          fluid
+        />
+        <Text component="p" ta="center" mt="xs">
+          No bias, high variance
+        </Text>
+      </Flex>
+    </Grid.Col>
+  </Grid>
 </div>
 
 <div data-slide>
-            {/* Types of Learning Problems */}
-            <Paper className="p-6 bg-gray-50 mb-6">
-              <Title order={3} mb="md" className="slide-title">Types of Learning Problems</Title>
-              
-              <Grid gutter="lg">
-                <Grid.Col span={4}>
-                  <Paper className="p-4 bg-blue-50 h-full">
-                    <Title order={4} mb="sm">Supervised Learning</Title>
-                    <Text size="sm" className="mb-3">Learning from labeled pairs <InlineMath>{`(x, y)`}</InlineMath></Text>
-                    
-                    <div className="mb-3">
-                      <Text fw="bold" size="sm">Classification:</Text>
-                      <BlockMath>{`y \\in \\{1, 2, ..., K\\}`}</BlockMath>
-                      <Text size="xs">Examples: Image recognition, spam detection</Text>
-                    </div>
-                    
-                    <div>
-                      <Text fw="bold" size="sm">Regression:</Text>
-                      <BlockMath>{`y \\in \\mathbb{R}^m`}</BlockMath>
-                      <Text size="xs">Examples: Price prediction, weather forecasting</Text>
-                    </div>
-                  </Paper>
-                </Grid.Col>
-                
-                <Grid.Col span={4}>
-                  <Paper className="p-4 bg-green-50 h-full">
-                    <Title order={4} mb="sm">Unsupervised Learning</Title>
-                    <Text size="sm" className="mb-3">Learning structure from unlabeled data <InlineMath>{`x`}</InlineMath></Text>
-                    
-                    <List size="sm">
-                      <List.Item><strong>Clustering:</strong> Group similar data points</List.Item>
-                      <List.Item><strong>Dimensionality Reduction:</strong> Find low-dimensional representations</List.Item>
-                      <List.Item><strong>Density Estimation:</strong> Model data distribution</List.Item>
-                      <List.Item><strong>Generation:</strong> Sample new data points</List.Item>
-                    </List>
-                  </Paper>
-                </Grid.Col>
-                
-                <Grid.Col span={4}>
-                  <Paper className="p-4 bg-purple-50 h-full">
-                    <Title order={4} mb="sm">Reinforcement Learning</Title>
-                    <Text size="sm" className="mb-3">Learning through interaction and rewards</Text>
-                    
-                    <Text size="sm" className="mb-2">Maximize expected return:</Text>
-                    <BlockMath>{`G_t = \\sum_{k=0}^\\infty \\gamma^k R_{t+k+1}`}</BlockMath>
-                    <Text size="xs">
-                      Agent learns policy <InlineMath>{`\\pi(a|s)`}</InlineMath> through 
-                      trial and error
-                    </Text>
-                  </Paper>
-                </Grid.Col>
-              </Grid>
-            </Paper>
-          For parmaters models, On the other cases (unsupervised, Reinforcment), we will find a way to formulate the problem in a same supervised learning framweork
-        </div>
+  {/* Types of Learning Problems */}
+    <Paper mb="xl">
+    <Title order={3} mb="md" className="slide-title">Types of Learning Problems</Title>
+    
+    <Grid gutter="lg">
+      <Grid.Col span={4}>
+          <Paper padding="md">
+          <Title order={4} mb="sm">Supervised Learning</Title>
+          <Text size="sm" mb="md">Learning from labeled pairs <InlineMath>{`(x, y)`}</InlineMath></Text>
+          
+          <div className="mb-3">
+            <Text fw="bold" size="sm">Classification:</Text>
+            <BlockMath>{`y \\in \\{1, 2, ..., K\\}`}</BlockMath>
+            <Text size="xs">Examples: Image recognition, spam detection</Text>
+          </div>
+          
+          <div>
+            <Text fw="bold" size="sm">Regression:</Text>
+            <BlockMath>{`y \\in \\mathbb{R}^m`}</BlockMath>
+            <Text size="xs">Examples: Price prediction, weather forecasting</Text>
+          </div>
+        </Paper>
+      </Grid.Col>
+      
+      <Grid.Col span={4}>
+        <Paper className="p-4 bg-green-50 h-full">
+          <Title order={4} mb="sm">Unsupervised Learning</Title>
+          <Text size="sm" mb="md">Learning structure from unlabeled data <InlineMath>{`x`}</InlineMath></Text>
+          
+          <List size="sm">
+            <List.Item><strong>Clustering:</strong> Group similar data points</List.Item>
+            <List.Item><strong>Dimensionality Reduction:</strong> Find low-dimensional representations</List.Item>
+            <List.Item><strong>Density Estimation:</strong> Model data distribution</List.Item>
+          </List>
+        </Paper>
+      </Grid.Col>
+      
+      <Grid.Col span={4}>
+        <Paper className="p-4 bg-purple-50 h-full">
+          <Title order={4} mb="sm">Reinforcement Learning</Title>
+          <Text size="sm" mb="md">Learning through interaction and rewards</Text>
+          
+          <Text size="sm" mb="xs">Maximize expected return:</Text>
+          <BlockMath>{`G_t = \\sum_{k=0}^\\infty \\gamma^k R_{t+k+1}`}</BlockMath>
+          <Text size="xs">
+            Agent learns policy <InlineMath>{`\\pi(a|s)`}</InlineMath> through 
+            trial and error
+          </Text>
+        </Paper>
+      </Grid.Col>
+    </Grid>
+  </Paper>
+  
+  <Text size="sm" mb="md">
+    For parametric models, in the other cases (unsupervised, reinforcement), we will find a way to formulate the problem in the same supervised learning framework.
+  </Text>
+</div>
 
       
       </Stack>

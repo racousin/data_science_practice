@@ -118,7 +118,7 @@ for epoch in range(num_epochs):
                   <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">Vectors</Title>
                     <BlockMath>{`x \\in \\mathbb{R}^n`}</BlockMath>
-                    <Text size="sm" className="mb-2">1D array of numbers</Text>
+                    <Text size="sm" mb="xs">1D array of numbers</Text>
                     <CodeBlock language="python" code={`import torch
 # Vector of size 5
 x = torch.tensor([1, 2, 3, 4, 5])
@@ -130,7 +130,7 @@ print(x.shape)  # torch.Size([5])`} />
                   <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">Matrices</Title>
                     <BlockMath>{`W \\in \\mathbb{R}^{m \\times n}`}</BlockMath>
-                    <Text size="sm" className="mb-2">2D array (rows × columns)</Text>
+                    <Text size="sm" mb="xs">2D array (rows × columns)</Text>
                     <CodeBlock language="python" code={`# Matrix of size 3×4
 W = torch.randn(3, 4)
 print(W.shape)  # torch.Size([3, 4])`} />
@@ -141,7 +141,7 @@ print(W.shape)  # torch.Size([3, 4])`} />
                   <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">Tensors</Title>
                     <BlockMath>{`T \\in \\mathbb{R}^{d_1 \\times d_2 \\times ... \\times d_k}`}</BlockMath>
-                    <Text size="sm" className="mb-2">k-dimensional array</Text>
+                    <Text size="sm" mb="xs">k-dimensional array</Text>
                     <CodeBlock language="python" code={`# 4D tensor (batch, channels, height, width)
 T = torch.randn(32, 3, 224, 224)
 print(T.shape)  # torch.Size([32, 3, 224, 224])`} />
@@ -151,7 +151,7 @@ print(T.shape)  # torch.Size([32, 3, 224, 224])`} />
             </Paper>
 
             {/* Matrix Operations */}
-            <Paper className="p-6 bg-gray-50 mb-6">
+              <Paper mb="xl">
               <Title order={3} mb="md">Fundamental Operations</Title>
               
               <Grid gutter="lg">
@@ -159,7 +159,7 @@ print(T.shape)  # torch.Size([32, 3, 224, 224])`} />
                   <Paper className="p-4 bg-blue-50">
                     <Title order={4} mb="sm">Matrix Multiplication</Title>
                     <BlockMath>{`C = AB \\text{ where } C_{ij} = \\sum_k A_{ik}B_{kj}`}</BlockMath>
-                    <Text size="sm" className="mb-2">Dimensions: <InlineMath>{`(m \\times n) \\cdot (n \\times p) = (m \\times p)`}</InlineMath></Text>
+                    <Text size="sm" mb="xs">Dimensions: <InlineMath>{`(m \\times n) \\cdot (n \\times p) = (m \\times p)`}</InlineMath></Text>
                     
                     <CodeBlock language="python" code={`# Matrix multiplication
 A = torch.randn(10, 5)
@@ -179,7 +179,7 @@ print(C_batch.shape)  # torch.Size([32, 10, 3])`} />
                   <Paper className="p-4 bg-green-50">
                     <Title order={4} mb="sm">Element-wise Operations</Title>
                     <BlockMath>{`C = A \\odot B \\text{ where } C_{ij} = A_{ij} \\cdot B_{ij}`}</BlockMath>
-                    <Text size="sm" className="mb-2">Hadamard product (element-wise multiplication)</Text>
+                    <Text size="sm" mb="xs">Hadamard product (element-wise multiplication)</Text>
                     
                     <CodeBlock language="python" code={`# Element-wise operations
 A = torch.tensor([[1, 2], [3, 4]])
@@ -203,7 +203,7 @@ E = A + v  # [[2, 4], [4, 6]]`} />
                   <Paper className="p-4 bg-yellow-50">
                     <Title order={4} mb="sm">Dot Product</Title>
                     <BlockMath>{`x \\cdot y = x^T y = \\sum_{i=1}^n x_i y_i`}</BlockMath>
-                    <Text size="sm" className="mb-2">Measures similarity between vectors</Text>
+                    <Text size="sm" mb="xs">Measures similarity between vectors</Text>
                     
                     <CodeBlock language="python" code={`# Dot product
 x = torch.tensor([1., 2., 3.])
@@ -221,7 +221,7 @@ cos_sim = torch.nn.functional.cosine_similarity(
                   <Paper className="p-4 bg-purple-50">
                     <Title order={4} mb="sm">Transpose and Reshape</Title>
                     <BlockMath>{`A^T \\text{ where } (A^T)_{ij} = A_{ji}`}</BlockMath>
-                    <Text size="sm" className="mb-2">Swapping dimensions</Text>
+                    <Text size="sm" mb="xs">Swapping dimensions</Text>
                     
                     <CodeBlock language="python" code={`# Transpose
 A = torch.randn(3, 5)
@@ -269,7 +269,7 @@ z = x.reshape(-1)  # Flatten to 1D`} />
                   <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">Broadcasting Rules</Title>
                     
-                    <Text size="sm" className="mb-3">
+                    <Text size="sm" mb="md">
                       PyTorch automatically broadcasts tensors for element-wise operations:
                     </Text>
                     
@@ -300,7 +300,7 @@ Z = X + Y                  # Shape: [2, 4, 3]`} />
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">Gradient Vector</Title>
-                    <Text size="sm" className="mb-3">
+                    <Text size="sm" mb="md">
                       For scalar function <InlineMath>{`f: \\mathbb{R}^n \\rightarrow \\mathbb{R}`}</InlineMath>:
                     </Text>
                     <BlockMath>{`\\nabla f = \\begin{bmatrix} \\frac{\\partial f}{\\partial x_1} \\\\ \\vdots \\\\ \\frac{\\partial f}{\\partial x_n} \\end{bmatrix}`}</BlockMath>
@@ -311,7 +311,7 @@ Z = X + Y                  # Shape: [2, 4, 3]`} />
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">Jacobian Matrix</Title>
-                    <Text size="sm" className="mb-3">
+                    <Text size="sm" mb="md">
                       For vector function <InlineMath>{`f: \\mathbb{R}^n \\rightarrow \\mathbb{R}^m`}</InlineMath>:
                     </Text>
                     <BlockMath>{`J = \\begin{bmatrix} \\frac{\\partial f_1}{\\partial x_1} & \\cdots & \\frac{\\partial f_1}{\\partial x_n} \\\\ \\vdots & \\ddots & \\vdots \\\\ \\frac{\\partial f_m}{\\partial x_1} & \\cdots & \\frac{\\partial f_m}{\\partial x_n} \\end{bmatrix}`}</BlockMath>
@@ -322,7 +322,7 @@ Z = X + Y                  # Shape: [2, 4, 3]`} />
               
               <Paper p="md" bg="white" mt="md">
                 <Title order={4} mb="sm">Chain Rule for Backpropagation</Title>
-                <Text size="sm" className="mb-3">
+                <Text size="sm" mb="md">
                   For composite function <InlineMath>{`h(x) = f(g(x))`}</InlineMath>:
                 </Text>
                 <BlockMath>{`\\frac{\\partial h}{\\partial x} = \\frac{\\partial f}{\\partial g} \\cdot \\frac{\\partial g}{\\partial x}`}</BlockMath>

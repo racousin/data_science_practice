@@ -290,24 +290,29 @@ export const pytorchCourseContentData = {
     ]}
   ],
   'module4': [
-    { to: '/device-management-resources', label: 'Device Management & Resources', subLinks: [
-      { id: 'gpu-architecture', label: 'GPU Architecture for Deep Learning' },
-      { id: 'memory-management', label: 'Memory Management Strategies' },
-      { id: 'flops-memory-calculation', label: 'Calculate FLOPs & Memory Requirements' },
-      { id: 'mixed-precision', label: 'Mixed Precision Training Mathematics' }
+    { to: '/resource-profiling', label: 'Resource Profiling & Memory', subLinks: [
+      { id: 'model-components', label: 'Model Component Analysis' },
+      { id: 'memory-breakdown', label: 'Memory Breakdown: Parameters, Gradients, Optimizer' },
+      { id: 'activation-memory', label: 'Activation Memory & Checkpointing' },
+      { id: 'gpu-vs-cpu', label: 'GPU vs CPU Performance' }
     ]},
-    { to: '/model-optimization', label: 'Model Optimization', subLinks: [
-      { id: 'model-compression', label: 'Model Compression Techniques' },
-      { id: 'computational-complexity', label: 'Computational Complexity Analysis' },
-      { id: 'torchscript-serialization', label: 'TorchScript & Model Serialization' },
-      { id: 'jit-compilation', label: 'JIT Compilation Basics' }
+    { to: '/model-complexity-analysis', label: 'Model Complexity Analysis', subLinks: [
+      { id: 'flops-calculation', label: 'FLOPs Calculation for MLPs' },
+      { id: 'memory-requirements', label: 'Memory Requirements Estimation' },
+      { id: 'batch-size-optimization', label: 'Batch Size vs Memory Trade-offs' },
+      { id: 'profiling-tools', label: 'PyTorch Profiling Tools' }
     ]},
-    { to: '/advanced-pytorch-architecture', label: 'Advanced PyTorch & Architecture Overview', subLinks: [
-      { id: 'hooks-applications', label: 'Hooks & Their Applications' },
-      { id: 'dynamic-computation-graphs', label: 'Dynamic Computation Graphs' },
-      { id: 'cnn-convolution-mathematics', label: 'CNN Convolution Mathematics (Brief)' },
-      { id: 'attention-mechanism-mathematics', label: 'Attention Mechanism Mathematics (Brief)' },
-      { id: 'custom-cpp-extensions', label: 'Custom C++ Extensions Overview' }
+    { to: '/performance-optimization', label: 'Performance Optimization', subLinks: [
+      { id: 'torch-compile', label: 'Torch Compile & Graph Optimization' },
+      { id: 'mixed-precision', label: 'Mixed Precision Training' },
+      { id: 'memory-optimization', label: 'Memory Optimization Strategies' },
+      { id: 'io-optimization', label: 'I/O and DataLoader Optimization' }
+    ]},
+    { to: '/multi-gpu-scaling', label: 'Multi-GPU Scaling', subLinks: [
+      { id: 'parallelization-overview', label: 'Parallelization Strategies Overview' },
+      { id: 'data-parallel', label: 'Data Parallelism (DP/DDP)' },
+      { id: 'model-parallel', label: 'Model & Pipeline Parallelism' },
+      { id: 'distributed-training', label: 'Distributed Training Best Practices' }
     ]}
   ]
 };
@@ -365,8 +370,8 @@ export const coursesData = {
     modules: [
       { id: 'module1', name: 'Foundations of Deep Learning', icon: IconMathFunction },
       { id: 'module2', name: 'Automatic Differentiation & Optimization', icon: IconCpu },
-      { id: 'module3', name: 'Neural Networks & Training Infrastructure', icon: IconBrain },
-      { id: 'module4', name: 'Performance Optimization & Advanced Features', icon: IconCode },
+      { id: 'module3', name: 'Neural Networks & Training & Monitoring', icon: IconBrain },
+      { id: 'module4', name: 'Performance Optimization & Scale', icon: IconCode },
     ]
   },
   'data-science-practice': {

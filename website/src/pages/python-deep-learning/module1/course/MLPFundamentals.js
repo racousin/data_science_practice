@@ -55,7 +55,7 @@ const MLPFundamentals = () => {
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-yellow-50">
                     <Title order={4} mb="sm">Neuron with Linear Activation</Title>
-                    <Text size="sm" className="mb-3">
+                    <Text size="sm" mb="md">
                       When <InlineMath>{`\\sigma(z) = z`}</InlineMath> (identity function):
                     </Text>
                     <BlockMath>{`y = w^T x + b`}</BlockMath>
@@ -69,7 +69,7 @@ const MLPFundamentals = () => {
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-green-50">
                     <Title order={4} mb="sm">Neuron with Sigmoid Activation</Title>
-                    <Text size="sm" className="mb-3">
+                    <Text size="sm" mb="md">
                       When <InlineMath>{`\\sigma(z) = \\frac{1}{1 + e^{-z}}`}</InlineMath>:
                     </Text>
                     <BlockMath>{`y = \\frac{1}{1 + e^{-(w^T x + b)}}`}</BlockMath>
@@ -114,7 +114,7 @@ const MLPFundamentals = () => {
                   <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">Single Layer (Linear Model)</Title>
                     <BlockMath>{`y = W x + b`}</BlockMath>
-                    <Text size="sm" className="mb-2">
+                    <Text size="sm" mb="xs">
                       Where <InlineMath>{`W \\in \\mathbb{R}^{m \\times n}`}</InlineMath>, <InlineMath>{`x \\in \\mathbb{R}^n`}</InlineMath>
                     </Text>
                     <Text size="sm" color="dimmed">
@@ -147,15 +147,15 @@ However, the real power of neural networks lies in their depth. While a single h
         </div>
 
             {/* Activation Functions */}
-            <Paper className="p-6 bg-gray-50 mb-6">
+              <Paper mb="xl">
               <Title order={3} mb="md">Common Activation Functions</Title>
               
               <Grid gutter="lg">
                 <Grid.Col span={4}>
-                  <Paper className="p-4 bg-blue-50 h-full">
+                    <Paper padding="md">
                     <Title order={4} mb="sm">Linear (Identity)</Title>
                     <BlockMath>{`\\sigma(z) = z`}</BlockMath>
-                    <Text size="sm" className="mb-2">Range: <InlineMath>{`(-\\infty, +\\infty)`}</InlineMath></Text>
+                    <Text size="sm" mb="xs">Range: <InlineMath>{`(-\\infty, +\\infty)`}</InlineMath></Text>
                     <Text size="xs">Used in: Regression output layers</Text>
                   </Paper>
                 </Grid.Col>
@@ -164,7 +164,7 @@ However, the real power of neural networks lies in their depth. While a single h
                   <Paper className="p-4 bg-green-50 h-full">
                     <Title order={4} mb="sm">Sigmoid</Title>
                     <BlockMath>{`\\sigma(z) = \\frac{1}{1 + e^{-z}}`}</BlockMath>
-                    <Text size="sm" className="mb-2">Range: <InlineMath>{`(0, 1)`}</InlineMath></Text>
+                    <Text size="sm" mb="xs">Range: <InlineMath>{`(0, 1)`}</InlineMath></Text>
                     <Text size="xs">Used in: Binary classification, gates in LSTM</Text>
                   </Paper>
                 </Grid.Col>
@@ -173,7 +173,7 @@ However, the real power of neural networks lies in their depth. While a single h
                   <Paper className="p-4 bg-purple-50 h-full">
                     <Title order={4} mb="sm">ReLU</Title>
                     <BlockMath>{`\\sigma(z) = \\max(0, z)`}</BlockMath>
-                    <Text size="sm" className="mb-2">Range: <InlineMath>{`[0, +\\infty)`}</InlineMath></Text>
+                    <Text size="sm" mb="xs">Range: <InlineMath>{`[0, +\\infty)`}</InlineMath></Text>
                     <Text size="xs">Used in: Hidden layers (most popular)</Text>
                   </Paper>
                 </Grid.Col>
@@ -181,7 +181,7 @@ However, the real power of neural networks lies in their depth. While a single h
               
               <Paper p="md" bg="white" mt="md">
                 <Title order={4} mb="sm">Why Activation Functions?</Title>
-                <Text size="sm" className="mb-3">
+                <Text size="sm" mb="md">
                   Without activation functions, multiple layers would collapse to a single linear transformation:
                 </Text>
                 <BlockMath>{`f(x) = W_2(W_1 x + b_1) + b_2 = (W_2 W_1) x + (W_2 b_1 + b_2) = W' x + b'`}</BlockMath>
@@ -206,7 +206,7 @@ However, the real power of neural networks lies in their depth. While a single h
               
               <Paper className="p-4 bg-white">
                 <Title order={4} mb="sm">Complete Parameter Set</Title>
-                <Text size="sm" className="mb-3">
+                <Text size="sm" mb="md">
                   For an L-layer MLP with layer sizes <InlineMath>{`[n_0, n_1, n_2, ..., n_L]`}</InlineMath>:
                 </Text>
                 <BlockMath>{`\\theta = \\{W^{(1)}, b^{(1)}, W^{(2)}, b^{(2)}, ..., W^{(L)}, b^{(L)}\\}`}</BlockMath>
@@ -222,14 +222,14 @@ However, the real power of neural networks lies in their depth. While a single h
             </Paper>
 
             {/* Parameter Counting */}
-            <Paper className="p-6 bg-gray-50 mb-6">
+              <Paper mb="xl">
               <Title order={3} mb="md">Parameter Count Analysis</Title>
               
               <Grid gutter="lg">
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-blue-50">
                     <Title order={4} mb="sm">Per-Layer Parameters</Title>
-                    <Text size="sm" className="mb-3">
+                    <Text size="sm" mb="md">
                       For a layer with <InlineMath>{`n_{in}`}</InlineMath> inputs and <InlineMath>{`n_{out}`}</InlineMath> outputs:
                     </Text>
                     <BlockMath>{`\text{Parameters} = n_{in} \\times n_{out} + n_{out}`}</BlockMath>
@@ -244,7 +244,7 @@ However, the real power of neural networks lies in their depth. While a single h
                   <Paper className="p-4 bg-green-50">
                     <Title order={4} mb="sm">Total Network Parameters</Title>
                     <BlockMath>{`\text{Total} = \\sum_{l=1}^L (n_{l-1} \\times n_l + n_l)`}</BlockMath>
-                    <Text size="sm" className="mb-2">
+                    <Text size="sm" mb="xs">
                       Example: 784 → 128 → 64 → 10
                     </Text>
                     <List size="sm">

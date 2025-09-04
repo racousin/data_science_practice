@@ -105,7 +105,7 @@ result = dynamic_network(input_data, some_condition)`} />
               <Grid.Col span={4}>
                 <Paper className="p-4 bg-white">
                   <Title order={4} mb="sm">Eager Execution</Title>
-                  <Text size="sm" className="mb-3">
+                  <Text size="sm" mb="md">
                     Operations execute immediately, making development interactive and intuitive.
                   </Text>
                   <CodeBlock language="python" code={`# Operations execute immediately
@@ -121,7 +121,7 @@ print(y.item())  # 2.1453...`} />
               <Grid.Col span={4}>
                 <Paper className="p-4 bg-white">
                   <Title order={4} mb="sm">Flexible Experimentation</Title>
-                  <Text size="sm" className="mb-3">
+                  <Text size="sm" mb="md">
                     Easy to modify architectures, try new ideas, and prototype quickly.
                   </Text>
                   <CodeBlock language="python" code={`# Easy to experiment with architectures
@@ -135,7 +135,7 @@ for num_layers in [2, 4, 6]:
               <Grid.Col span={4}>
                 <Paper className="p-4 bg-white">
                   <Title order={4} mb="sm">Production Ready</Title>
-                  <Text size="sm" className="mb-3">
+                  <Text size="sm" mb="md">
                     TorchScript enables deployment while maintaining development flexibility.
                   </Text>
                   <CodeBlock language="python" code={`# Convert to production format
@@ -246,7 +246,7 @@ torch.jit.save(optimized_model, "model.pt")`} />
             </Grid>
           </Paper>
 
-          <Paper className="p-6 bg-gray-50 mb-6">
+            <Paper mb="xl">
             <Title order={3} mb="md">3. Tensor Constructors</Title>
             
             <CodeBlock language="python" code={`import torch
@@ -298,7 +298,7 @@ max_val = a.max()                  # 3
 print(f"Mean: {mean_val}, Sum: {sum_val}, Max: {max_val}")`} />
           </Paper>
 
-          <Paper className="p-6 bg-gray-50 mb-6">
+            <Paper mb="xl">
             <Title order={3} mb="md">4. Linear Algebra Operations</Title>
             
             <Grid gutter="lg">
@@ -306,7 +306,7 @@ print(f"Mean: {mean_val}, Sum: {sum_val}, Max: {max_val}")`} />
                 <Paper className="p-4 bg-blue-50">
                   <Title order={4} mb="sm">Matrix Multiplication</Title>
                   <BlockMath>{`C = AB \\text{ where } C_{ij} = \\sum_k A_{ik}B_{kj}`}</BlockMath>
-                  <Text size="sm" className="mb-2">Dimensions: <InlineMath>{`(m \\times n) \\cdot (n \\times p) = (m \\times p)`}</InlineMath></Text>
+                  <Text size="sm" mb="xs">Dimensions: <InlineMath>{`(m \\times n) \\cdot (n \\times p) = (m \\times p)`}</InlineMath></Text>
                   
                   <CodeBlock language="python" code={`# Matrix multiplication
 A = torch.randn(10, 5)
@@ -320,7 +320,7 @@ print(C.shape)  # torch.Size([10, 3])`} />
                 <Paper className="p-4 bg-green-50">
                   <Title order={4} mb="sm">Element-wise Operations</Title>
                   <BlockMath>{`C = A \\odot B \\text{ where } C_{ij} = A_{ij} \\cdot B_{ij}`}</BlockMath>
-                  <Text size="sm" className="mb-2">Hadamard product (element-wise multiplication)</Text>
+                  <Text size="sm" mb="xs">Hadamard product (element-wise multiplication)</Text>
                   
                   <CodeBlock language="python" code={`# Element-wise operations
 A = torch.tensor([[1, 2], [3, 4]])
@@ -349,7 +349,7 @@ E = A + v  # [[2, 4], [4, 6]]`} />
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
                   <Title order={4} mb="sm">Storage and Strides</Title>
-                  <Text size="sm" className="mb-3">
+                  <Text size="sm" mb="md">
                     Tensors consist of data (storage) and metadata (strides, shape, offset). 
                     Strides determine how logical indices map to physical memory locations.
                   </Text>
@@ -372,7 +372,7 @@ print(f"Same storage: {x.storage().data_ptr() == y.storage().data_ptr()}")`} />
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
                   <Title order={4} mb="sm">Views vs Copies</Title>
-                  <Text size="sm" className="mb-3">
+                  <Text size="sm" mb="md">
                     Views provide different interpretations of the same memory, while copies 
                     create new storage. Understanding this distinction prevents memory issues.
                   </Text>
@@ -545,7 +545,7 @@ if cuda_available:
                 <Paper className="p-4 bg-blue-50">
                   <Title order={4} mb="sm">Matrix Multiplication</Title>
                   <BlockMath>{`C = AB \\text{ where } C_{ij} = \\sum_k A_{ik}B_{kj}`}</BlockMath>
-                  <Text size="sm" className="mb-2">Dimensions: <InlineMath>{`(m \\times n) \\cdot (n \\times p) = (m \\times p)`}</InlineMath></Text>
+                  <Text size="sm" mb="xs">Dimensions: <InlineMath>{`(m \\times n) \\cdot (n \\times p) = (m \\times p)`}</InlineMath></Text>
                   
                   <CodeBlock language="python" code={`# Matrix multiplication
 A = torch.randn(10, 5)
@@ -559,7 +559,7 @@ print(C.shape)  # torch.Size([10, 3])`} />
                 <Paper className="p-4 bg-green-50">
                   <Title order={4} mb="sm">Element-wise Operations</Title>
                   <BlockMath>{`C = A \\odot B \\text{ where } C_{ij} = A_{ij} \\cdot B_{ij}`}</BlockMath>
-                  <Text size="sm" className="mb-2">Hadamard product (element-wise multiplication)</Text>
+                  <Text size="sm" mb="xs">Hadamard product (element-wise multiplication)</Text>
                   
                   <CodeBlock language="python" code={`# Element-wise operations
 A = torch.tensor([[1, 2], [3, 4]])
@@ -576,14 +576,14 @@ E = A + v  # [[2, 4], [4, 6]]`} />
             </Grid>
           </Paper>
 
-          <Paper className="p-6 bg-gray-50 mb-6">
+            <Paper mb="xl">
             <Title order={3} mb="md">Broadcasting and Norms</Title>
             
             <Grid gutter="lg">
               <Grid.Col span={6}>
                 <Paper className="p-4 bg-white">
                   <Title order={4} mb="sm">Broadcasting Rules</Title>
-                  <Text size="sm" className="mb-3">
+                  <Text size="sm" mb="md">
                     PyTorch automatically broadcasts tensors for element-wise operations:
                   </Text>
                   <List size="sm">

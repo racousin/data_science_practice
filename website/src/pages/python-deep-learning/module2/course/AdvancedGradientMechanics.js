@@ -117,7 +117,7 @@ except RuntimeError as e:
         <div id="gradient-clipping">
           <Title order={2} mb="xl">Gradient Clipping & Normalization</Title>
           
-          <Paper className="p-6 bg-gray-50 mb-6">
+            <Paper mb="xl">
             <Title order={3} mb="md">Gradient Clipping Techniques</Title>
             
             <Grid gutter="lg">
