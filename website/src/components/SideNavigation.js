@@ -236,17 +236,21 @@ export const pytorchCourseContentData = {
       { id: 'network-architecture', label: 'Network Architecture' },
       { id: 'parameters', label: 'Parameters to Optimize' },
     ]},
-    { to: '/pytorch-introduction', label: 'PyTorch: Introduction & Philosophy', subLinks: [
+    { to: '/pytorch-introduction', label: 'PyTorch: Introduction', subLinks: [
       { id: 'philosophy', label: 'PyTorch' },
       { id: 'tensors', label: 'Tensors: The Foundation' },
       { id: 'device-management', label: 'Device Management and GPU Acceleration' },
       { id: 'autograd-intro', label: 'Introduction to Automatic Differentiation' }
     ]},
-    { to: '/pytorch-data-and-models', label: 'PyTorch: Data & Neural Networks', subLinks: [
-      { id: 'datasets-dataloaders', label: 'Datasets and DataLoaders' },
-      { id: 'transforms', label: 'Data Transforms and Preprocessing' },
-      { id: 'neural-networks', label: 'Building Neural Networks' },
-      { id: 'training-integration', label: 'Training Pipeline Integration' }
+    { to: '/pytorch-mlp-fundamentals', label: 'PyTorch MLP Fundamentals', subLinks: [
+      { id: 'linear-layer', label: 'Linear Layer' },
+      { id: 'activation-functions', label: 'Activation Functions' },
+      { id: 'sequential-model', label: 'Sequential Model' },
+      { id: 'custom-model-class', label: 'Custom Model Class' },
+      { id: 'counting-parameters', label: 'Counting Parameters' },
+      { id: 'input-output-shapes', label: 'Input and Output Shapes' },
+      { id: 'complete-example', label: 'Complete Example' },
+      { id: 'model-summary', label: 'Model Summary' }
     ]}
   ],
   'module2': [

@@ -1019,6 +1019,139 @@ equal = x == y         # [False, False, True, False, False]
 less_equal = x <= y    # [True, True, True, False, False]`} />
       </div>
       <div data-slide>
+        <div data-slide>
+      <Title order={3} mt="xl">Slicing and Indexing</Title>
+      
+      <Text>
+        Access and modify specific parts of tensors using Python-like syntax.
+      </Text>
+      
+      <Title order={4} mt="md">Basic Slicing</Title>
+      
+      <CodeBlock language="python" code={`x = torch.tensor([[1, 2, 3, 4],
+                  [5, 6, 7, 8],
+                  [9, 10, 11, 12]])
+                  
+# Single element
+element = x[1, 2]         # 7`} />
+      
+      <Text mt="sm">
+        Slice rows and columns:
+      </Text>
+      
+      <CodeBlock language="python" code={`first_row = x[0, :]       # [1, 2, 3, 4]
+last_column = x[:, -1]    # [4, 8, 12]
+submatrix = x[0:2, 1:3]   # [[2, 3], [6, 7]]`} />
+      </div>
+      
+      <div data-slide>
+      <Title order={4} mt="md">Advanced Indexing</Title>
+      
+      <Text>
+        Step slicing and boolean indexing:
+      </Text>
+      
+      <CodeBlock language="python" code={`x = torch.arange(10)      # [0, 1, 2, ..., 9]
+even = x[::2]             # [0, 2, 4, 6, 8]
+reversed = x[::-1]        # [9, 8, 7, ..., 0]`} />
+      
+      <Text mt="sm">
+        Boolean mask indexing:
+      </Text>
+      
+      <CodeBlock language="python" code={`x = torch.tensor([1, 2, 3, 4, 5])
+mask = x > 3              # [False, False, False, True, True]
+filtered = x[mask]        # [4, 5]`} />
+      
+      <Text mt="sm">
+        Modify values using indexing:
+      </Text>
+      
+      <CodeBlock language="python" code={`x = torch.zeros(3, 3)
+x[1, :] = 1               # Set entire row to 1
+x[:, 0] = torch.tensor([2, 3, 4])  # Set first column`} />
+      </div>
+      
+      <div data-slide>
+      <Title order={3} mt="xl">Reshaping Operations</Title>
+      
+      <Text>
+        Transform tensor dimensions while preserving data.
+      </Text>
+      
+      <Title order={4} mt="md">View and Reshape</Title>
+      
+      <CodeBlock language="python" code={`x = torch.arange(12)      # [0, 1, 2, ..., 11]
+matrix = x.view(3, 4)     # Shape: [3, 4]
+matrix2 = x.reshape(3, 4) # Same result`} />
+      
+      <Text mt="sm">
+        Use -1 to infer one dimension:
+      </Text>
+      
+      <CodeBlock language="python" code={`x = torch.arange(24)
+auto = x.view(4, -1)      # Shape: [4, 6] (inferred)
+auto2 = x.view(-1, 3)     # Shape: [8, 3] (inferred)`} />
+      </div>
+      
+      <div data-slide>
+      <Title order={4} mt="md">Squeeze and Unsqueeze</Title>
+      
+      <Text>
+        Remove or add dimensions of size 1:
+      </Text>
+      
+      <CodeBlock language="python" code={`x = torch.randn(1, 3, 1, 4)  # Shape: [1, 3, 1, 4]
+squeezed = x.squeeze()       # Shape: [3, 4]
+partial = x.squeeze(0)       # Shape: [3, 1, 4]`} />
+      
+      <Text mt="sm">
+        Add new dimensions:
+      </Text>
+      
+      <CodeBlock language="python" code={`x = torch.randn(3, 4)        # Shape: [3, 4]
+expanded = x.unsqueeze(0)    # Shape: [1, 3, 4]
+expanded2 = x.unsqueeze(-1)  # Shape: [3, 4, 1]`} />
+      </div>
+      
+      <div data-slide>
+      <Title order={4} mt="md">Transpose and Permute</Title>
+      
+      <Text>
+        Swap tensor dimensions:
+      </Text>
+      
+      <CodeBlock language="python" code={`x = torch.randn(2, 3)
+transposed = x.T          # or x.transpose(0, 1)
+# Shape: [3, 2]`} />
+      
+      <Text mt="sm">
+        For multiple dimensions, use permute:
+      </Text>
+      
+      <CodeBlock language="python" code={`x = torch.randn(2, 3, 4)  # Shape: [2, 3, 4]
+# Reorder dimensions: (0, 1, 2) -> (2, 0, 1)
+permuted = x.permute(2, 0, 1)  # Shape: [4, 2, 3]`} />
+      </div>
+      
+      <div data-slide>
+      <Title order={4} mt="md">Flatten and Unflatten</Title>
+      
+      <Text>
+        Convert to 1D and back:
+      </Text>
+      
+      <CodeBlock language="python" code={`x = torch.randn(2, 3, 4)
+flat = x.flatten()        # Shape: [24]
+partial_flat = x.flatten(start_dim=1)  # Shape: [2, 12]`} />
+      
+      <Text mt="sm">
+        Unflatten restores dimensions:
+      </Text>
+      
+      <CodeBlock language="python" code={`flat = torch.arange(24)
+unflat = flat.unflatten(0, (2, 3, 4))  # Shape: [2, 3, 4]`} />
+      </div>
       <Title order={3} mt="xl">Broadcasting</Title>
       
       <Text>
