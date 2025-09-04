@@ -12,7 +12,6 @@ const MonitoringVisualization = () => {
           </Title>
           
           <Paper className="p-6 bg-blue-50 mb-6">
-            <Title order={3} mb="md">Overview</Title>
             <Text>
               TensorBoard is TensorFlow's visualization toolkit, fully compatible with PyTorch. 
               It provides insights into model training through interactive visualizations of metrics, 
@@ -25,10 +24,6 @@ const MonitoringVisualization = () => {
             <div>
               <Title order={2} mb="md">1. Setting up TensorBoard with PyTorch</Title>
               
-              <Title order={3} mt="lg" mb="sm">Installation</Title>
-              <CodeBlock language="bash" code={`pip install tensorboard`} />
-              <Text size="sm" mb="md">TensorBoard works seamlessly with PyTorch through the torch.utils.tensorboard module.</Text>
-
               <Title order={3} mt="lg" mb="sm">Basic Setup</Title>
               <Text mb="sm">Import SummaryWriter to start logging:</Text>
               <CodeBlock language="python" code={`from torch.utils.tensorboard import SummaryWriter
@@ -50,13 +45,14 @@ dummy_input = torch.randn(1, 784)
 writer.add_graph(model, dummy_input)
 writer.close()`} />
 
-              <Alert c="blue" mb="md">
-                <Text weight={500}>Launching TensorBoard:</Text>
-                <Code block mt="sm">
-                  tensorboard --logdir=runs
-                </Code>
+                <Text mt="md" mb="sm">Launching TensorBoard:</Text>
+                <CodeBlock code={`tensorboard --logdir=runs`} />
                 <Text size="sm" mt="sm">Then navigate to http://localhost:6006</Text>
-              </Alert>
+                                <Text mt="md" mb="sm">Launching TensorBoard in colab:</Text>
+                <CodeBlock language="python" code={`%load_ext tensorboard`} />
+
+    
+
             </div>
 
             {/* Section 2: Logging Scalars */}
@@ -380,142 +376,6 @@ torch.cuda.empty_cache()`} />
                 <Text size="sm" c="dimmed" mt="xs">PyTorch Profiler in TensorBoard</Text>
               </Flex>
             </div>
-
-            {/* Section 10: Best Practices */}
-            <div>
-              <Title order={2} mb="md">10. Best Practices and Tips</Title>
-              
-              <Paper p="md" mb="md" withBorder>
-                <Title order={3} mb="sm">Directory Organization</Title>
-                <CodeBlock language="bash" code={`runs/
-├── baseline/
-├── experiment_lr_0.001/
-├── experiment_lr_0.01/
-└── ablation_study/
-    ├── without_dropout/
-    └── with_dropout/`} />
-                <Text mt="sm" mb="sm">Use meaningful names for experiments:</Text>
-                <CodeBlock language="python" code={`from datetime import datetime
-
-timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-writer = SummaryWriter(f'runs/{model_name}_{timestamp}')`} />
-              </Paper>
-
-              <Paper p="md" mb="md" withBorder>
-                <Title order={3} mb="sm">Efficient Logging</Title>
-                <Text mb="sm">Create a reusable logger class:</Text>
-                <CodeBlock language="python" code={`class TensorBoardLogger:
-    def __init__(self, log_dir, log_every=10):
-        self.writer = SummaryWriter(log_dir)
-        self.log_every = log_every
-        self.step = 0
-    
-    def log_metrics(self, metrics, prefix=""):
-        if self.step % self.log_every == 0:
-            for key, value in metrics.items():
-                self.writer.add_scalar(f'{prefix}/{key}', value, self.step)
-        self.step += 1`} />
-              </Paper>
-
-              <Paper p="md" mb="md" withBorder>
-                <Title order={3} mb="sm">Remote TensorBoard</Title>
-                <Code block mb="sm">
-                  {`# SSH tunnel for remote TensorBoard
-ssh -L 16006:127.0.0.1:6006 user@remote_server
-
-# On remote server
-tensorboard --logdir=runs --port=6006
-
-# Access locally at http://localhost:16006`}
-                </Code>
-              </Paper>
-
-              <Paper p="md" mb="md" withBorder>
-                <Title order={3} mb="sm">TensorBoard.dev for Sharing</Title>
-                <Code block>
-                  {`# Upload to TensorBoard.dev (public hosting)
-tensorboard dev upload --logdir runs \
-    --name "My Experiment" \
-    --description "Training results for model X"`}
-                </Code>
-              </Paper>
-            </div>
-
-            {/* Section 11: Common Issues */}
-            <div>
-              <Title order={2} mb="md">11. Troubleshooting Common Issues</Title>
-              
-              <Table mb="xl">
-                <thead>
-                  <tr>
-                    <th>Issue</th>
-                    <th>Solution</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><Badge c="red">No data</Badge> TensorBoard shows no data</td>
-                    <td>
-                      <Code>writer.flush()</Code> or <Code>writer.close()</Code> after logging
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><Badge c="orange">Slow loading</Badge> Large log files</td>
-                    <td>
-                      Use <Code>--samples_per_plugin</Code> flag or reduce logging frequency
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><Badge c="yellow">Port conflict</Badge> Port already in use</td>
-                    <td>
-                      <Code>tensorboard --logdir=runs --port=6007</Code>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><Badge c="blue">Multiple runs</Badge> Compare experiments</td>
-                    <td>
-                      <Code>tensorboard --logdir_spec name1:path1,name2:path2</Code>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><Badge c="green">Memory</Badge> Out of memory</td>
-                    <td>
-                      Reduce <Code>--max_reload_threads</Code> or clear cache
-                    </td>
-                  </tr>
-                </tbody>
-              </Table>
-            </div>
-
-            {/* Summary */}
-            <Paper p="xl" withBorder>
-              <Title order={3} mb="md">Quick Reference</Title>
-              <Group spacing="md" mb="md">
-                <Badge size="lg">Scalars</Badge>
-                <Badge size="lg">Histograms</Badge>
-                <Badge size="lg">Images</Badge>
-                <Badge size="lg">Graphs</Badge>
-                <Badge size="lg">Embeddings</Badge>
-                <Badge size="lg">Profiler</Badge>
-                <Badge size="lg">HParams</Badge>
-              </Group>
-              <Divider my="md" />
-              <List>
-                <List.Item>TensorBoard provides comprehensive monitoring for deep learning experiments</List.Item>
-                <List.Item>Integrates seamlessly with PyTorch through torch.utils.tensorboard</List.Item>
-                <List.Item>Essential for debugging, optimization, and result presentation</List.Item>
-                <List.Item>Supports custom visualizations through matplotlib integration</List.Item>
-                <List.Item>Can be hosted locally or shared via TensorBoard.dev</List.Item>
-              </List>
-            </Paper>
-
-            <Alert c="teal" mt="xl">
-              <Title order={4}>💡 Pro Tip</Title>
-              <Text mt="sm">
-                For production deployments, consider using Weights & Biases (wandb) or MLflow
-                alongside TensorBoard for more advanced experiment tracking and team collaboration.
-              </Text>
-            </Alert>
           </Stack>
         </div>
       </Stack>

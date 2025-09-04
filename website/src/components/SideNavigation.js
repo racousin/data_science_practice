@@ -373,8 +373,8 @@ export const coursesData = {
     name: 'Python for Deep Learning (PyTorch)',
     modules: [
       { id: 'module1', name: 'Foundations of Deep Learning', icon: IconMathFunction },
-      { id: 'module2', name: 'Automatic Differentiation & Optimization', icon: IconCpu },
-      { id: 'module3', name: 'Neural Networks & Training & Monitoring', icon: IconBrain },
+      { id: 'module2', name: 'Automatic Differentiation', icon: IconCpu },
+      { id: 'module3', name: 'Neural Network Essential & Monitoring', icon: IconBrain },
       { id: 'module4', name: 'Performance Optimization & Scale', icon: IconCode },
     ]
   },
