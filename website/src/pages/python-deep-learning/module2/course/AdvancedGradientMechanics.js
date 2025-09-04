@@ -169,7 +169,7 @@ print(f"Actual gradient norm after clipping: {utils.clip_grad_norm_(model.parame
               </Grid.Col>
               
               <Grid.Col span={6}>
-                <Paper className="p-4 bg-yellow-50">
+                <Paper p="md">
                   <Title order={4} mb="sm">Value-based Clipping</Title>
                   <CodeBlock language="python" code={`# Gradient clipping by value
 def clip_grad_value_(parameters, clip_value):

@@ -173,7 +173,7 @@ print(f"Matrix + Row Vector:\\n{result3}")`} />
               </Grid.Col>
               
               <Grid.Col span={6}>
-                <Paper className="p-4 bg-yellow-50">
+                <Paper p="md">
                   <Title order={4} mb="sm">Broadcasting Step-by-Step</Title>
                   <CodeBlock language="python" code={`# Step-by-step broadcasting analysis
 def analyze_broadcasting(a_shape, b_shape):
@@ -404,7 +404,7 @@ print(f"z.grad_fn.next_functions: {z.grad_fn.next_functions}")`} />
               </Grid.Col>
               
               <Grid.Col span={6}>
-                <Paper className="p-4 bg-yellow-50">
+                <Paper p="md">
                   <Title order={4} mb="sm">Graph Properties</Title>
                   <CodeBlock language="python" code={`# Analyze graph properties
 def analyze_graph(tensor):

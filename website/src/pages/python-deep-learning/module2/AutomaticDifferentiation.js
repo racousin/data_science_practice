@@ -238,7 +238,7 @@ print(f"\\nGradients: x.grad={x.grad:.4f}, y.grad={y.grad:.4f}")`} />
             </Grid.Col>
             
             <Grid.Col span={6}>
-              <Paper className="p-4 bg-yellow-50">
+              <Paper p="md">
                 <Title order={4} mb="sm">Gradient Flow Visualization</Title>
                 <div className="font-mono text-sm bg-white p-3 rounded">
                   <div>Forward Pass:</div>

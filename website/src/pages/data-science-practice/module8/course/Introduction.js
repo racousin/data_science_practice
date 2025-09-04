@@ -65,7 +65,7 @@ def apply_convolution(image_tensor):
           <Group spacing="xs" className="bg-gray-100 p-4 rounded-lg">
             <Stack spacing={0}>
               <Image src="/assets/data-science-practice/module8/gray.png" alt="Grayscale representation" />
-              <Text size="sm" className="mt-2">
+              <Text size="sm" mt="xs">
                 Single channel grayscale image: each pixel represents intensity from 0 (black) to max value 8 (white)
               </Text>
             </Stack>
@@ -81,7 +81,7 @@ def apply_convolution(image_tensor):
           <Group spacing="xs" className="bg-gray-100 p-4 rounded-lg">
             <Stack spacing={0}>
               <Image src="/assets/data-science-practice/module8/bit-depth-representation.png" alt="Bit depth visualization" />
-              <Text size="sm" className="mt-2">
+              <Text size="sm" mt="xs">
                 Bit depth determines the range of possible values:
                 • 2-bit: 2 levels (0-1)
                 • 8-bit: 256 levels (0-255)
@@ -95,7 +95,7 @@ def apply_convolution(image_tensor):
           <Group spacing="xs" className="bg-gray-100 p-4 rounded-lg">
             <Stack spacing={0}>
               <Image src="/assets/data-science-practice/module8/rgb.png" alt="RGB channel separation" />
-              <Text size="sm" className="mt-2">
+              <Text size="sm" mt="xs">
                 RGB images consist of three channels, each representing the intensity of Red, Green, and Blue components (usually on 8-bit)
               </Text>
             </Stack>
@@ -106,7 +106,7 @@ def apply_convolution(image_tensor):
           <Group spacing="xs" className="bg-gray-100 p-4 rounded-lg">
             <Stack spacing={0}>
               <Image src="/assets/data-science-practice/module8/satelite.png" alt="Multi-spectral satellite imagery" />
-              <Text size="sm" className="mt-2">
+              <Text size="sm" mt="xs">
                 Images can contain multiple layers beyond RGB:
                 • Satellite imagery: Near Infrared, Thermal, Altitude, etc.
                 • Medical imaging: Different sensor readings

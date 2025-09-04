@@ -626,7 +626,7 @@ class MobileNetV2(nn.Module):
             </Grid.Col>
             
             <Grid.Col span={6}>
-              <Paper className="p-4 bg-yellow-50">
+              <Paper p="md">
                 <Title order={4} mb="sm">EfficientNet Architecture</Title>
                 <Code block language="python">{`class SqueezeExcitation(nn.Module):
     def __init__(self, channels, reduction=16):
@@ -954,7 +954,7 @@ class CompressionAnalyzer:
             </Grid.Col>
             
             <Grid.Col span={6}>
-              <Paper className="p-4 bg-yellow-50">
+              <Paper p="md">
                 <Title order={4} mb="sm">Cloud Deployment</Title>
                 <Code block language="python">{`# Model serving with batching
 class BatchedModelServer:

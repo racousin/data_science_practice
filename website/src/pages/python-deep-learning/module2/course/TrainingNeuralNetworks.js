@@ -103,7 +103,7 @@ optimizer = optim.RMSprop(model.parameters(), lr=0.01, alpha=0.99)`}</Code>
             </Grid.Col>
             
             <Grid.Col span={6}>
-              <Paper className="p-4 bg-yellow-50">
+              <Paper p="md">
                 <Title order={4} mb="sm">Learning Rate Scheduling</Title>
                 <Code block language="python">{`# Step learning rate decay
 scheduler = optim.lr_scheduler.StepLR(

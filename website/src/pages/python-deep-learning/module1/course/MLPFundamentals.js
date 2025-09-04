@@ -13,23 +13,13 @@ const MLPFundamentals = () => {
           <Title order={1} mb="xl">
             Part 3: Multi Layer Perceptron in a nutshell
           </Title>
-          
+          </div>
           {/* Neuron as Computational Unit */}
-          
+          <div data-slide>
             <Title order={2} mb="xl" id="neuron">
               Neuron as Computational Unit
             </Title>
             
-            <Paper className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 mb-6">
-              <Title order={3} mb="md">From Biology to Mathematics</Title>
-              <Text size="lg" mb="md">
-                The artificial neuron is the fundamental building block of neural networks. It's a mathematical 
-                abstraction inspired by biological neurons, but operates purely through linear algebra.
-              </Text>
-              
-              <Paper className="p-4 bg-white mb-4">
-                <Title order={4} mb="sm">Mathematical Definition of a Neuron</Title>
-                <div className="space-y-4">
                   <div>
                     <Text fw="bold" mb="xs">Basic Neuron Operation:</Text>
                     <BlockMath>{`y = \\sigma(w^T x + b)`}</BlockMath>
@@ -48,18 +38,17 @@ const MLPFundamentals = () => {
                       <List.Item><strong>Activation:</strong> <InlineMath>{`y = \\sigma(z)`}</InlineMath></List.Item>
                     </List>
                   </div>
-                </div>
-              </Paper>
+
 
               <Grid gutter="lg">
                 <Grid.Col span={6}>
-                  <Paper className="p-4 bg-yellow-50">
+                  <Paper p="md">
                     <Title order={4} mb="sm">Neuron with Linear Activation</Title>
                     <Text size="sm" mb="md">
                       When <InlineMath>{`\\sigma(z) = z`}</InlineMath> (identity function):
                     </Text>
                     <BlockMath>{`y = w^T x + b`}</BlockMath>
-                    <Text size="sm" className="mt-2">
+                    <Text size="sm" mt="xs">
                       <strong>This is exactly linear regression!</strong> The neuron learns the same linear 
                       relationship between inputs and outputs.
                     </Text>
@@ -73,14 +62,13 @@ const MLPFundamentals = () => {
                       When <InlineMath>{`\\sigma(z) = \\frac{1}{1 + e^{-z}}`}</InlineMath>:
                     </Text>
                     <BlockMath>{`y = \\frac{1}{1 + e^{-(w^T x + b)}}`}</BlockMath>
-                    <Text size="sm" className="mt-2">
+                    <Text size="sm" mt="xs">
                       <strong>This is exactly logistic regression!</strong> The neuron outputs a probability 
                       between 0 and 1 for binary classification.
                     </Text>
                   </Paper>
                 </Grid.Col>
               </Grid>
-            </Paper>
 
           
         </div>
@@ -185,7 +173,7 @@ However, the real power of neural networks lies in their depth. While a single h
                   Without activation functions, multiple layers would collapse to a single linear transformation:
                 </Text>
                 <BlockMath>{`f(x) = W_2(W_1 x + b_1) + b_2 = (W_2 W_1) x + (W_2 b_1 + b_2) = W' x + b'`}</BlockMath>
-                <Text size="sm" className="mt-2">
+                <Text size="sm" mt="xs">
                   Activation functions introduce non-linearity, enabling complex pattern recognition.
                 </Text>
               </Paper>

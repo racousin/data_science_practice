@@ -182,65 +182,46 @@ div.mytab .tab-content {
   padding-left: 10px;
 }
 
-/* Slide Mode Styling */
-.slide-content .mantine-Container-root {
-  max-width: none !important;
-  width: 100% !important;
-  padding: 0 !important;
-}
-
+/* Slide Mode Styling - Simple approach */
 .slide-content h1 {
-  font-size: 5.5rem !important;
+  font-size: 5rem !important;
 }
 
 .slide-content h2 {
-  font-size: 4.5rem !important;
+  font-size: 4rem !important;
 }
 
 .slide-content h3 {
-  font-size: 3.5rem !important;
+  font-size: 3rem !important;
 }
 
 .slide-content h4 {
-  font-size: 2.8rem !important;
+  font-size: 2.5rem !important;
 }
 
-.slide-content p, .slide-content li, .slide-content .mantine-Text-root {
-  font-size: 2.2rem !important;
-  line-height: 1.5 !important;
+/* Override ALL Mantine Text components regardless of size prop */
+.slide-content .mantine-Text-root {
+  font-size: 2rem !important;
+  line-height: 1.6 !important;
 }
 
-/* Code blocks in slides */
-.slide-content pre, .slide-content code {
-  font-size: 1.8rem !important;
-}
-
-/* Lists in slides */
-.slide-content ul, .slide-content ol {
-  font-size: 2.2rem !important;
-}
-
-.slide-content ul li, .slide-content ol li {
-  margin-bottom: 0.8rem;
-}
-
-/* Strong and emphasized text in slides */
-.slide-content strong, .slide-content b {
-  font-weight: 700;
-}
-
-/* Links in slides */
-.slide-content a {
-  font-size: inherit !important;
-}
-
-/* Math formulas in slides */
-.slide-content .katex {
+/* Override small text specifically */
+.slide-content .mantine-fz-sm {
   font-size: 2rem !important;
 }
 
-.slide-content .katex-display {
+/* Override extra small text */
+.slide-content .mantine-fz-xs {
+  font-size: 1.8rem !important;
+}
+
+/* Override medium text */
+.slide-content .mantine-fz-md {
+  font-size: 2.2rem !important;
+}
+
+/* Override large text */
+.slide-content .mantine-fz-lg {
   font-size: 2.5rem !important;
-  margin: 2rem 0 !important;
 }
 
