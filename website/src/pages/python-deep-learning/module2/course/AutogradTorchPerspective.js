@@ -211,11 +211,55 @@ grad_x = z_exp.grad_fn(upstream_grad)
 # grad_x = [0.1*exp(1), 0.2*exp(2), 0.3*exp(3)]
 # grad_x ≈ [0.272, 1.478, 6.026]`} />
 
-      <Title order={3} mt="xl">Exploring the Graph Structure</Title>
-      
-      <Text>
-        Each <code>grad_fn</code> has a <code>next_functions</code> attribute linking to its inputs' gradient functions:
-      </Text>
+<Title order={3} mt="xl">Exploring the Graph Structure</Title>
+
+<Text>
+  Each <code>grad_fn</code> has a <code>next_functions</code> attribute linking to its inputs' gradient functions:
+</Text>
+
+<Text>
+  During forward pass, PyTorch saves values that are necessary for gradient computation. These saved tensors are attached to the <code>grad_fn</code> and contain the intermediate results needed for backpropagation.
+</Text>
+<Flex direction="column" align="center" mt="md">
+  <CodeBlock language="python" code={`x = torch.tensor(1.0, requires_grad=True)
+
+# Forward pass - building the graph
+u = x ** 2        # u = x²
+y = torch.sin(u)  # y = sin(u) = sin(x²)` }/>
+  <Image
+    src="/assets/python-deep-learning/module2/graph4.png"
+    alt="Autograd Overview"
+    style={{ maxWidth: 'min(400px, 70vw)', height: 'auto' }}
+    fluid
+  />
+</Flex>
+<Text mt="md">
+  <strong>For PowBackward0:</strong>
+</Text>
+<List spacing="xs" size="sm">
+  <List.Item>
+    <code>exponent: 2</code> - The power value from <code>x ** 2</code>
+  </List.Item>
+  <List.Item>
+    <code>self: [saved tensor]</code> - The base value (x = 1.0) needed for the power rule
+  </List.Item>
+</List>
+
+<Text mt="md">
+  <strong>For SinBackward0:</strong>
+</Text>
+<List spacing="xs" size="sm">
+  <List.Item>
+    <code>self: [saved tensor]</code> - The input value (u = 1.0) needed for cos(u) in the derivative
+  </List.Item>
+</List>
+
+<Text mt="md">
+  These saved values enable gradient computation using the chain rule:
+</Text>
+
+<BlockMath math="\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx} = \cos(u) \cdot 2x = \cos(1.0) \cdot 2(1.0)" />
+
 
 
       <Title order={2} mt="xl">3. Computing Gradients Step by Step</Title>
@@ -482,14 +526,6 @@ history = []`} />
 # Step 10: x = 2.651, loss = 0.122
 # Step 15: x = 2.893, loss = 0.011`} />
 
-      <Flex direction="column" align="center" mt="md">
-        <Image
-          src="/assets/python-deep-learning/module2/gradient-descent.png"
-          alt="Gradient Descent Visualization"
-          style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
-          fluid
-        />
-      </Flex>
 
     </Container>
   );
