@@ -145,189 +145,248 @@ const ResourceProfiling = () => {
             </Text>
 
 
-<Title order={2} mt="xl">Memory Profiling Tools</Title>
+<Title order={2} mt="xl">Memory Profiling with PyTorch Profiler</Title>
 
           <Text>
-            Let's build a memory profiler to track how different components consume memory during training.
+            PyTorch provides a powerful built-in profiler that can track CPU, GPU, and memory usage with minimal overhead.
           </Text>
 
-          <Title order={3} mt="lg">Basic Memory Tracker</Title>
+          <Title order={3} mt="lg">Basic Profiler Setup</Title>
           
           <Text>
-            First, create a simple utility to measure current GPU memory usage:
+            Start with a simple profiler configuration to track memory allocation:
           </Text>
 
           <CodeBlock language="python" code={`import torch
+from torch.profiler import profile, ProfilerActivity, record_function
 
-def get_memory_stats():
-    """Get current GPU memory statistics"""
-    if torch.cuda.is_available():
-        allocated = torch.cuda.memory_allocated() / 1024**2  # MB
-        reserved = torch.cuda.memory_reserved() / 1024**2    # MB
-        return {'allocated': allocated, 'reserved': reserved}
-    return {'allocated': 0, 'reserved': 0}`} />
+# Basic profiler with memory tracking
+with profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
+             profile_memory=True,
+             record_shapes=True) as prof:
+    # Your model operations here
+    model(input_tensor)
 
-          <Text mt="md">
-            Track memory changes during model operations:
-          </Text>
+# Print memory summary
+print(prof.key_averages().table(sort_by="self_cuda_memory_usage", row_limit=10))`} />
 
-          <CodeBlock language="python" code={`def measure_memory_delta(func, *args, **kwargs):
-    """Measure memory change from a function call"""
-    torch.cuda.empty_cache()
-    before = get_memory_stats()
-    
-    result = func(*args, **kwargs)
-    
-    after = get_memory_stats()
-    delta = after['allocated'] - before['allocated']
-    
-    print(f"Memory delta: +{delta:.2f} MB")
-    return result, delta`} />
-
-          <Title order={3} mt="lg">Component-Wise Memory Analysis</Title>
+          <Title order={3} mt="lg">Memory Timeline Profiling</Title>
           
           <Text>
-            Profile memory usage of individual model components:
+            Track memory allocation and deallocation over time:
           </Text>
 
-          <CodeBlock language="python" code={`class ComponentProfiler:
+          <CodeBlock language="python" code={`def profile_memory_timeline(model, input_data, steps=3):
+    """Profile memory usage over multiple training steps"""
+    
+    with profile(
+        activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
+        profile_memory=True,
+        record_shapes=True,
+        with_stack=True
+    ) as prof:
+        for step in range(steps):
+            with record_function(f"step_{step}"):
+                output = model(input_data)
+                loss = output.mean()
+                loss.backward()
+    
+    # Export timeline for visualization
+    prof.export_chrome_trace("memory_timeline.json")
+    return prof`} />
+
+          <Text mt="md">
+            View the timeline in Chrome DevTools (chrome://tracing) for detailed visualization.
+          </Text>
+
+          <Title order={3} mt="lg">Detailed Operation Profiling</Title>
+          
+          <Text>
+            Use record_function to annotate and track specific code sections:
+          </Text>
+
+          <CodeBlock language="python" code={`def profile_training_components(model, dataloader, optimizer):
+    """Profile different components of training loop"""
+    
+    with profile(
+        activities=[ProfilerActivity.CUDA],
+        profile_memory=True,
+        record_shapes=True
+    ) as prof:
+        
+        for batch_idx, (data, target) in enumerate(dataloader):
+            if batch_idx >= 2:  # Profile only first 2 batches
+                break
+                
+            with record_function("data_transfer"):
+                data, target = data.cuda(), target.cuda()
+            
+            with record_function("forward"):
+                output = model(data)
+                
+            with record_function("loss"):
+                loss = F.cross_entropy(output, target)
+            
+            with record_function("backward"):
+                loss.backward()
+                
+            with record_function("optimizer_step"):
+                optimizer.step()
+                optimizer.zero_grad()
+    
+    return prof`} />
+
+          <Title order={3} mt="lg">Memory Breakdown Analysis</Title>
+          
+          <Text>
+            Analyze memory usage by operation type and layer:
+          </Text>
+
+          <CodeBlock language="python" code={`def analyze_memory_by_operation(prof):
+    """Extract and analyze memory usage from profiler"""
+    
+    # Group by operation name
+    events = prof.key_averages(group_by_input_shape=True)
+    
+    memory_stats = []
+    for evt in events:
+        if evt.self_cuda_memory_usage > 0:
+            memory_stats.append({
+                'name': evt.key,
+                'calls': evt.count,
+                'memory_mb': evt.self_cuda_memory_usage / 1024**2,
+                'memory_per_call': evt.self_cuda_memory_usage / evt.count / 1024**2
+            })
+    
+    # Sort by total memory usage
+    memory_stats.sort(key=lambda x: x['memory_mb'], reverse=True)
+    
+    print("Top Memory Consuming Operations:")
+    for stat in memory_stats[:10]:
+        print(f"  {stat['name']}: {stat['memory_mb']:.2f} MB "
+              f"({stat['calls']} calls, {stat['memory_per_call']:.3f} MB/call)")`} />
+
+          <Title order={3} mt="lg">Layer-wise Memory Profiling</Title>
+          
+          <Text>
+            Profile memory consumption for each layer in your model:
+          </Text>
+
+          <CodeBlock language="python" code={`class LayerMemoryProfiler:
     def __init__(self, model):
         self.model = model
-        self.stats = {}
-    
-    def profile_parameters(self):
-        """Calculate parameter memory"""
-        total = 0
-        for name, param in self.model.named_parameters():
-            memory = param.numel() * param.element_size() / 1024**2
-            self.stats[f'param_{name}'] = memory
-            total += memory
-        return total`} />
-
-          <Text mt="md">
-            Add gradient tracking during backward pass:
-          </Text>
-
-          <CodeBlock language="python" code={`    def profile_gradients(self):
-        """Calculate gradient memory after backward"""
-        total = 0
-        for name, param in self.model.named_parameters():
-            if param.grad is not None:
-                memory = param.grad.numel() * param.grad.element_size() / 1024**2
-                self.stats[f'grad_{name}'] = memory
-                total += memory
-        return total`} />
-
-          <Title order={3} mt="lg">Activation Memory Tracking</Title>
-          
-          <Text>
-            Use hooks to monitor activation memory during forward pass:
-          </Text>
-
-          <CodeBlock language="python" code={`class ActivationProfiler:
-    def __init__(self):
-        self.activations = []
-        self.hooks = []
-    
-    def hook_fn(self, module, input, output):
-        """Hook to capture activation sizes"""
-        if isinstance(output, torch.Tensor):
-            memory_mb = output.numel() * output.element_size() / 1024**2
-            self.activations.append({
-                'layer': module.__class__.__name__,
-                'shape': list(output.shape),
-                'memory_mb': memory_mb
-            })`} />
-
-          <Text mt="md">
-            Register hooks and run profiling:
-          </Text>
-
-          <CodeBlock language="python" code={`    def attach_hooks(self, model):
-        """Attach hooks to all layers"""
-        for name, module in model.named_modules():
+        self.memory_usage = {}
+        
+    def profile_layers(self, input_data):
+        """Profile each layer's memory consumption"""
+        
+        def make_hook(name):
+            def hook(module, input, output):
+                with record_function(f"layer_{name}"):
+                    pass  # Profiler will track memory here
+            return hook
+        
+        # Add hooks to all layers
+        hooks = []
+        for name, module in self.model.named_modules():
             if len(list(module.children())) == 0:  # Leaf modules
-                hook = module.register_forward_hook(self.hook_fn)
-                self.hooks.append(hook)
-    
-    def remove_hooks(self):
-        """Clean up hooks after profiling"""
-        for hook in self.hooks:
+                hooks.append(module.register_forward_hook(make_hook(name)))
+        
+        # Run profiling
+        with profile(
+            activities=[ProfilerActivity.CUDA],
+            profile_memory=True,
+            with_stack=True
+        ) as prof:
+            with torch.no_grad():
+                self.model(input_data)
+        
+        # Clean up hooks
+        for hook in hooks:
             hook.remove()
-        self.hooks = []`} />
+        
+        return prof`} />
 
-          <Title order={3} mt="lg">Complete Training Memory Profile</Title>
+          <Title order={3} mt="lg">Memory Optimization Detection</Title>
           
           <Text>
-            Put it all together to profile a complete training step:
+            Identify memory optimization opportunities:
           </Text>
 
-          <CodeBlock language="python" code={`def profile_training_step(model, data, target, optimizer):
-    """Profile memory during one training iteration"""
-    profiler = ComponentProfiler(model)
-    activation_profiler = ActivationProfiler()
+          <CodeBlock language="python" code={`def find_memory_bottlenecks(prof):
+    """Identify potential memory optimization targets"""
     
-    print("=== Memory Profile ===")
+    events = prof.key_averages()
     
-    # Parameters
-    param_mem = profiler.profile_parameters()
-    print(f"Parameters: {param_mem:.2f} MB")
+    # Find peak memory operations
+    peak_memory_ops = []
+    for evt in events:
+        if evt.self_cuda_memory_usage > 0:
+            efficiency = evt.cuda_time_total / evt.self_cuda_memory_usage if evt.cuda_time_total > 0 else 0
+            peak_memory_ops.append({
+                'op': evt.key,
+                'memory_mb': evt.self_cuda_memory_usage / 1024**2,
+                'time_ms': evt.cuda_time_total / 1000,
+                'efficiency': efficiency
+            })
     
-    # Forward pass with activation tracking
-    activation_profiler.attach_hooks(model)
-    output = model(data)
-    activation_profiler.remove_hooks()
+    # Sort by memory usage
+    peak_memory_ops.sort(key=lambda x: x['memory_mb'], reverse=True)
     
-    act_mem = sum(a['memory_mb'] for a in activation_profiler.activations)
-    print(f"Activations: {act_mem:.2f} MB")
+    print("Memory Optimization Candidates:")
+    print("(High memory + low efficiency = optimization opportunity)\\n")
     
-    # Backward pass
-    loss = torch.nn.functional.cross_entropy(output, target)
-    loss.backward()
-    
-    grad_mem = profiler.profile_gradients()
-    print(f"Gradients: {grad_mem:.2f} MB")
-    
-    # Optimizer step (tracks optimizer state memory)
-    before_opt = get_memory_stats()['allocated']
-    optimizer.step()
-    after_opt = get_memory_stats()['allocated']
-    opt_mem = after_opt - before_opt
-    print(f"Optimizer states: {opt_mem:.2f} MB")
-    
-    total = param_mem + act_mem + grad_mem + opt_mem
-    print(f"\\nTotal: {total:.2f} MB")
-    
-    return profiler.stats`} />
+    for op in peak_memory_ops[:5]:
+        print(f"Operation: {op['op']}")
+        print(f"  Memory: {op['memory_mb']:.2f} MB")
+        print(f"  Time: {op['time_ms']:.2f} ms")
+        print(f"  Efficiency: {op['efficiency']:.4f}\\n")`} />
 
-          <Title order={3} mt="lg">Usage Example</Title>
+          <Title order={3} mt="lg">Complete Profiling Example</Title>
           
           <Text>
-            Profile a simple model to understand memory distribution:
+            Full example with visualization and analysis:
           </Text>
 
-          <CodeBlock language="python" code={`# Create model and move to GPU
-model = nn.Sequential(
-    nn.Linear(1024, 512),
-    nn.ReLU(),
-    nn.Linear(512, 256),
-    nn.ReLU(),
-    nn.Linear(256, 10)
-).cuda()
-
-# Setup training components
+          <CodeBlock language="python" code={`# Setup model and data
+model = torchvision.models.resnet18().cuda()
 optimizer = torch.optim.Adam(model.parameters())
-data = torch.randn(32, 1024).cuda()  # Batch size 32
-target = torch.randint(0, 10, (32,)).cuda()
+input_batch = torch.randn(16, 3, 224, 224).cuda()
+target = torch.randint(0, 1000, (16,)).cuda()
 
-# Profile one training step
-stats = profile_training_step(model, data, target, optimizer)
+# Profile with all features enabled
+with profile(
+    activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
+    profile_memory=True,
+    record_shapes=True,
+    with_stack=True,
+    with_flops=True
+) as prof:
+    # Training step
+    output = model(input_batch)
+    loss = F.cross_entropy(output, target)
+    loss.backward()
+    optimizer.step()
 
-# Analyze results
-print("\\nDetailed breakdown:")
-for key, value in sorted(stats.items()):
-    if value > 0.01:  # Show only significant components
-        print(f"  {key}: {value:.3f} MB")`} />
+# Generate reports
+print(prof.key_averages().table(
+    sort_by="self_cuda_memory_usage", 
+    row_limit=15
+))
+
+# Export for visualization
+prof.export_chrome_trace("trace.json")  # View in chrome://tracing
+prof.export_stacks("profiler_stacks.txt", "self_cuda_memory_usage")
+
+# Tensorboard integration
+from torch.utils.tensorboard import SummaryWriter
+writer = SummaryWriter('runs/profile')
+writer.add_text('profile', prof.key_averages().table())
+writer.close()
+
+print("\\nProfile exported. View with:")
+print("  - Chrome: chrome://tracing (load trace.json)")
+print("  - TensorBoard: tensorboard --logdir=runs")`} />
 
           <Title order={3} mt="lg">Gradient Checkpointing</Title>
           
