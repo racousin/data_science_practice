@@ -269,7 +269,7 @@ export const pytorchCourseContentData = {
     { to: '/data-pipeline-training-loop', label: 'DataPipelineTrainingLoop', subLinks: [
 
     ]},
-    { to: '/advanced-gradient-mechanics', label: 'Advanced Gradient Mechanics', subLinks: [
+    { to: '/advanced-gradient-mechanics', label: 'Understanding Gradient Flow', subLinks: [
       { id: 'gradient-flow', label: 'Gradient Flow & Vanishing/Exploding' },
       { id: 'gradient-clipping', label: 'Gradient Clipping & Normalization' },
       { id: 'higher-order-derivatives', label: 'Higher-order Derivatives & Hessians' },
