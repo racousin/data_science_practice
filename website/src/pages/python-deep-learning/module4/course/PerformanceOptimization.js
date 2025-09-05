@@ -14,8 +14,8 @@ const PerformanceOptimization = () => {
           and inference. We'll explore key strategies to maximize performance on available hardware.
         </Text>
 
-        <section id="torch-compile">
-          <Title order={2} mt="xl">Torch Compile & Graph Optimization</Title>
+        
+          <Title id="torch-compile" order={2} mt="xl">Torch Compile & Graph Optimization</Title>
           
           <Text>
             PyTorch 2.0 introduced torch.compile, which optimizes models through graph compilation
@@ -136,10 +136,10 @@ print("Compilation modes configured successfully")`} />
               fluid
             />
           </Flex>
-        </section>
+        
 
-        <section id="mixed-precision">
-          <Title order={2} mt="xl">Mixed Precision Training</Title>
+        
+          <Title id="mixed-precision" order={2} mt="xl">Mixed Precision Training</Title>
           
           <Text>
             Mixed precision training uses both FP16 and FP32 computations to accelerate training
@@ -298,10 +298,10 @@ for data, target in dataloader:
     
     optimizer.zero_grad()
     mp_trainer.update_scale(gradients_valid)`} />
-        </section>
+        
 
-        <section id="memory-optimization">
-          <Title order={2} mt="xl">Memory Optimization Strategies</Title>
+        
+          <Title id="memory-optimization" order={2} mt="xl">Memory Optimization Strategies</Title>
           
           <Text>
             Efficient memory management enables training larger models and batch sizes on limited hardware.
@@ -420,10 +420,10 @@ if torch.cuda.is_available():
           <Alert title="Memory Profiling" color="yellow" mt="md">
             Use torch.cuda.memory_summary() to get detailed memory breakdown and identify optimization opportunities.
           </Alert>
-        </section>
+        
 
-        <section id="io-optimization">
-          <Title order={2} mt="xl">I/O and DataLoader Optimization</Title>
+        
+          <Title id="io-optimization" order={2} mt="xl">I/O and DataLoader Optimization</Title>
           
           <Text>
             Data loading can be a significant bottleneck. Optimizing I/O ensures GPU utilization remains high.
@@ -630,7 +630,7 @@ print("Data pipeline optimization strategies configured")`} />
               fluid
             />
           </Flex>
-        </section>
+        
       </Stack>
     </Container>
   );

@@ -14,8 +14,7 @@ const ModelComplexityAnalysis = () => {
           is essential for designing efficient models and choosing appropriate hardware.
         </Text>
 
-        <section id="flops-calculation">
-          <Title order={2} mt="xl">FLOPs Calculation for MLPs</Title>
+          <Title id="flops-calculation" order={2} mt="xl">FLOPs Calculation for MLPs</Title>
           
           <Text>
             FLOPs (Floating Point Operations) measure the computational cost of a model.
@@ -126,10 +125,10 @@ model = torch.nn.Sequential(
 )
 
 flops = profile_model_flops(model, (64, 784))`} />
-        </section>
+        
 
-        <section id="memory-requirements">
-          <Title order={2} mt="xl">Memory Requirements Estimation</Title>
+        
+          <Title id="memory-requirements" order={2} mt="xl">Memory Requirements Estimation</Title>
           
           <Text>
             Accurate memory estimation helps prevent out-of-memory errors and optimize batch sizes.
@@ -286,10 +285,10 @@ memory_breakdown = estimator.estimate_memory()`} />
               fluid
             />
           </Flex>
-        </section>
+        
 
-        <section id="batch-size-optimization">
-          <Title order={2} mt="xl">Batch Size vs Memory Trade-offs</Title>
+        
+          <Title id="batch-size-optimization" order={2} mt="xl">Batch Size vs Memory Trade-offs</Title>
           
           <Text>
             Batch size significantly impacts both memory usage and training dynamics.
@@ -417,10 +416,10 @@ optimal_bs = find_optimal_batch_size(
     print(f"Simulated batch size: {effective_batch_size}")
     print(f"Actual batch size: {actual_batch_size}")
     print(f"Accumulation steps: {accumulation_steps}")`} />
-        </section>
+        
 
-        <section id="profiling-tools">
-          <Title order={2} mt="xl">PyTorch Profiling Tools</Title>
+        
+          <Title id="profiling-tools" order={2} mt="xl">PyTorch Profiling Tools</Title>
           
           <Text>
             PyTorch provides powerful profiling tools to analyze performance bottlenecks:
@@ -569,7 +568,7 @@ if torch.cuda.is_available():
               fluid
             />
           </Flex>
-        </section>
+        
       </Stack>
     </Container>
   );

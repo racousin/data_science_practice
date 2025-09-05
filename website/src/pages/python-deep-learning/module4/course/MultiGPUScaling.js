@@ -14,8 +14,8 @@ const MultiGPUScaling = () => {
           parallelization strategies to scale training across multiple GPUs and nodes.
         </Text>
 
-        <section id="parallelization-overview">
-          <Title order={2} mt="xl">Parallelization Strategies Overview</Title>
+        
+          <Title id="parallelization-overview" order={2} mt="xl">Parallelization Strategies Overview</Title>
           
           <Text>
             There are four main types of parallelism in distributed deep learning:
@@ -148,10 +148,10 @@ const MultiGPUScaling = () => {
               A = activations per sample, M = number of micro-batches
             </Text>
           </Paper>
-        </section>
+        
 
-        <section id="data-parallel">
-          <Title order={2} mt="xl">Data Parallelism (DP/DDP)</Title>
+        
+          <Title id="data-parallel" order={2} mt="xl">Data Parallelism (DP/DDP)</Title>
           
           <Text>
             Data parallelism is the most common and straightforward parallelization strategy,
@@ -365,10 +365,10 @@ class ManualGradientSync:
         print(f"  Total time: {elapsed:.3f}s")
         print(f"  Per iteration: {elapsed/100*1000:.2f}ms")
         print(f"  Bandwidth: {size_mb * 100 / elapsed:.1f} MB/s")`} />
-        </section>
+        
 
-        <section id="model-parallel">
-          <Title order={2} mt="xl">Model & Pipeline Parallelism</Title>
+        
+          <Title id="model-parallel" order={2} mt="xl">Model & Pipeline Parallelism</Title>
           
           <Text>
             When models don't fit on a single GPU, we need to split them across devices.
@@ -494,10 +494,10 @@ for strategy in ['data', 'model', 'pipeline']:
               fluid
             />
           </Flex>
-        </section>
+        
 
-        <section id="distributed-training">
-          <Title order={2} mt="xl">Distributed Training Best Practices</Title>
+        
+          <Title id="distributed-training" order={2} mt="xl">Distributed Training Best Practices</Title>
           
           <Text>
             Effective distributed training requires careful consideration of communication patterns,
@@ -696,7 +696,7 @@ if __name__ == "__main__":
               fluid
             />
           </Flex>
-        </section>
+        
       </Stack>
     </Container>
   );

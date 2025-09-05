@@ -14,14 +14,13 @@ const ResourceProfiling = () => {
           We'll explore how different model components consume memory and compute resources.
         </Text>
 
-        <section id="model-components">
-          <Title order={2} mt="xl">Model Component Analysis</Title>
+        
+          <Title id="model-components" order={2} mt="xl">Model Component Analysis</Title>
           
           <Text>
             A trained neural network consists of several memory-consuming components during training:
           </Text>
 
-          <Paper p="md" withBorder>
             <Title order={4}>Memory Components Breakdown</Title>
             <List spacing="sm" mt="md">
               <List.Item><strong>Model Parameters:</strong> Weights and biases of the network</List.Item>
@@ -30,161 +29,305 @@ const ResourceProfiling = () => {
               <List.Item><strong>Activations:</strong> Intermediate outputs saved for backward pass</List.Item>
               <List.Item><strong>Temporary Buffers:</strong> Workspace for operations like convolutions</List.Item>
             </List>
-          </Paper>
-
-          <CodeBlock language="python" code={`import torch
-import torch.nn as nn
-
-# Simple MLP for demonstration
-class MLP(nn.Module):
-    def __init__(self, input_size=784, hidden_size=256, num_classes=10):
-        super().__init__()
-        self.fc1 = nn.Linear(input_size, hidden_size)
-        self.relu = nn.ReLU()
-        self.fc2 = nn.Linear(hidden_size, num_classes)
-    
-    def forward(self, x):
-        x = self.fc1(x)
-        x = self.relu(x)
-        x = self.fc2(x)
-        return x
-
-# Create model and analyze memory
-model = MLP()
-total_params = sum(p.numel() for p in model.parameters())
-print(f"Total parameters: {total_params:,}")
-print(f"Model size (MB): {total_params * 4 / (1024**2):.2f}")  # 32-bit floats`} />
 
           <Flex direction="column" align="center" mt="md">
             <Image
-              src="/assets/python-deep-learning/module4/model_memory_components.png"
+              src="/assets/python-deep-learning/module4/distribution.png"
               alt="Model Memory Components Visualization"
               style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
               fluid
             />
           </Flex>
-        </section>
+        
 
-        <section id="memory-breakdown">
-          <Title order={2} mt="xl">Memory Breakdown: Parameters, Gradients, Optimizer</Title>
+        
           
-          <Text>
-            Let's calculate the exact memory requirements for training an MLP:
-          </Text>
-
-          <Paper p="md" withBorder mt="md">
-            <Title order={4}>Memory Formula for Training</Title>
+            <Title id="memory-breakdown" order={2}>Memory Formula for Training</Title>
+            
+            <Text>
+              During training, the total memory consumption is the sum of all components:
+            </Text>
+            
             <BlockMath>
               {`\\text{Total Memory} = \\text{Parameters} + \\text{Gradients} + \\text{Optimizer States} + \\text{Activations}`}
             </BlockMath>
-            
-            <Text mt="md">For Adam optimizer:</Text>
+
+            <Title order={3} mt="lg">Parameters Memory</Title>
+            <Text>
+              Model parameters (weights and biases) are the core storage requirement:
+            </Text>
             <BlockMath>
-              {`\\text{Memory}_{\\text{Adam}} = P + P + 2P = 4P`}
+              {`\\text{Parameter Memory} = N_{\\text{params}} \\times \\text{bytes\\_per\\_element}`}
             </BlockMath>
-            <Text size="sm" c="dimmed">Where P is the parameter memory</Text>
-          </Paper>
+            
+            <Text mt="sm">
+              <strong>Example:</strong> A model with 1,000,000 parameters using float32 (4 bytes):
+            </Text>
+            <BlockMath>
+              {`\\text{Memory} = 1,000,000 \\times 4\\text{ bytes} = 4\\text{ MB}`}
+            </BlockMath>
+            
+            <Alert color="blue" mt="md">
+              <Text size="sm">
+                <strong>Note:</strong> During inference, only parameter memory is needed: <InlineMath>{`\\text{Inference Memory} = \\text{Parameters}`}</InlineMath>
+              </Text>
+            </Alert>
 
-          <CodeBlock language="python" code={`def calculate_model_memory(model, batch_size=32, optimizer_type='adam'):
-    """Calculate memory requirements for training"""
-    # Count parameters
-    param_memory = 0
-    for p in model.parameters():
-        param_memory += p.numel() * p.element_size()
-    
-    # Gradient memory (same as parameters)
-    gradient_memory = param_memory
-    
-    # Optimizer memory
-    if optimizer_type == 'adam':
-        optimizer_memory = 2 * param_memory  # Momentum + variance
-    elif optimizer_type == 'sgd':
-        optimizer_memory = param_memory  # Only momentum
-    else:
-        optimizer_memory = 0
-    
-    # Print breakdown
-    print(f"Parameter memory: {param_memory / 1024**2:.2f} MB")
-    print(f"Gradient memory: {gradient_memory / 1024**2:.2f} MB")
-    print(f"Optimizer memory: {optimizer_memory / 1024**2:.2f} MB")
-    print(f"Total (excl. activations): {(param_memory + gradient_memory + optimizer_memory) / 1024**2:.2f} MB")
-    
-    return param_memory + gradient_memory + optimizer_memory
+            <Title order={3} mt="lg">Gradients Memory</Title>
+            <Text>
+              Gradients are computed for all trainable parameters during backpropagation:
+            </Text>
+            <BlockMath>
+              {`\\text{Gradient Memory} = N_{\\text{trainable}} \\times \\text{bytes\\_per\\_element}`}
+            </BlockMath>
+            
+            
+            <Text mt="sm">
+              <strong>Example:</strong> Same 1M parameter model with all parameters trainable:
+            </Text>
+            <BlockMath>
+              {`\\text{Gradient Memory} = 1,000,000 \\times 4\\text{ bytes} = 4\\text{ MB}`}
+            </BlockMath>
+            
+            <Title order={3} mt="lg">Optimizer Memory</Title>
+            <Text>
+              Memory requirements vary by optimizer type. Common optimizers:
+            </Text>
+            
+            <List mt="md" spacing="sm">
+              <List.Item>
+                <strong>SGD (no momentum):</strong> No additional memory
+                <BlockMath>{`\\text{Memory}_{\\text{SGD}} = 0`}</BlockMath>
+              </List.Item>
+              
+              <List.Item>
+                <strong>SGD with momentum:</strong> Stores velocity for each parameter
+                <BlockMath>{`\\text{Memory}_{\\text{SGD+momentum}} = P`}</BlockMath>
+              </List.Item>
+              
+              <List.Item>
+                <strong>Adam:</strong> Stores first and second moment estimates
+                <BlockMath>{`\\text{Memory}_{\\text{Adam}} = 2P`}</BlockMath>
+              </List.Item>
+            </List>
 
-# Example usage
-model = MLP(input_size=1024, hidden_size=512)
-total_memory = calculate_model_memory(model, optimizer_type='adam')`} />
-
-          <Alert title="Memory Scaling" color="blue" mt="md">
-            With Adam optimizer, you need approximately 4x the model parameter memory just for training states,
-            not including activations!
-          </Alert>
-        </section>
-
-        <section id="activation-memory">
-          <Title order={2} mt="xl">Activation Memory & Checkpointing</Title>
+            <Text size="sm" c="dimmed">Where P is the parameter memory size</Text>
+          <Text mt="sm">
+              <strong>Example:</strong> 1M parameter model with adam:
+            </Text>
+            <BlockMath>
+              {`\\text{Gradient Memory} = 1,000,000 \\times 4\\text{ bytes} \\times 2 = 8\\text{ MB}`}
+            </BlockMath>
+        <Title order={3} mt="lg">Activation Memory</Title>
           
           <Text>
-            Activations can consume significant memory, especially with large batch sizes. 
-            The memory grows linearly with batch size and network depth.
+            Activations are intermediate outputs saved during forward pass for use in backpropagation.
+            Unlike parameters and gradients, activation memory scales with batch size.
           </Text>
 
-          <Paper p="md" withBorder mt="md">
-            <Title order={4}>Activation Memory Formula</Title>
-            <Text>For a fully connected layer:</Text>
-            <BlockMath>
-              {`\\text{Activation Memory} = \\text{batch\\_size} \\times \\text{hidden\\_size} \\times \\text{bytes\\_per\\_element}`}
-            </BlockMath>
-            
-            <Text mt="md">Total for entire network:</Text>
-            <BlockMath>
-              {`\\text{Total Activations} = \\sum_{l=1}^{L} B \\times H_l \\times 4`}
-            </BlockMath>
-            <Text size="sm" c="dimmed">Where B is batch size, H_l is hidden size at layer l</Text>
-          </Paper>
+          <Text>For a fully connected layer:</Text>
 
-          <CodeBlock language="python" code={`class MemoryProfiler:
+          <BlockMath>
+            {`\\text{Total Activations} = \\sum_{l=1}^{L} B \\times H_l \\times \\text{bytes\\_per\\_element}`}
+          </BlockMath>
+          
+          <Text mt="sm">
+            <strong>Example:</strong> 3-layer MLP with batch size 64, float32:
+          </Text>
+          <List size="xm" mt="sm">
+            <List.Item>Layer 1: 64 × 512 × 4 = 131,072 bytes (0.13 MB)</List.Item>
+            <List.Item>Layer 2: 64 × 256 × 4 = 65,536 bytes (0.07 MB)</List.Item>
+            <List.Item>Total: ~0.2 MB per forward pass</List.Item>
+          </List>
+          
+            <Text size="xm">
+              Activation memory can dominate total memory usage with large batch sizes or deep networks!
+            </Text>
+
+
+<Title order={2} mt="xl">Memory Profiling Tools</Title>
+
+          <Text>
+            Let's build a memory profiler to track how different components consume memory during training.
+          </Text>
+
+          <Title order={3} mt="lg">Basic Memory Tracker</Title>
+          
+          <Text>
+            First, create a simple utility to measure current GPU memory usage:
+          </Text>
+
+          <CodeBlock language="python" code={`import torch
+
+def get_memory_stats():
+    """Get current GPU memory statistics"""
+    if torch.cuda.is_available():
+        allocated = torch.cuda.memory_allocated() / 1024**2  # MB
+        reserved = torch.cuda.memory_reserved() / 1024**2    # MB
+        return {'allocated': allocated, 'reserved': reserved}
+    return {'allocated': 0, 'reserved': 0}`} />
+
+          <Text mt="md">
+            Track memory changes during model operations:
+          </Text>
+
+          <CodeBlock language="python" code={`def measure_memory_delta(func, *args, **kwargs):
+    """Measure memory change from a function call"""
+    torch.cuda.empty_cache()
+    before = get_memory_stats()
+    
+    result = func(*args, **kwargs)
+    
+    after = get_memory_stats()
+    delta = after['allocated'] - before['allocated']
+    
+    print(f"Memory delta: +{delta:.2f} MB")
+    return result, delta`} />
+
+          <Title order={3} mt="lg">Component-Wise Memory Analysis</Title>
+          
+          <Text>
+            Profile memory usage of individual model components:
+          </Text>
+
+          <CodeBlock language="python" code={`class ComponentProfiler:
+    def __init__(self, model):
+        self.model = model
+        self.stats = {}
+    
+    def profile_parameters(self):
+        """Calculate parameter memory"""
+        total = 0
+        for name, param in self.model.named_parameters():
+            memory = param.numel() * param.element_size() / 1024**2
+            self.stats[f'param_{name}'] = memory
+            total += memory
+        return total`} />
+
+          <Text mt="md">
+            Add gradient tracking during backward pass:
+          </Text>
+
+          <CodeBlock language="python" code={`    def profile_gradients(self):
+        """Calculate gradient memory after backward"""
+        total = 0
+        for name, param in self.model.named_parameters():
+            if param.grad is not None:
+                memory = param.grad.numel() * param.grad.element_size() / 1024**2
+                self.stats[f'grad_{name}'] = memory
+                total += memory
+        return total`} />
+
+          <Title order={3} mt="lg">Activation Memory Tracking</Title>
+          
+          <Text>
+            Use hooks to monitor activation memory during forward pass:
+          </Text>
+
+          <CodeBlock language="python" code={`class ActivationProfiler:
     def __init__(self):
         self.activations = []
-        
+        self.hooks = []
+    
     def hook_fn(self, module, input, output):
-        """Hook to track activation memory"""
+        """Hook to capture activation sizes"""
         if isinstance(output, torch.Tensor):
-            memory = output.numel() * output.element_size()
+            memory_mb = output.numel() * output.element_size() / 1024**2
             self.activations.append({
                 'layer': module.__class__.__name__,
                 'shape': list(output.shape),
-                'memory_mb': memory / 1024**2
-            })
-    
-    def profile_model(self, model, input_tensor):
-        """Profile activation memory usage"""
-        hooks = []
-        for module in model.modules():
-            if len(list(module.children())) == 0:  # Leaf modules only
-                hooks.append(module.register_forward_hook(self.hook_fn))
-        
-        # Forward pass
-        with torch.no_grad():
-            _ = model(input_tensor)
-        
-        # Remove hooks
-        for hook in hooks:
-            hook.remove()
-        
-        # Print results
-        total_memory = sum(a['memory_mb'] for a in self.activations)
-        print(f"Total activation memory: {total_memory:.2f} MB")
-        for act in self.activations:
-            print(f"  {act['layer']}: {act['shape']} -> {act['memory_mb']:.3f} MB")
-        
-        return self.activations
+                'memory_mb': memory_mb
+            })`} />
 
-# Profile a model
-profiler = MemoryProfiler()
-model = MLP(input_size=1024, hidden_size=512)
-dummy_input = torch.randn(64, 1024)  # Batch size 64
-activations = profiler.profile_model(model, dummy_input)`} />
+          <Text mt="md">
+            Register hooks and run profiling:
+          </Text>
+
+          <CodeBlock language="python" code={`    def attach_hooks(self, model):
+        """Attach hooks to all layers"""
+        for name, module in model.named_modules():
+            if len(list(module.children())) == 0:  # Leaf modules
+                hook = module.register_forward_hook(self.hook_fn)
+                self.hooks.append(hook)
+    
+    def remove_hooks(self):
+        """Clean up hooks after profiling"""
+        for hook in self.hooks:
+            hook.remove()
+        self.hooks = []`} />
+
+          <Title order={3} mt="lg">Complete Training Memory Profile</Title>
+          
+          <Text>
+            Put it all together to profile a complete training step:
+          </Text>
+
+          <CodeBlock language="python" code={`def profile_training_step(model, data, target, optimizer):
+    """Profile memory during one training iteration"""
+    profiler = ComponentProfiler(model)
+    activation_profiler = ActivationProfiler()
+    
+    print("=== Memory Profile ===")
+    
+    # Parameters
+    param_mem = profiler.profile_parameters()
+    print(f"Parameters: {param_mem:.2f} MB")
+    
+    # Forward pass with activation tracking
+    activation_profiler.attach_hooks(model)
+    output = model(data)
+    activation_profiler.remove_hooks()
+    
+    act_mem = sum(a['memory_mb'] for a in activation_profiler.activations)
+    print(f"Activations: {act_mem:.2f} MB")
+    
+    # Backward pass
+    loss = torch.nn.functional.cross_entropy(output, target)
+    loss.backward()
+    
+    grad_mem = profiler.profile_gradients()
+    print(f"Gradients: {grad_mem:.2f} MB")
+    
+    # Optimizer step (tracks optimizer state memory)
+    before_opt = get_memory_stats()['allocated']
+    optimizer.step()
+    after_opt = get_memory_stats()['allocated']
+    opt_mem = after_opt - before_opt
+    print(f"Optimizer states: {opt_mem:.2f} MB")
+    
+    total = param_mem + act_mem + grad_mem + opt_mem
+    print(f"\\nTotal: {total:.2f} MB")
+    
+    return profiler.stats`} />
+
+          <Title order={3} mt="lg">Usage Example</Title>
+          
+          <Text>
+            Profile a simple model to understand memory distribution:
+          </Text>
+
+          <CodeBlock language="python" code={`# Create model and move to GPU
+model = nn.Sequential(
+    nn.Linear(1024, 512),
+    nn.ReLU(),
+    nn.Linear(512, 256),
+    nn.ReLU(),
+    nn.Linear(256, 10)
+).cuda()
+
+# Setup training components
+optimizer = torch.optim.Adam(model.parameters())
+data = torch.randn(32, 1024).cuda()  # Batch size 32
+target = torch.randint(0, 10, (32,)).cuda()
+
+# Profile one training step
+stats = profile_training_step(model, data, target, optimizer)
+
+# Analyze results
+print("\\nDetailed breakdown:")
+for key, value in sorted(stats.items()):
+    if value > 0.01:  # Show only significant components
+        print(f"  {key}: {value:.3f} MB")`} />
 
           <Title order={3} mt="lg">Gradient Checkpointing</Title>
           
@@ -224,16 +367,15 @@ print("Checkpointed: recomputes fc1 activations during backward")`} />
               fluid
             />
           </Flex>
-        </section>
+        
 
-        <section id="gpu-vs-cpu">
-          <Title order={2} mt="xl">GPU vs CPU Performance</Title>
+        
+          <Title id="gpu-vs-cpu" order={2} mt="xl">GPU vs CPU Performance</Title>
           
           <Text>
             Understanding when to use GPU vs CPU is crucial for efficient training:
           </Text>
 
-          <Paper p="md" withBorder mt="md">
             <Title order={4}>Performance Characteristics</Title>
             <Group position="apart" mt="md">
               <div>
@@ -255,7 +397,6 @@ print("Checkpointed: recomputes fc1 activations during backward")`} />
                 </List>
               </div>
             </Group>
-          </Paper>
 
           <CodeBlock language="python" code={`import time
 
@@ -355,7 +496,7 @@ for size in [10, 100, 500]:
               fluid
             />
           </Flex>
-        </section>
+        
       </Stack>
     </Container>
   );

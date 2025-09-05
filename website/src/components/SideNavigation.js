@@ -341,7 +341,6 @@ export const pytorchExerciseContentData = {
   'module4': [
     { to: '/exercise1', label: 'Exercise 4.1: Performance Profiling' },
     { to: '/exercise2', label: 'Exercise 4.2: Advanced Features' },
-    { to: '/exercise3', label: 'Exercise 4.3: Mini-Project' }
   ]
 };
 
