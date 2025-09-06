@@ -16,7 +16,7 @@ const PythonDeepLearningOverview = () => {
       <Stack spacing="xl" mb={50}>
         <Title order={1} align="center">Python for Deep Learning (PyTorch)</Title>
         <Text size="lg" color="dimmed" align="center" maw={800} mx="auto">
-          Master PyTorch from the ground up
+        
         </Text>
       </Stack>
 

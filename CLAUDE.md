@@ -32,24 +32,6 @@ This is a personal website and teaching platform featuring:
 
 ## Common Commands
 
-### Website Development
-```bash
-# Install dependencies
-cd website && npm install
-
-# Start development server
-cd website && npm start
-
-# Build for production
-cd website && npm run build
-
-# Run tests
-cd website && npm test
-
-# Deploy to AWS (build, upload to S3, create CloudFront invalidation)
-./scripts/deploy.sh
-```
-
 ### Jupyter Notebook Processing
 ```bash
 # Convert all module notebooks to HTML
@@ -116,8 +98,7 @@ Students work directly in Google Colab notebooks:
 ### Content Structure
 Each module contains:
 - Course materials (theory)
-- Exercises (practice)
-- Jupyter notebooks (interactive coding)
+- Exercises (practice with Jupyter notebooks)
 
 Notebooks are converted to HTML via the Makefile for web display.
 

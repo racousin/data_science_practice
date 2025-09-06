@@ -65,30 +65,7 @@ layer = nn.Linear(input_size, output_size)  # Automatically initialized
 # Default initialization can be overridden:
 nn.init.xavier_normal_(layer.weight)  # For tanh/sigmoid
 nn.init.kaiming_normal_(layer.weight)  # For ReLU
-nn.init.constant_(layer.bias, 0)  # Typically zero for biases
-
-
-
-import torch
-import torch.nn as nn
-import torch.nn.init as init
-
-# Define a simple Sequential model
-model = nn.Sequential(
-    nn.Linear(10, 20),
-    nn.ReLU(),
-    nn.Linear(20, 10)
-)
-
-# Custom initialization function
-def initialize_weights(m):
-    if isinstance(m, nn.Linear):
-        init.xavier_normal_(m.weight)  # Applying Xavier initialization
-        if m.bias is not None:
-            init.constant_(m.bias, 0)  # Initialize biases to zero
-
-# Apply the custom initialization function to the model
-model.apply(initialize_weights)`}
+nn.init.constant_(layer.bias, 0)  # Typically zero for biases`}
           />
         </div>
         <div>

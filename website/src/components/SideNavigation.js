@@ -275,10 +275,9 @@ export const pytorchCourseContentData = {
     ]}
   ],
   'module3': [
-    { to: '/data-pipeline-training-loop', label: 'DataPipelineTrainingLoop', subLinks: [
-
-    ],
-      to: '/mlp-architecture-components', label: 'MLP Architecture & Components', subLinks: [
+    { to: '/data-pipeline-training-loop', label: 'Data Pipeline Training Loop', subLinks: [
+    ]},
+    { to: '/essential-layers', label: 'MLP Architecture & Components', subLinks: [
       { id: 'multilayer-perceptron', label: 'Multilayer Perceptron Mathematics' },
       { id: 'universal-approximation', label: 'Universal Approximation Theorem' },
       { id: 'activation-functions', label: 'Activation Functions: Mathematical Properties' },
@@ -368,7 +367,7 @@ export const coursesData = {
     modules: [
       { id: 'module1', name: 'Foundations of Deep Learning', icon: IconMathFunction },
       { id: 'module2', name: 'Automatic Differentiation', icon: IconCpu },
-      { id: 'module3', name: 'Neural Network Essential & Monitoring', icon: IconBrain },
+      { id: 'module3', name: 'Neural Network Training & Monitoring', icon: IconBrain },
       { id: 'module4', name: 'Performance Optimization & Scale', icon: IconCode },
     ]
   },

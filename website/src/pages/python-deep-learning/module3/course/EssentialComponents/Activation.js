@@ -93,8 +93,7 @@ const Activation = () => {
     <Stack spacing="xl" className="w-full">
       
 
-      {/* Common Functions Section */}
-      
+
         
         <Grid mb="lg">
           <Grid.Col span={{ base: 12, md: 6 }}>
@@ -103,6 +102,9 @@ const Activation = () => {
               title="ReLU (Rectified Linear Unit)"
               equation={"f(x) = \\max(0, x)"}
             />
+                    <CodeBlock
+          language="python"
+          code={`nn.ReLU()`}/>
           </Grid.Col>
           
           <Grid.Col span={{ base: 12, md: 6 }}>
@@ -111,6 +113,9 @@ const Activation = () => {
               title="Sigmoid"
               equation={"f(x) = \\frac{1}{1 + e^{-x}}"}
             />
+                                <CodeBlock
+          language="python"
+          code={`nn.Sigmoid()`}/>
           </Grid.Col>
           
           <Grid.Col span={{ base: 12, md: 6 }}>
@@ -119,6 +124,9 @@ const Activation = () => {
               title="Tanh"
               equation={"f(x) = \\tanh(x)"}
             />
+                                <CodeBlock
+          language="python"
+          code={`nn.Tanh()`}/>
           </Grid.Col>
           
           <Grid.Col span={{ base: 12, md: 6 }}>
@@ -127,24 +135,12 @@ const Activation = () => {
               title="Leaky ReLU"
               equation={"f(x) = \\max(0.01x, x)"}
             />
+                                <CodeBlock
+          language="python"
+          code={`nn.LeakyReLU(0.1)`}/>
           </Grid.Col>
         </Grid>
 
-        <CodeBlock
-          language="python"
-          code={`
-import torch.nn as nn
-
-# Using PyTorch's built-in activation functions
-model = nn.Sequential(
-    nn.Linear(10, 20),
-    nn.ReLU(),           # Most common for hidden layers
-    nn.Linear(20, 20),
-    nn.LeakyReLU(0.01),  # Alternative to ReLU
-    nn.Linear(20, 10),
-    nn.Tanh()         # Alternative to ReLU
-)`}
-        />
       
 
       {/* Mathematical Properties Section */}
