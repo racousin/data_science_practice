@@ -266,9 +266,7 @@ export const pytorchCourseContentData = {
       { id: 'chain-rule-backpropagation', label: 'Chain Rule & Backpropagation Mathematics' },
       { id: 'gradient-accumulation', label: 'Gradient Accumulation & Zeroing' }
     ]},
-    { to: '/data-pipeline-training-loop', label: 'DataPipelineTrainingLoop', subLinks: [
 
-    ]},
     { to: '/advanced-gradient-mechanics', label: 'Understanding Gradient Flow', subLinks: [
       { id: 'gradient-flow', label: 'Gradient Flow & Vanishing/Exploding' },
       { id: 'gradient-clipping', label: 'Gradient Clipping & Normalization' },
@@ -277,7 +275,10 @@ export const pytorchCourseContentData = {
     ]}
   ],
   'module3': [
-    { to: '/mlp-architecture-components', label: 'MLP Architecture & Components', subLinks: [
+    { to: '/data-pipeline-training-loop', label: 'DataPipelineTrainingLoop', subLinks: [
+
+    ],
+      to: '/mlp-architecture-components', label: 'MLP Architecture & Components', subLinks: [
       { id: 'multilayer-perceptron', label: 'Multilayer Perceptron Mathematics' },
       { id: 'universal-approximation', label: 'Universal Approximation Theorem' },
       { id: 'activation-functions', label: 'Activation Functions: Mathematical Properties' },

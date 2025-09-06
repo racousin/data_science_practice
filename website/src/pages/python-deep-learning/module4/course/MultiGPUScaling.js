@@ -1,6 +1,7 @@
 import React from 'react';
-import { Container, Title, Text, Stack, Alert, Flex, Image, Paper, Badge, List, Grid, Table } from '@mantine/core';
+import { Container, Title, Text, Stack, Alert, Flex, Image, Paper, Badge, List, Grid, Table, Code } from '@mantine/core';
 import { InlineMath, BlockMath } from 'react-katex';
+import { IconAlertCircle, IconBulb } from '@tabler/icons-react';
 import CodeBlock from '../../../../components/CodeBlock';
 
 const MultiGPUScaling = () => {
@@ -10,655 +11,639 @@ const MultiGPUScaling = () => {
         <Title order={1}>Multi-GPU Scaling Strategies</Title>
         
         <Text>
-          As models grow larger, single GPU training becomes insufficient. We'll explore different 
-          parallelization strategies to scale training across multiple GPUs and nodes.
+          As models grow larger and datasets expand, single GPU training becomes insufficient. 
+          This section explores different parallelization strategies to scale training across multiple GPUs and nodes.
         </Text>
 
+        <Title id="parallelization-overview" order={2} mt="xl">Parallelization Strategies Overview</Title>
         
-          <Title id="parallelization-overview" order={2} mt="xl">Parallelization Strategies Overview</Title>
-          
-          <Text>
-            There are four main types of parallelism in distributed deep learning:
-          </Text>
+        <Text>
+          There are four main types of parallelism in distributed deep learning, each optimizing different aspects:
+        </Text>
 
-          <Paper p="md" withBorder>
-            <Grid>
-              <Grid.Col span={6}>
-                <Badge color="blue" size="lg">Data Parallelism (DP)</Badge>
-                <Text size="sm" mt="xs">
-                  • Replicate model on each GPU<br/>
-                  • Split batch across GPUs<br/>
-                  • Synchronize gradients
-                </Text>
-              </Grid.Col>
-              <Grid.Col span={6}>
-                <Badge color="green" size="lg">Model Parallelism (MP)</Badge>
-                <Text size="sm" mt="xs">
-                  • Split model layers across GPUs<br/>
-                  • Sequential computation<br/>
-                  • For very large models
-                </Text>
-              </Grid.Col>
-              <Grid.Col span={6}>
-                <Badge color="orange" size="lg">Pipeline Parallelism (PP)</Badge>
-                <Text size="sm" mt="xs">
-                  • Split model into stages<br/>
-                  • Micro-batching for efficiency<br/>
-                  • Reduces idle time
-                </Text>
-              </Grid.Col>
-              <Grid.Col span={6}>
-                <Badge color="purple" size="lg">Tensor Parallelism (TP)</Badge>
-                <Text size="sm" mt="xs">
-                  • Split tensors across GPUs<br/>
-                  • Parallel matrix operations<br/>
-                  • For very wide layers
-                </Text>
-              </Grid.Col>
-            </Grid>
-          </Paper>
+        <Grid mt="md">
+          <Grid.Col span={6}>
+            <Paper p="md" withBorder>
+              <Badge color="blue" size="lg" mb="sm">Data Parallelism (DP)</Badge>
+              <Text size="sm">
+                • Replicate entire model on each GPU<br/>
+                • Split batch across GPUs<br/>
+                • Synchronize gradients after backward pass<br/>
+                • Best for: Models that fit in single GPU memory
+              </Text>
+            </Paper>
+          </Grid.Col>
+          <Grid.Col span={6}>
+            <Paper p="md" withBorder>
+              <Badge color="green" size="lg" mb="sm">Model Parallelism (MP)</Badge>
+              <Text size="sm">
+                • Split model layers across GPUs<br/>
+                • Sequential computation through layers<br/>
+                • One GPU active at a time (naive version)<br/>
+                • Best for: Models too large for single GPU
+              </Text>
+            </Paper>
+          </Grid.Col>
+          <Grid.Col span={6}>
+            <Paper p="md" withBorder>
+              <Badge color="orange" size="lg" mb="sm">Pipeline Parallelism (PP)</Badge>
+              <Text size="sm">
+                • Split model into pipeline stages<br/>
+                • Process micro-batches concurrently<br/>
+                • Reduces GPU idle time vs MP<br/>
+                • Best for: Deep models with balanced stages
+              </Text>
+            </Paper>
+          </Grid.Col>
+          <Grid.Col span={6}>
+            <Paper p="md" withBorder>
+              <Badge color="purple" size="lg" mb="sm">Tensor Parallelism (TP)</Badge>
+              <Text size="sm">
+                • Split individual tensors/layers across GPUs<br/>
+                • Parallel matrix operations<br/>
+                • Requires high bandwidth between GPUs<br/>
+                • Best for: Large transformer layers
+              </Text>
+            </Paper>
+          </Grid.Col>
+        </Grid>
 
-          <Title order={3} mt="lg">Choosing the Right Strategy</Title>
-
-          <Table mt="md">
-            <thead>
-              <tr>
-                <th>Model Size</th>
-                <th>Batch Size</th>
-                <th>Recommended Strategy</th>
-                <th>Reason</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Small (fits on 1 GPU)</td>
-                <td>Large</td>
-                <td>Data Parallel</td>
-                <td>Simple, efficient</td>
-              </tr>
-              <tr>
-                <td>Medium (fits on 1 GPU)</td>
-                <td>Very Large</td>
-                <td>Data Parallel + Gradient Accumulation</td>
-                <td>Memory efficient</td>
-              </tr>
-              <tr>
-                <td>Large (doesn't fit on 1 GPU)</td>
-                <td>Any</td>
-                <td>Model/Pipeline Parallel</td>
-                <td>Necessary for memory</td>
-              </tr>
-              <tr>
-                <td>Very Large</td>
-                <td>Any</td>
-                <td>3D Parallelism (DP+MP+PP)</td>
-                <td>Maximum scaling</td>
-              </tr>
-            </tbody>
-          </Table>
-
-          <Flex direction="column" align="center" mt="md">
-            <Image
-              src="/assets/python-deep-learning/module4/parallelization_strategies.png"
-              alt="Parallelization Strategies Comparison"
-              style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
-              fluid
-            />
-          </Flex>
-
-          <Title order={3} mt="lg">Memory and Compute Distribution</Title>
-
-          <Paper p="md" withBorder>
-            <Title order={4}>Resource Distribution Across Strategies</Title>
-            
-            <Text mt="md">For a model with P parameters, batch size B, and N GPUs:</Text>
-            
-            <Table mt="md">
-              <thead>
-                <tr>
-                  <th>Strategy</th>
-                  <th>Parameters per GPU</th>
-                  <th>Activations per GPU</th>
-                  <th>Communication</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Data Parallel</td>
-                  <td><InlineMath>{`P`}</InlineMath></td>
-                  <td><InlineMath>{`\\frac{B}{N} \\times A`}</InlineMath></td>
-                  <td>All-reduce gradients</td>
-                </tr>
-                <tr>
-                  <td>Model Parallel</td>
-                  <td><InlineMath>{`\\frac{P}{N}`}</InlineMath></td>
-                  <td><InlineMath>{`B \\times A`}</InlineMath></td>
-                  <td>Activations between layers</td>
-                </tr>
-                <tr>
-                  <td>Pipeline Parallel</td>
-                  <td><InlineMath>{`\\frac{P}{N}`}</InlineMath></td>
-                  <td><InlineMath>{`\\frac{B}{M} \\times A`}</InlineMath></td>
-                  <td>Micro-batch activations</td>
-                </tr>
-              </tbody>
-            </Table>
-            
-            <Text size="sm" c="dimmed" mt="sm">
-              A = activations per sample, M = number of micro-batches
-            </Text>
-          </Paper>
+        <Title order={3} mt="lg">Memory and Compute Distribution</Title>
         
-
+        <Text>For a model with P parameters, batch size B, and N GPUs:</Text>
         
-          <Title id="data-parallel" order={2} mt="xl">Data Parallelism (DP/DDP)</Title>
-          
-          <Text>
-            Data parallelism is the most common and straightforward parallelization strategy,
-            perfect for models that fit on a single GPU.
-          </Text>
+        <Table mt="md" withBorder>
+          <thead>
+            <tr>
+              <th>Strategy</th>
+              <th>Parameters per GPU</th>
+              <th>Activations per GPU</th>
+              <th>Communication Pattern</th>
+              <th>Main Bottleneck</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Data Parallel</strong></td>
+              <td><InlineMath>{`P`}</InlineMath></td>
+              <td><InlineMath>{`\\frac{B}{N} \\times A`}</InlineMath></td>
+              <td>All-reduce gradients</td>
+              <td>Communication bandwidth</td>
+            </tr>
+            <tr>
+              <td><strong>Model Parallel</strong></td>
+              <td><InlineMath>{`\\frac{P}{N}`}</InlineMath></td>
+              <td><InlineMath>{`B \\times A`}</InlineMath></td>
+              <td>Point-to-point activations</td>
+              <td>GPU utilization</td>
+            </tr>
+            <tr>
+              <td><strong>Pipeline Parallel</strong></td>
+              <td><InlineMath>{`\\frac{P}{N}`}</InlineMath></td>
+              <td><InlineMath>{`\\frac{B}{M} \\times A`}</InlineMath></td>
+              <td>Point-to-point micro-batches</td>
+              <td>Bubble overhead</td>
+            </tr>
+            <tr>
+              <td><strong>Tensor Parallel</strong></td>
+              <td><InlineMath>{`\\frac{P}{N}`}</InlineMath></td>
+              <td><InlineMath>{`B \\times \\frac{A}{N}`}</InlineMath></td>
+              <td>All-reduce/all-gather tensors</td>
+              <td>Communication latency</td>
+            </tr>
+          </tbody>
+        </Table>
+        
+        <Text size="sm" c="dimmed" mt="sm">
+          A = activations per sample, M = number of micro-batches in pipeline parallelism
+        </Text>
 
-          <Title order={3} mt="lg">DataParallel (DP) - Single Node</Title>
+        <Title id="data-parallel" order={2} mt="xl">Data Parallelism (DP/DDP)</Title>
+        
+        <Alert icon={<IconBulb />} color="blue" mt="md">
+          Data parallelism is the most common starting point for distributed training. 
+          It's simple to implement and works well when the model fits in GPU memory.
+        </Alert>
 
-          <CodeBlock language="python" code={`import torch
+        <Title order={3} mt="lg">How Data Parallelism Works</Title>
+
+        <List spacing="sm">
+          <List.Item>Each GPU holds a complete copy of the model</List.Item>
+          <List.Item>Training batch is split evenly across GPUs</List.Item>
+          <List.Item>Each GPU computes forward and backward pass on its mini-batch</List.Item>
+          <List.Item>Gradients are synchronized across all GPUs</List.Item>
+          <List.Item>All models are updated with the averaged gradients</List.Item>
+        </List>
+
+        <Title order={3} mt="lg">PyTorch Implementation</Title>
+
+        <Title order={4} mt="md">DataParallel (DP) - Single Node</Title>
+        
+        <CodeBlock language="python">{`import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
-class MLP(nn.Module):
-    def __init__(self, input_size=1024, hidden_sizes=[2048, 1024], num_classes=10):
-        super().__init__()
-        layers = []
-        prev_size = input_size
-        
-        for hidden_size in hidden_sizes:
-            layers.extend([
-                nn.Linear(prev_size, hidden_size),
-                nn.ReLU(),
-                nn.BatchNorm1d(hidden_size)
-            ])
-            prev_size = hidden_size
-        
-        layers.append(nn.Linear(prev_size, num_classes))
-        self.model = nn.Sequential(*layers)
-    
-    def forward(self, x):
-        return self.model(x)
+# Simple DataParallel - single process, multiple GPUs
+model = MyModel()
+if torch.cuda.device_count() > 1:
+    model = nn.DataParallel(model)
+model = model.cuda()
 
-# Simple DataParallel (single machine, multiple GPUs)
-def train_with_dp(model, dataloader, num_gpus=2):
-    if torch.cuda.device_count() < num_gpus:
-        print(f"Warning: Only {torch.cuda.device_count()} GPUs available")
-    
-    # Wrap model with DataParallel
-    model = nn.DataParallel(model, device_ids=list(range(num_gpus)))
-    model = model.cuda()
-    
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-    
-    for epoch in range(5):
-        for batch_idx, (data, target) in enumerate(dataloader):
-            # DataParallel automatically splits batch across GPUs
-            data, target = data.cuda(), target.cuda()
-            
-            optimizer.zero_grad()
-            output = model(data)  # Parallel forward
-            loss = F.cross_entropy(output, target)
-            loss.backward()  # Parallel backward
-            optimizer.step()
-            
-            if batch_idx % 10 == 0:
-                print(f"Epoch {epoch}, Batch {batch_idx}, Loss: {loss.item():.4f}")
+# Training loop remains the same
+for data, target in dataloader:
+    output = model(data)  # Automatically distributed
+    loss = criterion(output, target)
+    loss.backward()  # Gradients automatically synchronized
+    optimizer.step()`}</CodeBlock>
 
-# Note: DataParallel has limitations:
-# - Imbalanced GPU memory (GPU 0 stores more)
-# - Single-process, GIL-limited
-# - Not suitable for multi-node training`} />
+        <Alert icon={<IconAlertCircle />} color="yellow" mt="md">
+          DataParallel has significant Python GIL overhead. Use DistributedDataParallel for better performance.
+        </Alert>
 
-          <Title order={3} mt="lg">DistributedDataParallel (DDP) - Multi-Node</Title>
+        <Title order={4} mt="md">DistributedDataParallel (DDP) - Multi-Node</Title>
 
-          <Alert color="green" mt="md">
-            DDP is recommended over DP for better performance and scalability.
-            It uses multiple processes, avoiding Python GIL limitations.
-          </Alert>
-
-          <CodeBlock language="python" code={`import torch.distributed as dist
+        <CodeBlock language="python">{`import torch
+import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel as DDP
-from torch.utils.data.distributed import DistributedSampler
 
-def setup_ddp(rank, world_size):
-    """Initialize DDP process group"""
-    import os
-    os.environ['MASTER_ADDR'] = 'localhost'
-    os.environ['MASTER_PORT'] = '12355'
-    
-    # Initialize process group
-    dist.init_process_group(backend='nccl', rank=rank, world_size=world_size)
-    
-    # Set device for this process
-    torch.cuda.set_device(rank)
+def setup(rank, world_size):
+    dist.init_process_group("nccl", rank=rank, world_size=world_size)
 
-def cleanup_ddp():
-    """Clean up DDP process group"""
-    dist.destroy_process_group()
-
-def train_ddp(rank, world_size, model, dataset):
-    """Training function for each DDP process"""
-    # Setup
-    setup_ddp(rank, world_size)
+def train(rank, world_size):
+    setup(rank, world_size)
     
     # Create model and move to GPU
-    model = model.to(rank)
+    model = MyModel().to(rank)
     ddp_model = DDP(model, device_ids=[rank])
     
-    # Distributed sampler ensures each GPU gets different data
-    sampler = DistributedSampler(
-        dataset, 
-        num_replicas=world_size,
-        rank=rank,
-        shuffle=True
+    # Use DistributedSampler for proper data distribution
+    sampler = torch.utils.data.distributed.DistributedSampler(
+        dataset, num_replicas=world_size, rank=rank
     )
+    dataloader = DataLoader(dataset, sampler=sampler, batch_size=batch_size)
     
-    dataloader = torch.utils.data.DataLoader(
-        dataset,
-        batch_size=32,
-        sampler=sampler,
-        num_workers=4,
-        pin_memory=True
-    )
-    
-    optimizer = torch.optim.Adam(ddp_model.parameters(), lr=0.001)
-    
-    for epoch in range(5):
+    for epoch in range(num_epochs):
         sampler.set_epoch(epoch)  # Ensure different shuffling each epoch
-        
-        for batch_idx, (data, target) in enumerate(dataloader):
-            data, target = data.to(rank), target.to(rank)
-            
-            optimizer.zero_grad()
-            output = ddp_model(data)
-            loss = F.cross_entropy(output, target)
+        for data, target in dataloader:
+            output = ddp_model(data.to(rank))
+            loss = criterion(output, target.to(rank))
             loss.backward()
-            
-            # DDP automatically synchronizes gradients across GPUs
             optimizer.step()
-            
-            if batch_idx % 10 == 0 and rank == 0:
-                print(f"Epoch {epoch}, Batch {batch_idx}, Loss: {loss.item():.4f}")
-    
-    cleanup_ddp()
+            optimizer.zero_grad()`}</CodeBlock>
 
-# Launch DDP training (typically done with torchrun or torch.multiprocessing)
-import torch.multiprocessing as mp
+        <Title order={3} mt="lg">Gradient Synchronization</Title>
 
-def launch_ddp_training():
-    world_size = torch.cuda.device_count()
-    model = MLP()
-    dataset = YourDataset()  # Your dataset here
-    
-    # Spawn processes for each GPU
-    mp.spawn(
-        train_ddp,
-        args=(world_size, model, dataset),
-        nprocs=world_size,
-        join=True
-    )
+        <Text>
+          DDP uses the all-reduce algorithm to efficiently average gradients across all GPUs:
+        </Text>
 
-# Command line launch:
-# torchrun --nproc_per_node=4 your_script.py
-# or
-# python -m torch.distributed.launch --nproc_per_node=4 your_script.py`} />
+        <BlockMath>{`\\nabla_{\\text{avg}} = \\frac{1}{N} \\sum_{i=1}^{N} \\nabla_i`}</BlockMath>
+        
+        <Text mt="md">The communication cost depends on the network topology and algorithm:</Text>
+        
+        <BlockMath>{`\\text{Time} = \\alpha + \\beta \\times \\frac{2(N-1)}{N} \\times M`}</BlockMath>
+        
+        <Text size="sm" c="dimmed">
+          α = latency, β = inverse bandwidth, M = message size (gradient size), N = number of GPUs
+        </Text>
 
-          <Title order={3} mt="lg">Gradient Synchronization</Title>
+        <Title order={3} mt="lg">Effective Batch Size</Title>
 
-          <Paper p="md" withBorder>
-            <Title order={4}>All-Reduce Algorithm</Title>
-            <Text>
-              DDP uses all-reduce to efficiently synchronize gradients:
-            </Text>
-            <BlockMath>{`\\nabla_{\\text{avg}} = \\frac{1}{N} \\sum_{i=1}^{N} \\nabla_i`}</BlockMath>
-            
-            <Text mt="md">Communication cost:</Text>
-            <BlockMath>{`\\text{Time} = \\alpha + \\beta \\times \\frac{2(N-1)}{N} \\times M`}</BlockMath>
-            
-            <Text size="sm" c="dimmed">
-              α = latency, β = inverse bandwidth, M = message size, N = number of GPUs
-            </Text>
-          </Paper>
+        <Text>
+          With data parallelism, the effective batch size scales with the number of GPUs:
+        </Text>
 
-          <CodeBlock language="python" code={`# Custom gradient synchronization for understanding
-class ManualGradientSync:
-    def __init__(self, model, world_size):
-        self.model = model
-        self.world_size = world_size
-        
-    def sync_gradients(self):
-        """Manually synchronize gradients across GPUs"""
-        for param in self.model.parameters():
-            if param.grad is not None:
-                # All-reduce gradient across all processes
-                dist.all_reduce(param.grad, op=dist.ReduceOp.SUM)
-                # Average gradients
-                param.grad /= self.world_size
-    
-    def benchmark_communication(self, size_mb=100):
-        """Benchmark gradient synchronization time"""
-        import time
-        
-        # Create dummy tensor
-        tensor = torch.randn(int(size_mb * 1024 * 1024 / 4)).cuda()
-        
-        # Warmup
-        for _ in range(5):
-            dist.all_reduce(tensor, op=dist.ReduceOp.SUM)
-        
-        # Benchmark
-        torch.cuda.synchronize()
-        start = time.perf_counter()
-        
-        for _ in range(100):
-            dist.all_reduce(tensor, op=dist.ReduceOp.SUM)
-            torch.cuda.synchronize()
-        
-        elapsed = time.perf_counter() - start
-        
-        print(f"All-reduce {size_mb}MB across {self.world_size} GPUs:")
-        print(f"  Total time: {elapsed:.3f}s")
-        print(f"  Per iteration: {elapsed/100*1000:.2f}ms")
-        print(f"  Bandwidth: {size_mb * 100 / elapsed:.1f} MB/s")`} />
-        
+        <BlockMath>{`B_{\\text{effective}} = B_{\\text{per\\_gpu}} \\times N_{\\text{gpus}}`}</BlockMath>
 
-        
-          <Title id="model-parallel" order={2} mt="xl">Model & Pipeline Parallelism</Title>
-          
-          <Text>
-            When models don't fit on a single GPU, we need to split them across devices.
-          </Text>
+        <Alert icon={<IconAlertCircle />} color="red" mt="md">
+          Large batch sizes may require learning rate scaling and warmup to maintain convergence quality.
+          Common practice: scale learning rate linearly with batch size.
+        </Alert>
 
-          <Title order={3}>Model Parallelism</Title>
+        <Title id="model-parallel" order={2} mt="xl">Model Parallelism (MP)</Title>
 
-          <CodeBlock language="python" code={`# Simple model parallelism example
-class ModelParallelMLP(nn.Module):
-    def __init__(self, input_size=1024, hidden_size=4096, num_classes=10):
+        <Text>
+          Model parallelism splits the model across multiple GPUs, with each GPU holding a subset of layers.
+          This enables training models that don't fit in a single GPU's memory.
+        </Text>
+
+        <Title order={3} mt="lg">How Model Parallelism Works</Title>
+
+        <List spacing="sm">
+          <List.Item>Model layers are partitioned across GPUs</List.Item>
+          <List.Item>Each GPU processes the full batch through its layers</List.Item>
+          <List.Item>Activations are passed between GPUs sequentially</List.Item>
+          <List.Item>Gradients flow backward through the same path</List.Item>
+        </List>
+
+        <Title order={3} mt="lg">Naive Model Parallelism</Title>
+
+        <CodeBlock language="python">{`import torch
+import torch.nn as nn
+
+class ModelParallelNet(nn.Module):
+    def __init__(self):
         super().__init__()
-        
-        # Split model across two GPUs
         # First half on GPU 0
-        self.layer1 = nn.Linear(input_size, hidden_size).to('cuda:0')
-        self.relu1 = nn.ReLU().to('cuda:0')
+        self.layer1 = nn.Linear(1000, 500).to('cuda:0')
+        self.layer2 = nn.Linear(500, 500).to('cuda:0')
         
         # Second half on GPU 1
-        self.layer2 = nn.Linear(hidden_size, hidden_size).to('cuda:1')
-        self.relu2 = nn.ReLU().to('cuda:1')
-        self.layer3 = nn.Linear(hidden_size, num_classes).to('cuda:1')
+        self.layer3 = nn.Linear(500, 500).to('cuda:1')
+        self.layer4 = nn.Linear(500, 10).to('cuda:1')
     
     def forward(self, x):
-        # Start on GPU 0
         x = x.to('cuda:0')
-        x = self.relu1(self.layer1(x))
+        x = torch.relu(self.layer1(x))
+        x = torch.relu(self.layer2(x))
         
         # Transfer to GPU 1
         x = x.to('cuda:1')
-        x = self.relu2(self.layer2(x))
-        x = self.layer3(x)
-        
+        x = torch.relu(self.layer3(x))
+        x = self.layer4(x)
         return x
 
-# Pipeline parallelism for better efficiency
+model = ModelParallelNet()
+
+# Training - labels must be on the last GPU
+for data, target in dataloader:
+    output = model(data)
+    loss = criterion(output, target.to('cuda:1'))
+    loss.backward()
+    optimizer.step()`}</CodeBlock>
+
+        <Alert icon={<IconAlertCircle />} color="yellow" mt="md">
+          <strong>Problem:</strong> Naive model parallelism has poor GPU utilization. 
+          While GPU 0 processes layer 1, GPU 1 is idle, and vice versa.
+        </Alert>
+
+        <Title order={3} mt="lg">GPU Utilization in Model Parallelism</Title>
+
+        <Text>
+          The main drawback is sequential execution leading to GPU idle time:
+        </Text>
+
+        <BlockMath>{`\\text{Utilization} = \\frac{1}{N_{\\text{gpus}}}`}</BlockMath>
+
+        <Text mt="md">
+          With N GPUs, each GPU is only active 1/N of the time in naive model parallelism.
+        </Text>
+
+        <Title id="pipeline-parallel" order={2} mt="xl">Pipeline Parallelism (PP)</Title>
+
+        <Text>
+          Pipeline parallelism improves upon model parallelism by splitting the batch into micro-batches
+          and processing them in a pipeline fashion, reducing GPU idle time.
+        </Text>
+
+        <Title order={3} mt="lg">How Pipeline Parallelism Works</Title>
+
+        <List spacing="sm">
+          <List.Item>Model is divided into sequential stages across GPUs</List.Item>
+          <List.Item>Mini-batch is split into smaller micro-batches</List.Item>
+          <List.Item>Micro-batches are processed in pipeline fashion</List.Item>
+          <List.Item>GPUs work on different micro-batches simultaneously</List.Item>
+          <List.Item>Gradients are accumulated across micro-batches</List.Item>
+        </List>
+
+        <Title order={3} mt="lg">Pipeline Schedule</Title>
+
+        <Text>
+          Common pipeline schedules include GPipe and 1F1B (one-forward-one-backward):
+        </Text>
+
+        <CodeBlock language="python">{`# Conceptual pipeline parallelism with micro-batches
+# Using PyTorch's pipe (requires fairscale or torch.distributed.pipeline)
+
 from torch.distributed.pipeline.sync import Pipe
 
-class PipelineParallelMLP(nn.Module):
-    def __init__(self, input_size=1024, hidden_size=4096, num_classes=10):
-        super().__init__()
-        
-        # Define sequential layers
-        layers = nn.Sequential(
-            nn.Linear(input_size, hidden_size),
-            nn.ReLU(),
-            nn.Linear(hidden_size, hidden_size),
-            nn.ReLU(),
-            nn.Linear(hidden_size, hidden_size),
-            nn.ReLU(),
-            nn.Linear(hidden_size, num_classes)
-        )
-        
-        # Split into pipeline stages
-        # balance parameter determines how to split layers
-        self.model = Pipe(
-            layers,
-            balance=[2, 2, 2, 1],  # Layers per GPU
-            devices=['cuda:0', 'cuda:1', 'cuda:2', 'cuda:3'],
-            chunks=8  # Number of micro-batches
-        )
-    
-    def forward(self, x):
-        return self.model(x)
+# Define model with balance indicating layer distribution
+model = nn.Sequential(
+    nn.Linear(1000, 500),
+    nn.ReLU(),
+    nn.Linear(500, 500),
+    nn.ReLU(),
+    nn.Linear(500, 500),
+    nn.ReLU(),
+    nn.Linear(500, 10)
+)
 
-# Memory calculation for model parallelism
-def calculate_mp_memory(model_params, num_gpus, strategy='model'):
-    """Calculate memory per GPU for different parallelism strategies"""
-    
-    if strategy == 'data':
-        params_per_gpu = model_params
-        print(f"Data Parallel: {params_per_gpu:,} params per GPU")
-        
-    elif strategy == 'model':
-        params_per_gpu = model_params // num_gpus
-        print(f"Model Parallel: {params_per_gpu:,} params per GPU")
-        
-    elif strategy == 'pipeline':
-        params_per_gpu = model_params // num_gpus
-        print(f"Pipeline Parallel: {params_per_gpu:,} params per GPU")
-        print(f"  Note: Activations from micro-batches add overhead")
-    
-    # Memory in MB (assuming FP32)
-    memory_mb = params_per_gpu * 4 / (1024**2)
-    
-    # With optimizer (Adam)
-    memory_with_opt = memory_mb * 4  # Params + grads + 2x optimizer states
-    
-    print(f"  Base memory: {memory_mb:.2f} MB")
-    print(f"  With Adam optimizer: {memory_with_opt:.2f} MB")
-    
-    return params_per_gpu
+# Create pipeline with 4 GPUs and 8 micro-batches
+model = Pipe(model, balance=[2, 2, 2, 1], devices=[0, 1, 2, 3], chunks=8)
 
-# Example: 7B parameter model
-model_params = 7_000_000_000
-num_gpus = 8
+# Training
+for data, target in dataloader:
+    output = model(data)
+    loss = criterion(output, target)
+    loss.backward()
+    optimizer.step()`}</CodeBlock>
 
-print("Memory requirements for 7B parameter model:")
-for strategy in ['data', 'model', 'pipeline']:
-    calculate_mp_memory(model_params, num_gpus, strategy)
-    print()`} />
+        <Title order={3} mt="lg">Pipeline Efficiency</Title>
 
-          <Title order={3} mt="lg">Pipeline Parallelism Scheduling</Title>
+        <Text>
+          Pipeline efficiency depends on the number of micro-batches (M) and pipeline stages (P):
+        </Text>
 
-          <Paper p="md" withBorder>
-            <Title order={4}>Pipeline Bubble Time</Title>
-            <Text>
-              Pipeline parallelism introduces bubble time (idle GPUs).
-              With M micro-batches and P pipeline stages:
-            </Text>
-            
-            <BlockMath>{`\\text{Bubble Fraction} = \\frac{P - 1}{M}`}</BlockMath>
-            
-            <Text mt="sm">
-              To minimize bubble overhead, use M ≫ P (many micro-batches)
-            </Text>
-          </Paper>
+        <BlockMath>{`\\text{Bubble Rate} = \\frac{P - 1}{M}`}</BlockMath>
 
-          <Flex direction="column" align="center" mt="md">
-            <Image
-              src="/assets/python-deep-learning/module4/pipeline_parallel_schedule.png"
-              alt="Pipeline Parallelism Schedule"
-              style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
-              fluid
-            />
-          </Flex>
-        
+        <Text mt="md">
+          The bubble (idle) time decreases as the number of micro-batches increases, 
+          but this also increases memory usage for storing intermediate activations.
+        </Text>
 
-        
-          <Title id="distributed-training" order={2} mt="xl">Distributed Training Best Practices</Title>
+        <Alert icon={<IconBulb />} color="blue" mt="md">
+          <strong>Rule of thumb:</strong> Use at least 4× more micro-batches than pipeline stages 
+          for reasonable efficiency (e.g., 16 micro-batches for 4 stages).
+        </Alert>
+
+        <Title id="tensor-parallel" order={2} mt="xl">Tensor Parallelism (TP)</Title>
+
+        <Text>
+          Tensor parallelism splits individual layers (tensors) across multiple GPUs, 
+          enabling parallel computation within a single layer. This is particularly effective 
+          for large transformer models.
+        </Text>
+
+        <Title order={3} mt="lg">How Tensor Parallelism Works</Title>
+
+        <List spacing="sm">
+          <List.Item>Individual weight matrices are split across GPUs</List.Item>
+          <List.Item>Matrix operations are performed in parallel</List.Item>
+          <List.Item>Results are gathered/reduced as needed</List.Item>
+          <List.Item>Requires high bandwidth between GPUs (NVLink preferred)</List.Item>
+        </List>
+
+        <Title order={3} mt="lg">Linear Layer Tensor Parallelism</Title>
+
+        <Text>
+          For a linear layer with weight matrix W ∈ ℝ^(d_out × d_in), tensor parallelism can split the computation:
+        </Text>
+
+        <Paper p="md" withBorder mt="md">
+          <Title order={4}>Column-wise Parallelism</Title>
+
+          <Text>Split W into [W₁, W₂, ..., Wₙ] along the output dimension:</Text>
+
+          <BlockMath>{`Y = XW = X[W_1, W_2, ..., W_n] = [XW_1, XW_2, ..., XW_n]`}</BlockMath>
           
+          <Text mt="md"><strong>How it works:</strong></Text>
+          <List size="sm" mt="xs">
+            <List.Item>Each GPU stores a vertical slice of the weight matrix</List.Item>
+            <List.Item>Input X is replicated across all GPUs</List.Item>
+            <List.Item>Each GPU computes its portion of the output independently</List.Item>
+            <List.Item>No communication needed during forward pass if input is replicated</List.Item>
+            <List.Item>Output can remain distributed or be gathered depending on next layer</List.Item>
+          </List>
+          
+          <Text mt="md"><strong>Advantages:</strong></Text>
+          <List size="sm" mt="xs">
+            <List.Item>No communication in forward pass with replicated input</List.Item>
+            <List.Item>Works well when followed by row-wise parallel layer</List.Item>
+            <List.Item>Efficient for large output dimensions</List.Item>
+          </List>
+        </Paper>
+
+        <Paper p="md" withBorder mt="md">
+          <Title order={4}>Row-wise Parallelism</Title>
+
+          <Text>Split W into rows along the input dimension:</Text>
+
+          <BlockMath>{`Y = XW = [X_1, X_2, ..., X_n] \\begin{bmatrix} W_1 \\\\ W_2 \\\\ ... \\\\ W_n \\end{bmatrix} = \\sum_{i=1}^{n} X_i W_i`}</BlockMath>
+          
+          <Text mt="md"><strong>How it works:</strong></Text>
+          <List size="sm" mt="xs">
+            <List.Item>Each GPU stores a horizontal slice of the weight matrix</List.Item>
+            <List.Item>Input X must be split across GPUs accordingly</List.Item>
+            <List.Item>Each GPU computes a partial sum XᵢWᵢ</List.Item>
+            <List.Item>All-reduce operation sums partial results across GPUs</List.Item>
+            <List.Item>Final output Y is replicated on all GPUs after reduction</List.Item>
+          </List>
+          
+          <Text mt="md"><strong>Advantages:</strong></Text>
+          <List size="sm" mt="xs">
+            <List.Item>No communication in backward pass for gradient w.r.t. input</List.Item>
+            <List.Item>Works well when preceded by column-wise parallel layer</List.Item>
+            <List.Item>Efficient for large input dimensions</List.Item>
+          </List>
+        </Paper>
+
+        <Title order={3} mt="lg">Transformer Tensor Parallelism</Title>
+
+        <Paper p="md" withBorder>
           <Text>
-            Effective distributed training requires careful consideration of communication patterns,
-            batch sizes, and learning rate scaling.
+            Transformers are particularly well-suited for tensor parallelism due to their structure:
           </Text>
 
-          <Paper p="md" withBorder>
-            <Title order={4}>Key Best Practices</Title>
-            <List spacing="sm" mt="md">
-              <List.Item>
-                <strong>Linear learning rate scaling:</strong> LR = base_lr × num_gpus
-              </List.Item>
-              <List.Item>
-                <strong>Warm-up period:</strong> Gradually increase LR over first epochs
-              </List.Item>
-              <List.Item>
-                <strong>Gradient clipping:</strong> Essential for stability with large batches
-              </List.Item>
-              <List.Item>
-                <strong>Mixed precision:</strong> Reduces communication overhead
-              </List.Item>
-              <List.Item>
-                <strong>Gradient accumulation:</strong> Simulate larger batches
-              </List.Item>
-            </List>
-          </Paper>
+          <Title order={4} mt="md">1. Multi-Head Attention Parallelism</Title>
+          <List size="sm" mt="xs">
+            <List.Item>Attention heads are naturally independent and can be split across GPUs</List.Item>
+            <List.Item>Each GPU computes attention for H/N heads (H=total heads, N=GPUs)</List.Item>
+            <List.Item>Q, K, V projections can be column-parallel</List.Item>
+            <List.Item>Output projection is row-parallel to gather results</List.Item>
+            <List.Item>Minimal communication overhead due to head independence</List.Item>
+          </List>
 
-          <CodeBlock language="python" code={`class DistributedTrainer:
-    def __init__(self, model, world_size, base_lr=0.001, warmup_epochs=5):
-        self.model = model
-        self.world_size = world_size
-        self.base_lr = base_lr
-        self.warmup_epochs = warmup_epochs
-        
-        # Scale learning rate
-        self.lr = base_lr * world_size
-        
-        self.optimizer = torch.optim.Adam(model.parameters(), lr=self.lr)
-        
-        # Mixed precision training
-        self.scaler = torch.cuda.amp.GradScaler()
-        
-    def get_lr(self, epoch):
-        """Learning rate schedule with warm-up"""
-        if epoch < self.warmup_epochs:
-            # Linear warm-up
-            return self.lr * (epoch + 1) / self.warmup_epochs
-        else:
-            # Cosine annealing after warm-up
-            progress = (epoch - self.warmup_epochs) / (100 - self.warmup_epochs)
-            return self.lr * 0.5 * (1 + np.cos(np.pi * progress))
-    
-    def train_epoch(self, dataloader, epoch):
-        """Train one epoch with distributed best practices"""
-        self.model.train()
-        
-        # Adjust learning rate
-        current_lr = self.get_lr(epoch)
-        for param_group in self.optimizer.param_groups:
-            param_group['lr'] = current_lr
-        
-        for batch_idx, (data, target) in enumerate(dataloader):
-            data, target = data.cuda(), target.cuda()
-            
-            self.optimizer.zero_grad()
-            
-            # Mixed precision forward pass
-            with torch.cuda.amp.autocast():
-                output = self.model(data)
-                loss = F.cross_entropy(output, target)
-            
-            # Backward with gradient scaling
-            self.scaler.scale(loss).backward()
-            
-            # Gradient clipping
-            self.scaler.unscale_(self.optimizer)
-            torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
-            
-            # Optimizer step
-            self.scaler.step(self.optimizer)
-            self.scaler.update()
-            
-            # Logging (only on rank 0)
-            if batch_idx % 50 == 0 and dist.get_rank() == 0:
-                print(f"Epoch {epoch}, Batch {batch_idx}, "
-                      f"Loss: {loss.item():.4f}, LR: {current_lr:.6f}")
-    
-    def benchmark_training(self, input_shape, num_iterations=100):
-        """Benchmark distributed training performance"""
-        import time
-        
-        dummy_data = torch.randn(input_shape).cuda()
-        dummy_target = torch.randint(0, 10, (input_shape[0],)).cuda()
-        
-        # Warmup
-        for _ in range(10):
-            output = self.model(dummy_data)
-            loss = F.cross_entropy(output, dummy_target)
-            loss.backward()
-            self.optimizer.step()
-            self.optimizer.zero_grad()
-        
-        # Benchmark
-        torch.cuda.synchronize()
-        start = time.perf_counter()
-        
-        for _ in range(num_iterations):
-            output = self.model(dummy_data)
-            loss = F.cross_entropy(output, dummy_target)
-            loss.backward()
-            self.optimizer.step()
-            self.optimizer.zero_grad()
-            
-        torch.cuda.synchronize()
-        elapsed = time.perf_counter() - start
-        
-        # Calculate throughput
-        samples_per_sec = (input_shape[0] * num_iterations) / elapsed
-        
-        # All-reduce to get total throughput
-        throughput_tensor = torch.tensor([samples_per_sec]).cuda()
-        dist.all_reduce(throughput_tensor, op=dist.ReduceOp.SUM)
-        
-        if dist.get_rank() == 0:
-            total_throughput = throughput_tensor.item()
-            print(f"\\nDistributed Training Performance:")
-            print(f"  World size: {self.world_size}")
-            print(f"  Per-GPU throughput: {samples_per_sec:.1f} samples/s")
-            print(f"  Total throughput: {total_throughput:.1f} samples/s")
-            print(f"  Scaling efficiency: {total_throughput / (samples_per_sec * self.world_size) * 100:.1f}%")
+          <Title order={4} mt="md">2. MLP/FFN Layer Parallelism (Megatron-style)</Title>
+          <Text mt="xs">
+            The transformer MLP typically expands hidden dimension by 4x, making it memory-intensive:
+          </Text>
+          <List size="sm" mt="xs">
+            <List.Item><strong>First Linear (h → 4h):</strong> Use column-parallel to split the expanded dimension</List.Item>
+            <List.Item><strong>Activation:</strong> Applied element-wise, no communication needed</List.Item>
+            <List.Item><strong>Second Linear (4h → h):</strong> Use row-parallel to reduce back to hidden size</List.Item>
+            <List.Item><strong>Result:</strong> Only one all-reduce needed at the end of MLP block</List.Item>
+          </List>
+          
+          <Alert icon={<IconBulb />} color="blue" mt="md">
+            <strong>Efficiency tip:</strong> By carefully arranging column and row parallelism, 
+            Megatron-LM achieves only 2 all-reduce operations per transformer layer 
+            (one for attention, one for MLP), minimizing communication overhead.
+          </Alert>
 
-# Example launch script
-def main():
-    # This would be called by each process in distributed training
-    rank = int(os.environ['RANK'])
-    world_size = int(os.environ['WORLD_SIZE'])
-    
-    # Setup distributed training
-    setup_ddp(rank, world_size)
-    
-    # Create model and trainer
-    model = DDP(MLP().to(rank), device_ids=[rank])
-    trainer = DistributedTrainer(model, world_size)
-    
-    # Create distributed dataloader
-    dataset = YourDataset()
-    sampler = DistributedSampler(dataset, num_replicas=world_size, rank=rank)
-    dataloader = DataLoader(dataset, batch_size=256, sampler=sampler)
-    
-    # Train
-    for epoch in range(100):
-        trainer.train_epoch(dataloader, epoch)
-    
-    # Cleanup
-    cleanup_ddp()
+          <Title order={4} mt="md">3. Embedding Layer Parallelism</Title>
+          <List size="sm" mt="xs">
+            <List.Item>Vocabulary can be split across GPUs (each GPU handles V/N tokens)</List.Item>
+            <List.Item>Input tokens are scattered to appropriate GPUs</List.Item>
+            <List.Item>Embedding lookups happen locally on each GPU</List.Item>
+            <List.Item>Results are gathered for the transformer blocks</List.Item>
+            <List.Item>Particularly useful for large vocabularies (50K+ tokens)</List.Item>
+          </List>
+        </Paper>
 
-if __name__ == "__main__":
-    # Launch with: torchrun --nproc_per_node=8 script.py
-    main()`} />
+        <Title order={3} mt="lg">Communication Patterns in Tensor Parallelism</Title>
 
-        
+        <Table mt="md" withBorder>
+          <thead>
+            <tr>
+              <th>Operation</th>
+              <th>Forward Pass</th>
+              <th>Backward Pass</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Column Parallel</td>
+              <td>Identity (if input replicated)</td>
+              <td>All-reduce gradients</td>
+            </tr>
+            <tr>
+              <td>Row Parallel</td>
+              <td>All-reduce outputs</td>
+              <td>Identity</td>
+            </tr>
+            <tr>
+              <td>Attention Heads</td>
+              <td>All-gather Q,K,V → All-reduce output</td>
+              <td>Reverse of forward</td>
+            </tr>
+          </tbody>
+        </Table>
+
+        <Title id="hybrid-parallelism" order={2} mt="xl">Hybrid Parallelism Strategies</Title>
+
+        <Text>
+          Modern large-scale training combines multiple parallelism strategies to overcome 
+          individual limitations and maximize efficiency.
+        </Text>
+
+        <Title order={3} mt="lg">Common Hybrid Approaches</Title>
+
+        <Paper p="md" withBorder mt="md">
+          <Title order={4}>3D Parallelism (DP + PP + TP)</Title>
+          <Text size="sm" mt="xs">
+            Used in models like GPT-3 and Megatron-Turing NLG:
+          </Text>
+          <List size="sm" mt="xs">
+            <List.Item>Tensor parallelism within nodes (high bandwidth)</List.Item>
+            <List.Item>Pipeline parallelism across nodes (tolerates latency)</List.Item>
+            <List.Item>Data parallelism for remaining scale-out</List.Item>
+          </List>
+        </Paper>
+
+        <Paper p="md" withBorder mt="md">
+          <Title order={4}>ZeRO + Pipeline Parallelism</Title>
+          <Text size="sm" mt="xs">
+            Combines memory optimization with pipeline efficiency:
+          </Text>
+          <List size="sm" mt="xs">
+            <List.Item>ZeRO shards optimizer states, gradients, and parameters</List.Item>
+            <List.Item>Pipeline parallelism for model that still doesn't fit</List.Item>
+            <List.Item>Reduces memory redundancy while maintaining throughput</List.Item>
+          </List>
+        </Paper>
+
+        <Title order={3} mt="lg">Choosing the Right Strategy</Title>
+
+        <Table mt="md" withBorder>
+          <thead>
+            <tr>
+              <th>Scenario</th>
+              <th>Recommended Strategy</th>
+              <th>Reasoning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Model fits on GPU, large dataset</td>
+              <td>Data Parallelism (DDP)</td>
+              <td>Simple, efficient, minimal communication</td>
+            </tr>
+            <tr>
+              <td>Model slightly too large</td>
+              <td>ZeRO or Gradient Checkpointing</td>
+              <td>Memory optimization without model splitting</td>
+            </tr>
+            <tr>
+              <td>Very large transformer</td>
+              <td>TP within node + PP across nodes</td>
+              <td>TP needs high bandwidth, PP tolerates latency</td>
+            </tr>
+            <tr>
+              <td>Extreme scale (1000+ GPUs)</td>
+              <td>3D Parallelism</td>
+              <td>Combines all strategies for maximum scale</td>
+            </tr>
+          </tbody>
+        </Table>
+
+        <Title order={3} mt="lg">Performance Considerations</Title>
+
+        <Alert icon={<IconBulb />} color="green" mt="md">
+          <strong>Key Performance Metrics:</strong>
+          <List size="sm" mt="xs">
+            <List.Item><strong>MFU (Model FLOPs Utilization):</strong> Actual vs theoretical FLOPS</List.Item>
+            <List.Item><strong>Scaling Efficiency:</strong> Speedup vs number of GPUs</List.Item>
+            <List.Item><strong>Communication/Computation Ratio:</strong> Time spent on communication</List.Item>
+            <List.Item><strong>Memory Efficiency:</strong> Model size vs available memory</List.Item>
+          </List>
+        </Alert>
+
+        <Title order={3} mt="lg">Implementing 3D Parallelism</Title>
+
+        <Paper p="md" withBorder>
+          <Title order={4}>3D Parallelism Configuration</Title>
+          
+          <Text>
+            3D parallelism combines TP, PP, and DP to maximize hardware utilization. Here's how to organize it:
+          </Text>
+          
+          <Text mt="md"><strong>Typical Setup (Example: 128 GPUs):</strong></Text>
+          <List size="sm" mt="xs">
+            <List.Item><strong>Tensor Parallel Size = 8:</strong> Within each node (high NVLink bandwidth)</List.Item>
+            <List.Item><strong>Pipeline Parallel Size = 4:</strong> Across 4 nodes (tolerates network latency)</List.Item>
+            <List.Item><strong>Data Parallel Size = 4:</strong> Remaining dimension (128 ÷ 8 ÷ 4 = 4)</List.Item>
+          </List>
+          
+          <Text mt="md"><strong>Process Group Organization:</strong></Text>
+          <List size="sm" mt="xs">
+            <List.Item><strong>TP Groups:</strong> GPUs [0-7], [8-15], [16-23], etc. (same node)</List.Item>
+            <List.Item><strong>PP Groups:</strong> GPUs [0,8,16,24], [1,9,17,25], etc. (across nodes)</List.Item>
+            <List.Item><strong>DP Groups:</strong> GPUs with same TP and PP position across replicas</List.Item>
+          </List>
+          
+          <Text mt="md"><strong>Communication Hierarchy:</strong></Text>
+          <List size="sm" mt="xs">
+            <List.Item><strong>Intra-node (TP):</strong> Uses NVLink/NVSwitch - very high bandwidth (600 GB/s)</List.Item>
+            <List.Item><strong>Inter-node (PP):</strong> Uses InfiniBand/Ethernet - moderate bandwidth (100-200 GB/s)</List.Item>
+            <List.Item><strong>Cross-replica (DP):</strong> Gradient all-reduce across data parallel groups</List.Item>
+          </List>
+          
+          <Alert icon={<IconBulb />} color="green" mt="md">
+            <strong>Best Practice:</strong> Place communication-heavy operations (tensor parallelism) 
+            within nodes where bandwidth is highest, and latency-tolerant operations (pipeline parallelism) 
+            across nodes.
+          </Alert>
+        </Paper>
+
+        <Title order={2} mt="xl">Summary and Best Practices</Title>
+
+        <Paper p="lg" withBorder mt="md">
+          <Title order={3}>Quick Decision Guide</Title>
+          
+          <List spacing="md" mt="md">
+            <List.Item>
+              <strong>Start with Data Parallelism</strong> - It's simple and often sufficient
+            </List.Item>
+            <List.Item>
+              <strong>Add ZeRO optimization</strong> - When approaching memory limits
+            </List.Item>
+            <List.Item>
+              <strong>Use Tensor Parallelism</strong> - For very wide layers (transformers)
+            </List.Item>
+            <List.Item>
+              <strong>Apply Pipeline Parallelism</strong> - For very deep models
+            </List.Item>
+            <List.Item>
+              <strong>Combine strategies</strong> - For extreme scale (billions of parameters)
+            </List.Item>
+          </List>
+
+          <Alert icon={<IconAlertCircle />} color="blue" mt="lg">
+            <strong>Remember:</strong> The optimal strategy depends on your specific model architecture, 
+            hardware setup (especially interconnect bandwidth), and scaling requirements. 
+            Profile and experiment to find the best configuration.
+          </Alert>
+        </Paper>
+
       </Stack>
     </Container>
   );
