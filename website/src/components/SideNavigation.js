@@ -301,7 +301,7 @@ export const pytorchCourseContentData = {
       { id: 'gpu-vs-cpu', label: 'GPU vs CPU Performance' }
     ]},
     { to: '/performance-optimization', label: 'Performance Optimization', subLinks: [
-      { id: 'torch-compile', label: 'Torch Compile & Graph Optimization' },
+      { id: 'torch-compile', label: 'Torch Compile' },
       { id: 'mixed-precision', label: 'Mixed Precision Training' },
       { id: 'memory-optimization', label: 'Memory Optimization Strategies' },
       { id: 'io-optimization', label: 'I/O and DataLoader Optimization' }

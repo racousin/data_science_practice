@@ -15,14 +15,13 @@ const PerformanceOptimization = () => {
         </Text>
 
         
-          <Title id="torch-compile" order={2} mt="xl">Torch Compile & Graph Optimization</Title>
+          <Title id="torch-compile" order={2} mt="xl">Torch Compile</Title>
           
           <Text>
             PyTorch 2.0 introduced torch.compile, which optimizes models through graph compilation
             and fusion of operations, significantly improving performance.
           </Text>
 
-          <Paper p="md" withBorder>
             <Title order={4}>How Torch Compile Works</Title>
             <List spacing="sm" mt="md">
               <List.Item><strong>Graph Capture:</strong> Traces Python execution to build computation graph</List.Item>
@@ -30,7 +29,6 @@ const PerformanceOptimization = () => {
               <List.Item><strong>Code Generation:</strong> Generates optimized kernels for target hardware</List.Item>
               <List.Item><strong>Caching:</strong> Reuses compiled graphs for repeated calls</List.Item>
             </List>
-          </Paper>
 
 
           <CodeBlock language="python" code={`def foo(x, y):
@@ -98,415 +96,464 @@ Best Practices:
           <Title id="mixed-precision" order={2} mt="xl">Mixed Precision Training</Title>
           
           <Text>
-            Mixed precision training uses both FP16 and FP32 computations to accelerate training
-            while maintaining model accuracy.
+            While we can simply cast models and data to lower precision to reduce memory usage,
+            this naive approach can impact training stability. Mixed precision training provides
+            a sophisticated solution that combines the benefits of both precisions.
           </Text>
 
+          <Title order={3} mt="lg">Basic Precision Casting</Title>
+          
+          <Text>
+            You can manually cast models and tensors to 16-bit precision:
+          </Text>
+
+          <CodeBlock language="python" code={`# Simple casting to FP16
+model = model.to(torch.float16)  # or model.half()
+data = data.to(torch.float16)
+
+# This halves memory usage but may cause:
+# - Gradient underflow (gradients become zero)
+# - Loss of precision in weight updates
+# - Training instability`} />
+
+          <Title order={3} mt="lg">How Mixed Precision Works</Title>
+          
+          <Text>
+            Standard training uses 32-bit floating point (FP32) for all computations.
+            Mixed precision training strategically combines:
+          </Text>
+          
+          <List>
+            <List.Item><strong>FP16:</strong> For most forward and backward pass computations</List.Item>
+            <List.Item><strong>FP32:</strong> For operations needing higher precision (loss scaling, weight updates)</List.Item>
+          </List>
+
+          <Title order={4} mt="md">What Gets Cast to FP16 vs FP32?</Title>
+          
+
+            <Text weight={500} mb="sm">During mixed precision training:</Text>
+            
+            <Title order={5}>FP16 (Half Precision):</Title>
+            <List size="sm">
+              <List.Item><strong>Activations:</strong> Intermediate layer outputs during forward pass</List.Item>
+              <List.Item><strong>Gradients:</strong> Computed gradients during backward pass</List.Item>
+              <List.Item><strong>Forward computations:</strong> Matrix multiplications, convolutions</List.Item>
+            </List>
+            
+            <Title order={5} mt="md">FP32 (Full Precision):</Title>
+            <List size="sm">
+              <List.Item><strong>Master weights:</strong> The actual model parameters always stay in FP32</List.Item>
+              <List.Item><strong>Loss values:</strong> Final loss computation remains in FP32 for stability</List.Item>
+              <List.Item><strong>Optimizer states:</strong> Adam moments, SGD momentum buffers</List.Item>
+              <List.Item><strong>Weight updates:</strong> Gradient application to parameters</List.Item>
+            </List>
+
+          <CodeBlock language="python" code={`# What happens under the hood:
+with autocast():
+    # Input activations cast to FP16
+    x_fp16 = x.to(torch.float16)
+    
+    # Weights temporarily cast to FP16 for computation
+    w_fp16 = model.weight.to(torch.float16)  
+    
+    # Forward pass in FP16
+    output = torch.matmul(x_fp16, w_fp16)  # FP16 computation
+    
+    # Loss computed in FP32 for stability
+    loss = criterion(output.float(), target)  # Cast back to FP32
+
+# Master weights remain in FP32 throughout
+print(model.weight.dtype)  # torch.float32
+print(optimizer.param_groups[0]['params'][0].dtype)  # torch.float32`} />
+
+          <Title order={3} mt="lg">Key Benefits</Title>
+          
           <Paper p="md" withBorder>
-            <Title order={4}>Benefits of Mixed Precision</Title>
-            <Grid mt="md">
-              <Grid.Col span={6}>
-                <Badge color="green" size="lg">Memory Savings</Badge>
-                <Text size="sm" mt="xs">50% reduction in memory usage for activations and weights</Text>
+            <Grid>
+              <Grid.Col span={4}>
+                <Badge color="green" size="lg">Memory Efficiency</Badge>
+                <Text size="sm" mt="xs">FP16 uses half the memory, enabling larger models or batch sizes</Text>
               </Grid.Col>
-              <Grid.Col span={6}>
-                <Badge color="blue" size="lg">Speed Improvement</Badge>
-                <Text size="sm" mt="xs">2-3x speedup on modern GPUs with Tensor Cores</Text>
+              <Grid.Col span={4}>
+                <Badge color="blue" size="lg">Speed Improvements</Badge>
+                <Text size="sm" mt="xs">Modern GPUs (V100, A100) have Tensor Cores for faster FP16 operations</Text>
+              </Grid.Col>
+              <Grid.Col span={4}>
+                <Badge color="purple" size="lg">Maintained Accuracy</Badge>
+                <Text size="sm" mt="xs">Preserves model quality through gradient scaling and FP32 master weights</Text>
               </Grid.Col>
             </Grid>
           </Paper>
 
-          <CodeBlock language="python" code={`import torch
-from torch.cuda.amp import autocast, GradScaler
+          <Title order={3} mt="lg">Implementation Details</Title>
 
-def train_with_mixed_precision(model, dataloader, optimizer, num_epochs=5):
-    """Training with Automatic Mixed Precision (AMP)"""
+          <Text>The technique involves three key components:</Text>
+
+          <Title order={4} mt="md">1. Automatic Loss Scaling</Title>
+          <Text>Prevents gradient underflow by scaling the loss before backpropagation:</Text>
+          
+          <CodeBlock language="python" code={`from torch.cuda.amp import GradScaler
+
+# Initialize gradient scaler
+scaler = GradScaler()
+
+# Scale loss before backward pass
+scaled_loss = scaler.scale(loss)
+scaled_loss.backward()
+
+# Unscale gradients before optimizer step
+scaler.unscale_(optimizer)`} />
+
+          <Title order={4} mt="md">2. Smart Precision Casting</Title>
+          <Text>Autocast automatically chooses the right precision for each operation:</Text>
+          
+          <CodeBlock language="python" code={`from torch.cuda.amp import autocast
+
+# Operations inside autocast use FP16 where safe
+with autocast():
+    output = model(input)  # FP16 computation
+    loss = criterion(output, target)  # Loss stays in FP32
     
-    # Create gradient scaler for mixed precision
+# Gradients computed in FP16, master weights stay FP32`} />
+
+          <Title order={4} mt="md">3. Complete Training Loop</Title>
+          <Text>Combining all components for mixed precision training:</Text>
+          
+          <CodeBlock language="python" code={`def train_mixed_precision(model, dataloader, optimizer):
     scaler = GradScaler()
     
-    model.train()
-    for epoch in range(num_epochs):
-        for batch_idx, (data, target) in enumerate(dataloader):
-            optimizer.zero_grad()
-            
-            # Forward pass with autocast
-            with autocast():
-                output = model(data)
-                loss = F.cross_entropy(output, target)
-            
-            # Backward pass with scaled gradients
-            scaler.scale(loss).backward()
-            
-            # Unscale gradients and clip if needed
-            scaler.unscale_(optimizer)
-            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
-            
-            # Optimizer step with scaler
-            scaler.step(optimizer)
-            scaler.update()
-            
-            if batch_idx % 100 == 0:
-                print(f"Epoch {epoch}, Batch {batch_idx}, Loss: {loss.item():.4f}")
-
-# Compare memory usage
-def compare_precision_memory():
-    model = MLP(input_size=1024, hidden_sizes=[2048, 2048, 1024])
-    batch_size = 128
-    x = torch.randn(batch_size, 1024).cuda()
-    
-    # FP32 forward pass
-    torch.cuda.reset_peak_memory_stats()
-    with torch.no_grad():
-        output_fp32 = model.cuda()(x)
-    fp32_memory = torch.cuda.max_memory_allocated() / 1024**2
-    
-    # FP16 forward pass
-    model_fp16 = model.half()
-    x_fp16 = x.half()
-    torch.cuda.reset_peak_memory_stats()
-    with torch.no_grad():
-        output_fp16 = model_fp16(x_fp16)
-    fp16_memory = torch.cuda.max_memory_allocated() / 1024**2
-    
-    print(f"FP32 Peak Memory: {fp32_memory:.2f} MB")
-    print(f"FP16 Peak Memory: {fp16_memory:.2f} MB")
-    print(f"Memory Reduction: {(1 - fp16_memory/fp32_memory)*100:.1f}%")
-
-if torch.cuda.is_available():
-    compare_precision_memory()`} />
-
-          <Title order={3} mt="lg">Loss Scaling and Gradient Management</Title>
-
-          <Paper p="md" withBorder>
-            <Title order={4}>Why Loss Scaling?</Title>
-            <Text>
-              FP16 has limited range (±65,504) compared to FP32 (±3.4×10³⁸).
-              Small gradients can underflow to zero in FP16.
-            </Text>
-            
-            <BlockMath>{`\\text{Scaled Loss} = \\text{Loss} \\times \\text{Scale Factor}`}</BlockMath>
-            <BlockMath>{`\\text{True Gradient} = \\frac{\\text{Scaled Gradient}}{\\text{Scale Factor}}`}</BlockMath>
-          </Paper>
-
-          <CodeBlock language="python" code={`class ManualMixedPrecision:
-    """Manual implementation to understand mixed precision mechanics"""
-    
-    def __init__(self, initial_scale=2**16):
-        self.scale = initial_scale
-        self.growth_factor = 2.0
-        self.backoff_factor = 0.5
-        self.growth_interval = 2000
-        self.steps_since_update = 0
+    for data, target in dataloader:
+        optimizer.zero_grad()
         
-    def scale_loss(self, loss):
-        """Scale the loss for FP16 training"""
-        return loss * self.scale
-    
-    def unscale_gradients(self, optimizer):
-        """Unscale gradients before optimizer step"""
-        for param_group in optimizer.param_groups:
-            for param in param_group['params']:
-                if param.grad is not None:
-                    param.grad.data.div_(self.scale)
-    
-    def check_gradients(self, parameters):
-        """Check for inf/nan in gradients"""
-        for param in parameters:
-            if param.grad is not None:
-                if torch.isinf(param.grad).any() or torch.isnan(param.grad).any():
-                    return False
-        return True
-    
-    def update_scale(self, gradients_valid):
-        """Update loss scale based on gradient validity"""
-        if gradients_valid:
-            self.steps_since_update += 1
-            if self.steps_since_update >= self.growth_interval:
-                self.scale *= self.growth_factor
-                self.steps_since_update = 0
-                print(f"Scale increased to {self.scale}")
-        else:
-            self.scale *= self.backoff_factor
-            self.steps_since_update = 0
-            print(f"Scale decreased to {self.scale}")
+        # Forward pass with autocast
+        with autocast():
+            output = model(data)
+            loss = criterion(output, target)
+        
+        # Backward with gradient scaling
+        scaler.scale(loss).backward()
+        
+        # Update weights with unscaled gradients
+        scaler.step(optimizer)
+        scaler.update()`} />
 
-# Example usage
-mp_trainer = ManualMixedPrecision()
-model = MLP().cuda().half()  # Convert model to FP16
-optimizer = torch.optim.Adam(model.parameters())
-
-for data, target in dataloader:
-    data, target = data.cuda().half(), target.cuda()
-    
-    # Forward pass in FP16
-    output = model(data)
-    loss = F.cross_entropy(output, target)
-    
-    # Scale loss and backward
-    scaled_loss = mp_trainer.scale_loss(loss)
-    scaled_loss.backward()
-    
-    # Check and unscale gradients
-    if mp_trainer.check_gradients(model.parameters()):
-        mp_trainer.unscale_gradients(optimizer)
-        optimizer.step()
-    
-    optimizer.zero_grad()
-    mp_trainer.update_scale(gradients_valid)`} />
         
 
-        
-          <Title id="memory-optimization" order={2} mt="xl">Memory Optimization Strategies</Title>
+          <Title order={3} mt="lg">Gradient Checkpointing</Title>
           
           <Text>
-            Efficient memory management enables training larger models and batch sizes on limited hardware.
+            During standard backpropagation, all intermediate activations from the forward pass are 
+            stored in memory to compute gradients. Gradient checkpointing strategically discards 
+            some activations and recomputes them during the backward pass when needed.
+          </Text>
+
+            <Title order={4}>How It Works</Title>
+            <List spacing="sm" mt="md">
+              <List.Item><strong>Forward Pass:</strong> Only save activations at checkpoint boundaries</List.Item>
+              <List.Item><strong>Backward Pass:</strong> Recompute intermediate activations from nearest checkpoint</List.Item>
+              <List.Item><strong>Trade-off:</strong> ~30% slower training for ~60% memory reduction</List.Item>
+              <List.Item><strong>Best for:</strong> Very deep networks with sequential layers</List.Item>
+            </List>
+
+          <CodeBlock language="python" code={`from torch.utils.checkpoint import checkpoint
+
+class CheckpointedLayer(nn.Module):
+    def __init__(self, in_features, out_features):
+        super().__init__()
+        self.linear = nn.Linear(in_features, out_features)
+        self.norm = nn.LayerNorm(out_features)
+        self.activation = nn.GELU()
+    
+    def forward(self, x):
+        # Without checkpointing: stores all intermediate values
+        # x -> linear_out -> norm_out -> activation_out
+        
+        # With checkpointing: only stores input and output
+        if self.training:
+            # Wrap the computation in checkpoint
+            return checkpoint(self._forward_impl, x)
+        else:
+            return self._forward_impl(x)
+    
+    def _forward_impl(self, x):
+        x = self.linear(x)
+        x = self.norm(x)
+        return self.activation(x)`} />
+
+          <Title order={3} mt="lg">2. CPU Offloading</Title>
+          
+          <Text>
+            Modern optimizers like Adam maintain momentum and variance buffers that double or triple 
+            the memory needed for parameters. CPU offloading moves these optimizer states to system RAM, 
+            keeping only the model weights on GPU.
           </Text>
 
           <Paper p="md" withBorder>
-            <Title order={4}>Key Memory Optimization Techniques</Title>
+            <Title order={4}>Memory Breakdown for Adam Optimizer</Title>
             <List spacing="sm" mt="md">
-              <List.Item><strong>Gradient Checkpointing:</strong> Trade compute for memory</List.Item>
-              <List.Item><strong>CPU Offloading:</strong> Move optimizer states to CPU</List.Item>
-              <List.Item><strong>Memory Efficient Attention:</strong> Flash Attention, xFormers</List.Item>
-              <List.Item><strong>Activation Recomputation:</strong> Recompute instead of storing</List.Item>
+              <List.Item><strong>Model Parameters:</strong> Original weights (FP32)</List.Item>
+              <List.Item><strong>Gradients:</strong> Same size as parameters</List.Item>
+              <List.Item><strong>First Moment (m):</strong> Running average of gradients</List.Item>
+              <List.Item><strong>Second Moment (v):</strong> Running average of squared gradients</List.Item>
+              <List.Item><strong>Total:</strong> 4× parameter memory for Adam vs 2× for SGD</List.Item>
             </List>
           </Paper>
 
-          <CodeBlock language="python" code={`from torch.utils.checkpoint import checkpoint_sequential
-import torch.nn.functional as F
+          <Text mt="md">
+            By offloading optimizer states to CPU, we reduce GPU memory from 4× to 2× parameter size:
+          </Text>
 
-class MemoryEfficientMLP(nn.Module):
-    def __init__(self, input_size=1024, num_layers=8, hidden_size=2048):
-        super().__init__()
-        
-        # Create deep network
-        layers = []
-        for i in range(num_layers):
-            in_size = input_size if i == 0 else hidden_size
-            layers.append(nn.Linear(in_size, hidden_size))
-            layers.append(nn.ReLU())
-            layers.append(nn.Dropout(0.1))
-        
-        self.layers = nn.ModuleList(layers)
-        self.output = nn.Linear(hidden_size, 10)
-        
-        # Checkpointing configuration
-        self.checkpoint_segments = 4  # Checkpoint every N layers
-        
-    def forward(self, x):
-        # Split layers into segments for checkpointing
-        segment_size = len(self.layers) // self.checkpoint_segments
-        
-        for i in range(0, len(self.layers), segment_size):
-            segment = self.layers[i:i+segment_size]
-            if self.training:
-                # Use checkpointing during training
-                x = checkpoint_sequential(segment, segment_size, x)
-            else:
-                # Normal forward during inference
-                for layer in segment:
-                    x = layer(x)
-        
-        return self.output(x)
-
-# Memory-efficient optimizer with CPU offloading
-class CPUOffloadOptimizer:
+          <CodeBlock language="python" code={`# Simplified CPU offloading concept
+class CPUOffloadAdam:
     def __init__(self, params, lr=0.001):
         self.params = list(params)
         self.lr = lr
-        # Store optimizer states on CPU
-        self.momentum_buffers = {
-            id(p): torch.zeros_like(p, device='cpu') 
-            for p in self.params
-        }
+        # Keep optimizer states on CPU instead of GPU
+        self.m = {id(p): torch.zeros_like(p, device='cpu') for p in self.params}
+        self.v = {id(p): torch.zeros_like(p, device='cpu') for p in self.params}
+        self.t = 0
     
     def step(self):
-        """Optimizer step with CPU offloading"""
-        for param in self.params:
-            if param.grad is None:
+        self.t += 1
+        for p in self.params:
+            if p.grad is None:
                 continue
             
-            # Move gradient to CPU
-            grad_cpu = param.grad.cpu()
+            # Transfer gradient to CPU for computation
+            grad_cpu = p.grad.cpu()
             
-            # Update momentum on CPU
-            momentum = self.momentum_buffers[id(param)]
-            momentum.mul_(0.9).add_(grad_cpu, alpha=0.1)
+            # Update moments on CPU (no GPU memory used)
+            self.m[id(p)] = 0.9 * self.m[id(p)] + 0.1 * grad_cpu
+            self.v[id(p)] = 0.999 * self.v[id(p)] + 0.001 * grad_cpu**2
             
-            # Apply update on GPU
-            param.data.add_(momentum.cuda(), alpha=-self.lr)
-    
-    def zero_grad(self):
-        for param in self.params:
-            if param.grad is not None:
-                param.grad.zero_()
+            # Compute update on CPU
+            m_hat = self.m[id(p)] / (1 - 0.9**self.t)
+            v_hat = self.v[id(p)] / (1 - 0.999**self.t)
+            update = self.lr * m_hat / (torch.sqrt(v_hat) + 1e-8)
+            
+            # Apply update to GPU parameters
+            p.data.add_(update.to(p.device), alpha=-1)`} />
 
-# Compare memory usage
-def compare_memory_techniques():
-    torch.cuda.reset_peak_memory_stats()
-    
-    # Standard model
-    model_standard = MLP(input_size=1024, hidden_sizes=[2048]*8)
-    model_standard.cuda()
-    x = torch.randn(64, 1024).cuda()
-    
-    # Forward and backward
-    loss = model_standard(x).sum()
-    loss.backward()
-    standard_memory = torch.cuda.max_memory_allocated() / 1024**2
-    
-    # Memory-efficient model
-    torch.cuda.reset_peak_memory_stats()
-    model_efficient = MemoryEfficientMLP(input_size=1024, num_layers=8)
-    model_efficient.cuda()
-    
-    loss = model_efficient(x).sum()
-    loss.backward()
-    efficient_memory = torch.cuda.max_memory_allocated() / 1024**2
-    
-    print(f"Standard model memory: {standard_memory:.2f} MB")
-    print(f"Efficient model memory: {efficient_memory:.2f} MB")
-    print(f"Memory saved: {(1 - efficient_memory/standard_memory)*100:.1f}%")
+          <Title order={3} mt="lg">3. Memory Efficient Attention</Title>
+          
+          <Text>
+            Standard attention mechanisms have O(n²) memory complexity for sequence length n. 
+            Memory-efficient implementations like Flash Attention reorganize computations to 
+            reduce memory usage while maintaining mathematical equivalence.
+          </Text>
 
-if torch.cuda.is_available():
-    compare_memory_techniques()`} />
+          <Paper p="md" withBorder>
+            <Title order={4}>Flash Attention Key Concepts</Title>
+            <List spacing="sm" mt="md">
+              <List.Item><strong>Tiling:</strong> Process attention in blocks instead of full matrices</List.Item>
+              <List.Item><strong>Kernel Fusion:</strong> Combine multiple operations to avoid intermediate storage</List.Item>
+              <List.Item><strong>Recomputation:</strong> Recompute softmax normalization instead of storing</List.Item>
+              <List.Item><strong>Benefits:</strong> 10-100× less memory, 2-4× faster on long sequences</List.Item>
+            </List>
+          </Paper>
 
-          <Alert title="Memory Profiling" color="yellow" mt="md">
-            Use torch.cuda.memory_summary() to get detailed memory breakdown and identify optimization opportunities.
-          </Alert>
+          <CodeBlock language="python" code={`# Standard attention (high memory usage)
+def standard_attention(Q, K, V):
+    # Q, K, V: [batch, heads, seq_len, dim]
+    scores = torch.matmul(Q, K.transpose(-2, -1)) / math.sqrt(Q.size(-1))
+    # scores: [batch, heads, seq_len, seq_len] - O(n²) memory!
+    attn_weights = F.softmax(scores, dim=-1)
+    output = torch.matmul(attn_weights, V)
+    return output
+
+# Using Flash Attention (memory efficient)
+from flash_attn import flash_attn_func
+
+def efficient_attention(Q, K, V):
+    # Flash Attention processes in blocks, never materializing full attention matrix
+    # Memory: O(n) instead of O(n²)
+    output = flash_attn_func(Q, K, V, dropout_p=0.0, causal=False)
+    return output`} />
+
+          <Title order={3} mt="lg">4. Activation Recomputation</Title>
+          
+          <Text>
+            Similar to gradient checkpointing but more fine-grained. Instead of saving all 
+            activations or checkpointing entire layers, selectively recompute expensive 
+            but memory-light operations while caching memory-heavy but compute-light operations.
+          </Text>
+
+          <Paper p="md" withBorder>
+            <Title order={4}>Smart Recomputation Strategy</Title>
+            <List spacing="sm" mt="md">
+              <List.Item><strong>Recompute:</strong> Activation functions (GELU, ReLU), dropout, normalization</List.Item>
+              <List.Item><strong>Cache:</strong> Linear projections, convolutions (memory-heavy)</List.Item>
+              <List.Item><strong>Rationale:</strong> Activations are fast to recompute but large to store</List.Item>
+            </List>
+          </Paper>
+
+          <CodeBlock language="python" code={`class SelectiveRecomputation(nn.Module):
+    def __init__(self, dim):
+        super().__init__()
+        self.linear1 = nn.Linear(dim, dim * 4)  # Expensive to recompute
+        self.linear2 = nn.Linear(dim * 4, dim)  # Expensive to recompute
+        self.activation = nn.GELU()  # Cheap to recompute
+        self.dropout = nn.Dropout(0.1)  # Cheap to recompute
+    
+    def forward(self, x):
+        # Cache the expensive linear computation
+        hidden = self.linear1(x)
         
+        if self.training:
+            # Don't save activation output - recompute in backward
+            hidden = checkpoint(lambda h: self.dropout(self.activation(h)), hidden)
+        else:
+            hidden = self.dropout(self.activation(hidden))
+        
+        return self.linear2(hidden)`} />
+
 
         
           <Title id="io-optimization" order={2} mt="xl">I/O and DataLoader Optimization</Title>
           
-          <Text>
-            Data loading can be a significant bottleneck. Optimizing I/O ensures GPU utilization remains high.
+          <Text mb="md">
+            <strong>I/O (Input/Output)</strong> refers to reading data from disk/memory and transferring it to the GPU. 
+            This can become a bottleneck if the GPU processes data faster than it can be loaded, leaving the GPU idle.
           </Text>
 
-          <Paper p="md" withBorder>
-            <Title order={4}>DataLoader Optimization Parameters</Title>
-            <Table mt="md">
-              <thead>
-                <tr>
-                  <th>Parameter</th>
-                  <th>Impact</th>
-                  <th>Recommended Value</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>num_workers</td>
-                  <td>Parallel data loading</td>
-                  <td>2-4 × num_gpus</td>
-                </tr>
-                <tr>
-                  <td>pin_memory</td>
-                  <td>Faster GPU transfer</td>
-                  <td>True for GPU training</td>
-                </tr>
-                <tr>
-                  <td>persistent_workers</td>
-                  <td>Avoid worker restart</td>
-                  <td>True if memory allows</td>
-                </tr>
-                <tr>
-                  <td>prefetch_factor</td>
-                  <td>Samples to prefetch</td>
-                  <td>2-4</td>
-                </tr>
-              </tbody>
-            </Table>
-          </Paper>
+          <Title order={3}>Understanding DataLoader Parameters</Title>
 
-          <CodeBlock language="python" code={`import torch.utils.data as data
+          <Title order={4} mt="md">1. num_workers - Parallel Data Loading</Title>
+          <Text mb="sm">
+            Controls how many subprocesses load data in parallel. Each worker loads batches independently, 
+            allowing data preparation to happen while the GPU processes the current batch.
+          </Text>
+          <CodeBlock language="python" code={`# Default: single-threaded loading (slow)
+dataloader = DataLoader(dataset, batch_size=32, num_workers=0)
+
+# Optimized: parallel loading with multiple workers
+dataloader = DataLoader(dataset, batch_size=32, num_workers=4)`} />
+
+          <Title order={4} mt="md">2. pin_memory - Faster GPU Transfer</Title>
+          <Text mb="sm">
+            Allocates data in page-locked (pinned) memory, enabling faster transfer from CPU to GPU. 
+            This bypasses one memory copy operation during the transfer.
+          </Text>
+          <CodeBlock language="python" code={`# Without pinned memory: CPU → Pageable → Pinned → GPU
+dataloader = DataLoader(dataset, pin_memory=False)
+
+# With pinned memory: CPU → Pinned → GPU (faster)
+dataloader = DataLoader(dataset, pin_memory=True)`} />
+
+          <Title order={4} mt="md">3. persistent_workers - Avoid Worker Restart</Title>
+          <Text mb="sm">
+            Keeps worker processes alive between epochs instead of shutting down and restarting them. 
+            This eliminates the overhead of creating new processes each epoch.
+          </Text>
+          <CodeBlock language="python" code={`# Workers restart each epoch (overhead)
+dataloader = DataLoader(dataset, num_workers=4, persistent_workers=False)
+
+# Workers stay alive (faster epoch transitions)
+dataloader = DataLoader(dataset, num_workers=4, persistent_workers=True)`} />
+
+          <Title order={4} mt="md">4. prefetch_factor - Batch Prefetching</Title>
+          <Text mb="sm">
+            Number of batches each worker prefetches. Workers prepare future batches while the model 
+            processes the current one, creating a buffer to prevent GPU starvation.
+          </Text>
+          <CodeBlock language="python" code={`# Each worker prefetches 2 batches (default)
+dataloader = DataLoader(dataset, num_workers=4, prefetch_factor=2)
+
+# Increase for more aggressive prefetching (uses more memory)
+dataloader = DataLoader(dataset, num_workers=4, prefetch_factor=4)`} />
+
+          <Title order={3} mt="lg">Complete Optimized DataLoader</Title>
+          <Text mb="sm">
+            Combining all optimizations for maximum throughput:
+          </Text>
+          <CodeBlock language="python" code={`import torch
 from torch.utils.data import DataLoader
 import multiprocessing
 
-class OptimizedDataLoader:
-    def __init__(self, dataset, batch_size=32, device='cuda'):
-        self.dataset = dataset
-        self.batch_size = batch_size
-        self.device = device
-        
-        # Optimal number of workers
-        self.num_workers = min(multiprocessing.cpu_count(), 8)
-        
-    def get_dataloader(self):
-        """Create optimized DataLoader"""
-        return DataLoader(
-            self.dataset,
-            batch_size=self.batch_size,
-            shuffle=True,
-            num_workers=self.num_workers,
-            pin_memory=True,  # Pin memory for faster GPU transfer
-            persistent_workers=True,  # Keep workers alive between epochs
-            prefetch_factor=2,  # Prefetch 2 batches per worker
-            drop_last=True  # Drop incomplete batches for consistent size
-        )
+def create_optimized_dataloader(dataset, batch_size=32, device='cuda'):
+    """Create a DataLoader with optimal settings for GPU training"""
     
-    def benchmark_loading(self, num_batches=100):
-        """Benchmark data loading speed"""
-        dataloader = self.get_dataloader()
-        
-        # Warmup
-        for i, batch in enumerate(dataloader):
-            if i >= 5:
-                break
-        
-        # Benchmark
-        start_time = time.perf_counter()
-        for i, (data, target) in enumerate(dataloader):
-            # Transfer to GPU
-            data = data.to(self.device, non_blocking=True)
-            target = target.to(self.device, non_blocking=True)
-            
-            if i >= num_batches:
-                break
-        
-        elapsed = time.perf_counter() - start_time
-        print(f"Loaded {num_batches} batches in {elapsed:.2f}s")
-        print(f"Average time per batch: {elapsed/num_batches*1000:.2f}ms")
-        print(f"Throughput: {num_batches * self.batch_size / elapsed:.0f} samples/s")
+    # Determine optimal number of workers
+    num_cores = multiprocessing.cpu_count()
+    num_workers = min(num_cores - 1, 8)  # Leave one core for main process
+    
+    dataloader = DataLoader(
+        dataset,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=num_workers,      # Parallel loading
+        pin_memory=True,               # Fast GPU transfer
+        persistent_workers=True,       # Avoid worker restart
+        prefetch_factor=2,            # Prefetch batches
+        drop_last=True                # Consistent batch sizes
+    )
+    
+    return dataloader`} />
 
-# Custom dataset with optimizations
-class OptimizedDataset(data.Dataset):
-    def __init__(self, size=10000, input_dim=1024):
-        # Pre-allocate and cache data in memory
-        self.data = torch.randn(size, input_dim, dtype=torch.float32)
-        self.targets = torch.randint(0, 10, (size,), dtype=torch.long)
+          <Title order={3} mt="lg">Benchmarking I/O Performance</Title>
+          <Text mb="sm">
+            Measure and compare loading speeds to identify bottlenecks:
+          </Text>
+          <CodeBlock language="python" code={`import time
+
+def benchmark_dataloader(dataloader, num_batches=100, device='cuda'):
+    """Benchmark data loading and transfer speed"""
+    
+    # Warmup
+    for i, (data, target) in enumerate(dataloader):
+        if i >= 5:
+            break
+    
+    # Benchmark
+    start_time = time.perf_counter()
+    
+    for i, (data, target) in enumerate(dataloader):
+        # Transfer to GPU with non_blocking for async transfer
+        data = data.to(device, non_blocking=True)
+        target = target.to(device, non_blocking=True)
         
-    def __len__(self):
-        return len(self.data)
+        # Synchronize to measure actual transfer time
+        torch.cuda.synchronize()
+        
+        if i >= num_batches:
+            break
+    
+    elapsed = time.perf_counter() - start_time
+    throughput = num_batches / elapsed
+    
+    print(f"Loading speed: {throughput:.1f} batches/sec")
+    print(f"Time per batch: {elapsed/num_batches*1000:.1f} ms")`} />
+
+          <Title order={3} mt="lg">Comparing Different Configurations</Title>
+          <Text mb="sm">
+            Test the impact of each optimization parameter:
+          </Text>
+          <CodeBlock language="python" code={`# Compare configurations
+configs = [
+    {"num_workers": 0, "pin_memory": False},  # Baseline
+    {"num_workers": 4, "pin_memory": False},  # Add workers
+    {"num_workers": 4, "pin_memory": True},   # Add pinned memory
+    {"num_workers": 4, "pin_memory": True, 
+     "persistent_workers": True}              # Full optimization
+]
+
+for config in configs:
+    loader = DataLoader(dataset, batch_size=128, **config)
+    # Benchmark each configuration...`} />
+
+          <Title order={3} mt="lg">Memory-Efficient Dataset Design</Title>
+          <Text mb="sm">
+            Pre-allocate data when possible to avoid repeated allocations:
+          </Text>
+          <CodeBlock language="python" code={`class OptimizedDataset(torch.utils.data.Dataset):
+    def __init__(self, size=10000, input_dim=1024):
+        # Pre-allocate all data in memory once
+        self.data = torch.randn(size, input_dim)
+        self.targets = torch.randint(0, 10, (size,))
     
     def __getitem__(self, idx):
-        # Return pre-allocated tensors (no allocation in workers)
-        return self.data[idx], self.targets[idx]
-
-# Compare different DataLoader configurations
-def compare_dataloader_configs():
-    dataset = OptimizedDataset(size=50000)
-    configs = [
-        {"num_workers": 0, "pin_memory": False, "persistent_workers": False},
-        {"num_workers": 4, "pin_memory": False, "persistent_workers": False},
-        {"num_workers": 4, "pin_memory": True, "persistent_workers": False},
-        {"num_workers": 4, "pin_memory": True, "persistent_workers": True},
-    ]
-    
-    for config in configs:
-        print(f"\\nConfig: {config}")
-        loader = DataLoader(dataset, batch_size=128, **config)
-        
-        start = time.perf_counter()
-        for i, batch in enumerate(loader):
-            if i >= 100:
-                break
-        elapsed = time.perf_counter() - start
-        
-        print(f"  Time for 100 batches: {elapsed:.2f}s")
-        print(f"  Throughput: {100 * 128 / elapsed:.0f} samples/s")
-
-compare_dataloader_configs()`} />
+        # Return pre-allocated tensors (no new allocations)
+        return self.data[idx], self.targets[idx]`} />
 
 
           <Flex direction="column" align="center" mt="md">

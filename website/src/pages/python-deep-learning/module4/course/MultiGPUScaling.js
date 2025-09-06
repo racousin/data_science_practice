@@ -658,44 +658,6 @@ if __name__ == "__main__":
     # Launch with: torchrun --nproc_per_node=8 script.py
     main()`} />
 
-          <Title order={3} mt="lg">Advanced Scaling Strategies</Title>
-
-          <Paper p="md" withBorder>
-            <Title order={4}>3D Parallelism (DP + MP + PP)</Title>
-            <Text>
-              For maximum scale, combine all parallelism strategies:
-            </Text>
-            
-            <List size="sm" mt="md">
-              <List.Item>Data parallel across nodes</List.Item>
-              <List.Item>Pipeline parallel within nodes</List.Item>
-              <List.Item>Tensor parallel within layers</List.Item>
-            </List>
-            
-            <Text mt="md">Total GPUs = DP_size × PP_size × TP_size</Text>
-          </Paper>
-
-          <Alert title="Scaling Checklist" color="green" mt="md">
-            <List size="sm">
-              <List.Item>✓ Profile single-GPU performance first</List.Item>
-              <List.Item>✓ Choose appropriate parallelism strategy based on model size</List.Item>
-              <List.Item>✓ Optimize batch size for GPU memory utilization</List.Item>
-              <List.Item>✓ Use mixed precision to reduce communication</List.Item>
-              <List.Item>✓ Implement gradient accumulation for large effective batches</List.Item>
-              <List.Item>✓ Monitor scaling efficiency and communication overhead</List.Item>
-              <List.Item>✓ Use NCCL backend for GPU communication</List.Item>
-              <List.Item>✓ Enable CUDA graphs for small models</List.Item>
-            </List>
-          </Alert>
-
-          <Flex direction="column" align="center" mt="md">
-            <Image
-              src="/assets/python-deep-learning/module4/scaling_efficiency.png"
-              alt="Scaling Efficiency Chart"
-              style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
-              fluid
-            />
-          </Flex>
         
       </Stack>
     </Container>
