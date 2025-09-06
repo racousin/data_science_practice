@@ -462,109 +462,194 @@ dataloader = DataLoader(dataset, num_workers=4, prefetch_factor=2)
 # Increase for more aggressive prefetching (uses more memory)
 dataloader = DataLoader(dataset, num_workers=4, prefetch_factor=4)`} />
 
-          <Title order={3} mt="lg">Complete Optimized DataLoader</Title>
-          <Text mb="sm">
-            Combining all optimizations for maximum throughput:
-          </Text>
-          <CodeBlock language="python" code={`import torch
-from torch.utils.data import DataLoader
-import multiprocessing
-
-def create_optimized_dataloader(dataset, batch_size=32, device='cuda'):
-    """Create a DataLoader with optimal settings for GPU training"""
-    
-    # Determine optimal number of workers
-    num_cores = multiprocessing.cpu_count()
-    num_workers = min(num_cores - 1, 8)  # Leave one core for main process
-    
-    dataloader = DataLoader(
-        dataset,
-        batch_size=batch_size,
-        shuffle=True,
-        num_workers=num_workers,      # Parallel loading
-        pin_memory=True,               # Fast GPU transfer
-        persistent_workers=True,       # Avoid worker restart
-        prefetch_factor=2,            # Prefetch batches
-        drop_last=True                # Consistent batch sizes
-    )
-    
-    return dataloader`} />
-
-          <Title order={3} mt="lg">Benchmarking I/O Performance</Title>
-          <Text mb="sm">
-            Measure and compare loading speeds to identify bottlenecks:
-          </Text>
-          <CodeBlock language="python" code={`import time
-
-def benchmark_dataloader(dataloader, num_batches=100, device='cuda'):
-    """Benchmark data loading and transfer speed"""
-    
-    # Warmup
-    for i, (data, target) in enumerate(dataloader):
-        if i >= 5:
-            break
-    
-    # Benchmark
-    start_time = time.perf_counter()
-    
-    for i, (data, target) in enumerate(dataloader):
-        # Transfer to GPU with non_blocking for async transfer
-        data = data.to(device, non_blocking=True)
-        target = target.to(device, non_blocking=True)
         
-        # Synchronize to measure actual transfer time
-        torch.cuda.synchronize()
+        <Title id="pruning-optimization" order={2} mt="xl">Pruning Optimization</Title>
         
-        if i >= num_batches:
-            break
-    
-    elapsed = time.perf_counter() - start_time
-    throughput = num_batches / elapsed
-    
-    print(f"Loading speed: {throughput:.1f} batches/sec")
-    print(f"Time per batch: {elapsed/num_batches*1000:.1f} ms")`} />
+        <Text>
+          Neural network pruning removes redundant parameters to create smaller, faster models without 
+          significantly impacting accuracy. Most networks are overparameterized - many weights contribute 
+          little to the final predictions and can be eliminated.
+        </Text>
 
-          <Title order={3} mt="lg">Comparing Different Configurations</Title>
-          <Text mb="sm">
-            Test the impact of each optimization parameter:
-          </Text>
-          <CodeBlock language="python" code={`# Compare configurations
-configs = [
-    {"num_workers": 0, "pin_memory": False},  # Baseline
-    {"num_workers": 4, "pin_memory": False},  # Add workers
-    {"num_workers": 4, "pin_memory": True},   # Add pinned memory
-    {"num_workers": 4, "pin_memory": True, 
-     "persistent_workers": True}              # Full optimization
-]
-
-for config in configs:
-    loader = DataLoader(dataset, batch_size=128, **config)
-    # Benchmark each configuration...`} />
-
-          <Title order={3} mt="lg">Memory-Efficient Dataset Design</Title>
-          <Text mb="sm">
-            Pre-allocate data when possible to avoid repeated allocations:
-          </Text>
-          <CodeBlock language="python" code={`class OptimizedDataset(torch.utils.data.Dataset):
-    def __init__(self, size=10000, input_dim=1024):
-        # Pre-allocate all data in memory once
-        self.data = torch.randn(size, input_dim)
-        self.targets = torch.randint(0, 10, (size,))
-    
-    def __getitem__(self, idx):
-        # Return pre-allocated tensors (no new allocations)
-        return self.data[idx], self.targets[idx]`} />
-
-
-          <Flex direction="column" align="center" mt="md">
-            <Image
-              src="/assets/python-deep-learning/module4/data_pipeline_optimization.png"
-              alt="Data Pipeline Optimization Flow"
-              style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
-              fluid
-            />
-          </Flex>
+        <Title order={3} mt="lg">Core Concepts</Title>
         
+        <Text>
+          Pruning exploits the observation that neural networks contain significant redundancy. 
+          By removing less important connections, we can achieve:
+        </Text>
+        
+        <List spacing="sm" mt="md">
+          <List.Item><strong>Reduced Model Size:</strong> 50-90% parameter reduction is common</List.Item>
+          <List.Item><strong>Faster Inference:</strong> Less computation with sparse operations</List.Item>
+          <List.Item><strong>Lower Memory Footprint:</strong> Crucial for edge deployment</List.Item>
+          <List.Item><strong>Maintained Accuracy:</strong> Often within 1-2% of original performance</List.Item>
+        </List>
+
+        <Title order={3} mt="lg">Main Pruning Strategies</Title>
+
+        <Title order={4} mt="md">1. Magnitude-Based Pruning</Title>
+        <Text>
+          The simplest approach: remove weights with the smallest absolute values, 
+          assuming they contribute least to the output.
+        </Text>
+        
+        <CodeBlock language="python" code={`# Unstructured magnitude pruning - removes individual weights
+import torch.nn.utils.prune as prune
+
+# Prune 30% of weights with smallest magnitude
+prune.l1_unstructured(model.linear, name='weight', amount=0.3)
+
+# The pruned weights become zero but structure remains
+print(model.linear.weight)  # Contains zeros where pruned`} />
+
+        <Text mt="md">
+          After pruning, weights are masked with zeros. The mask is applied during forward pass:
+        </Text>
+
+        <CodeBlock language="python" code={`# How pruning masks work internally
+weight_orig = model.linear.weight_orig  # Original weights
+weight_mask = model.linear.weight_mask  # Binary mask (0 or 1)
+effective_weight = weight_orig * weight_mask  # Zeros where pruned`} />
+
+        <Title order={4} mt="md">2. Structured Pruning</Title>
+        <Text>
+          Removes entire neurons, channels, or filters instead of individual weights. 
+          This creates actual speedup on standard hardware without special sparse operations.
+        </Text>
+        
+        <CodeBlock language="python" code={`# Structured pruning - remove entire channels
+prune.ln_structured(
+    model.conv, 
+    name='weight', 
+    amount=0.3,  # Remove 30% of channels
+    n=2,  # L2 norm for importance
+    dim=0  # Prune along output channel dimension
+)
+
+# Results in smaller conv layer: fewer output channels`} />
+
+        <Title order={4} mt="md">3. Iterative Pruning with Fine-tuning</Title>
+        <Text>
+          Gradually prune the network in steps, retraining between each pruning iteration 
+          to recover accuracy. This typically yields better results than one-shot pruning.
+        </Text>
+        
+        <CodeBlock language="python" code={`def iterative_pruning(model, dataloader, sparsity_levels):
+    """Gradually increase sparsity with retraining"""
+    for sparsity in sparsity_levels:  # e.g., [0.2, 0.4, 0.6, 0.8]
+        # Apply pruning to reach target sparsity
+        for module in model.modules():
+            if isinstance(module, nn.Linear):
+                prune.l1_unstructured(module, 'weight', amount=sparsity)
+        
+        # Fine-tune for several epochs to recover accuracy
+        train_epochs(model, dataloader, epochs=5)
+        
+        # Evaluate pruned model
+        accuracy = evaluate(model, test_loader)
+        print(f"Sparsity: {sparsity:.1%}, Accuracy: {accuracy:.2%}")`} />
+
+        <Title order={4} mt="md">4. Lottery Ticket Hypothesis</Title>
+        <Text>
+          Theory that dense networks contain sparse subnetworks (winning tickets) that can 
+          achieve comparable accuracy when trained from the original initialization.
+        </Text>
+        
+        <Paper p="md" withBorder>
+          <Title order={5}>Lottery Ticket Procedure:</Title>
+          <List spacing="sm" size="sm" mt="sm">
+            <List.Item>1. Train network to convergence</List.Item>
+            <List.Item>2. Prune p% of smallest magnitude weights</List.Item>
+            <List.Item>3. Reset remaining weights to original initialization</List.Item>
+            <List.Item>4. Retrain sparse network from scratch</List.Item>
+            <List.Item>5. Winning tickets match original accuracy at high sparsity</List.Item>
+          </List>
+        </Paper>
+
+        <Title order={4} mt="md">5. Dynamic Sparsity</Title>
+        <Text>
+          Allows pruned connections to regrow during training, enabling the network to 
+          explore different sparse topologies and find better configurations.
+        </Text>
+        
+        <CodeBlock language="python" code={`class DynamicSparsity:
+    def update_mask(self, model, epoch):
+        """Prune and regrow connections dynamically"""
+        if epoch % 10 == 0:  # Update every 10 epochs
+            # Prune: remove 20% of smallest weights
+            prune_weights(model, amount=0.2)
+            
+            # Regrow: add back 20% connections with highest gradient
+            regrow_weights(model, amount=0.2)
+            
+            # Maintains constant sparsity while exploring topologies`} />
+
+        <Title order={3} mt="lg">Practical Considerations</Title>
+
+        <Alert color="blue" mt="md">
+          <Text weight={500}>Best Practices for Pruning:</Text>
+          <List size="sm" mt="xs">
+            <List.Item>Start with a well-trained model - pruning from scratch is harder</List.Item>
+            <List.Item>Use gradual pruning schedules rather than aggressive one-shot pruning</List.Item>
+            <List.Item>Different layers have different sensitivity - prune early layers less</List.Item>
+            <List.Item>Structured pruning gives real speedup, unstructured needs special hardware</List.Item>
+            <List.Item>Combine with quantization for maximum compression</List.Item>
+          </List>
+        </Alert>
+
+        <Title order={4} mt="md">Making Pruning Permanent</Title>
+        <Text>
+          After pruning, remove the masks and create a truly smaller model:
+        </Text>
+        
+        <CodeBlock language="python" code={`# Remove pruning reparameterization
+for module in model.modules():
+    if isinstance(module, nn.Linear):
+        if hasattr(module, 'weight_orig'):
+            prune.remove(module, 'weight')
+
+# For structured pruning, actually resize layers
+def resize_pruned_model(model):
+    """Create new model with pruned architecture"""
+    # Count remaining channels/neurons after structured pruning
+    # Instantiate new smaller model with reduced dimensions
+    # Copy non-zero weights to new model
+    return smaller_model`} />
+
+        <Title order={3} mt="lg">Advanced Pruning Methods</Title>
+
+        <Text>
+          Modern research explores more sophisticated pruning techniques:
+        </Text>
+
+        <List spacing="sm" mt="md">
+          <List.Item>
+            <strong>Gradient-based pruning:</strong> Use gradient information to identify important weights
+          </List.Item>
+          <List.Item>
+            <strong>Second-order pruning:</strong> Consider Hessian information for better importance estimation
+          </List.Item>
+          <List.Item>
+            <strong>Pruning at initialization:</strong> Identify winning tickets before training
+          </List.Item>
+          <List.Item>
+            <strong>Hardware-aware pruning:</strong> Optimize sparsity patterns for specific accelerators
+          </List.Item>
+        </List>
+
+        <Paper p="md" withBorder mt="md">
+          <Title order={4}>Compression Results in Practice</Title>
+          <Text size="sm" mt="xs">
+            Typical compression ratios achieved through pruning:
+          </Text>
+          <List size="sm" mt="xs">
+            <List.Item>ResNet-50: 70-80% sparsity with &lt;1% accuracy loss</List.Item>
+            <List.Item>BERT: 40-60% sparsity maintaining downstream task performance</List.Item>
+            <List.Item>GPT models: 50% unstructured sparsity with minimal perplexity increase</List.Item>
+            <List.Item>CNNs: 90%+ sparsity possible with careful iterative pruning</List.Item>
+          </List>
+        </Paper>
+
       </Stack>
     </Container>
   );
