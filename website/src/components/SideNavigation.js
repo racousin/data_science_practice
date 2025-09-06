@@ -220,7 +220,7 @@ export const pytorchCourseContentData = {
   'module1': [
     { to: '/introduction', label: 'Historical Context & Applications', subLinks: [
       { id: 'introduction', label: 'Introduction to Deep Learning' },
-      { id: 'history', label: 'Historical Evolution' },
+      { id: 'history', label: 'Historical Evolution of Deep Learning' },
       { id: 'applications', label: 'Real-World Applications' },
       { id: 'data', label: 'Data: The Fuel of Deep Learning' }
     ]},
@@ -228,89 +228,65 @@ export const pytorchCourseContentData = {
       { id: 'ml-objective', label: 'The Machine Learning Objective' },
       { id: 'models-parameters', label: 'Models and Parameters' },
       { id: 'loss-functions', label: 'Loss Functions and Optimization' },
-      { id: 'gradient-descent', label: 'Gradient Descent' },
-      { id: 'linear-algebra', label: 'Essential Linear Algebra' }
+      { id: 'gradient-descent', label: 'Gradient Descent' }
     ]},
     { to: '/mlp-fundamentals', label: 'Multi layer perceptron in a nutshell', subLinks: [
       { id: 'neuron', label: 'Neuron as Computational Unit' },
       { id: 'network-architecture', label: 'Network Architecture' },
-      { id: 'parameters', label: 'Parameters to Optimize' },
+      { id: 'parameters', label: 'Parameters to Optimize' }
     ]},
     { to: '/pytorch-introduction', label: 'PyTorch: Introduction', subLinks: [
-      { id: 'philosophy', label: 'PyTorch' },
+      { id: 'philosophy', label: 'PyTorch Philosophy' },
       { id: 'tensors', label: 'Tensors: The Foundation' },
       { id: 'device-management', label: 'Device Management and GPU Acceleration' },
       { id: 'autograd-intro', label: 'Introduction to Automatic Differentiation' }
     ]},
     { to: '/pytorch-mlp-fundamentals', label: 'PyTorch MLP Fundamentals', subLinks: [
-      { id: 'linear-layer', label: 'Linear Layer' },
-      { id: 'activation-functions', label: 'Activation Functions' },
-      { id: 'sequential-model', label: 'Sequential Model' },
-      { id: 'custom-model-class', label: 'Custom Model Class' },
-      { id: 'counting-parameters', label: 'Counting Parameters' },
-      { id: 'input-output-shapes', label: 'Input and Output Shapes' },
-      { id: 'complete-example', label: 'Complete Example' },
-      { id: 'model-summary', label: 'Model Summary' }
     ]}
   ],
   'module2': [
     { to: '/automatic-differentiation-mathematical-perspective', label: 'Autograd mathematical perspective', subLinks: [
-      { id: 'forward-reverse-mode', label: 'Forward & Reverse Mode Differentiation' },
-      { id: 'computational-graph-construction', label: 'Computational Graph Construction' },
-      { id: 'chain-rule-backpropagation', label: 'Chain Rule & Backpropagation Mathematics' },
-      { id: 'gradient-accumulation', label: 'Gradient Accumulation & Zeroing' }
+      { id: 'gradient-methods', label: 'Gradient Computation Methods' },
+      { id: 'backprop-details', label: 'Backpropagation: A Reverse-Mode Automatic Differentiation' },
+      { id: 'error-derivatives', label: 'Error Function Derivatives' },
+      { id: 'output-layer', label: 'Output Layer Gradients' },
+      { id: 'hidden-layers', label: 'Hidden Layer Gradients' },
+      { id: 'backpropagation-algorithm', label: 'Backpropagation Algorithm' },
+      { id: 'forward-pass', label: 'Forward Pass' },
+      { id: 'backward-pass', label: 'Backward Pass' }
     ]},
-        { to: '/autograd-torch-perspective', label: 'Autograd torch perspective', subLinks: [
-      { id: 'forward-reverse-mode', label: 'Forward & Reverse Mode Differentiation' },
-      { id: 'computational-graph-construction', label: 'Computational Graph Construction' },
-      { id: 'chain-rule-backpropagation', label: 'Chain Rule & Backpropagation Mathematics' },
-      { id: 'gradient-accumulation', label: 'Gradient Accumulation & Zeroing' }
+    { to: '/autograd-torch-perspective', label: 'Autograd torch perspective', subLinks: [
     ]},
-
     { to: '/advanced-gradient-mechanics', label: 'Understanding Gradient Flow', subLinks: [
-      { id: 'gradient-flow', label: 'Gradient Flow & Vanishing/Exploding' },
-      { id: 'gradient-clipping', label: 'Gradient Clipping & Normalization' },
-      { id: 'higher-order-derivatives', label: 'Higher-order Derivatives & Hessians' },
-      { id: 'custom-backward-passes', label: 'Custom Backward Passes' }
     ]}
   ],
   'module3': [
     { to: '/data-pipeline-training-loop', label: 'Data Pipeline Training Loop', subLinks: [
     ]},
     { to: '/essential-layers', label: 'MLP Architecture & Components', subLinks: [
-      { id: 'multilayer-perceptron', label: 'Multilayer Perceptron Mathematics' },
-      { id: 'universal-approximation', label: 'Universal Approximation Theorem' },
-      { id: 'activation-functions', label: 'Activation Functions: Mathematical Properties' },
-      { id: 'weight-initialization', label: 'Weight Initialization Theory' },
-      { id: 'regularization-techniques', label: 'Regularization Techniques (Dropout, L2, Batch Norm)' }
     ]},
-
     { to: '/monitoring-visualization', label: 'Monitoring & Visualization', subLinks: [
-      { id: 'tensorboard-integration', label: 'TensorBoard Integration' },
-      { id: 'metrics-visualization', label: 'Metrics Visualization Strategies' },
-      { id: 'model-interpretability', label: 'Model Interpretability Basics' },
-      { id: 'debugging-networks', label: 'Debugging Neural Networks' },
-      { id: 'checkpoint-saving', label: 'Checkpoint Saving/Loading Strategies' }
     ]}
   ],
   'module4': [
     { to: '/resource-profiling', label: 'Model Resource Profiling', subLinks: [
+      { id: 'gpu-vs-cpu', label: 'GPU vs CPU Performance' },
       { id: 'model-components', label: 'Model Component Analysis' },
-      { id: 'memory-breakdown', label: 'Memory Breakdown: Parameters, Gradients, Optimizer' },
-      { id: 'activation-memory', label: 'Activation Memory & Checkpointing' },
-      { id: 'gpu-vs-cpu', label: 'GPU vs CPU Performance' }
+      { id: 'memory-breakdown', label: 'Memory Formula for Training' }
     ]},
     { to: '/performance-optimization', label: 'Performance Optimization', subLinks: [
       { id: 'torch-compile', label: 'Torch Compile' },
       { id: 'mixed-precision', label: 'Mixed Precision Training' },
-      { id: 'memory-optimization', label: 'Memory Optimization Strategies' },
-      { id: 'io-optimization', label: 'I/O and DataLoader Optimization' }
+      { id: 'io-optimization', label: 'I/O and DataLoader Optimization' },
+      { id: 'pruning-optimization', label: 'Pruning Optimization' }
     ]},
     { to: '/multi-gpu-scaling', label: 'Multi-GPU Scaling', subLinks: [
       { id: 'parallelization-overview', label: 'Parallelization Strategies Overview' },
       { id: 'data-parallel', label: 'Data Parallelism (DP/DDP)' },
-      { id: 'model-parallel', label: 'Model & Pipeline Parallelism' },
-      { id: 'distributed-training', label: 'Distributed Training Best Practices' }
+      { id: 'model-parallel', label: 'Model Parallelism (MP)' },
+      { id: 'pipeline-parallel', label: 'Pipeline Parallelism (PP)' },
+      { id: 'tensor-parallel', label: 'Tensor Parallelism (TP)' },
+      { id: 'hybrid-parallelism', label: 'Hybrid Parallelism Strategies' }
     ]}
   ]
 };
