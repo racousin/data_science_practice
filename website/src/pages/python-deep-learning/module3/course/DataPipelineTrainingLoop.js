@@ -20,11 +20,114 @@ const DataPipelineTrainingLoop = () => {
         
           <Title order={2}>Core Components</Title>
           
-          <Title order={3} mt="md">nn.Module</Title>
+          <Title order={3} mt="md">nn.Module Overview</Title>
           <Text>
             Base class for all neural network components. Handles parameters and gradients automatically.
           </Text>
+          
+          <Title order={3} mt="md">nn.Module Core Features</Title>
+          <Text>
+            The nn.Module class provides essential functionality for all neural network layers and models:
+          </Text>
+          <List>
+            <List.Item><strong>Automatic Parameter Management:</strong> Registers all trainable parameters</List.Item>
+            <List.Item><strong>GPU Movement:</strong> Move entire model to GPU with .to(device)</List.Item>
+            <List.Item><strong>Mode Switching:</strong> Toggle between training and evaluation modes</List.Item>
+            <List.Item><strong>Gradient Management:</strong> Automatic gradient computation and storage</List.Item>
+            <List.Item><strong>State Dict:</strong> Save and load model parameters</List.Item>
+          </List>
+          <CodeBlock language="python" code={`class MyModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.layer1 = nn.Linear(784, 128)
+        self.layer2 = nn.Linear(128, 10)
+    
+    def forward(self, x):
+        x = torch.relu(self.layer1(x))
+        return self.layer2(x)
+
+model = MyModel()
+model.to('cuda')  # Move to GPU
+model.train()     # Training mode
+model.eval()      # Evaluation mode`}/>
+          
+          <Title order={3} mt="md">nn.Module Methods</Title>
+          <Text>
+            Essential methods provided by nn.Module:
+          </Text>
+          <CodeBlock language="python" code={`# Parameter access
+model.parameters()           # Iterator over all parameters
+model.named_parameters()     # Iterator with parameter names
+model.state_dict()          # Dictionary of all parameters
+
+# Model manipulation
+model.to(device)            # Move to device (CPU/GPU)
+model.half()                # Convert to half precision
+model.double()              # Convert to double precision
+model.requires_grad_(False) # Freeze all parameters
+
+# Mode control
+model.train()               # Enable dropout, batch norm updates
+model.eval()                # Disable dropout, freeze batch norm
+
+# Module access
+model.modules()             # All submodules recursively
+model.children()            # Direct child modules only
+model.named_modules()       # Named modules recursively`}/>
+          
+          <Title order={3} mt="md">nn.Module Hooks</Title>
+          <Text>
+            Register functions to be called during forward/backward passes:
+          </Text>
+          <CodeBlock language="python" code={`# Forward hook - inspect intermediate outputs
+def forward_hook(module, input, output):
+    print(f"Output shape: {output.shape}")
+    return output  # Can modify output here
+
+handle = model.layer1.register_forward_hook(forward_hook)
+
+# Backward hook - inspect/modify gradients
+def backward_hook(module, grad_input, grad_output):
+    print(f"Gradient norm: {grad_output[0].norm()}")
+    return grad_input  # Can modify gradients here
+
+model.layer1.register_backward_hook(backward_hook)
+
+# Remove hook when done
+handle.remove()`}/>
+          
+          <Title order={3} mt="md">nn.Module Weight Initialization</Title>
           <WeightInitialization/>
+          
+          <Title order={3} mt="md">nn.Module Save and Load</Title>
+          <Text>
+            Saving and loading model state for checkpointing and deployment:
+          </Text>
+          <CodeBlock language="python" code={`# Save model state
+torch.save(model.state_dict(), 'model_weights.pth')
+
+# Save complete checkpoint
+checkpoint = {
+    'epoch': epoch,
+    'model_state_dict': model.state_dict(),
+    'optimizer_state_dict': optimizer.state_dict(),
+    'loss': loss,
+    'best_accuracy': best_acc
+}
+torch.save(checkpoint, 'checkpoint.pth')
+
+# Load model state
+model = MyModel()
+model.load_state_dict(torch.load('model_weights.pth'))
+model.eval()
+
+# Load complete checkpoint
+checkpoint = torch.load('checkpoint.pth')
+model.load_state_dict(checkpoint['model_state_dict'])
+optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+epoch = checkpoint['epoch']
+loss = checkpoint['loss']`}/>
+          
           
           <Title order={3} mt="md">Optimizers</Title>
           <Optimization/>
@@ -40,28 +143,60 @@ const DataPipelineTrainingLoop = () => {
           <Text>
             Container that defines how to access your data. Implement <Code>__len__</Code> and <Code>__getitem__</Code> methods.
           </Text>
-          <CodeBlock language="python">{`class CustomDataset(torch.utils.data.Dataset):
-    def __len__(self):
-        return len(self.data)
-    
-    def __getitem__(self, idx):
-        return self.data[idx], self.labels[idx]`}</CodeBlock>
+          <CodeBlock language="python" code={`class CustomDataset(torch.utils.data.Dataset):
+    def __init__(self, data_path):
+        self.data = torch.load(data_path)
+        self.transform = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize((0.5,), (0.5,))
+        ])`}/>
+          
+          <Text mt="sm">
+            The <Code>__len__</Code> method returns the total number of samples:
+          </Text>
+          <CodeBlock language="python" code={`    def __len__(self):
+        return len(self.data)`}/>
+          
+          <Text mt="sm">
+            The <Code>__getitem__</Code> method retrieves a single sample and applies transformations:
+          </Text>
+          <CodeBlock language="python" code={`    def __getitem__(self, idx):
+        sample = self.data[idx]
+        if self.transform:
+            sample = self.transform(sample)
+        return sample, self.labels[idx]`}/>
           
           <Title order={3} mt="md">DataLoader</Title>
           <Text>
-            Handles batching, shuffling, and parallel loading efficiently.
+            Handles batching, shuffling, and parallel loading efficiently. Key parameters control data loading behavior:
           </Text>
-          <CodeBlock language="python">{`dataloader = DataLoader(dataset, 
-                        batch_size=32, 
-                        shuffle=True, 
-                        num_workers=4)`}</CodeBlock>
+          <CodeBlock language="python" code={`# Basic DataLoader configuration
+dataloader = DataLoader(
+    dataset,
+    batch_size=32,      # Samples per batch
+    shuffle=True,       # Randomize order each epoch
+    num_workers=4       # Parallel data loading processes
+)`}/>
           
           <Title order={3} mt="md">Batch Size</Title>
           <Text>
-            Number of samples processed together. Balance between memory usage and training speed.
+            Number of samples processed together. Balance between memory usage and training speed:
           </Text>
-        
-
+          <List>
+            <List.Item><strong>Large batch size:</strong> Better GPU utilization, more stable gradients, faster per epoch</List.Item>
+            <List.Item><strong>Small batch size:</strong> Less memory, more gradient noise (can help generalization), more updates per epoch</List.Item>
+          </List>
+          <CodeBlock language="python" code={`# Dynamic batch size based on available memory
+def find_batch_size(model, input_shape):
+    batch_size = 2
+    while True:
+        try:
+            dummy = torch.randn(batch_size, *input_shape).cuda()
+            _ = model(dummy)
+            batch_size *= 2
+        except RuntimeError:
+            return batch_size // 2`}/>
+          
         
           <Title order={2}>Data Splits</Title>
           
@@ -93,32 +228,78 @@ const DataPipelineTrainingLoop = () => {
           <Text>
             Core training cycle: Forward pass → Calculate loss → Backward pass → Update weights
           </Text>
-          <CodeBlock language="python">{`for epoch in range(num_epochs):
+          <CodeBlock language="python" code={`for epoch in range(num_epochs):
     for batch in train_loader:
         optimizer.zero_grad()
         outputs = model(inputs)
         loss = criterion(outputs, targets)
         loss.backward()
-        optimizer.step()`}</CodeBlock>
+        optimizer.step()`}/>
           
           <Title order={3} mt="md">Evaluation Mode</Title>
           <Text>
             Disable dropout and batch normalization updates during validation.
           </Text>
-          <CodeBlock language="python">{`model.eval()
+          <CodeBlock language="python" code={`model.eval()
 with torch.no_grad():
-    # validation code`}</CodeBlock>
+    # validation code`}/>
         
 
         
           <Title order={2}>Callbacks</Title>
           
-          <Title order={3} mt="md">Early Stopping</Title>
-          <EarlyStopping/>
+          <Text>
+            Callbacks are functions executed at specific points during training to monitor progress, save checkpoints, or modify training behavior. They help automate common training patterns and improve model performance.
+          </Text>
           
-          <Title order={3} mt="md">Learning Rate Scheduling</Title>
-          <ReduceLROnPlateau/>
+          <Title order={3} mt="md">Common Callback Patterns</Title>
+          <Text>
+            Implementing a simple callback system for training monitoring:
+          </Text>
+          <CodeBlock language="python" code={`class TrainingCallback:
+    def on_epoch_start(self, epoch, model):
+        pass
+    
+    def on_batch_end(self, batch_idx, loss):
+        pass
+    
+    def on_epoch_end(self, epoch, train_loss, val_loss):
+        pass`}/>
+          
+          <Text mt="sm">
+            Using callbacks in your training loop:
+          </Text>
+          <CodeBlock language="python" code={`callbacks = [checkpoint_callback, logging_callback]
+
+for epoch in range(num_epochs):
+    for callback in callbacks:
+        callback.on_epoch_start(epoch, model)
+    
+    # Training loop
+    for batch_idx, (data, target) in enumerate(train_loader):
+        loss = train_step(data, target)
+        for callback in callbacks:
+            callback.on_batch_end(batch_idx, loss)`}/>
+          
+          <Title order={3} mt="md">Model Checkpointing</Title>
+          <Text>
+            Save model weights periodically and keep best performing versions:
+          </Text>
+          <CodeBlock language="python" code={`class ModelCheckpoint:
+    def __init__(self, filepath, monitor='val_loss'):
+        self.filepath = filepath
+        self.best_score = float('inf')
         
+    def on_epoch_end(self, epoch, model, val_loss):
+        if val_loss < self.best_score:
+            self.best_score = val_loss
+            torch.save({
+                'epoch': epoch,
+                'model_state': model.state_dict(),
+                'best_score': self.best_score
+            }, self.filepath)
+            print(f"Saved best model at epoch {epoch}")`}/>
+          
       </Stack>
     </Container>
   );

@@ -9,10 +9,17 @@ const Optimization = () => {
     <Stack spacing="lg" w="100%">
     <Stack spacing="md">
       {/* SGD */}
+                    <CodeBlock
+        language="python"
+        code={`import torch.optim as optim`}/>
       <div>
         <Title order={4}>Stochastic Gradient Descent (SGD)</Title>
         <BlockMath>{`w_{t+1} = w_t - \\eta \\nabla L(w_t)`}</BlockMath>
         <Text size="sm">Basic gradient descent with fixed learning rate η</Text>
+              <CodeBlock
+        language="python"
+        code={`sgd = optim.SGD(model.parameters(), lr=0.01)`}
+      />
       </div>
 
       {/* Momentum */}
@@ -22,7 +29,10 @@ const Optimization = () => {
         <BlockMath>{`w_{t+1} = w_t - \\eta v_{t+1}`}</BlockMath>
         <Text size="sm">Adds velocity term to dampen oscillations and accelerate convergence</Text>
       </div>
-
+              <CodeBlock
+        language="python"
+        code={`momentum = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)`}
+      />
       {/* Adam */}
       <div>
         <Title order={4}>Adam (Adaptive Moment Estimation)</Title>
@@ -37,20 +47,15 @@ const Optimization = () => {
         <Text size="sm">* t is the iteration counter (timestep), starting from 1</Text>
         <Text size="sm">* Bias correction terms (1-β₁ᵗ) and (1-β₂ᵗ) counteract initialization bias</Text>
       </div>
+                    <CodeBlock
+        language="python"
+        code={`adam = optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999))`}
+      />
     </Stack>
 
       <CodeBlock
         language="python"
-        code={`
-import torch.optim as optim
-
-# Initialize optimizers
-model = YourModel()
-sgd = optim.SGD(model.parameters(), lr=0.01)
-momentum = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
-adam = optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999))
-
-# Training loop example
+        code={`# Training loop example
 optimizer.zero_grad()
 loss = criterion(outputs, targets)
 loss.backward()

@@ -210,6 +210,28 @@ writer.add_embedding(
 
           </Stack>
         </div>
+
+
+          <Title order={3} mt="md">Use callback to get TensorBoard Integration</Title>
+          <Text>
+            Log metrics and visualizations for real-time monitoring:
+          </Text>
+          <CodeBlock language="python" code={`from torch.utils.tensorboard import SummaryWriter
+
+class TensorBoardCallback:
+    def __init__(self, log_dir='runs/experiment'):
+        self.writer = SummaryWriter(log_dir)
+        
+    def on_batch_end(self, global_step, loss):
+        self.writer.add_scalar('Loss/train', loss, global_step)
+        
+    def on_epoch_end(self, epoch, train_loss, val_loss, model):
+        self.writer.add_scalar('Loss/val', val_loss, epoch)
+        self.writer.add_scalar('Loss/train_epoch', train_loss, epoch)
+        
+        # Log model weights histogram
+        for name, param in model.named_parameters():
+            self.writer.add_histogram(name, param, epoch)`}/>
       </Stack>
     </Container>
   );

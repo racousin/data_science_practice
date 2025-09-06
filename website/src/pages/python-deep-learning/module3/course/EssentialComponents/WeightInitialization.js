@@ -18,29 +18,6 @@ const WeightInitialization = () => {
         </Text>
         <BlockMath>{String.raw`W = 0`}</BlockMath>
 
-
-          <Title order={3} mt="lg" mb="sm">Random Normal Initialization</Title>
-          <Text mb="md">
-            Basic approach using fixed standard deviation (problematic for deep networks):
-          </Text>
-          <BlockMath>{String.raw`W \sim \mathcal{N}(0, \sigma^2)`}</BlockMath>
-
-          <Title order={3} mt="lg" mb="sm">Xavier/Glorot Initialization</Title>
-          <Text mb="md">
-            Scales based on layer sizes, ideal for linear/tanh/sigmoid activations:
-          </Text>
-          <BlockMath>
-            {String.raw`W \sim \mathcal{N}(0, \sqrt{\frac{2}{n_{in} + n_{out}}})`}
-          </BlockMath>
-
-          <Title order={3} mt="lg" mb="sm">He Initialization</Title>
-          <Text mb="md">
-            Modified for ReLU activations, accounts for rectification:
-          </Text>
-          <BlockMath>
-            {String.raw`W \sim \mathcal{N}(0, \sqrt{\frac{2}{n_{in}}})`}
-          </BlockMath>
-
           <Title order={3} mt="lg" mb="sm">PyTorch Default Initializations</Title>
           <Text mb="md">
           Linear Layer (nn.Linear) weights are initialized using a uniform distribution bounded by
@@ -63,8 +40,8 @@ const WeightInitialization = () => {
 layer = nn.Linear(input_size, output_size)  # Automatically initialized
 
 # Default initialization can be overridden:
-nn.init.xavier_normal_(layer.weight)  # For tanh/sigmoid
-nn.init.kaiming_normal_(layer.weight)  # For ReLU
+nn.init.xavier_normal_(layer.weight) 
+nn.init.kaiming_normal_(layer.weight)
 nn.init.constant_(layer.bias, 0)  # Typically zero for biases`}
           />
         </div>
