@@ -32,110 +32,66 @@ const PerformanceOptimization = () => {
             </List>
           </Paper>
 
-          <CodeBlock language="python" code={`import torch
-import torch.nn as nn
-import time
 
-class MLP(nn.Module):
-    def __init__(self, input_size=784, hidden_sizes=[512, 256, 128], num_classes=10):
-        super().__init__()
-        layers = []
-        prev_size = input_size
-        
-        for hidden_size in hidden_sizes:
-            layers.extend([
-                nn.Linear(prev_size, hidden_size),
-                nn.ReLU(),
-                nn.BatchNorm1d(hidden_size)
-            ])
-            prev_size = hidden_size
-        
-        layers.append(nn.Linear(prev_size, num_classes))
-        self.model = nn.Sequential(*layers)
-    
-    def forward(self, x):
-        return self.model(x)
+          <CodeBlock language="python" code={`def foo(x, y):
+    a = torch.sin(x)
+    b = torch.cos(y)
+    return a + b
+opt_foo1 = torch.compile(foo)
+print(opt_foo1(torch.randn(10, 10), torch.randn(10, 10))) #same output`} />
+Arbitrary Python functions can be optimized by passing the callable to torch.compile. We can then call the returned optimized function in place of the original function.
 
-# Compare performance with and without compile
-def benchmark_compile():
-    model = MLP(input_size=1024, hidden_sizes=[2048, 1024, 512])
-    compiled_model = torch.compile(model)  # Compile the model
+
+          <CodeBlock language="python" code={`def simple_function(x, y):
+    # Multiple element-wise operations
+    z = torch.sin(x) + torch.cos(y)
+    z = z * torch.exp(-z)
+    z = torch.tanh(z) + torch.sigmoid(z)
+    z = z ** 2 + torch.sqrt(torch.abs(z) + 1e-8)
+    return z
     
-    # Test input
-    batch_size = 256
-    x = torch.randn(batch_size, 1024)
+        # Create compiled version
+    compiled_function = torch.compile(simple_function)
     
-    # Warmup
-    for _ in range(10):
-        _ = model(x)
-        _ = compiled_model(x)
-    
-    # Benchmark original model
+    # Test tensors - make them large enough to see benefits
+    size = (1000, 1000)
+    x = torch.randn(size, device=device)
+    y = torch.randn(size, device=device)
+        print("Benchmarking original function...")
     start = time.perf_counter()
     for _ in range(100):
-        _ = model(x)
+        result = simple_function(x, y)
+        torch.cuda.synchronize()
     original_time = time.perf_counter() - start
     
-    # Benchmark compiled model
+    # Benchmark compiled function
+    print("Benchmarking compiled function...")
     start = time.perf_counter()
     for _ in range(100):
-        _ = compiled_model(x)
-    compiled_time = time.perf_counter() - start
-    
-    print(f"Original model: {original_time:.3f}s")
-    print(f"Compiled model: {compiled_time:.3f}s")
-    print(f"Speedup: {original_time/compiled_time:.2f}x")
-    
-benchmark_compile()`} />
+        result = compiled_function(x, y)
+        torch.cuda.synchronize()
+    compiled_time = time.perf_counter() - start`} />
+<CodeBlock code={`Function Results:
+Original function: 0.019s
+Compiled function: 0.007s
+Speedup: 2.89x`} />
 
-          <Title order={3} mt="lg">Compilation Modes and Backends</Title>
+Behavior of torch.compile with Nested Modules and Function Calls
 
-          <CodeBlock language="python" code={`# Different compilation modes
-model = MLP()
+When you use torch.compile, the compiler will try to recursively compile every function call inside the target function or module inside the target function or module that is not in a skip list (such as built-ins, some functions in the torch.* namespace).
 
-# Mode: default - balanced optimization
-compiled_default = torch.compile(model)
+Best Practices:
 
-# Mode: reduce-overhead - minimize framework overhead
-compiled_reduce = torch.compile(model, mode="reduce-overhead")
+1. Top-Level Compilation: One approach is to compile at the highest level possible (i.e., when the top-level module is initialized/called) and selectively disable compilation when encountering excessive graph breaks or errors. If there are still many compile issues, compile individual subcomponents instead.
 
-# Mode: max-autotune - extensive tuning for best performance
-compiled_max = torch.compile(model, mode="max-autotune")
+2. Modular Testing: Test individual functions and modules with torch.compile before integrating them into larger models to isolate potential issues.
 
-# Custom backend selection
-compiled_inductor = torch.compile(model, backend="inductor")  # Default, good for GPUs
-compiled_onnx = torch.compile(model, backend="onnxrt")  # ONNX Runtime
 
-# Disable certain optimizations
-compiled_custom = torch.compile(
-    model,
-    options={
-        "max_autotune": True,
-        "triton.cudagraphs": True,  # Enable CUDA graphs
-        "trace.enabled": True,       # Enable tracing
-        "trace.graph_diagram": True  # Save graph visualization
-    }
-)
-
-print("Compilation modes configured successfully")`} />
-
-          <Alert title="Compilation Tips" color="blue" mt="md">
             <List size="sm">
               <List.Item>First call will be slower due to compilation overhead</List.Item>
               <List.Item>Best for static input shapes - dynamic shapes may cause recompilation</List.Item>
-              <List.Item>Use fullgraph=True for maximum optimization if model has no Python control flow</List.Item>
-              <List.Item>Monitor with TORCH_LOGS="+dynamo" for compilation insights</List.Item>
             </List>
-          </Alert>
 
-          <Flex direction="column" align="center" mt="md">
-            <Image
-              src="/assets/python-deep-learning/module4/torch_compile_workflow.png"
-              alt="Torch Compile Workflow"
-              style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
-              fluid
-            />
-          </Flex>
         
 
         
@@ -314,7 +270,6 @@ for data, target in dataloader:
               <List.Item><strong>CPU Offloading:</strong> Move optimizer states to CPU</List.Item>
               <List.Item><strong>Memory Efficient Attention:</strong> Flash Attention, xFormers</List.Item>
               <List.Item><strong>Activation Recomputation:</strong> Recompute instead of storing</List.Item>
-              <List.Item><strong>Parameter Sharding:</strong> Distribute parameters across devices</List.Item>
             </List>
           </Paper>
 
@@ -553,74 +508,6 @@ def compare_dataloader_configs():
 
 compare_dataloader_configs()`} />
 
-          <Title order={3} mt="lg">Data Pipeline Optimization</Title>
-
-          <CodeBlock language="python" code={`# Advanced data pipeline with preprocessing on GPU
-class GPUAugmentationPipeline:
-    def __init__(self, device='cuda'):
-        self.device = device
-        
-    def augment_batch(self, batch):
-        """Apply augmentations on GPU for better performance"""
-        # Move to GPU if not already
-        if batch.device.type != 'cuda':
-            batch = batch.to(self.device)
-        
-        # GPU-based augmentations (example)
-        batch = batch + torch.randn_like(batch) * 0.1  # Add noise
-        batch = F.dropout2d(batch, p=0.1, training=True)  # Random dropout
-        
-        return batch
-    
-    def create_data_stream(self, dataloader):
-        """Create optimized data stream with GPU preprocessing"""
-        for data, target in dataloader:
-            # Async transfer to GPU
-            data = data.to(self.device, non_blocking=True)
-            target = target.to(self.device, non_blocking=True)
-            
-            # GPU augmentation
-            data = self.augment_batch(data)
-            
-            yield data, target
-
-# Prefetch to GPU for maximum throughput
-class DataPrefetcher:
-    def __init__(self, loader, device='cuda'):
-        self.loader = iter(loader)
-        self.device = device
-        self.stream = torch.cuda.Stream()
-        self.preload()
-    
-    def preload(self):
-        """Preload next batch to GPU"""
-        try:
-            self.next_data, self.next_target = next(self.loader)
-        except StopIteration:
-            self.next_data = None
-            self.next_target = None
-            return
-        
-        with torch.cuda.stream(self.stream):
-            self.next_data = self.next_data.to(self.device, non_blocking=True)
-            self.next_target = self.next_target.to(self.device, non_blocking=True)
-    
-    def next(self):
-        """Get next batch and start loading the following one"""
-        torch.cuda.current_stream().wait_stream(self.stream)
-        data = self.next_data
-        target = self.next_target
-        
-        if data is not None:
-            data.record_stream(torch.cuda.current_stream())
-        if target is not None:
-            target.record_stream(torch.cuda.current_stream())
-        
-        self.preload()
-        return data, target
-
-# Usage example
-print("Data pipeline optimization strategies configured")`} />
 
           <Flex direction="column" align="center" mt="md">
             <Image

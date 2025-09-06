@@ -1,10 +1,12 @@
 import React from 'react';
-import { Container, Title, Text, Stack, Grid, Paper, Code, List } from '@mantine/core';
-
+import { Container, Title, Text, Stack, Grid, Paper, Code, List, Flex, Image } from '@mantine/core';
+import { InlineMath, BlockMath } from 'react-katex';
+import CodeBlock from '../../../../components/CodeBlock';
 const ModelOptimization = () => {
   return (
     <Container size="xl" py="xl">
       <Stack spacing="xl">
+        
         
         {/* Slide 1: Title and Introduction */}
         <div data-slide className="min-h-[500px] flex flex-col justify-center">

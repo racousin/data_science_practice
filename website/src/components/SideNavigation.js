@@ -294,17 +294,11 @@ export const pytorchCourseContentData = {
     ]}
   ],
   'module4': [
-    { to: '/resource-profiling', label: 'Resource Profiling & Memory', subLinks: [
+    { to: '/resource-profiling', label: 'Model Resource Profiling', subLinks: [
       { id: 'model-components', label: 'Model Component Analysis' },
       { id: 'memory-breakdown', label: 'Memory Breakdown: Parameters, Gradients, Optimizer' },
       { id: 'activation-memory', label: 'Activation Memory & Checkpointing' },
       { id: 'gpu-vs-cpu', label: 'GPU vs CPU Performance' }
-    ]},
-    { to: '/model-complexity-analysis', label: 'Model Complexity Analysis', subLinks: [
-      { id: 'flops-calculation', label: 'FLOPs Calculation for MLPs' },
-      { id: 'memory-requirements', label: 'Memory Requirements Estimation' },
-      { id: 'batch-size-optimization', label: 'Batch Size vs Memory Trade-offs' },
-      { id: 'profiling-tools', label: 'PyTorch Profiling Tools' }
     ]},
     { to: '/performance-optimization', label: 'Performance Optimization', subLinks: [
       { id: 'torch-compile', label: 'Torch Compile & Graph Optimization' },

@@ -7,13 +7,130 @@ const ResourceProfiling = () => {
   return (
     <Container fluid>
       <Stack spacing="md">
-        <Title order={1}>Resource Profiling & Memory Management</Title>
+        <Title order={1}>Model Resource Profiling</Title>
         
         <Text>
           Understanding how deep learning models utilize system resources is crucial for optimization.
           We'll explore how different model components consume memory and compute resources.
         </Text>
+We will use this simple MLP model to illustrate following sections
+          <CodeBlock language="python" code={`class MLP(nn.Module):
+    def __init__(self, input_size=784, hidden_size=256, num_classes=10):
+        super().__init__()
+        self.fc1 = nn.Linear(input_size, hidden_size)
+        self.relu = nn.ReLU()
+        self.fc2 = nn.Linear(hidden_size, num_classes)
 
+    def forward(self, x):
+        x = self.fc1(x)
+        x = self.relu(x)
+        x = self.fc2(x)
+        return x`}/>
+        
+          <Title id="gpu-vs-cpu" order={2} mt="xl">GPU vs CPU Performance</Title>
+          
+          <Text>
+            Understanding when to use GPU vs CPU is crucial for efficient training:
+          </Text>
+
+            <Title order={4}>Performance Characteristics</Title>
+            <Group position="apart" mt="md">
+              <div>
+                <Badge color="blue" size="lg">CPU</Badge>
+                <List size="sm" mt="sm">
+                  <List.Item>Low latency for small operations</List.Item>
+                  <List.Item>Better for sequential tasks</List.Item>
+                  <List.Item>More memory available</List.Item>
+                </List>
+              </div>
+              <div>
+                <Badge color="green" size="lg">GPU</Badge>
+                <List size="sm" mt="sm">
+                  <List.Item>High throughput for parallel ops</List.Item>
+                  <List.Item>Excellent for matrix operations</List.Item>
+                  <List.Item>Limited memory (typically 8-80GB)</List.Item>
+                </List>
+              </div>
+            </Group>
+
+          <Flex direction="column" align="center" mt="md">
+            <Image
+              src="/assets/python-deep-learning/module4/cpugpubatch.png"
+              alt="GPU vs CPU Performance Comparison"
+              style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+              fluid
+            />
+          </Flex>
+                      <Title order={4}>Batch Size Impact on training</Title>
+                      
+                      <List spacing="sm" mt="md">
+                        <List.Item>
+                          <strong>Linear scaling with activations:</strong> Activation memory scales linearly with batch size
+                        </List.Item>
+                        <List.Item>
+                          <strong>Fixed parameter memory:</strong> Model and optimizer memory independent of batch size
+                        </List.Item>
+                        <List.Item>
+                          <strong>Gradient noise:</strong> Smaller batches → noisier gradients → better generalization
+                        </List.Item>
+                        <List.Item>
+                          <strong>Hardware utilization:</strong> Larger batches → better GPU utilization
+                        </List.Item>
+                      </List>
+
+          <Title order={3} mt="lg">Memory Transfer Overhead</Title>
+          
+          <Text>
+            As we discussed in Module 1, your computer's operating system kernel runs on the CPU with its RAM. 
+            All data must pass through CPU RAM before reaching the GPU for processing. This CPU-to-GPU memory 
+            transfer can become a significant bottleneck since data needs to travel across the PCIe bus between 
+            these two separate memory spaces. Understanding and optimizing these transfers is crucial for performance.
+          </Text>
+
+          <CodeBlock language="python" code={`def measure_transfer_overhead(size_mb=100):
+    """Measure CPU-GPU transfer overhead"""
+    size_elements = int(size_mb * 1024 * 1024 / 4)  # 32-bit floats
+    
+    # Create CPU tensor
+    cpu_tensor = torch.randn(size_elements)
+    
+    # Measure CPU to GPU
+    start = time.time()
+    gpu_tensor = cpu_tensor.cuda()
+    torch.cuda.synchronize()
+    cpu_to_gpu_time = time.time() - start
+    
+    # Measure GPU to CPU
+    start = time.time()
+    cpu_tensor_back = gpu_tensor.cpu()
+    torch.cuda.synchronize()
+    gpu_to_cpu_time = time.time() - start
+    
+    print(f"Transfer {size_mb}MB:")
+    print(f"  CPU → GPU: {cpu_to_gpu_time*1000:.2f}ms ({size_mb/cpu_to_gpu_time:.1f} MB/s)")
+    print(f"  GPU → CPU: {gpu_to_cpu_time*1000:.2f}ms ({size_mb/gpu_to_cpu_time:.1f} MB/s)")
+    
+    return cpu_to_gpu_time, gpu_to_cpu_time
+
+# Test different sizes
+for size in [10, 100, 500]:
+    measure_transfer_overhead(size)
+    print()`} />
+          <Flex direction="column" align="center" mt="md">
+            <Image
+              src="/assets/python-deep-learning/module4/overhead.png"
+              alt="GPU vs CPU Performance Comparison"
+              style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+              fluid
+            />
+          </Flex>
+            <List size="sm">
+              <List.Item>Use GPU for large batch training and inference</List.Item>
+              <List.Item>Minimize CPU-GPU transfers by keeping data on GPU</List.Item>
+              <List.Item>Profile your specific workload to find optimal device</List.Item>
+            </List>
+
+        
         
           <Title id="model-components" order={2} mt="xl">Model Component Analysis</Title>
           
@@ -145,7 +262,104 @@ const ResourceProfiling = () => {
             </Text>
 
 
-<Title order={2} mt="xl">Memory Profiling with PyTorch Profiler</Title>
+
+        <Title order={2}>Model Complexity Estimation</Title>
+        
+        <Text>
+          Understanding the computational complexity of neural networks 
+          is essential for designing efficient models and choosing appropriate hardware.
+        </Text>
+
+        <Title order={3}>Number of Operations Estimation (FLOPs)</Title>
+        
+        <Text>
+          FLOPs (Floating Point Operations) provide a hardware-independent measure of computational complexity.
+          We count multiply-add operations as 2 FLOPs.
+        </Text>
+
+        <Title order={4}>Number of Operations for Forward Pass</Title>
+        
+        <Text mt="md">
+          <strong>Single Neuron:</strong> For input size n and single output:
+        </Text>
+        <CodeBlock language="python" code={`# Matrix multiplication: y = Wx + b
+# Operations: n multiplications + (n-1) additions + 1 bias addition
+FLOPs = 2n`} />
+        
+        <Text mt="md">
+          <strong>Activation Functions:</strong>
+        </Text>
+        <List mt="sm" spacing="xs">
+          <List.Item>ReLU: 1 FLOP per element (comparison)</List.Item>
+          <List.Item>Sigmoid/Tanh: ~10-20 FLOPs per element (exponential operations)</List.Item>
+          <List.Item>Softmax: ~5m FLOPs for m outputs (exp + normalization)</List.Item>
+        </List>
+        
+        <Text mt="md">
+          <strong>MLP Layer:</strong> For input size n, output size m:
+        </Text>
+        <CodeBlock language="python" code={`# Linear layer: Y = XW + b
+# X: batch_size × n, W: n × m, b: m
+FLOPs_per_sample = 2nm  # Matrix multiplication
+FLOPs_batch = batch_size × 2nm`} />
+
+        <Title order={4} mt="lg">Number of Operations for Backward Pass</Title>
+        
+        <Text mt="md">
+          The backward pass typically requires 2-3× the FLOPs of the forward pass:
+        </Text>
+        
+        <List mt="md" spacing="sm">
+          <List.Item>
+            <strong>Gradient w.r.t weights:</strong> dL/dW = X^T × dL/dY
+            <CodeBlock language="python" code={`FLOPs = 2nm (same as forward)`} />
+          </List.Item>
+          <List.Item>
+            <strong>Gradient w.r.t inputs:</strong> dL/dX = dL/dY × W^T
+            <CodeBlock language="python" code={`FLOPs = 2nm (same as forward)`} />
+          </List.Item>
+          <List.Item>
+            <strong>Gradient w.r.t bias:</strong> dL/db = sum(dL/dY)
+            <CodeBlock language="python" code={`FLOPs = m`} />
+          </List.Item>
+        </List>
+        
+        <Text mt="md">
+          <strong>Total backward FLOPs ≈ 2 × forward FLOPs</strong>
+        </Text>
+
+        <Title order={4} mt="lg">Number of Operations for Optimizer</Title>
+        
+        <Text mt="md">
+          Optimizer FLOPs depend on the algorithm complexity:
+        </Text>
+        
+        <List mt="md" spacing="sm">
+          <List.Item>
+            <strong>SGD:</strong> W = W - lr × dW
+            <CodeBlock language="python" code={`FLOPs = 2 × num_parameters`} />
+          </List.Item>
+          <List.Item>
+            <strong>SGD with Momentum:</strong> v = β×v + dW; W = W - lr×v
+            <CodeBlock language="python" code={`FLOPs = 4 × num_parameters`} />
+          </List.Item>
+          <List.Item>
+            <strong>Adam:</strong> Updates both first and second moments
+            <CodeBlock language="python" code={`FLOPs = 8 × num_parameters`} />
+          </List.Item>
+        </List>
+        
+        <Text mt="md">
+          <strong>Example: ResNet-50 Complexity</strong>
+        </Text>
+        <CodeBlock language="python" code={`# ResNet-50 statistics
+Parameters: 25.6M
+Forward pass: 3.8 GFLOPs
+Backward pass: ~7.6 GFLOPs
+Adam update: ~0.2 GFLOPs
+Total per iteration: ~11.6 GFLOPs`} />
+
+<Title order={2} mt="xl">Memory and Computation Profiling with PyTorch Profiler</Title>
 
           <Text>
             PyTorch provides a powerful built-in profiler that can track CPU, GPU, and memory usage with minimal overhead.
@@ -169,35 +383,38 @@ with profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
 
 # Print memory summary
 print(prof.key_averages().table(sort_by="self_cuda_memory_usage", row_limit=10))`} />
+<CodeBlock language="python" code={`-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg       CPU Mem  Self CPU Mem      CUDA Mem  Self CUDA Mem    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                            aten::addmm         4.52%     211.996us        77.31%       3.627ms       1.814ms      26.432us        90.57%      40.544us      20.272us           0 B           0 B      33.50 KB      33.50 KB             2  
+                                        aten::clamp_min         0.71%      33.130us         1.00%      47.066us      47.066us       2.752us         9.43%       2.752us       2.752us           0 B           0 B      32.00 KB      32.00 KB             1  
+                                           aten::linear         7.82%     366.919us        98.21%       4.608ms       2.304ms       0.000us         0.00%      40.544us      20.272us           0 B           0 B      33.50 KB           0 B             2  
+                                                aten::t         0.80%      37.622us        13.08%     613.940us     306.970us       0.000us         0.00%       0.000us       0.000us           0 B           0 B           0 B           0 B             2  
+                                        aten::transpose        12.03%     564.421us        12.28%     576.318us     288.159us       0.000us         0.00%       0.000us       0.000us           0 B           0 B           0 B           0 B             2  
+                                       aten::as_strided         0.25%      11.897us         0.25%      11.897us       5.948us       0.000us         0.00%       0.000us       0.000us           0 B           0 B           0 B           0 B             2  
+                                           Unrecognized        49.10%       2.304ms        49.10%       2.304ms       2.304ms      14.112us        48.36%      14.112us      14.112us           0 B           0 B           0 B           0 B             1  
+          cudaOccupancyMaxActiveBlocksPerMultiprocessor        22.25%       1.044ms        22.25%       1.044ms       1.044ms       0.000us         0.00%       0.000us       0.000us           0 B           0 B           0 B           0 B             1  
+                                       cudaLaunchKernel         1.74%      81.598us         1.74%      81.598us      20.399us       0.000us         0.00%       0.000us       0.000us           0 B           0 B           0 B           0 B             4  
+                        ampere_sgemm_32x32_sliced1x4_tn         0.00%       0.000us         0.00%       0.000us       0.000us      21.824us        74.78%      21.824us      10.912us           0 B           0 B           0 B           0 B             2  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 4.692ms
+Self CUDA time total: 29.184us`}/>
 
-          <Title order={3} mt="lg">Memory Timeline Profiling</Title>
-          
-          <Text>
-            Track memory allocation and deallocation over time:
+          <Text mt="md" size="sm">
+            <strong>Column explanations:</strong>
           </Text>
+          <List size="sm" mt="xs">
+            <List.Item><strong>Name:</strong> Operation name (e.g., aten::linear for linear layers, aten::addmm for matrix multiply-add)</List.Item>
+            <List.Item><strong>Self CPU %/Self CPU:</strong> Time spent in this operation alone on CPU (excluding child operations)</List.Item>
+            <List.Item><strong>CPU total %/CPU total:</strong> Total CPU time including all child operations</List.Item>
+            <List.Item><strong>CPU time avg:</strong> Average CPU time per call</List.Item>
+            <List.Item><strong>Self CUDA/Self CUDA %:</strong> Time spent in this operation alone on GPU</List.Item>
+            <List.Item><strong>CUDA total/CUDA time avg:</strong> Total GPU time including child operations</List.Item>
+            <List.Item><strong>CPU Mem/Self CPU Mem:</strong> Total and self CPU memory allocated</List.Item>
+            <List.Item><strong>CUDA Mem/Self CUDA Mem:</strong> Total and self GPU memory allocated</List.Item>
+            <List.Item><strong># of Calls:</strong> Number of times this operation was executed</List.Item>
+          </List>
 
-          <CodeBlock language="python" code={`def profile_memory_timeline(model, input_data, steps=3):
-    """Profile memory usage over multiple training steps"""
-    
-    with profile(
-        activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
-        profile_memory=True,
-        record_shapes=True,
-        with_stack=True
-    ) as prof:
-        for step in range(steps):
-            with record_function(f"step_{step}"):
-                output = model(input_data)
-                loss = output.mean()
-                loss.backward()
-    
-    # Export timeline for visualization
-    prof.export_chrome_trace("memory_timeline.json")
-    return prof`} />
-
-          <Text mt="md">
-            View the timeline in Chrome DevTools (chrome://tracing) for detailed visualization.
-          </Text>
 
           <Title order={3} mt="lg">Detailed Operation Profiling</Title>
           
@@ -209,353 +426,99 @@ print(prof.key_averages().table(sort_by="self_cuda_memory_usage", row_limit=10))
     """Profile different components of training loop"""
     
     with profile(
-        activities=[ProfilerActivity.CUDA],
+        activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
         profile_memory=True,
-        record_shapes=True
+        record_shapes=True,
+        with_stack=True
     ) as prof:
-        
         for batch_idx, (data, target) in enumerate(dataloader):
-            if batch_idx >= 2:  # Profile only first 2 batches
+            if batch_idx >= 6:  # Profile 4 batches
                 break
-                
-            with record_function("data_transfer"):
+            if batch_idx < 2: # 2 warmup to avoid initial noise
                 data, target = data.cuda(), target.cuda()
-            
-            with record_function("forward"):
                 output = model(data)
-                
-            with record_function("loss"):
                 loss = F.cross_entropy(output, target)
-            
-            with record_function("backward"):
                 loss.backward()
-                
-            with record_function("optimizer_step"):
                 optimizer.step()
                 optimizer.zero_grad()
+            else:
+              with record_function("data_transfer"):
+                  data, target = data.cuda(), target.cuda()
+              
+              with record_function("forward"):
+                  output = model(data)
+                  
+              with record_function("loss"):
+                  loss = F.cross_entropy(output, target)
+              
+              with record_function("backward"):
+                  loss.backward()
+                  
+              with record_function("optimizer_step"):
+                  optimizer.step()
+                  optimizer.zero_grad()
     
     return prof`} />
+    <CodeBlock code={`Time breakdown:
+  data_transfer: 7.7%
+  forward: 12.5%
+  loss: 6.3%
+  backward: 30.2%
+  optimizer_step: 43.2%`}/>
 
-          <Title order={3} mt="lg">Memory Breakdown Analysis</Title>
-          
-          <Text>
-            Analyze memory usage by operation type and layer:
+          <Text mt="md" size="sm">
+            <strong>Profiling insights:</strong>
           </Text>
-
-          <CodeBlock language="python" code={`def analyze_memory_by_operation(prof):
-    """Extract and analyze memory usage from profiler"""
-    
-    # Group by operation name
-    events = prof.key_averages(group_by_input_shape=True)
-    
-    memory_stats = []
-    for evt in events:
-        if evt.self_cuda_memory_usage > 0:
-            memory_stats.append({
-                'name': evt.key,
-                'calls': evt.count,
-                'memory_mb': evt.self_cuda_memory_usage / 1024**2,
-                'memory_per_call': evt.self_cuda_memory_usage / evt.count / 1024**2
-            })
-    
-    # Sort by total memory usage
-    memory_stats.sort(key=lambda x: x['memory_mb'], reverse=True)
-    
-    print("Top Memory Consuming Operations:")
-    for stat in memory_stats[:10]:
-        print(f"  {stat['name']}: {stat['memory_mb']:.2f} MB "
-              f"({stat['calls']} calls, {stat['memory_per_call']:.3f} MB/call)")`} />
-
-          <Title order={3} mt="lg">Layer-wise Memory Profiling</Title>
-          
-          <Text>
-            Profile memory consumption for each layer in your model:
+          <List size="sm" mt="xs">
+            <List.Item><strong>Optimizer step (43.2%):</strong> Largest bottleneck - gradient updates and parameter optimization dominate training time</List.Item>
+            <List.Item><strong>Backward pass (30.2%):</strong> Second most expensive - gradient computation through the network</List.Item>
+            <List.Item><strong>Forward pass (12.5%):</strong> Relatively efficient compared to backward pass</List.Item>
+            <List.Item><strong>Data transfer (7.7%):</strong> CPU to GPU transfer is minimal - good data pipeline efficiency</List.Item>
+            <List.Item><strong>Loss computation (6.3%):</strong> Negligible overhead from loss calculation</List.Item>
+          </List>
+          <Text size="sm" mt="xs">
+            This profile suggests optimization efforts should focus on the optimizer (e.g., using fused optimizers) and backward pass efficiency.
           </Text>
-
-          <CodeBlock language="python" code={`class LayerMemoryProfiler:
-    def __init__(self, model):
-        self.model = model
-        self.memory_usage = {}
-        
-    def profile_layers(self, input_data):
-        """Profile each layer's memory consumption"""
-        
-        def make_hook(name):
-            def hook(module, input, output):
-                with record_function(f"layer_{name}"):
-                    pass  # Profiler will track memory here
-            return hook
-        
-        # Add hooks to all layers
-        hooks = []
-        for name, module in self.model.named_modules():
-            if len(list(module.children())) == 0:  # Leaf modules
-                hooks.append(module.register_forward_hook(make_hook(name)))
-        
-        # Run profiling
-        with profile(
-            activities=[ProfilerActivity.CUDA],
-            profile_memory=True,
-            with_stack=True
-        ) as prof:
-            with torch.no_grad():
-                self.model(input_data)
-        
-        # Clean up hooks
-        for hook in hooks:
-            hook.remove()
-        
-        return prof`} />
-
-          <Title order={3} mt="lg">Memory Optimization Detection</Title>
-          
-          <Text>
-            Identify memory optimization opportunities:
-          </Text>
-
-          <CodeBlock language="python" code={`def find_memory_bottlenecks(prof):
-    """Identify potential memory optimization targets"""
-    
-    events = prof.key_averages()
-    
-    # Find peak memory operations
-    peak_memory_ops = []
-    for evt in events:
-        if evt.self_cuda_memory_usage > 0:
-            efficiency = evt.cuda_time_total / evt.self_cuda_memory_usage if evt.cuda_time_total > 0 else 0
-            peak_memory_ops.append({
-                'op': evt.key,
-                'memory_mb': evt.self_cuda_memory_usage / 1024**2,
-                'time_ms': evt.cuda_time_total / 1000,
-                'efficiency': efficiency
-            })
-    
-    # Sort by memory usage
-    peak_memory_ops.sort(key=lambda x: x['memory_mb'], reverse=True)
-    
-    print("Memory Optimization Candidates:")
-    print("(High memory + low efficiency = optimization opportunity)\\n")
-    
-    for op in peak_memory_ops[:5]:
-        print(f"Operation: {op['op']}")
-        print(f"  Memory: {op['memory_mb']:.2f} MB")
-        print(f"  Time: {op['time_ms']:.2f} ms")
-        print(f"  Efficiency: {op['efficiency']:.4f}\\n")`} />
-
-          <Title order={3} mt="lg">Complete Profiling Example</Title>
-          
-          <Text>
-            Full example with visualization and analysis:
-          </Text>
-
-          <CodeBlock language="python" code={`# Setup model and data
-model = torchvision.models.resnet18().cuda()
-optimizer = torch.optim.Adam(model.parameters())
-input_batch = torch.randn(16, 3, 224, 224).cuda()
-target = torch.randint(0, 1000, (16,)).cuda()
-
-# Profile with all features enabled
-with profile(
-    activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
-    profile_memory=True,
-    record_shapes=True,
-    with_stack=True,
-    with_flops=True
-) as prof:
-    # Training step
-    output = model(input_batch)
-    loss = F.cross_entropy(output, target)
-    loss.backward()
-    optimizer.step()
-
-# Generate reports
-print(prof.key_averages().table(
-    sort_by="self_cuda_memory_usage", 
-    row_limit=15
-))
-
-# Export for visualization
-prof.export_chrome_trace("trace.json")  # View in chrome://tracing
-prof.export_stacks("profiler_stacks.txt", "self_cuda_memory_usage")
-
-# Tensorboard integration
-from torch.utils.tensorboard import SummaryWriter
-writer = SummaryWriter('runs/profile')
-writer.add_text('profile', prof.key_averages().table())
-writer.close()
-
-print("\\nProfile exported. View with:")
-print("  - Chrome: chrome://tracing (load trace.json)")
-print("  - TensorBoard: tensorboard --logdir=runs")`} />
-
-          <Title order={3} mt="lg">Gradient Checkpointing</Title>
-          
-          <Text>
-            Gradient checkpointing trades compute for memory by recomputing activations during backward pass:
-          </Text>
-
-          <CodeBlock language="python" code={`from torch.utils.checkpoint import checkpoint
-
-class CheckpointedMLP(nn.Module):
-    def __init__(self, input_size=784, hidden_size=256, num_classes=10):
-        super().__init__()
-        self.fc1 = nn.Linear(input_size, hidden_size)
-        self.relu = nn.ReLU()
-        self.fc2 = nn.Linear(hidden_size, num_classes)
-    
-    def forward(self, x):
-        # Checkpoint the first layer computation
-        x = checkpoint(self._forward_block1, x)
-        x = self.fc2(x)
-        return x
-    
-    def _forward_block1(self, x):
-        x = self.fc1(x)
-        x = self.relu(x)
-        return x
-
-# Memory comparison
-print("Standard forward: stores all activations")
-print("Checkpointed: recomputes fc1 activations during backward")`} />
-
           <Flex direction="column" align="center" mt="md">
             <Image
-              src="/assets/python-deep-learning/module4/gradient_checkpointing.png"
-              alt="Gradient Checkpointing Trade-off"
-              style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
-              fluid
-            />
-          </Flex>
-        
-
-        
-          <Title id="gpu-vs-cpu" order={2} mt="xl">GPU vs CPU Performance</Title>
-          
-          <Text>
-            Understanding when to use GPU vs CPU is crucial for efficient training:
-          </Text>
-
-            <Title order={4}>Performance Characteristics</Title>
-            <Group position="apart" mt="md">
-              <div>
-                <Badge color="blue" size="lg">CPU</Badge>
-                <List size="sm" mt="sm">
-                  <List.Item>Low latency for small operations</List.Item>
-                  <List.Item>Better for sequential tasks</List.Item>
-                  <List.Item>More memory available</List.Item>
-                  <List.Item>Efficient for small batch sizes</List.Item>
-                </List>
-              </div>
-              <div>
-                <Badge color="green" size="lg">GPU</Badge>
-                <List size="sm" mt="sm">
-                  <List.Item>High throughput for parallel ops</List.Item>
-                  <List.Item>Excellent for matrix operations</List.Item>
-                  <List.Item>Limited memory (typically 8-80GB)</List.Item>
-                  <List.Item>Efficient for large batch sizes</List.Item>
-                </List>
-              </div>
-            </Group>
-
-          <CodeBlock language="python" code={`import time
-
-def benchmark_device(model, input_tensor, device, num_iterations=100):
-    """Benchmark model performance on different devices"""
-    model = model.to(device)
-    input_tensor = input_tensor.to(device)
-    
-    # Warmup
-    for _ in range(10):
-        _ = model(input_tensor)
-    
-    # Synchronize for GPU timing
-    if device.type == 'cuda':
-        torch.cuda.synchronize()
-    
-    # Benchmark
-    start_time = time.time()
-    for _ in range(num_iterations):
-        output = model(input_tensor)
-        if device.type == 'cuda':
-            torch.cuda.synchronize()
-    
-    elapsed_time = time.time() - start_time
-    throughput = num_iterations / elapsed_time
-    
-    print(f"Device: {device}")
-    print(f"  Total time: {elapsed_time:.3f}s")
-    print(f"  Throughput: {throughput:.1f} iterations/s")
-    print(f"  Avg time per iteration: {elapsed_time/num_iterations*1000:.2f}ms")
-    
-    return throughput
-
-# Compare CPU vs GPU
-model = MLP(input_size=1024, hidden_size=2048)
-batch_sizes = [1, 16, 64, 256]
-
-for batch_size in batch_sizes:
-    print(f"\\nBatch size: {batch_size}")
-    input_tensor = torch.randn(batch_size, 1024)
-    
-    cpu_throughput = benchmark_device(model, input_tensor, torch.device('cpu'))
-    if torch.cuda.is_available():
-        gpu_throughput = benchmark_device(model, input_tensor, torch.device('cuda'))
-        print(f"  Speedup: {gpu_throughput/cpu_throughput:.1f}x")`} />
-
-          <Title order={3} mt="lg">Memory Transfer Overhead</Title>
-          
-          <Text>
-            Moving data between CPU and GPU can be a bottleneck:
-          </Text>
-
-          <CodeBlock language="python" code={`def measure_transfer_overhead(size_mb=100):
-    """Measure CPU-GPU transfer overhead"""
-    size_elements = int(size_mb * 1024 * 1024 / 4)  # 32-bit floats
-    
-    # Create CPU tensor
-    cpu_tensor = torch.randn(size_elements)
-    
-    # Measure CPU to GPU
-    start = time.time()
-    gpu_tensor = cpu_tensor.cuda()
-    torch.cuda.synchronize()
-    cpu_to_gpu_time = time.time() - start
-    
-    # Measure GPU to CPU
-    start = time.time()
-    cpu_tensor_back = gpu_tensor.cpu()
-    torch.cuda.synchronize()
-    gpu_to_cpu_time = time.time() - start
-    
-    print(f"Transfer {size_mb}MB:")
-    print(f"  CPU → GPU: {cpu_to_gpu_time*1000:.2f}ms ({size_mb/cpu_to_gpu_time:.1f} MB/s)")
-    print(f"  GPU → CPU: {gpu_to_cpu_time*1000:.2f}ms ({size_mb/gpu_to_cpu_time:.1f} MB/s)")
-    
-    return cpu_to_gpu_time, gpu_to_cpu_time
-
-# Test different sizes
-for size in [10, 100, 500]:
-    measure_transfer_overhead(size)
-    print()`} />
-
-          <Alert title="Best Practices" color="green" mt="md">
-            <List size="sm">
-              <List.Item>Use GPU for large batch training and inference</List.Item>
-              <List.Item>Minimize CPU-GPU transfers by keeping data on GPU</List.Item>
-              <List.Item>Use pinned memory for faster transfers</List.Item>
-              <List.Item>Profile your specific workload to find optimal device</List.Item>
-            </List>
-          </Alert>
-
-          <Flex direction="column" align="center" mt="md">
-            <Image
-              src="/assets/python-deep-learning/module4/gpu_cpu_comparison.png"
+              src="/assets/python-deep-learning/module4/time.png"
               alt="GPU vs CPU Performance Comparison"
               style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
               fluid
             />
           </Flex>
-        
+          <CodeBlock language="python" code={`def profile_model_flops(model, input_shape):
+    """Use PyTorch profiler to measure actual FLOPs"""
+    model.eval()
+    inputs = torch.randn(input_shape)
+    
+    with profile(activities=[ProfilerActivity.CPU], with_flops=True) as prof:
+        with torch.no_grad():
+            model(inputs)
+    
+    # Get FLOPs from profiler
+    flops = sum([int(evt.flops) for evt in prof.events() if evt.flops])
+    
+    print(f"Measured FLOPs: {flops:,}")
+    print(f"GFLOPs: {flops / 1e9:.3f}")
+    
+    # Print top operations by FLOPs
+    events = sorted([evt for evt in prof.events() if evt.flops], 
+                   key=lambda x: x.flops, reverse=True)[:5]
+    
+    print("\nTop operations by FLOPs:")
+    for evt in events:
+        print(f"  {evt.name}: {evt.flops:,} FLOPs")
+    
+    return flops`} />
+                    <Flex direction="column" align="center" mt="md">
+            <Image
+              src="/assets/python-deep-learning/module4/flop.png"
+              alt="GPU vs CPU Performance Comparison"
+              style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+              fluid
+            />
+          </Flex>
       </Stack>
     </Container>
   );
