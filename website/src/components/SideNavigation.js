@@ -280,6 +280,8 @@ export const pytorchCourseContentData = {
       { id: 'io-optimization', label: 'I/O and DataLoader Optimization' },
       { id: 'pruning-optimization', label: 'Pruning Optimization' }
     ]},
+        { to: '/fine-tuning', label: 'Fine-Tuning', subLinks: [
+    ]},
     { to: '/multi-gpu-scaling', label: 'Multi-GPU Scaling', subLinks: [
       { id: 'parallelization-overview', label: 'Parallelization Strategies Overview' },
       { id: 'data-parallel', label: 'Data Parallelism (DP/DDP)' },

@@ -57,7 +57,7 @@ const CourseLayoutInner = ({ opened, setOpened }) => {
   return (
     <AppShell
       header={slideMode ? undefined : { height: 60 }}
-      navbar={{ 
+      navbar={slideMode ? undefined : { 
         width: 300, 
         breakpoint: 'md',
         collapsed: { 
@@ -65,7 +65,7 @@ const CourseLayoutInner = ({ opened, setOpened }) => {
           desktop: opened 
         }
       }}
-      padding="md"
+      padding={slideMode ? 0 : "md"}
     >
       {!slideMode && (
         <AppShell.Header>
@@ -81,9 +81,11 @@ const CourseLayoutInner = ({ opened, setOpened }) => {
           />
         </AppShell.Header>
       )}
-      <AppShell.Navbar>
-        <SideNavigation onClose={() => setOpened(false)} />
-      </AppShell.Navbar>
+      {!slideMode && (
+        <AppShell.Navbar>
+          <SideNavigation onClose={() => setOpened(false)} />
+        </AppShell.Navbar>
+      )}
       <AppShell.Main>
         <Outlet />
       </AppShell.Main>

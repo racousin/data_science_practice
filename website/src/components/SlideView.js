@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Carousel } from '@mantine/carousel';
-import { ActionIcon, Tooltip, Burger } from '@mantine/core';
+import { ActionIcon, Tooltip } from '@mantine/core';
 import { IconPresentation, IconX } from '@tabler/icons-react';
 import { useSidebar } from '../contexts/SidebarContext';
 import '@mantine/carousel/styles.css';
 
 const SlideView = ({ children, enabled = false }) => {
-  const { sidebarOpened, toggleSidebar, slideMode, setSlideMode } = useSidebar();
+  const { slideMode, setSlideMode } = useSidebar();
   const [slides, setSlides] = useState([]);
 
   // Helper function to extract slide titles and separate content
@@ -66,7 +66,7 @@ const SlideView = ({ children, enabled = false }) => {
       clearTimeout(timer2);
       clearTimeout(timer3);
     };
-  }, [enabled]);
+  }, [enabled, children]); // Add children as dependency to re-detect when content changes
 
   const handleKeyPress = useCallback((e) => {
     // Start presentation with 'S' key
@@ -127,20 +127,16 @@ const SlideView = ({ children, enabled = false }) => {
   if (slideMode) {
     return (
       <div className="fixed inset-0 w-full h-screen bg-white dark:bg-gray-900 z-50">
-        {/* Hamburger menu button - left side */}
-        <Tooltip label="Toggle Sidebar" position="right">
-          <ActionIcon
-            onClick={toggleSidebar}
-            className="absolute top-4 left-4 z-10"
-            size="lg"
-            variant="filled"
-            color="dark"
-          >
-            <Burger opened={sidebarOpened} size="sm" color="white" />
-          </ActionIcon>
-        </Tooltip>
-        
-        {/* Exit button - transparent and aligned with hamburger */}
+        <style>
+          {`
+            /* Override Container padding in slide mode */
+            .mantine-Container-root {
+              padding-inline: 0 !important;
+              max-width: 100% !important;
+            }
+          `}
+        </style>
+        {/* Exit button - top right corner */}
         <Tooltip label="Exit (Esc)" position="left">
           <ActionIcon
             onClick={exitFullscreen}

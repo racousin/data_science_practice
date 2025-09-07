@@ -567,17 +567,6 @@ const Introduction = () => {
           Accelerating scientific discovery and solving domain-specific challenges
         </Text>
         
-        <Flex direction="column" align="center" mb="md">
-          <Image
-            src="/assets/python-deep-learning/module1/alphafold.png"
-            alt="Scientific Applications"
-            style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
-            fluid
-          />
-          <Text component="p" ta="center" mt="xs">
-            Source: https://deepmind.google/science/alphafold/
-          </Text>
-        </Flex>
         
         <List>
           <List.Item>
@@ -613,17 +602,6 @@ const Introduction = () => {
       <Paper className="p-6 mb-6">
         <Title order={3} className="mb-2">Core Data Requirements</Title>
         
-        <Flex direction="column" align="center" mb="md">
-          <Image
-            src="/assets/python-deep-learning/module1/data_requirements.png"
-            alt="Data Requirements in Deep Learning"
-            style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
-            fluid
-          />
-          <Text component="p" ta="center" mt="xs">
-            The Data Pipeline in Deep Learning
-          </Text>
-        </Flex>
         
         <List>
           <List.Item>
