@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>exercise1</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>exercise2</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7517,14 +7517,24 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Module-4---Exercise-1:-Model-Resource-Profiling">Module 4 - Exercise 1: Model Resource Profiling<a class="anchor-link" href="#Module-4---Exercise-1:-Model-Resource-Profiling">¶</a></h1><h2 id="Learning-Objectives">Learning Objectives<a class="anchor-link" href="#Learning-Objectives">¶</a></h2><ul>
-<li>Understand CPU vs GPU tensor operations and memory management</li>
-<li>Profile model training performance across different devices</li>
-<li>Analyze the impact of batch size on training speed</li>
-<li>Monitor memory usage during model creation and training</li>
-<li>Use PyTorch profiler to identify bottlenecks</li>
-<li>Apply optimization techniques to improve performance</li>
+<h1 id="Module-3---Exercise-2:-Essential-Layers">Module 3 - Exercise 2: Essential Layers<a class="anchor-link" href="#Module-3---Exercise-2:-Essential-Layers">¶</a></h1><h2 id="Learning-Objectives">Learning Objectives<a class="anchor-link" href="#Learning-Objectives">¶</a></h2><ul>
+<li>Understand and implement dropout for regularization</li>
+<li>Work with embedding layers for categorical data</li>
+<li>Implement skip connections (residual blocks)</li>
+<li>Combine essential layers in a complete model</li>
+<li>Train and evaluate models with various layer types</li>
 </ul>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Test-Framework-Setup">Test Framework Setup<a class="anchor-link" href="#Test-Framework-Setup">¶</a></h2>
 </div>
 </div>
 </div>
@@ -7545,11 +7555,11 @@ a.anchor-link {
 
 <span class="c1"># Import the improved test utilities</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">test_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">NotebookTestRunner</span><span class="p">,</span> <span class="n">create_inline_test</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">module4.test_exercise1</span><span class="w"> </span><span class="kn">import</span> <span class="n">Exercise1Validator</span><span class="p">,</span> <span class="n">EXERCISE1_SECTIONS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">module3.test_exercise2</span><span class="w"> </span><span class="kn">import</span> <span class="n">Exercise2Validator</span><span class="p">,</span> <span class="n">EXERCISE2_SECTIONS</span>
 
 <span class="c1"># Create test runner and validator</span>
-<span class="n">test_runner</span> <span class="o">=</span> <span class="n">NotebookTestRunner</span><span class="p">(</span><span class="s2">"module4"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">validator</span> <span class="o">=</span> <span class="n">Exercise1Validator</span><span class="p">()</span>
+<span class="n">test_runner</span> <span class="o">=</span> <span class="n">NotebookTestRunner</span><span class="p">(</span><span class="s2">"module3"</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">validator</span> <span class="o">=</span> <span class="n">Exercise2Validator</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -7576,25 +7586,20 @@ a.anchor-link {
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">optim</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">optim</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">TensorDataset</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">psutil</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torch.profiler</span><span class="w"> </span><span class="kn">import</span> <span class="n">profile</span><span class="p">,</span> <span class="n">record_function</span><span class="p">,</span> <span class="n">ProfilerActivity</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="c1"># Set random seeds for reproducibility</span>
 <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 
 <span class="c1"># Check CUDA availability</span>
-<span class="n">device_available</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CUDA available: </span><span class="si">{</span><span class="n">device_available</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">device_available</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"GPU: </span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">get_device_name</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CUDA version: </span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">cuda</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">'cuda'</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">'cpu'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Using device: </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7607,7 +7612,17 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Section-1:-Device-Management">Section 1: Device Management<a class="anchor-link" href="#Section-1:-Device-Management">¶</a></h2><p>In this section, you'll explore the differences between CPU and GPU tensor operations, including creation, manipulation, and data transfer between devices.</p>
+<h2 id="Section-1:-Dropout-Layer">Section 1: Dropout Layer<a class="anchor-link" href="#Section-1:-Dropout-Layer">¶</a></h2><p>Dropout is a regularization technique that randomly sets a fraction of input units to 0 during training, which helps prevent overfitting. The key insight is that dropout behaves differently during training and evaluation.</p>
+<p>During training:</p>
+<ul>
+<li>Randomly drops connections with probability p</li>
+<li>Scales remaining activations by 1/(1-p)</li>
+</ul>
+<p>During evaluation:</p>
+<ul>
+<li>All connections are active</li>
+<li>No scaling needed (due to training-time scaling)</li>
+</ul>
 </div>
 </div>
 </div>
@@ -7619,11 +7634,28 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a tensor of size (1000, 1000) on CPU filled with random values</span>
-<span class="n">cpu_tensor</span> <span class="o">=</span> <span class="kc">None</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a Dropout layer with probability 0.5</span>
+<span class="n">dropout_layer</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CPU tensor device: </span><span class="si">{</span><span class="n">cpu_tensor</span><span class="o">.</span><span class="n">device</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">cpu_tensor</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'Not created'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CPU tensor shape: </span><span class="si">{</span><span class="n">cpu_tensor</span><span class="o">.</span><span class="n">shape</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">cpu_tensor</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'Not created'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="c1"># Create sample input</span>
+<span class="n">sample_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># TODO: Apply dropout in training mode</span>
+<span class="c1"># Set the layer to training mode and apply dropout</span>
+<span class="n">output_train</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># TODO: Apply dropout in evaluation mode</span>
+<span class="c1"># Set the layer to evaluation mode and apply dropout</span>
+<span class="n">output_eval</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># Display results</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Input shape: </span><span class="si">{</span><span class="n">sample_input</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Output train shape: </span><span class="si">{</span><span class="n">output_train</span><span class="o">.</span><span class="n">shape</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">output_train</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'Not implemented'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Output eval shape: </span><span class="si">{</span><span class="n">output_eval</span><span class="o">.</span><span class="n">shape</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">output_eval</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'Not implemented'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">output_train</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Zeros in training output: </span><span class="si">{</span><span class="p">(</span><span class="n">output_train</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2"> out of </span><span class="si">{</span><span class="n">output_train</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">output_eval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Zeros in eval output: </span><span class="si">{</span><span class="p">(</span><span class="n">output_eval</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2"> out of </span><span class="si">{</span><span class="n">output_eval</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7637,15 +7669,27 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: If CUDA is available, create the same tensor on GPU</span>
-<span class="c1"># If not available, set gpu_tensor to None or a message string</span>
-<span class="n">gpu_tensor</span> <span class="o">=</span> <span class="kc">None</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a simple neural network with dropout layers</span>
+<span class="c1"># The model should have:</span>
+<span class="c1"># - Linear layer (input_dim=10, output_dim=20)</span>
+<span class="c1"># - ReLU activation</span>
+<span class="c1"># - Dropout (p=0.5)</span>
+<span class="c1"># - Linear layer (input_dim=20, output_dim=10)</span>
+<span class="c1"># - ReLU activation</span>
+<span class="c1"># - Dropout (p=0.5)</span>
+<span class="c1"># - Linear layer (input_dim=10, output_dim=2)</span>
 
-<span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"GPU tensor device: </span><span class="si">{</span><span class="n">gpu_tensor</span><span class="o">.</span><span class="n">device</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">gpu_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'Not created'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"GPU tensor shape: </span><span class="si">{</span><span class="n">gpu_tensor</span><span class="o">.</span><span class="n">shape</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">gpu_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'Not created'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"No GPU available"</span><span class="p">)</span>
+<span class="n">model_with_dropout</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># Test the model</span>
+<span class="k">if</span> <span class="n">model_with_dropout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">test_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="n">model_with_dropout</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="n">output_train</span> <span class="o">=</span> <span class="n">model_with_dropout</span><span class="p">(</span><span class="n">test_input</span><span class="p">)</span>
+    <span class="n">model_with_dropout</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    <span class="n">output_eval</span> <span class="o">=</span> <span class="n">model_with_dropout</span><span class="p">(</span><span class="n">test_input</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Model output shape: </span><span class="si">{</span><span class="n">output_train</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Training vs Eval output difference: </span><span class="si">{</span><span class="p">(</span><span class="n">output_train</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">output_eval</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7659,30 +7703,9 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Measure the time to transfer a tensor from CPU to GPU (or vice versa)</span>
-<span class="c1"># Store the transfer time in seconds</span>
-<span class="n">transfer_time</span> <span class="o">=</span> <span class="kc">None</span>
-
-<span class="c1"># Hint: Use time.time() to measure the transfer</span>
-<span class="c1"># If no GPU, measure CPU to CPU copy time</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Transfer time: </span><span class="si">{</span><span class="n">transfer_time</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> seconds"</span> <span class="k">if</span> <span class="n">transfer_time</span> <span class="k">else</span> <span class="s2">"Not measured"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 1: Device Management</span>
-<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE1_SECTIONS</span><span class="p">[</span><span class="s2">"Section 1: Device Management"</span><span class="p">]]</span>
-<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 1: Device Management"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 1: Dropout Layer</span>
+<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE2_SECTIONS</span><span class="p">[</span><span class="s2">"Section 1: Dropout Layer"</span><span class="p">]]</span>
+<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 1: Dropout Layer"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -7695,7 +7718,13 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Section-2:-Model-Training-Performance">Section 2: Model Training Performance<a class="anchor-link" href="#Section-2:-Model-Training-Performance">¶</a></h2><p>Now let's compare the training performance of a simple neural network on CPU vs GPU.</p>
+<h2 id="Section-2:-Embedding-Layer">Section 2: Embedding Layer<a class="anchor-link" href="#Section-2:-Embedding-Layer">¶</a></h2><p>Embedding layers are essential for working with categorical data, especially in NLP tasks. They map discrete tokens (like word indices) to dense vector representations.</p>
+<p>Key concepts:</p>
+<ul>
+<li>Vocabulary size: number of unique tokens</li>
+<li>Embedding dimension: size of the vector representation</li>
+<li>Learnable parameters: vocabulary_size × embedding_dim</li>
+</ul>
 </div>
 </div>
 </div>
@@ -7707,29 +7736,70 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Define a simple 3-layer MLP model</span>
-<span class="c1"># Input: 784 features (like flattened MNIST)</span>
-<span class="c1"># Hidden layers: 256 and 128 neurons</span>
-<span class="c1"># Output: 10 classes</span>
-<span class="c1"># Use ReLU activations</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create an Embedding layer</span>
+<span class="c1"># - Vocabulary size: 100</span>
+<span class="c1"># - Embedding dimension: 16</span>
+<span class="n">embedding_layer</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">SimpleModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="c1"># TODO: Create a tensor of word indices (batch_size=3, sequence_length=5)</span>
+<span class="c1"># Values should be integers between 0 and 99</span>
+<span class="n">word_indices</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># TODO: Apply the embedding layer to get embedded word vectors</span>
+<span class="n">embedded_words</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># Display results</span>
+<span class="k">if</span> <span class="n">embedding_layer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Embedding layer: </span><span class="si">{</span><span class="n">embedding_layer</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">word_indices</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Word indices shape: </span><span class="si">{</span><span class="n">word_indices</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sample indices: </span><span class="si">{</span><span class="n">word_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">embedded_words</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Embedded words shape: </span><span class="si">{</span><span class="n">embedded_words</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Embedding vector for first word: </span><span class="si">{</span><span class="n">embedded_words</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="p">:</span><span class="mi">5</span><span class="p">]</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a simple text classifier using embeddings</span>
+<span class="c1"># The model should:</span>
+<span class="c1"># 1. Use an embedding layer (vocab_size=1000, embedding_dim=32)</span>
+<span class="c1"># 2. Average the embeddings across the sequence dimension</span>
+<span class="c1"># 3. Pass through a linear layer to get 3 output classes</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TextClassifier</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">SimpleModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="c1"># TODO: Define layers fc1, fc2, fc3</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TextClassifier</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># TODO: Initialize layers</span>
+        <span class="k">pass</span>
     
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="c1"># TODO: Implement forward pass</span>
-        <span class="k">return</span> <span class="n">x</span>
+        <span class="c1"># x shape: (batch_size, sequence_length)</span>
+        <span class="c1"># 1. Apply embedding</span>
+        <span class="c1"># 2. Average across sequence dimension</span>
+        <span class="c1"># 3. Apply linear layer</span>
+        <span class="k">pass</span>
 
-<span class="c1"># Test the model</span>
-<span class="n">test_model</span> <span class="o">=</span> <span class="n">SimpleModel</span><span class="p">()</span>
-<span class="n">test_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">784</span><span class="p">)</span>
-<span class="n">test_output</span> <span class="o">=</span> <span class="n">test_model</span><span class="p">(</span><span class="n">test_input</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Model output shape: </span><span class="si">{</span><span class="n">test_output</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="c1"># TODO: Create an instance of the text classifier</span>
+<span class="n">text_classifier</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># Test the classifier</span>
+<span class="k">if</span> <span class="n">text_classifier</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">test_sequences</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">text_classifier</span><span class="p">(</span><span class="n">test_sequences</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Input shape: </span><span class="si">{</span><span class="n">test_sequences</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Output shape: </span><span class="si">{</span><span class="n">output</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Output logits: </span><span class="si">{</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7743,87 +7813,9 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create synthetic dataset</span>
-<span class="n">X_train</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">784</span><span class="p">)</span>
-<span class="n">y_train</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="mi">1000</span><span class="p">,))</span>
-<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">train_one_epoch</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">loader</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">criterion</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Train model for one epoch"""</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">loader</span><span class="p">):</span>
-        <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">target</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
-        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Train the model on CPU for 3 epochs and measure the time</span>
-<span class="n">cpu_model</span> <span class="o">=</span> <span class="n">SimpleModel</span><span class="p">()</span>
-<span class="n">cpu_optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">cpu_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
-<span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
-
-<span class="c1"># TODO: Measure training time on CPU</span>
-<span class="n">cpu_train_time</span> <span class="o">=</span> <span class="kc">None</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CPU training time: </span><span class="si">{</span><span class="n">cpu_train_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> seconds"</span> <span class="k">if</span> <span class="n">cpu_train_time</span> <span class="k">else</span> <span class="s2">"Not measured"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: If GPU is available, train the same model on GPU and measure the time</span>
-<span class="c1"># If not available, set gpu_train_time to None or a message</span>
-<span class="n">gpu_train_time</span> <span class="o">=</span> <span class="kc">None</span>
-
-<span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
-    <span class="c1"># TODO: Create model on GPU and train</span>
-    <span class="k">pass</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"GPU training time: </span><span class="si">{</span><span class="n">gpu_train_time</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="n">gpu_train_time</span> <span class="k">else</span> <span class="s2">"Not measured or no GPU"</span><span class="p">)</span>
-
-<span class="c1"># Compare if both times are available</span>
-<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cpu_train_time</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gpu_train_time</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
-    <span class="n">speedup</span> <span class="o">=</span> <span class="n">cpu_train_time</span> <span class="o">/</span> <span class="n">gpu_train_time</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"GPU speedup: </span><span class="si">{</span><span class="n">speedup</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">x"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 2: Model Training Performance</span>
-<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE1_SECTIONS</span><span class="p">[</span><span class="s2">"Section 2: Model Training Performance"</span><span class="p">]]</span>
-<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 2: Model Training Performance"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 2: Embedding Layer</span>
+<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE2_SECTIONS</span><span class="p">[</span><span class="s2">"Section 2: Embedding Layer"</span><span class="p">]]</span>
+<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 2: Embedding Layer"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -7836,7 +7828,9 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Section-3:-Batch-Size-Impact">Section 3: Batch Size Impact<a class="anchor-link" href="#Section-3:-Batch-Size-Impact">¶</a></h2><p>Explore how different batch sizes affect training performance.</p>
+<h2 id="Section-3:-Skip-Connections-(Residual-Blocks)">Section 3: Skip Connections (Residual Blocks)<a class="anchor-link" href="#Section-3:-Skip-Connections-(Residual-Blocks)">¶</a></h2><p>Skip connections, also known as residual connections, help train deeper networks by providing gradient highways. They allow gradients to flow directly through shortcuts, mitigating the vanishing gradient problem.</p>
+<p>The key equation: <code>output = F(x) + x</code>
+where F(x) is the transformation and x is the input (identity mapping)</p>
 </div>
 </div>
 </div>
@@ -7848,110 +7842,34 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Test different batch sizes and measure training time per batch</span>
-<span class="c1"># Test batch sizes: 16, 32, 64, 128, 256</span>
-<span class="c1"># Store results in a dictionary with batch size as key and time as value</span>
-
-<span class="n">batch_times</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">batch_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">]</span>
-
-<span class="c1"># TODO: For each batch size, create a DataLoader and measure time for 10 batches</span>
-<span class="c1"># Store average time per batch in batch_times dictionary</span>
-
-<span class="c1"># Visualize results</span>
-<span class="k">if</span> <span class="n">batch_times</span><span class="p">:</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">batch_times</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="nb">list</span><span class="p">(</span><span class="n">batch_times</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="s1">'bo-'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Batch Size'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Time per Batch (seconds)'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Batch Size vs Training Time'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-    
-    <span class="k">for</span> <span class="n">size</span><span class="p">,</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">batch_times</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Batch size </span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">time</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> seconds/batch"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 3: Batch Size Impact</span>
-<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE1_SECTIONS</span><span class="p">[</span><span class="s2">"Section 3: Batch Size Impact"</span><span class="p">]]</span>
-<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 3: Batch Size Impact"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Section-4:-Memory-Profiling">Section 4: Memory Profiling<a class="anchor-link" href="#Section-4:-Memory-Profiling">¶</a></h2><p>Monitor memory usage during model creation and training.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Measure memory usage before and after creating a large model</span>
-<span class="c1"># Use psutil to get current process memory usage</span>
-
-<span class="n">process</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">Process</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">())</span>
-
-<span class="c1"># TODO: Get memory usage before model creation (in MB)</span>
-<span class="n">memory_before</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Hint: process.memory_info().rss / 1024 / 1024</span>
-
-<span class="c1"># Create a larger model</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">LargeModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">LargeModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc4</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc5</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Implement a ResidualBlock</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ResidualBlock</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ResidualBlock</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># TODO: Create two linear layers with ReLU activation</span>
+        <span class="c1"># Both layers should have input and output dimension = dim</span>
+        <span class="k">pass</span>
     
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc3</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc4</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc5</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="c1"># TODO: Implement forward pass with skip connection</span>
+        <span class="c1"># 1. Save input as identity</span>
+        <span class="c1"># 2. Apply first linear layer + ReLU</span>
+        <span class="c1"># 3. Apply second linear layer</span>
+        <span class="c1"># 4. Add identity to output</span>
+        <span class="c1"># 5. Apply final ReLU</span>
+        <span class="k">pass</span>
 
-<span class="n">large_model</span> <span class="o">=</span> <span class="n">LargeModel</span><span class="p">()</span>
+<span class="c1"># TODO: Create a residual block and test it</span>
+<span class="n">residual_block</span> <span class="o">=</span> <span class="n">ResidualBlock</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span> <span class="k">if</span> <span class="s1">'ResidualBlock'</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
+<span class="n">test_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
 
-<span class="c1"># TODO: Get memory usage after model creation (in MB)</span>
-<span class="n">memory_after</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1"># TODO: Apply the residual block</span>
+<span class="n">residual_output</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="k">if</span> <span class="n">memory_before</span> <span class="ow">and</span> <span class="n">memory_after</span><span class="p">:</span>
-    <span class="n">memory_increase</span> <span class="o">=</span> <span class="n">memory_after</span> <span class="o">-</span> <span class="n">memory_before</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Memory before: </span><span class="si">{</span><span class="n">memory_before</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Memory after: </span><span class="si">{</span><span class="n">memory_after</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Memory increase: </span><span class="si">{</span><span class="n">memory_increase</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB"</span><span class="p">)</span>
-    
-    <span class="c1"># Calculate model size</span>
-    <span class="n">param_count</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">large_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
-    <span class="n">param_size</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">element_size</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">large_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span> <span class="o">/</span> <span class="mi">1024</span> <span class="o">/</span> <span class="mi">1024</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Model parameters: </span><span class="si">{</span><span class="n">param_count</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Model size (parameters only): </span><span class="si">{</span><span class="n">param_size</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">residual_output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Input shape: </span><span class="si">{</span><span class="n">test_input</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Output shape: </span><span class="si">{</span><span class="n">residual_output</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mean absolute difference from input: </span><span class="si">{</span><span class="p">(</span><span class="n">residual_output</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">test_input</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7965,9 +7883,48 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 4: Memory Profiling</span>
-<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE1_SECTIONS</span><span class="p">[</span><span class="s2">"Section 4: Memory Profiling"</span><span class="p">]]</span>
-<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 4: Memory Profiling"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a deeper network with multiple residual blocks</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DeepResidualNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DeepResidualNet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># TODO: Build a network with:</span>
+        <span class="c1"># 1. Initial conv layer (1 -&gt; 64 channels, 3x3 kernel)</span>
+        <span class="c1"># 2. Three residual blocks (dim=64)</span>
+        <span class="c1"># 3. Global average pooling</span>
+        <span class="c1"># 4. Final linear layer (64 -&gt; 10 classes)</span>
+        <span class="k">pass</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># TODO: Implement forward pass</span>
+        <span class="c1"># x shape: (batch_size, 1, 28, 28)</span>
+        <span class="k">pass</span>
+
+<span class="c1"># TODO: Create an instance of the deep residual network</span>
+<span class="n">deep_residual_net</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># Test the network</span>
+<span class="k">if</span> <span class="n">deep_residual_net</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">test_images</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">deep_residual_net</span><span class="p">(</span><span class="n">test_images</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Input shape: </span><span class="si">{</span><span class="n">test_images</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Output shape: </span><span class="si">{</span><span class="n">output</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Number of parameters: </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">deep_residual_net</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 3: Skip Connections</span>
+<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE2_SECTIONS</span><span class="p">[</span><span class="s2">"Section 3: Skip Connections"</span><span class="p">]]</span>
+<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 3: Skip Connections"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -7980,7 +7937,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Section-5:-Operation-Level-Profiling">Section 5: Operation-Level Profiling<a class="anchor-link" href="#Section-5:-Operation-Level-Profiling">¶</a></h2><p>Profile individual operations to identify bottlenecks.</p>
+<h2 id="Section-4:-Complete-Model-with-Essential-Layers">Section 4: Complete Model with Essential Layers<a class="anchor-link" href="#Section-4:-Complete-Model-with-Essential-Layers">¶</a></h2><p>Now let's combine all the essential layers we've learned into a complete model for a real task. We'll create a model that uses embeddings, dropout, and other essential layers for text classification.</p>
 </div>
 </div>
 </div>
@@ -7992,34 +7949,36 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Compare the execution time of different operations</span>
-<span class="c1"># Operations to test: matmul, conv2d, relu, softmax</span>
-<span class="c1"># Store times in op_times dictionary</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a complete model combining all essential layers</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CompleteModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vocab_size</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">CompleteModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># TODO: Initialize layers</span>
+        <span class="c1"># 1. Embedding layer</span>
+        <span class="c1"># 2. Dropout after embedding</span>
+        <span class="c1"># 3. Linear layer (embedding_dim -&gt; hidden_dim)</span>
+        <span class="c1"># 4. ReLU activation</span>
+        <span class="c1"># 5. Dropout</span>
+        <span class="c1"># 6. Linear layer (hidden_dim -&gt; num_classes)</span>
+        <span class="k">pass</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># TODO: Implement forward pass</span>
+        <span class="c1"># x shape: (batch_size, sequence_length)</span>
+        <span class="c1"># 1. Apply embedding</span>
+        <span class="c1"># 2. Average pool over sequence dimension</span>
+        <span class="c1"># 3. Apply dropout</span>
+        <span class="c1"># 4. Apply first linear + ReLU</span>
+        <span class="c1"># 5. Apply dropout</span>
+        <span class="c1"># 6. Apply final linear layer</span>
+        <span class="k">pass</span>
 
-<span class="n">op_times</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">num_iterations</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="c1"># TODO: Create an instance of the complete model</span>
+<span class="n">complete_model</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="c1"># Test data</span>
-<span class="n">test_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="n">test_image</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
-<span class="n">conv_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-
-<span class="c1"># TODO: Measure time for matrix multiplication</span>
-<span class="c1"># op_times['matmul'] = ...</span>
-
-<span class="c1"># TODO: Measure time for 2D convolution</span>
-<span class="c1"># op_times['conv2d'] = ...</span>
-
-<span class="c1"># TODO: Measure time for ReLU activation</span>
-<span class="c1"># op_times['relu'] = ...</span>
-
-<span class="c1"># TODO: Measure time for softmax</span>
-<span class="c1"># op_times['softmax'] = ...</span>
-
-<span class="k">if</span> <span class="n">op_times</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Operation timing (average over 100 iterations):"</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">op</span><span class="p">,</span> <span class="n">time</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">op_times</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">op</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">time</span><span class="o">*</span><span class="mi">1000</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ms"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">complete_model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Complete model architecture:</span><span class="se">\n</span><span class="si">{</span><span class="n">complete_model</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Total parameters: </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">complete_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8033,19 +7992,27 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Use PyTorch profiler to analyze a forward pass</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">SimpleModel</span><span class="p">()</span>
-<span class="n">inputs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">784</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create synthetic dataset for training</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_synthetic_text_data</span><span class="p">(</span><span class="n">num_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">seq_length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">vocab_size</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="c1"># Random sequences</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="p">(</span><span class="n">num_samples</span><span class="p">,</span> <span class="n">seq_length</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+    <span class="c1"># Random labels</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">,</span> <span class="p">(</span><span class="n">num_samples</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span>
 
-<span class="c1"># TODO: Profile the model forward pass and store the table output</span>
-<span class="n">profile_table</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1"># Create training and test data</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">create_synthetic_text_data</span><span class="p">(</span><span class="mi">800</span><span class="p">)</span>
+<span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">create_synthetic_text_data</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
 
-<span class="c1"># Hint: Use torch.profiler.profile with activities=[ProfilerActivity.CPU]</span>
-<span class="c1"># Call prof.key_averages().table() to get the profiler output</span>
+<span class="c1"># Create data loaders</span>
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">test_dataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">test_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="k">if</span> <span class="n">profile_table</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"PyTorch Profiler Results:"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">profile_table</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Training samples: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Test samples: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Input shape: </span><span class="si">{</span><span class="n">X_train</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8059,9 +8026,103 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 5: Operation-Level Profiling</span>
-<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE1_SECTIONS</span><span class="p">[</span><span class="s2">"Section 5: Operation-Level Profiling"</span><span class="p">]]</span>
-<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 5: Operation-Level Profiling"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Implement training function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">train_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.001</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Train the model and return training losses.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        model: The neural network model</span>
+<span class="sd">        train_loader: DataLoader for training data</span>
+<span class="sd">        num_epochs: Number of training epochs</span>
+<span class="sd">        learning_rate: Learning rate for optimizer</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        List of training losses</span>
+<span class="sd">    """</span>
+    <span class="c1"># TODO: Implement training loop</span>
+    <span class="c1"># 1. Create optimizer (Adam)</span>
+    <span class="c1"># 2. Create loss function (CrossEntropyLoss)</span>
+    <span class="c1"># 3. For each epoch:</span>
+    <span class="c1">#    - Set model to train mode</span>
+    <span class="c1">#    - Iterate through batches</span>
+    <span class="c1">#    - Forward pass</span>
+    <span class="c1">#    - Compute loss</span>
+    <span class="c1">#    - Backward pass</span>
+    <span class="c1">#    - Update weights</span>
+    <span class="c1">#    - Track losses</span>
+    <span class="k">pass</span>
+
+<span class="c1"># TODO: Train the complete model</span>
+<span class="n">training_losses</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="k">if</span> <span class="n">complete_model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">train_model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">training_losses</span> <span class="o">=</span> <span class="n">train_model</span><span class="p">(</span><span class="n">complete_model</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">training_losses</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Plot training losses</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">training_losses</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Training Loss Over Time'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Batch'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Loss'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Initial loss: </span><span class="si">{</span><span class="n">training_losses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Final loss: </span><span class="si">{</span><span class="n">training_losses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Evaluate the model</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">evaluate_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_loader</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Evaluate the model on test data.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Test accuracy (float between 0 and 1)</span>
+<span class="sd">    """</span>
+    <span class="c1"># TODO: Implement evaluation</span>
+    <span class="c1"># 1. Set model to eval mode</span>
+    <span class="c1"># 2. Disable gradient computation</span>
+    <span class="c1"># 3. Iterate through test batches</span>
+    <span class="c1"># 4. Compute predictions</span>
+    <span class="c1"># 5. Calculate accuracy</span>
+    <span class="k">pass</span>
+
+<span class="c1"># TODO: Calculate test accuracy</span>
+<span class="n">test_accuracy</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="k">if</span> <span class="n">complete_model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">evaluate_model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">test_accuracy</span> <span class="o">=</span> <span class="n">evaluate_model</span><span class="p">(</span><span class="n">complete_model</span><span class="p">,</span> <span class="n">test_loader</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">test_accuracy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Test Accuracy: </span><span class="si">{</span><span class="n">test_accuracy</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 4: Complete Model</span>
+<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE2_SECTIONS</span><span class="p">[</span><span class="s2">"Section 4: Complete Model"</span><span class="p">]]</span>
+<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 4: Complete Model"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -8074,68 +8135,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Section-6:-Optimization-Techniques">Section 6: Optimization Techniques<a class="anchor-link" href="#Section-6:-Optimization-Techniques">¶</a></h2><p>Apply optimization techniques to improve performance.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Compare baseline vs optimized implementations</span>
-<span class="c1"># Store results in optimization_results dictionary with keys 'baseline' and 'optimized'</span>
-
-<span class="n">optimization_results</span> <span class="o">=</span> <span class="p">{}</span>
-
-<span class="c1"># Baseline: Regular model forward pass</span>
-<span class="n">baseline_model</span> <span class="o">=</span> <span class="n">SimpleModel</span><span class="p">()</span>
-<span class="n">baseline_model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>  <span class="c1"># Set to evaluation mode</span>
-<span class="n">test_batch</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">784</span><span class="p">)</span>
-
-<span class="c1"># TODO: Measure baseline inference time (100 iterations)</span>
-<span class="c1"># optimization_results['baseline'] = ...</span>
-
-<span class="c1"># Optimized: Use torch.no_grad() and potentially torch.jit.script</span>
-<span class="c1"># TODO: Measure optimized inference time</span>
-<span class="c1"># optimization_results['optimized'] = ...</span>
-
-<span class="c1"># Hint: Use @torch.no_grad() decorator or with torch.no_grad(): context</span>
-<span class="c1"># Optional: Try torch.jit.script(model) for additional optimization</span>
-
-<span class="k">if</span> <span class="n">optimization_results</span><span class="p">:</span>
-    <span class="n">baseline_time</span> <span class="o">=</span> <span class="n">optimization_results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'baseline'</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">optimized_time</span> <span class="o">=</span> <span class="n">optimization_results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'optimized'</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-    
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Baseline inference time: </span><span class="si">{</span><span class="n">baseline_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> seconds"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Optimized inference time: </span><span class="si">{</span><span class="n">optimized_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> seconds"</span><span class="p">)</span>
-    
-    <span class="k">if</span> <span class="n">baseline_time</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">optimized_time</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">improvement</span> <span class="o">=</span> <span class="p">(</span><span class="n">baseline_time</span> <span class="o">-</span> <span class="n">optimized_time</span><span class="p">)</span> <span class="o">/</span> <span class="n">baseline_time</span> <span class="o">*</span> <span class="mi">100</span>
-        <span class="n">speedup</span> <span class="o">=</span> <span class="n">baseline_time</span> <span class="o">/</span> <span class="n">optimized_time</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Performance improvement: </span><span class="si">{</span><span class="n">improvement</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Speedup: </span><span class="si">{</span><span class="n">speedup</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">x"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 6: Optimization Techniques</span>
-<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE1_SECTIONS</span><span class="p">[</span><span class="s2">"Section 6: Optimization Techniques"</span><span class="p">]]</span>
-<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 6: Optimization Techniques"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
-</pre></div>
-</div>
+<h2 id="Final-Summary">Final Summary<a class="anchor-link" href="#Final-Summary">¶</a></h2>
 </div>
 </div>
 </div>
@@ -8161,22 +8161,14 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h2><p>In this exercise, you've learned:</p>
-<ul>
-<li>How to manage tensors and models across CPU and GPU devices</li>
-<li>The performance differences between CPU and GPU training</li>
-<li>How batch size affects training performance</li>
-<li>How to monitor memory usage during model creation</li>
-<li>How to profile individual operations to find bottlenecks</li>
-<li>Optimization techniques to improve inference performance</li>
-</ul>
-<p>These profiling skills are essential for:</p>
-<ul>
-<li>Optimizing model training and inference speed</li>
-<li>Managing memory constraints in production environments</li>
-<li>Identifying and resolving performance bottlenecks</li>
-<li>Making informed decisions about hardware requirements</li>
-</ul>
+<h2 id="Congratulations!">Congratulations!<a class="anchor-link" href="#Congratulations!">¶</a></h2><p>You've successfully completed Module 3 Exercise 2 on Essential Layers! You've learned how to:</p>
+<ol>
+<li><strong>Dropout</strong>: Implement and use dropout for regularization</li>
+<li><strong>Embeddings</strong>: Work with embedding layers for categorical data</li>
+<li><strong>Skip Connections</strong>: Build residual blocks for deeper networks</li>
+<li><strong>Complete Models</strong>: Combine multiple layer types in practical applications</li>
+</ol>
+<p>These essential layers form the building blocks of modern deep learning architectures. Understanding how to use them effectively is crucial for building robust and performant neural networks.</p>
 </div>
 </div>
 </div>

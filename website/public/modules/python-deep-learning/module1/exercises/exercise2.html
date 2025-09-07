@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>exercise1</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>exercise2</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7517,14 +7517,22 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Module-4---Exercise-1:-Model-Resource-Profiling">Module 4 - Exercise 1: Model Resource Profiling<a class="anchor-link" href="#Module-4---Exercise-1:-Model-Resource-Profiling">¶</a></h1><h2 id="Learning-Objectives">Learning Objectives<a class="anchor-link" href="#Learning-Objectives">¶</a></h2><ul>
-<li>Understand CPU vs GPU tensor operations and memory management</li>
-<li>Profile model training performance across different devices</li>
-<li>Analyze the impact of batch size on training speed</li>
-<li>Monitor memory usage during model creation and training</li>
-<li>Use PyTorch profiler to identify bottlenecks</li>
-<li>Apply optimization techniques to improve performance</li>
+<h1 id="Module-1---Exercise-2:-Gradient-Descent">Module 1 - Exercise 2: Gradient Descent<a class="anchor-link" href="#Module-1---Exercise-2:-Gradient-Descent">¶</a></h1><h2 id="Learning-Objectives">Learning Objectives<a class="anchor-link" href="#Learning-Objectives">¶</a></h2><ul>
+<li>Implement gradient descent from scratch using NumPy</li>
+<li>Understand optimization trajectories and convergence behavior</li>
+<li>Visualize mathematical optimization concepts</li>
 </ul>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Test-Framework-Setup">Test Framework Setup<a class="anchor-link" href="#Test-Framework-Setup">¶</a></h2>
 </div>
 </div>
 </div>
@@ -7545,11 +7553,11 @@ a.anchor-link {
 
 <span class="c1"># Import the improved test utilities</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">test_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">NotebookTestRunner</span><span class="p">,</span> <span class="n">create_inline_test</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">module4.test_exercise1</span><span class="w"> </span><span class="kn">import</span> <span class="n">Exercise1Validator</span><span class="p">,</span> <span class="n">EXERCISE1_SECTIONS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">module1.test_exercise2</span><span class="w"> </span><span class="kn">import</span> <span class="n">Exercise2Validator</span><span class="p">,</span> <span class="n">EXERCISE2_SECTIONS</span>
 
 <span class="c1"># Create test runner and validator</span>
-<span class="n">test_runner</span> <span class="o">=</span> <span class="n">NotebookTestRunner</span><span class="p">(</span><span class="s2">"module4"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">validator</span> <span class="o">=</span> <span class="n">Exercise1Validator</span><span class="p">()</span>
+<span class="n">test_runner</span> <span class="o">=</span> <span class="n">NotebookTestRunner</span><span class="p">(</span><span class="s2">"module1"</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">validator</span> <span class="o">=</span> <span class="n">Exercise2Validator</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -7574,27 +7582,17 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">optim</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">TensorDataset</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">psutil</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torch.profiler</span><span class="w"> </span><span class="kn">import</span> <span class="n">profile</span><span class="p">,</span> <span class="n">record_function</span><span class="p">,</span> <span class="n">ProfilerActivity</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Callable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
 
-<span class="c1"># Set random seeds for reproducibility</span>
-<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="c1"># Set random seed for reproducibility</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 
-<span class="c1"># Check CUDA availability</span>
-<span class="n">device_available</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CUDA available: </span><span class="si">{</span><span class="n">device_available</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">device_available</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"GPU: </span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">get_device_name</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CUDA version: </span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">cuda</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="c1"># Configure matplotlib</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'seaborn-v0_8-darkgrid'</span><span class="p">)</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
 </div>
@@ -7607,7 +7605,19 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Section-1:-Device-Management">Section 1: Device Management<a class="anchor-link" href="#Section-1:-Device-Management">¶</a></h2><p>In this section, you'll explore the differences between CPU and GPU tensor operations, including creation, manipulation, and data transfer between devices.</p>
+<h2 id="Section-1:-Function-Definitions-and-Visualization">Section 1: Function Definitions and Visualization<a class="anchor-link" href="#Section-1:-Function-Definitions-and-Visualization">¶</a></h2><p>In this section, we'll define three functions to optimize and create visualization helpers to understand their landscapes.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Function-1:-Basic-Convex-Quadratic">Function 1: Basic Convex Quadratic<a class="anchor-link" href="#Function-1:-Basic-Convex-Quadratic">¶</a></h3><p>$f(x) = x^2 + 2x + 1$</p>
+<p>This is a simple parabola with global minimum at $x = -1$</p>
 </div>
 </div>
 </div>
@@ -7619,11 +7629,24 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a tensor of size (1000, 1000) on CPU filled with random values</span>
-<span class="n">cpu_tensor</span> <span class="o">=</span> <span class="kc">None</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Implement function 1 and its gradient</span>
+<span class="c1"># f(x) = x² + 2x + 1</span>
+<span class="c1"># gradient: f'(x) = 2x + 2</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CPU tensor device: </span><span class="si">{</span><span class="n">cpu_tensor</span><span class="o">.</span><span class="n">device</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">cpu_tensor</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'Not created'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CPU tensor shape: </span><span class="si">{</span><span class="n">cpu_tensor</span><span class="o">.</span><span class="n">shape</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">cpu_tensor</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'Not created'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">f1</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Basic convex quadratic function"""</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">grad_f1</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Gradient of f1"""</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+<span class="c1"># Display your functions</span>
+<span class="k">if</span> <span class="n">f1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">f1</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"f1(0) = </span><span class="si">{</span><span class="n">f1</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"f1(-1) = </span><span class="si">{</span><span class="n">f1</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2"> (should be minimum)"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"grad_f1(0) = </span><span class="si">{</span><span class="n">grad_f1</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"grad_f1(-1) = </span><span class="si">{</span><span class="n">grad_f1</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2"> (should be 0 at minimum)"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7637,52 +7660,9 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: If CUDA is available, create the same tensor on GPU</span>
-<span class="c1"># If not available, set gpu_tensor to None or a message string</span>
-<span class="n">gpu_tensor</span> <span class="o">=</span> <span class="kc">None</span>
-
-<span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"GPU tensor device: </span><span class="si">{</span><span class="n">gpu_tensor</span><span class="o">.</span><span class="n">device</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">gpu_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'Not created'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"GPU tensor shape: </span><span class="si">{</span><span class="n">gpu_tensor</span><span class="o">.</span><span class="n">shape</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">gpu_tensor</span><span class="p">,</span><span class="w"> </span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'Not created'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"No GPU available"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Measure the time to transfer a tensor from CPU to GPU (or vice versa)</span>
-<span class="c1"># Store the transfer time in seconds</span>
-<span class="n">transfer_time</span> <span class="o">=</span> <span class="kc">None</span>
-
-<span class="c1"># Hint: Use time.time() to measure the transfer</span>
-<span class="c1"># If no GPU, measure CPU to CPU copy time</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Transfer time: </span><span class="si">{</span><span class="n">transfer_time</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> seconds"</span> <span class="k">if</span> <span class="n">transfer_time</span> <span class="k">else</span> <span class="s2">"Not measured"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 1: Device Management</span>
-<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE1_SECTIONS</span><span class="p">[</span><span class="s2">"Section 1: Device Management"</span><span class="p">]]</span>
-<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 1: Device Management"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 1: Function Definitions</span>
+<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE2_SECTIONS</span><span class="p">[</span><span class="s2">"Section 1: Function Definitions"</span><span class="p">]]</span>
+<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 1: Function Definitions"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -7695,7 +7675,8 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Section-2:-Model-Training-Performance">Section 2: Model Training Performance<a class="anchor-link" href="#Section-2:-Model-Training-Performance">¶</a></h2><p>Now let's compare the training performance of a simple neural network on CPU vs GPU.</p>
+<h3 id="Function-2:-Non-Convex-Cubic">Function 2: Non-Convex Cubic<a class="anchor-link" href="#Function-2:-Non-Convex-Cubic">¶</a></h3><p>$f(x) = x^3 - 3x^2 + 2$</p>
+<p>This cubic function has both local maximum and minimum, demonstrating how starting points affect convergence.</p>
 </div>
 </div>
 </div>
@@ -7707,186 +7688,196 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Define a simple 3-layer MLP model</span>
-<span class="c1"># Input: 784 features (like flattened MNIST)</span>
-<span class="c1"># Hidden layers: 256 and 128 neurons</span>
-<span class="c1"># Output: 10 classes</span>
-<span class="c1"># Use ReLU activations</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Implement function 2 and its gradient</span>
+<span class="c1"># f(x) = x³ - 3x² + 2</span>
+<span class="c1"># gradient: f'(x) = 3x² - 6x</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">SimpleModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">SimpleModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="c1"># TODO: Define layers fc1, fc2, fc3</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">f2</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Non-convex cubic function"""</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">grad_f2</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Gradient of f2"""</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+<span class="c1"># Display your functions</span>
+<span class="k">if</span> <span class="n">f2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">f2</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"f2(0) = </span><span class="si">{</span><span class="n">f2</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"f2(2) = </span><span class="si">{</span><span class="n">f2</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2"> (local minimum)"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"grad_f2(0) = </span><span class="si">{</span><span class="n">grad_f2</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2"> (critical point)"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"grad_f2(2) = </span><span class="si">{</span><span class="n">grad_f2</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2"> (should be 0)"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Function 2</span>
+<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE2_SECTIONS</span><span class="p">[</span><span class="s2">"Section 1: Function Definitions"</span><span class="p">]</span> <span class="k">if</span> <span class="s2">"f2"</span> <span class="ow">in</span> <span class="n">name</span><span class="p">]</span>
+<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Function 2 Tests"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Function-3:-2D-Convex-Function">Function 3: 2D Convex Function<a class="anchor-link" href="#Function-3:-2D-Convex-Function">¶</a></h3><p>$f(x,y) = x^2 + 2y^2 + 2x - 4y + 5$</p>
+<p>This 2D function lets us practice with vector gradients. Minimum at $(-1, 1)$.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Implement function 3 and its gradient</span>
+<span class="c1"># f(x,y) = x² + 2y² + 2x - 4y + 5</span>
+<span class="c1"># gradient: ∇f = [2x + 2, 4y - 4]</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">f3</span><span class="p">(</span><span class="n">point</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""2D convex function</span>
+<span class="sd">    Args:</span>
+<span class="sd">        point: numpy array of shape (2,) containing [x, y]</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Function value at the point</span>
+<span class="sd">    """</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">point</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">grad_f3</span><span class="p">(</span><span class="n">point</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Gradient of f3</span>
+<span class="sd">    Args:</span>
+<span class="sd">        point: numpy array of shape (2,) containing [x, y]</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Gradient vector of shape (2,)</span>
+<span class="sd">    """</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">point</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+<span class="c1"># Display your functions</span>
+<span class="k">if</span> <span class="n">f3</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">f3</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"f3([0, 0]) = </span><span class="si">{</span><span class="n">f3</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]))</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"f3([-1, 1]) = </span><span class="si">{</span><span class="n">f3</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]))</span><span class="si">}</span><span class="s2"> (should be minimum)"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"grad_f3([0, 0]) = </span><span class="si">{</span><span class="n">grad_f3</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]))</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"grad_f3([-1, 1]) = </span><span class="si">{</span><span class="n">grad_f3</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]))</span><span class="si">}</span><span class="s2"> (should be [0, 0])"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Function 3</span>
+<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE2_SECTIONS</span><span class="p">[</span><span class="s2">"Section 1: Function Definitions"</span><span class="p">]</span> <span class="k">if</span> <span class="s2">"f3"</span> <span class="ow">in</span> <span class="n">name</span><span class="p">]</span>
+<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Function 3 Tests"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Section-2:-Visualization-Helpers">Section 2: Visualization Helpers<a class="anchor-link" href="#Section-2:-Visualization-Helpers">¶</a></h2><p>Let's create functions to visualize our optimization landscapes and trajectories.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_1d_function</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">x_range</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> 
+                     <span class="n">trajectory</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Plot a 1D function and optionally show optimization trajectory"""</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">200</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span> <span class="k">for</span> <span class="n">xi</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
     
-    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-        <span class="c1"># TODO: Implement forward pass</span>
-        <span class="k">return</span> <span class="n">x</span>
-
-<span class="c1"># Test the model</span>
-<span class="n">test_model</span> <span class="o">=</span> <span class="n">SimpleModel</span><span class="p">()</span>
-<span class="n">test_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">784</span><span class="p">)</span>
-<span class="n">test_output</span> <span class="o">=</span> <span class="n">test_model</span><span class="p">(</span><span class="n">test_input</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Model output shape: </span><span class="si">{</span><span class="n">test_output</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create synthetic dataset</span>
-<span class="n">X_train</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">784</span><span class="p">)</span>
-<span class="n">y_train</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="mi">1000</span><span class="p">,))</span>
-<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">train_one_epoch</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">loader</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">criterion</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Train model for one epoch"""</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">loader</span><span class="p">):</span>
-        <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">target</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
-        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Train the model on CPU for 3 epochs and measure the time</span>
-<span class="n">cpu_model</span> <span class="o">=</span> <span class="n">SimpleModel</span><span class="p">()</span>
-<span class="n">cpu_optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">cpu_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
-<span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
-
-<span class="c1"># TODO: Measure training time on CPU</span>
-<span class="n">cpu_train_time</span> <span class="o">=</span> <span class="kc">None</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CPU training time: </span><span class="si">{</span><span class="n">cpu_train_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> seconds"</span> <span class="k">if</span> <span class="n">cpu_train_time</span> <span class="k">else</span> <span class="s2">"Not measured"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: If GPU is available, train the same model on GPU and measure the time</span>
-<span class="c1"># If not available, set gpu_train_time to None or a message</span>
-<span class="n">gpu_train_time</span> <span class="o">=</span> <span class="kc">None</span>
-
-<span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
-    <span class="c1"># TODO: Create model on GPU and train</span>
-    <span class="k">pass</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"GPU training time: </span><span class="si">{</span><span class="n">gpu_train_time</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="n">gpu_train_time</span> <span class="k">else</span> <span class="s2">"Not measured or no GPU"</span><span class="p">)</span>
-
-<span class="c1"># Compare if both times are available</span>
-<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cpu_train_time</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gpu_train_time</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
-    <span class="n">speedup</span> <span class="o">=</span> <span class="n">cpu_train_time</span> <span class="o">/</span> <span class="n">gpu_train_time</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"GPU speedup: </span><span class="si">{</span><span class="n">speedup</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">x"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 2: Model Training Performance</span>
-<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE1_SECTIONS</span><span class="p">[</span><span class="s2">"Section 2: Model Training Performance"</span><span class="p">]]</span>
-<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 2: Model Training Performance"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Section-3:-Batch-Size-Impact">Section 3: Batch Size Impact<a class="anchor-link" href="#Section-3:-Batch-Size-Impact">¶</a></h2><p>Explore how different batch sizes affect training performance.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Test different batch sizes and measure training time per batch</span>
-<span class="c1"># Test batch sizes: 16, 32, 64, 128, 256</span>
-<span class="c1"># Store results in a dictionary with batch size as key and time as value</span>
-
-<span class="n">batch_times</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">batch_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">]</span>
-
-<span class="c1"># TODO: For each batch size, create a DataLoader and measure time for 10 batches</span>
-<span class="c1"># Store average time per batch in batch_times dictionary</span>
-
-<span class="c1"># Visualize results</span>
-<span class="k">if</span> <span class="n">batch_times</span><span class="p">:</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">batch_times</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="nb">list</span><span class="p">(</span><span class="n">batch_times</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="s1">'bo-'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Batch Size'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Time per Batch (seconds)'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Batch Size vs Training Time'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">'b-'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Function'</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">trajectory</span><span class="p">:</span>
+        <span class="n">traj_y</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span> <span class="k">for</span> <span class="n">xi</span> <span class="ow">in</span> <span class="n">trajectory</span><span class="p">]</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trajectory</span><span class="p">,</span> <span class="n">traj_y</span><span class="p">,</span> <span class="s1">'ro-'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> 
+                <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Optimization path'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trajectory</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">traj_y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">'go'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Start'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trajectory</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">traj_y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">'r*'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'End'</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'x'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'f(x)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_2d_function</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">x_range</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> 
+                     <span class="n">y_range</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">trajectory</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+                     <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Plot a 2D function as contour plot with optional trajectory"""</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">y_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
     
-    <span class="k">for</span> <span class="n">size</span><span class="p">,</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">batch_times</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Batch size </span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">time</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> seconds/batch"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 3: Batch Size Impact</span>
-<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE1_SECTIONS</span><span class="p">[</span><span class="s2">"Section 3: Batch Size Impact"</span><span class="p">]]</span>
-<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 3: Batch Size Impact"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]]))</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    <span class="n">contour</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'viridis'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">contour</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">contour</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">trajectory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">trajectory</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trajectory</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">trajectory</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">'ro-'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> 
+                <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Optimization path'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trajectory</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">trajectory</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">'go'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Start'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trajectory</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">trajectory</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">'r*'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'End'</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'x'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'y'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Visualize all three functions</span>
+<span class="k">if</span> <span class="n">f1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">f1</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">plot_1d_function</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Function 1: Convex Quadratic"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">f2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">f2</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">plot_1d_function</span><span class="p">(</span><span class="n">f2</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Function 2: Non-Convex Cubic"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">f3</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">f3</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">plot_2d_function</span><span class="p">(</span><span class="n">f3</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Function 3: 2D Convex"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7899,7 +7890,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Section-4:-Memory-Profiling">Section 4: Memory Profiling<a class="anchor-link" href="#Section-4:-Memory-Profiling">¶</a></h2><p>Monitor memory usage during model creation and training.</p>
+<h2 id="Section-3:-Gradient-Descent-Implementation">Section 3: Gradient Descent Implementation<a class="anchor-link" href="#Section-3:-Gradient-Descent-Implementation">¶</a></h2><p>Now let's implement the gradient descent algorithm for both 1D and multi-dimensional functions.</p>
 </div>
 </div>
 </div>
@@ -7911,47 +7902,44 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Measure memory usage before and after creating a large model</span>
-<span class="c1"># Use psutil to get current process memory usage</span>
-
-<span class="n">process</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">Process</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">())</span>
-
-<span class="c1"># TODO: Get memory usage before model creation (in MB)</span>
-<span class="n">memory_before</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Hint: process.memory_info().rss / 1024 / 1024</span>
-
-<span class="c1"># Create a larger model</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">LargeModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">LargeModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc4</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc5</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Implement gradient descent for 1D functions</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">gradient_descent_1d</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">grad_f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">x0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> 
+                        <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">n_iterations</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Gradient descent for 1D functions</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        f: Function to minimize</span>
+<span class="sd">        grad_f: Gradient of the function</span>
+<span class="sd">        x0: Starting point</span>
+<span class="sd">        learning_rate: Step size for updates</span>
+<span class="sd">        n_iterations: Number of iterations</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Tuple of (final_x, trajectory)</span>
+<span class="sd">        - final_x: Final position after optimization</span>
+<span class="sd">        - trajectory: List of x values at each iteration</span>
+<span class="sd">    """</span>
+    <span class="n">trajectory</span> <span class="o">=</span> <span class="p">[</span><span class="n">x0</span><span class="p">]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x0</span>
     
-    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc3</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc4</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc5</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-<span class="n">large_model</span> <span class="o">=</span> <span class="n">LargeModel</span><span class="p">()</span>
-
-<span class="c1"># TODO: Get memory usage after model creation (in MB)</span>
-<span class="n">memory_after</span> <span class="o">=</span> <span class="kc">None</span>
-
-<span class="k">if</span> <span class="n">memory_before</span> <span class="ow">and</span> <span class="n">memory_after</span><span class="p">:</span>
-    <span class="n">memory_increase</span> <span class="o">=</span> <span class="n">memory_after</span> <span class="o">-</span> <span class="n">memory_before</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Memory before: </span><span class="si">{</span><span class="n">memory_before</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Memory after: </span><span class="si">{</span><span class="n">memory_after</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Memory increase: </span><span class="si">{</span><span class="n">memory_increase</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB"</span><span class="p">)</span>
+    <span class="c1"># TODO: Implement the gradient descent loop</span>
+    <span class="c1"># For each iteration:</span>
+    <span class="c1">#   1. Compute gradient at current position</span>
+    <span class="c1">#   2. Update position: x = x - learning_rate * gradient</span>
+    <span class="c1">#   3. Store new position in trajectory</span>
     
-    <span class="c1"># Calculate model size</span>
-    <span class="n">param_count</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">large_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
-    <span class="n">param_size</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">element_size</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">large_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span> <span class="o">/</span> <span class="mi">1024</span> <span class="o">/</span> <span class="mi">1024</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Model parameters: </span><span class="si">{</span><span class="n">param_count</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Model size (parameters only): </span><span class="si">{</span><span class="n">param_size</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+<span class="c1"># Test gradient descent on Function 1</span>
+<span class="k">if</span> <span class="n">gradient_descent_1d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">f1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">result_1d</span><span class="p">,</span> <span class="n">trajectory_1d</span> <span class="o">=</span> <span class="n">gradient_descent_1d</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">grad_f1</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> 
+                                                   <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">n_iterations</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">result_1d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Starting point: 2.0"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Final point: </span><span class="si">{</span><span class="n">result_1d</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Expected minimum: -1.0"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Number of steps: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">trajectory_1d</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7965,9 +7953,78 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 4: Memory Profiling</span>
-<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE1_SECTIONS</span><span class="p">[</span><span class="s2">"Section 4: Memory Profiling"</span><span class="p">]]</span>
-<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 4: Memory Profiling"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 3: Gradient Descent 1D</span>
+<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE2_SECTIONS</span><span class="p">[</span><span class="s2">"Section 3: Gradient Descent 1D"</span><span class="p">]]</span>
+<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 3: Gradient Descent 1D"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Implement gradient descent for multi-dimensional functions</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">gradient_descent_nd</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">grad_f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">x0</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+                        <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">n_iterations</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Gradient descent for n-dimensional functions</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        f: Function to minimize</span>
+<span class="sd">        grad_f: Gradient of the function</span>
+<span class="sd">        x0: Starting point (numpy array)</span>
+<span class="sd">        learning_rate: Step size for updates</span>
+<span class="sd">        n_iterations: Number of iterations</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Tuple of (final_x, trajectory)</span>
+<span class="sd">        - final_x: Final position after optimization</span>
+<span class="sd">        - trajectory: Array of positions at each iteration (shape: [n_iterations+1, n_dims])</span>
+<span class="sd">    """</span>
+    <span class="n">trajectory</span> <span class="o">=</span> <span class="p">[</span><span class="n">x0</span><span class="o">.</span><span class="n">copy</span><span class="p">()]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x0</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    
+    <span class="c1"># TODO: Implement the gradient descent loop</span>
+    <span class="c1"># For each iteration:</span>
+    <span class="c1">#   1. Compute gradient at current position</span>
+    <span class="c1">#   2. Update position: x = x - learning_rate * gradient</span>
+    <span class="c1">#   3. Store new position in trajectory</span>
+    
+    <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+<span class="c1"># Test gradient descent on Function 3 (2D)</span>
+<span class="k">if</span> <span class="n">gradient_descent_nd</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">f3</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">result_nd</span><span class="p">,</span> <span class="n">trajectory_nd</span> <span class="o">=</span> <span class="n">gradient_descent_nd</span><span class="p">(</span><span class="n">f3</span><span class="p">,</span> <span class="n">grad_f3</span><span class="p">,</span> 
+                                                   <span class="n">x0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">]),</span> 
+                                                   <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+                                                   <span class="n">n_iterations</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">result_nd</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Starting point: [2.0, 2.0]"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Final point: [</span><span class="si">{</span><span class="n">result_nd</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">result_nd</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">]"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Expected minimum: [-1.0, 1.0]"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Number of steps: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">trajectory_nd</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 3: Gradient Descent ND</span>
+<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE2_SECTIONS</span><span class="p">[</span><span class="s2">"Section 3: Gradient Descent ND"</span><span class="p">]]</span>
+<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 3: Gradient Descent ND"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -7980,7 +8037,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Section-5:-Operation-Level-Profiling">Section 5: Operation-Level Profiling<a class="anchor-link" href="#Section-5:-Operation-Level-Profiling">¶</a></h2><p>Profile individual operations to identify bottlenecks.</p>
+<h2 id="Section-4:-Learning-Rate-Experiments">Section 4: Learning Rate Experiments<a class="anchor-link" href="#Section-4:-Learning-Rate-Experiments">¶</a></h2><p>Let's experiment with different learning rates to understand their impact on convergence.</p>
 </div>
 </div>
 </div>
@@ -7992,34 +8049,40 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Compare the execution time of different operations</span>
-<span class="c1"># Operations to test: matmul, conv2d, relu, softmax</span>
-<span class="c1"># Store times in op_times dictionary</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Experiment with different learning rates on Function 1</span>
+<span class="n">learning_rates</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">]</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'blue'</span><span class="p">,</span> <span class="s1">'green'</span><span class="p">,</span> <span class="s1">'orange'</span><span class="p">,</span> <span class="s1">'red'</span><span class="p">]</span>
 
-<span class="n">op_times</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">num_iterations</span> <span class="o">=</span> <span class="mi">100</span>
-
-<span class="c1"># Test data</span>
-<span class="n">test_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="n">test_image</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
-<span class="n">conv_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-
-<span class="c1"># TODO: Measure time for matrix multiplication</span>
-<span class="c1"># op_times['matmul'] = ...</span>
-
-<span class="c1"># TODO: Measure time for 2D convolution</span>
-<span class="c1"># op_times['conv2d'] = ...</span>
-
-<span class="c1"># TODO: Measure time for ReLU activation</span>
-<span class="c1"># op_times['relu'] = ...</span>
-
-<span class="c1"># TODO: Measure time for softmax</span>
-<span class="c1"># op_times['softmax'] = ...</span>
-
-<span class="k">if</span> <span class="n">op_times</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Operation timing (average over 100 iterations):"</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">op</span><span class="p">,</span> <span class="n">time</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">op_times</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">op</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">time</span><span class="o">*</span><span class="mi">1000</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ms"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">gradient_descent_1d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">f1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">lr</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">learning_rates</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">learning_rates</span><span class="p">),</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="c1"># Run gradient descent</span>
+        <span class="n">final_x</span><span class="p">,</span> <span class="n">trajectory</span> <span class="o">=</span> <span class="n">gradient_descent_1d</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">grad_f1</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> 
+                                                  <span class="n">learning_rate</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span> 
+                                                  <span class="n">n_iterations</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">trajectory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Plot function</span>
+            <span class="n">x_plot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+            <span class="n">y_plot</span> <span class="o">=</span> <span class="p">[</span><span class="n">f1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">x_plot</span><span class="p">]</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">y_plot</span><span class="p">,</span> <span class="s1">'b-'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            
+            <span class="c1"># Plot trajectory</span>
+            <span class="n">traj_y</span> <span class="o">=</span> <span class="p">[</span><span class="n">f1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">trajectory</span><span class="p">]</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trajectory</span><span class="p">,</span> <span class="n">traj_y</span><span class="p">,</span> <span class="s1">'o-'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> 
+                    <span class="n">markersize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+            
+            <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Learning Rate = </span><span class="si">{</span><span class="n">lr</span><span class="si">}</span><span class="s1">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'x'</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'f(x)'</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -8033,19 +8096,21 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Use PyTorch profiler to analyze a forward pass</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">SimpleModel</span><span class="p">()</span>
-<span class="n">inputs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">784</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Find optimal learning rates for each function</span>
+<span class="c1"># Experiment with different learning rates and record which works best</span>
 
-<span class="c1"># TODO: Profile the model forward pass and store the table output</span>
-<span class="n">profile_table</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1"># For Function 1 (Convex Quadratic)</span>
+<span class="n">optimal_lr_f1</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># TODO: Set the learning rate that converges fastest without overshooting</span>
 
-<span class="c1"># Hint: Use torch.profiler.profile with activities=[ProfilerActivity.CPU]</span>
-<span class="c1"># Call prof.key_averages().table() to get the profiler output</span>
+<span class="c1"># For Function 2 (Non-Convex Cubic) </span>
+<span class="n">optimal_lr_f2</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># TODO: Set a learning rate that finds a local minimum</span>
 
-<span class="k">if</span> <span class="n">profile_table</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"PyTorch Profiler Results:"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">profile_table</span><span class="p">)</span>
+<span class="c1"># For Function 3 (2D Convex)</span>
+<span class="n">optimal_lr_f3</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># TODO: Set the learning rate that converges efficiently</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Optimal learning rate for f1: </span><span class="si">{</span><span class="n">optimal_lr_f1</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Optimal learning rate for f2: </span><span class="si">{</span><span class="n">optimal_lr_f2</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Optimal learning rate for f3: </span><span class="si">{</span><span class="n">optimal_lr_f3</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8059,9 +8124,9 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 5: Operation-Level Profiling</span>
-<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE1_SECTIONS</span><span class="p">[</span><span class="s2">"Section 5: Operation-Level Profiling"</span><span class="p">]]</span>
-<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 5: Operation-Level Profiling"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 4: Learning Rate Optimization</span>
+<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE2_SECTIONS</span><span class="p">[</span><span class="s2">"Section 4: Learning Rate Experiments"</span><span class="p">]]</span>
+<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 4: Learning Rate Experiments"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -8074,7 +8139,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Section-6:-Optimization-Techniques">Section 6: Optimization Techniques<a class="anchor-link" href="#Section-6:-Optimization-Techniques">¶</a></h2><p>Apply optimization techniques to improve performance.</p>
+<h2 id="Section-5:-Convergence-Analysis">Section 5: Convergence Analysis<a class="anchor-link" href="#Section-5:-Convergence-Analysis">¶</a></h2><p>Let's analyze how different starting points affect convergence, especially for non-convex functions.</p>
 </div>
 </div>
 </div>
@@ -8086,38 +8151,40 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Compare baseline vs optimized implementations</span>
-<span class="c1"># Store results in optimization_results dictionary with keys 'baseline' and 'optimized'</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Experiment with different starting points on Function 2 (Non-Convex)</span>
+<span class="n">starting_points</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">]</span>
 
-<span class="n">optimization_results</span> <span class="o">=</span> <span class="p">{}</span>
-
-<span class="c1"># Baseline: Regular model forward pass</span>
-<span class="n">baseline_model</span> <span class="o">=</span> <span class="n">SimpleModel</span><span class="p">()</span>
-<span class="n">baseline_model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>  <span class="c1"># Set to evaluation mode</span>
-<span class="n">test_batch</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">784</span><span class="p">)</span>
-
-<span class="c1"># TODO: Measure baseline inference time (100 iterations)</span>
-<span class="c1"># optimization_results['baseline'] = ...</span>
-
-<span class="c1"># Optimized: Use torch.no_grad() and potentially torch.jit.script</span>
-<span class="c1"># TODO: Measure optimized inference time</span>
-<span class="c1"># optimization_results['optimized'] = ...</span>
-
-<span class="c1"># Hint: Use @torch.no_grad() decorator or with torch.no_grad(): context</span>
-<span class="c1"># Optional: Try torch.jit.script(model) for additional optimization</span>
-
-<span class="k">if</span> <span class="n">optimization_results</span><span class="p">:</span>
-    <span class="n">baseline_time</span> <span class="o">=</span> <span class="n">optimization_results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'baseline'</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">optimized_time</span> <span class="o">=</span> <span class="n">optimization_results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'optimized'</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">gradient_descent_1d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">f2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
     
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Baseline inference time: </span><span class="si">{</span><span class="n">baseline_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> seconds"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Optimized inference time: </span><span class="si">{</span><span class="n">optimized_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> seconds"</span><span class="p">)</span>
+    <span class="c1"># Plot the function</span>
+    <span class="n">x_plot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+    <span class="n">y_plot</span> <span class="o">=</span> <span class="p">[</span><span class="n">f2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">x_plot</span><span class="p">]</span>
     
-    <span class="k">if</span> <span class="n">baseline_time</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">optimized_time</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">improvement</span> <span class="o">=</span> <span class="p">(</span><span class="n">baseline_time</span> <span class="o">-</span> <span class="n">optimized_time</span><span class="p">)</span> <span class="o">/</span> <span class="n">baseline_time</span> <span class="o">*</span> <span class="mi">100</span>
-        <span class="n">speedup</span> <span class="o">=</span> <span class="n">baseline_time</span> <span class="o">/</span> <span class="n">optimized_time</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Performance improvement: </span><span class="si">{</span><span class="n">improvement</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Speedup: </span><span class="si">{</span><span class="n">speedup</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">x"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x0</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">starting_points</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">y_plot</span><span class="p">,</span> <span class="s1">'b-'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        
+        <span class="c1"># Run gradient descent</span>
+        <span class="n">final_x</span><span class="p">,</span> <span class="n">trajectory</span> <span class="o">=</span> <span class="n">gradient_descent_1d</span><span class="p">(</span><span class="n">f2</span><span class="p">,</span> <span class="n">grad_f2</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="n">x0</span><span class="p">,</span> 
+                                                  <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+                                                  <span class="n">n_iterations</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">trajectory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">traj_y</span> <span class="o">=</span> <span class="p">[</span><span class="n">f2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">trajectory</span><span class="p">]</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trajectory</span><span class="p">,</span> <span class="n">traj_y</span><span class="p">,</span> <span class="s1">'ro-'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> 
+                    <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trajectory</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">traj_y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">'go'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trajectory</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">traj_y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">'r*'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+            
+            <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Start: x=</span><span class="si">{</span><span class="n">x0</span><span class="si">}</span><span class="s1">, End: x=</span><span class="si">{</span><span class="n">final_x</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'x'</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'f(x)'</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">'Effect of Starting Points on Non-Convex Function'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -8131,11 +8198,164 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 6: Optimization Techniques</span>
-<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE1_SECTIONS</span><span class="p">[</span><span class="s2">"Section 6: Optimization Techniques"</span><span class="p">]]</span>
-<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 6: Optimization Techniques"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Implement convergence checking</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_convergence</span><span class="p">(</span><span class="n">trajectory</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Check when the optimization has converged</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        trajectory: List of positions during optimization</span>
+<span class="sd">        threshold: Convergence threshold for position change</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Iteration number where convergence occurred (-1 if not converged)</span>
+<span class="sd">    """</span>
+    <span class="c1"># TODO: Check consecutive positions in trajectory</span>
+    <span class="c1"># Return the iteration where |x[i+1] - x[i]| &lt; threshold</span>
+    <span class="c1"># Return -1 if never converged</span>
+    
+    <span class="k">return</span> <span class="kc">None</span>
+
+<span class="c1"># Test convergence checking</span>
+<span class="k">if</span> <span class="n">check_convergence</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">gradient_descent_1d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">test_traj</span> <span class="o">=</span> <span class="n">gradient_descent_1d</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">grad_f1</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> 
+                                       <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">n_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">test_traj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">convergence_iter</span> <span class="o">=</span> <span class="n">check_convergence</span><span class="p">(</span><span class="n">test_traj</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Converged at iteration: </span><span class="si">{</span><span class="n">convergence_iter</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 5: Convergence Analysis</span>
+<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE2_SECTIONS</span><span class="p">[</span><span class="s2">"Section 5: Convergence Analysis"</span><span class="p">]]</span>
+<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 5: Convergence Analysis"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Interactive-Exploration">Interactive Exploration<a class="anchor-link" href="#Interactive-Exploration">¶</a></h2><p>Use this section to experiment with different parameters and see how they affect optimization.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Interactive function to experiment with parameters</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_experiment</span><span class="p">(</span><span class="n">function_choice</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">x0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">n_iterations</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Run gradient descent experiment with visualization"""</span>
+    
+    <span class="k">if</span> <span class="n">function_choice</span> <span class="o">==</span> <span class="s2">"f1"</span> <span class="ow">and</span> <span class="n">f1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">gradient_descent_1d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">final_x</span><span class="p">,</span> <span class="n">trajectory</span> <span class="o">=</span> <span class="n">gradient_descent_1d</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">grad_f1</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">,</span> <span class="n">n_iterations</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">trajectory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">plot_1d_function</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">trajectory</span><span class="p">,</span> 
+                           <span class="sa">f</span><span class="s2">"Function 1 - LR=</span><span class="si">{</span><span class="n">learning_rate</span><span class="si">}</span><span class="s2">, Start=</span><span class="si">{</span><span class="n">x0</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Final position: </span><span class="si">{</span><span class="n">final_x</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> (Target: -1.0)"</span><span class="p">)</span>
+            
+    <span class="k">elif</span> <span class="n">function_choice</span> <span class="o">==</span> <span class="s2">"f2"</span> <span class="ow">and</span> <span class="n">f2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">gradient_descent_1d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">final_x</span><span class="p">,</span> <span class="n">trajectory</span> <span class="o">=</span> <span class="n">gradient_descent_1d</span><span class="p">(</span><span class="n">f2</span><span class="p">,</span> <span class="n">grad_f2</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">,</span> <span class="n">n_iterations</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">trajectory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">plot_1d_function</span><span class="p">(</span><span class="n">f2</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">trajectory</span><span class="p">,</span> 
+                           <span class="sa">f</span><span class="s2">"Function 2 - LR=</span><span class="si">{</span><span class="n">learning_rate</span><span class="si">}</span><span class="s2">, Start=</span><span class="si">{</span><span class="n">x0</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Final position: </span><span class="si">{</span><span class="n">final_x</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Try different experiments</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Experiment 1: Good learning rate"</span><span class="p">)</span>
+<span class="n">run_experiment</span><span class="p">(</span><span class="s2">"f1"</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">n_iterations</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Experiment 2: Too small learning rate"</span><span class="p">)</span>
+<span class="n">run_experiment</span><span class="p">(</span><span class="s2">"f1"</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">n_iterations</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Experiment 3: Non-convex function"</span><span class="p">)</span>
+<span class="n">run_experiment</span><span class="p">(</span><span class="s2">"f2"</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">n_iterations</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 2D optimization visualization</span>
+<span class="k">if</span> <span class="n">gradient_descent_nd</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">f3</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="c1"># Try different starting points</span>
+    <span class="n">starting_points_2d</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">]),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">]),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">])</span>
+    <span class="p">]</span>
+    
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x0</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">starting_points_2d</span><span class="p">):</span>
+        <span class="n">final_x</span><span class="p">,</span> <span class="n">trajectory</span> <span class="o">=</span> <span class="n">gradient_descent_nd</span><span class="p">(</span><span class="n">f3</span><span class="p">,</span> <span class="n">grad_f3</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> 
+                                                  <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> 
+                                                  <span class="n">n_iterations</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">trajectory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">trajectory</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">trajectory</span><span class="p">)</span>
+            <span class="n">plot_2d_function</span><span class="p">(</span><span class="n">f3</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">trajectory</span><span class="p">,</span>
+                           <span class="sa">f</span><span class="s2">"2D Optimization - Start: [</span><span class="si">{</span><span class="n">x0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">x0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">]"</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Start: </span><span class="si">{</span><span class="n">x0</span><span class="si">}</span><span class="s2">, Final: </span><span class="si">{</span><span class="n">final_x</span><span class="si">}</span><span class="s2">, Target: [-1, 1]</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h2><h3 id="Key-Takeaways:">Key Takeaways:<a class="anchor-link" href="#Key-Takeaways:">¶</a></h3><ol>
+<li><p><strong>Learning Rate Impact</strong>:</p>
+<ul>
+<li>Too small: Slow convergence</li>
+<li>Too large: Overshooting or divergence</li>
+<li>Optimal: Fast and stable convergence</li>
+</ul>
+</li>
+<li><p><strong>Function Landscapes</strong>:</p>
+<ul>
+<li>Convex functions: Single global minimum</li>
+<li>Non-convex functions: Multiple local minima/maxima</li>
+<li>Starting point matters for non-convex functions</li>
+</ul>
+</li>
+<li><p><strong>Gradient Descent Behavior</strong>:</p>
+<ul>
+<li>Always moves in direction of steepest descent</li>
+<li>Can get stuck in local minima</li>
+<li>Convergence depends on function properties and hyperparameters</li>
+</ul>
+</li>
+</ol>
 </div>
 </div>
 </div>
@@ -8151,32 +8371,6 @@ a.anchor-link {
 <span class="n">test_runner</span><span class="o">.</span><span class="n">final_summary</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h2><p>In this exercise, you've learned:</p>
-<ul>
-<li>How to manage tensors and models across CPU and GPU devices</li>
-<li>The performance differences between CPU and GPU training</li>
-<li>How batch size affects training performance</li>
-<li>How to monitor memory usage during model creation</li>
-<li>How to profile individual operations to find bottlenecks</li>
-<li>Optimization techniques to improve inference performance</li>
-</ul>
-<p>These profiling skills are essential for:</p>
-<ul>
-<li>Optimizing model training and inference speed</li>
-<li>Managing memory constraints in production environments</li>
-<li>Identifying and resolving performance bottlenecks</li>
-<li>Making informed decisions about hardware requirements</li>
-</ul>
 </div>
 </div>
 </div>

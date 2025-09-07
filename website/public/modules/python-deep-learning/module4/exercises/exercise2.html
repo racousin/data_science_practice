@@ -7517,14 +7517,932 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Module-4---Exercise-2:-Advanced-Features">Module 4 - Exercise 2: Advanced Features<a class="anchor-link" href="#Module-4---Exercise-2:-Advanced-Features">¶</a></h1><h2 id="Learning-Objectives">Learning Objectives<a class="anchor-link" href="#Learning-Objectives">¶</a></h2><ul>
-<li>Implement mixed precision training</li>
-<li>Use model compilation and TorchScript</li>
-<li>Create custom autograd functions</li>
-<li>Setup distributed training components</li>
-<li>Advanced checkpointing and model ensembling</li>
+<h1 id="Module-4---Exercise-2:-Fine-Tuning">Module 4 - Exercise 2: Fine-Tuning<a class="anchor-link" href="#Module-4---Exercise-2:-Fine-Tuning">¶</a></h1><h2 id="Learning-Objectives">Learning Objectives<a class="anchor-link" href="#Learning-Objectives">¶</a></h2><ul>
+<li>Understand the principles of transfer learning and fine-tuning</li>
+<li>Implement feature extraction with frozen layers</li>
+<li>Apply selective layer freezing and gradual unfreezing strategies</li>
+<li>Use discriminative learning rates for different layer groups</li>
+<li>Implement parameter-efficient fine-tuning methods (Adapters, LoRA)</li>
+<li>Work with Hugging Face models for practical fine-tuning tasks</li>
 </ul>
-<p><em>Cutting-edge PyTorch features for advanced practitioners.</em></p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Test-Framework-Setup">Test Framework Setup<a class="anchor-link" href="#Test-Framework-Setup">¶</a></h2>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Clone the test repository</span>
+<span class="o">!</span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/racousin/data_science_practice.git<span class="w"> </span>/tmp/tests<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="o">||</span><span class="w"> </span>true
+
+<span class="c1"># Import required modules</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'/tmp/tests/tests/python_deep_learning'</span><span class="p">)</span>
+
+<span class="c1"># Import the test utilities</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">test_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">NotebookTestRunner</span><span class="p">,</span> <span class="n">create_inline_test</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">module4.test_exercise2</span><span class="w"> </span><span class="kn">import</span> <span class="n">Exercise2Validator</span><span class="p">,</span> <span class="n">EXERCISE2_SECTIONS</span>
+
+<span class="c1"># Create test runner and validator</span>
+<span class="n">test_runner</span> <span class="o">=</span> <span class="n">NotebookTestRunner</span><span class="p">(</span><span class="s2">"module4"</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">validator</span> <span class="o">=</span> <span class="n">Exercise2Validator</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Environment-Setup">Environment Setup<a class="anchor-link" href="#Environment-Setup">¶</a></h2>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">optim</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">TensorDataset</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">'ignore'</span><span class="p">)</span>
+
+<span class="c1"># Set random seeds for reproducibility</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Check CUDA availability</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">'cuda'</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">'cpu'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Using device: </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Introduction-to-Fine-Tuning">Introduction to Fine-Tuning<a class="anchor-link" href="#Introduction-to-Fine-Tuning">¶</a></h2><p>Fine-tuning is a transfer learning technique where we take a pre-trained model and adapt it to a new, related task. This approach leverages the knowledge learned from a large dataset and applies it to a specific problem, often with much less data.</p>
+<h3 id="Key-Concepts:">Key Concepts:<a class="anchor-link" href="#Key-Concepts:">¶</a></h3><ol>
+<li><strong>Transfer Learning</strong>: Using knowledge from one task to improve performance on another</li>
+<li><strong>Feature Extraction</strong>: Using pre-trained layers as fixed feature extractors</li>
+<li><strong>Fine-Tuning</strong>: Updating pre-trained weights with a small learning rate</li>
+<li><strong>Layer Freezing</strong>: Keeping certain layers fixed during training</li>
+<li><strong>Discriminative Learning Rates</strong>: Using different learning rates for different layers</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Section-1:-Feature-Extraction-Basics">Section 1: Feature Extraction Basics<a class="anchor-link" href="#Section-1:-Feature-Extraction-Basics">¶</a></h2><p>In this section, we'll start with the simplest form of transfer learning: using a pre-trained model as a fixed feature extractor.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Creating-a-Simple-Pre-trained-Model">Creating a Simple Pre-trained Model<a class="anchor-link" href="#Creating-a-Simple-Pre-trained-Model">¶</a></h3><p>Let's simulate a pre-trained model with frozen feature layers and a trainable classifier.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">SimpleCNN</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""A simple CNN to demonstrate fine-tuning concepts"""</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SimpleCNN</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># Feature extraction layers (will be frozen)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">AdaptiveAvgPool2d</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+        <span class="p">)</span>
+        
+        <span class="c1"># Classification layers (will be trainable)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">128</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">256</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
+        <span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+<span class="c1"># TODO: Create a simple_pretrained_model instance with 10 classes</span>
+<span class="c1"># Freeze the feature layers (set requires_grad=False for features parameters)</span>
+<span class="c1"># Keep the classifier layers trainable</span>
+<span class="n">simple_pretrained_model</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># Display model info</span>
+<span class="k">if</span> <span class="n">simple_pretrained_model</span><span class="p">:</span>
+    <span class="n">total_params</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">simple_pretrained_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+    <span class="n">trainable_params</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">simple_pretrained_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">requires_grad</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total parameters: </span><span class="si">{</span><span class="n">total_params</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Trainable parameters: </span><span class="si">{</span><span class="n">trainable_params</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Frozen parameters: </span><span class="si">{</span><span class="n">total_params</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">trainable_params</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Setting-up-Feature-Extraction">Setting up Feature Extraction<a class="anchor-link" href="#Setting-up-Feature-Extraction">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a feature_extractor using only the features part of the model</span>
+<span class="c1"># Set it to eval mode and ensure no gradients are computed</span>
+<span class="n">feature_extractor</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># Create dummy data for testing</span>
+<span class="n">dummy_images</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+
+<span class="c1"># TODO: Extract features from the dummy images using feature_extractor</span>
+<span class="c1"># Store the result in extracted_features (should be a 2D tensor after flattening)</span>
+<span class="n">extracted_features</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="k">if</span> <span class="n">extracted_features</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Extracted features shape: </span><span class="si">{</span><span class="n">extracted_features</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Features require grad: </span><span class="si">{</span><span class="n">extracted_features</span><span class="o">.</span><span class="n">requires_grad</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 1: Feature Extraction Basics</span>
+<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE2_SECTIONS</span><span class="p">[</span><span class="s2">"Section 1: Feature Extraction Basics"</span><span class="p">]]</span>
+<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 1: Feature Extraction Basics"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Section-2:-Fine-Tuning-Strategies">Section 2: Fine-Tuning Strategies<a class="anchor-link" href="#Section-2:-Fine-Tuning-Strategies">¶</a></h2><p>Now let's explore different strategies for fine-tuning models, including selective layer freezing and gradual unfreezing.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Creating-a-Fine-Tuned-Model">Creating a Fine-Tuned Model<a class="anchor-link" href="#Creating-a-Fine-Tuned-Model">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a fine_tuned_model based on SimpleCNN</span>
+<span class="c1"># Freeze only the first two convolutional layers in features</span>
+<span class="c1"># Keep the rest trainable</span>
+<span class="n">fine_tuned_model</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="k">if</span> <span class="n">fine_tuned_model</span><span class="p">:</span>
+    <span class="c1"># Count parameters by layer group</span>
+    <span class="n">frozen_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">trainable_count</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">fine_tuned_model</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">requires_grad</span><span class="p">:</span>
+            <span class="n">trainable_count</span> <span class="o">+=</span> <span class="n">param</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">frozen_count</span> <span class="o">+=</span> <span class="n">param</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="s1">'Trainable'</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">param</span><span class="o">.</span><span class="n">requires_grad</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'Frozen'</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">param</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> params"</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Total frozen: </span><span class="si">{</span><span class="n">frozen_count</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total trainable: </span><span class="si">{</span><span class="n">trainable_count</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Implementing-Layer-Freezing-Strategy">Implementing Layer Freezing Strategy<a class="anchor-link" href="#Implementing-Layer-Freezing-Strategy">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Implement a function to freeze the first N layers of a model</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">freeze_layers</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">num_layers_to_freeze</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Freeze the first N layers of a Sequential model.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        model: The model to modify</span>
+<span class="sd">        num_layers_to_freeze: Number of layers to freeze from the beginning</span>
+<span class="sd">    """</span>
+    <span class="c1"># TODO: Implement the freezing logic</span>
+    <span class="k">pass</span>
+
+<span class="c1"># Test the function</span>
+<span class="n">test_model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+    <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+    <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span>
+    <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="k">if</span> <span class="n">freeze_layers</span><span class="p">:</span>
+    <span class="n">freeze_layers</span><span class="p">(</span><span class="n">test_model</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">test_model</span><span class="p">):</span>
+        <span class="n">grad_status</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">requires_grad</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">layer</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Layer </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="s1">'Trainable'</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">grad_status</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'Frozen'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Gradual-Unfreezing-Schedule">Gradual Unfreezing Schedule<a class="anchor-link" href="#Gradual-Unfreezing-Schedule">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create an unfreezing schedule</span>
+<span class="c1"># Format: [(epoch, layers_to_unfreeze), ...]</span>
+<span class="c1"># Example: At epoch 0, all layers frozen except classifier</span>
+<span class="c1">#          At epoch 3, unfreeze last conv layer</span>
+<span class="c1">#          At epoch 5, unfreeze all layers</span>
+<span class="n">unfreeze_schedule</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="k">if</span> <span class="n">unfreeze_schedule</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Unfreezing Schedule:"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">unfreeze_schedule</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">action</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 2: Fine-Tuning Strategies</span>
+<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE2_SECTIONS</span><span class="p">[</span><span class="s2">"Section 2: Fine-Tuning Strategies"</span><span class="p">]]</span>
+<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 2: Fine-Tuning Strategies"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Section-3:-Advanced-Techniques">Section 3: Advanced Techniques<a class="anchor-link" href="#Section-3:-Advanced-Techniques">¶</a></h2><p>Let's explore more sophisticated fine-tuning techniques including discriminative learning rates and parameter-efficient methods.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Discriminative-Learning-Rates">Discriminative Learning Rates<a class="anchor-link" href="#Discriminative-Learning-Rates">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create a model for demonstration</span>
+<span class="n">model_for_training</span> <span class="o">=</span> <span class="n">SimpleCNN</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># TODO: Create parameter groups with different learning rates</span>
+<span class="c1"># Group 1: Feature layers (lower learning rate, e.g., 1e-4)</span>
+<span class="c1"># Group 2: Classifier layers (higher learning rate, e.g., 1e-3)</span>
+<span class="n">lr_groups</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="k">if</span> <span class="n">lr_groups</span><span class="p">:</span>
+    <span class="c1"># Create optimizer with parameter groups</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">lr_groups</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Learning rate groups:"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Group </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: LR = </span><span class="si">{</span><span class="n">group</span><span class="p">[</span><span class="s1">'lr'</span><span class="p">]</span><span class="si">}</span><span class="s2">, Params = </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">group</span><span class="p">[</span><span class="s1">'params'</span><span class="p">])</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Measuring-Fine-Tuning-Performance">Measuring Fine-Tuning Performance<a class="anchor-link" href="#Measuring-Fine-Tuning-Performance">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create synthetic data for fine-tuning demonstration</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">100</span><span class="p">,))</span>
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># TODO: Calculate initial loss before fine-tuning</span>
+<span class="n">model_for_training</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="c1"># Calculate initial_loss on the first batch</span>
+    <span class="n">initial_loss</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># TODO: Perform one epoch of fine-tuning and calculate final_loss</span>
+<span class="k">if</span> <span class="n">lr_groups</span><span class="p">:</span>
+    <span class="n">model_for_training</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+    
+    <span class="k">for</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_loader</span><span class="p">):</span>
+        <span class="c1"># TODO: Implement training step</span>
+        <span class="k">pass</span>
+    
+    <span class="c1"># Calculate final loss</span>
+    <span class="n">model_for_training</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="c1"># TODO: Calculate final_loss on the first batch</span>
+        <span class="n">final_loss</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="k">if</span> <span class="n">initial_loss</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">final_loss</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Initial loss: </span><span class="si">{</span><span class="n">initial_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Final loss: </span><span class="si">{</span><span class="n">final_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Improvement: </span><span class="si">{</span><span class="p">((</span><span class="n">initial_loss</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">final_loss</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">initial_loss</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Adapter-Modules">Adapter Modules<a class="anchor-link" href="#Adapter-Modules">¶</a></h3><p>Adapters are small trainable modules inserted into a frozen pre-trained model, allowing parameter-efficient fine-tuning.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Implement an Adapter module</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AdapterModule</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    A simple adapter module that can be inserted into a pre-trained model.</span>
+<span class="sd">    Uses a bottleneck architecture: down-projection -&gt; nonlinearity -&gt; up-projection</span>
+<span class="sd">    """</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">bottleneck_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">AdapterModule</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># TODO: Implement the adapter architecture</span>
+        <span class="c1"># Default bottleneck_dim to input_dim // 4 if not specified</span>
+        <span class="c1"># Create down_proj, up_proj layers and activation</span>
+        <span class="k">pass</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># TODO: Implement forward pass with residual connection</span>
+        <span class="c1"># adapter_out = x + adapter_layers(x)</span>
+        <span class="k">pass</span>
+
+<span class="c1"># Test the adapter</span>
+<span class="k">if</span> <span class="n">AdapterModule</span><span class="p">:</span>
+    <span class="n">adapter</span> <span class="o">=</span> <span class="n">AdapterModule</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="n">bottleneck_dim</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
+    <span class="n">test_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">512</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">adapter</span><span class="p">(</span><span class="n">test_input</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Adapter input shape: </span><span class="si">{</span><span class="n">test_input</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Adapter output shape: </span><span class="si">{</span><span class="n">output</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Adapter parameters: </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">adapter</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="LoRA-(Low-Rank-Adaptation)">LoRA (Low-Rank Adaptation)<a class="anchor-link" href="#LoRA-(Low-Rank-Adaptation)">¶</a></h3><p>LoRA is a parameter-efficient fine-tuning method that adds trainable low-rank decomposition matrices to frozen weights.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Implement a LoRA Linear layer</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LoRALinear</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Linear layer with LoRA (Low-Rank Adaptation).</span>
+<span class="sd">    W' = W + BA where B ∈ R^(d×r) and A ∈ R^(r×k), with r &lt;&lt; min(d, k)</span>
+<span class="sd">    """</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">out_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">rank</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LoRALinear</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># TODO: Initialize the frozen weight matrix and LoRA matrices</span>
+        <span class="c1"># Create self.weight (frozen), self.lora_A, and self.lora_B</span>
+        <span class="c1"># Initialize lora_A with normal distribution and lora_B with zeros</span>
+        <span class="k">pass</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># TODO: Implement forward pass</span>
+        <span class="c1"># output = x @ W^T + x @ A^T @ B^T</span>
+        <span class="k">pass</span>
+
+<span class="c1"># Test LoRA implementation</span>
+<span class="k">if</span> <span class="n">LoRALinear</span><span class="p">:</span>
+    <span class="n">lora_layer</span> <span class="o">=</span> <span class="n">LoRALinear</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">test_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">lora_layer</span><span class="p">(</span><span class="n">test_input</span><span class="p">)</span>
+    
+    <span class="n">total_params</span> <span class="o">=</span> <span class="mi">256</span> <span class="o">*</span> <span class="mi">128</span>
+    <span class="n">lora_params</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">[</span><span class="n">lora_layer</span><span class="o">.</span><span class="n">lora_A</span><span class="p">,</span> <span class="n">lora_layer</span><span class="o">.</span><span class="n">lora_B</span><span class="p">])</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Original parameters: </span><span class="si">{</span><span class="n">total_params</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"LoRA parameters: </span><span class="si">{</span><span class="n">lora_params</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Parameter reduction: </span><span class="si">{</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">lora_params</span><span class="o">/</span><span class="n">total_params</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 3: Advanced Techniques</span>
+<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE2_SECTIONS</span><span class="p">[</span><span class="s2">"Section 3: Advanced Techniques"</span><span class="p">]]</span>
+<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 3: Advanced Techniques"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Section-4:-Hugging-Face-Integration">Section 4: Hugging Face Integration<a class="anchor-link" href="#Section-4:-Hugging-Face-Integration">¶</a></h2><p>Hugging Face provides a vast ecosystem of pre-trained models. Let's explore how to work with them for fine-tuning.</p>
+<p><strong>Note</strong>: For this exercise, we'll simulate Hugging Face concepts without requiring actual library installation.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Understanding-Hugging-Face-Models">Understanding Hugging Face Models<a class="anchor-link" href="#Understanding-Hugging-Face-Models">¶</a></h3><p>Hugging Face models typically consist of:</p>
+<ol>
+<li><strong>Base Model</strong>: Pre-trained transformer layers (BERT, GPT, etc.)</li>
+<li><strong>Task-Specific Heads</strong>: Classification, token classification, generation heads</li>
+<li><strong>Tokenizers</strong>: Convert text to model inputs</li>
+<li><strong>Config</strong>: Model architecture and training configuration</li>
+</ol>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Choose a small Hugging Face model name for fine-tuning</span>
+<span class="c1"># Examples: 'distilbert-base-uncased', 'bert-tiny', 'distilgpt2'</span>
+<span class="n">hf_model_name</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Selected model: </span><span class="si">{</span><span class="n">hf_model_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Simulate model architecture info</span>
+<span class="k">if</span> <span class="n">hf_model_name</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s1">'bert'</span> <span class="ow">in</span> <span class="n">hf_model_name</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Model Architecture:"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"  - Type: Encoder-only transformer"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"  - Use cases: Classification, NER, Question Answering"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"  - Hidden size: 768 (base) or 256 (tiny)"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"  - Layers: 12 (base) or 4 (tiny)"</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="s1">'gpt'</span> <span class="ow">in</span> <span class="n">hf_model_name</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Model Architecture:"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"  - Type: Decoder-only transformer"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"  - Use cases: Text generation, completion"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"  - Hidden size: 768"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"  - Layers: 12 (base) or 6 (distilled)"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Tokenizer-Configuration">Tokenizer Configuration<a class="anchor-link" href="#Tokenizer-Configuration">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Set tokenizer parameters</span>
+<span class="n">max_length</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Maximum sequence length (32-512)</span>
+
+<span class="c1"># Simulate tokenization</span>
+<span class="n">sample_text</span> <span class="o">=</span> <span class="s2">"Fine-tuning allows us to adapt pre-trained models to specific tasks."</span>
+
+<span class="k">if</span> <span class="n">max_length</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Tokenizer configuration:"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Max length: </span><span class="si">{</span><span class="n">max_length</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Padding: 'max_length'"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Truncation: True"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Sample tokenization:"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Input: '</span><span class="si">{</span><span class="n">sample_text</span><span class="p">[:</span><span class="mi">50</span><span class="p">]</span><span class="si">}</span><span class="s2">...'"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Output shape: [batch_size, </span><span class="si">{</span><span class="n">max_length</span><span class="si">}</span><span class="s2">]"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Custom-Classification-Head">Custom Classification Head<a class="anchor-link" href="#Custom-Classification-Head">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a custom classification head for a Hugging Face model</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ClassificationHead</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">768</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">dropout_prob</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ClassificationHead</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># TODO: Implement classification head</span>
+        <span class="c1"># Should include: dropout, dense layer(s), and output projection</span>
+        <span class="k">pass</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_states</span><span class="p">):</span>
+        <span class="c1"># TODO: Implement forward pass</span>
+        <span class="c1"># Typically uses the [CLS] token representation (first token)</span>
+        <span class="k">pass</span>
+
+<span class="c1"># TODO: Create classification_head instance</span>
+<span class="n">classification_head</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="k">if</span> <span class="n">classification_head</span><span class="p">:</span>
+    <span class="c1"># Test with dummy hidden states</span>
+    <span class="n">dummy_hidden</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">768</span><span class="p">)</span>  <span class="c1"># [batch_size, hidden_size]</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">classification_head</span><span class="p">(</span><span class="n">dummy_hidden</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Classification head output shape: </span><span class="si">{</span><span class="n">logits</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Number of parameters: </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">classification_head</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Fine-Tuning-Configuration">Fine-Tuning Configuration<a class="anchor-link" href="#Fine-Tuning-Configuration">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a configuration dictionary for fine-tuning</span>
+<span class="n">fine_tuning_config</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># Should include:</span>
+<span class="c1"># - learning_rate: Small learning rate (e.g., 2e-5 to 5e-5)</span>
+<span class="c1"># - batch_size: Appropriate batch size (e.g., 16 or 32)</span>
+<span class="c1"># - num_epochs: Few epochs (e.g., 3-5)</span>
+<span class="c1"># - warmup_steps: Number of warmup steps (e.g., 100-500)</span>
+<span class="c1"># - weight_decay: Regularization (e.g., 0.01)</span>
+<span class="c1"># - gradient_accumulation_steps: For large batches (e.g., 1-4)</span>
+
+<span class="k">if</span> <span class="n">fine_tuning_config</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Fine-tuning configuration:"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">fine_tuning_config</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="c1"># Calculate effective batch size</span>
+    <span class="n">effective_batch</span> <span class="o">=</span> <span class="n">fine_tuning_config</span><span class="p">[</span><span class="s1">'batch_size'</span><span class="p">]</span> <span class="o">*</span> <span class="n">fine_tuning_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'gradient_accumulation_steps'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Effective batch size: </span><span class="si">{</span><span class="n">effective_batch</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Best-Practices-for-Fine-Tuning-Hugging-Face-Models">Best Practices for Fine-Tuning Hugging Face Models<a class="anchor-link" href="#Best-Practices-for-Fine-Tuning-Hugging-Face-Models">¶</a></h3><ol>
+<li><strong>Start with Feature Extraction</strong>: Freeze the base model initially</li>
+<li><strong>Use Small Learning Rates</strong>: Pre-trained weights are already good</li>
+<li><strong>Monitor for Overfitting</strong>: Use validation data and early stopping</li>
+<li><strong>Layer-wise Learning Rates</strong>: Lower rates for early layers</li>
+<li><strong>Warmup Period</strong>: Gradually increase learning rate at start</li>
+<li><strong>Mixed Precision Training</strong>: Use fp16 for faster training</li>
+<li><strong>Gradient Checkpointing</strong>: Save memory for large models</li>
+</ol>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 4: Hugging Face Integration</span>
+<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE2_SECTIONS</span><span class="p">[</span><span class="s2">"Section 4: Hugging Face Integration"</span><span class="p">]]</span>
+<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 4: Hugging Face Integration"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Summary-and-Practical-Applications">Summary and Practical Applications<a class="anchor-link" href="#Summary-and-Practical-Applications">¶</a></h2><h3 id="When-to-Use-Each-Technique:">When to Use Each Technique:<a class="anchor-link" href="#When-to-Use-Each-Technique:">¶</a></h3><ol>
+<li><p><strong>Feature Extraction</strong>:</p>
+<ul>
+<li>Very small datasets (&lt; 1000 samples)</li>
+<li>Limited computational resources</li>
+<li>Similar domain to pre-training data</li>
+</ul>
+</li>
+<li><p><strong>Full Fine-Tuning</strong>:</p>
+<ul>
+<li>Larger datasets (&gt; 10,000 samples)</li>
+<li>Sufficient computational resources</li>
+<li>Domain shift from pre-training data</li>
+</ul>
+</li>
+<li><p><strong>Gradual Unfreezing</strong>:</p>
+<ul>
+<li>Medium-sized datasets</li>
+<li>Prevent catastrophic forgetting</li>
+<li>Stable training progression</li>
+</ul>
+</li>
+<li><p><strong>Parameter-Efficient Methods (Adapters, LoRA)</strong>:</p>
+<ul>
+<li>Multiple downstream tasks</li>
+<li>Limited storage for model weights</li>
+<li>Need to preserve original model</li>
+</ul>
+</li>
+<li><p><strong>Discriminative Learning Rates</strong>:</p>
+<ul>
+<li>Always recommended for fine-tuning</li>
+<li>Especially important for deep networks</li>
+<li>Helps preserve pre-trained features</li>
+</ul>
+</li>
+</ol>
+<h3 id="Common-Pitfalls-to-Avoid:">Common Pitfalls to Avoid:<a class="anchor-link" href="#Common-Pitfalls-to-Avoid:">¶</a></h3><ul>
+<li>Using too high learning rates → Catastrophic forgetting</li>
+<li>Training for too many epochs → Overfitting</li>
+<li>Not using validation data → Poor generalization</li>
+<li>Ignoring class imbalance → Biased predictions</li>
+<li>Not monitoring training metrics → Missing problems early</li>
+</ul>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Display final summary of all tests</span>
+<span class="n">test_runner</span><span class="o">.</span><span class="n">final_summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Congratulations!">Congratulations!<a class="anchor-link" href="#Congratulations!">¶</a></h2><p>You've completed the Fine-Tuning exercise! You've learned:</p>
+<p>✅ How to implement feature extraction with frozen layers<br/>
+✅ Strategies for selective layer freezing and gradual unfreezing<br/>
+✅ Using discriminative learning rates for different layer groups<br/>
+✅ Parameter-efficient fine-tuning with Adapters and LoRA<br/>
+✅ Working with Hugging Face models and configurations</p>
+<p>These techniques are essential for modern deep learning applications where pre-trained models are adapted to specific tasks with limited data and resources.</p>
 </div>
 </div>
 </div>
