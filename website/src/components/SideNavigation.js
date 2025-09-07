@@ -295,22 +295,23 @@ export const pytorchCourseContentData = {
 export const pytorchExerciseContentData = {
   'module1': [
     { to: '/exercise1', label: 'Exercise 1.1: Environment & Basics' },
-    { to: '/exercise2', label: 'Exercise 1.2: Mathematical Implementation' },
-    { to: '/exercise3', label: 'Exercise 1.3: Tensor Mastery' }
+    { to: '/exercise2', label: 'Exercise 1.2: Gradient Descent' },
+    { to: '/exercise3', label: 'Exercise 1.3: First Step with MLP' }
   ],
   'module2': [
     { to: '/exercise1', label: 'Exercise 2.1: Autograd Exploration' },
-    { to: '/exercise2', label: 'Exercise 2.2: Gradient Analysis' },
-    { to: '/exercise3', label: 'Exercise 2.3: Optimizer Implementation' }
+    { to: '/exercise2', label: 'Exercise 2.2: Optimization with PyTorch Autograd' },
+    { to: '/exercise3', label: 'Exercise 2.3: Gradient Flow' }
   ],
   'module3': [
-    { to: '/exercise1', label: 'Exercise 3.1: Build Custom MLP' },
-    { to: '/exercise2', label: 'Exercise 3.2: Complete Training Pipeline' },
-    { to: '/exercise3', label: 'Exercise 3.3: Data & Optimization' }
+    { to: '/exercise1', label: 'Exercise 3.1: Data Pipeline & Training Loop' },
+    { to: '/exercise2', label: 'Exercise 3.2: Essential Layers' },
+    { to: '/exercise3', label: 'Exercise 3.3: Monitoring & Visualization with TensorBoard' }
   ],
   'module4': [
-    { to: '/exercise1', label: 'Exercise 4.1: Performance Profiling' },
-    { to: '/exercise2', label: 'Exercise 4.2: Advanced Features' },
+    { to: '/exercise1', label: 'Exercise 4.1: Model Resource Profiling' },
+    { to: '/exercise2', label: 'Exercise 4.2: Fine Tunning' },
+    { to: '/exercise3', label: 'Exercise 4.3: Model Resource optimization' },
   ]
 };
 

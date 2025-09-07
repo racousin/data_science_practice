@@ -1,271 +1,393 @@
-#!/usr/bin/env python3
-"""
-Test suite for Python Deep Learning Module 2 - Exercise 2: Gradient Analysis
-"""
-
 import sys
 import torch
 import numpy as np
 import pytest
-import math
-from typing import Optional, Callable, Tuple, List
+from typing import Dict, Any, List, Tuple, Callable
 
+sys.path.append('..')
+from test_utils import TestValidator, NotebookTestRunner
 
-class TestExercise2:
-    """Test cases for Exercise 2: Gradient Analysis"""
+class Exercise2Validator(TestValidator):
+    """Validator for Module 2 Exercise 2: Optimization with PyTorch Autograd"""
     
-    def setup_method(self):
-        """Set up test fixtures"""
-        torch.manual_seed(42)
-        np.random.seed(42)
+    def test_f1_tensor(self, f1_tensor: Callable) -> Tuple[bool, str]:
+        """Test the tensor version of function 1"""
+        if not self.check_variable(f1_tensor, "f1_tensor"):
+            return False, "f1_tensor function not defined"
+        
+        try:
+            x = torch.tensor(0.0, requires_grad=True)
+            result = f1_tensor(x)
+            if not isinstance(result, torch.Tensor):
+                return False, "f1_tensor should return a torch.Tensor"
+            
+            # Check values
+            x_test = torch.tensor(0.0, requires_grad=True)
+            if abs(f1_tensor(x_test).item() - 1.0) > 1e-6:
+                return False, f"f1_tensor(0) should be 1.0, got {f1_tensor(x_test).item()}"
+            
+            x_test = torch.tensor(-1.0, requires_grad=True)
+            if abs(f1_tensor(x_test).item() - 0.0) > 1e-6:
+                return False, f"f1_tensor(-1) should be 0.0, got {f1_tensor(x_test).item()}"
+            
+            return True, "f1_tensor implemented correctly"
+        except Exception as e:
+            return False, f"Error testing f1_tensor: {str(e)}"
     
-    def test_gradient_computation_accuracy(self):
-        """Test numerical vs analytical gradient computation"""
-        def numerical_gradient(f, x, h=1e-5):
-            """Compute numerical gradient using finite differences"""
-            grad = torch.zeros_like(x)
-            for i in range(x.numel()):
-                x_plus = x.clone()
-                x_minus = x.clone()
-                x_plus.view(-1)[i] += h
-                x_minus.view(-1)[i] -= h
-                grad.view(-1)[i] = (f(x_plus) - f(x_minus)) / (2 * h)
-            return grad
+    def test_f1_gradient(self, f1_tensor: Callable) -> Tuple[bool, str]:
+        """Test gradient computation for function 1"""
+        if not self.check_variable(f1_tensor, "f1_tensor"):
+            return False, "f1_tensor function not defined"
         
-        # Test function: f(x) = x^3 + 2*x^2 + x + 1
-        def test_function(x):
-            return torch.sum(x**3 + 2*x**2 + x + 1)
-        
-        x = torch.tensor([1.0, 2.0], requires_grad=True)
-        
-        # Analytical gradient
-        loss = test_function(x)
-        loss.backward()
-        analytical_grad = x.grad.clone()
-        
-        # Numerical gradient
-        x_no_grad = x.detach()
-        numerical_grad = numerical_gradient(test_function, x_no_grad)
-        
-        # Should be close (within tolerance)
-        assert torch.allclose(analytical_grad, numerical_grad, atol=1e-4), \
-            f"Analytical and numerical gradients should match. Analytical: {analytical_grad}, Numerical: {numerical_grad}"
+        try:
+            # Test gradient at x=0
+            x = torch.tensor(0.0, requires_grad=True)
+            y = f1_tensor(x)
+            y.backward()
+            if abs(x.grad.item() - 2.0) > 1e-6:
+                return False, f"Gradient at x=0 should be 2.0, got {x.grad.item()}"
+            
+            # Test gradient at x=-1 (minimum)
+            x = torch.tensor(-1.0, requires_grad=True)
+            y = f1_tensor(x)
+            y.backward()
+            if abs(x.grad.item()) > 1e-6:
+                return False, f"Gradient at x=-1 should be 0.0, got {x.grad.item()}"
+            
+            return True, "f1_tensor gradient computation correct"
+        except Exception as e:
+            return False, f"Error testing f1_tensor gradient: {str(e)}"
     
-    def test_gradient_flow_through_operations(self):
-        """Test gradient flow through various operations"""
-        x = torch.tensor([[1.0, 2.0], [3.0, 4.0]], requires_grad=True)
+    def test_f2_tensor(self, f2_tensor: Callable) -> Tuple[bool, str]:
+        """Test the tensor version of function 2"""
+        if not self.check_variable(f2_tensor, "f2_tensor"):
+            return False, "f2_tensor function not defined"
         
-        # Test various operations
-        y1 = torch.sum(x)  # Sum
-        y2 = torch.mean(x)  # Mean
-        y3 = torch.max(x)  # Max
-        y4 = torch.norm(x)  # L2 norm
-        
-        # Test gradients for sum
-        y1.backward(retain_graph=True)
-        expected_grad_sum = torch.ones_like(x)
-        assert torch.allclose(x.grad, expected_grad_sum), "Gradient of sum should be all ones"
-        
-        # Reset gradients and test mean
-        x.grad.zero_()
-        y2.backward(retain_graph=True)
-        expected_grad_mean = torch.ones_like(x) / x.numel()
-        assert torch.allclose(x.grad, expected_grad_mean), "Gradient of mean should be 1/n for all elements"
+        try:
+            x = torch.tensor(0.0, requires_grad=True)
+            result = f2_tensor(x)
+            if not isinstance(result, torch.Tensor):
+                return False, "f2_tensor should return a torch.Tensor"
+            
+            # Check values
+            x_test = torch.tensor(0.0, requires_grad=True)
+            if abs(f2_tensor(x_test).item() - 2.0) > 1e-6:
+                return False, f"f2_tensor(0) should be 2.0, got {f2_tensor(x_test).item()}"
+            
+            x_test = torch.tensor(2.0, requires_grad=True)
+            if abs(f2_tensor(x_test).item() + 2.0) > 1e-6:
+                return False, f"f2_tensor(2) should be -2.0, got {f2_tensor(x_test).item()}"
+            
+            return True, "f2_tensor implemented correctly"
+        except Exception as e:
+            return False, f"Error testing f2_tensor: {str(e)}"
     
-    def test_gradient_checkpointing_understanding(self):
-        """Test understanding of gradient checkpointing concepts"""
-        # Simulate a deep computation that would benefit from checkpointing
-        x = torch.tensor(1.0, requires_grad=True)
+    def test_f2_gradient(self, f2_tensor: Callable) -> Tuple[bool, str]:
+        """Test gradient computation for function 2"""
+        if not self.check_variable(f2_tensor, "f2_tensor"):
+            return False, "f2_tensor function not defined"
         
-        # Deep computation chain
-        y = x
-        for i in range(10):
-            y = y**2 + 0.1*y  # Repeated squaring with linear term
-        
-        y.backward()
-        
-        # Should have computed gradient without error
-        assert x.grad is not None, "Gradient should be computed"
-        assert torch.isfinite(x.grad), "Gradient should be finite"
+        try:
+            # Test gradient at x=0
+            x = torch.tensor(0.0, requires_grad=True)
+            y = f2_tensor(x)
+            y.backward()
+            if abs(x.grad.item()) > 1e-6:
+                return False, f"Gradient at x=0 should be 0.0, got {x.grad.item()}"
+            
+            # Test gradient at x=1
+            x = torch.tensor(1.0, requires_grad=True)
+            y = f2_tensor(x)
+            y.backward()
+            if abs(x.grad.item() + 3.0) > 1e-6:
+                return False, f"Gradient at x=1 should be -3.0, got {x.grad.item()}"
+            
+            return True, "f2_tensor gradient computation correct"
+        except Exception as e:
+            return False, f"Error testing f2_tensor gradient: {str(e)}"
     
-    def test_gradient_clipping_necessity(self):
-        """Test scenarios where gradient clipping is necessary"""
-        # Create a scenario prone to exploding gradients
-        x = torch.tensor(10.0, requires_grad=True)
+    def test_f3_tensor(self, f3_tensor: Callable) -> Tuple[bool, str]:
+        """Test the tensor version of function 3"""
+        if not self.check_variable(f3_tensor, "f3_tensor"):
+            return False, "f3_tensor function not defined"
         
-        # Exponential function leads to large gradients
-        y = torch.exp(x)
-        y.backward()
+        try:
+            point = torch.tensor([0.0, 0.0], requires_grad=True)
+            result = f3_tensor(point)
+            if not isinstance(result, torch.Tensor):
+                return False, "f3_tensor should return a torch.Tensor"
+            
+            # Check values
+            point_test = torch.tensor([0.0, 0.0], requires_grad=True)
+            if abs(f3_tensor(point_test).item() - 5.0) > 1e-6:
+                return False, f"f3_tensor([0, 0]) should be 5.0, got {f3_tensor(point_test).item()}"
+            
+            point_test = torch.tensor([-1.0, 1.0], requires_grad=True)
+            if abs(f3_tensor(point_test).item() - 2.0) > 1e-6:
+                return False, f"f3_tensor([-1, 1]) should be 2.0, got {f3_tensor(point_test).item()}"
+            
+            return True, "f3_tensor implemented correctly"
+        except Exception as e:
+            return False, f"Error testing f3_tensor: {str(e)}"
+    
+    def test_f3_gradient(self, f3_tensor: Callable) -> Tuple[bool, str]:
+        """Test gradient computation for function 3"""
+        if not self.check_variable(f3_tensor, "f3_tensor"):
+            return False, "f3_tensor function not defined"
         
-        original_grad = x.grad.clone()
+        try:
+            # Test gradient at [0, 0]
+            point = torch.tensor([0.0, 0.0], requires_grad=True)
+            y = f3_tensor(point)
+            y.backward()
+            expected_grad = torch.tensor([2.0, -4.0])
+            if torch.norm(point.grad - expected_grad) > 1e-6:
+                return False, f"Gradient at [0, 0] should be [2, -4], got {point.grad.tolist()}"
+            
+            # Test gradient at minimum [-1, 1]
+            point = torch.tensor([-1.0, 1.0], requires_grad=True)
+            y = f3_tensor(point)
+            y.backward()
+            if torch.norm(point.grad) > 1e-6:
+                return False, f"Gradient at [-1, 1] should be [0, 0], got {point.grad.tolist()}"
+            
+            return True, "f3_tensor gradient computation correct"
+        except Exception as e:
+            return False, f"Error testing f3_tensor gradient: {str(e)}"
+    
+    def test_gradient_descent_torch_1d(self, gradient_descent_torch_1d: Callable) -> Tuple[bool, str]:
+        """Test gradient descent implementation for 1D functions"""
+        if not self.check_variable(gradient_descent_torch_1d, "gradient_descent_torch_1d"):
+            return False, "gradient_descent_torch_1d function not defined"
         
-        # Test gradient clipping
-        clipped_grad = torch.clamp(original_grad, -1.0, 1.0)
+        try:
+            # Simple quadratic function for testing
+            def test_func(x):
+                return x**2 + 2*x + 1
+            
+            result, trajectory = gradient_descent_torch_1d(
+                test_func, x0=2.0, learning_rate=0.1, n_iterations=50
+            )
+            
+            if result is None or trajectory is None:
+                return False, "gradient_descent_torch_1d returned None"
+            
+            # Check convergence to minimum at x=-1
+            if abs(result + 1.0) > 0.1:
+                return False, f"Should converge near -1.0, got {result}"
+            
+            # Check trajectory structure
+            if len(trajectory) != 51:  # Initial + 50 iterations
+                return False, f"Trajectory should have 51 points, got {len(trajectory)}"
+            
+            return True, "gradient_descent_torch_1d implemented correctly"
+        except Exception as e:
+            return False, f"Error testing gradient_descent_torch_1d: {str(e)}"
+    
+    def test_gradient_descent_torch_nd(self, gradient_descent_torch_nd: Callable) -> Tuple[bool, str]:
+        """Test gradient descent implementation for n-dimensional functions"""
+        if not self.check_variable(gradient_descent_torch_nd, "gradient_descent_torch_nd"):
+            return False, "gradient_descent_torch_nd function not defined"
         
-        assert torch.abs(clipped_grad) <= 1.0, "Clipped gradient should be within bounds"
-        assert torch.abs(original_grad) > 1.0, "Original gradient should be large (demonstrating need for clipping)"
+        try:
+            # Simple 2D quadratic function for testing
+            def test_func(point):
+                x, y = point[0], point[1]
+                return x**2 + 2*y**2 + 2*x - 4*y + 5
+            
+            result, trajectory = gradient_descent_torch_nd(
+                test_func, x0=torch.tensor([2.0, 2.0]), 
+                learning_rate=0.1, n_iterations=50
+            )
+            
+            if result is None or trajectory is None:
+                return False, "gradient_descent_torch_nd returned None"
+            
+            # Check convergence to minimum at [-1, 1]
+            expected = torch.tensor([-1.0, 1.0])
+            if torch.norm(result - expected) > 0.1:
+                return False, f"Should converge near [-1, 1], got {result.tolist()}"
+            
+            # Check trajectory structure
+            if len(trajectory) != 51:  # Initial + 50 iterations
+                return False, f"Trajectory should have 51 points, got {len(trajectory)}"
+            
+            return True, "gradient_descent_torch_nd implemented correctly"
+        except Exception as e:
+            return False, f"Error testing gradient_descent_torch_nd: {str(e)}"
+    
+    def test_sgd_optimizer(self, sgd_optimizer: Any, sgd_params: Any) -> Tuple[bool, str]:
+        """Test SGD optimizer setup"""
+        if not self.check_variable(sgd_optimizer, "sgd_optimizer"):
+            return False, "sgd_optimizer not defined"
+        if not self.check_variable(sgd_params, "sgd_params"):
+            return False, "sgd_params not defined"
+        
+        try:
+            # Check if it's a torch optimizer
+            if not isinstance(sgd_optimizer, torch.optim.Optimizer):
+                return False, "sgd_optimizer should be a torch.optim.Optimizer"
+            
+            # Check if it's specifically SGD
+            if not isinstance(sgd_optimizer, torch.optim.SGD):
+                return False, "sgd_optimizer should be torch.optim.SGD"
+            
+            # Check parameters
+            if not isinstance(sgd_params, torch.Tensor):
+                return False, "sgd_params should be a torch.Tensor"
+            
+            if not sgd_params.requires_grad:
+                return False, "sgd_params should have requires_grad=True"
+            
+            return True, "SGD optimizer setup correctly"
+        except Exception as e:
+            return False, f"Error testing SGD optimizer: {str(e)}"
+    
+    def test_adam_optimizer(self, adam_optimizer: Any, adam_params: Any) -> Tuple[bool, str]:
+        """Test Adam optimizer setup"""
+        if not self.check_variable(adam_optimizer, "adam_optimizer"):
+            return False, "adam_optimizer not defined"
+        if not self.check_variable(adam_params, "adam_params"):
+            return False, "adam_params not defined"
+        
+        try:
+            # Check if it's a torch optimizer
+            if not isinstance(adam_optimizer, torch.optim.Optimizer):
+                return False, "adam_optimizer should be a torch.optim.Optimizer"
+            
+            # Check if it's specifically Adam
+            if not isinstance(adam_optimizer, torch.optim.Adam):
+                return False, "adam_optimizer should be torch.optim.Adam"
+            
+            # Check parameters
+            if not isinstance(adam_params, torch.Tensor):
+                return False, "adam_params should be a torch.Tensor"
+            
+            if not adam_params.requires_grad:
+                return False, "adam_params should have requires_grad=True"
+            
+            return True, "Adam optimizer setup correctly"
+        except Exception as e:
+            return False, f"Error testing Adam optimizer: {str(e)}"
+    
+    def test_optimize_with_pytorch(self, optimize_with_pytorch: Callable) -> Tuple[bool, str]:
+        """Test PyTorch optimizer usage function"""
+        if not self.check_variable(optimize_with_pytorch, "optimize_with_pytorch"):
+            return False, "optimize_with_pytorch function not defined"
+        
+        try:
+            # Test with a simple function
+            def test_func(x):
+                return x**2 + 2*x + 1
+            
+            x0 = torch.tensor(2.0, requires_grad=True)
+            optimizer = torch.optim.SGD([x0], lr=0.1)
+            
+            result, trajectory = optimize_with_pytorch(
+                test_func, x0, optimizer, n_iterations=50
+            )
+            
+            if result is None or trajectory is None:
+                return False, "optimize_with_pytorch returned None"
+            
+            # Check convergence
+            if abs(result.item() + 1.0) > 0.1:
+                return False, f"Should converge near -1.0, got {result.item()}"
+            
+            # Check trajectory
+            if len(trajectory) != 51:
+                return False, f"Trajectory should have 51 points, got {len(trajectory)}"
+            
+            return True, "optimize_with_pytorch implemented correctly"
+        except Exception as e:
+            return False, f"Error testing optimize_with_pytorch: {str(e)}"
+    
+    def test_momentum_comparison(self, momentum_results: Dict) -> Tuple[bool, str]:
+        """Test momentum comparison results"""
+        if not self.check_variable(momentum_results, "momentum_results"):
+            return False, "momentum_results not defined"
+        
+        try:
+            if not isinstance(momentum_results, dict):
+                return False, "momentum_results should be a dictionary"
+            
+            required_keys = ["no_momentum", "with_momentum"]
+            for key in required_keys:
+                if key not in momentum_results:
+                    return False, f"momentum_results missing key: {key}"
+                
+                if "final" not in momentum_results[key]:
+                    return False, f"momentum_results['{key}'] missing 'final' value"
+                
+                if "iterations" not in momentum_results[key]:
+                    return False, f"momentum_results['{key}'] missing 'iterations' count"
+            
+            # Check that momentum helps convergence
+            no_momentum_iters = momentum_results["no_momentum"]["iterations"]
+            with_momentum_iters = momentum_results["with_momentum"]["iterations"]
+            
+            if with_momentum_iters >= no_momentum_iters:
+                return False, "Momentum should reduce number of iterations needed"
+            
+            return True, "Momentum comparison completed correctly"
+        except Exception as e:
+            return False, f"Error testing momentum_comparison: {str(e)}"
+    
+    def test_learning_rate_scheduler(self, scheduler: Any, scheduler_results: List) -> Tuple[bool, str]:
+        """Test learning rate scheduler implementation"""
+        if not self.check_variable(scheduler, "scheduler"):
+            return False, "scheduler not defined"
+        if not self.check_variable(scheduler_results, "scheduler_results"):
+            return False, "scheduler_results not defined"
+        
+        try:
+            # Check if it's a learning rate scheduler
+            if not hasattr(scheduler, 'step'):
+                return False, "scheduler should have a 'step' method"
+            
+            # Check results structure
+            if not isinstance(scheduler_results, list):
+                return False, "scheduler_results should be a list"
+            
+            if len(scheduler_results) < 10:
+                return False, "scheduler_results should have at least 10 learning rates recorded"
+            
+            # Check that learning rates decrease
+            first_lr = scheduler_results[0]
+            last_lr = scheduler_results[-1]
+            
+            if last_lr >= first_lr:
+                return False, "Learning rate should decrease over time with scheduler"
+            
+            return True, "Learning rate scheduler implemented correctly"
+        except Exception as e:
+            return False, f"Error testing learning_rate_scheduler: {str(e)}"
 
-
-def test_numerical_vs_analytical_gradients(namespace):
-    """Test numerical vs analytical gradient comparison"""
-    import torch
-    
-    # Test function definition
-    if 'test_func' in namespace:
-        test_func = namespace['test_func']
-        x_test = torch.tensor([1.0, 2.0], requires_grad=True)
-        result = test_func(x_test)
-        assert torch.is_tensor(result), "test_func should return a tensor"
-    else:
-        raise AssertionError("test_func not found. Please define a test function")
-    
-    # Test analytical gradient computation
-    if 'analytical_grad' in namespace:
-        analytical_grad = namespace['analytical_grad']
-        assert torch.is_tensor(analytical_grad), "analytical_grad should be a tensor"
-        assert analytical_grad.shape == torch.Size([2]), "analytical_grad should have shape matching input"
-    else:
-        raise AssertionError("analytical_grad not found. Please compute analytical gradient using autograd")
-    
-    # Test numerical gradient computation
-    if 'numerical_grad' in namespace:
-        numerical_grad = namespace['numerical_grad']
-        assert torch.is_tensor(numerical_grad), "numerical_grad should be a tensor"
-        assert numerical_grad.shape == torch.Size([2]), "numerical_grad should have shape matching input"
-    else:
-        raise AssertionError("numerical_grad not found. Please implement numerical gradient computation")
-    
-    # Test that gradients are close
-    if 'gradients_close' in namespace:
-        gradients_close = namespace['gradients_close']
-        assert gradients_close, "Analytical and numerical gradients should be close"
-    else:
-        raise AssertionError("gradients_close not found. Please compare the gradients")
-
-
-def test_gradient_flow_analysis(namespace):
-    """Test gradient flow through different operations"""
-    import torch
-    
-    # Test input tensor
-    if 'flow_x' in namespace:
-        flow_x = namespace['flow_x']
-        assert flow_x.requires_grad, "flow_x should require gradients"
-        assert flow_x.shape == torch.Size([2, 2]), "flow_x should be 2x2 matrix"
-    else:
-        raise AssertionError("flow_x not found. Please create a 2x2 tensor with requires_grad=True")
-    
-    # Test different operations and their gradients
-    operations = ['sum_grad', 'mean_grad', 'norm_grad']
-    for op_name in operations:
-        if op_name in namespace:
-            grad = namespace[op_name]
-            assert torch.is_tensor(grad), f"{op_name} should be a tensor"
-            assert grad.shape == flow_x.shape, f"{op_name} should have same shape as input"
-        else:
-            raise AssertionError(f"{op_name} not found. Please compute gradients for different operations")
-
-
-def test_activation_function_gradients(namespace):
-    """Test gradients of common activation functions"""
-    import torch
-    
-    # Test activation functions and their gradients
-    activations = ['relu_grad', 'sigmoid_grad', 'tanh_grad']
-    
-    for activation_name in activations:
-        if activation_name in namespace:
-            grad = namespace[activation_name]
-            assert torch.is_tensor(grad), f"{activation_name} should be a tensor"
-        else:
-            raise AssertionError(f"{activation_name} not found. Please compute gradient of {activation_name.split('_')[0]} activation")
-    
-    # Test specific properties
-    if 'relu_grad' in namespace:
-        relu_grad = namespace['relu_grad']
-        # ReLU gradient should be 0 or 1
-        assert torch.all((relu_grad == 0) | (relu_grad == 1)), "ReLU gradient should be 0 or 1"
-    
-    if 'sigmoid_grad' in namespace:
-        sigmoid_grad = namespace['sigmoid_grad']
-        # Sigmoid gradient should be between 0 and 0.25
-        assert torch.all((sigmoid_grad >= 0) & (sigmoid_grad <= 0.25)), "Sigmoid gradient should be in [0, 0.25]"
-
-
-def test_loss_function_gradients(namespace):
-    """Test gradients of different loss functions"""
-    import torch
-    
-    # Test MSE loss gradient
-    if 'mse_grad' in namespace:
-        mse_grad = namespace['mse_grad']
-        assert torch.is_tensor(mse_grad), "mse_grad should be a tensor"
-    else:
-        raise AssertionError("mse_grad not found. Please compute MSE loss gradient")
-    
-    # Test Cross Entropy loss gradient
-    if 'ce_grad' in namespace:
-        ce_grad = namespace['ce_grad']
-        assert torch.is_tensor(ce_grad), "ce_grad should be a tensor"
-    else:
-        raise AssertionError("ce_grad not found. Please compute Cross Entropy loss gradient")
-
-
-def test_gradient_vanishing_exploding(namespace):
-    """Test understanding of vanishing and exploding gradients"""
-    import torch
-    
-    # Test deep network gradient magnitudes
-    if 'deep_gradients' in namespace:
-        deep_gradients = namespace['deep_gradients']
-        assert isinstance(deep_gradients, list), "deep_gradients should be a list"
-        assert len(deep_gradients) > 0, "deep_gradients should not be empty"
-        
-        # Check gradient magnitudes
-        grad_magnitudes = [torch.norm(grad).item() for grad in deep_gradients if grad is not None]
-        assert len(grad_magnitudes) > 0, "Should have computed some gradient magnitudes"
-        
-    else:
-        raise AssertionError("deep_gradients not found. Please analyze gradients in a deep network")
-    
-    # Test gradient clipping
-    if 'clipped_gradients' in namespace:
-        clipped_gradients = namespace['clipped_gradients']
-        assert isinstance(clipped_gradients, list), "clipped_gradients should be a list"
-        
-        # Check that clipped gradients are within bounds
-        for grad in clipped_gradients:
-            if grad is not None:
-                assert torch.norm(grad) <= 1.0, "Clipped gradients should have norm <= 1.0"
-    else:
-        raise AssertionError("clipped_gradients not found. Please implement gradient clipping")
-
-
-def test_custom_backward_function(namespace):
-    """Test implementation of custom backward functions"""
-    import torch
-    
-    # Test custom function implementation
-    if 'custom_function_result' in namespace:
-        custom_function_result = namespace['custom_function_result']
-        assert torch.is_tensor(custom_function_result), "custom_function_result should be a tensor"
-        assert custom_function_result.requires_grad, "custom_function_result should require gradients"
-    else:
-        raise AssertionError("custom_function_result not found. Please implement a custom autograd function")
-    
-    # Test that custom gradients work
-    if 'custom_grad' in namespace:
-        custom_grad = namespace['custom_grad']
-        assert torch.is_tensor(custom_grad), "custom_grad should be a tensor"
-        assert torch.isfinite(custom_grad).all(), "custom_grad should be finite"
-    else:
-        raise AssertionError("custom_grad not found. Please compute gradients through custom function")
-
-
-def run_tests():
-    """Run all tests for Exercise 2"""
-    pytest.main([__file__, "-v"])
-
+# Define test sections
+EXERCISE2_SECTIONS = {
+    "Section 1: Function Definitions with Autograd": [
+        ("test_f1_tensor", "Function 1 tensor implementation"),
+        ("test_f1_gradient", "Function 1 gradient computation"),
+        ("test_f2_tensor", "Function 2 tensor implementation"),
+        ("test_f2_gradient", "Function 2 gradient computation"),
+        ("test_f3_tensor", "Function 3 tensor implementation"),
+        ("test_f3_gradient", "Function 3 gradient computation"),
+    ],
+    "Section 2: Gradient Descent with Autograd": [
+        ("test_gradient_descent_torch_1d", "1D gradient descent with autograd"),
+        ("test_gradient_descent_torch_nd", "N-D gradient descent with autograd"),
+    ],
+    "Section 3: PyTorch Optimizers": [
+        ("test_sgd_optimizer", "SGD optimizer setup"),
+        ("test_adam_optimizer", "Adam optimizer setup"),
+        ("test_optimize_with_pytorch", "Optimization with PyTorch optimizers"),
+    ],
+    "Section 4: Advanced Optimization": [
+        ("test_momentum_comparison", "Momentum comparison results"),
+        ("test_learning_rate_scheduler", "Learning rate scheduler"),
+    ],
+}
 
 if __name__ == "__main__":
-    run_tests()
+    # Run tests if executed directly
+    pytest.main([__file__, "-v"])

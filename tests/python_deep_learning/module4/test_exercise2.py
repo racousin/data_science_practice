@@ -1,633 +1,359 @@
-#!/usr/bin/env python3
-"""
-Test suite for Python Deep Learning Module 4 - Exercise 2: Advanced Features
-"""
-
 import sys
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import numpy as np
 import pytest
-import math
-from typing import Optional, Callable, Tuple, List
+from typing import Dict, Any, Optional, List, Tuple
+from torch.utils.data import DataLoader
+
+sys.path.append('..')
+from test_utils import TestValidator, NotebookTestRunner
 
 
-class TestExercise2:
-    """Test cases for Exercise 2: Advanced Features"""
+class Exercise2Validator(TestValidator):
+    """Validator for Module 4 Exercise 2: Fine-Tuning"""
     
-    def setup_method(self):
-        """Set up test fixtures"""
-        torch.manual_seed(42)
-        np.random.seed(42)
+    def test_simple_pretrained_model(self, context: Dict[str, Any]) -> Tuple[bool, str]:
+        """Test if simple pretrained model is created correctly"""
+        model = self.check_variable(context, 'simple_pretrained_model')
+        
+        if not isinstance(model, nn.Module):
+            return False, "simple_pretrained_model should be a torch.nn.Module"
+        
+        # Check if model has expected layers
+        if not hasattr(model, 'features') or not hasattr(model, 'classifier'):
+            return False, "Model should have 'features' and 'classifier' attributes"
+        
+        # Check if features are frozen
+        features_frozen = all(not param.requires_grad for param in model.features.parameters())
+        if not features_frozen:
+            return False, "Feature layers should be frozen (requires_grad=False)"
+        
+        # Check if classifier is trainable
+        classifier_trainable = all(param.requires_grad for param in model.classifier.parameters())
+        if not classifier_trainable:
+            return False, "Classifier layers should be trainable (requires_grad=True)"
+        
+        return True, "Simple pretrained model created correctly with frozen features"
     
-    def test_mixed_precision_training(self):
-        """Test mixed precision training with autocast and GradScaler"""
-        if not torch.cuda.is_available():
-            pytest.skip("CUDA not available for mixed precision testing")
+    def test_feature_extractor(self, context: Dict[str, Any]) -> Tuple[bool, str]:
+        """Test feature extraction setup"""
+        extractor = self.check_variable(context, 'feature_extractor')
         
-        model = nn.Sequential(
-            nn.Linear(784, 512),
-            nn.ReLU(),
-            nn.Linear(512, 10)
-        ).cuda()
+        if not isinstance(extractor, nn.Module):
+            return False, "feature_extractor should be a torch.nn.Module"
         
-        optimizer = torch.optim.Adam(model.parameters())
-        scaler = torch.cuda.amp.GradScaler()
-        criterion = nn.CrossEntropyLoss()
+        # Test that it's in eval mode
+        if extractor.training:
+            return False, "Feature extractor should be in eval mode"
         
-        # Test data
-        x = torch.randn(32, 784).cuda()
-        y = torch.randint(0, 10, (32,)).cuda()
+        # Check that parameters don't require gradients
+        all_frozen = all(not param.requires_grad for param in extractor.parameters())
+        if not all_frozen:
+            return False, "All feature extractor parameters should have requires_grad=False"
         
-        # Training step with mixed precision
-        optimizer.zero_grad()
-        
-        with torch.cuda.amp.autocast():
-            output = model(x)
-            loss = criterion(output, y)
-        
-        # Check that autocast changes the dtype of intermediate tensors
-        assert output.dtype == torch.float16, "Output should be float16 with autocast"
-        
-        # Backward pass with scaling
-        scaler.scale(loss).backward()
-        scaler.step(optimizer)
-        scaler.update()
-        
-        assert not torch.isnan(loss), "Loss should not be NaN with mixed precision"
+        return True, "Feature extractor configured correctly"
     
-    def test_model_compilation(self):
-        """Test model compilation features (PyTorch 2.0+)"""
-        model = nn.Sequential(
-            nn.Linear(100, 50),
-            nn.ReLU(),
-            nn.Linear(50, 10)
+    def test_extracted_features(self, context: Dict[str, Any]) -> Tuple[bool, str]:
+        """Test extracted features shape and properties"""
+        features = self.check_variable(context, 'extracted_features')
+        
+        if not isinstance(features, torch.Tensor):
+            return False, "extracted_features should be a torch.Tensor"
+        
+        if features.dim() != 2:
+            return False, f"Features should be 2D (batch_size, feature_dim), got {features.dim()}D"
+        
+        if features.shape[0] != 32:  # Expected batch size
+            return False, f"Batch size should be 32, got {features.shape[0]}"
+        
+        if features.shape[1] < 64:  # Minimum expected feature dimension
+            return False, f"Feature dimension seems too small: {features.shape[1]}"
+        
+        return True, "Features extracted correctly"
+    
+    def test_fine_tuned_model(self, context: Dict[str, Any]) -> Tuple[bool, str]:
+        """Test fine-tuned model structure"""
+        model = self.check_variable(context, 'fine_tuned_model')
+        
+        if not isinstance(model, nn.Module):
+            return False, "fine_tuned_model should be a torch.nn.Module"
+        
+        # Count trainable parameters
+        trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+        total_params = sum(p.numel() for p in model.parameters())
+        
+        if trainable_params == 0:
+            return False, "Model should have trainable parameters"
+        
+        if trainable_params == total_params:
+            return False, "Not all parameters should be trainable (some should be frozen)"
+        
+        return True, f"Fine-tuned model has {trainable_params}/{total_params} trainable parameters"
+    
+    def test_layer_freezing_strategy(self, context: Dict[str, Any]) -> Tuple[bool, str]:
+        """Test selective layer freezing implementation"""
+        freeze_layers = self.check_variable(context, 'freeze_layers')
+        
+        if not callable(freeze_layers):
+            return False, "freeze_layers should be a callable function"
+        
+        # Test on a dummy model
+        test_model = nn.Sequential(
+            nn.Linear(10, 20),
+            nn.Linear(20, 30),
+            nn.Linear(30, 10)
         )
         
-        # Test if torch.compile is available (PyTorch 2.0+)
-        if hasattr(torch, 'compile'):
-            try:
-                compiled_model = torch.compile(model)
-                
-                # Test that compiled model works
-                x = torch.randn(32, 100)
-                output = compiled_model(x)
-                
-                assert output.shape == (32, 10), "Compiled model should produce correct output shape"
-                assert torch.is_tensor(output), "Compiled model should return tensor"
-                
-                # Test that original and compiled models produce similar results
-                original_output = model(x)
-                assert torch.allclose(output, original_output, atol=1e-5), \
-                    "Compiled and original models should produce similar outputs"
-                    
-            except Exception as e:
-                print(f"Model compilation not fully supported: {e}")
-        else:
-            print("torch.compile not available (requires PyTorch 2.0+)")
-    
-    def test_custom_autograd_function(self):
-        """Test custom autograd function implementation"""
-        class CustomReLU(torch.autograd.Function):
-            @staticmethod
-            def forward(ctx, input):
-                ctx.save_for_backward(input)
-                return torch.clamp(input, min=0)
-            
-            @staticmethod
-            def backward(ctx, grad_output):
-                input, = ctx.saved_tensors
-                grad_input = grad_output.clone()
-                grad_input[input < 0] = 0
-                return grad_input
-        
-        # Test custom function
-        x = torch.randn(10, requires_grad=True)
-        y = CustomReLU.apply(x)
-        
-        assert y.shape == x.shape, "Custom function should preserve shape"
-        assert torch.all(y >= 0), "Custom ReLU should output non-negative values"
-        assert y.requires_grad, "Output should require gradients"
-        
-        # Test gradients
-        loss = y.sum()
-        loss.backward()
-        
-        assert x.grad is not None, "Input should have gradients"
-        
-        # Gradient should be 1 where x > 0 and 0 where x < 0
-        expected_grad = (x > 0).float()
-        assert torch.allclose(x.grad, expected_grad), "Custom gradients should be correct"
-    
-    def test_model_scripting_and_tracing(self):
-        """Test TorchScript functionality"""
-        class SimpleModel(nn.Module):
-            def __init__(self):
-                super().__init__()
-                self.linear = nn.Linear(10, 5)
-                
-            def forward(self, x):
-                return F.relu(self.linear(x))
-        
-        model = SimpleModel()
-        x = torch.randn(3, 10)
-        
-        # Test scripting
+        # Apply freezing
         try:
-            scripted_model = torch.jit.script(model)
-            scripted_output = scripted_model(x)
-            
-            assert torch.is_tensor(scripted_output), "Scripted model should return tensor"
-            assert scripted_output.shape == (3, 5), "Scripted model should have correct output shape"
-            
+            freeze_layers(test_model, num_layers_to_freeze=2)
         except Exception as e:
-            print(f"Model scripting failed: {e}")
+            return False, f"Error in freeze_layers function: {str(e)}"
         
-        # Test tracing
+        # Check if first 2 layers are frozen
+        layers = list(test_model.children())
+        for i in range(2):
+            if any(p.requires_grad for p in layers[i].parameters()):
+                return False, f"Layer {i} should be frozen but has trainable parameters"
+        
+        # Check if last layer is trainable
+        if not any(p.requires_grad for p in layers[2].parameters()):
+            return False, "Last layer should remain trainable"
+        
+        return True, "Layer freezing strategy implemented correctly"
+    
+    def test_gradual_unfreezing(self, context: Dict[str, Any]) -> Tuple[bool, str]:
+        """Test gradual unfreezing implementation"""
+        unfreeze_schedule = self.check_variable(context, 'unfreeze_schedule')
+        
+        if not isinstance(unfreeze_schedule, list):
+            return False, "unfreeze_schedule should be a list"
+        
+        if len(unfreeze_schedule) < 3:
+            return False, "unfreeze_schedule should have at least 3 epochs"
+        
+        # Check if schedule makes sense (epochs should be increasing)
+        for i in range(1, len(unfreeze_schedule)):
+            if unfreeze_schedule[i][0] <= unfreeze_schedule[i-1][0]:
+                return False, "Epochs in unfreeze_schedule should be in increasing order"
+        
+        return True, "Gradual unfreezing schedule defined correctly"
+    
+    def test_learning_rate_schedule(self, context: Dict[str, Any]) -> Tuple[bool, str]:
+        """Test discriminative learning rates"""
+        lr_groups = self.check_variable(context, 'lr_groups')
+        
+        if not isinstance(lr_groups, list):
+            return False, "lr_groups should be a list"
+        
+        if len(lr_groups) < 2:
+            return False, "Should have at least 2 learning rate groups"
+        
+        # Check if learning rates are different
+        lrs = [group['lr'] for group in lr_groups]
+        if len(set(lrs)) == 1:
+            return False, "Different parameter groups should have different learning rates"
+        
+        # Check if early layers have lower learning rates
+        if lrs[0] >= lrs[-1]:
+            return False, "Early layers should have lower learning rates than later layers"
+        
+        return True, "Discriminative learning rates configured correctly"
+    
+    def test_fine_tuning_loss(self, context: Dict[str, Any]) -> Tuple[bool, str]:
+        """Test fine-tuning loss calculation"""
+        initial_loss = self.check_variable(context, 'initial_loss')
+        final_loss = self.check_variable(context, 'final_loss')
+        
+        if not isinstance(initial_loss, (float, torch.Tensor)):
+            return False, "initial_loss should be a float or tensor"
+        
+        if not isinstance(final_loss, (float, torch.Tensor)):
+            return False, "final_loss should be a float or tensor"
+        
+        initial_val = initial_loss.item() if isinstance(initial_loss, torch.Tensor) else initial_loss
+        final_val = final_loss.item() if isinstance(final_loss, torch.Tensor) else final_loss
+        
+        if final_val >= initial_val:
+            return False, f"Loss should decrease during fine-tuning. Initial: {initial_val:.4f}, Final: {final_val:.4f}"
+        
+        improvement = (initial_val - final_val) / initial_val * 100
+        return True, f"Loss improved by {improvement:.1f}%"
+    
+    def test_adapter_module(self, context: Dict[str, Any]) -> Tuple[bool, str]:
+        """Test adapter module implementation"""
+        adapter = self.check_variable(context, 'AdapterModule')
+        
+        if not isinstance(adapter, type):
+            return False, "AdapterModule should be a class"
+        
+        # Try to instantiate
         try:
-            traced_model = torch.jit.trace(model, x)
-            traced_output = traced_model(x)
-            
-            assert torch.is_tensor(traced_output), "Traced model should return tensor"
-            assert traced_output.shape == (3, 5), "Traced model should have correct output shape"
-            
-            # Compare outputs
-            original_output = model(x)
-            assert torch.allclose(traced_output, original_output), \
-                "Traced model should produce same output as original"
-                
+            adapter_instance = adapter(512)  # Common feature dimension
         except Exception as e:
-            print(f"Model tracing failed: {e}")
+            return False, f"Could not instantiate AdapterModule: {str(e)}"
+        
+        if not isinstance(adapter_instance, nn.Module):
+            return False, "AdapterModule should inherit from nn.Module"
+        
+        # Count parameters
+        adapter_params = sum(p.numel() for p in adapter_instance.parameters())
+        if adapter_params > 512 * 512:  # Should be small
+            return False, f"Adapter has too many parameters ({adapter_params}). Should be lightweight"
+        
+        return True, f"Adapter module implemented with {adapter_params} parameters"
     
-    def test_custom_dataset_implementation(self):
-        """Test custom Dataset implementation"""
-        from torch.utils.data import Dataset, DataLoader
+    def test_lora_implementation(self, context: Dict[str, Any]) -> Tuple[bool, str]:
+        """Test LoRA (Low-Rank Adaptation) implementation"""
+        lora_layer = self.check_variable(context, 'LoRALinear')
         
-        class CustomDataset(Dataset):
-            def __init__(self, size=1000, input_dim=10, num_classes=5):
-                self.size = size
-                self.input_dim = input_dim
-                self.num_classes = num_classes
-                
-                # Generate synthetic data
-                self.data = torch.randn(size, input_dim)
-                self.labels = torch.randint(0, num_classes, (size,))
-            
-            def __len__(self):
-                return self.size
-            
-            def __getitem__(self, idx):
-                return self.data[idx], self.labels[idx]
+        if not isinstance(lora_layer, type):
+            return False, "LoRALinear should be a class"
         
-        # Test dataset
-        dataset = CustomDataset()
-        assert len(dataset) == 1000, "Dataset should have correct length"
-        
-        # Test indexing
-        sample, label = dataset[0]
-        assert sample.shape == (10,), "Sample should have correct shape"
-        assert isinstance(label.item(), int), "Label should be integer"
-        assert 0 <= label.item() < 5, "Label should be in valid range"
-        
-        # Test with DataLoader
-        dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
-        batch_x, batch_y = next(iter(dataloader))
-        
-        assert batch_x.shape == (32, 10), "Batch should have correct shape"
-        assert batch_y.shape == (32,), "Labels should have correct shape"
-    
-    def test_distributed_training_setup(self):
-        """Test distributed training setup (basic components)"""
-        # Test if distributed utilities are available
-        assert hasattr(torch.distributed, 'init_process_group'), \
-            "Should have distributed training utilities"
-        assert hasattr(torch.nn.parallel, 'DistributedDataParallel'), \
-            "Should have DistributedDataParallel"
-        
-        # Test DataParallel (simpler version for single machine)
-        if torch.cuda.device_count() > 1:
-            model = nn.Sequential(
-                nn.Linear(100, 50),
-                nn.ReLU(),
-                nn.Linear(50, 10)
-            )
-            
-            # Wrap model with DataParallel
-            parallel_model = nn.DataParallel(model)
-            
-            x = torch.randn(64, 100)
-            if torch.cuda.is_available():
-                parallel_model = parallel_model.cuda()
-                x = x.cuda()
-            
-            output = parallel_model(x)
-            assert output.shape == (64, 10), "DataParallel should preserve output shape"
-        else:
-            print("Multiple GPUs not available - skipping DataParallel test")
-    
-    def test_checkpointing_and_resuming(self):
-        """Test advanced checkpointing with training state"""
-        model = nn.Sequential(
-            nn.Linear(50, 100),
-            nn.ReLU(),
-            nn.Linear(100, 10)
-        )
-        
-        optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-        scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
-        
-        # Simulate training state
-        epoch = 15
-        step = 1500
-        best_loss = 0.25
-        
-        # Create comprehensive checkpoint
-        checkpoint = {
-            'epoch': epoch,
-            'step': step,
-            'model_state_dict': model.state_dict(),
-            'optimizer_state_dict': optimizer.state_dict(),
-            'scheduler_state_dict': scheduler.state_dict(),
-            'best_loss': best_loss,
-            'rng_state': torch.get_rng_state()
-        }
-        
-        # Verify checkpoint contains all necessary components
-        required_keys = ['epoch', 'model_state_dict', 'optimizer_state_dict', 'best_loss']
-        for key in required_keys:
-            assert key in checkpoint, f"Checkpoint should contain {key}"
-        
-        # Test loading checkpoint
-        new_model = nn.Sequential(
-            nn.Linear(50, 100),
-            nn.ReLU(),
-            nn.Linear(100, 10)
-        )
-        new_optimizer = torch.optim.Adam(new_model.parameters(), lr=0.001)
-        new_scheduler = torch.optim.lr_scheduler.StepLR(new_optimizer, step_size=10, gamma=0.1)
-        
-        # Load state
-        new_model.load_state_dict(checkpoint['model_state_dict'])
-        new_optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-        new_scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
-        
-        # Verify models have same parameters
-        for (p1, p2) in zip(model.parameters(), new_model.parameters()):
-            assert torch.allclose(p1, p2), "Loaded model should have same parameters"
-    
-    def test_gradient_accumulation(self):
-        """Test gradient accumulation for large effective batch sizes"""
-        model = nn.Linear(100, 10)
-        optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
-        criterion = nn.MSELoss()
-        
-        # Test gradient accumulation
-        accumulation_steps = 4
-        batch_size = 8
-        
-        # Accumulate gradients over multiple mini-batches
-        optimizer.zero_grad()
-        accumulated_loss = 0
-        
-        for i in range(accumulation_steps):
-            # Mini-batch
-            x = torch.randn(batch_size, 100)
-            y = torch.randn(batch_size, 10)
-            
-            output = model(x)
-            loss = criterion(output, y)
-            
-            # Scale loss by number of accumulation steps
-            loss = loss / accumulation_steps
-            loss.backward()
-            
-            accumulated_loss += loss.item()
-        
-        # Check that gradients were accumulated
-        for param in model.parameters():
-            assert param.grad is not None, "Parameters should have gradients after accumulation"
-            assert not torch.all(param.grad == 0), "Gradients should be non-zero"
-        
-        # Update parameters
-        optimizer.step()
-        
-        assert accumulated_loss > 0, "Accumulated loss should be positive"
-    
-    def test_model_ensembling(self):
-        """Test model ensembling techniques"""
-        # Create multiple models
-        models = []
-        for i in range(3):
-            model = nn.Sequential(
-                nn.Linear(20, 50),
-                nn.ReLU(),
-                nn.Linear(50, 10)
-            )
-            models.append(model)
-        
-        # Test ensemble prediction
-        x = torch.randn(32, 20)
-        predictions = []
-        
-        for model in models:
-            with torch.no_grad():
-                pred = model(x)
-                predictions.append(pred)
-        
-        # Average ensemble
-        ensemble_pred = torch.stack(predictions).mean(dim=0)
-        
-        assert ensemble_pred.shape == (32, 10), "Ensemble prediction should have correct shape"
-        
-        # Weighted ensemble
-        weights = torch.tensor([0.5, 0.3, 0.2])
-        weighted_pred = torch.stack(predictions).mul(weights.view(-1, 1, 1)).sum(dim=0)
-        
-        assert weighted_pred.shape == (32, 10), "Weighted ensemble should have correct shape"
-        assert not torch.allclose(ensemble_pred, weighted_pred), "Different ensembling should give different results"
-
-
-def test_mixed_precision_implementation(namespace):
-    """Test mixed precision training implementation"""
-    import torch
-    
-    if torch.cuda.is_available():
-        # Test GradScaler usage
-        if 'scaler' in namespace:
-            scaler = namespace['scaler']
-            assert isinstance(scaler, torch.cuda.amp.GradScaler), "Should use GradScaler for mixed precision"
-        else:
-            print("Warning: GradScaler not found. Mixed precision training not implemented")
-        
-        # Test autocast usage
-        if 'use_autocast' in namespace:
-            use_autocast = namespace['use_autocast']
-            assert isinstance(use_autocast, bool), "use_autocast should be boolean"
-            if use_autocast:
-                print("✓ Autocast enabled for mixed precision training")
-        else:
-            print("Warning: Autocast usage not specified")
-    else:
-        print("CUDA not available - skipping mixed precision tests")
-
-
-def test_model_compilation_usage(namespace):
-    """Test model compilation implementation"""
-    import torch
-    
-    # Test compiled model
-    if 'compiled_model' in namespace:
-        compiled_model = namespace['compiled_model']
-        
-        # Test that it's callable
-        assert hasattr(compiled_model, '__call__'), "Compiled model should be callable"
-        
-        # Test with sample input
+        # Try to instantiate
         try:
-            x = torch.randn(5, 100)  # Adjust based on model architecture
-            output = compiled_model(x)
-            assert torch.is_tensor(output), "Compiled model should return tensor"
+            lora_instance = lora_layer(256, 128, rank=8)
         except Exception as e:
-            print(f"Compiled model test failed: {e}")
-    elif hasattr(torch, 'compile'):
-        print("Warning: torch.compile available but compiled_model not found")
-    else:
-        print("torch.compile not available (requires PyTorch 2.0+)")
-
-
-def test_custom_autograd_function(namespace):
-    """Test custom autograd function implementation"""
-    import torch
+            return False, f"Could not instantiate LoRALinear: {str(e)}"
+        
+        if not isinstance(lora_instance, nn.Module):
+            return False, "LoRALinear should inherit from nn.Module"
+        
+        # Check for LoRA components
+        if not hasattr(lora_instance, 'lora_A') or not hasattr(lora_instance, 'lora_B'):
+            return False, "LoRALinear should have lora_A and lora_B components"
+        
+        # Check rank
+        if lora_instance.lora_A.shape[1] != 8 or lora_instance.lora_B.shape[0] != 8:
+            return False, "LoRA rank not correctly implemented"
+        
+        return True, "LoRA implementation correct with low-rank decomposition"
     
-    # Test custom function class
-    if 'CustomFunction' in namespace or 'CustomAutograd' in namespace:
-        CustomFunc = namespace.get('CustomFunction', namespace.get('CustomAutograd'))
+    def test_huggingface_model_loading(self, context: Dict[str, Any]) -> Tuple[bool, str]:
+        """Test Hugging Face model loading setup"""
+        model_name = self.check_variable(context, 'hf_model_name')
         
-        # Test that it's a proper autograd function
-        assert hasattr(CustomFunc, 'forward'), "Custom function should have forward method"
-        assert hasattr(CustomFunc, 'backward'), "Custom function should have backward method"
+        if not isinstance(model_name, str):
+            return False, "hf_model_name should be a string"
         
-        # Test usage
+        if 'bert' not in model_name.lower() and 'distil' not in model_name.lower() and 'tiny' not in model_name.lower():
+            return False, "Please use a small model like 'distilbert' or 'tiny-bert' for this exercise"
+        
+        return True, f"Hugging Face model name set to: {model_name}"
+    
+    def test_tokenizer_setup(self, context: Dict[str, Any]) -> Tuple[bool, str]:
+        """Test tokenizer configuration"""
+        max_length = self.check_variable(context, 'max_length')
+        
+        if not isinstance(max_length, int):
+            return False, "max_length should be an integer"
+        
+        if max_length < 32 or max_length > 512:
+            return False, f"max_length should be between 32 and 512, got {max_length}"
+        
+        return True, f"Tokenizer max_length set to {max_length}"
+    
+    def test_classification_head(self, context: Dict[str, Any]) -> Tuple[bool, str]:
+        """Test custom classification head"""
+        classification_head = self.check_variable(context, 'classification_head')
+        
+        if not isinstance(classification_head, nn.Module):
+            return False, "classification_head should be a torch.nn.Module"
+        
+        # Check for dropout
+        has_dropout = any(isinstance(m, nn.Dropout) for m in classification_head.modules())
+        if not has_dropout:
+            return False, "Classification head should include dropout for regularization"
+        
+        # Check output dimension
         try:
-            x = torch.randn(10, requires_grad=True)
-            y = CustomFunc.apply(x)
-            assert y.requires_grad, "Custom function output should require gradients"
-            
-            # Test backward pass
-            loss = y.sum()
-            loss.backward()
-            assert x.grad is not None, "Custom function should compute gradients"
-        except Exception as e:
-            print(f"Custom autograd function test failed: {e}")
-    else:
-        print("Warning: Custom autograd function not implemented")
-
-
-def test_torchscript_usage(namespace):
-    """Test TorchScript implementation"""
-    import torch
-    
-    # Test scripted or traced model
-    script_artifacts = ['scripted_model', 'traced_model', 'jit_model']
-    found_artifacts = [name for name in script_artifacts if name in namespace]
-    
-    if found_artifacts:
-        for artifact_name in found_artifacts:
-            artifact = namespace[artifact_name]
-            
-            # Test that it's a ScriptModule
-            if hasattr(torch.jit, 'ScriptModule') and isinstance(artifact, torch.jit.ScriptModule):
-                print(f"✓ Found TorchScript artifact: {artifact_name}")
-                
-                # Test inference
-                try:
-                    x = torch.randn(1, 100)  # Adjust based on model
-                    output = artifact(x)
-                    assert torch.is_tensor(output), f"{artifact_name} should return tensor"
-                except Exception as e:
-                    print(f"TorchScript artifact {artifact_name} test failed: {e}")
-    else:
-        print("Warning: No TorchScript artifacts found")
-
-
-def test_custom_dataset_implementation(namespace):
-    """Test custom Dataset implementation"""
-    import torch
-    from torch.utils.data import Dataset
-    
-    # Test custom dataset class
-    if 'CustomDataset' in namespace:
-        CustomDataset = namespace['CustomDataset']
+            test_input = torch.randn(1, 768)  # Common hidden size
+            output = classification_head(test_input)
+            if output.shape[1] < 2:
+                return False, f"Classification head should output at least 2 classes, got {output.shape[1]}"
+        except:
+            pass  # May have different input size
         
-        # Check inheritance
-        assert issubclass(CustomDataset, Dataset), "CustomDataset should inherit from torch.utils.data.Dataset"
+        return True, "Classification head configured correctly"
+    
+    def test_training_config(self, context: Dict[str, Any]) -> Tuple[bool, str]:
+        """Test fine-tuning training configuration"""
+        config = self.check_variable(context, 'fine_tuning_config')
         
-        # Test instantiation
-        try:
-            dataset = CustomDataset()
-            assert len(dataset) > 0, "Custom dataset should not be empty"
-            
-            # Test indexing
-            sample = dataset[0]
-            assert sample is not None, "Dataset should return valid samples"
-            
-        except Exception as e:
-            print(f"Custom dataset test failed: {e}")
-    else:
-        print("Warning: CustomDataset not implemented")
-
-
-def test_distributed_training_components(namespace):
-    """Test distributed training components"""
-    import torch
-    import torch.nn as nn
-    
-    # Test DataParallel usage
-    if 'parallel_model' in namespace:
-        parallel_model = namespace['parallel_model']
+        if not isinstance(config, dict):
+            return False, "fine_tuning_config should be a dictionary"
         
-        if isinstance(parallel_model, nn.DataParallel):
-            print("✓ DataParallel model found")
-        elif isinstance(parallel_model, nn.parallel.DistributedDataParallel):
-            print("✓ DistributedDataParallel model found")
-        else:
-            print("Warning: parallel_model is not a recognized parallel wrapper")
-    else:
-        print("Warning: Parallel model not found")
-    
-    # Test distributed utilities knowledge
-    if 'distributed_config' in namespace:
-        config = namespace['distributed_config']
-        assert isinstance(config, dict), "distributed_config should be dictionary"
-        print("✓ Distributed configuration found")
-    else:
-        print("Info: Distributed configuration not specified")
-
-
-def test_advanced_checkpointing(namespace):
-    """Test advanced checkpointing implementation"""
-    import torch
-    
-    # Test comprehensive checkpoint
-    if 'create_checkpoint' in namespace:
-        create_checkpoint = namespace['create_checkpoint']
-        assert callable(create_checkpoint), "create_checkpoint should be a function"
+        required_keys = ['learning_rate', 'batch_size', 'num_epochs', 'warmup_steps']
+        missing_keys = [k for k in required_keys if k not in config]
         
-        # Test checkpoint creation
-        model = torch.nn.Linear(10, 1)
-        optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
+        if missing_keys:
+            return False, f"Missing configuration keys: {missing_keys}"
         
-        try:
-            checkpoint = create_checkpoint(model, optimizer, epoch=5, loss=0.1)
-            assert isinstance(checkpoint, dict), "Checkpoint should be a dictionary"
-            
-            required_keys = ['model_state_dict', 'optimizer_state_dict', 'epoch']
-            for key in required_keys:
-                assert key in checkpoint, f"Checkpoint should contain {key}"
-        except Exception as e:
-            print(f"Checkpoint creation test failed: {e}")
-    else:
-        print("Warning: create_checkpoint function not found")
-    
-    # Test checkpoint loading
-    if 'load_checkpoint' in namespace:
-        load_checkpoint = namespace['load_checkpoint']
-        assert callable(load_checkpoint), "load_checkpoint should be a function"
-    else:
-        print("Warning: load_checkpoint function not found")
-
-
-def test_gradient_accumulation_implementation(namespace):
-    """Test gradient accumulation implementation"""
-    import torch
-    
-    # Test gradient accumulation function or configuration
-    if 'gradient_accumulation_steps' in namespace:
-        steps = namespace['gradient_accumulation_steps']
-        assert isinstance(steps, int), "gradient_accumulation_steps should be integer"
-        assert steps > 1, "Gradient accumulation steps should be > 1"
-        print(f"✓ Gradient accumulation with {steps} steps")
-    elif 'accumulate_gradients' in namespace:
-        accumulate_func = namespace['accumulate_gradients']
-        assert callable(accumulate_func), "accumulate_gradients should be a function"
-        print("✓ Gradient accumulation function found")
-    else:
-        print("Warning: Gradient accumulation not implemented")
-
-
-def test_model_ensembling_implementation(namespace):
-    """Test model ensembling implementation"""
-    import torch
-    
-    # Test ensemble models
-    if 'ensemble_models' in namespace:
-        ensemble = namespace['ensemble_models']
-        assert isinstance(ensemble, (list, tuple)), "ensemble_models should be list or tuple"
-        assert len(ensemble) > 1, "Ensemble should contain multiple models"
+        # Check reasonable values
+        if config['learning_rate'] > 1e-3:
+            return False, "Learning rate too high for fine-tuning (should be < 1e-3)"
         
-        # Test that all are PyTorch models
-        for model in ensemble:
-            assert hasattr(model, 'parameters'), "Each ensemble member should be a PyTorch model"
-    else:
-        print("Warning: ensemble_models not found")
-    
-    # Test ensemble prediction function
-    if 'ensemble_predict' in namespace:
-        predict_func = namespace['ensemble_predict']
-        assert callable(predict_func), "ensemble_predict should be a function"
-        print("✓ Ensemble prediction function found")
-    else:
-        print("Warning: ensemble_predict function not found")
+        if config['num_epochs'] > 10:
+            return False, "Too many epochs for fine-tuning (should be <= 10)"
+        
+        return True, "Fine-tuning configuration set appropriately"
 
 
-def test_advanced_optimization_techniques(namespace):
-    """Test advanced optimization techniques"""
-    import torch
-    
-    # Test learning rate finder
-    if 'lr_finder' in namespace or 'find_lr' in namespace:
-        lr_finder = namespace.get('lr_finder', namespace.get('find_lr'))
-        if callable(lr_finder):
-            print("✓ Learning rate finder implemented")
-        else:
-            print("Learning rate finder found but not callable")
-    else:
-        print("Warning: Learning rate finder not implemented")
-    
-    # Test cyclical learning rates
-    if 'cyclical_lr' in namespace or 'cyclic_scheduler' in namespace:
-        cyclical = namespace.get('cyclical_lr', namespace.get('cyclic_scheduler'))
-        print("✓ Cyclical learning rate implementation found")
-    else:
-        print("Info: Cyclical learning rates not implemented")
-
-
-def test_model_interpretability_tools(namespace):
-    """Test model interpretability implementations"""
-    import torch
-    
-    # Test gradient-based interpretability
-    if 'compute_gradients' in namespace or 'gradient_attribution' in namespace:
-        grad_func = namespace.get('compute_gradients', namespace.get('gradient_attribution'))
-        if callable(grad_func):
-            print("✓ Gradient-based interpretability implemented")
-    else:
-        print("Info: Gradient-based interpretability not implemented")
-    
-    # Test attention visualization
-    if 'visualize_attention' in namespace:
-        vis_func = namespace['visualize_attention']
-        if callable(vis_func):
-            print("✓ Attention visualization implemented")
-    else:
-        print("Info: Attention visualization not implemented")
-
-
-def run_tests():
-    """Run all tests for Exercise 2"""
-    pytest.main([__file__, "-v"])
+EXERCISE2_SECTIONS = {
+    "Section 1: Feature Extraction Basics": [
+        ("test_simple_pretrained_model", "Simple pretrained model with frozen features"),
+        ("test_feature_extractor", "Feature extractor configuration"),
+        ("test_extracted_features", "Extracted features shape and properties")
+    ],
+    "Section 2: Fine-Tuning Strategies": [
+        ("test_fine_tuned_model", "Fine-tuned model structure"),
+        ("test_layer_freezing_strategy", "Selective layer freezing"),
+        ("test_gradual_unfreezing", "Gradual unfreezing schedule")
+    ],
+    "Section 3: Advanced Techniques": [
+        ("test_learning_rate_schedule", "Discriminative learning rates"),
+        ("test_fine_tuning_loss", "Fine-tuning loss improvement"),
+        ("test_adapter_module", "Adapter module implementation"),
+        ("test_lora_implementation", "LoRA (Low-Rank Adaptation)")
+    ],
+    "Section 4: Hugging Face Integration": [
+        ("test_huggingface_model_loading", "Hugging Face model selection"),
+        ("test_tokenizer_setup", "Tokenizer configuration"),
+        ("test_classification_head", "Custom classification head"),
+        ("test_training_config", "Fine-tuning training configuration")
+    ]
+}
 
 
 if __name__ == "__main__":
-    run_tests()
+    validator = Exercise2Validator()
+    runner = NotebookTestRunner("module4", 2)
+    
+    # Test with sample context
+    sample_context = {
+        'simple_pretrained_model': nn.Sequential(
+            nn.Sequential(nn.Linear(10, 20), nn.ReLU()),
+            nn.Linear(20, 2)
+        ),
+        'max_length': 128,
+        'hf_model_name': 'distilbert-base-uncased',
+        'fine_tuning_config': {
+            'learning_rate': 2e-5,
+            'batch_size': 16,
+            'num_epochs': 3,
+            'warmup_steps': 100
+        }
+    }
+    
+    print("Testing Module 4 Exercise 2: Fine-Tuning")
+    print("=" * 50)
+    
+    for section_name, tests in EXERCISE2_SECTIONS.items():
+        print(f"\n{section_name}")
+        print("-" * 40)
+        for test_name, description in tests:
+            test_method = getattr(validator, test_name)
+            success, message = test_method(sample_context)
+            status = "✓" if success else "✗"
+            print(f"  {status} {description}: {message}")

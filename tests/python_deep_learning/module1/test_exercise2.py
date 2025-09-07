@@ -1,505 +1,222 @@
-#!/usr/bin/env python3
-"""
-Test suite for Python Deep Learning Module 1 - Exercise 2: Mathematical Implementation
-"""
-
 import sys
-import torch
 import numpy as np
 import pytest
-import matplotlib.pyplot as plt
-from typing import Optional, Callable, Tuple, List
-import math
+from typing import Dict, Any, List, Tuple, Callable
 
-class TestExercise2:
-    """Test cases for Exercise 2: Mathematical Implementation"""
-    
-    def setup_method(self):
-        """Set up test fixtures"""
-        torch.manual_seed(42)
-        np.random.seed(42)
-    
-    def test_numpy_gradient_descent(self):
-        """Test NumPy gradient descent implementation"""
-        def quadratic_function(x: np.ndarray) -> float:
-            return (x[0] - 3)**2 + (x[1] - 2)**2
-        
-        def quadratic_gradient(x: np.ndarray) -> np.ndarray:
-            return np.array([2*(x[0] - 3), 2*(x[1] - 2)])
-        
-        # Test basic gradient descent
-        def gradient_descent_numpy(func, grad_func, initial_point, learning_rate, num_iterations):
-            current_point = initial_point.copy()
-            trajectory = []
-            losses = []
-            
-            for i in range(num_iterations):
-                current_loss = func(current_point)
-                current_gradient = grad_func(current_point)
-                
-                trajectory.append(current_point.copy())
-                losses.append(current_loss)
-                
-                current_point = current_point - learning_rate * current_gradient
-            
-            return current_point, trajectory, losses
-        
-        initial_point = np.array([0.0, 0.0])
-        final_point, trajectory, losses = gradient_descent_numpy(
-            quadratic_function, quadratic_gradient, initial_point, 0.1, 50
-        )
-        
-        # Check convergence
-        assert len(trajectory) == 50, "Should have 50 trajectory points"
-        assert len(losses) == 50, "Should have 50 loss values"
-        assert losses[-1] < 0.1, "Should converge to low loss"
-        
-        # Check final point is close to minimum [3, 2]
-        assert abs(final_point[0] - 3.0) < 0.1, "x[0] should be close to 3"
-        assert abs(final_point[1] - 2.0) < 0.1, "x[1] should be close to 2"
-    
-    def test_torch_gradient_descent(self):
-        """Test PyTorch gradient descent implementation"""
-        def quadratic_function_torch(x: torch.Tensor) -> torch.Tensor:
-            return (x[0] - 3)**2 + (x[1] - 2)**2
-        
-        def quadratic_gradient_torch(x: torch.Tensor) -> torch.Tensor:
-            return torch.tensor([2*(x[0] - 3), 2*(x[1] - 2)], dtype=x.dtype)
-        
-        # Test basic gradient descent with PyTorch
-        def gradient_descent_torch(func, grad_func, initial_point, learning_rate, num_iterations):
-            current_point = initial_point.clone()
-            trajectory = []
-            losses = []
-            
-            for i in range(num_iterations):
-                current_loss = func(current_point)
-                current_gradient = grad_func(current_point)
-                
-                trajectory.append(current_point.clone())
-                losses.append(current_loss.item())
-                
-                current_point = current_point - learning_rate * current_gradient
-            
-            return current_point, trajectory, losses
-        
-        initial_point = torch.tensor([0.0, 0.0], dtype=torch.float32)
-        final_point, trajectory, losses = gradient_descent_torch(
-            quadratic_function_torch, quadratic_gradient_torch, initial_point, 0.1, 50
-        )
-        
-        # Check convergence
-        assert len(trajectory) == 50, "Should have 50 trajectory points"
-        assert len(losses) == 50, "Should have 50 loss values"
-        assert losses[-1] < 0.1, "Should converge to low loss"
-        
-        # Check final point is close to minimum [3, 2]
-        assert abs(final_point[0].item() - 3.0) < 0.1, "x[0] should be close to 3"
-        assert abs(final_point[1].item() - 2.0) < 0.1, "x[1] should be close to 2"
-    
-    def test_sgd_momentum(self):
-        """Test SGD with momentum implementation"""
-        def rosenbrock_function(x: np.ndarray) -> float:
-            return (1 - x[0])**2 + 100 * (x[1] - x[0]**2)**2
-        
-        def rosenbrock_gradient(x: np.ndarray) -> np.ndarray:
-            dx0 = -2*(1 - x[0]) - 400*x[0]*(x[1] - x[0]**2)
-            dx1 = 200*(x[1] - x[0]**2)
-            return np.array([dx0, dx1])
-        
-        # Test SGD with momentum
-        def sgd_with_momentum(func, grad_func, initial_point, learning_rate, momentum, num_iterations):
-            current_point = initial_point.copy()
-            velocity = np.zeros_like(current_point)
-            trajectory = []
-            losses = []
-            
-            for i in range(num_iterations):
-                current_loss = func(current_point)
-                current_gradient = grad_func(current_point)
-                
-                trajectory.append(current_point.copy())
-                losses.append(current_loss)
-                
-                velocity = momentum * velocity + learning_rate * current_gradient
-                current_point = current_point - velocity
-            
-            return current_point, trajectory, losses
-        
-        initial_point = np.array([-1.0, 1.0])
-        final_point, trajectory, losses = sgd_with_momentum(
-            rosenbrock_function, rosenbrock_gradient, initial_point, 0.001, 0.9, 100
-        )
-        
-        # Check that momentum helps convergence
-        assert len(trajectory) == 100, "Should have 100 trajectory points"
-        assert len(losses) == 100, "Should have 100 loss values"
-        assert losses[-1] < losses[0], "Loss should decrease"
-    
-    def test_adaptive_optimizers(self):
-        """Test AdaGrad and RMSprop implementations"""
-        def quadratic_function(x: np.ndarray) -> float:
-            return (x[0] - 3)**2 + (x[1] - 2)**2
-        
-        def quadratic_gradient(x: np.ndarray) -> np.ndarray:
-            return np.array([2*(x[0] - 3), 2*(x[1] - 2)])
-        
-        # Test AdaGrad
-        def adagrad_optimizer(func, grad_func, initial_point, learning_rate, epsilon, num_iterations):
-            current_point = initial_point.copy()
-            sum_squared_gradients = np.zeros_like(current_point)
-            trajectory = []
-            losses = []
-            
-            for i in range(num_iterations):
-                current_loss = func(current_point)
-                current_gradient = grad_func(current_point)
-                
-                trajectory.append(current_point.copy())
-                losses.append(current_loss)
-                
-                sum_squared_gradients += current_gradient ** 2
-                adaptive_lr = learning_rate / (np.sqrt(sum_squared_gradients) + epsilon)
-                current_point = current_point - adaptive_lr * current_gradient
-            
-            return current_point, trajectory, losses
-        
-        # Test RMSprop  
-        def rmsprop_optimizer(func, grad_func, initial_point, learning_rate, beta, epsilon, num_iterations):
-            current_point = initial_point.copy()
-            moving_avg_squared_grad = np.zeros_like(current_point)
-            trajectory = []
-            losses = []
-            
-            for i in range(num_iterations):
-                current_loss = func(current_point)
-                current_gradient = grad_func(current_point)
-                
-                trajectory.append(current_point.copy())
-                losses.append(current_loss)
-                
-                moving_avg_squared_grad = beta * moving_avg_squared_grad + (1 - beta) * current_gradient ** 2
-                adaptive_lr = learning_rate / (np.sqrt(moving_avg_squared_grad) + epsilon)
-                current_point = current_point - adaptive_lr * current_gradient
-            
-            return current_point, trajectory, losses
-        
-        initial_point = np.array([0.0, 0.0])
-        
-        # Test AdaGrad
-        adagrad_final, adagrad_trajectory, adagrad_losses = adagrad_optimizer(
-            quadratic_function, quadratic_gradient, initial_point.copy(), 0.1, 1e-8, 50
-        )
-        
-        # Test RMSprop
-        rmsprop_final, rmsprop_trajectory, rmsprop_losses = rmsprop_optimizer(
-            quadratic_function, quadratic_gradient, initial_point.copy(), 0.01, 0.9, 1e-8, 50
-        )
-        
-        # Check both converge
-        assert adagrad_losses[-1] < 0.5, "AdaGrad should converge"
-        assert rmsprop_losses[-1] < 0.5, "RMSprop should converge"
-    
-    def test_learning_rate_schedules(self):
-        """Test learning rate scheduling implementations"""
-        # Test step schedule
-        def step_schedule(initial_lr: float, step_size: int, gamma: float, epoch: int) -> float:
-            return initial_lr * (gamma ** (epoch // step_size))
-        
-        # Test exponential schedule
-        def exponential_schedule(initial_lr: float, gamma: float, epoch: int) -> float:
-            return initial_lr * (gamma ** epoch)
-        
-        # Test cosine schedule
-        def cosine_schedule(initial_lr: float, max_epochs: int, epoch: int) -> float:
-            return initial_lr * 0.5 * (1 + math.cos(math.pi * epoch / max_epochs))
-        
-        # Test that schedules return expected values
-        initial_lr = 0.01
-        
-        # Step schedule tests
-        assert abs(step_schedule(initial_lr, 10, 0.5, 0) - initial_lr) < 1e-6
-        assert abs(step_schedule(initial_lr, 10, 0.5, 10) - initial_lr * 0.5) < 1e-6
-        assert abs(step_schedule(initial_lr, 10, 0.5, 20) - initial_lr * 0.25) < 1e-6
-        
-        # Exponential schedule tests
-        assert abs(exponential_schedule(initial_lr, 0.9, 0) - initial_lr) < 1e-6
-        assert exponential_schedule(initial_lr, 0.9, 10) < initial_lr
-        
-        # Cosine schedule tests
-        assert abs(cosine_schedule(initial_lr, 100, 0) - initial_lr) < 1e-6
-        assert cosine_schedule(initial_lr, 100, 50) < initial_lr
-        assert cosine_schedule(initial_lr, 100, 100) < initial_lr
-    
-    def test_visualization(self):
-        """Test that visualization function can be called without errors"""
-        # Simple test that visualization function exists and can handle basic input
-        def quadratic_function(x: np.ndarray) -> float:
-            return (x[0] - 3)**2 + (x[1] - 2)**2
-        
-        # Create a simple trajectory
-        trajectory = [np.array([0.0, 0.0]), np.array([1.0, 1.0]), np.array([2.0, 1.5])]
-        
-        # Test that plot function can handle the data
-        def plot_optimization_trajectory(func, trajectory, title="Test"):
-            if len(trajectory) == 0:
-                return
-            
-            # Convert trajectory to numpy if needed
-            if isinstance(trajectory[0], torch.Tensor):
-                trajectory_np = [point.numpy() for point in trajectory]
-            else:
-                trajectory_np = trajectory
-            
-            # Create grid
-            trajectory_array = np.array(trajectory_np)
-            x_min, x_max = trajectory_array[:, 0].min() - 1, trajectory_array[:, 0].max() + 1
-            y_min, y_max = trajectory_array[:, 1].min() - 1, trajectory_array[:, 1].max() + 1
-            
-            x = np.linspace(x_min, x_max, 10)
-            y = np.linspace(y_min, y_max, 10)
-            X, Y = np.meshgrid(x, y)
-            
-            # Evaluate function on grid
-            Z = np.zeros_like(X)
-            for i in range(X.shape[0]):
-                for j in range(X.shape[1]):
-                    Z[i, j] = func(np.array([X[i, j], Y[i, j]]))
-            
-            # Should be able to create plot without errors
-            assert Z.shape == X.shape, "Function evaluation should match grid shape"
-            assert len(trajectory_np) > 0, "Trajectory should not be empty"
-        
-        # Test the function
-        plot_optimization_trajectory(quadratic_function, trajectory)
+sys.path.append('..')
+from test_utils import TestValidator, NotebookTestRunner
 
 
-def test_numpy_gradient_descent(namespace):
-    """Test function for numpy gradient descent that can be called directly from notebooks"""
-    # Check if gradient_descent_numpy function exists
-    if 'gradient_descent_numpy' not in namespace:
-        raise AssertionError("gradient_descent_numpy function not found. Please implement the gradient descent function.")
+class Exercise2Validator(TestValidator):
+    """Validator for Module 1 Exercise 2: Gradient Descent"""
     
-    func = namespace['gradient_descent_numpy']
+    # Section 1: Function Definitions
+    def test_f1(self, f1: Callable) -> None:
+        """Test function 1 implementation"""
+        self.check_variable(f1, "f1")
+        
+        # Test function values
+        assert abs(f1(0) - 1.0) < 1e-6, "f1(0) should equal 1"
+        assert abs(f1(-1) - 0.0) < 1e-6, "f1(-1) should equal 0 (minimum)"
+        assert abs(f1(1) - 4.0) < 1e-6, "f1(1) should equal 4"
+        
+    def test_grad_f1(self, grad_f1: Callable) -> None:
+        """Test gradient of function 1"""
+        self.check_variable(grad_f1, "grad_f1")
+        
+        # Test gradient values
+        assert abs(grad_f1(0) - 2.0) < 1e-6, "grad_f1(0) should equal 2"
+        assert abs(grad_f1(-1) - 0.0) < 1e-6, "grad_f1(-1) should equal 0 (at minimum)"
+        assert abs(grad_f1(1) - 4.0) < 1e-6, "grad_f1(1) should equal 4"
     
-    # Test with simple quadratic function
-    def quadratic_function(x: np.ndarray) -> float:
-        return (x[0] - 3)**2 + (x[1] - 2)**2
+    def test_f2(self, f2: Callable) -> None:
+        """Test function 2 implementation"""
+        self.check_variable(f2, "f2")
+        
+        # Test function values
+        assert abs(f2(0) - 2.0) < 1e-6, "f2(0) should equal 2"
+        assert abs(f2(1) - 0.0) < 1e-6, "f2(1) should equal 0"
+        assert abs(f2(2) - (-2.0)) < 1e-6, "f2(2) should equal -2 (local minimum)"
+        
+    def test_grad_f2(self, grad_f2: Callable) -> None:
+        """Test gradient of function 2"""
+        self.check_variable(grad_f2, "grad_f2")
+        
+        # Test gradient values
+        assert abs(grad_f2(0) - 0.0) < 1e-6, "grad_f2(0) should equal 0 (critical point)"
+        assert abs(grad_f2(2) - 0.0) < 1e-6, "grad_f2(2) should equal 0 (at local minimum)"
+        assert abs(grad_f2(1) - (-3.0)) < 1e-6, "grad_f2(1) should equal -3"
     
-    def quadratic_gradient(x: np.ndarray) -> np.ndarray:
-        return np.array([2*(x[0] - 3), 2*(x[1] - 2)])
+    def test_f3(self, f3: Callable) -> None:
+        """Test function 3 implementation"""
+        self.check_variable(f3, "f3")
+        
+        # Test function values
+        point1 = np.array([0, 0])
+        assert abs(f3(point1) - 5.0) < 1e-6, "f3([0,0]) should equal 5"
+        
+        point2 = np.array([-1, 1])
+        assert abs(f3(point2) - 2.0) < 1e-6, "f3([-1,1]) should equal 2 (minimum)"
+        
+        point3 = np.array([1, 1])
+        assert abs(f3(point3) - 6.0) < 1e-6, "f3([1,1]) should equal 6"
+        
+    def test_grad_f3(self, grad_f3: Callable) -> None:
+        """Test gradient of function 3"""
+        self.check_variable(grad_f3, "grad_f3")
+        
+        # Test gradient values
+        point1 = np.array([0, 0])
+        grad1 = grad_f3(point1)
+        assert isinstance(grad1, np.ndarray), "grad_f3 should return numpy array"
+        assert grad1.shape == (2,), "grad_f3 should return array of shape (2,)"
+        assert abs(grad1[0] - 2.0) < 1e-6, "grad_f3([0,0])[0] should equal 2"
+        assert abs(grad1[1] - (-4.0)) < 1e-6, "grad_f3([0,0])[1] should equal -4"
+        
+        point2 = np.array([-1, 1])
+        grad2 = grad_f3(point2)
+        assert abs(grad2[0] - 0.0) < 1e-6, "grad_f3([-1,1])[0] should equal 0 (at minimum)"
+        assert abs(grad2[1] - 0.0) < 1e-6, "grad_f3([-1,1])[1] should equal 0 (at minimum)"
     
-    initial_point = np.array([0.0, 0.0])
-    final_point, trajectory, losses = func(
-        quadratic_function, quadratic_gradient, initial_point, 0.1, 50
-    )
+    # Section 3: Gradient Descent Implementation
+    def test_gradient_descent_1d(self, gradient_descent_1d: Callable) -> None:
+        """Test 1D gradient descent implementation"""
+        self.check_variable(gradient_descent_1d, "gradient_descent_1d")
+        
+        # Simple quadratic test: f(x) = (x-1)^2, gradient = 2(x-1)
+        def test_f(x): return (x - 1) ** 2
+        def test_grad(x): return 2 * (x - 1)
+        
+        final_x, trajectory = gradient_descent_1d(test_f, test_grad, x0=5.0, 
+                                                   learning_rate=0.1, n_iterations=50)
+        
+        assert final_x is not None, "gradient_descent_1d should return final position"
+        assert trajectory is not None, "gradient_descent_1d should return trajectory"
+        assert len(trajectory) == 51, "Trajectory should include initial position plus all iterations"
+        assert abs(trajectory[0] - 5.0) < 1e-6, "First trajectory point should be x0"
+        assert abs(final_x - 1.0) < 0.01, f"Should converge near minimum at x=1, got {final_x}"
+        
+        # Check that trajectory is descending
+        for i in range(1, len(trajectory)):
+            assert trajectory[i] <= trajectory[i-1] + 1e-10, "Trajectory should be descending"
     
-    # Check outputs
-    assert isinstance(final_point, np.ndarray), "Final point should be numpy array"
-    assert isinstance(trajectory, list), "Trajectory should be a list"
-    assert isinstance(losses, list), "Losses should be a list"
-    assert len(trajectory) == 50, "Should have 50 trajectory points"
-    assert len(losses) == 50, "Should have 50 loss values"
+    def test_gradient_descent_nd(self, gradient_descent_nd: Callable) -> None:
+        """Test n-dimensional gradient descent implementation"""
+        self.check_variable(gradient_descent_nd, "gradient_descent_nd")
+        
+        # Simple 2D quadratic: f(x,y) = (x-1)^2 + (y-2)^2
+        def test_f(point): 
+            x, y = point
+            return (x - 1) ** 2 + (y - 2) ** 2
+        
+        def test_grad(point):
+            x, y = point
+            return np.array([2 * (x - 1), 2 * (y - 2)])
+        
+        x0 = np.array([5.0, 6.0])
+        final_x, trajectory = gradient_descent_nd(test_f, test_grad, x0=x0,
+                                                  learning_rate=0.1, n_iterations=50)
+        
+        assert final_x is not None, "gradient_descent_nd should return final position"
+        assert trajectory is not None, "gradient_descent_nd should return trajectory"
+        
+        trajectory = np.array(trajectory)
+        assert trajectory.shape[0] == 51, "Trajectory should include initial position plus all iterations"
+        assert trajectory.shape[1] == 2, "Trajectory should be 2D"
+        assert np.allclose(trajectory[0], x0), "First trajectory point should be x0"
+        assert abs(final_x[0] - 1.0) < 0.01, f"Should converge near x=1, got {final_x[0]}"
+        assert abs(final_x[1] - 2.0) < 0.01, f"Should converge near y=2, got {final_x[1]}"
     
-    # Check convergence
-    assert losses[-1] < losses[0], "Loss should decrease"
-    assert abs(final_point[0] - 3.0) < 0.5, "Should converge towards x[0] = 3"
-    assert abs(final_point[1] - 2.0) < 0.5, "Should converge towards x[1] = 2"
+    def test_result_1d(self, result_1d: float, trajectory_1d: List[float]) -> None:
+        """Test gradient descent result on function 1"""
+        if result_1d is None or trajectory_1d is None:
+            pytest.skip("gradient_descent_1d not yet implemented")
+            
+        assert abs(result_1d - (-1.0)) < 0.1, f"Should converge near minimum at x=-1, got {result_1d}"
+        assert len(trajectory_1d) > 0, "Trajectory should not be empty"
+    
+    def test_result_nd(self, result_nd: np.ndarray, trajectory_nd: np.ndarray) -> None:
+        """Test gradient descent result on function 3"""
+        if result_nd is None or trajectory_nd is None:
+            pytest.skip("gradient_descent_nd not yet implemented")
+            
+        assert abs(result_nd[0] - (-1.0)) < 0.1, f"Should converge near x=-1, got {result_nd[0]}"
+        assert abs(result_nd[1] - 1.0) < 0.1, f"Should converge near y=1, got {result_nd[1]}"
+    
+    # Section 4: Learning Rate Experiments
+    def test_optimal_lr_f1(self, optimal_lr_f1: float) -> None:
+        """Test optimal learning rate for function 1"""
+        self.check_variable(optimal_lr_f1, "optimal_lr_f1")
+        
+        # For quadratic functions, optimal is around 0.1-0.5
+        assert 0.05 <= optimal_lr_f1 <= 0.8, f"Optimal LR for f1 should be between 0.05 and 0.8, got {optimal_lr_f1}"
+    
+    def test_optimal_lr_f2(self, optimal_lr_f2: float) -> None:
+        """Test optimal learning rate for function 2"""
+        self.check_variable(optimal_lr_f2, "optimal_lr_f2")
+        
+        # For cubic functions, need smaller learning rate
+        assert 0.01 <= optimal_lr_f2 <= 0.3, f"Optimal LR for f2 should be between 0.01 and 0.3, got {optimal_lr_f2}"
+    
+    def test_optimal_lr_f3(self, optimal_lr_f3: float) -> None:
+        """Test optimal learning rate for function 3"""
+        self.check_variable(optimal_lr_f3, "optimal_lr_f3")
+        
+        # For 2D convex function
+        assert 0.05 <= optimal_lr_f3 <= 0.4, f"Optimal LR for f3 should be between 0.05 and 0.4, got {optimal_lr_f3}"
+    
+    # Section 5: Convergence Analysis
+    def test_check_convergence(self, check_convergence: Callable) -> None:
+        """Test convergence checking function"""
+        self.check_variable(check_convergence, "check_convergence")
+        
+        # Test converged trajectory
+        converged_traj = [1.0, 0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625, 
+                         0.0078125, 0.00390625, 0.001953125, 0.001, 0.001, 0.001]
+        
+        conv_iter = check_convergence(converged_traj, threshold=0.001)
+        assert conv_iter == 10, f"Should detect convergence at iteration 10, got {conv_iter}"
+        
+        # Test non-converged trajectory
+        non_converged = [1.0, 0.5, 0.25, 0.125, 0.0625]
+        conv_iter = check_convergence(non_converged, threshold=0.001)
+        assert conv_iter == -1, "Should return -1 for non-converged trajectory"
+        
+        # Test immediate convergence
+        immediate = [1.0, 1.0, 1.0]
+        conv_iter = check_convergence(immediate, threshold=0.001)
+        assert conv_iter == 1, "Should detect immediate convergence"
 
 
-def test_torch_gradient_descent(namespace):
-    """Test function for torch gradient descent that can be called directly from notebooks"""
-    if 'gradient_descent_torch' not in namespace:
-        raise AssertionError("gradient_descent_torch function not found. Please implement the PyTorch gradient descent function.")
-    
-    func = namespace['gradient_descent_torch']
-    
-    # Test with simple quadratic function
-    def quadratic_function_torch(x: torch.Tensor) -> torch.Tensor:
-        return (x[0] - 3)**2 + (x[1] - 2)**2
-    
-    def quadratic_gradient_torch(x: torch.Tensor) -> torch.Tensor:
-        return torch.tensor([2*(x[0] - 3), 2*(x[1] - 2)], dtype=x.dtype)
-    
-    initial_point = torch.tensor([0.0, 0.0], dtype=torch.float32)
-    final_point, trajectory, losses = func(
-        quadratic_function_torch, quadratic_gradient_torch, initial_point, 0.1, 50
-    )
-    
-    # Check outputs
-    assert isinstance(final_point, torch.Tensor), "Final point should be torch tensor"
-    assert isinstance(trajectory, list), "Trajectory should be a list"
-    assert isinstance(losses, list), "Losses should be a list"
-    assert len(trajectory) == 50, "Should have 50 trajectory points"
-    assert len(losses) == 50, "Should have 50 loss values"
-    
-    # Check convergence
-    assert losses[-1] < losses[0], "Loss should decrease"
-    assert abs(final_point[0].item() - 3.0) < 0.5, "Should converge towards x[0] = 3"
-    assert abs(final_point[1].item() - 2.0) < 0.5, "Should converge towards x[1] = 2"
-
-
-def test_visualization(namespace):
-    """Test function for visualization that can be called directly from notebooks"""
-    if 'plot_optimization_trajectory' not in namespace:
-        raise AssertionError("plot_optimization_trajectory function not found. Please implement the visualization function.")
-    
-    func = namespace['plot_optimization_trajectory']
-    
-    # Test with simple data
-    def simple_function(x):
-        return x[0]**2 + x[1]**2
-    
-    trajectory = [np.array([0.0, 0.0]), np.array([1.0, 1.0])]
-    
-    # Should not raise an error
-    try:
-        func(simple_function, trajectory, "Test Plot")
-    except Exception as e:
-        # Allow matplotlib-related errors in testing environment
-        if "display" not in str(e).lower() and "tkinter" not in str(e).lower():
-            raise AssertionError(f"Visualization function failed: {e}")
-
-
-def test_sgd_momentum(namespace):
-    """Test function for SGD with momentum that can be called directly from notebooks"""
-    if 'sgd_with_momentum' not in namespace:
-        raise AssertionError("sgd_with_momentum function not found. Please implement the SGD with momentum function.")
-    
-    func = namespace['sgd_with_momentum']
-    
-    # Test with simple quadratic function
-    def quadratic_function(x: np.ndarray) -> float:
-        return (x[0] - 3)**2 + (x[1] - 2)**2
-    
-    def quadratic_gradient(x: np.ndarray) -> np.ndarray:
-        return np.array([2*(x[0] - 3), 2*(x[1] - 2)])
-    
-    initial_point = np.array([0.0, 0.0])
-    final_point, trajectory, losses = func(
-        quadratic_function, quadratic_gradient, initial_point, 0.1, 0.9, 50
-    )
-    
-    # Check outputs
-    assert isinstance(final_point, np.ndarray), "Final point should be numpy array"
-    assert isinstance(trajectory, list), "Trajectory should be a list"
-    assert isinstance(losses, list), "Losses should be a list"
-    assert len(trajectory) == 50, "Should have 50 trajectory points"
-    assert len(losses) == 50, "Should have 50 loss values"
-    
-    # Check convergence
-    assert losses[-1] < losses[0], "Loss should decrease"
-
-
-def test_adaptive_optimizers(namespace):
-    """Test function for adaptive optimizers that can be called directly from notebooks"""
-    if 'adagrad_optimizer' not in namespace:
-        raise AssertionError("adagrad_optimizer function not found. Please implement the AdaGrad optimizer.")
-    
-    if 'rmsprop_optimizer' not in namespace:
-        raise AssertionError("rmsprop_optimizer function not found. Please implement the RMSprop optimizer.")
-    
-    adagrad_func = namespace['adagrad_optimizer']
-    rmsprop_func = namespace['rmsprop_optimizer']
-    
-    # Test with simple quadratic function
-    def quadratic_function(x: np.ndarray) -> float:
-        return (x[0] - 3)**2 + (x[1] - 2)**2
-    
-    def quadratic_gradient(x: np.ndarray) -> np.ndarray:
-        return np.array([2*(x[0] - 3), 2*(x[1] - 2)])
-    
-    initial_point = np.array([0.0, 0.0])
-    
-    # Test AdaGrad
-    adagrad_final, adagrad_trajectory, adagrad_losses = adagrad_func(
-        quadratic_function, quadratic_gradient, initial_point.copy(), 0.1, 1e-8, 50
-    )
-    
-    # Test RMSprop
-    rmsprop_final, rmsprop_trajectory, rmsprop_losses = rmsprop_func(
-        quadratic_function, quadratic_gradient, initial_point.copy(), 0.01, 0.9, 1e-8, 50
-    )
-    
-    # Check AdaGrad outputs
-    assert isinstance(adagrad_final, np.ndarray), "AdaGrad final point should be numpy array"
-    assert len(adagrad_trajectory) == 50, "AdaGrad should have 50 trajectory points"
-    assert len(adagrad_losses) == 50, "AdaGrad should have 50 loss values"
-    assert adagrad_losses[-1] < adagrad_losses[0], "AdaGrad loss should decrease"
-    
-    # Check RMSprop outputs
-    assert isinstance(rmsprop_final, np.ndarray), "RMSprop final point should be numpy array"
-    assert len(rmsprop_trajectory) == 50, "RMSprop should have 50 trajectory points"
-    assert len(rmsprop_losses) == 50, "RMSprop should have 50 loss values"
-    assert rmsprop_losses[-1] < rmsprop_losses[0], "RMSprop loss should decrease"
-
-
-def test_learning_rate_schedules(namespace):
-    """Test function for learning rate schedules that can be called directly from notebooks"""
-    required_functions = ['step_schedule', 'exponential_schedule', 'cosine_schedule', 'sgd_with_schedule']
-    
-    for func_name in required_functions:
-        if func_name not in namespace:
-            raise AssertionError(f"{func_name} function not found. Please implement the learning rate schedule function.")
-    
-    step_func = namespace['step_schedule']
-    exp_func = namespace['exponential_schedule']
-    cos_func = namespace['cosine_schedule']
-    sgd_sched_func = namespace['sgd_with_schedule']
-    
-    # Test schedule functions
-    initial_lr = 0.01
-    
-    # Test step schedule
-    lr_step_0 = step_func(initial_lr, 10, 0.5, 0)
-    lr_step_10 = step_func(initial_lr, 10, 0.5, 10)
-    
-    assert abs(lr_step_0 - initial_lr) < 1e-6, "Step schedule should return initial_lr at epoch 0"
-    assert lr_step_10 < lr_step_0, "Step schedule should decay learning rate"
-    
-    # Test exponential schedule
-    lr_exp_0 = exp_func(initial_lr, 0.9, 0)
-    lr_exp_10 = exp_func(initial_lr, 0.9, 10)
-    
-    assert abs(lr_exp_0 - initial_lr) < 1e-6, "Exponential schedule should return initial_lr at epoch 0"
-    assert lr_exp_10 < lr_exp_0, "Exponential schedule should decay learning rate"
-    
-    # Test cosine schedule
-    lr_cos_0 = cos_func(initial_lr, 100, 0)
-    lr_cos_50 = cos_func(initial_lr, 100, 50)
-    
-    assert abs(lr_cos_0 - initial_lr) < 1e-6, "Cosine schedule should return initial_lr at epoch 0"
-    assert lr_cos_50 < lr_cos_0, "Cosine schedule should decay learning rate"
-    
-    # Test SGD with schedule
-    def quadratic_function(x: np.ndarray) -> float:
-        return (x[0] - 3)**2 + (x[1] - 2)**2
-    
-    def quadratic_gradient(x: np.ndarray) -> np.ndarray:
-        return np.array([2*(x[0] - 3), 2*(x[1] - 2)])
-    
-    schedule_func = lambda epoch: step_func(initial_lr, 10, 0.5, epoch)
-    initial_point = np.array([0.0, 0.0])
-    
-    final_point, trajectory, losses, learning_rates = sgd_sched_func(
-        quadratic_function, quadratic_gradient, initial_point, initial_lr, schedule_func, 25
-    )
-    
-    # Check outputs
-    assert isinstance(final_point, np.ndarray), "Final point should be numpy array"
-    assert len(trajectory) == 25, "Should have 25 trajectory points"
-    assert len(losses) == 25, "Should have 25 loss values"
-    assert len(learning_rates) == 25, "Should have 25 learning rates"
-    
-    # Check that learning rates change according to schedule
-    assert learning_rates[0] == initial_lr, "First learning rate should be initial_lr"
-    assert learning_rates[10] < learning_rates[0], "Learning rate should decay according to schedule"
-
-
-def run_tests():
-    """Run all tests for Exercise 2"""
-    pytest.main([__file__, "-v"])
+# Define test sections
+EXERCISE2_SECTIONS = {
+    "Section 1: Function Definitions": [
+        ("test_f1", "Testing function 1 implementation"),
+        ("test_grad_f1", "Testing gradient of function 1"),
+        ("test_f2", "Testing function 2 implementation"),
+        ("test_grad_f2", "Testing gradient of function 2"),
+        ("test_f3", "Testing function 3 implementation"),
+        ("test_grad_f3", "Testing gradient of function 3"),
+    ],
+    "Section 3: Gradient Descent 1D": [
+        ("test_gradient_descent_1d", "Testing 1D gradient descent implementation"),
+        ("test_result_1d", "Testing convergence on function 1"),
+    ],
+    "Section 3: Gradient Descent ND": [
+        ("test_gradient_descent_nd", "Testing n-dimensional gradient descent"),
+        ("test_result_nd", "Testing convergence on function 3"),
+    ],
+    "Section 4: Learning Rate Experiments": [
+        ("test_optimal_lr_f1", "Testing optimal learning rate for function 1"),
+        ("test_optimal_lr_f2", "Testing optimal learning rate for function 2"),
+        ("test_optimal_lr_f3", "Testing optimal learning rate for function 3"),
+    ],
+    "Section 5: Convergence Analysis": [
+        ("test_check_convergence", "Testing convergence detection function"),
+    ],
+}
 
 
 if __name__ == "__main__":
-    run_tests()
+    # Run tests
+    pytest.main([__file__, "-v"])

@@ -73,32 +73,7 @@ output = model(input_data)         # Shape: [32, 10]`} />
       </div>
 
       <div data-slide>
-        <Title order={2} mt="xl">4. Custom Model Class</Title>
-        
-        <Text>
-          Define models as classes for more flexibility:
-        </Text>
-        
-        <CodeBlock language="python" code={`class MLP(nn.Module):
-    def __init__(self, input_dim, hidden_dim, output_dim):
-        super(MLP, self).__init__()
-        self.fc1 = nn.Linear(input_dim, hidden_dim)
-        self.fc2 = nn.Linear(hidden_dim, hidden_dim)
-        self.fc3 = nn.Linear(hidden_dim, output_dim)
-        self.relu = nn.ReLU()
-        
-    def forward(self, x):
-        x = self.relu(self.fc1(x))
-        x = self.relu(self.fc2(x))
-        x = self.fc3(x)  # No activation on output
-        return x
-
-# Instantiate model
-model = MLP(input_dim=784, hidden_dim=256, output_dim=10)`} />
-      </div>
-
-      <div data-slide>
-        <Title order={2} mt="xl">5. Counting Parameters</Title>
+        <Title order={2} mt="xl">4. Counting Parameters</Title>
         
         <Text>
           Each linear layer has weights and biases. Total parameters determine model capacity:
@@ -121,7 +96,7 @@ print(f"Total parameters: {count_parameters(model)}")  # 235,146`} />
       </div>
 
       <div data-slide>
-        <Title order={2} mt="xl">6. Input and Output Shapes</Title>
+        <Title order={2} mt="xl">5. Input and Output Shapes</Title>
         
         <Text>
           Understanding tensor dimensions through the network:
@@ -143,74 +118,6 @@ print(f"After layer 1: {x.shape}")
 layer2 = nn.Linear(256, 10)
 x = layer2(x)                           # [32, 10]
 print(f"Output shape: {x.shape}")`} />
-      </div>
-
-      <div data-slide>
-        <Title order={2} mt="xl">7. Complete Example</Title>
-        
-        <Text>
-          A minimal working MLP for MNIST classification:
-        </Text>
-        
-        <CodeBlock language="python" code={`import torch
-import torch.nn as nn
-
-# Define model
-class SimpleMLP(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.layers = nn.Sequential(
-            nn.Linear(28*28, 512),
-            nn.ReLU(),
-            nn.Linear(512, 256),
-            nn.ReLU(),
-            nn.Linear(256, 10)
-        )
-    
-    def forward(self, x):
-        # Flatten image to vector
-        x = x.view(x.size(0), -1)  # [batch, 28, 28] � [batch, 784]
-        return self.layers(x)
-
-# Create model instance
-model = SimpleMLP()
-
-# Test with random data
-batch = torch.randn(64, 28, 28)  # 64 images
-output = model(batch)             # [64, 10] class scores
-print(f"Output shape: {output.shape}")`} />
-      </div>
-
-      <div data-slide>
-        <Title order={2} mt="xl">8. Model Summary</Title>
-        
-        <Text>
-          View model architecture and parameter counts:
-        </Text>
-        
-        <CodeBlock language="python" code={`# Print model structure
-print(model)
-
-# Count parameters by layer
-for name, param in model.named_parameters():
-    print(f"{name}: {param.shape} = {param.numel()} parameters")
-
-# Total parameters
-total = sum(p.numel() for p in model.parameters())
-print(f"\\nTotal trainable parameters: {total:,}")`} />
-        
-        <Text mt="md">
-          Output for our SimpleMLP:
-        </Text>
-        
-        <CodeBlock language="python" code={`layers.0.weight: [512, 784] = 401,408 parameters
-layers.0.bias: [512] = 512 parameters
-layers.2.weight: [256, 512] = 131,072 parameters
-layers.2.bias: [256] = 256 parameters
-layers.4.weight: [10, 256] = 2,560 parameters
-layers.4.bias: [10] = 10 parameters
-
-Total trainable parameters: 535,818`} />
       </div>
 
     </Container>

@@ -2,190 +2,142 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Project Overview
+## PRIMARY FOCUS: Python Deep Learning Exercise Development
 
-This is a personal website and teaching platform featuring:
-- **Personal Portfolio**: Home page with profile, teaching, and research/projects sections
-- **Multi-Course Teaching Platform**: Supporting multiple data science and deep learning courses
-- **Python Testing Framework**: Automated assessment system at `/tests`
-- **Content Management**: Course materials and Jupyter notebooks
+We are actively developing exercises for the Python Deep Learning course. Each exercise follows a standardized pattern that ensures consistency and quality.
 
-## Design Principles
+### Exercise Structure Pattern
 
-### Cultural Direction
-- **Academic and Professional**: Maintain a scholarly, educational focus
-- **Concise and Direct**: Clear communication without unnecessary elaboration
-- **Objective and Neutral**: Factual, impersonal presentation of content
-- **Non-commercial**: Avoid marketing language, focus on educational value
+Each exercise notebook (`/website/public/modules/python-deep-learning/module{N}/exercises/exercise{N}.ipynb`) must include:
 
-### Visual Style
-- **Minimalist**: Simple, clean interfaces without clutter
-- **Sober Colors**: Modern, professional palette avoiding bright or playful colors
-- **Direct Interaction**: Clickable elements without unnecessary buttons or decorations
-- **Functional Design**: Every element serves a clear purpose
+1. **Title and Learning Objectives**
+   ```markdown
+   # Module N - Exercise N: Topic Name
+   
+   ## Learning Objectives
+   - Clear, specific learning goals
+   - One objective per line
+   - Actionable and measurable
+   ```
 
-### Content Guidelines
-- **Simple Navigation**: Direct links and lists over complex cards or widgets
-- **Clear Typography**: Readable fonts with appropriate hierarchy
-- **Dark Mode Support**: Accessible viewing in different lighting conditions
-- **Responsive Layout**: Works seamlessly across devices
+2. **Test Framework Setup**
+   ```python
+   # Clone the test repository
+   !git clone https://github.com/racousin/data_science_practice.git /tmp/tests 2>/dev/null || true
+   
+   # Import required modules
+   import sys
+   sys.path.append('/tmp/tests/tests/python_deep_learning')
+   
+   # Import the improved test utilities
+   from test_utils import NotebookTestRunner, create_inline_test
+   from moduleN.test_exerciseN import ExerciseNValidator, EXERCISEN_SECTIONS
+   
+   # Create test runner and validator
+   test_runner = NotebookTestRunner("moduleN", N)
+   validator = ExerciseNValidator()
+   ```
 
-## Common Commands
+3. **Environment Setup**
+   - Import necessary libraries (torch, numpy, matplotlib, etc.)
+   - Set random seeds for reproducibility
+   - Verify CUDA availability if relevant
 
-### Jupyter Notebook Processing
-```bash
-# Convert all module notebooks to HTML
-make
+4. **Section Pattern**
+   Each section follows this structure:
+   ```markdown
+   ## Section N: Topic Name
+   
+   Brief description of what students will learn in this section.
+   Theorical and mathematical questions
+   ```
+   
+   ```python
+   # TODO comments for each task the student needs to complete
+   # Students replace None with their implementation
+   variable_name = None
+   
+   # Display/verification code to help students check their work
+   print(f"Your result: {variable_name}")
+   ```
+   
+   ```python
+   # Test Section N: Topic Name
+   section_tests = [(getattr(validator, name), desc) for name, desc in EXERCISEN_SECTIONS["Section N: Topic Name"]]
+   test_runner.test_section("Section N: Topic Name", validator, section_tests, locals())
+   ```
 
-# Clean generated HTML files
-make clean
-```
+5. **Final Validation**
+   ```python
+   # Display final summary of all tests
+   test_runner.final_summary()
+   ```
 
-### Testing Framework
-```bash
-# Set up Python environment
-python3 -m venv venv
-source venv/bin/activate
-pip install -r tests/data-science-practice/requirements.txt
+### Test File Structure Pattern
 
-# Run tests for specific module (example for module 1)
-./tests/data-science-practice/module1/exercise1.sh <username> <timestamp> <aws_key> <aws_secret> <aws_region>
-```
+Each test file (`/tests/python_deep_learning/module{N}/test_exercise{N}.py`) must:
 
-## Architecture
+1. **Import Dependencies**
+   ```python
+   import sys
+   import torch
+   import numpy as np
+   import pytest
+   from typing import Dict, Any
+   
+   sys.path.append('..')
+   from test_utils import TestValidator, NotebookTestRunner
+   ```
 
-### Site Structure
-The website is organized with multiple layout types:
-- **Simple Layout** (no sidebar): Home, Courses List, Projects pages
-- **Course Layout** (with sidebar): Course content pages with hierarchical navigation
+2. **Define Validator Class**
+   ```python
+   class ExerciseNValidator(TestValidator):
+       """Validator for Module N Exercise N: Topic"""
+   ```
 
-### Frontend (React)
-The website uses React 18.3 with Mantine UI components. Key directories:
-- `/website/src/pages/` - Page components (Home, Projects, Course module pages)
-- `/website/src/courses/` - Course containers (DataSciencePractice, PythonDeepLearning)
-- `/website/src/components/` - Reusable components:
-  - `MainHeader` - Top navigation bar
-  - `SideNavigation` - Course-specific sidebar with hierarchical content links
-  - `ModuleFrame` - Module page wrapper
-- `/website/public/modules/` - Module content (HTML, Jupyter notebooks)
+3. **Implement Test Methods**
+   - One test method per student task
+   - Use descriptive test names: `test_variable_name()`
+   - Use helper methods from TestValidator:
+     - `check_variable()` - Verify variable exists
+     - `check_tensor_shape()` - Validate tensor dimensions
+     - `check_tensor_dtype()` - Check data types
+     - `check_tensor_values()` - Compare expected values
 
-### Supported Courses
-1. **Data Science Practice**: 15 modules covering Git, Python, ML, Deep Learning, NLP, Computer Vision
-2. **Python Deep Learning**: 4 modules on PyTorch and deep learning (under development)
+4. **Define Section Dictionary**
+   ```python
+   EXERCISEN_SECTIONS = {
+       "Section 1: Topic Name": [
+           ("test_method_name", "Description of what's being tested"),
+           ...
+       ],
+       ...
+   }
+   ```
+#### Module 1: Foundations of Deep Learning
+- Exercise 1: Environment & Basics
+- Exercise 2: Gradient Descent
+- Exercise 3: First Step with MLP
 
-### Navigation Features
-- **Hierarchical Sidebar**: Course content with expandable subsections
-- **Exercise Integration**: Direct links to exercises in sidebar
-- **No Duplicate Menus**: All navigation centralized in left sidebar for course pages
+#### Module 2: Automatic Differentiation
+- Exercise 1: Autograd Exploration
+- Exercise 2: Optimization with PyTorch Autograd
+- Exercise 3: Gradient Flow
 
-### Testing System
+#### Module 3: Neural Network Training & Monitoring
+- Exercise 1: Data Pipeline & Training Loop
+- Exercise 2: Essential Layers
+- Exercise 3: Monitoring & Visualization with TensorBoard
 
-#### Data Science Practice Course
-Students work with a dedicated Git repository workflow:
-- Create and push solutions to their own GitHub repository
-- Run shell scripts (`exercise*.sh`) to validate their solutions
-- Test results are automatically uploaded to AWS S3 for instructor tracking
-- Progress is monitored via the Session Results page
+#### Module 4: Performance Optimization & Scale
+- Exercise 1: Model Resource Profiling
+- Exercise 2: Fine Tunning
+- Exercise 3: Performance Optimization Techniques
+### Development Guidelines
 
-#### Python Deep Learning Course  
-Students work directly in Google Colab notebooks:
-- Open exercise notebooks in Colab environment
-- Clone test repository (https://github.com/racousin/data_science_practice.git) for step-by-step validation
-- Run pytest tests for each exercise part to verify their solutions
-- No separate repository or submission required
-- Immediate feedback with validation throughout exercises
-
-### Content Structure
-Each module contains:
-- Course materials (theory)
-- Exercises (practice with Jupyter notebooks)
-
-Notebooks are converted to HTML via the Makefile for web display.
-
-## Important Path File Resources
-
-### Course Content Structure
-```
-/website/public/modules/
-├── data-science-practice/
-│   ├── module1/
-│   │   ├── course.ipynb
-│   │   ├── course.html
-│   │   └── exercises/
-│   └── ...module15/
-└── python-deep-learning/
-    ├── module1/
-    │   ├── course.ipynb
-    │   ├── course.html
-    │   └── exercises/
-    └── ...module4/
-```
-
-### Source Code Organization
-```
-/website/src/
-├── components/
-│   ├── MainHeader.js         # Top navigation
-│   ├── SideNavigation.js     # Course sidebar navigation (defines course structure)
-│   └── ModuleFrame.js        # Module page wrapper
-├── pages/
-│   ├── Home.js               # Landing page
-│   ├── Courses.js            # Course selection
-│   ├── Projects.js           # Research projects
-│   ├── data-science-practice/
-│   │   └── module{1-15}/
-│   │       ├── course/
-│   │       └── exercise/
-│   └── python-deep-learning/
-│       └── module{1-4}/
-│           ├── course/
-│           └── exercise/
-└── courses/
-    ├── DataSciencePractice.js
-    └── PythonDeepLearning.js
-```
-
-### Testing Framework
-```
-/tests/
-├── data-science-practice/        # Repository-based workflow
-│   ├── requirements.txt
-│   └── module{1-15}/
-│       ├── exercise{N}.sh        # Shell script runner (uploads to S3)
-│       └── test_exercise{N}.py   # Pytest test file
-└── python-deep-learning/          # Colab self-validation workflow
-    ├── requirements.txt
-    └── module{1-4}/
-        └── test_exercise{N}.py   # Pytest test file (no .sh scripts)
-```
-
-## Key Dependencies
-
-### Frontend
-- React Router for navigation
-- Mantine UI for components
-- react-jupyter for notebook display
-- react-ga4 for analytics
-
-### Testing
-- pytest for test execution
-- pandas/scikit-learn for data science operations
-- boto3 for AWS S3 integration
-
-## Development Notes
-
-### Technical Notes
-- Test results are stored in S3 bucket: `www.raphaelcousin.com/repositories/{repo}/students/`
-- Virtual environment activation is required for Python operations
-- All module content is stored as HTML or Jupyter notebooks in `/website/public/modules/`
-- Course content links are defined in `/website/src/components/SideNavigation.js`
-
-### URL Structure
-- `/` - Home page (personal profile)
-- `/courses` - Course selection page
-- `/courses/data-science-practice/module{N}/course` - Course content
-- `/courses/data-science-practice/module{N}/exercise` - Exercises
-- `/courses/data-science-practice/results` - Student results
-- `/courses/python-deep-learning/module{N}/course` - Course content
-- `/courses/python-deep-learning/module{N}/exercise` - Exercises
-- `/projects` - Research projects and collaborations
+1. **Consistency**: All exercises must follow the exact patternß
+2. **Progressive Difficulty**: Start simple, gradually increase complexityß
+3. **Clear TODOs**: Every student task starts with `# TODO:` comment
+4. **Immediate Feedback**: Tests run after each section for validation
+5. **Self-Contained**: No external dependencies beyond PyTorch and standard libraries
+6. **Colab-Friendly**: Everything runs in Google Colab without additional setup
