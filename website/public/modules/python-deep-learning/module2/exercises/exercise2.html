@@ -8405,51 +8405,6 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Comparison:-Manual-vs-Autograd">Comparison: Manual vs Autograd<a class="anchor-link" href="#Comparison:-Manual-vs-Autograd">¶</a></h2><p>Let's compare the effort and flexibility of manual gradient computation vs autograd.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Complex function example: f(x) = x^4 - 2x^3 + x^2 - x + 1</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">complex_function</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">x</span><span class="o">**</span><span class="mi">4</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">3</span> <span class="o">+</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
-
-<span class="c1"># With autograd - simple!</span>
-<span class="n">x_auto</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">y_auto</span> <span class="o">=</span> <span class="n">complex_function</span><span class="p">(</span><span class="n">x_auto</span><span class="p">)</span>
-<span class="n">y_auto</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Autograd gradient at x=1.5: </span><span class="si">{</span><span class="n">x_auto</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Manual gradient would require: f'(x) = 4x³ - 6x² + 2x - 1</span>
-<span class="n">x_manual</span> <span class="o">=</span> <span class="mf">1.5</span>
-<span class="n">grad_manual</span> <span class="o">=</span> <span class="mi">4</span><span class="o">*</span><span class="n">x_manual</span><span class="o">**</span><span class="mi">3</span> <span class="o">-</span> <span class="mi">6</span><span class="o">*</span><span class="n">x_manual</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">x_manual</span> <span class="o">-</span> <span class="mi">1</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Manual gradient at x=1.5: </span><span class="si">{</span><span class="n">grad_manual</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Difference: </span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="n">x_auto</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">grad_manual</span><span class="p">)</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Autograd advantages:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"- No need to derive gradients manually"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"- Works for any differentiable function"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"- Handles complex computational graphs"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"- Less error-prone"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="Interactive-Experiments">Interactive Experiments<a class="anchor-link" href="#Interactive-Experiments">¶</a></h2><p>Try different optimizers and hyperparameters on various functions.</p>
 </div>
 </div>
@@ -8536,46 +8491,6 @@ a.anchor-link {
     <span class="n">compare_optimizers</span><span class="p">(</span><span class="n">f1_tensor</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">n_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h2><h3 id="Key-Takeaways:">Key Takeaways:<a class="anchor-link" href="#Key-Takeaways:">¶</a></h3><ol>
-<li><p><strong>Automatic Differentiation</strong>:</p>
-<ul>
-<li>PyTorch's autograd eliminates manual gradient computation</li>
-<li>Works with complex functions and computational graphs</li>
-<li>Essential for deep learning</li>
-</ul>
-</li>
-<li><p><strong>PyTorch Optimizers</strong>:</p>
-<ul>
-<li>SGD: Simple gradient descent with optional momentum</li>
-<li>Adam: Adaptive learning rates, often faster convergence</li>
-<li>RMSprop: Another adaptive method</li>
-</ul>
-</li>
-<li><p><strong>Advanced Techniques</strong>:</p>
-<ul>
-<li>Momentum: Accelerates convergence, helps escape shallow minima</li>
-<li>Learning rate scheduling: Improves convergence stability</li>
-<li>Different optimizers suit different problems</li>
-</ul>
-</li>
-<li><p><strong>Practical Benefits</strong>:</p>
-<ul>
-<li>Less error-prone than manual implementation</li>
-<li>Scales to neural networks with millions of parameters</li>
-<li>Foundation for modern deep learning</li>
-</ul>
-</li>
-</ol>
 </div>
 </div>
 </div>

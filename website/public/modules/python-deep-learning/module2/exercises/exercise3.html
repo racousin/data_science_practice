@@ -8121,48 +8121,6 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h2><p>In this exercise, you've learned about gradient flow problems in deep neural networks:</p>
-<h3 id="Key-Takeaways:">Key Takeaways:<a class="anchor-link" href="#Key-Takeaways:">¶</a></h3><ol>
-<li><p><strong>Vanishing Gradients</strong>:</p>
-<ul>
-<li>Sigmoid and Tanh activations cause gradients to shrink exponentially</li>
-<li>Deeper networks suffer more from this problem</li>
-<li>Makes training deep networks nearly impossible</li>
-</ul>
-</li>
-<li><p><strong>Exploding Gradients</strong>:</p>
-<ul>
-<li>Poor initialization can cause gradients to grow exponentially</li>
-<li>Leads to numerical instability (NaN values)</li>
-<li>Can be controlled with gradient clipping</li>
-</ul>
-</li>
-<li><p><strong>Solutions</strong>:</p>
-<ul>
-<li><strong>ReLU</strong>: Maintains gradient flow for positive inputs</li>
-<li><strong>Batch Normalization</strong>: Stabilizes gradients throughout the network</li>
-<li><strong>Proper Initialization</strong>: Xavier/He initialization helps</li>
-<li><strong>Gradient Clipping</strong>: Prevents explosion during training</li>
-</ul>
-</li>
-<li><p><strong>Gradient Analysis</strong>:</p>
-<ul>
-<li>Monitor gradient statistics during training</li>
-<li>Use histograms to detect dead neurons or saturation</li>
-<li>Essential for debugging training issues</li>
-</ul>
-</li>
-</ol>
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">

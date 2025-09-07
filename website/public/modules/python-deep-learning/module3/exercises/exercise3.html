@@ -7987,68 +7987,6 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Section-7:-Hyperparameter-Logging">Section 7: Hyperparameter Logging<a class="anchor-link" href="#Section-7:-Hyperparameter-Logging">¶</a></h2><p>TensorBoard can help you track and compare different hyperparameter configurations.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Define hyperparameter configurations to test</span>
-<span class="n">hyperparameter_configs</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">{</span><span class="s1">'lr'</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="s1">'batch_size'</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">'hidden_size'</span><span class="p">:</span> <span class="mi">64</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">'lr'</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span> <span class="s1">'batch_size'</span><span class="p">:</span> <span class="mi">64</span><span class="p">,</span> <span class="s1">'hidden_size'</span><span class="p">:</span> <span class="mi">128</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">'lr'</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">'batch_size'</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="s1">'hidden_size'</span><span class="p">:</span> <span class="mi">32</span><span class="p">},</span>
-<span class="p">]</span>
-
-<span class="k">for</span> <span class="n">config_id</span><span class="p">,</span> <span class="n">hparams</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">hyperparameter_configs</span><span class="p">):</span>
-    <span class="c1"># Create a writer for this configuration</span>
-    <span class="n">writer</span> <span class="o">=</span> <span class="n">SummaryWriter</span><span class="p">(</span><span class="sa">f</span><span class="s1">'runs/hparam_search/config_</span><span class="si">{</span><span class="n">config_id</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-    
-    <span class="c1"># TODO: Log hyperparameters</span>
-    <span class="c1"># Log each hyperparameter as text</span>
-    <span class="n">hparam_str</span> <span class="o">=</span> <span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">=</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s1">'</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">hparams</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
-    <span class="n">writer</span><span class="o">.</span><span class="n">add_text</span><span class="p">(</span><span class="s1">'Hyperparameters'</span><span class="p">,</span> <span class="n">hparam_str</span><span class="p">)</span>
-    
-    <span class="c1"># Simulate training with these hyperparameters</span>
-    <span class="n">final_loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="n">hparams</span><span class="p">[</span><span class="s1">'lr'</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span>  <span class="c1"># Fake correlation</span>
-    <span class="n">final_accuracy</span> <span class="o">=</span> <span class="mf">0.9</span> <span class="o">-</span> <span class="n">hparams</span><span class="p">[</span><span class="s1">'lr'</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.1</span>
-    
-    <span class="c1"># Log final metrics</span>
-    <span class="n">writer</span><span class="o">.</span><span class="n">add_scalar</span><span class="p">(</span><span class="s1">'Final/Loss'</span><span class="p">,</span> <span class="n">final_loss</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">writer</span><span class="o">.</span><span class="n">add_scalar</span><span class="p">(</span><span class="s1">'Final/Accuracy'</span><span class="p">,</span> <span class="n">final_accuracy</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-    
-    <span class="c1"># TODO: Use add_hparams for better hyperparameter tracking</span>
-    <span class="c1"># Hint: writer.add_hparams(hparams, {'loss': final_loss, 'accuracy': final_accuracy})</span>
-    <span class="n">writer</span><span class="o">.</span><span class="n">add_hparams</span><span class="p">(</span>
-        <span class="n">hparams</span><span class="p">,</span>
-        <span class="p">{</span><span class="s1">'hparam/loss'</span><span class="p">:</span> <span class="n">final_loss</span><span class="p">,</span> <span class="s1">'hparam/accuracy'</span><span class="p">:</span> <span class="n">final_accuracy</span><span class="p">}</span>
-    <span class="p">)</span>
-    
-    <span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-    
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Config </span><span class="si">{</span><span class="n">config_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">hparams</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Final loss: </span><span class="si">{</span><span class="n">final_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Accuracy: </span><span class="si">{</span><span class="n">final_accuracy</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Hyperparameter search complete!"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Check the 'HPARAMS' tab in TensorBoard for comparisons"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="Starting-TensorBoard">Starting TensorBoard<a class="anchor-link" href="#Starting-TensorBoard">¶</a></h2><p>To view all the visualizations we've created, you need to start TensorBoard. Run the following in a terminal or use the magic command below:</p>
 </div>
 </div>
@@ -8071,47 +8009,6 @@ a.anchor-link {
 <span class="c1"># tensorboard --logdir=runs --port=6006</span>
 </pre></div>
 </div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Summary-and-Best-Practices">Summary and Best Practices<a class="anchor-link" href="#Summary-and-Best-Practices">¶</a></h2><h3 id="What-you've-learned:">What you've learned:<a class="anchor-link" href="#What-you've-learned:">¶</a></h3><ol>
-<li><strong>Scalar Logging</strong>: Track metrics like loss and accuracy over time</li>
-<li><strong>Model Graphs</strong>: Visualize your neural network architecture</li>
-<li><strong>Histograms</strong>: Monitor weight and gradient distributions</li>
-<li><strong>Multiple Runs</strong>: Compare different experiments side by side</li>
-<li><strong>Custom Visualizations</strong>: Add matplotlib figures to TensorBoard</li>
-<li><strong>Embeddings</strong>: Visualize high-dimensional data in lower dimensions</li>
-<li><strong>Hyperparameter Tracking</strong>: Compare different configurations systematically</li>
-</ol>
-<h3 id="Best-Practices:">Best Practices:<a class="anchor-link" href="#Best-Practices:">¶</a></h3><ul>
-<li><strong>Organize runs</strong>: Use descriptive names and folder structure</li>
-<li><strong>Log frequently</strong>: But not too frequently (can slow down training)</li>
-<li><strong>Use meaningful tags</strong>: Group related metrics together</li>
-<li><strong>Clean up old logs</strong>: TensorBoard can slow down with too many runs</li>
-<li><strong>Version control</strong>: Track which code version produced which results</li>
-</ul>
-<h3 id="Common-TensorBoard-Tabs:">Common TensorBoard Tabs:<a class="anchor-link" href="#Common-TensorBoard-Tabs:">¶</a></h3><ul>
-<li><strong>Scalars</strong>: Line plots of metrics over time</li>
-<li><strong>Images</strong>: Custom visualizations and plots</li>
-<li><strong>Graphs</strong>: Model architecture visualization</li>
-<li><strong>Distributions</strong>: Histograms of tensors</li>
-<li><strong>Projector</strong>: Embedding visualizations</li>
-<li><strong>HParams</strong>: Hyperparameter comparison dashboard</li>
-</ul>
-<h3 id="Pro-Tips:">Pro Tips:<a class="anchor-link" href="#Pro-Tips:">¶</a></h3><ol>
-<li>Use <code>writer.flush()</code> to ensure data is written immediately</li>
-<li>Always <code>writer.close()</code> when done to free resources</li>
-<li>Use different log directories for different experiments</li>
-<li>You can log the same metric to multiple categories using '/'</li>
-<li>TensorBoard updates in real-time - keep it open while training!</li>
-</ol>
 </div>
 </div>
 </div>
