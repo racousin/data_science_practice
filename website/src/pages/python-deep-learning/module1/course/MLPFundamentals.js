@@ -77,7 +77,7 @@ const MLPFundamentals = () => {
         <div data-slide>
           
             <Title order={2} mb="xl" id="network-architecture">
-              Network Architecture
+              Network Architecture : From Single Neuron to Multi-Layer Networks
             </Title>
                                 <Flex direction="column" align="center" mb="md">
                                   <Image
@@ -90,16 +90,14 @@ const MLPFundamentals = () => {
                                                   <Text component="p" ta="center" mt="xs">
                                     Source: https://aimresearch.co/
                                   </Text>
-            <Paper className="p-6 bg-blue-50 mb-6">
-              <Title order={3} mb="md">From Single Neuron to Multi-Layer Networks</Title>
               <Text size="lg" mb="md">
                 A Multi-Layer Perceptron (MLP) stacks multiple layers of neurons, where each layer transforms 
                 the input through the same mathematical operations we've seen in traditional ML models.
               </Text>
-              
+              </div>
+              <div data-slide>
               <Grid gutter="lg">
                 <Grid.Col span={6}>
-                  <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">Single Layer (Linear Model)</Title>
                     <BlockMath>{`y = W x + b`}</BlockMath>
                     <Text size="sm" mb="xs">
@@ -108,11 +106,9 @@ const MLPFundamentals = () => {
                     <Text size="sm" color="dimmed">
                       Limited to linear decision boundaries - same as traditional linear regression/classification
                     </Text>
-                  </Paper>
                 </Grid.Col>
                 
                 <Grid.Col span={6}>
-                  <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">Multi-Layer Perceptron</Title>
                     <BlockMath>{`h_1 = \\sigma_1(W_1 x + b_1)`}</BlockMath>
                     <BlockMath>{`h_2 = \\sigma_2(W_2 h_1 + b_2)`}</BlockMath>
@@ -120,20 +116,18 @@ const MLPFundamentals = () => {
                     <Text size="sm" color="dimmed">
                       Composition of transformations enables complex non-linear relationships
                     </Text>
-                  </Paper>
                 </Grid.Col>
               </Grid>
-            </Paper>
 
             {/* Why Multi-Layer? */}
             <Paper className="p-6 bg-green-50 mb-6">
               <Title order={3} mb="md">Why Multiple Layers?</Title>
-              Research has demonstrated that a Multi-Layer Perceptron (MLP) with just one hidden layer can model even the most complex functions, provided it has enough neurons. This finding might suggest that deeper networks are unnecessary.
+              Research has demonstrated that a Multi-Layer Perceptron (MLP) with just one hidden layer can model even the most complex functions, provided it has enough neurons (<a href="https://link.springer.com/article/10.1007/BF02551274" target="_blank" rel="noopener noreferrer" style={{color: '#1976d2', textDecoration: 'underline'}}>Hornik et al., 1989</a>). This finding might suggest that deeper networks are unnecessary.
 
 However, the real power of neural networks lies in their depth. While a single hidden layer can theoretically model any function, deeper networks (those with more than one hidden layer) can do so much more efficiently. They can model complex functions with exponentially fewer neurons than shallow networks, leading to better performance with the same amount of training data
               </Paper>
         </div>
-
+<div data-slide>
             {/* Activation Functions */}
               <Paper mb="xl">
               <Title order={3} mb="md">Common Activation Functions</Title>
@@ -178,7 +172,21 @@ However, the real power of neural networks lies in their depth. While a single h
                 </Text>
               </Paper>
             </Paper>
+            </div>
         {/* Parameters to Optimize */}
+        <div data-slide>
+                                        <Flex direction="column" align="center" mb="md">
+                                  <Image
+                                    src="/assets/python-deep-learning/module1/mlp_nonlinear_classification.png"
+                                    alt="Computer Vision Applications"
+                                    style={{ maxWidth: 'min(1600px, 90vw)', height: 'auto' }}
+                                    fluid
+                                  />
+                                </Flex>
+                                                  <Text component="p" ta="center" mt="xs">
+                                    
+                                  </Text>
+             </div>                     
         <div data-slide>
           
             <Title order={2} mb="xl" id="parameters">
@@ -192,32 +200,11 @@ However, the real power of neural networks lies in their depth. While a single h
                 represent and how they scale is crucial for designing and training networks effectively.
               </Text>
               
-              <Paper className="p-4 bg-white">
-                <Title order={4} mb="sm">Complete Parameter Set</Title>
-                <Text size="sm" mb="md">
-                  For an L-layer MLP with layer sizes <InlineMath>{`[n_0, n_1, n_2, ..., n_L]`}</InlineMath>:
-                </Text>
-                <Text size="sm" mb="md">
-                  Example: For MNIST digits (input <InlineMath>{`x \\in \\mathbb{R}^{784}`}</InlineMath>, output <InlineMath>{`y \\in \\mathbb{R}^{10}`}</InlineMath>)
-                </Text>
-                <BlockMath>{`\\theta = \\{W^{(1)}, b^{(1)}, W^{(2)}, b^{(2)}, ..., W^{(L)}, b^{(L)}\\}`}</BlockMath>
-                <Grid gutter="lg" className="mt-4">
-                  <Grid.Col span={6}>
-                    <Text size="sm"><InlineMath>{`W^{(l)} \\in \\mathbb{R}^{n_l \\times n_{l-1}}`}</InlineMath> - Weight matrix for layer l</Text>
-                    <Text size="xs" color="dimmed">• <InlineMath>{`n_{l-1}`}</InlineMath> (input dimension) determines the number of columns</Text>
-                    <Text size="xs" color="dimmed">• <InlineMath>{`n_l`}</InlineMath> (number of neurons) determines the number of rows</Text>
-                  </Grid.Col>
-                  <Grid.Col span={6}>
-                    <Text size="sm"><InlineMath>{`b^{(l)} \\in \\mathbb{R}^{n_l}`}</InlineMath> - Bias vector for layer l</Text>
-                    <Text size="xs" color="dimmed">• Size equals the number of neurons in layer l</Text>
-                  </Grid.Col>
-                </Grid>
-              </Paper>
             </Paper>
 
             {/* Parameter Counting */}
               <Paper mb="xl">
-              <Title order={3} mb="md">Parameter Count Analysis</Title>
+              <Title order={3} mb="md">Parameter Count</Title>
               
               <Grid gutter="lg">
                 <Grid.Col span={6}>

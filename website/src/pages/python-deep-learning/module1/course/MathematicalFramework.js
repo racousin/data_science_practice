@@ -36,40 +36,7 @@ Machine learning is a field of artificial intelligence that enables systems to a
                         Example : predict the future
                       </Text>
           </div>
-          <div data-slide>
-            <Title order={4} mb="xs" className="slide-title">Features and Target</Title>
-            <Text size="lg" mb="xl">
-              <strong>X:</strong> Explanatory variables (features/characteristics)<br/>
-              <strong>Y:</strong> Variable to explain (target)<br/>
-              Concretely, we want to find a relationship Y = f(X)
-            </Text>
-            
-            <Text mb="xl">
-              <strong>Example:</strong> f(year, latitude, altitude) = predicted temperature
-            </Text>
-            
-            <Grid gutter="lg">
-              <Grid.Col span={6}>
-                <Paper className="p-4 bg-blue-50">
-                  <Title order={4} className="mb-2">Training Phase</Title>
-                  <List size="sm">
-                    <List.Item>We have observed/measured (X, Y) pairs</List.Item>
-                    <List.Item>The model learns the relationship between X and Y</List.Item>
-                  </List>
-                </Paper>
-              </Grid.Col>
-              <Grid.Col span={6}>
-                <Paper className="p-4 bg-green-50">
-                  <Title order={4} className="mb-2">Prediction Phase</Title>
-                  <List size="sm">
-                    <List.Item>We receive new X values</List.Item>
-                    <List.Item>Predict the corresponding Y values</List.Item>
-                  </List>
-                </Paper>
-              </Grid.Col>
-            </Grid>
-          </div>
-          
+             <div data-slide>    
 <Title order={3} mb="md" className="slide-title">Data Characteristics</Title>
 
 <Paper p="md" bg="white" mt="md">
@@ -113,6 +80,41 @@ Machine learning is a field of artificial intelligence that enables systems to a
     </Grid.Col>
   </Grid>
 </Paper>
+</div>
+          <div data-slide>
+            <Title order={4} mb="xs" className="slide-title">Features and Target</Title>
+            <Text size="lg" mb="xl">
+              <strong>X:</strong> Explanatory variables (features/characteristics)<br/>
+              <strong>Y:</strong> Variable to explain (target)<br/>
+              Concretely, we want to find a relationship Y = f(X)
+            </Text>
+            
+            <Text mb="xl">
+              <strong>Example:</strong> f(year, latitude, altitude) = predicted temperature
+            </Text>
+            
+            <Grid gutter="lg">
+              <Grid.Col span={6}>
+                <Paper className="p-4 bg-blue-50">
+                  <Title order={4} className="mb-2">Training Phase</Title>
+                  <List size="sm">
+                    <List.Item>We have observed/measured (X, Y) pairs</List.Item>
+                    <List.Item>The model learns the relationship between X and Y</List.Item>
+                  </List>
+                </Paper>
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <Paper className="p-4 bg-green-50">
+                  <Title order={4} className="mb-2">Prediction Phase</Title>
+                  <List size="sm">
+                    <List.Item>We receive new X values</List.Item>
+                    <List.Item>Predict the corresponding Y values</List.Item>
+                  </List>
+                </Paper>
+              </Grid.Col>
+            </Grid>
+          </div>
+   
 <div data-slide>
             <Title order={3} mb="md" className="slide-title">Regression, Classification</Title>
             
@@ -230,9 +232,8 @@ Machine learning is a field of artificial intelligence that enables systems to a
                       />
                     </Flex>
                                       <Text component="p" ta="center" mt="xs">
-                        Example: Linear function R to R 2 params
+                        Linear function <InlineMath>{`\\mathbb{R} \\to \\mathbb{R}`}</InlineMath>, 2 params
                       </Text>
-
                 </Grid.Col>
                 <Grid.Col span={6}>
                                                            <Flex direction="column" align="center" mb="md">
@@ -243,9 +244,9 @@ Machine learning is a field of artificial intelligence that enables systems to a
                       />
                     </Flex>
                                       <Text component="p" ta="center" mt="xs">
-                        Polynomial function R to R 3 params
+                        Polynomial function <InlineMath>{`\\mathbb{R} \\to \\mathbb{R}`}</InlineMath>, 3 params
                       </Text>
-                </Grid.Col>
+                                   </Grid.Col>
               </Grid>
             </Paper>
 
@@ -262,15 +263,15 @@ Machine learning is a field of artificial intelligence that enables systems to a
                 <Grid.Col span={6}>
                                                        <Flex direction="column" align="center" mb="md">
                       <Image
-                        src="/assets/python-deep-learning/module1/ai_obj15.png"
+                        src="/assets/python-deep-learning/module1/logistic_regression_curves.png"
                         style={{ maxWidth: 'min(600px, 90vw)', height: 'auto' }}
                         fluid
                       />
                     </Flex>
                                       <Text component="p" ta="center" mt="xs">
-                        Linear function R2 to R 3 params
+                        Logistic <InlineMath>{`\\mathbb{R} \\to [0,1]`}</InlineMath>, 2 params
                       </Text>
-                </Grid.Col>
+                                      </Grid.Col>
                 <Grid.Col span={6}>
                                                                                 <Flex direction="column" align="center" mb="md">
                       <Image
@@ -280,12 +281,13 @@ Machine learning is a field of artificial intelligence that enables systems to a
                       />
                     </Flex>
                                       <Text component="p" ta="center" mt="xs">
-                        Quadratic function R² to R, 5 params
+                        Quadratic function <InlineMath>{`\\mathbb{R}^2 \\to \\mathbb{R}`}</InlineMath>, 5 params
                       </Text>
-                </Grid.Col>
+                                     </Grid.Col>
               </Grid>
             </Paper>
-            
+            </div>
+            <div data-slide>
             <Paper className="p-6 bg-blue-50 mb-6">
               
               <Grid gutter="lg">
@@ -295,12 +297,16 @@ Machine learning is a field of artificial intelligence that enables systems to a
                     <Text size="sm" mb="md">The simplest parametric model:</Text>
                     <BlockMath>{`f_\\theta(x) = w^T x + b`}</BlockMath>
                     <Text size="sm" mb="xs">Parameters: <InlineMath>{`\\theta = \\{w \\in \\mathbb{R}^d, b \\in \\mathbb{R}\\}`}</InlineMath></Text>
+                                 <Text size="sm" mb="md">The logistic regression:</Text>
+                    <BlockMath>{`f_\\theta(x) = \\frac{1}{1 + e^{-(w^T x + b)}}`}</BlockMath>
+                    <Text size="sm" mb="xs">Parameters: <InlineMath>{`\\theta = \\{w \\in \\mathbb{R}^d, b \\in \\mathbb{R}\\}`}</InlineMath></Text>
+                           
                   </Paper>
                 </Grid.Col>
                 
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
-                    <Title order={4} mb="sm">Not linear Models (eg : Neural Networks)</Title>
+                    <Title order={4} mb="sm">Not linear Models</Title>
                     <Text size="sm" mb="md">Composition of linear and non-linear functions:</Text>
                     <BlockMath>{`f_\\theta(x) = W_L \\cdot \\sigma(W_{L-1} \\cdot ... \\cdot \\sigma(W_1 x + b_1) ... + b_{L-1}) + b_L`}</BlockMath>
                     <Text size="sm" mb="xs">Parameters: <InlineMath>{`\\theta = \\{W_1, b_1, ..., W_L, b_L\\}`}</InlineMath></Text>
@@ -368,12 +374,12 @@ l: \\mathbb{R}^{k \\times n} \\times \\mathbb{R}^{k \\times n} & \\to \\mathbb{R
                     <div className="space-y-4">
                                             <div>
                         <Text fw="bold" size="sm">Binary Cross-Entropy:</Text>
-                        <BlockMath>{`\\ell_{BCE}(y, \\hat{p}) = -[y\\log(\\hat{p}) + (1-y)\\log(1-\\hat{p})]`}</BlockMath>
+                        <BlockMath>{`\\ell_{BCE}(y, \\hat{y}) = -[y\\log(\\hat{y}) + (1-y)\\log(1-\\hat{y})]`}</BlockMath>
                         <Text size="xs" c="dimmed">For binary classification problems</Text>
                       </div>
                       <div>
                         <Text fw="bold" size="sm">Cross-Entropy Loss:</Text>
-                        <BlockMath>{`\\ell_{CE}(y, \\hat{p}) = -\\sum_{i=1}^n \\sum_{c=1}^C y_{ic} \\log(\\hat{p}_{ic})`}</BlockMath>
+                        <BlockMath>{`\\ell_{CE}(y, \\hat{y}) = -\\sum_{i=1}^n \\sum_{c=1}^C y_{ic} \\log(\\hat{y}_{ic})`}</BlockMath>
                         <Text size="xs" c="dimmed">Standard for multi-class classification</Text>
                       </div>
                       
@@ -477,7 +483,6 @@ l: \\mathbb{R}^{k \\times n} \\times \\mathbb{R}^{k \\times n} & \\to \\mathbb{R
                       />
                     </Flex>
                                       <Text component="p" ta="center" mt="xs">
-                        Gradient descent visualization
                       </Text>
                       </Grid.Col>
               </Grid>
@@ -522,7 +527,11 @@ l: \\mathbb{R}^{k \\times n} \\times \\mathbb{R}^{k \\times n} & \\to \\mathbb{R
                         Model After some steps
                       </Text>
                 </Grid.Col>
+                </Grid>
                 
+                </div>
+                <div data-slide>
+                  <Grid>
                 <Grid.Col span={6}>
                                                                                                         <Flex direction="column" align="center" mb="md">
                       <Image
@@ -532,7 +541,7 @@ l: \\mathbb{R}^{k \\times n} \\times \\mathbb{R}^{k \\times n} & \\to \\mathbb{R
                       />
                     </Flex>
                                       <Text component="p" ta="center" mt="xs">
-                        Loss though steps
+                      
                       </Text>
                 </Grid.Col>
                                 <Grid.Col span={6}>
@@ -544,7 +553,7 @@ l: \\mathbb{R}^{k \\times n} \\times \\mathbb{R}^{k \\times n} & \\to \\mathbb{R
                       />
                     </Flex>
                                       <Text component="p" ta="center" mt="xs">
-                        Loss though steps
+                       
                       </Text>
                 </Grid.Col>
               </Grid>
@@ -566,7 +575,6 @@ l: \\mathbb{R}^{k \\times n} \\times \\mathbb{R}^{k \\times n} & \\to \\mathbb{R
                       />
                     </Flex>
                                       <Text component="p" ta="center" mt="xs">
-                        Gradient descent visualization
                       </Text>
                 </Grid.Col>
                 
@@ -579,10 +587,12 @@ l: \\mathbb{R}^{k \\times n} \\times \\mathbb{R}^{k \\times n} & \\to \\mathbb{R
                       />
                     </Flex>
                                       <Text component="p" ta="center" mt="xs">
-                        Gradient descent visualization
                       </Text>
                 </Grid.Col>
-                
+                </Grid>
+                </div>
+                <div data-slide>
+                  <Grid>
                 <Grid.Col span={6}>
                                                                                 <Flex direction="column" align="center" mb="md">
                       <Image
@@ -592,7 +602,7 @@ l: \\mathbb{R}^{k \\times n} \\times \\mathbb{R}^{k \\times n} & \\to \\mathbb{R
                       />
                     </Flex>
                                       <Text component="p" ta="center" mt="xs">
-                        Gradient descent visualization
+
                       </Text>
                 </Grid.Col>
                                 <Grid.Col span={6}>
@@ -671,7 +681,7 @@ l: \\mathbb{R}^{k \\times n} \\times \\mathbb{R}^{k \\times n} & \\to \\mathbb{R
 </div>
 
 <div data-slide>
-  <Title order={3} mb="md" className="slide-title">More parameters is not necessarily a better model</Title>
+  <Title order={3} mb="md" className="slide-title">Model Complexity and Overfitting</Title>
   <Grid gutter="lg">
     <Grid.Col span={6}>
       <Flex direction="column" align="center" mb="md">
