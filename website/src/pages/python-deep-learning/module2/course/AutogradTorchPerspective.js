@@ -7,8 +7,10 @@ import 'katex/dist/katex.min.css';
 const AutogradTorchPerspective = () => {
   return (
     <Container fluid>
+            <div data-slide>
       <Title order={1} mb="lg">Autograd: PyTorch's Automatic Differentiation Engine</Title>
-      
+      </div>
+      <div data-slide>
       <Text>
 
 We saw in the previous section (/courses/python-deep-learning/module1/course/pytorch-introduction), the tensor definition, features and operations, but if PyTorch was only that, it would be just another NumPy. But where PyTorch is super useful is its capacity to compute efficiently gradients (of potentially billions of parameters) in its implementation of reverse Automatic Differentiation (named autograd), that we will describe here.
@@ -25,9 +27,11 @@ We saw in the previous section (/courses/python-deep-learning/module1/course/pyt
                                             Source: https://pytorch.org/blog/computational-graphs-constructed-in-pytorch/
                                           </Text>
       </Flex>
-
+</div>
+ <div data-slide>
       <Title order={2} mt="xl">1. Basic Autograd Mechanics</Title>
-      
+      </div>
+       <div data-slide>
       <Title order={3} mt="md">Understanding requires_grad</Title>
       
       <Text>
@@ -47,7 +51,8 @@ print(f"requires_grad: {a.requires_grad}")  # False`} />
       <CodeBlock language="python" code={`# Enable gradient tracking
 b = torch.tensor(3.0, requires_grad=True)
 print(f"requires_grad: {b.requires_grad}")  # True`} />
-
+</div>
+ <div data-slide>
       <Title order={3} mt="xl">The Computational Graph</Title>
       
       <Text>
@@ -60,41 +65,43 @@ print(f"requires_grad: {b.requires_grad}")  # True`} />
 
                     <Grid gutter="lg">
                       <Grid.Col span={6}>
-      <Flex direction="column" align="center" mt="md">
-              <CodeBlock language="python" code={`x = torch.tensor(2.0, requires_grad=True)
+                                      <CodeBlock language="python" code={`x = torch.tensor(2.0, requires_grad=True)
 y = torch.tensor(3.0, requires_grad=True)
 z = x + y
 print(f"z.grad_fn: {z.grad_fn}")  # <AddBackward0>`} />
+      <Flex direction="column" align="center" mt="md">
+
         <Image
           src="/assets/python-deep-learning/module2/graph0.png"
           alt="Autograd Overview"
-          style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+          style={{ maxWidth: 'min(600px, 30vw)', height: 'auto' }}
           fluid
         />
       </Flex>
                       </Grid.Col>
                       <Grid.Col span={6}>
-            <Flex direction="column" align="center" mt="md">
-                    <CodeBlock language="python" code={`# Chain more operations
-                    x = torch.tensor(2.0, requires_grad=True)
+                                            <CodeBlock language="python" code={`# Chain more operations
+x = torch.tensor(2.0, requires_grad=True)
 y = torch.tensor(3.0, requires_grad=True)
 w = z * z
 print(f"w.grad_fn: {w.grad_fn}")  # <MulBackward0>`} />
+            <Flex direction="column" align="center" mt="md">
+
         <Image
           src="/assets/python-deep-learning/module2/graph1.png"
           alt="Autograd Overview"
-          style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+          style={{ maxWidth: 'min(600px, 30vw)', height: 'auto' }}
           fluid
         />
       </Flex>
                       </Grid.Col>
                     </Grid>
-
+                    </div>
+ <div data-slide>
                     <Grid gutter="lg">
                       <Grid.Col span={6}>
       <Flex direction="column" align="center" mt="md">
-              <CodeBlock language="python" code={`
-                x = torch.tensor(2.0, requires_grad=True)
+              <CodeBlock language="python" code={`x = torch.tensor(2.0, requires_grad=True)
 y = torch.tensor(3.0, requires_grad=True)
 w = z / 2.`} />
         <Image
@@ -119,11 +126,13 @@ w = torch.sin(x @ y)`} />
       </Flex>
                       </Grid.Col>
                     </Grid>
-
-      <Text mt="md">
+                          <Text mt="md">
         The <code>grad_fn</code> attribute stores the function that created this tensor. It will be used during backpropagation 
         to compute gradients.
       </Text>
+</div>
+ <div data-slide>
+
 
       <Title order={3} mt="xl">Leaf Tensors vs Intermediate Tensors</Title>
       
@@ -138,9 +147,11 @@ print(f"z is leaf: {z.is_leaf}")  # False - result of x + y`} />
       <Text mt="md">
         Only leaf tensors with <code>requires_grad=True</code> will have their gradients accumulated:
       </Text>
-
+</div>
+ <div data-slide>
       <Title order={2} mt="xl">2. Understanding grad_fn Objects</Title>
-      
+      </div>
+       <div data-slide>
       <Title order={3} mt="md">Each Operation Creates a Function Object</Title>
       
       <Text>
@@ -152,7 +163,8 @@ import torch
 
 x = torch.tensor([1.0, 2.0, 3.0], requires_grad=True)
 y = torch.tensor([4.0, 5.0, 6.0], requires_grad=True)`} />
-      
+      </div>
+       <div data-slide>
       <Text mt="md">
         <strong>Addition</strong> creates an <code>AddBackward</code> object:
       </Text>
@@ -180,7 +192,8 @@ upstream_grad = torch.tensor([0.1, 0.2, 0.3])
 grad_x, grad_y = z_mul.grad_fn(upstream_grad)
 # grad_x = [0.1*4, 0.2*5, 0.3*6] = [0.4, 1.0, 1.8]
 # grad_y = [0.1*1, 0.2*2, 0.3*3] = [0.1, 0.4, 0.9]`} />
-      
+      </div>
+      <div data-slide>
       <Text mt="md">
         <strong>Trigonometric functions</strong> have their own backward functions:
       </Text>
@@ -210,9 +223,11 @@ grad_x = z_exp.grad_fn(upstream_grad)
 # grad_x = upstream_grad * exp(x)
 # grad_x = [0.1*exp(1), 0.2*exp(2), 0.3*exp(3)]
 # grad_x ≈ [0.272, 1.478, 6.026]`} />
-
+</div>
+<div data-slide>
 <Title order={3} mt="xl">Exploring the Graph Structure</Title>
-
+</div>
+<div data-slide>
 <Text>
   Each <code>grad_fn</code> has a <code>next_functions</code> attribute linking to its inputs' gradient functions:
 </Text>
@@ -220,7 +235,10 @@ grad_x = z_exp.grad_fn(upstream_grad)
 <Text>
   During forward pass, PyTorch saves values that are necessary for gradient computation. These saved tensors are attached to the <code>grad_fn</code> and contain the intermediate results needed for backpropagation.
 </Text>
-<Flex direction="column" align="center" mt="md">
+
+</div>
+<div data-slide>
+  <Flex direction="column" align="center" mt="md">
   <CodeBlock language="python" code={`x = torch.tensor(1.0, requires_grad=True)
 
 # Forward pass - building the graph
@@ -260,11 +278,12 @@ y = torch.sin(u)  # y = sin(u) = sin(x²)` }/>
 
 <BlockMath math="\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx} = \cos(u) \cdot 2x = \cos(1.0) \cdot 2(1.0)" />
 
-
+</div>
+<div data-slide>
 
       <Title order={2} mt="xl">3. Computing Gradients Step by Step</Title>
-      
-
+      </div>
+<div data-slide>
 <Title order={3} mt="xl">How Backpropagation Works in Autograd</Title>
 
 <Text>
@@ -280,7 +299,8 @@ y = torch.sin(u)  # y = sin(u) = sin(x²)` }/>
 # Forward pass - building the graph
 u = x ** 2        # u = x²
 y = torch.sin(u)  # y = sin(u) = sin(x²)`} />
-
+</div>
+<div data-slide>
 <Text mt="md">
   During backward pass, autograd applies the chain rule:
 </Text>
@@ -298,6 +318,8 @@ y = torch.sin(u)  # y = sin(u) = sin(x²)`} />
           fluid
         />
       </Flex>
+      </div>
+      <div data-slide>
 <Title order={4} mt="lg">Step 1: Initialize</Title>
 <CodeBlock language="python" code={`upstream_grad = torch.tensor(1.0)  # dL/dy = 1
 print(f"Starting: dL/dy = {upstream_grad}")
@@ -329,7 +351,8 @@ print(f"PowBackward result: {pow_grad}")  # 2*1*0.540 ≈ 1.081`} />
 print(f"Final gradient: dL/dx = {x_grad}")
 
 `} />
-
+</div>
+<div data-slide>
 <Text mt="sm">
   <InlineMath>{`\\frac{dy}{dx} = \\cos(x^2) \\cdot 2x = \\cos(1) \\cdot 2 \\approx 1.081`}</InlineMath>
 </Text>
@@ -342,7 +365,8 @@ print(f"Final gradient: dL/dx = {x_grad}")
 
   
 </Text>
-
+</div>
+<div data-slide>
 
       <Title order={3} mt="xl">The .backward() Method</Title>
 
@@ -365,7 +389,8 @@ y.backward()      # Automatically does everything we described above!
 # Access the gradient
 print(f"x.grad = {x.grad}")  # tensor(1.0806)
 # This is exactly cos(1) * 2 * 1 ≈ 1.0806`} />
-
+</div>
+<div data-slide>
       <Title order={4} mt="lg">Important: Gradient Accumulation</Title>
       
       <Text mt="md">
@@ -384,7 +409,8 @@ y2 = x ** 3
 y2.backward()
 print(f"After second backward: x.grad = {x.grad}")  # tensor(5.)
 # This is 2 (from first) + 3 (from second) = 5`} />
-
+</div>
+<div data-slide>
       <Title order={4} mt="lg">Using zero_grad() to Reset Gradients</Title>
 
       <CodeBlock language="python" code={`x = torch.tensor(1.0, requires_grad=True)
@@ -403,8 +429,8 @@ y2.backward()
 print(f"Second backward: x.grad = {x.grad}")  # tensor(3.)
 # Now it's just 3, not accumulated`} />
 
-
-
+</div>
+<div data-slide>
       <Title order={2} mt="xl">4. Memory Management and Graph Retention</Title>
       
       <Title order={3} mt="md">Computational Graph Lifetime</Title>
@@ -441,7 +467,8 @@ print(f"First backward: x.grad = {x.grad}")  # 4.0
 x.grad.zero_()
 y.backward()  # Works now!
 print(f"Second backward: x.grad = {x.grad}")  # 4.0`} />
-
+</div>
+<div data-slide>
       <Title order={3} mt="xl">Detaching from the Graph</Title>
       
       <Text>
@@ -463,7 +490,8 @@ print(f"y_detached.requires_grad: {y_detached.requires_grad}")  # False`} />
 z = y_detached * x  # Only tracks gradient w.r.t. x
 z.backward()
 print(f"x.grad: {x.grad}")  # 4.0 (not 8.0!)`} />
-
+</div>
+<div data-slide>
       <Title order={3} mt="xl">Using torch.no_grad() Context Manager</Title>
       
       <Text>
@@ -484,6 +512,8 @@ with torch.no_grad():
     # Even operations on tensors with requires_grad=True won't track gradients
     z = x * 3 + 2
     print(f"z.requires_grad: {z.requires_grad}")  # False`} />
+    </div>
+    <div data-slide>
       <Title order={2} mt="xl">5. Practical Example: Simple Optimization</Title>
       
       <Text>
@@ -496,7 +526,8 @@ learning_rate = 0.1
 
 # Track the optimization process
 history = []`} />
-
+</div>
+<div data-slide>
       <Text mt="md">
         Perform gradient descent steps:
       </Text>
@@ -525,7 +556,7 @@ history = []`} />
 # Step 5: x = 2.046, loss = 0.913  
 # Step 10: x = 2.651, loss = 0.122
 # Step 15: x = 2.893, loss = 0.011`} />
-
+</div>
 
     </Container>
   );

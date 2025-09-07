@@ -3,11 +3,13 @@ import { Carousel } from '@mantine/carousel';
 import { ActionIcon, Tooltip } from '@mantine/core';
 import { IconPresentation, IconX } from '@tabler/icons-react';
 import { useSidebar } from '../contexts/SidebarContext';
+import { useLocation } from 'react-router-dom';
 import '@mantine/carousel/styles.css';
 
 const SlideView = ({ children, enabled = false }) => {
   const { slideMode, setSlideMode } = useSidebar();
   const [slides, setSlides] = useState([]);
+  const location = useLocation();
 
   // Helper function to extract slide titles and separate content
   const extractTitleAndContent = (element) => {
@@ -30,7 +32,14 @@ const SlideView = ({ children, enabled = false }) => {
   };
 
   useEffect(() => {
-    if (!enabled) return;
+    if (!enabled) {
+      // Clear slides when disabled
+      setSlides([]);
+      return;
+    }
+
+    // Reset slides immediately when children change
+    setSlides([]);
 
     let isDetecting = false; // Prevent recursive calls
 
@@ -51,6 +60,9 @@ const SlideView = ({ children, enabled = false }) => {
           };
         });
         setSlides(slidesArray);
+      } else {
+        // Clear slides if no slide elements found
+        setSlides([]);
       }
       
       isDetecting = false;
@@ -65,8 +77,10 @@ const SlideView = ({ children, enabled = false }) => {
       clearTimeout(timer1);
       clearTimeout(timer2);
       clearTimeout(timer3);
+      // Clear slides on unmount
+      setSlides([]);
     };
-  }, [enabled, children]); // Add children as dependency to re-detect when content changes
+  }, [enabled, children, location.pathname]); // Add location.pathname to re-detect when navigating
 
   const handleKeyPress = useCallback((e) => {
     // Start presentation with 'S' key

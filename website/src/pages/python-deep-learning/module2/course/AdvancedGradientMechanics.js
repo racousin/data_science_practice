@@ -7,12 +7,22 @@ const AdvancedGradientMechanics = () => {
   return (
     <Container size="xl">
       <Stack spacing="xl">
-        
+        <div data-slide>
         <div id="gradient-flow">
           <Title order={2} mb="xl">
             Gradient Flow & Vanishing/Exploding Gradients
           </Title>
-          
+           <Flex direction="column" align="center" mt="md" mb="md">
+            <Image
+              src="/assets/python-deep-learning/module3/histogram.png"
+              alt="Gradient Flow Visualization"
+              style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+              fluid
+            />
+                      </Flex>
+          </div>
+          </div>
+          <div data-slide>
           <Paper className="p-6 bg-blue-50 mb-6">
             <Title order={3} mb="md">Mathematical Foundation of Gradient Flow</Title>
             <Text className="mb-4">
@@ -28,12 +38,12 @@ const AdvancedGradientMechanics = () => {
             </Text>
             
           </Paper>
-
+</div>
+<div data-slide>
           <Title order={3} mb="md">The Vanishing Gradient Problem</Title>
           
-          <Paper className="p-6 mb-6">
             <Text className="mb-4">
-              <strong>Mathematical Analysis:</strong> Consider the sigmoid activation <InlineMath math="\sigma(z) = \frac{1}{1 + e^{-z}}" />. 
+              Consider the sigmoid activation <InlineMath math="\sigma(z) = \frac{1}{1 + e^{-z}}" />. 
               Its derivative is <InlineMath math="\sigma'(z) = \sigma(z)(1 - \sigma(z))" />, which has maximum value:
             </Text>
             
@@ -49,7 +59,8 @@ const AdvancedGradientMechanics = () => {
               Since <InlineMath math="|\sigma'(z)| \leq 0.25" />, with <InlineMath math="L = 10" /> layers:
               <InlineMath math=" (0.25)^{10} \approx 9.5 \times 10^{-7}" />. Gradients vanish exponentially!
             </Text>
-            
+            </div>
+            <div data-slide>
             <CodeBlock language="python" code={`# Visualizing sigmoid gradient vanishing
 import torch
 import torch.nn as nn
@@ -62,81 +73,46 @@ y.sum().backward()
 print(f"Max gradient: {x.grad.max():.4f}")  # Max = 0.25
 print(f"Gradient at x=5: {x.grad[75]:.6f}")  # Nearly zero`} />
             
-            <Text className="mb-4 mt-4">
-              <strong>Chain effect in deep networks:</strong> Each layer compounds the problem:
-            </Text>
-            
-            <CodeBlock language="python" code={`# Gradient vanishing through layers
-def sigmoid_chain(depth):
-    x = torch.tensor([2.0], requires_grad=True)
-    for _ in range(depth):
-        x = torch.sigmoid(x)
-    x.backward()
-    return x.grad.item()
-
-for d in [1, 5, 10, 20]:
-    grad = sigmoid_chain(d)
-    print(f"Depth {d:2d}: gradient = {grad:.2e}")`} />
-          </Paper>
-
+          <Flex direction="column" align="center" mt="md" mb="md">
+            <Image
+              src="/assets/python-deep-learning/module2/vanish.png"
+              alt="Gradient Flow Visualization"
+              style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+              fluid
+            />
+                      </Flex>
+                      </div>
+                      <div data-slide>
           <Title order={3} mb="md">The Exploding Gradient Problem</Title>
           
           <Paper className="p-6 mb-6">
             <Text className="mb-4">
-              <strong>Mathematical Analysis:</strong> When weight matrices have large eigenvalues <InlineMath math="\lambda_{\max}(W) > 1" />,
-              gradients grow exponentially through layers:
+              Consider ReLU activation: <InlineMath math="\text{ReLU}(x) = \max(0, x)" /> with derivative:
             </Text>
             
-            <BlockMath math="\left|\frac{\partial \mathcal{L}}{\partial W^{(1)}}\right| \propto \prod_{i=1}^{L-1} \lambda_{\max}(W^{(i)}) \approx \lambda^{L-1}" />
+            <BlockMath math="\text{ReLU}'(x) = \begin{cases} 1 & \text{if } x > 0 \\ 0 & \text{if } x \leq 0 \end{cases}" />
             
             <Text className="mb-4">
-              If <InlineMath math="\lambda_{\max} = 2" /> and <InlineMath math="L = 10" />: 
-              <InlineMath math=" 2^9 = 512" /> times amplification. With poor initialization or unbounded activations (ReLU), this explodes quickly.
+              Unlike sigmoid (max derivative = 0.25), ReLU has derivative = 1 for positive inputs.
+              With unscaled inputs and standard weight initialization, the gradient through each layer is:
             </Text>
             
-            <CodeBlock language="python" code={`# Weight initialization impact
-W = torch.randn(10, 10) * 3  # Large initialization
-eigenvalues = torch.linalg.eigvals(W).abs()
-print(f"Max eigenvalue: {eigenvalues.max():.2f}")
-
-# Gradient amplification
-x = torch.randn(1, 10, requires_grad=True)
-for _ in range(5):
-    x = x @ W
-grad_norm = torch.autograd.grad(x.sum(), x)[0].norm()
-print(f"Gradient norm after 5 layers: {grad_norm:.2e}")`} />
+            <BlockMath math="\frac{\partial a^{(i)}}{\partial a^{(i-1)}} = W^{(i)} \cdot \text{ReLU}'(z^{(i-1)})" />
             
-            <Text className="mb-4 mt-4">
-              <strong>ReLU and gradient explosion:</strong> While ReLU helps with vanishing gradients (derivative is 1 for positive inputs),
-              it can cause explosion with poor initialization:
+            <Text className="mb-4">
+              When inputs are large (e.g., magnitude ~10) and weights have std ~1, the product 
+              <InlineMath math="|W \cdot x|" /> can be much greater than 1. Since ReLU doesn't shrink gradients
+              (derivative = 1), each layer can amplify the gradient, causing exponential growth.
             </Text>
             
-            <CodeBlock language="python" code={`# ReLU gradient behavior
-def relu_chain(depth, std):
-    x = torch.randn(100, requires_grad=True)
-    for _ in range(depth):
-        W = torch.randn(100, 100) * std
-        x = torch.relu(W @ x)
-    loss = x.sum()
-    loss.backward()
-    return x.grad.norm().item()
-
-print(f"std=0.1: {relu_chain(10, 0.1):.2e}")
-print(f"std=1.0: {relu_chain(10, 1.0):.2e}")
-print(f"std=2.0: {relu_chain(10, 2.0):.2e}")`} />
           </Paper>
+          </div>
+                      <div data-slide>
+            <CodeBlock language="python" code={`Epoch 0, Loss: 1774099840.000000, Gradient Norm: 25415619288.704369
+Training stopped at epoch 2 due to NaN loss (exploded gradients)`} />
 
-          <Flex direction="column" align="center" mt="md" mb="md">
-            <Image
-              src="/assets/python-deep-learning/module3/individualImage.png"
-              alt="Gradient Flow Visualization"
-              style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
-              fluid
-            />
-            <Text size="sm" c="dimmed" mt="xs">Gradient Flow Through Deep Networks</Text>
-          </Flex>
+</div>
 
-        </div>
 
 
        
