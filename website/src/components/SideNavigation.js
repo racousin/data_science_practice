@@ -261,9 +261,11 @@ export const pytorchCourseContentData = {
     ]}
   ],
   'module3': [
-    { to: '/data-pipeline-training-loop', label: 'Data Pipeline Training Loop', subLinks: [
+    { to: '/training-basics', label: 'Training Basics', subLinks: [
     ]},
-    { to: '/essential-layers', label: 'MLP Architecture & Components', subLinks: [
+    { to: '/data-pipeline-training-loop', label: 'Data Pipeline Essential Components', subLinks: [
+    ]},
+    { to: '/essential-layers', label: 'NN Essential Components', subLinks: [
     ]},
     { to: '/monitoring-visualization', label: 'Monitoring & Visualization', subLinks: [
     ]}

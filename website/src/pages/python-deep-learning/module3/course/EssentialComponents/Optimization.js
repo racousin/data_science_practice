@@ -7,11 +7,14 @@ import { BlockMath } from 'react-katex';
 const Optimization = () => {
   return (
     <Stack spacing="lg" w="100%">
-    <Stack spacing="md">
+<div data-slide>
+      <Title order={3} mt="md">Optimizers</Title>
       {/* SGD */}
                     <CodeBlock
         language="python"
         code={`import torch.optim as optim`}/>
+        </div>
+        <div data-slide>
       <div>
         <Title order={4}>Stochastic Gradient Descent (SGD)</Title>
         <BlockMath>{`w_{t+1} = w_t - \\eta \\nabla L(w_t)`}</BlockMath>
@@ -20,8 +23,8 @@ const Optimization = () => {
         language="python"
         code={`sgd = optim.SGD(model.parameters(), lr=0.01)`}
       />
-      </div>
-
+      </div></div>
+<div data-slide>
       {/* Momentum */}
       <div>
         <Title order={4}>SGD with Momentum</Title>
@@ -32,7 +35,8 @@ const Optimization = () => {
               <CodeBlock
         language="python"
         code={`momentum = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)`}
-      />
+      /></div>
+      <div data-slide>
       {/* Adam */}
       <div>
         <Title order={4}>Adam (Adaptive Moment Estimation)</Title>
@@ -50,38 +54,7 @@ const Optimization = () => {
                     <CodeBlock
         language="python"
         code={`adam = optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999))`}
-      />
-    </Stack>
-
-      <CodeBlock
-        language="python"
-        code={`# Training loop example
-optimizer.zero_grad()
-loss = criterion(outputs, targets)
-loss.backward()
-optimizer.step()`}
-      />
-      <Group grow align="flex-start">
-        <Stack spacing="xs">
-          <Title order={3}>Learning Rate (η)</Title>
-          <Text size="sm">Controls step size in gradient descent</Text>
-          <Text size="sm" c="dimmed">
-            • High: Faster learning, risk of divergence
-            • Low: Stable but slow convergence
-            • Typical: 1e-4 to 1e-1
-          </Text>
-        </Stack>
-
-        <Stack spacing="xs">
-          <Title order={3}>Momentum (β)</Title>
-          <Text size="sm">Controls influence of past gradients</Text>
-          <Text size="sm" c="dimmed">
-            • Higher: More momentum (0.9 typical)
-            • Helps escape local minima
-            • Smooths optimization trajectory
-          </Text>
-        </Stack>
-      </Group>
+      /></div>
 
     </Stack>
   );

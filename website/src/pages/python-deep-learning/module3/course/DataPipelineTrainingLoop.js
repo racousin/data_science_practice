@@ -15,9 +15,10 @@ const DataPipelineTrainingLoop = () => {
   return (
     <Container fluid>
       <Stack spacing="lg">
-        <Title order={1}>Data Pipeline & Training Loop</Title>
-        
-        
+        <div data-slide>
+        <Title order={1}>Data Pipeline Essential Components</Title>
+        </div>
+         <div data-slide>
           <Title order={2}>Core Components</Title>
           
           <Title order={3} mt="md">nn.Module Overview</Title>
@@ -36,6 +37,8 @@ const DataPipelineTrainingLoop = () => {
             <List.Item><strong>Gradient Management:</strong> Automatic gradient computation and storage</List.Item>
             <List.Item><strong>State Dict:</strong> Save and load model parameters</List.Item>
           </List>
+          </div>
+          <div data-slide>
           <CodeBlock language="python" code={`class MyModel(nn.Module):
     def __init__(self):
         super().__init__()
@@ -50,7 +53,8 @@ model = MyModel()
 model.to('cuda')  # Move to GPU
 model.train()     # Training mode
 model.eval()      # Evaluation mode`}/>
-          
+          </div>
+          <div data-slide>
           <Title order={3} mt="md">nn.Module Methods</Title>
           <Text>
             Essential methods provided by nn.Module:
@@ -68,37 +72,12 @@ model.requires_grad_(False) # Freeze all parameters
 
 # Mode control
 model.train()               # Enable dropout, batch norm updates
-model.eval()                # Disable dropout, freeze batch norm
-
-# Module access
-model.modules()             # All submodules recursively
-model.children()            # Direct child modules only
-model.named_modules()       # Named modules recursively`}/>
+model.eval()                # Disable dropout, freeze batch norm`}/>
+          </div>
           
-          <Title order={3} mt="md">nn.Module Hooks</Title>
-          <Text>
-            Register functions to be called during forward/backward passes:
-          </Text>
-          <CodeBlock language="python" code={`# Forward hook - inspect intermediate outputs
-def forward_hook(module, input, output):
-    print(f"Output shape: {output.shape}")
-    return output  # Can modify output here
-
-handle = model.layer1.register_forward_hook(forward_hook)
-
-# Backward hook - inspect/modify gradients
-def backward_hook(module, grad_input, grad_output):
-    print(f"Gradient norm: {grad_output[0].norm()}")
-    return grad_input  # Can modify gradients here
-
-model.layer1.register_backward_hook(backward_hook)
-
-# Remove hook when done
-handle.remove()`}/>
           
-          <Title order={3} mt="md">nn.Module Weight Initialization</Title>
           <WeightInitialization/>
-          
+          <div data-slide>
           <Title order={3} mt="md">nn.Module Save and Load</Title>
           <Text>
             Saving and loading model state for checkpointing and deployment:
@@ -127,18 +106,19 @@ model.load_state_dict(checkpoint['model_state_dict'])
 optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
 epoch = checkpoint['epoch']
 loss = checkpoint['loss']`}/>
+          </div>
           
           
-          <Title order={3} mt="md">Optimizers</Title>
           <Optimization/>
           
-          <Title order={3} mt="md">Loss Functions</Title>
+          
           <CustomLoss/>
         
 
-        
+        <div data-slide>
           <Title order={2}>Data Pipeline Components</Title>
-          
+          </div>
+          <div data-slide>
           <Title order={3} mt="md">Dataset</Title>
           <Text>
             Container that defines how to access your data. Implement <Code>__len__</Code> and <Code>__getitem__</Code> methods.
@@ -165,7 +145,8 @@ loss = checkpoint['loss']`}/>
         if self.transform:
             sample = self.transform(sample)
         return sample, self.labels[idx]`}/>
-          
+          </div>
+          <div data-slide>
           <Title order={3} mt="md">DataLoader</Title>
           <Text>
             Handles batching, shuffling, and parallel loading efficiently. Key parameters control data loading behavior:
@@ -186,18 +167,9 @@ dataloader = DataLoader(
             <List.Item><strong>Large batch size:</strong> Better GPU utilization, more stable gradients, faster per epoch</List.Item>
             <List.Item><strong>Small batch size:</strong> Less memory, more gradient noise (can help generalization), more updates per epoch</List.Item>
           </List>
-          <CodeBlock language="python" code={`# Dynamic batch size based on available memory
-def find_batch_size(model, input_shape):
-    batch_size = 2
-    while True:
-        try:
-            dummy = torch.randn(batch_size, *input_shape).cuda()
-            _ = model(dummy)
-            batch_size *= 2
-        except RuntimeError:
-            return batch_size // 2`}/>
+          </div>
           
-        
+        <div data-slide>
           <Title order={2}>Data Splits</Title>
           
           <Title order={3} mt="md">Training Set</Title>
@@ -214,9 +186,54 @@ def find_batch_size(model, input_shape):
           <Text>
             Final performance evaluation. Never touched during training. Typically 10-20% of data.
           </Text>
-        
+          </div>
+          <div data-slide>
+          <Title order={3} mt="md">Random Split Implementation</Title>
+          <CodeBlock language="python" code={`from torch.utils.data import random_split
 
-        
+# Define split sizes
+dataset_size = len(dataset)
+train_size = int(0.7 * dataset_size)
+val_size = int(0.15 * dataset_size)
+test_size = dataset_size - train_size - val_size
+
+# Create random splits
+train_dataset, val_dataset, test_dataset = random_split(
+    dataset, [train_size, val_size, test_size]
+)`}/></div>
+          <div data-slide>
+          <Title order={3} mt="md">Creating DataLoaders for Each Split</Title>
+          <Text>
+            Different configurations for training and evaluation:
+          </Text>
+          <CodeBlock language="python" code={`# Training loader - shuffle for better learning
+train_loader = DataLoader(
+    train_dataset,
+    batch_size=32,
+    shuffle=True,       # Randomize each epoch
+    num_workers=4,
+    pin_memory=True     # Faster GPU transfer
+)
+
+# Validation loader - no shuffle needed
+val_loader = DataLoader(
+    val_dataset,
+    batch_size=64,      # Can use larger batch (no gradients)
+    shuffle=False,      # Keep order consistent
+    num_workers=4,
+    pin_memory=True
+)
+
+# Test loader - similar to validation
+test_loader = DataLoader(
+    test_dataset,
+    batch_size=64,
+    shuffle=False,
+    num_workers=4
+)`}/>
+        </div>
+
+        <div data-slide>
           <Title order={2}>Training Concepts</Title>
           
           <Title order={3} mt="md">Epoch</Title>
@@ -235,7 +252,8 @@ def find_batch_size(model, input_shape):
         loss = criterion(outputs, targets)
         loss.backward()
         optimizer.step()`}/>
-          
+          </div>
+          <div data-slide>
           <Title order={3} mt="md">Evaluation Mode</Title>
           <Text>
             Disable dropout and batch normalization updates during validation.
@@ -243,9 +261,9 @@ def find_batch_size(model, input_shape):
           <CodeBlock language="python" code={`model.eval()
 with torch.no_grad():
     # validation code`}/>
-        
+        </div>
 
-        
+        <div data-slide>
           <Title order={2}>Callbacks</Title>
           
           <Text>
@@ -265,7 +283,8 @@ with torch.no_grad():
     
     def on_epoch_end(self, epoch, train_loss, val_loss):
         pass`}/>
-          
+          </div>
+          <div data-slide>
           <Text mt="sm">
             Using callbacks in your training loop:
           </Text>
@@ -280,7 +299,8 @@ for epoch in range(num_epochs):
         loss = train_step(data, target)
         for callback in callbacks:
             callback.on_batch_end(batch_idx, loss)`}/>
-          
+          </div>
+          <div data-slide>
           <Title order={3} mt="md">Model Checkpointing</Title>
           <Text>
             Save model weights periodically and keep best performing versions:
@@ -299,8 +319,9 @@ for epoch in range(num_epochs):
                 'best_score': self.best_score
             }, self.filepath)
             print(f"Saved best model at epoch {epoch}")`}/>
-          
+          </div>
       </Stack>
+      
     </Container>
   );
 };

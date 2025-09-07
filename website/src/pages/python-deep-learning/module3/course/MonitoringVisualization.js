@@ -170,15 +170,6 @@ grid = torchvision.utils.make_grid(images, nrow=4, normalize=True)
 writer.add_image('Batch_Samples', grid, epoch)`} />
             
 
-              <Flex direction="column" align="center" mt="md" mb="md">
-                <Image
-                  src="/assets/python-deep-learning/module3/individualImage.png"
-                  alt="TensorBoard Image Visualization"
-                  style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
-                  fluid
-                />
-                <Text size="sm" c="dimmed" mt="xs">Image and Feature Map Visualization</Text>
-              </Flex>
             </div>
 
             {/* Section 6: Embeddings Visualization */}
@@ -204,7 +195,7 @@ writer.add_embedding(
                   style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
                   fluid
                 />
-                <Text size="sm" c="dimmed" mt="xs">Image and Feature Map Visualization</Text>
+                <Text size="sm" c="dimmed" mt="xs">embedding projector</Text>
               </Flex>
             </div>
 

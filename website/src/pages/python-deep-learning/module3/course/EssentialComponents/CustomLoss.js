@@ -4,8 +4,9 @@ import CodeBlock from 'components/CodeBlock';
 
 const CustomLoss = () => {
   return (
-    <Stack spacing="md">
-      <Title order={3}>PyTorch Built-in Loss Functions</Title>
+<>
+    <div data-slide>
+    <Title order={3} mt="md">Loss Functions</Title>
       <Text>
         PyTorch provides common loss functions in <Code>torch.nn</Code>:
       </Text>
@@ -31,7 +32,8 @@ criterion = nn.KLDivLoss()             # Kullback-Leibler divergence
 criterion = nn.CosineEmbeddingLoss()   # Cosine similarity
 criterion = nn.TripletMarginLoss()     # Triplet loss for embeddings`}
       />
-
+</div>
+    <div data-slide>
       <Title order={3} mt="md">Custom Loss Example</Title>
       <Text>
         Create custom losses by subclassing <Code>nn.Module</Code>:
@@ -52,22 +54,10 @@ class WeightedMSELoss(nn.Module):
         squared_diff = (predictions - targets) ** 2
         if weights is not None:
             squared_diff = squared_diff * weights
-        return torch.mean(squared_diff)
-
-# Usage
-model = YourModel()
-criterion = WeightedMSELoss()
-optimizer = torch.optim.Adam(model.parameters())
-
-for inputs, targets, sample_weights in dataloader:
-    outputs = model(inputs)
-    loss = criterion(outputs, targets, sample_weights)
-    
-    optimizer.zero_grad()
-    loss.backward()
-    optimizer.step()`}
+        return torch.mean(squared_diff)`}
       />
-    </Stack>
+      </div>
+      </>
   );
 };
 

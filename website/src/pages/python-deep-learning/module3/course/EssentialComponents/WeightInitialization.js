@@ -11,7 +11,8 @@ const WeightInitialization = () => {
 
         {/* Methods Section */}
         <div>
-          
+          <div data-slide>
+            <Title order={3} mt="md">nn.Module Weight Initialization</Title>
         <Title order={3} mb="sm">Zero/Constant Initialization</Title>
         <Text mb="md">
           Initializing all weights to zero (or the same constant) creates symmetry among neurons, preventing them from learning distinct features and hindering effective training:
@@ -29,8 +30,10 @@ const WeightInitialization = () => {
     {String.raw`W \sim \mathcal{U} \left(-\frac{1}{\sqrt{\text{fan\_in}}}, \frac{1}{\sqrt{\text{fan\_in}}}\right)`}
   </BlockMath>
         </div>
+        </div>
 
         {/* PyTorch Defaults */}
+        <div data-slide>
         <div>
           <CodeBlock
             language="python"
@@ -45,12 +48,15 @@ nn.init.kaiming_normal_(layer.weight)
 nn.init.constant_(layer.bias, 0)  # Typically zero for biases`}
           />
         </div>
+        </div>
+        <div data-slide>
         <div>
           <Image
             src="/assets/data-science-practice/module7/weight_distributions.png"
             alt="Weight initialization distributions comparison"
             radius="md"
           />
+        </div>
         </div>
       </Stack>
     </Container>
