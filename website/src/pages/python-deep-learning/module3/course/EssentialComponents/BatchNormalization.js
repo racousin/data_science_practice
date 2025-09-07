@@ -6,7 +6,10 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 const BatchNormalization = () => {
   return (
+    
     <Stack spacing="md">
+      <div data-slide>
+      <Title order={3} mt="md">Batch Normalization</Title>
       <Text>
         Batch Normalization (BatchNorm) is a technique introduced by Sergey Ioffe and Christian Szegedy in 2015
         that normalizes the intermediate activations of neural networks, significantly improving training 
@@ -16,6 +19,8 @@ const BatchNormalization = () => {
         language="python"
         code={`self.bn1 = nn.BatchNorm1d(256)`}
       />
+      </div>
+      <div data-slide>
       <Text>
         Consider a mini-batch of activations at some layer: <InlineMath>{`\\mathcal{B} = \\{x_1, x_2, ..., x_m\\}`}</InlineMath>
       </Text>
@@ -36,7 +41,8 @@ const BatchNormalization = () => {
       <BlockMath>
         {`\\hat{x}_i = \\frac{x_i - \\mu_\\mathcal{B}}{\\sqrt{\\sigma_\\mathcal{B}^2 + \\epsilon}}`}
       </BlockMath>
-
+</div>
+<div data-slide>
       <Title order={3}>Training vs. Inference</Title>
       <Text>
         During training, for each batch:
@@ -62,7 +68,7 @@ train_predictions = model(train_data)`}
 model.eval()
 test_predictions = model(test_data)`}
       />
-
+</div>
     </Stack>
   );
 };

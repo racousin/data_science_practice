@@ -6,21 +6,23 @@ const MonitoringVisualization = () => {
   return (
     <Container size="xl">
       <Stack spacing="xl">
-        <div>
+        <div data-slide>
+        
           <Title order={1} mb="xl">
             Monitoring & Visualization with TensorBoard
           </Title>
+          </div>
           
-          <Paper className="p-6 bg-blue-50 mb-6">
             <Text>
               TensorBoard is TensorFlow's visualization toolkit, fully compatible with PyTorch. 
               It provides insights into model training through interactive visualizations of metrics, 
               model graphs, embeddings, and more.
             </Text>
-          </Paper>
+            <div>
 
           <Stack spacing="xl" mt="xl">
             {/* Section 1: Setting up TensorBoard */}
+            <div data-slide>
             <div>
               <Title order={2} mb="md">1. Setting up TensorBoard with PyTorch</Title>
               
@@ -46,9 +48,9 @@ writer.close()`} />
                 <Text size="sm" mt="sm">Then run <code>%tensorboard --logdir runs </code></Text>
 
     
-
+</div>
             </div>
-
+<div data-slide>
             {/* Section 2: Logging Scalars */}
             <div>
               <Title order={2} mb="md">2. Logging Training Metrics</Title>
@@ -77,7 +79,8 @@ writer.add_scalars('Loss', {
     writer.add_scalar('Loss/train', train_loss, epoch)
     writer.add_scalar('Loss/val', val_loss, epoch)
     writer.add_scalar('Accuracy/val', val_acc, epoch)`} />
-
+</div>
+<div data-slide>
               <Flex direction="column" align="center" mt="md" mb="md">
                 <Image
                   src="/assets/python-deep-learning/module3/Loss.svg"
@@ -87,8 +90,8 @@ writer.add_scalars('Loss', {
                 />
                 <Text size="sm" c="dimmed" mt="xs">TensorBoard Scalars Visualization</Text>
               </Flex>
-            </div>
-
+            </div></div>
+<div data-slide>
             {/* Section 3: Visualizing Model Architecture */}
             <div>
               <Title order={2} mb="md">3. Model Architecture Visualization</Title>
@@ -101,7 +104,8 @@ writer = SummaryWriter('runs/model_viz')
 # Create dummy input and add graph
 dummy_input = torch.randn(1, 1, 28, 28)
 writer.add_graph(model, dummy_input)`} />
-
+</div>
+<div data-slide>
               <Flex direction="column" align="center" mt="md" mb="md">
                 <Image
                   src="/assets/python-deep-learning/module3/tensorboard_graph.png"
@@ -112,7 +116,8 @@ writer.add_graph(model, dummy_input)`} />
                 <Text size="sm" c="dimmed" mt="xs">Model Architecture in TensorBoard</Text>
               </Flex>
             </div>
-
+</div>
+<div data-slide>
             {/* Section 4: Histograms and Distributions */}
             <div>
               <Title order={2} mb="md">4. Weight and Gradient Distributions</Title>
@@ -141,7 +146,8 @@ def get_activation(name):
 # Register hooks
 model.fc1.register_forward_hook(get_activation('fc1'))
 model.fc2.register_forward_hook(get_activation('fc2'))`} />
-
+</div>
+<div data-slide>
               <Flex direction="column" align="center" mt="md" mb="md">
                 <Image
                   src="/assets/python-deep-learning/module3/histogram.png"
@@ -152,7 +158,8 @@ model.fc2.register_forward_hook(get_activation('fc2'))`} />
                 <Text size="sm" c="dimmed" mt="xs">Weight and Gradient Distributions</Text>
               </Flex>
             </div>
-
+</div>
+<div data-slide>
             {/* Section 5: Image Visualization */}
             <div>
               <Title order={2} mb="md">5. Image and Tensor Visualization</Title>
@@ -168,8 +175,8 @@ writer.add_image('Sample_Image', img, epoch)`} />
 images = batch_images[:16]  # Take first 16 images
 grid = torchvision.utils.make_grid(images, nrow=4, normalize=True)
 writer.add_image('Batch_Samples', grid, epoch)`} />
-            
-
+            </div>
+<div data-slide>
             </div>
 
             {/* Section 6: Embeddings Visualization */}
@@ -188,6 +195,8 @@ writer.add_embedding(
     global_step=epoch,
     tag='feature_embeddings'
 )`} />
+</div>
+<div data-slide>
                             <Flex direction="column" align="center" mt="md" mb="md">
                 <Image
                   src="/assets/python-deep-learning/module3/embedding_projector.png"
@@ -197,11 +206,11 @@ writer.add_embedding(
                 />
                 <Text size="sm" c="dimmed" mt="xs">embedding projector</Text>
               </Flex>
-            </div>
+            </div></div>
 
           </Stack>
         </div>
-
+<div data-slide>
 
           <Title order={3} mt="md">Use callback to get TensorBoard Integration</Title>
           <Text>
@@ -223,6 +232,7 @@ class TensorBoardCallback:
         # Log model weights histogram
         for name, param in model.named_parameters():
             self.writer.add_histogram(name, param, epoch)`}/>
+            </div>
       </Stack>
     </Container>
   );

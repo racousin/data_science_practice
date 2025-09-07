@@ -7,13 +7,15 @@ const PerformanceOptimization = () => {
   return (
     <Container fluid>
       <Stack spacing="md">
+        <div data-slide>
         <Title order={1}>Performance Optimization Techniques</Title>
         
         <Text>
           Modern deep learning frameworks provide numerous optimization techniques to accelerate training 
           and inference. We'll explore key strategies to maximize performance on available hardware.
         </Text>
-
+</div>
+<div data-slide>
         
           <Title id="torch-compile" order={2} mt="xl">Torch Compile</Title>
           
@@ -29,7 +31,8 @@ const PerformanceOptimization = () => {
               <List.Item><strong>Code Generation:</strong> Generates optimized kernels for target hardware</List.Item>
               <List.Item><strong>Caching:</strong> Reuses compiled graphs for repeated calls</List.Item>
             </List>
-
+</div>
+<div data-slide>
 
           <CodeBlock language="python" code={`def foo(x, y):
     a = torch.sin(x)
@@ -38,7 +41,8 @@ const PerformanceOptimization = () => {
 opt_foo1 = torch.compile(foo)
 print(opt_foo1(torch.randn(10, 10), torch.randn(10, 10))) #same output`} />
 Arbitrary Python functions can be optimized by passing the callable to torch.compile. We can then call the returned optimized function in place of the original function.
-
+</div>
+<div data-slide>
 
           <CodeBlock language="python" code={`def simple_function(x, y):
     # Multiple element-wise operations
@@ -73,7 +77,8 @@ Arbitrary Python functions can be optimized by passing the callable to torch.com
 Original function: 0.019s
 Compiled function: 0.007s
 Speedup: 2.89x`} />
-
+</div>
+<div data-slide>
 Behavior of torch.compile with Nested Modules and Function Calls
 
 When you use torch.compile, the compiler will try to recursively compile every function call inside the target function or module inside the target function or module that is not in a skip list (such as built-ins, some functions in the torch.* namespace).
@@ -90,8 +95,8 @@ Best Practices:
               <List.Item>Best for static input shapes - dynamic shapes may cause recompilation</List.Item>
             </List>
 
-        
-
+        </div>
+<div data-slide>
         
           <Title id="mixed-precision" order={2} mt="xl">Mixed Precision Training</Title>
           
@@ -100,7 +105,8 @@ Best Practices:
             this naive approach can impact training stability. Mixed precision training provides
             a sophisticated solution that combines the benefits of both precisions.
           </Text>
-
+</div>
+<div data-slide>
           <Title order={3} mt="lg">Basic Precision Casting</Title>
           
           <Text>
@@ -115,7 +121,8 @@ data = data.to(torch.float16)
 # - Gradient underflow (gradients become zero)
 # - Loss of precision in weight updates
 # - Training instability`} />
-
+</div>
+<div data-slide>
           <Title order={3} mt="lg">How Mixed Precision Works</Title>
           
           <Text>
@@ -127,7 +134,8 @@ data = data.to(torch.float16)
             <List.Item><strong>FP16:</strong> For most forward and backward pass computations</List.Item>
             <List.Item><strong>FP32:</strong> For operations needing higher precision (loss scaling, weight updates)</List.Item>
           </List>
-
+</div>
+<div data-slide>
           <Title order={4} mt="md">What Gets Cast to FP16 vs FP32?</Title>
           
 
@@ -147,7 +155,8 @@ data = data.to(torch.float16)
               <List.Item><strong>Optimizer states:</strong> Adam moments, SGD momentum buffers</List.Item>
               <List.Item><strong>Weight updates:</strong> Gradient application to parameters</List.Item>
             </List>
-
+</div>
+<div data-slide>
           <CodeBlock language="python" code={`# What happens under the hood:
 with autocast():
     # Input activations cast to FP16
@@ -165,7 +174,8 @@ with autocast():
 # Master weights remain in FP32 throughout
 print(model.weight.dtype)  # torch.float32
 print(optimizer.param_groups[0]['params'][0].dtype)  # torch.float32`} />
-
+</div>
+<div data-slide>
           <Title order={3} mt="lg">Key Benefits</Title>
           
           <Paper p="md" withBorder>
@@ -237,8 +247,8 @@ with autocast():
         scaler.step(optimizer)
         scaler.update()`} />
 
-        
-
+</div>
+        <div data-slide>
           <Title order={3} mt="lg">Gradient Checkpointing</Title>
           
           <Text>
@@ -254,6 +264,8 @@ with autocast():
               <List.Item><strong>Trade-off:</strong> ~30% slower training for ~60% memory reduction</List.Item>
               <List.Item><strong>Best for:</strong> Very deep networks with sequential layers</List.Item>
             </List>
+</div>
+<div data-slide>
 
           <CodeBlock language="python" code={`from torch.utils.checkpoint import checkpoint
 
@@ -279,7 +291,8 @@ class CheckpointedLayer(nn.Module):
         x = self.linear(x)
         x = self.norm(x)
         return self.activation(x)`} />
-
+</div>
+<div data-slide>
           <Title order={3} mt="lg">2. CPU Offloading</Title>
           
           <Text>
@@ -302,7 +315,8 @@ class CheckpointedLayer(nn.Module):
           <Text mt="md">
             By offloading optimizer states to CPU, we reduce GPU memory from 4× to 2× parameter size:
           </Text>
-
+          </div>
+<div data-slide>
           <CodeBlock language="python" code={`# Simplified CPU offloading concept
 class CPUOffloadAdam:
     def __init__(self, params, lr=0.001):
@@ -333,7 +347,8 @@ class CPUOffloadAdam:
             
             # Apply update to GPU parameters
             p.data.add_(update.to(p.device), alpha=-1)`} />
-
+</div>
+<div data-slide>
           <Title order={3} mt="lg">3. Memory Efficient Attention</Title>
           
           <Text>
@@ -351,7 +366,8 @@ class CPUOffloadAdam:
               <List.Item><strong>Benefits:</strong> 10-100× less memory, 2-4× faster on long sequences</List.Item>
             </List>
           </Paper>
-
+</div>
+<div data-slide>
           <CodeBlock language="python" code={`# Standard attention (high memory usage)
 def standard_attention(Q, K, V):
     # Q, K, V: [batch, heads, seq_len, dim]
@@ -369,7 +385,8 @@ def efficient_attention(Q, K, V):
     # Memory: O(n) instead of O(n²)
     output = flash_attn_func(Q, K, V, dropout_p=0.0, causal=False)
     return output`} />
-
+</div>
+<div data-slide>
           <Title order={3} mt="lg">4. Activation Recomputation</Title>
           
           <Text>
@@ -386,7 +403,8 @@ def efficient_attention(Q, K, V):
               <List.Item><strong>Rationale:</strong> Activations are fast to recompute but large to store</List.Item>
             </List>
           </Paper>
-
+</div>
+<div data-slide>
           <CodeBlock language="python" code={`class SelectiveRecomputation(nn.Module):
     def __init__(self, dim):
         super().__init__()
@@ -406,9 +424,9 @@ def efficient_attention(Q, K, V):
             hidden = self.dropout(self.activation(hidden))
         
         return self.linear2(hidden)`} />
+</div>
 
-
-        
+       <div data-slide>
           <Title id="io-optimization" order={2} mt="xl">I/O and DataLoader Optimization</Title>
           
           <Text mb="md">
@@ -423,12 +441,14 @@ def efficient_attention(Q, K, V):
             Controls how many subprocesses load data in parallel. Each worker loads batches independently, 
             allowing data preparation to happen while the GPU processes the current batch.
           </Text>
+          </div> 
+                 
           <CodeBlock language="python" code={`# Default: single-threaded loading (slow)
 dataloader = DataLoader(dataset, batch_size=32, num_workers=0)
 
 # Optimized: parallel loading with multiple workers
 dataloader = DataLoader(dataset, batch_size=32, num_workers=4)`} />
-
+<div data-slide>
           <Title order={4} mt="md">2. pin_memory - Faster GPU Transfer</Title>
           <Text mb="sm">
             Allocates data in page-locked (pinned) memory, enabling faster transfer from CPU to GPU. 
@@ -439,7 +459,8 @@ dataloader = DataLoader(dataset, pin_memory=False)
 
 # With pinned memory: CPU → Pinned → GPU (faster)
 dataloader = DataLoader(dataset, pin_memory=True)`} />
-
+</div>
+<div data-slide>
           <Title order={4} mt="md">3. persistent_workers - Avoid Worker Restart</Title>
           <Text mb="sm">
             Keeps worker processes alive between epochs instead of shutting down and restarting them. 
@@ -450,7 +471,8 @@ dataloader = DataLoader(dataset, num_workers=4, persistent_workers=False)
 
 # Workers stay alive (faster epoch transitions)
 dataloader = DataLoader(dataset, num_workers=4, persistent_workers=True)`} />
-
+</div>
+<div data-slide>
           <Title order={4} mt="md">4. prefetch_factor - Batch Prefetching</Title>
           <Text mb="sm">
             Number of batches each worker prefetches. Workers prepare future batches while the model 
@@ -461,7 +483,8 @@ dataloader = DataLoader(dataset, num_workers=4, prefetch_factor=2)
 
 # Increase for more aggressive prefetching (uses more memory)
 dataloader = DataLoader(dataset, num_workers=4, prefetch_factor=4)`} />
-
+</div>
+<div data-slide>
         
         <Title id="pruning-optimization" order={2} mt="xl">Pruning Optimization</Title>
         
@@ -484,7 +507,8 @@ dataloader = DataLoader(dataset, num_workers=4, prefetch_factor=4)`} />
           <List.Item><strong>Lower Memory Footprint:</strong> Crucial for edge deployment</List.Item>
           <List.Item><strong>Maintained Accuracy:</strong> Often within 1-2% of original performance</List.Item>
         </List>
-
+</div>
+<div data-slide>
         <Title order={3} mt="lg">Main Pruning Strategies</Title>
 
         <Title order={4} mt="md">1. Magnitude-Based Pruning</Title>
@@ -510,7 +534,8 @@ print(model.linear.weight)  # Contains zeros where pruned`} />
 weight_orig = model.linear.weight_orig  # Original weights
 weight_mask = model.linear.weight_mask  # Binary mask (0 or 1)
 effective_weight = weight_orig * weight_mask  # Zeros where pruned`} />
-
+</div>
+<div data-slide>
         <Title order={4} mt="md">2. Structured Pruning</Title>
         <Text>
           Removes entire neurons, channels, or filters instead of individual weights. 
@@ -527,7 +552,8 @@ prune.ln_structured(
 )
 
 # Results in smaller conv layer: fewer output channels`} />
-
+</div>
+<div data-slide>
         <Title order={4} mt="md">3. Iterative Pruning with Fine-tuning</Title>
         <Text>
           Gradually prune the network in steps, retraining between each pruning iteration 
@@ -548,7 +574,8 @@ prune.ln_structured(
         # Evaluate pruned model
         accuracy = evaluate(model, test_loader)
         print(f"Sparsity: {sparsity:.1%}, Accuracy: {accuracy:.2%}")`} />
-
+</div>
+<div data-slide>
         <Title order={4} mt="md">4. Lottery Ticket Hypothesis</Title>
         <Text>
           Theory that dense networks contain sparse subnetworks (winning tickets) that can 
@@ -565,7 +592,8 @@ prune.ln_structured(
             <List.Item>5. Winning tickets match original accuracy at high sparsity</List.Item>
           </List>
         </Paper>
-
+</div>
+<div data-slide>
         <Title order={4} mt="md">5. Dynamic Sparsity</Title>
         <Text>
           Allows pruned connections to regrow during training, enabling the network to 
@@ -583,7 +611,7 @@ prune.ln_structured(
             regrow_weights(model, amount=0.2)
             
             # Maintains constant sparsity while exploring topologies`} />
-
+</div>
         <Title order={3} mt="lg">Practical Considerations</Title>
 
         <Alert color="blue" mt="md">
@@ -615,27 +643,6 @@ def resize_pruned_model(model):
     # Instantiate new smaller model with reduced dimensions
     # Copy non-zero weights to new model
     return smaller_model`} />
-
-        <Title order={3} mt="lg">Advanced Pruning Methods</Title>
-
-        <Text>
-          Modern research explores more sophisticated pruning techniques:
-        </Text>
-
-        <List spacing="sm" mt="md">
-          <List.Item>
-            <strong>Gradient-based pruning:</strong> Use gradient information to identify important weights
-          </List.Item>
-          <List.Item>
-            <strong>Second-order pruning:</strong> Consider Hessian information for better importance estimation
-          </List.Item>
-          <List.Item>
-            <strong>Pruning at initialization:</strong> Identify winning tickets before training
-          </List.Item>
-          <List.Item>
-            <strong>Hardware-aware pruning:</strong> Optimize sparsity patterns for specific accelerators
-          </List.Item>
-        </List>
 
         <Paper p="md" withBorder mt="md">
           <Title order={4}>Compression Results in Practice</Title>

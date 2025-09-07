@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Stack, Table, Code } from '@mantine/core';
+import { Text, Stack, Table, Code, Title} from '@mantine/core';
 import CodeBlock from 'components/CodeBlock';
 import { InlineMath, BlockMath } from 'react-katex';
 
@@ -14,6 +14,8 @@ const CategoricalEmbeddings = () => {
 
   return (
     <Stack spacing="md">
+      <div data-slide>
+      <Title order={3} mt="md">Embeddings</Title>
       <Text>
         Handling categorical variables effectively is crucial in deep learning. While traditional methods like one-hot encoding 
         work for small categorical spaces, they become inefficient with high cardinality. Neural network embeddings offer a 
@@ -32,7 +34,8 @@ const CategoricalEmbeddings = () => {
           3. Embeddings are learned during training, capturing semantic relationships between categories
         </Text>
       </Stack>
-
+</div>
+<div data-slide>
       <Text>
         Let <InlineMath>V</InlineMath> be a vocabulary of categorical values with cardinality <InlineMath>|V| = n</InlineMath>. 
         An embedding layer can be formalized as a mapping function:
@@ -59,7 +62,7 @@ const CategoricalEmbeddings = () => {
         code={`nn.Embedding(
     num_embeddings=num_embeddings,
     embedding_dim=embedding_dim)`}
-      />
+      /></div>
 
     </Stack>
   );

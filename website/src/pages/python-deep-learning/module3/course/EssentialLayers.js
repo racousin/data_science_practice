@@ -15,11 +15,13 @@ const EssentialLayers = () => {
   return (
     <Container fluid>
       <Stack spacing="lg">
+        <div data-slide>
         <Title order={1}>Essential Layers</Title>
-        
-        
+        </div>
+        <div data-slide>
           <Title order={2}>Foundation Layers</Title>
-          
+          </div>
+          <div data-slide>
           <Title order={3} mt="md">Linear/Fully Connected</Title>
           <Text>
             Core transformation layer performing matrix multiplication + bias.
@@ -35,7 +37,8 @@ const EssentialLayers = () => {
           <Text mt="xs"><strong>Parameters:</strong> <InlineMath math="in\_features \times out\_features + out\_features" /></Text>
           <CodeBlock language="python" code={`nn.Linear(in_features=128, out_features=64)
 # Performs: output = input @ weight.T + bias`}/>
-          
+          </div>
+          <div data-slide>
           <Title order={3} mt="md">Convolution</Title>
           <Text>
             Spatial pattern detection in images. Local connectivity with shared weights.
@@ -52,7 +55,8 @@ const EssentialLayers = () => {
           <Text mt="xs"><strong>Parameters:</strong> <InlineMath math="(kernel\_size^2 \times in\_channels + 1) \times out\_channels" /></Text>
           <CodeBlock language="python" code={`nn.Conv2d(in_channels=3, out_channels=64, kernel_size=3, stride=1, padding=1)
 # Slides kernel across input, computing local feature maps`}/>
-          
+          </div>
+          <div data-slide>
           <Title order={3} mt="md">Recurrent</Title>
           <Text>
             Process sequential data by maintaining hidden state across time steps.
@@ -72,7 +76,8 @@ const EssentialLayers = () => {
           <Text mt="xs"><strong>Parameters per layer:</strong> <InlineMath math="4 \times (input\_size \times hidden\_size + hidden\_size^2 + 2 \times hidden\_size)" /></Text>
           <CodeBlock language="python" code= {`nn.LSTM(input_size=128, hidden_size=256, num_layers=2)
 # Process sequences with memory of previous inputs`}/>
-          
+          </div>
+          <div data-slide>
           <Title order={3} mt="md">Attention</Title>
           <Text>
             Dynamic focus mechanism that relates different positions in sequences.
@@ -92,25 +97,25 @@ const EssentialLayers = () => {
           <Text mt="xs"><strong>Parameters:</strong> <InlineMath math="4 \times embed\_dim^2" /> (for Q, K, V, and output projections)</Text>
           <CodeBlock language="python" code={`nn.MultiheadAttention(embed_dim=512, num_heads=8)
 # Computes weighted importance between sequence elements`}/>
-        
+        </div>
 
         
-          <Title order={2}>Activation Functions</Title>
+          
           
           <Activation/>
         
           <Title order={2}>Regularization Layers</Title>
           
-          <Title order={3} mt="md">Dropout</Title>
+          
           <Dropout/>
-          <Title order={3} mt="md">Batch Normalization</Title>
+          
 <BatchNormalization/>
           <Title order={2}>Specialized Components</Title>
           
-          <Title order={3} mt="md">Embeddings</Title>
+          
 <CategoricalEmbeddings/>
           
-          <Title order={3} mt="md">Skip Connections</Title>
+          
 <SkipConnections/>
         
       </Stack>

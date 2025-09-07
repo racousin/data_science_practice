@@ -6,6 +6,7 @@ const FineTuning = () => {
   return (
     <Container fluid>
       <Stack spacing="md">
+        <div data-slide>
         <Title order={1}>Fine-Tuning Pre-trained Models</Title>
         
         <Text>
@@ -20,7 +21,8 @@ const FineTuning = () => {
             We can reuse these features and adapt only the necessary parts for our task.
           </Text>
         </Alert>
-
+</div>
+        <div data-slide>
         <Title order={2} mt="xl">Why Fine-Tuning?</Title>
         
         <List spacing="sm" mt="md">
@@ -29,7 +31,8 @@ const FineTuning = () => {
           <List.Item><strong>Better Performance:</strong> Often achieves better results than training from scratch</List.Item>
           <List.Item><strong>Resource Efficient:</strong> Requires less computational resources and time</List.Item>
         </List>
-
+</div>
+        <div data-slide>
         <Title order={2} mt="xl">Fine-Tuning Process</Title>
 
         <Title order={3} mt="lg">Step 1: Load a Pre-trained Architecture</Title>
@@ -47,7 +50,8 @@ import torchvision.models as models
 # Load a pre-trained ResNet model
 model = models.resnet18(pretrained=True)
 print(f"Model has {sum(p.numel() for p in model.parameters())} parameters")`}/>
-
+</div>
+<div data-slide>
         <Title order={3} mt="lg">Step 2: Inspect Model Architecture</Title>
         
         <Text>
@@ -62,7 +66,8 @@ print(model.fc)  # Linear(in_features=512, out_features=1000)
 
 # The model was trained for 1000 ImageNet classes
 # We need to adapt it for our task (e.g., 10 classes)`}/>
-
+</div>
+<div data-slide>
         <Title order={3} mt="lg">Step 3: Modify the Output Layer</Title>
         
         <Text>
@@ -77,7 +82,8 @@ num_classes = 10
 model.fc = torch.nn.Linear(512, num_classes)
 
 # The new layer has random weights while others are pre-trained`}/>
-
+</div>
+<div data-slide>
         <Title order={3} mt="lg">Step 4: Freeze Early Layers</Title>
         
         <Text>
@@ -95,7 +101,8 @@ for param in model.parameters():
 # Unfreeze only the final layer
 for param in model.fc.parameters():
     param.requires_grad = True`}/>
-
+</div>
+<div data-slide>
         <Title order={2} mt="xl">Advanced Fine-Tuning Strategies</Title>
 
         <Title order={3} mt="lg">Gradual Unfreezing</Title>
@@ -119,7 +126,8 @@ optimizer = torch.optim.Adam(
     filter(lambda p: p.requires_grad, model.parameters()), 
     lr=0.0001  # Lower learning rate for pre-trained layers
 )`}/>
-
+</div>
+<div data-slide>
         <Title order={3} mt="lg">Different Learning Rates</Title>
         
         <Text>
@@ -134,7 +142,8 @@ optimizer = torch.optim.SGD([
     {'params': model.layer4.parameters(), 'lr': 1e-4},
     {'params': model.fc.parameters(), 'lr': 1e-2}
 ], momentum=0.9)`}/>
-
+</div>
+<div data-slide>
         <Title order={2} mt="xl">Complete Fine-Tuning Example</Title>
 
         <Paper p="md" withBorder>
@@ -178,24 +187,7 @@ for epoch in range(10):
         loss = nn.CrossEntropyLoss()(outputs, labels)
         loss.backward()
         optimizer.step()`}/>
-
-        <Title order={2} mt="xl">When to Use Fine-Tuning</Title>
-
-        <Paper p="md" withBorder mt="md">
-          <List spacing="sm">
-            <List.Item><strong>Similar Domain:</strong> Your task is similar to the pre-training task (e.g., ImageNet to custom image classification)</List.Item>
-            <List.Item><strong>Limited Data:</strong> You have a small dataset that would be insufficient for training from scratch</List.Item>
-            <List.Item><strong>Limited Resources:</strong> You have computational constraints that make full training impractical</List.Item>
-            <List.Item><strong>Transfer Learning:</strong> You want to leverage knowledge from one domain to another</List.Item>
-          </List>
-        </Paper>
-
-        <Alert color="green" mt="xl">
-          <Text>
-            <strong>Best Practice:</strong> Start with frozen layers and gradually unfreeze as needed. 
-            Monitor validation performance to avoid overfitting when fine-tuning with small datasets.
-          </Text>
-        </Alert>
+</div>
 
       </Stack>
     </Container>

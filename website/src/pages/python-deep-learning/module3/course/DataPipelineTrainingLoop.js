@@ -233,35 +233,6 @@ test_loader = DataLoader(
 )`}/>
         </div>
 
-        <div data-slide>
-          <Title order={2}>Training Concepts</Title>
-          
-          <Title order={3} mt="md">Epoch</Title>
-          <Text>
-            One complete pass through the entire training dataset.
-          </Text>
-          
-          <Title order={3} mt="md">Training Loop</Title>
-          <Text>
-            Core training cycle: Forward pass → Calculate loss → Backward pass → Update weights
-          </Text>
-          <CodeBlock language="python" code={`for epoch in range(num_epochs):
-    for batch in train_loader:
-        optimizer.zero_grad()
-        outputs = model(inputs)
-        loss = criterion(outputs, targets)
-        loss.backward()
-        optimizer.step()`}/>
-          </div>
-          <div data-slide>
-          <Title order={3} mt="md">Evaluation Mode</Title>
-          <Text>
-            Disable dropout and batch normalization updates during validation.
-          </Text>
-          <CodeBlock language="python" code={`model.eval()
-with torch.no_grad():
-    # validation code`}/>
-        </div>
 
         <div data-slide>
           <Title order={2}>Callbacks</Title>

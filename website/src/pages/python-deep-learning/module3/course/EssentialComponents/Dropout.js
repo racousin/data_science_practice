@@ -6,7 +6,8 @@ import { BlockMath, InlineMath } from 'react-katex';
 const Dropout = () => {
   return (
     <Stack spacing="xl">
-      
+      <div data-slide>
+      <Title order={3} mt="md">Dropout</Title>
       <Text>
         Dropout randomly deactivates neurons during training, forcing the network to learn redundant 
         representations and preventing co-adaptation of features.
@@ -15,6 +16,8 @@ const Dropout = () => {
         language="python"
         code={`nn.Dropout(p=0.5)`}
       />
+      </div>
+      <div data-slide>
       <div>
         <Title order={4} mb="md">Key Properties</Title>
         <Text>
@@ -29,6 +32,8 @@ model.train()
 output = model(x)  # Some neurons randomly dropped, others scaled by 2.0
 `}
       />
+      </div>
+      <div data-slide>
         <Text>
           <strong>Inference:</strong> All neurons are active, no scaling is applied.
         </Text>
@@ -46,6 +51,7 @@ model.eval()
 output = model(x)  # All neurons active, no scaling applied
 `}
       />
+      </div>
     </Stack>
   );
 };

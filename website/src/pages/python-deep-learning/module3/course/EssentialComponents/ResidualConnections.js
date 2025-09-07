@@ -7,6 +7,8 @@ import { InlineMath, BlockMath } from 'react-katex';
 const SkipConnections = () => {
   return (
     <Stack spacing="md">
+      <div data-slide>
+      <Title order={3} mt="md">Skip Connections</Title>
       <Text>
         Skip connections are a fundamental architectural pattern in neural networks that create shortcuts 
         to bypass one or more layers. They address key challenges in training deep networks by providing 
@@ -18,6 +20,8 @@ const SkipConnections = () => {
           <strong>Identity skip connections:</strong> The input is directly added to the output of a block 
           (<InlineMath>{`y = F(x) + x`}</InlineMath>). This is the core of residual connections.
         </Text>
+        </div>
+        <div data-slide>
       <Title order={3}>Core Principles of Skip Connections</Title>
 
       <List>
@@ -27,7 +31,8 @@ const SkipConnections = () => {
         <List.Item>They enable the training of much deeper architectures</List.Item>
       </List>
 
-
+</div>
+        <div data-slide>
       <Title order={3}>Implementation with PyTorch</Title>
       <CodeBlock
         language="python"
@@ -58,7 +63,7 @@ class AdditionSkipBlock(nn.Module):
         out = self.relu(out)
         
         return out`}/>
-
+</div>
     </Stack>
   );
 };

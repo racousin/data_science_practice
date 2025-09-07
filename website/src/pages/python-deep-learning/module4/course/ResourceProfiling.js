@@ -7,6 +7,7 @@ const ResourceProfiling = () => {
   return (
     <Container fluid>
       <Stack spacing="md">
+        <div data-slide>
         <Title order={1}>Model Resource Profiling</Title>
         
         <Text>
@@ -26,7 +27,8 @@ We will use this simple MLP model to illustrate following sections
         x = self.relu(x)
         x = self.fc2(x)
         return x`}/>
-        
+        </div>
+        <div data-slide>
           <Title id="gpu-vs-cpu" order={2} mt="xl">GPU vs CPU Performance</Title>
           
           <Text>
@@ -52,7 +54,8 @@ We will use this simple MLP model to illustrate following sections
                 </List>
               </div>
             </Group>
-
+</div>
+<div data-slide>
           <Flex direction="column" align="center" mt="md">
             <Image
               src="/assets/python-deep-learning/module4/cpugpubatch.png"
@@ -61,6 +64,8 @@ We will use this simple MLP model to illustrate following sections
               fluid
             />
           </Flex>
+          </div>
+          <div data-slide>
                       <Title order={4}>Batch Size Impact on training</Title>
                       
                       <List spacing="sm" mt="md">
@@ -77,7 +82,8 @@ We will use this simple MLP model to illustrate following sections
                           <strong>Hardware utilization:</strong> Larger batches → better GPU utilization
                         </List.Item>
                       </List>
-
+</div>
+          <div data-slide>
           <Title order={3} mt="lg">Memory Transfer Overhead</Title>
           
           <Text>
@@ -116,6 +122,8 @@ We will use this simple MLP model to illustrate following sections
 for size in [10, 100, 500]:
     measure_transfer_overhead(size)
     print()`} />
+    </div>
+    <div data-slide>
           <Flex direction="column" align="center" mt="md">
             <Image
               src="/assets/python-deep-learning/module4/overhead.png"
@@ -124,14 +132,8 @@ for size in [10, 100, 500]:
               fluid
             />
           </Flex>
-            <List size="sm">
-              <List.Item>Use GPU for large batch training and inference</List.Item>
-              <List.Item>Minimize CPU-GPU transfers by keeping data on GPU</List.Item>
-              <List.Item>Profile your specific workload to find optimal device</List.Item>
-            </List>
-
-        
-        
+</div>
+        <div data-slide>
           <Title id="model-components" order={2} mt="xl">Model Component Analysis</Title>
           
           <Text>
@@ -146,7 +148,8 @@ for size in [10, 100, 500]:
               <List.Item><strong>Activations:</strong> Intermediate outputs saved for backward pass</List.Item>
               <List.Item><strong>Temporary Buffers:</strong> Workspace for operations like convolutions</List.Item>
             </List>
-
+</div>
+<div data-slide>
           <Flex direction="column" align="center" mt="md">
             <Image
               src="/assets/python-deep-learning/module4/distribution.png"
@@ -155,10 +158,10 @@ for size in [10, 100, 500]:
               fluid
             />
           </Flex>
-        
+        </div>
 
         
-          
+          <div data-slide>
             <Title id="memory-breakdown" order={2}>Memory Formula for Training</Title>
             
             <Text>
@@ -168,7 +171,8 @@ for size in [10, 100, 500]:
             <BlockMath>
               {`\\text{Total Memory} = \\text{Parameters} + \\text{Gradients} + \\text{Optimizer States} + \\text{Activations}`}
             </BlockMath>
-
+</div>
+<div data-slide>
             <Title order={3} mt="lg">Parameters Memory</Title>
             <Text>
               Model parameters (weights and biases) are the core storage requirement:
@@ -183,13 +187,15 @@ for size in [10, 100, 500]:
             <BlockMath>
               {`\\text{Memory} = 1,000,000 \\times 4\\text{ bytes} = 4\\text{ MB}`}
             </BlockMath>
+
             
             <Alert color="blue" mt="md">
               <Text size="sm">
                 <strong>Note:</strong> During inference, only parameter memory is needed: <InlineMath>{`\\text{Inference Memory} = \\text{Parameters}`}</InlineMath>
               </Text>
             </Alert>
-
+            </div>
+<div data-slide>
             <Title order={3} mt="lg">Gradients Memory</Title>
             <Text>
               Gradients are computed for all trainable parameters during backpropagation:
@@ -205,7 +211,8 @@ for size in [10, 100, 500]:
             <BlockMath>
               {`\\text{Gradient Memory} = 1,000,000 \\times 4\\text{ bytes} = 4\\text{ MB}`}
             </BlockMath>
-            
+            </div>
+            <div data-slide>
             <Title order={3} mt="lg">Optimizer Memory</Title>
             <Text>
               Memory requirements vary by optimizer type. Common optimizers:
@@ -235,6 +242,8 @@ for size in [10, 100, 500]:
             <BlockMath>
               {`\\text{Gradient Memory} = 1,000,000 \\times 4\\text{ bytes} \\times 2 = 8\\text{ MB}`}
             </BlockMath>
+            </div>
+            <div data-slide>
         <Title order={3} mt="lg">Activation Memory</Title>
           
           <Text>
@@ -260,9 +269,9 @@ for size in [10, 100, 500]:
             <Text size="xm">
               Activation memory can dominate total memory usage with large batch sizes or deep networks!
             </Text>
+</div>
 
-
-
+<div data-slide>
         <Title order={2}>Model Complexity Estimation</Title>
         
         <Text>
@@ -276,7 +285,8 @@ for size in [10, 100, 500]:
           FLOPs (Floating Point Operations) provide a hardware-independent measure of computational complexity.
           We count multiply-add operations as 2 FLOPs.
         </Text>
-
+</div>
+<div data-slide>
         <Title order={4}>Number of Operations for Forward Pass</Title>
         
         <Text mt="md">
@@ -302,7 +312,8 @@ FLOPs = 2n`} />
 # X: batch_size × n, W: n × m, b: m
 FLOPs_per_sample = 2nm  # Matrix multiplication
 FLOPs_batch = batch_size × 2nm`} />
-
+</div>
+<div data-slide>
         <Title order={4} mt="lg">Number of Operations for Backward Pass</Title>
         
         <Text mt="md">
@@ -327,7 +338,8 @@ FLOPs_batch = batch_size × 2nm`} />
         <Text mt="md">
           <strong>Total backward FLOPs ≈ 2 × forward FLOPs</strong>
         </Text>
-
+</div>
+<div data-slide>
         <Title order={4} mt="lg">Number of Operations for Optimizer</Title>
         
         <Text mt="md">
@@ -348,7 +360,8 @@ FLOPs_batch = batch_size × 2nm`} />
             <CodeBlock language="python" code={`FLOPs = 8 × num_parameters`} />
           </List.Item>
         </List>
-        
+        </div>
+        <div data-slide>
         <Text mt="md">
           <strong>Example: ResNet-50 Complexity</strong>
         </Text>
@@ -358,13 +371,15 @@ Forward pass: 3.8 GFLOPs
 Backward pass: ~7.6 GFLOPs
 Adam update: ~0.2 GFLOPs
 Total per iteration: ~11.6 GFLOPs`} />
-
+</div>
+<div data-slide>
 <Title order={2} mt="xl">Memory and Computation Profiling with PyTorch Profiler</Title>
 
           <Text>
             PyTorch provides a powerful built-in profiler that can track CPU, GPU, and memory usage with minimal overhead.
           </Text>
-
+</div>
+<div data-slide>
           <Title order={3} mt="lg">Basic Profiler Setup</Title>
           
           <Text>
@@ -399,7 +414,8 @@ print(prof.key_averages().table(sort_by="self_cuda_memory_usage", row_limit=10))
 -------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
 Self CPU time total: 4.692ms
 Self CUDA time total: 29.184us`}/>
-
+</div>
+<div data-slide>
           <Text mt="md" size="sm">
             <strong>Column explanations:</strong>
           </Text>
@@ -414,8 +430,8 @@ Self CUDA time total: 29.184us`}/>
             <List.Item><strong>CUDA Mem/Self CUDA Mem:</strong> Total and self GPU memory allocated</List.Item>
             <List.Item><strong># of Calls:</strong> Number of times this operation was executed</List.Item>
           </List>
-
-
+</div>
+<div data-slide>
           <Title order={3} mt="lg">Detailed Operation Profiling</Title>
           
           <Text>
@@ -465,7 +481,8 @@ Self CUDA time total: 29.184us`}/>
   loss: 6.3%
   backward: 30.2%
   optimizer_step: 43.2%`}/>
-
+</div>
+<div data-slide>
           <Text mt="md" size="sm">
             <strong>Profiling insights:</strong>
           </Text>
@@ -476,9 +493,9 @@ Self CUDA time total: 29.184us`}/>
             <List.Item><strong>Data transfer (7.7%):</strong> CPU to GPU transfer is minimal - good data pipeline efficiency</List.Item>
             <List.Item><strong>Loss computation (6.3%):</strong> Negligible overhead from loss calculation</List.Item>
           </List>
-          <Text size="sm" mt="xs">
-            This profile suggests optimization efforts should focus on the optimizer (e.g., using fused optimizers) and backward pass efficiency.
-          </Text>
+
+          </div>
+          <div data-slide>
           <Flex direction="column" align="center" mt="md">
             <Image
               src="/assets/python-deep-learning/module4/time.png"
@@ -487,6 +504,8 @@ Self CUDA time total: 29.184us`}/>
               fluid
             />
           </Flex>
+          </div>
+           <div data-slide>
           <CodeBlock language="python" code={`def profile_model_flops(model, input_shape):
     """Use PyTorch profiler to measure actual FLOPs"""
     model.eval()
@@ -519,6 +538,7 @@ Self CUDA time total: 29.184us`}/>
               fluid
             />
           </Flex>
+          </div>
       </Stack>
     </Container>
   );

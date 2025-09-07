@@ -8,13 +8,15 @@ const MultiGPUScaling = () => {
   return (
     <Container fluid>
       <Stack spacing="md">
+        <div data-slide>
         <Title order={1}>Multi-GPU Scaling Strategies</Title>
         
         <Text>
           As models grow larger and datasets expand, single GPU training becomes insufficient. 
           This section explores different parallelization strategies to scale training across multiple GPUs and nodes.
         </Text>
-
+        </div>
+<div data-slide>
         <Title id="parallelization-overview" order={2} mt="xl">Parallelization Strategies Overview</Title>
         
         <Text>
@@ -67,7 +69,8 @@ const MultiGPUScaling = () => {
             </Paper>
           </Grid.Col>
         </Grid>
-
+</div>
+<div data-slide>
         <Title order={3} mt="lg">Memory and Compute Distribution</Title>
         
         <Text>For a model with P parameters, batch size B, and N GPUs:</Text>
@@ -117,7 +120,8 @@ const MultiGPUScaling = () => {
         <Text size="sm" c="dimmed" mt="sm">
           A = activations per sample, M = number of micro-batches in pipeline parallelism
         </Text>
-
+</div>
+<div data-slide>
         <Title id="data-parallel" order={2} mt="xl">Data Parallelism (DP/DDP)</Title>
         
         <Alert icon={<IconBulb />} color="blue" mt="md">
@@ -136,7 +140,8 @@ const MultiGPUScaling = () => {
         </List>
 
         <Title order={3} mt="lg">PyTorch Implementation</Title>
-
+</div>
+<div data-slide>
         <Title order={4} mt="md">DataParallel (DP) - Single Node</Title>
         
         <CodeBlock language="python">{`import torch
@@ -158,7 +163,8 @@ for data, target in dataloader:
         <Alert icon={<IconAlertCircle />} color="yellow" mt="md">
           DataParallel has significant Python GIL overhead. Use DistributedDataParallel for better performance.
         </Alert>
-
+</div>
+<div data-slide>
         <Title order={4} mt="md">DistributedDataParallel (DDP) - Multi-Node</Title>
 
         <CodeBlock language="python">{`import torch
@@ -189,7 +195,8 @@ def train(rank, world_size):
             loss.backward()
             optimizer.step()
             optimizer.zero_grad()`}</CodeBlock>
-
+</div>
+<div data-slide>
         <Title order={3} mt="lg">Gradient Synchronization</Title>
 
         <Text>
@@ -218,7 +225,8 @@ def train(rank, world_size):
           Large batch sizes may require learning rate scaling and warmup to maintain convergence quality.
           Common practice: scale learning rate linearly with batch size.
         </Alert>
-
+</div>
+<div data-slide>
         <Title id="model-parallel" order={2} mt="xl">Model Parallelism (MP)</Title>
 
         <Text>
@@ -234,7 +242,7 @@ def train(rank, world_size):
           <List.Item>Activations are passed between GPUs sequentially</List.Item>
           <List.Item>Gradients flow backward through the same path</List.Item>
         </List>
-
+</div>
         <Title order={3} mt="lg">Naive Model Parallelism</Title>
 
         <CodeBlock language="python">{`import torch

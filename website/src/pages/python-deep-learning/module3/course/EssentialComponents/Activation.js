@@ -91,7 +91,8 @@ const Activation = () => {
 
   return (
     <Stack spacing="xl" className="w-full">
-      
+      <div data-slide>
+      <Title order={2}>Activation Functions</Title>
 
 
         
@@ -113,11 +114,15 @@ const Activation = () => {
               title="Sigmoid"
               equation={"f(x) = \\frac{1}{1 + e^{-x}}"}
             />
+
                                 <CodeBlock
           language="python"
           code={`nn.Sigmoid()`}/>
           </Grid.Col>
-          
+          </Grid>
+          </div>
+          <div data-slide>
+          <Grid mb="lg">
           <Grid.Col span={{ base: 12, md: 6 }}>
             <ActivationPlot 
               data={tanhData} 
@@ -141,11 +146,11 @@ const Activation = () => {
           </Grid.Col>
         </Grid>
 
-      
+      </div>
 
       {/* Mathematical Properties Section */}
       
-        
+        <div data-slide>
         <Table>
           <thead>
             <tr>
@@ -182,73 +187,8 @@ const Activation = () => {
             </tr>
           </tbody>
         </Table>
-      
+      </div>
 
-      {/* Usage Guidelines Section */}
-      {/* 
-        <Title order={2} id="usage-guidelines" mb="md">Usage Guidelines</Title>
-        
-        <Table mb="lg">
-          <thead>
-            <tr>
-              <th>Scenario</th>
-              <th>Recommended Activation</th>
-              <th>Rationale</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Hidden Layers</td>
-              <td>ReLU</td>
-              <td>Fast training, no vanishing gradient for positive values</td>
-            </tr>
-            <tr>
-              <td>Binary Classification</td>
-              <td>Sigmoid</td>
-              <td>Output interpretable as probability</td>
-            </tr>
-            <tr>
-              <td>Multi-class Classification</td>
-              <td>Softmax</td>
-              <td>Normalized probability distribution across classes</td>
-            </tr>
-            <tr>
-              <td>Deep Networks</td>
-              <td>Leaky ReLU</td>
-              <td>Prevents dying ReLU problem in deep architectures</td>
-            </tr>
-          </tbody>
-        </Table>
-
-        <CodeBlock
-          language="python"
-          code={`
-# Example of activation function usage in a practical network
-class DeepNetwork(nn.Module):
-    def __init__(self, input_size, hidden_size, num_classes):
-        super().__init__()
-        self.layer1 = nn.Linear(input_size, hidden_size)
-        self.layer2 = nn.Linear(hidden_size, hidden_size)
-        self.layer3 = nn.Linear(hidden_size, num_classes)
-        
-        # Different activations for different purposes
-        self.relu = nn.ReLU()           # Hidden layers
-        self.leaky_relu = nn.LeakyReLU(0.01)  # Alternative for deep networks
-        self.softmax = nn.Softmax(dim=1) # Multi-class classification
-    
-    def forward(self, x):
-        x = self.relu(self.layer1(x))      # First hidden layer
-        x = self.leaky_relu(self.layer2(x)) # Second hidden layer
-        x = self.layer3(x)                 # No activation (use with CrossEntropyLoss)
-        return x
-
-# Initialize and test the model
-model = DeepNetwork(input_size=784, hidden_size=256, num_classes=10)
-x = torch.randn(32, 784)  # Batch of 32 samples
-output = model(x)
-print(f"Output shape: {output.shape}")  # Should be (32, 10)`}
-        />
-       */}
     </Stack>
   );
 };
