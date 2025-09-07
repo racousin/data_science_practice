@@ -60,16 +60,16 @@ output = relu(x)        # Negative values become 0`} />
         
         <CodeBlock language="python" code={`# Define a simple 2-layer MLP
 model = nn.Sequential(
-    nn.Linear(784, 128),    # Input layer: 784 � 128
+    nn.Linear(784, 128),    # Input layer: 784 / 128
     nn.ReLU(),              # Activation
-    nn.Linear(128, 64),     # Hidden layer: 128 � 64  
+    nn.Linear(128, 64),     # Hidden layer: 128 / 64  
     nn.ReLU(),              # Activation
-    nn.Linear(64, 10)       # Output layer: 64 � 10
+    nn.Linear(64, 10)       # Output layer: 64 / 10
 )
 
 # Forward pass
-input_data = torch.randn(32, 784)  # Batch of 32 samples
-output = model(input_data)         # Shape: [32, 10]`} />
+input_data = torch.randn(784)
+output = model(input_data)         # Shape: [10]`} />
       </div>
 
       <div data-slide>
@@ -102,22 +102,55 @@ print(f"Total parameters: {count_parameters(model)}")  # 235,146`} />
           Understanding tensor dimensions through the network:
         </Text>
         
-        <CodeBlock language="python" code={`# Track shapes through the network
-batch_size = 32
-input_dim = 784
-
-x = torch.randn(batch_size, input_dim)  # [32, 784]
-print(f"Input shape: {x.shape}")
-
-# Through first layer
+        <Text mt="md">
+          <strong>Example 1: Single observation</strong>
+        </Text>
+        <CodeBlock language="python" code={`input_dim = 784  # e.g., 28x28 flattened image
+x = torch.randn(input_dim)
+print(f"Shape: {x.shape}")  # Shape: torch.Size([784])`} />
+        
+        <Text mt="md">
+          <strong>Example 2: 5 observations</strong>
+        </Text>
+        <CodeBlock language="python" code={`x = torch.randn(5, input_dim)
+print(f"Shape: {x.shape}")  # Shape: torch.Size([5, 784])
+# 5 observations, each with 784 features`} />
+        
+        <Text mt="md">
+          <strong>Example 3: 100 observations</strong>
+        </Text>
+        <CodeBlock language="python" code={`x = torch.randn(100, input_dim)
+print(f"Shape: {x.shape}")  # Shape: torch.Size([100, 784])
+# 100 observations, each with 784 features`} />
+        
+        <Text mt="md">
+          <strong>Example 4: 3D tensor with shape (20, 100, input_dim)</strong>
+        </Text>
+        <CodeBlock language="python" code={`# Can represent 20 batches of 100 observations each
+x = torch.randn(20, 100, input_dim)
+print(f"Input shape: {x.shape}")  # Shape: torch.Size([20, 100, 784])`} />
+        
+        <Text mt="md">
+          <strong>How dimensions transform through the network:</strong>
+        </Text>
+        <CodeBlock language="python" code={`# Define layers
 layer1 = nn.Linear(784, 256)
-x = layer1(x)                           # [32, 256]
-print(f"After layer 1: {x.shape}")
-
-# Through second layer  
 layer2 = nn.Linear(256, 10)
-x = layer2(x)                           # [32, 10]
-print(f"Output shape: {x.shape}")`} />
+
+# Process 2D tensor (50 observations)
+x = torch.randn(50, 784)
+x = layer1(x)  # [50, 784] → [50, 256]
+x = layer2(x)  # [50, 256] → [50, 10]
+print(f"2D output: {x.shape}")  # torch.Size([50, 10])
+
+# Process 3D tensor (20 batches of 100 observations)
+x = torch.randn(20, 100, 784)
+x = layer1(x)  # [20, 100, 784] → [20, 100, 256]
+x = layer2(x)  # [20, 100, 256] → [20, 100, 10]
+print(f"3D output: {x.shape}")  # torch.Size([20, 100, 10])
+
+# Note: Only the last dimension (features) changes
+# All other dimensions remain constant`} />
       </div>
 
     </Container>

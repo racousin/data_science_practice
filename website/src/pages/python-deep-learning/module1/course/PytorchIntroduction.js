@@ -19,7 +19,7 @@ const PytorchIntroduction = () => {
       </Flex>
       </div>
       <div data-slide>
-      <Title order={2} mt="xl">1. PyTorch: Deep Learning Computing Context</Title>
+      <Title order={2} mt="xl">PyTorch: Deep Learning Computing Context</Title>
       </div>
       <div data-slide>
       <Title order={3} mt="md" className="slide-title">Why Deep Learning Needs Specialized Computing</Title>
@@ -84,6 +84,8 @@ const PytorchIntroduction = () => {
       </div>
       
       <div data-slide>
+        <Title order={4} mt="md" className="slide-title">Why Pytorch?</Title>
+
       <Text><strong><a href="https://pytorch.org" target="_blank" rel="noopener noreferrer">PyTorch</a></strong> addresses these challenges by providing:</Text>
       <List>
         <List.Item>Efficient tensor operations optimized for parallel hardware</List.Item>
@@ -96,27 +98,23 @@ const PytorchIntroduction = () => {
       </div>
       
       <div data-slide>
-      <Title order={3} mt="xl">Understanding Performance</Title>
+      <Title order={3} mt="xl" className="slide-title">Hardware Understanding Performance</Title>
             <BlockMath>
         {`\\text{Performance} \\propto \\frac{\\text{Parallelism} \\times \\text{Memory Bandwidth}}{\\text{Data Transfer Overhead}}`}
       </BlockMath>
       <Text><strong>Parallelism</strong>: Executing multiple operations simultaneously</Text>
-      <List>
-        <List.Item><strong>Data Parallelism</strong>: Same operation on different data elements</List.Item>
-        <List.Item><strong>Task Parallelism</strong>: Different operations executed concurrently</List.Item>
-      </List>
+
       
       <Text mt="md"><strong>Bandwidth</strong>: Rate of data transfer between processor and memory</Text>
       <List>
         <List.Item>CPU-RAM: ~100 GB/s</List.Item>
         <List.Item>GPU-VRAM: ~1000 GB/s (10× faster)</List.Item>
-        <List.Item>PCIe (CPU↔GPU): ~30 GB/s (bottleneck)</List.Item>
+        
       </List>
       
       <Text mt="md"><strong>Data Transfer</strong>: Movement of data between different memory spaces</Text>
       <List>
-        <List.Item>Minimize transfers between CPU and GPU</List.Item>
-        <List.Item>Batch operations to amortize transfer costs</List.Item>
+        <List.Item>PCIe (CPU↔GPU): ~30 GB/s (bottleneck)</List.Item>
       </List>
       </div>
       <div data-slide>
@@ -165,12 +163,6 @@ const PytorchIntroduction = () => {
         Each element <InlineMath>{`C_{ij}`}</InlineMath> can be computed independently. For a 1000×1000 matrix multiplication:
       </Text>
       
-      <List>
-        <List.Item><strong>Total operations</strong>: 1,000,000 dot products (one per output element)</List.Item>
-        <List.Item><strong>Operations per dot product</strong>: 1,000 multiply-adds</List.Item>
-        <List.Item><strong>Total FLOPs</strong>: 2 billion (2×10⁹) floating-point operations</List.Item>
-        <List.Item><strong>Memory needed</strong>: ~12 MB for float32 (3 matrices × 1M elements × 4 bytes)</List.Item>
-      </List>
       
       <Text mt="md">
         <strong>Parallelization potential:</strong> All 1,000,000 dot products can theoretically execute simultaneously:
@@ -231,15 +223,14 @@ const PytorchIntroduction = () => {
       </Flex>
       <List>
         <List.Item><strong>Python loop</strong>: ~1000× slower than C++ for numerical operations</List.Item>
-        <List.Item><strong>Dynamic typing</strong>: Type checking at runtime adds overhead</List.Item>
-        <List.Item><strong>GIL (Global Interpreter Lock)</strong>: Prevents true multi-threading</List.Item>
+        <List.Item><strong>Python Wrapper</strong>: Most of important component of torch are built and compiled in C++ and wrapped by python</List.Item>
       </List>
       </div>
       <div data-slide>
       <Title order={3} mt="xl">Optimized Linear Algebra Libraries</Title>
       
       <Text>
-        Linear algebra optimization remains an active research field. Modern libraries provide state-of-the-art implementations:
+        Linear algebra optimization.Pytorch uses modern libraries implementations:
       </Text>
       
       <List>
@@ -275,14 +266,11 @@ const PytorchIntroduction = () => {
         </List.Item>
       </List>
       
-      <Text mt="md">
-        <strong>Recent Research:</strong> Algorithms continue to improve. For example, matrix multiplication complexity 
-        has been reduced from O(n³) to O(n^2.373) theoretically, though practical implementations still use optimized O(n³) algorithms.
-      </Text>
       </div>
       <div data-slide>
-      <Title order={2} mt="xl">2. Tensor Definition</Title>
-      
+      <Title order={2} mt="xl">Tensor Definition</Title>
+      </div>
+      <div data-slide>
       <Text>
         A tensor is a multi-dimensional array that generalizes scalars, vectors, and matrices to arbitrary dimensions.
       </Text>
@@ -293,9 +281,8 @@ const PytorchIntroduction = () => {
         <List.Item><strong>shape</strong>: Dimensions of the tensor (e.g., [3, 4] for a 3×4 matrix)</List.Item>
         <List.Item><strong>dtype</strong>: Data type of elements (float32, int64, etc.)</List.Item>
         <List.Item><strong>device</strong>: Computation location (CPU, CUDA GPU, MPS)</List.Item>
-        <List.Item><strong>layout</strong>: Memory arrangement (strided or sparse)</List.Item>
         <List.Item><strong>storage</strong>: Underlying 1D memory buffer containing the data</List.Item>
-        <List.Item><strong>strides</strong>: Number of elements to skip in storage for each dimension</List.Item>
+        <List.Item><strong>layout/strides</strong>: Memory arrangement : Number of elements to skip in storage for each dimension</List.Item>
       </List>
       </div>
       <div data-slide>
@@ -361,8 +348,9 @@ E = A + v  # [[2, 4], [4, 6]]`} />
       </Container>
 </div>
 <div data-slide>
-      <Title order={2} mt="xl">3. Data Types</Title>
-      
+      <Title order={2} mt="xl">Data Types</Title>
+      </div>
+      <div data-slide>
       <Title order={3} mt="md">Understanding Data Types in Memory</Title>
                   <Flex direction="column" align="center" mt="md">
         <Image
@@ -435,7 +423,7 @@ E = A + v  # [[2, 4], [4, 6]]`} />
 
       </div>
       <div data-slide>
-      <Title order={3} mt="xl">PyTorch Data Types</Title>
+      <Title order={3} mt="xl" className="slide-title">PyTorch Data Types</Title>
       
       
       <Text><strong>Floating-point types:</strong></Text>
@@ -467,7 +455,8 @@ E = A + v  # [[2, 4], [4, 6]]`} />
           Memory usage for different data types (1M element tensor)
         </Text>
       </Flex>
-      
+      </div>
+      <div data-slide>
       <Flex direction="column" align="center" mt="md">
         <Image
           src="/assets/python-deep-learning/module1/float_error.png"
@@ -539,7 +528,9 @@ print(f"int8 + float32 = {r2.dtype}")         # torch.float32`} />
       </div>
 <div data-slide>
 
-      <Title order={2} mt="xl">4. Memory Layout</Title>
+      <Title order={2} mt="xl">Memory Layout</Title>
+      </div>
+      <div data-slide>
             <Flex direction="column" align="center" mt="md">
         <Image
           src="/assets/python-deep-learning/module1/tensor_layout.jpeg"
@@ -706,19 +697,11 @@ print(sparse._values())         # [5.0, 3.0, 7.0]`} />
 # Sparse: 3 values + 6 indices = ~72 bytes
 # Compression ratio: ~55,000x`} />
       
-      <Text mt="md">
-        Create sparse tensors directly:
-      </Text>
-      
-      <CodeBlock language="python" code={`sparse = torch.sparse_coo_tensor(
-    indices=[[0, 1], [2, 0]],  # positions
-    values=[3.0, 4.0],          # values
-    size=(3, 3)
-)`} />
 </div>
       <div data-slide>
-      <Title order={2} mt="xl">5. Devices & Performance</Title>
-      
+      <Title order={2} mt="xl">Devices & Performance</Title>
+      </div>
+      <div data-slide>
       <Title order={3} mt="md">Understanding Computing Devices</Title>
       
       <Text>
@@ -822,73 +805,27 @@ print(f"Actual time: {time.time() - start:.6f}s")`} />
 </div>
 
 <div data-slide>
-      <Title order={2} mt="xl">6. Functions & NumPy</Title>
-      
+      <Title order={2} mt="xl">Functions & NumPy</Title>
+      </div>
+      <div data-slide>
       <Title order={3} mt="md">Mathematical Functions</Title>
       
-      <Text>
-        PyTorch provides a comprehensive set of mathematical functions that operate element-wise on tensors. 
-        These functions are optimized for both CPU and GPU computation.
+            <Text mt="sm">
+        Apply trigonometric function:
       </Text>
-      </div>
-      <div data-slide>
-      <Title order={4} mt="md">Trigonometric Functions</Title>
-      
-      <Text>
-        Trigonometric functions operate element-wise, computing the function for each element independently:
-      </Text>
-      
       <CodeBlock language="python" code={`# Create angles from 0 to 2π
 angles = torch.linspace(0, 2*torch.pi, 5)
-print(angles)  # [0.0000, 1.5708, 3.1416, 4.7124, 6.2832]`} />
-      
-      <Text mt="sm">
-        Apply sine function: <InlineMath>{`\\sin(x)`}</InlineMath> maps each angle to its sine value:
-      </Text>
-      
-      <CodeBlock language="python" code={`sines = torch.sin(angles)
-print(sines)   # [0.0000, 1.0000, 0.0000, -1.0000, 0.0000]`} />
-      
-      <Text mt="sm">
-        Other trigonometric functions work similarly:
-      </Text>
-      
-      <CodeBlock language="python" code={`cosines = torch.cos(angles)  # Cosine values
-tangents = torch.tan(angles)  # Tangent values
-arcsin = torch.asin(sines)    # Inverse sine (returns angles)`} />
-      </div>
-      <div data-slide>
-      <Title order={4} mt="md">Exponential and Logarithmic Functions</Title>
-      
+sines = torch.sin(angles)
+tangents = torch.tan(angles)
+arcsin = torch.asin(sines)
+`} />
+
       <Text>
         The exponential function <InlineMath>{`e^x`}</InlineMath> and logarithm <InlineMath>{`\\ln(x)`}</InlineMath> are fundamental in deep learning:
       </Text>
       
-      <CodeBlock language="python" code={`x = torch.tensor([1.0, 2.0, 3.0])
-exp_x = torch.exp(x)  # e^x for each element
-print(exp_x)  # [2.7183, 7.3891, 20.0855]`} />
-      
-      <Text mt="sm">
-        Natural logarithm is the inverse of exponential:
-      </Text>
-      
-      <CodeBlock language="python" code={`log_exp_x = torch.log(exp_x)  # ln(e^x) = x
-print(log_exp_x)  # [1.0, 2.0, 3.0] - recovers original`} />
-      
-      <Text mt="sm">
-        For numerical stability in deep learning, use special functions:
-      </Text>
-      
-      <CodeBlock language="python" code={`# log(1 + e^x) computed stably for large x
-x = torch.tensor([100.0, -100.0, 0.0])
-stable = torch.log1p(torch.exp(x))  # More stable than log(1 + exp(x))`} />
-      </div>
-      <div data-slide>
-      <Title order={4} mt="md">Power and Root Functions</Title>
-      
-      <CodeBlock language="python" code={`x = torch.tensor([1.0, 4.0, 9.0, 16.0])
-sqrt_x = torch.sqrt(x)     # Square root
-print(sqrt_x)  # [1.0, 2.0, 3.0, 4.0]`} />
+      <CodeBlock language="python" code={`exp_x = torch.exp(x)  # e^x for each element
+log_exp_x = torch.log(exp_x)  # ln(e^x) = x`} />
       
       <Text mt="sm">
         General power function: <InlineMath>{`x^n`}</InlineMath>
@@ -896,92 +833,41 @@ print(sqrt_x)  # [1.0, 2.0, 3.0, 4.0]`} />
       
       <CodeBlock language="python" code={`squared = torch.pow(x, 2)   # x^2
 cubed = torch.pow(x, 3)     # x^3
-reciprocal = torch.pow(x, -1)  # 1/x`} />
+reciprocal = torch.pow(x, -1/2)  # 1/sqrt(x)`} />
       </div>
       <div data-slide>
       <Title order={3} mt="xl">Reduction Operations</Title>
-      
+
       <Text>
         Reduction operations aggregate tensor values along specified dimensions, reducing the tensor's dimensionality.
-      </Text>
-      </div>
-      <div data-slide>
-      <Title order={4} mt="md">Sum and Mean</Title>
-      
-      <Text>
-        Sum aggregates values: <InlineMath>{`\\sum_{i} x_i`}</InlineMath>
       </Text>
       
       <CodeBlock language="python" code={`x = torch.tensor([[1, 2, 3],
                   [4, 5, 6]])
-# Sum all elements
+# all elements
 total = x.sum()
-print(total)  # 21`} />
+mean_all = x.mean()
+max_val = x.max()
+max_val = x.max()
+argmax = x.argmax() #ArgMax returns only indices
+std = x.std()
+var = x.var() 
+`} />
       </div>
       <div data-slide>
       <Text mt="sm">
         Reduce along specific dimensions:
       </Text>
       
-      <CodeBlock language="python" code={`# Sum along rows (dim=0)
+      <CodeBlock language="python" code={`
 row_sums = x.sum(dim=0)
-print(row_sums)  # [5, 7, 9]  # [1+4, 2+5, 3+6]`} />
-      
-      <CodeBlock language="python" code={`# Sum along columns (dim=1)
 col_sums = x.sum(dim=1)
-print(col_sums)  # [6, 15]  # [1+2+3, 4+5+6]`} />
-      
-      <Text mt="sm">
-        Mean computes average: <InlineMath>{`\\frac{1}{n}\\sum_{i} x_i`}</InlineMath>
-      </Text>
-      
-      <CodeBlock language="python" code={`mean_all = x.mean()           # 3.5 (21/6)
 mean_rows = x.mean(dim=0)     # [2.5, 3.5, 4.5]
-mean_cols = x.mean(dim=1)     # [2.0, 5.0]`} />
+mean_cols = x.mean(dim=1)     # [2.0, 5.0]
+min_cols = x.max(dim=1)
+argmax_roww = x.argmax(dim=0)`} />
       </div>
-      <div data-slide>
-      <Title order={4} mt="md">Min, Max, and ArgMax</Title>
-      
-      <CodeBlock language="python" code={`x = torch.tensor([[3, 7, 2],
-                  [9, 1, 5]])
-# Maximum value
-max_val = x.max()
-print(max_val)  # 9`} />
-      
-      <Text mt="sm">
-        Get both values and indices along a dimension:
-      </Text>
-      
-      <CodeBlock language="python" code={`# Max along columns (dim=1)
-values, indices = x.max(dim=1)
-print(values)   # [7, 9] - max values
-print(indices)  # [1, 0] - positions of max values`} />
-      
-      <CodeBlock language="python" code={`# ArgMax returns only indices
-argmax = x.argmax(dim=1)
-print(argmax)  # [1, 0] - same as indices above`} />
-      </div>
-      <div data-slide>
-      <Title order={4} mt="md">Standard Deviation and Variance</Title>
-      
-      <Text>
-        Variance measures spread: <InlineMath>{`\\sigma^2 = \\frac{1}{n}\\sum_{i}(x_i - \\mu)^2`}</InlineMath>
-      </Text>
-      
-      <CodeBlock language="python" code={`x = torch.randn(100)  # 100 samples from N(0,1)
-mean = x.mean()        # Should be close to 0
-std = x.std()          # Should be close to 1
-var = x.var()          # Should be close to 1`} />
-      
-      <Text mt="sm">
-        Compute along specific dimensions:
-      </Text>
-      
-      <CodeBlock language="python" code={`batch = torch.randn(32, 10, 20)  # Batch of 32 samples
-# Compute stats across batch dimension
-batch_mean = batch.mean(dim=0)  # Shape: [10, 20]
-batch_std = batch.std(dim=0)    # Shape: [10, 20]`} />
-      </div>
+
       <div data-slide>
       <Title order={3} mt="xl">Element-wise Operations</Title>
       
@@ -1081,11 +967,11 @@ x[:, 0] = torch.tensor([2, 3, 4])  # Set first column`} />
       <Title order={4} mt="md">View and Reshape</Title>
       
       <CodeBlock language="python" code={`x = torch.arange(12)      # [0, 1, 2, ..., 11]
-matrix = x.view(3, 4)     # Shape: [3, 4]
-matrix2 = x.reshape(3, 4) # Same result`} />
+      matrix2 = x.reshape(3, 4)
+matrix = x.view(3, 4)     # Shape: [3, 4] # Same result. .view() Only works on contiguous tensors`} />
       
       <Text mt="sm">
-        Use -1 to infer one dimension:
+        Use -1 to infer one dimension: (based on - The total number of elements in the tensor - The other specified dimensions)
       </Text>
       
       <CodeBlock language="python" code={`x = torch.arange(24)
@@ -1137,19 +1023,13 @@ permuted = x.permute(2, 0, 1)  # Shape: [4, 2, 3]`} />
       <Title order={4} mt="md">Flatten and Unflatten</Title>
       
       <Text>
-        Convert to 1D and back:
+        Convert to 1D:
       </Text>
       
       <CodeBlock language="python" code={`x = torch.randn(2, 3, 4)
 flat = x.flatten()        # Shape: [24]
 partial_flat = x.flatten(start_dim=1)  # Shape: [2, 12]`} />
       
-      <Text mt="sm">
-        Unflatten restores dimensions:
-      </Text>
-      
-      <CodeBlock language="python" code={`flat = torch.arange(24)
-unflat = flat.unflatten(0, (2, 3, 4))  # Shape: [2, 3, 4]`} />
       </div>
       <div data-slide>
       <Title order={3} mt="xl">Broadcasting</Title>
@@ -1236,14 +1116,6 @@ cpu_tensor = torch.rand(2, 3)
 np_view = cpu_tensor.numpy()
 print(type(np_view))  # <class 'numpy.ndarray'>`} />
       
-      <Text mt="sm">
-        GPU tensors must be moved to CPU first:
-      </Text>
-      
-      <CodeBlock language="python" code={`if torch.cuda.is_available():
-    gpu_tensor = torch.rand(2, 3, device='cuda')
-    # gpu_tensor.numpy()  # Error! Can't convert GPU tensor
-    np_array = gpu_tensor.cpu().numpy()  # Move to CPU first`} />
       
       <Title order={4} mt="md">Deep Copy vs Shallow Copy</Title>
       
