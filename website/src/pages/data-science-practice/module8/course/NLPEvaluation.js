@@ -1,8 +1,7 @@
 import React from "react";
-import { Container, Grid, Card, Alert, Table, Tabs, TabsTab } from '@mantine/core';
+import { Container, Grid, Card, Alert, Table, Title } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
-import { InlineMath, BlockMath } from "react-katex";
-import { FaLightbulb, FaChartBar, FaExclamationTriangle, FaCheck, FaTimes } from "react-icons/fa";
+import { FaLightbulb, FaExclamationTriangle } from "react-icons/fa";
 const NLPEvaluation = () => {
   return (
     <Container className="py-4">
@@ -20,8 +19,7 @@ const NLPEvaluation = () => {
         <h2>1. LLM Evaluation Fundamentals</h2>
         <Grid className="mb-4">
           <Grid.Col>
-            <Card>
-              <Card.Body>
+            <Card padding="lg">
                 <p>
                   Modern LLM evaluation addresses several key dimensions:
                 </p>
@@ -39,7 +37,6 @@ const NLPEvaluation = () => {
                   performance, leading to hybrid approaches combining traditional metrics, LLM-as-judge evaluations, 
                   and human assessment.
                 </Alert>
-              </Card.Body>
             </Card>
           </Grid.Col>
         </Grid>
@@ -50,10 +47,9 @@ const NLPEvaluation = () => {
         </p>
         <Grid className="mb-4">
           <Grid.Col span={{ md: 6 }}>
-            <Card className="h-100">
-              <Card.Header>Limitations of Traditional Metrics</Card.Header>
-              <Card.Body>
-                <p>Traditional metrics like BLEU face significant limitations with modern LLM translations:</p>
+            <Card className="h-100" padding="lg">
+              <Title order={4} mb="md">Limitations of Traditional Metrics</Title>
+                    <p>Traditional metrics like BLEU face significant limitations with modern LLM translations:</p>
                 <ul>
                   <li><strong>Multiple Valid Translations:</strong> There are often many correct ways to translate a sentence</li>
                   <li><strong>Cultural Context:</strong> Proper translations adapt to cultural contexts beyond literal meaning</li>
@@ -64,14 +60,12 @@ const NLPEvaluation = () => {
                   <FaExclamationTriangle className="me-2" />
                   <strong>Note:</strong> In several studies, BLEU scores show low correlation with human judgments for LLM translations, particularly for distant language pairs.
                 </Alert>
-              </Card.Body>
             </Card>
           </Grid.Col>
           <Grid.Col span={{ md: 6 }}>
-            <Card className="h-100">
-              <Card.Header>Modern Translation Evaluation Approaches</Card.Header>
-              <Card.Body>
-                <h5>Character-level COMET</h5>
+            <Card className="h-100" padding="lg">
+              <Title order={4} mb="md">Modern Translation Evaluation Approaches</Title>
+                    <h5>Character-level COMET</h5>
                 <p>Neural metric trained on human judgments that outperforms traditional metrics.</p>
                 <h5>Multi-dimensional LLM-based Evaluation</h5>
                 <p>Using LLM judges to evaluate translations on multiple dimensions:</p>
@@ -85,13 +79,11 @@ const NLPEvaluation = () => {
                 <p>
                   LLM-as-judge approach showing high correlation with human judgments across diverse languages.
                 </p>
-              </Card.Body>
             </Card>
           </Grid.Col>
         </Grid>
-        <Card className="mb-4">
-          <Card.Header>Translation Evaluation Implementation</Card.Header>
-          <Card.Body>
+        <Card className="mb-4" padding="lg">
+          <Title order={4} mb="md">Translation Evaluation Implementation</Title>
             <CodeBlock language="python" code={`from transformers import AutoModelForSeq2Seq, AutoTokenizer
 import torch
 from comet import download_model, load_from_checkpoint
@@ -126,7 +118,6 @@ def llm_translation_evaluation(source_text, translation, reference, source_langu
     # Send prompt to LLM API (e.g., OpenAI's GPT-4)
     evaluation = call_llm_api(prompt)  # Implement this function based on your LLM API
     return evaluation`} />
-          </Card.Body>
         </Card>
       
         <h2 id="reasoning-eval">3. Evaluating Reasoning Accuracy</h2>
@@ -136,10 +127,9 @@ def llm_translation_evaluation(source_text, translation, reference, source_langu
         </p>
         <Grid className="mb-4">
           <Grid.Col span={{ md: 6 }}>
-            <Card className="h-100">
-              <Card.Header>Reasoning Benchmarks</Card.Header>
-              <Card.Body>
-                <h5>Key Reasoning Evaluation Datasets</h5>
+            <Card className="h-100" padding="lg">
+              <Title order={4} mb="md">Reasoning Benchmarks</Title>
+                    <h5>Key Reasoning Evaluation Datasets</h5>
                 <Table striped bordered hover size="sm">
                   <thead>
                     <tr>
@@ -184,14 +174,12 @@ def llm_translation_evaluation(source_text, translation, reference, source_langu
                   <li><strong>Chain-of-Thought Analysis:</strong> Evaluating intermediate reasoning steps</li>
                   <li><strong>Process Rubrics:</strong> Scoring based on reasoning methodology</li>
                 </ul>
-              </Card.Body>
             </Card>
           </Grid.Col>
           <Grid.Col span={{ md: 6 }}>
-            <Card className="h-100">
-              <Card.Header>Reasoning Evaluation Techniques</Card.Header>
-              <Card.Body>
-                <h5>Self-Consistency Checking</h5>
+            <Card className="h-100" padding="lg">
+              <Title order={4} mb="md">Reasoning Evaluation Techniques</Title>
+                    <h5>Self-Consistency Checking</h5>
                 <p>
                   Generate multiple solution paths and check for consensus, particularly effective for math reasoning.
                 </p>
@@ -227,7 +215,6 @@ def llm_translation_evaluation(source_text, translation, reference, source_langu
                   <strong>Research Finding:</strong> Studies show stronger LLMs can reliably judge reasoning 
                   quality with 85-90% agreement with expert human evaluators.
                 </Alert>
-              </Card.Body>
             </Card>
           </Grid.Col>
         </Grid>
@@ -238,10 +225,9 @@ def llm_translation_evaluation(source_text, translation, reference, source_langu
         </p>
         <Grid className="mb-4">
           <Grid.Col>
-            <Card>
-              <Card.Header>Major LLM Evaluation Leaderboards</Card.Header>
-              <Card.Body>
-                <Table striped bordered hover>
+            <Card padding="lg">
+              <Title order={4} mb="md">Major LLM Evaluation Leaderboards</Title>
+                    <Table striped bordered hover>
                   <thead>
                     <tr>
                       <th>Leaderboard</th>
@@ -293,7 +279,6 @@ def llm_translation_evaluation(source_text, translation, reference, source_langu
                   and may not reflect real-world usefulness. Performance can also vary significantly based on prompt
                   formulation and evaluation methodology.
                 </Alert>
-              </Card.Body>
             </Card>
           </Grid.Col>
         </Grid>

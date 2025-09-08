@@ -94,8 +94,11 @@ export const courseContentData = {
       { id: 'jupyter-notebooks', label: 'Jupyter Notebooks' },
       { id: 'google-colab', label: 'Google Colab' }
     ]},
-    { to: '/eda-case-study', label: 'EDA Case Study' },
+    { to: '/case-study', label: 'EDA Case Study' },
     { to: '/model-baseline-case-study', label: 'Model Baseline Case Study' }
+    ,
+    { to: '/case-study', label: 'EDA Case Study' },
+    { to: '/case-study-ml', label: 'Model Baseline Case Study' }
   ],
   'module4': [
     { to: '/Introduction', label: 'Introduction' },
@@ -126,7 +129,6 @@ export const courseContentData = {
     { to: '/ensemble-models', label: 'Ensemble Models' },
     { to: '/ensemble-techniques', label: 'Ensemble Techniques' },
     { to: '/time-series-models', label: 'Time Series Models' },
-    { to: '/automl', label: 'AutoML' },
     { to: '/custom-objectives-guide', label: 'Custom Objectives' },
     { to: '/case-study', label: 'Case Study' }
   ],
