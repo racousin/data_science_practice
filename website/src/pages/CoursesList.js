@@ -18,7 +18,7 @@ const courses = [
     id: 'data-science-practice',
     title: 'Data Science Practice',
     description: 'Complete data science pipeline from data collection to deployment',
-    modules: 15,
+    modules: 9,
     icon: IconChartBar,
     color: 'blue',
     topics: [], //['Python', 'Machine Learning', 'Deep Learning', 'MLOps'],

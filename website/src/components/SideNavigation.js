@@ -132,19 +132,12 @@ export const courseContentData = {
   ],
   'module7': [
     { to: '/Introduction', label: 'Introduction' },
-    { to: '/backpropagation', label: 'Backpropagation' },
-    { to: '/essential-components', label: 'Essential Components' },
-    { to: '/nn-workflow', label: 'NN Workflow' },
-    { to: '/case-study', label: 'Case Study' }
-  ],
-  'module8': [
-    { to: '/Introduction', label: 'Introduction' },
     { to: '/cnn-essentials', label: 'CNN Essentials' },
     { to: '/transfer-learning', label: 'Transfer Learning' },
     { to: '/enhancement', label: 'Enhancement Techniques' },
     { to: '/case-study', label: 'Case Study' }
   ],
-  'module10': [
+  'module8': [
     { to: '/Introduction', label: 'Introduction to NLP' },
     { to: '/text-numerical-representation', label: 'Text Numerical Representation' },
     { to: '/rnn', label: 'RNN' },
@@ -153,7 +146,7 @@ export const courseContentData = {
     { to: '/transfer-learning', label: 'Transfer Learning' },
     { to: '/nlp-evaluation', label: 'NLP Evaluation' }
   ],
-  'module13': [
+  'module9': [
     { to: '/Introduction', label: 'Introduction' },
     { to: '/mdp', label: 'Markov Decision Processes' },
     { to: '/dynamic-programming', label: 'Dynamic Programming' },
@@ -196,15 +189,11 @@ export const exerciseContentData = {
   ],
   'module8': [
     { to: '/exercise0', label: 'Exercise 0' },
-    { to: '/exercise1', label: 'Exercise 1' }
-  ],
-  'module10': [
-    { to: '/exercise0', label: 'Exercise 0' },
     { to: '/exercise1', label: 'Exercise 1' },
     { to: '/exercise2', label: 'Exercise 2' },
     { to: '/exercise3', label: 'Exercise 3' }
   ],
-  'module13': [
+  'module9': [
     { to: '/exercise0', label: 'Exercise 0' },
     { to: '/exercise1', label: 'Exercise 1' },
     { to: '/exercise2', label: 'Exercise 2' },
@@ -219,41 +208,18 @@ export const exerciseContentData = {
 export const pytorchCourseContentData = {
   'module1': [
     { to: '/introduction', label: 'Historical Context & Applications', subLinks: [
-      { id: 'introduction', label: 'Introduction to Deep Learning' },
-      { id: 'history', label: 'Historical Evolution of Deep Learning' },
-      { id: 'applications', label: 'Real-World Applications' },
-      { id: 'data', label: 'Data: The Fuel of Deep Learning' }
     ]},
     { to: '/mathematical-framework', label: 'Machine Learning in a nutshell', subLinks: [
-      { id: 'ml-objective', label: 'The Machine Learning Objective' },
-      { id: 'models-parameters', label: 'Models and Parameters' },
-      { id: 'loss-functions', label: 'Loss Functions and Optimization' },
-      { id: 'gradient-descent', label: 'Gradient Descent' }
     ]},
     { to: '/mlp-fundamentals', label: 'Multi layer perceptron in a nutshell', subLinks: [
-      { id: 'neuron', label: 'Neuron as Computational Unit' },
-      { id: 'network-architecture', label: 'Network Architecture' },
-      { id: 'parameters', label: 'Parameters to Optimize' }
     ]},
     { to: '/pytorch-introduction', label: 'PyTorch: Introduction', subLinks: [
-      { id: 'philosophy', label: 'PyTorch Philosophy' },
-      { id: 'tensors', label: 'Tensors: The Foundation' },
-      { id: 'device-management', label: 'Device Management and GPU Acceleration' },
-      { id: 'autograd-intro', label: 'Introduction to Automatic Differentiation' }
     ]},
     { to: '/pytorch-mlp-fundamentals', label: 'PyTorch MLP Fundamentals', subLinks: [
     ]}
   ],
   'module2': [
     { to: '/automatic-differentiation-mathematical-perspective', label: 'Autograd mathematical perspective', subLinks: [
-      { id: 'gradient-methods', label: 'Gradient Computation Methods' },
-      { id: 'backprop-details', label: 'Backpropagation: A Reverse-Mode Automatic Differentiation' },
-      { id: 'error-derivatives', label: 'Error Function Derivatives' },
-      { id: 'output-layer', label: 'Output Layer Gradients' },
-      { id: 'hidden-layers', label: 'Hidden Layer Gradients' },
-      { id: 'backpropagation-algorithm', label: 'Backpropagation Algorithm' },
-      { id: 'forward-pass', label: 'Forward Pass' },
-      { id: 'backward-pass', label: 'Backward Pass' }
     ]},
     { to: '/autograd-torch-perspective', label: 'Autograd torch perspective', subLinks: [
     ]},
@@ -272,25 +238,13 @@ export const pytorchCourseContentData = {
   ],
   'module4': [
     { to: '/resource-profiling', label: 'Model Resource Profiling', subLinks: [
-      { id: 'gpu-vs-cpu', label: 'GPU vs CPU Performance' },
-      { id: 'model-components', label: 'Model Component Analysis' },
-      { id: 'memory-breakdown', label: 'Memory Formula for Training' }
+
     ]},
     { to: '/performance-optimization', label: 'Performance Optimization', subLinks: [
-      { id: 'torch-compile', label: 'Torch Compile' },
-      { id: 'mixed-precision', label: 'Mixed Precision Training' },
-      { id: 'io-optimization', label: 'I/O and DataLoader Optimization' },
-      { id: 'pruning-optimization', label: 'Pruning Optimization' }
     ]},
         { to: '/fine-tuning', label: 'Fine-Tuning', subLinks: [
     ]},
     { to: '/multi-gpu-scaling', label: 'Multi-GPU Scaling', subLinks: [
-      { id: 'parallelization-overview', label: 'Parallelization Strategies Overview' },
-      { id: 'data-parallel', label: 'Data Parallelism (DP/DDP)' },
-      { id: 'model-parallel', label: 'Model Parallelism (MP)' },
-      { id: 'pipeline-parallel', label: 'Pipeline Parallelism (PP)' },
-      { id: 'tensor-parallel', label: 'Tensor Parallelism (TP)' },
-      { id: 'hybrid-parallelism', label: 'Hybrid Parallelism Strategies' }
     ]}
   ]
 };
@@ -362,15 +316,9 @@ export const coursesData = {
       { id: 'module4', name: 'Data Collection', icon: IconDatabase },
       { id: 'module5', name: 'Data Preprocessing', icon: IconFilter },
       { id: 'module6', name: 'Tabular Models', icon: IconTable },
-      { id: 'module7', name: 'Deep Learning Fundamentals', icon: IconBrain },
-      { id: 'module8', name: 'Image Processing', icon: IconPhoto },
-      { id: 'module9', name: 'TimeSeries Processing', icon: IconClock },
-      { id: 'module10', name: 'Natural Language Processing', icon: IconFileText },
-      { id: 'module11', name: 'Generative Models', icon: IconSparkles },
-      { id: 'module12', name: 'Recommendation Systems', icon: IconUsers },
-      { id: 'module13', name: 'Reinforcement Learning', icon: IconRobot },
-      { id: 'module14', name: 'Docker', icon: IconBrandDocker },
-      { id: 'module15', name: 'Cloud Integration', icon: IconCloud },
+      { id: 'module7', name: 'Image Processing', icon: IconPhoto },
+      { id: 'module8', name: 'Natural Language Processing', icon: IconFileText },
+      { id: 'module9', name: 'Reinforcement Learning', icon: IconRobot },
       { id: 'project', name: 'Project' }
     ]
   }

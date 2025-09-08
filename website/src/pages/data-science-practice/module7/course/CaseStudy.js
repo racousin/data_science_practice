@@ -5,11 +5,11 @@ import DataInteractionPanel from "components/DataInteractionPanel";
 
 const CaseStudy = () => {
   // URLs for data and notebook files
-  const trainDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/course/module7_course_train.zip";
-  const requirementsUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/course/module7_requirements.txt";
-  const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/course/module7_course.ipynb";
-  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/course/module7_course.html";
-  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/data-science-practice/module7/course/module7_course.ipynb";
+  const trainDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/course/module8_course_train.zip";
+  const requirementsUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/course/module8_requirements.txt";
+  const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/course/module8_course.ipynb";
+  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/course/module8_course.html";
+  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/data-science-practice/module7/course/module8_course.ipynb";
 
 
   // Dataset metadata

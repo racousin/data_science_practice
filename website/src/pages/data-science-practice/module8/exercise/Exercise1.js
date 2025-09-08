@@ -1,64 +1,60 @@
 import React from 'react';
-import { Container, Text, Title, List, Stack, Code } from '@mantine/core';
+import { Container, Text, Title, Stack, List } from '@mantine/core';
+import { Network } from 'lucide-react';
 import DataInteractionPanel from 'components/DataInteractionPanel';
-import CodeBlock from 'components/CodeBlock';
 
 const Exercise1 = () => {
-  const trainDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module8/exercise/module8_exercise_train.zip";
-  const testDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module8/exercise/module8_exercise_test_features.csv";
   const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module8/exercise/module8_exercise1.ipynb";
   const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module8/exercise/module8_exercise1.html";
   const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/data-science-practice/module8/exercise/module8_exercise1.ipynb";
-  
-  const metadata = {
-    description: "The CIFAR-10 dataset consists of 60,000 32x32 color images divided into 10 classes, with 6,000 images per class. There are 50,000 training images and 10,000 test images.",
-    source: "CIFAR-10 Dataset",
-    target: "Image class label (0-9)",
-    listData: [
-      { name: "image", description: "32x32x3 RGB image values (3072 values: 1024 for each color channel)" },
-      { name: "label", description: "Target class (0: airplane, 1: automobile, 2: bird, 3: cat, 4: deer, 5: dog, 6: frog, 7: horse, 8: ship, 9: truck)", isTarget: true }
-    ],
-  };
 
   return (
-    <Container fluid className="p-4">
-      <Stack spacing="lg">
-        <Title order={1}>Exercise 1: CIFAR-10 Image Classification with PyTorch</Title>
-        
-        <Stack spacing="md">
-          <Title order={2} id="overview">Overview</Title>
-          <List>
-            <List.Item>Explore and analyze the CIFAR-10 dataset structure</List.Item>
-            <List.Item>Develop a CNN model using PyTorch for multi-class image classification</List.Item>
-            <List.Item>Generate predictions and evaluate model performance</List.Item>
-          </List>
+    <>
+      <Container fluid>
+        <Stack spacing="xl" className="p-6">
+          <div className="flex items-center gap-3"> 
+            <Network size={24} />
+            <Title order={1} className="text-2xl font-bold">Exercise 1: Transformer Warmup</Title>
+          </div>
 
-          <Title order={2} id="expected-output">Expected Output</Title>
-          <Text>Submit a Jupyter Notebook (<Code>exercise1.ipynb</Code>) containing:</Text>
-          <List>
-            <List.Item>CNN architecture implementation and training pipeline</List.Item>
-            <List.Item>Data augmentation and preprocessing steps (optional)</List.Item>
-            <List.Item>Model evaluation and performance analysis</List.Item>
-          </List>
+          <Stack spacing="lg">
+            {/* Part 1 */}
+            <div>
+              <Title order={2} className="text-xl font-semibold mb-4">Part 1: Implementing a Simple Transformer Model</Title>
+              <Text className="text-gray-700 mb-4">
+                Build and understand the core components of a Transformer architecture:
+              </Text>
+              <List spacing="sm" className="ml-6">
+                <List.Item>Self-attention mechanisms and multi-head attention</List.Item>
+                <List.Item>Positional encodings and embedding layers</List.Item>
+                <List.Item>Feed-forward networks and layer normalization</List.Item>
+                <List.Item>Encoder-decoder architecture implementation</List.Item>
+              </List>
+            </div>
 
-          <Title order={2} id="evaluation">Evaluation</Title>
-          <Text>Create a <Code>submission.csv</Code> with predictions:</Text>
-          <CodeBlock
-            code={`index,label\n0,4\n1,7\n2,2\n3,1\n...`}
-          />
-          <Text>Target accuracy threshold: 80% on the test set</Text>
+            {/* Part 2 */}
+            <div>
+              <Title order={2} className="text-xl font-semibold mb-4">Part 2: Simple NLP Use Case - English to German Translation</Title>
+              <Text className="text-gray-700 mb-4">
+                Apply your transformer model to machine translation:
+              </Text>
+              <List spacing="sm" className="ml-6">
+                <List.Item>Preprocessing bilingual text data for translation</List.Item>
+                <List.Item>Training a translation model with parallel corpora</List.Item>
+                <List.Item>Implementing beam search for sequence generation</List.Item>
+                <List.Item>Evaluating translation quality with BLEU scores</List.Item>
+              </List>
+            </div>
+          </Stack>
         </Stack>
-
         <DataInteractionPanel
-          trainDataUrl={trainDataUrl}
-          testDataUrl={testDataUrl}
           notebookUrl={notebookUrl}
           notebookHtmlUrl={notebookHtmlUrl}
           notebookColabUrl={notebookColabUrl}
-          metadata={metadata}
+          className="mt-6"
         />
-      </Stack>
-    </Container>
+      </Container>
+    </>
   );
 };
 
