@@ -7,9 +7,11 @@ import GenericModuleExercise from '../components/GenericModuleExercise';
 
 // Special pages
 import PrerequistAndMethodologie from '../pages/data-science-practice/module0/PrerequistAandMethodologie';
-import ProjectPage from '../pages/ProjectPage';
-import RepositoriesList from '../pages/RepositoriesList';
-import StudentsList from '../pages/StudentsList';
+import ProjectPages from '../pages/data-science-practice/ProjectPages';
+import ProjectPage2024 from '../pages/data-science-practice/project-pages/ProjectPage2024';
+import ProjectPage2025 from '../pages/data-science-practice/project-pages/ProjectPage2025';
+import RepositoriesList from '../pages/data-science-practice/RepositoriesList';
+import StudentsList from '../pages/data-science-practice/StudentsList';
 
 // Course overview page
 import CourseOverview from './DataSciencePracticeOverview';
@@ -34,7 +36,9 @@ const DataSciencePractice = () => {
       ))}
       
       {/* Project and Results */}
-      <Route path="project" element={<ProjectPage />} />
+      <Route path="project" element={<ProjectPages />} />
+      <Route path="project/2024" element={<ProjectPage2024 />} />
+      <Route path="project/2025" element={<ProjectPage2025 />} />
       <Route path="results" element={<RepositoriesList />} />
       <Route path="students/:repoName" element={<StudentsList />} />
       

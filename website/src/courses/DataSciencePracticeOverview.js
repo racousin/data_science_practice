@@ -19,7 +19,6 @@ const DataSciencePracticeOverview = () => {
       <Stack spacing="xl" mb={50}>
         <Title order={1} align="center">Data Science Practice</Title>
         <Text size="lg" color="dimmed" align="center" maw={800} mx="auto">
-          A comprehensive journey through the entire data science pipeline, from fundamentals to deployment
         </Text>
         
         <Group justify="center" gap="md">
@@ -123,7 +122,7 @@ const DataSciencePracticeOverview = () => {
             </Group>
             
             <Text fw={500} size="sm" c="white">
-              Capstone Project
+              Final Project
             </Text>
             
             <Button 
