@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>module13_exercise5</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>module9_exercise4</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7510,770 +7510,46 @@ a.anchor-link {
 </style>
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<main><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<main>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Run-in-collab">Run in collab<a class="anchor-link" href="#Run-in-collab">¶</a></h3><p><a href="https://colab.research.google.com/github/racousin/data_science_practice/blob/master/website/public/modules/data-science-practice/module9/exercise/module9_exercise4.ipynb" target="_parent"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg"/></a></p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%capture</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">swig</span><span class="o">==</span><span class="mf">4.2.1</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">gymnasium</span><span class="o">==</span><span class="mf">0.29.1</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">'ignore'</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Run-in-collab">Run in collab<a class="anchor-link" href="#Run-in-collab">¶</a></h3><p><a href="https://colab.research.google.com/github/racousin/data_science_practice/blob/master/website/public/modules/data-science-practice/module9/exercise/module13_exercise5.ipynb" target="_parent"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg"/></a></p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>apt-get<span class="w"> </span>install<span class="w"> </span>swig<span class="w"> </span>build-essential<span class="w"> </span>python-dev<span class="w"> </span>python3-dev<span class="w"> </span>&gt;<span class="w"> </span>/dev/null<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
-<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">gym</span><span class="o">==</span><span class="m">0</span>.23.1<span class="w"> </span>&gt;<span class="w"> </span>/dev/null<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gymnasium</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gym</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># We will experiment our algo with CartPole</span>
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">'CartPole-v0'</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Objective">Objective<a class="anchor-link" href="#Objective">¶</a></h3><p>Here we present an alternative of Q learning: policy gradient algorithm</p>
-<p><strong>Complete the TODO steps! Good luck!</strong></p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Policy-gradient">Policy gradient<a class="anchor-link" href="#Policy-gradient">¶</a></h1><p>In policy gradient, we parametrize directly the policy $\pi_\theta$. It's especially welcome when the action space is continuous; in that case greedy policy based on Q-learning need to compute the $argmax_a Q(s,a)$. This could be pretty tedious. More generally, policy gradient algorithms are better to explore large state-action spaces.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>$J(\pi_{\theta}) = E_{\tau \sim \pi_{\theta}}[{G(\tau)}]$</p>
-<p>We can proof  that:</p>
-<p>$\nabla_{\theta} J(\pi_{\theta}) = E_{\tau \sim \pi_{\theta}}[{\sum_{t=0}^{T} \nabla_{\theta} \log \pi_{\theta}(a_t |s_t) G(\tau)}]$</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<ol>
-<li>In discrete action space</li>
-</ol>
-<p>we parametrize $\pi$ with $\theta$, such as $\pi_\theta : S \rightarrow [0,1]^{dim(A)}$ and $\forall s$ $\sum \pi_\theta(s) = 1$.</p>
-<ol start="2">
-<li>In continous action space</li>
-</ol>
-<p>we parametrize $\pi$ with $\theta$, such as $\pi_\theta : S \rightarrow \mu^{dim(A)} \times \sigma^{dim(A)} =  \mathbb{R}^{dim(A)} \times \mathbb{R}_{+,*}^{dim(A)}$</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>In keras, it is easier to pass the loss than the gradient.</p>
-<ol>
-<li>It is possible to show that the loss for discrete action ($1,...,N$) with softmax policy is weighted negative binary crossentropy:
-$-G\sum_{j=1}^N[a^j\log(\hat{a}^j) + (1-a^j)\log(1 - \hat{a}^j)]$</li>
-</ol>
-<p>with:
-$a^j=1$ if $a_t = j$, $0$ otherwise.</p>
-<p>$\hat{a}^j = \pi_\theta(s_t)^j$.</p>
-<p>$G$ is the discounted empirical return $G_t = \sum_{k=0}^{T-t-1} \gamma^k R_{t+k+1}$ from state $s_t$ and $a_t$</p>
-<ol start="2">
-<li>It is possible to show that the loss for conitnous action ($1,...,N$) with multivariate Gaussian (identity Covariance) policy is given by:</li>
-</ol>
-<p>$-G\sum_{j=1}^N[(a^j - \hat{a}^j)^2]$</p>
-<p>$\hat{a}^j = \pi_\theta(s_t)^j$.</p>
-<p>see <a href="https://aleksispi.github.io/assets/pg_autodiff.pdf">https://aleksispi.github.io/assets/pg_autodiff.pdf</a> for more explanation</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Reinforce---discrete-action">Reinforce - discrete action<a class="anchor-link" href="#Reinforce---discrete-action">¶</a></h1>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">optim</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">PolicyNetwork</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">output_size</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Initialize the policy network.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            input_size (int): Dimension of state space</span>
-<span class="sd">            hidden_size (int): Number of hidden units</span>
-<span class="sd">            output_size (int): Dimension of action space</span>
-<span class="sd">        """</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PolicyNetwork</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">output_size</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Forward pass through the network.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            x (torch.Tensor): Input state</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            torch.Tensor: Action probabilities</span>
-<span class="sd">        """</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc3</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">x</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">REINFORCE</span><span class="p">:</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">hidden_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.99</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Initialize the REINFORCE agent.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            env: Gymnasium environment</span>
-<span class="sd">            hidden_size (int): Number of hidden units in the policy network</span>
-<span class="sd">            learning_rate (float): Learning rate for optimization</span>
-<span class="sd">            gamma (float): Discount factor</span>
-<span class="sd">        """</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma</span>
-
-        <span class="c1"># Initialize policy network</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">policy</span> <span class="o">=</span> <span class="n">PolicyNetwork</span><span class="p">(</span>
-            <span class="n">input_size</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-            <span class="n">hidden_size</span><span class="o">=</span><span class="n">hidden_size</span><span class="p">,</span>
-            <span class="n">output_size</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span>
-        <span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">policy</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">)</span>
-
-        <span class="c1"># Storage for trajectory</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">states</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">actions</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">select_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Select an action using the policy network.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            state (numpy.ndarray): Current state</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            int: Selected action</span>
-<span class="sd">        """</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-        <span class="n">probs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">policy</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-        <span class="n">action_dist</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">probs</span><span class="p">)</span>
-        <span class="n">action</span> <span class="o">=</span> <span class="n">action_dist</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
-
-        <span class="c1"># Store log probability for training</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">log_probs</span> <span class="o">=</span> <span class="n">action_dist</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">action</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">store_transition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">reward</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Store state, action, and reward for the current transition.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            state (numpy.ndarray): Current state</span>
-<span class="sd">            action (int): Selected action</span>
-<span class="sd">            reward (float): Received reward</span>
-<span class="sd">        """</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">states</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_returns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Calculate discounted returns for the episode.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            torch.Tensor: Tensor of discounted returns</span>
-<span class="sd">        """</span>
-        <span class="n">returns</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">G</span> <span class="o">=</span> <span class="mi">0</span>
-
-        <span class="c1"># Calculate returns backwards</span>
-        <span class="k">for</span> <span class="n">reward</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rewards</span><span class="p">):</span>
-            <span class="n">G</span> <span class="o">=</span> <span class="n">reward</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">*</span> <span class="n">G</span>
-            <span class="n">returns</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">G</span><span class="p">)</span>
-
-        <span class="n">returns</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">returns</span><span class="p">)</span>
-
-        <span class="c1"># Normalize returns for stability</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">returns</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Only normalize if we have more than one return</span>
-            <span class="n">returns</span> <span class="o">=</span> <span class="p">(</span><span class="n">returns</span> <span class="o">-</span> <span class="n">returns</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="p">(</span><span class="n">returns</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">returns</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">update_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Update the policy network using the REINFORCE algorithm.</span>
-<span class="sd">        """</span>
-        <span class="n">returns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_returns</span><span class="p">()</span>
-
-        <span class="c1"># Calculate policy loss</span>
-        <span class="n">policy_loss</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">log_prob</span><span class="p">,</span> <span class="n">G</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">saved_log_probs</span><span class="p">,</span> <span class="n">returns</span><span class="p">):</span>
-            <span class="n">policy_loss</span> <span class="o">+=</span> <span class="o">-</span><span class="n">log_prob</span> <span class="o">*</span> <span class="n">G</span>
-
-        <span class="c1"># Optimize the policy</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-        <span class="n">policy_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-
-        <span class="c1"># Clear trajectory storage</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">states</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">actions</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">saved_log_probs</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_episodes</span><span class="p">,</span> <span class="n">max_steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Train the agent for a specified number of episodes.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            num_episodes (int): Number of episodes to train</span>
-<span class="sd">            max_steps (int): Maximum steps per episode</span>
-<span class="sd">        """</span>
-        <span class="n">episode_rewards</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="k">for</span> <span class="n">episode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_episodes</span><span class="p">):</span>
-            <span class="n">state</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-            <span class="n">episode_reward</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">saved_log_probs</span> <span class="o">=</span> <span class="p">[]</span>
-
-            <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_steps</span><span class="p">):</span>
-                <span class="c1"># Select action</span>
-                <span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_action</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">saved_log_probs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_probs</span><span class="p">)</span>
-
-                <span class="c1"># Take action in environment</span>
-                <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
-                <span class="n">done</span> <span class="o">=</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span>
-
-                <span class="c1"># Store transition</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">store_transition</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">reward</span><span class="p">)</span>
-                <span class="n">episode_reward</span> <span class="o">+=</span> <span class="n">reward</span>
-
-                <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
-                    <span class="k">break</span>
-
-                <span class="n">state</span> <span class="o">=</span> <span class="n">next_state</span>
-
-            <span class="c1"># Update policy after episode</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">update_policy</span><span class="p">()</span>
-            <span class="n">episode_rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">episode_reward</span><span class="p">)</span>
-
-            <span class="c1"># Print episode statistics</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">episode</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">avg_reward</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">episode_rewards</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">:])</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Episode </span><span class="si">{</span><span class="n">episode</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">, Average Reward (last 10): </span><span class="si">{</span><span class="n">avg_reward</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">episode_rewards</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create environment</span>
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">'CartPole-v1'</span><span class="p">)</span>
-
-<span class="c1"># Initialize and train agent</span>
-<span class="n">agent</span> <span class="o">=</span> <span class="n">REINFORCE</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-<span class="n">rewards</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">num_episodes</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
-
-<span class="c1"># Test the trained policy</span>
-<span class="n">state</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>  <span class="c1"># Gymnasium returns (state, info)</span>
-<span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">total_reward</span> <span class="o">=</span> <span class="mi">0</span>
-
-<span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
-    <span class="n">action</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">select_action</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-    <span class="n">state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>  <span class="c1"># Gymnasium step API</span>
-    <span class="n">done</span> <span class="o">=</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span>
-    <span class="n">total_reward</span> <span class="o">+=</span> <span class="n">reward</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Test Episode Reward: </span><span class="si">{</span><span class="n">total_reward</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Episode 10, Average Reward (last 10): 18.50
-Episode 20, Average Reward (last 10): 19.80
-Episode 30, Average Reward (last 10): 24.40
-Episode 40, Average Reward (last 10): 23.90
-Episode 50, Average Reward (last 10): 28.10
-Episode 60, Average Reward (last 10): 43.20
-Episode 70, Average Reward (last 10): 32.20
-Episode 80, Average Reward (last 10): 34.40
-Episode 90, Average Reward (last 10): 67.80
-Episode 100, Average Reward (last 10): 69.30
-Episode 110, Average Reward (last 10): 79.70
-Episode 120, Average Reward (last 10): 103.10
-Episode 130, Average Reward (last 10): 108.50
-Episode 140, Average Reward (last 10): 135.10
-Episode 150, Average Reward (last 10): 166.30
-Episode 160, Average Reward (last 10): 247.10
-Episode 170, Average Reward (last 10): 323.90
-Episode 180, Average Reward (last 10): 197.60
-Episode 190, Average Reward (last 10): 199.00
-Episode 200, Average Reward (last 10): 243.50
-Episode 210, Average Reward (last 10): 320.00
-Episode 220, Average Reward (last 10): 324.70
-Episode 230, Average Reward (last 10): 149.80
-Episode 240, Average Reward (last 10): 284.00
-Episode 250, Average Reward (last 10): 345.40
-Episode 260, Average Reward (last 10): 161.90
-Episode 270, Average Reward (last 10): 80.90
-Episode 280, Average Reward (last 10): 71.10
-Episode 290, Average Reward (last 10): 114.00
-Episode 300, Average Reward (last 10): 101.30
-Episode 310, Average Reward (last 10): 92.60
-Episode 320, Average Reward (last 10): 126.60
-Episode 330, Average Reward (last 10): 104.20
-Episode 340, Average Reward (last 10): 126.40
-Episode 350, Average Reward (last 10): 152.00
-Episode 360, Average Reward (last 10): 157.40
-Episode 370, Average Reward (last 10): 146.60
-Episode 380, Average Reward (last 10): 237.60
-Episode 390, Average Reward (last 10): 416.10
-Episode 400, Average Reward (last 10): 484.80
-Episode 410, Average Reward (last 10): 492.40
-Episode 420, Average Reward (last 10): 434.80
-Episode 430, Average Reward (last 10): 249.00
-Episode 440, Average Reward (last 10): 159.10
-Episode 450, Average Reward (last 10): 411.40
-Episode 460, Average Reward (last 10): 418.10
-Episode 470, Average Reward (last 10): 489.10
-Episode 480, Average Reward (last 10): 286.90
-Episode 490, Average Reward (last 10): 112.70
-Episode 500, Average Reward (last 10): 123.80
-Test Episode Reward: 143.0
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="TODO-:-Try-different-hyerparamters-models-(number-of-layers,-nodes)-and-compare-learning-speed-and-stability">TODO : Try different hyerparamters models (number of layers, nodes) and compare learning speed and stability<a class="anchor-link" href="#TODO-:-Try-different-hyerparamters-models-(number-of-layers,-nodes)-and-compare-learning-speed-and-stability">¶</a></h3>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create environment</span>
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">'CartPole-v1'</span><span class="p">)</span>
-
-<span class="c1"># Initialize and train agent</span>
-<span class="n">agent</span> <span class="o">=</span> <span class="n">REINFORCE</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-<span class="n">rewards</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">num_episodes</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
-
-<span class="c1"># Test the trained policy</span>
-<span class="n">state</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>  <span class="c1"># Gymnasium returns (state, info)</span>
-<span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">total_reward</span> <span class="o">=</span> <span class="mi">0</span>
-
-<span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
-    <span class="n">action</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">select_action</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-    <span class="n">state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>  <span class="c1"># Gymnasium step API</span>
-    <span class="n">done</span> <span class="o">=</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span>
-    <span class="n">total_reward</span> <span class="o">+=</span> <span class="n">reward</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Test Episode Reward: </span><span class="si">{</span><span class="n">total_reward</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="other-improvements">other improvements<a class="anchor-link" href="#other-improvements">¶</a></h1>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="GAE(general-advantage-estimation)-actor-critic">GAE(general advantage estimation) actor critic<a class="anchor-link" href="#GAE(general-advantage-estimation)-actor-critic">¶</a></h3><p>We can rewrite the policy gradient</p>
-<p>$\nabla_{\theta} J(\pi_{\theta}) = E_{\tau \sim \pi_{\theta}}[{\sum_{t=0}^{T} \nabla_{\theta} \log \pi_{\theta}(a_t |s_t) \Phi_t}]$,</p>
-<p>whith $\Phi_t$ could be any of:</p>
-<ul>
-<li>$\Phi_t =  G_t$</li>
-<li>$\Phi_t = \sum_{t'=t}^T R_{t+1} - V(s_t)$</li>
-<li>$\Phi_t = \sum_{t'=t}^T R_{t+1} - Q(s_t,a_t)$</li>
-</ul>
-<p>For the last 2 cases we need to estimate V or Q (the critics). We do it as the same way at deepQ.
-<a href="https://arxiv.org/pdf/1506.02438.pdf">https://arxiv.org/pdf/1506.02438.pdf</a></p>
-<p>$\phi_k = \arg \min_{\phi} E_{s_t, G_t \sim \pi_k}[{\left( V_{\phi}(s_t) - G_t \right)^2}]$</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">optim</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">gymnasium</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gym</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">ActorNetwork</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">output_size</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Actor network that outputs action probabilities.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            input_size (int): State dimension</span>
-<span class="sd">            hidden_size (int): Number of hidden units</span>
-<span class="sd">            output_size (int): Action dimension</span>
-<span class="sd">        """</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">ActorNetwork</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">output_size</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Forward pass through the actor network.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            state (torch.Tensor): Input state</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            torch.Tensor: Action probabilities</span>
-<span class="sd">        """</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">state</span><span class="p">))</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="n">action_probs</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc3</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">action_probs</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">CriticNetwork</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Critic network that estimates the value function.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            input_size (int): State dimension</span>
-<span class="sd">            hidden_size (int): Number of hidden units</span>
-<span class="sd">        """</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">CriticNetwork</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Forward pass through the critic network.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            state (torch.Tensor): Input state</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            torch.Tensor: Estimated state value</span>
-<span class="sd">        """</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">state</span><span class="p">))</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">value</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">ActorCritic</span><span class="p">:</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">hidden_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">actor_lr</span><span class="o">=</span><span class="mf">3e-4</span><span class="p">,</span> <span class="n">critic_lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.99</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Initialize the Actor-Critic agent.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            env: Gymnasium environment</span>
-<span class="sd">            hidden_size (int): Number of hidden units in networks</span>
-<span class="sd">            actor_lr (float): Learning rate for actor network</span>
-<span class="sd">            critic_lr (float): Learning rate for critic network</span>
-<span class="sd">            gamma (float): Discount factor</span>
-<span class="sd">        """</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma</span>
-
-        <span class="c1"># Initialize actor network</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">actor</span> <span class="o">=</span> <span class="n">ActorNetwork</span><span class="p">(</span>
-            <span class="n">input_size</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-            <span class="n">hidden_size</span><span class="o">=</span><span class="n">hidden_size</span><span class="p">,</span>
-            <span class="n">output_size</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span>
-        <span class="p">)</span>
-
-        <span class="c1"># Initialize critic network</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">critic</span> <span class="o">=</span> <span class="n">CriticNetwork</span><span class="p">(</span>
-            <span class="n">input_size</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-            <span class="n">hidden_size</span><span class="o">=</span><span class="n">hidden_size</span>
-        <span class="p">)</span>
-
-        <span class="c1"># Setup optimizers</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">actor_optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actor</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">actor_lr</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">critic_optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">critic</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">critic_lr</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">select_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Select an action using the actor network.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            state (numpy.ndarray): Current state</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            tuple: Selected action and log probability</span>
-<span class="sd">        """</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-        <span class="n">action_probs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">actor</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-        <span class="n">dist</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">action_probs</span><span class="p">)</span>
-        <span class="n">action</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
-        <span class="n">log_prob</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">action</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">log_prob</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Estimate the value of a state using the critic network.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            state (numpy.ndarray): Input state</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            torch.Tensor: Estimated state value</span>
-<span class="sd">        """</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">value</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">action_log_prob</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">done</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Update both actor and critic networks.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            state (numpy.ndarray): Current state</span>
-<span class="sd">            action_log_prob (torch.Tensor): Log probability of taken action</span>
-<span class="sd">            reward (float): Received reward</span>
-<span class="sd">            next_state (numpy.ndarray): Next state</span>
-<span class="sd">            done (bool): Whether episode has terminated</span>
-<span class="sd">        """</span>
-        <span class="c1"># Convert to tensors</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-        <span class="n">next_state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">next_state</span><span class="p">)</span>
-        <span class="n">reward</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">([</span><span class="n">reward</span><span class="p">])</span>
-
-        <span class="c1"># Get current and next state values</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-        <span class="n">next_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic</span><span class="p">(</span><span class="n">next_state</span><span class="p">)</span>
-
-        <span class="c1"># Calculate TD error and value loss</span>
-        <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
-            <span class="n">expected_value</span> <span class="o">=</span> <span class="n">reward</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">expected_value</span> <span class="o">=</span> <span class="n">reward</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">*</span> <span class="n">next_value</span>
-
-        <span class="n">advantage</span> <span class="o">=</span> <span class="n">expected_value</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span> <span class="o">-</span> <span class="n">value</span>
-        <span class="n">critic_loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">expected_value</span><span class="o">.</span><span class="n">detach</span><span class="p">())</span>
-
-        <span class="c1"># Calculate actor loss</span>
-        <span class="n">actor_loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">action_log_prob</span> <span class="o">*</span> <span class="n">advantage</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
-
-        <span class="c1"># Update critic</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">critic_optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-        <span class="n">critic_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">critic_optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-
-        <span class="c1"># Update actor</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">actor_optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-        <span class="n">actor_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">actor_optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-
-        <span class="k">return</span> <span class="n">actor_loss</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">critic_loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_episodes</span><span class="p">,</span> <span class="n">max_steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Train the agent for a specified number of episodes.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            num_episodes (int): Number of episodes to train</span>
-<span class="sd">            max_steps (int): Maximum steps per episode</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            list: Episode rewards</span>
-<span class="sd">        """</span>
-        <span class="n">episode_rewards</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="k">for</span> <span class="n">episode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_episodes</span><span class="p">):</span>
-            <span class="n">state</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-            <span class="n">episode_reward</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">actor_losses</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">critic_losses</span> <span class="o">=</span> <span class="p">[]</span>
-
-            <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_steps</span><span class="p">):</span>
-                <span class="c1"># Select and perform action</span>
-                <span class="n">action</span><span class="p">,</span> <span class="n">action_log_prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_action</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-                <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
-                <span class="n">done</span> <span class="o">=</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span>
-
-                <span class="c1"># Update networks</span>
-                <span class="n">actor_loss</span><span class="p">,</span> <span class="n">critic_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                    <span class="n">state</span><span class="p">,</span> <span class="n">action_log_prob</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">done</span>
-                <span class="p">)</span>
-                <span class="n">actor_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">actor_loss</span><span class="p">)</span>
-                <span class="n">critic_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">critic_loss</span><span class="p">)</span>
-
-                <span class="n">episode_reward</span> <span class="o">+=</span> <span class="n">reward</span>
-
-                <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
-                    <span class="k">break</span>
-
-                <span class="n">state</span> <span class="o">=</span> <span class="n">next_state</span>
-
-            <span class="n">episode_rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">episode_reward</span><span class="p">)</span>
-
-            <span class="c1"># Print episode statistics</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">episode</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">avg_reward</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">episode_rewards</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">:])</span>
-                <span class="n">avg_actor_loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">actor_losses</span><span class="p">)</span>
-                <span class="n">avg_critic_loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">critic_losses</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Episode </span><span class="si">{</span><span class="n">episode</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Average Reward (last 10): </span><span class="si">{</span><span class="n">avg_reward</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Average Actor Loss: </span><span class="si">{</span><span class="n">avg_actor_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Average Critic Loss: </span><span class="si">{</span><span class="n">avg_critic_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">episode_rewards</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 </pre></div>
 </div>
 </div>
@@ -8286,307 +7562,52 @@ Test Episode Reward: 143.0
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="TODO-:-Try-different-hyerparamters-models-(number-of-layers,-nodes)-and-compare-learning-speed-and-stability">TODO : Try different hyerparamters models (number of layers, nodes) and compare learning speed and stability<a class="anchor-link" href="#TODO-:-Try-different-hyerparamters-models-(number-of-layers,-nodes)-and-compare-learning-speed-and-stability">¶</a></h3>
+<h1 id="module9_exercise4-:-ML---Arena--LunarLander">module9_exercise4 : ML - Arena <a href="https://ml-arena.com/viewcompetition/1" target="_blank"> LunarLander</a><a class="anchor-link" href="#module9_exercise4-:-ML---Arena--LunarLander">¶</a></h1>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Objective">Objective<a class="anchor-link" href="#Objective">¶</a></h3><p>Get at list an agent running on ML-Arena <a href="https://ml-arena.com/viewcompetition/1" target="_blank"> LunarLander</a> with mean reward upper than 50</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>You should submit an agent file named <code>agent.py</code> with a class <code>Agent</code> that includes at least the following attributes:</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create environment</span>
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">'CartPole-v1'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Agent</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
 
-<span class="c1"># Initialize and train agent</span>
-<span class="n">agent</span> <span class="o">=</span> <span class="n">ActorCritic</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-<span class="n">rewards</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">num_episodes</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
-
-<span class="c1"># Test the trained policy</span>
-<span class="n">state</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-<span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">total_reward</span> <span class="o">=</span> <span class="mi">0</span>
-
-<span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
-    <span class="n">action</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">select_action</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-    <span class="n">state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
-    <span class="n">done</span> <span class="o">=</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span>
-    <span class="n">total_reward</span> <span class="o">+=</span> <span class="n">reward</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Test Episode Reward: </span><span class="si">{</span><span class="n">total_reward</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">choose_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observation</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">terminated</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">truncated</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span> <span class="c1"># your logic here</span>
+        <span class="k">return</span> <span class="n">action</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Episode 10
-Average Reward (last 10): 18.70
-Average Actor Loss: 0.1906
-Average Critic Loss: 10.4676
-
-Episode 20
-Average Reward (last 10): 18.20
-Average Actor Loss: -0.1193
-Average Critic Loss: 17.5052
-
-Episode 30
-Average Reward (last 10): 20.90
-Average Actor Loss: 0.0156
-Average Critic Loss: 11.0133
-
-Episode 40
-Average Reward (last 10): 16.70
-Average Actor Loss: -0.1793
-Average Critic Loss: 14.3520
-
-Episode 50
-Average Reward (last 10): 28.30
-Average Actor Loss: -0.0947
-Average Critic Loss: 8.5526
-
-Episode 60
-Average Reward (last 10): 47.20
-Average Actor Loss: 0.0546
-Average Critic Loss: 12.8212
-
-Episode 70
-Average Reward (last 10): 49.40
-Average Actor Loss: -0.2119
-Average Critic Loss: 18.3696
-
-Episode 80
-Average Reward (last 10): 65.60
-Average Actor Loss: -0.0920
-Average Critic Loss: 19.0536
-
-Episode 90
-Average Reward (last 10): 70.20
-Average Actor Loss: 0.0877
-Average Critic Loss: 17.7627
-
-Episode 100
-Average Reward (last 10): 80.20
-Average Actor Loss: -0.4060
-Average Critic Loss: 10.5324
-
-Episode 110
-Average Reward (last 10): 89.60
-Average Actor Loss: -0.6349
-Average Critic Loss: 1.5154
-
-Episode 120
-Average Reward (last 10): 102.20
-Average Actor Loss: -0.1409
-Average Critic Loss: 0.6608
-
-Episode 130
-Average Reward (last 10): 230.80
-Average Actor Loss: -0.0236
-Average Critic Loss: 6.6430
-
-Episode 140
-Average Reward (last 10): 92.20
-Average Actor Loss: -0.2446
-Average Critic Loss: 0.7899
-
-Episode 150
-Average Reward (last 10): 64.20
-Average Actor Loss: -0.0620
-Average Critic Loss: 0.4028
-
-Episode 160
-Average Reward (last 10): 71.30
-Average Actor Loss: -0.0152
-Average Critic Loss: 0.3483
-
-Episode 170
-Average Reward (last 10): 94.40
-Average Actor Loss: -0.0811
-Average Critic Loss: 4.3596
-
-Episode 180
-Average Reward (last 10): 284.70
-Average Actor Loss: 0.0203
-Average Critic Loss: 3.6730
-
-Episode 190
-Average Reward (last 10): 248.60
-Average Actor Loss: -0.0554
-Average Critic Loss: 0.3524
-
-Episode 200
-Average Reward (last 10): 334.00
-Average Actor Loss: -1.7016
-Average Critic Loss: 275.6510
-
-Episode 210
-Average Reward (last 10): 405.00
-Average Actor Loss: -0.1424
-Average Critic Loss: 16.6424
-
-Episode 220
-Average Reward (last 10): 500.00
-Average Actor Loss: 0.0049
-Average Critic Loss: 17.2071
-
-Episode 230
-Average Reward (last 10): 172.70
-Average Actor Loss: -0.0522
-Average Critic Loss: 2.9775
-
-Episode 240
-Average Reward (last 10): 181.10
-Average Actor Loss: -0.0428
-Average Critic Loss: 0.1522
-
-Episode 250
-Average Reward (last 10): 181.30
-Average Actor Loss: -0.1028
-Average Critic Loss: 0.4540
-
-Episode 260
-Average Reward (last 10): 284.40
-Average Actor Loss: 0.0384
-Average Critic Loss: 0.4067
-
-Episode 270
-Average Reward (last 10): 211.00
-Average Actor Loss: -0.0162
-Average Critic Loss: 0.2264
-
-Episode 280
-Average Reward (last 10): 335.60
-Average Actor Loss: 0.0288
-Average Critic Loss: 17.6955
-
-Episode 290
-Average Reward (last 10): 204.70
-Average Actor Loss: -0.5545
-Average Critic Loss: 218.9117
-
-Episode 300
-Average Reward (last 10): 153.10
-Average Actor Loss: -0.1418
-Average Critic Loss: 0.4577
-
-Episode 310
-Average Reward (last 10): 144.80
-Average Actor Loss: -0.0540
-Average Critic Loss: 0.5370
-
-Episode 320
-Average Reward (last 10): 180.00
-Average Actor Loss: -0.0308
-Average Critic Loss: 0.1317
-
-Episode 330
-Average Reward (last 10): 205.40
-Average Actor Loss: -0.0333
-Average Critic Loss: 0.3552
-
-Episode 340
-Average Reward (last 10): 313.00
-Average Actor Loss: -0.0497
-Average Critic Loss: 2.1123
-
-Episode 350
-Average Reward (last 10): 187.10
-Average Actor Loss: -0.0961
-Average Critic Loss: 0.6011
-
-Episode 360
-Average Reward (last 10): 228.30
-Average Actor Loss: -0.0182
-Average Critic Loss: 0.4323
-
-Episode 370
-Average Reward (last 10): 207.10
-Average Actor Loss: -0.0079
-Average Critic Loss: 0.1836
-
-Episode 380
-Average Reward (last 10): 218.80
-Average Actor Loss: -0.0407
-Average Critic Loss: 0.1246
-
-Episode 390
-Average Reward (last 10): 264.00
-Average Actor Loss: -0.0017
-Average Critic Loss: 0.1925
-
-Episode 400
-Average Reward (last 10): 274.80
-Average Actor Loss: -0.0118
-Average Critic Loss: 0.1225
-
-Episode 410
-Average Reward (last 10): 354.80
-Average Actor Loss: -0.1377
-Average Critic Loss: 6.6303
-
-Episode 420
-Average Reward (last 10): 249.60
-Average Actor Loss: -0.0607
-Average Critic Loss: 0.9386
-
-Episode 430
-Average Reward (last 10): 487.70
-Average Actor Loss: -0.0483
-Average Critic Loss: 20.3022
-
-Episode 440
-Average Reward (last 10): 201.30
-Average Actor Loss: 0.0148
-Average Critic Loss: 4.4376
-
-Episode 450
-Average Reward (last 10): 105.40
-Average Actor Loss: -0.0081
-Average Critic Loss: 123.1853
-
-Episode 460
-Average Reward (last 10): 116.20
-Average Actor Loss: -0.0041
-Average Critic Loss: 1.2499
-
-Episode 470
-Average Reward (last 10): 116.70
-Average Actor Loss: 0.0106
-Average Critic Loss: 1.3611
-
-Episode 480
-Average Reward (last 10): 189.40
-Average Actor Loss: -0.0132
-Average Critic Loss: 0.8381
-
-Episode 490
-Average Reward (last 10): 200.70
-Average Actor Loss: -0.0548
-Average Critic Loss: 12.5091
-
-Episode 500
-Average Reward (last 10): 450.30
-Average Actor Loss: -0.0388
-Average Critic Loss: 18.9036
-
-
-Test Episode Reward: 500.0
-</pre>
-</div>
-</div>
-</div>
-</div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -8594,40 +7615,35 @@ Test Episode Reward: 500.0
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Actor-Critic-with-other-improvements">Actor Critic with other improvements<a class="anchor-link" href="#Actor-Critic-with-other-improvements">¶</a></h1><p>Architecture Improvements:</p>
+<h3 id="Description">Description<a class="anchor-link" href="#Description">¶</a></h3><p>This environment is a classic rocket trajectory optimization problem. According to Pontryagin’s maximum principle, it is optimal to fire the engine at full throttle or turn it off. This is the reason why this environment has discrete actions: engine on or off.
+There are two environment versions: discrete or continuous. The landing pad is always at coordinates (0,0). The coordinates are the first two numbers in the state vector. Landing outside of the landing pad is possible. Fuel is infinite, so an agent can learn to fly and then land on its first attempt.</p>
+<h3 id="Action-Space">Action Space<a class="anchor-link" href="#Action-Space">¶</a></h3><p>There are four discrete actions available:</p>
 <ul>
-<li>Layer normalization for better stability</li>
-<li>Orthogonal weight initialization</li>
-<li>Separate target network for critic</li>
-<li>PPO-style clipping for more stable updates</li>
+<li>0: do nothing</li>
+<li>1: fire left orientation engine</li>
+<li>2: fire main engine</li>
+<li>3: fire right orientation engine</li>
 </ul>
-<p>Advanced Features:</p>
+<h3 id="Observation-Space">Observation Space<a class="anchor-link" href="#Observation-Space">¶</a></h3><p>The state is an 8-dimensional vector: the coordinates of the lander in x &amp; y, its linear velocities in x &amp; y, its angle, its angular velocity, and two booleans that represent whether each leg is in contact with the ground or not.</p>
+<h3 id="Rewards">Rewards<a class="anchor-link" href="#Rewards">¶</a></h3><p>After every step a reward is granted. The total reward of an episode is the sum of the rewards for all the steps within that episode.
+For each step, the reward:</p>
 <ul>
-<li>Generalized Advantage Estimation (GAE)</li>
-<li>Entropy regularization for exploration</li>
-<li>Gradient clipping to prevent exploding gradients</li>
-<li>Mini-batch updates for better sample efficiency</li>
-<li>Experience replay buffer with proper advantage computation</li>
+<li>is increased/decreased the closer/further the lander is to the landing pad.</li>
+<li>is increased/decreased the slower/faster the lander is moving.</li>
+<li>is decreased the more the lander is tilted (angle not horizontal).</li>
+<li>is increased by 10 points for each leg that is in contact with the ground.</li>
+<li>is decreased by 0.03 points each frame a side engine is firing.</li>
+<li>is decreased by 0.3 points each frame the main engine is firing.</li>
 </ul>
-<p>Training Stabilizers:</p>
+<p>The episode receive an additional reward of -100 or +100 points for crashing or landing safely respectively.
+An episode is considered a solution if it scores at least 200 points.</p>
+<h3 id="Starting-State">Starting State<a class="anchor-link" href="#Starting-State">¶</a></h3><p>The lander starts at the top center of the viewport with a random initial force applied to its center of mass.</p>
+<h3 id="Episode-Termination">Episode Termination<a class="anchor-link" href="#Episode-Termination">¶</a></h3><p>The episode finishes if:</p>
 <ul>
-<li>Advantage normalization</li>
-<li>Multiple update epochs per batch</li>
-<li>Proper handling of episode termination</li>
-<li>Target network periodic updates</li>
-<li>Proper PPO-style policy updates with clipping</li>
+<li>the lander crashes (the lander body gets in contact with the moon);</li>
+<li>the lander gets outside of the viewport (x coordinate is greater than 1);</li>
+<li>the lander is not awake. From the Box2D docs, a body which is not awake is a body which doesn’t move and doesn’t collide with any other body.</li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="TODO-:-Implement-improvments-and-try-them-on-other-environements">TODO : Implement improvments and try them on other environements<a class="anchor-link" href="#TODO-:-Implement-improvments-and-try-them-on-other-environements">¶</a></h3>
 </div>
 </div>
 </div>
@@ -8640,23 +7656,69 @@ Test Episode Reward: 500.0
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">"LunarLander-v2"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Before-submit">Before submit<a class="anchor-link" href="#Before-submit">¶</a></h3><p>Test that your agent has the right attributes</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">"LunarLander-v2"</span><span class="p">)</span>
+<span class="n">agent</span> <span class="o">=</span> <span class="n">Agent</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
 
-<span class="n">agent</span> <span class="o">=</span> <span class="n">ActorCritic</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-<span class="n">rewards</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">num_episodes</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
-
-<span class="c1"># Test the trained policy</span>
-<span class="n">state</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-<span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">total_reward</span> <span class="o">=</span> <span class="mi">0</span>
-
-<span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
-    <span class="n">action</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">select_action</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">evaluate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
-    <span class="n">done</span> <span class="o">=</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span>
-    <span class="n">total_reward</span> <span class="o">+=</span> <span class="n">reward</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Test Episode Reward: </span><span class="si">{</span><span class="n">total_reward</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">observation</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
+<span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">):</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">choose_action</span><span class="p">(</span><span class="n">observation</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="o">=</span><span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="o">=</span><span class="n">truncated</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="n">info</span><span class="p">)</span>
+    <span class="n">observation</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+    <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Cumulative Reward: </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">)</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

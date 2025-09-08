@@ -3,9 +3,9 @@ import { Container, Text, Title, Stack, List } from '@mantine/core';
 import DataInteractionPanel from 'components/DataInteractionPanel';
 
 const Exercise1 = () => {
-  const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module9/exercise/module13_exercise3.ipynb";
-  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module9/exercise/module13_exercise3.html";
-  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/data-science-practice/module9/exercise/module13_exercise3.ipynb";
+  const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module9/exercise/module9_exercise3.ipynb";
+  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module9/exercise/module9_exercise3.html";
+  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/data-science-practice/module9/exercise/module9_exercise3.ipynb";
 
   return (
     <Container fluid>

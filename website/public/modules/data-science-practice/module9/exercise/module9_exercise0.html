@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>module13_exercise4</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>module9_exercise0</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7517,7 +7517,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Run-in-collab">Run in collab<a class="anchor-link" href="#Run-in-collab">¶</a></h3><p><a href="https://colab.research.google.com/github/racousin/data_science_practice/blob/master/website/public/modules/data-science-practice/module9/exercise/module13_exercise4.ipynb" target="_parent"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg"/></a></p>
+<h3 id="Run-in-collab">Run in collab<a class="anchor-link" href="#Run-in-collab">¶</a></h3><p><a href="https://colab.research.google.com/github/racousin/data_science_practice/blob/master/website/public/modules/data-science-practice/module9/exercise/module9_exercise0.ipynb" target="_parent"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg"/></a></p>
 </div>
 </div>
 </div>
@@ -7530,8 +7530,28 @@ a.anchor-link {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">%%capture</span>
-<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">swig</span><span class="o">==</span><span class="mf">4.2.1</span>
-<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">gymnasium</span><span class="o">==</span><span class="mf">0.29.1</span>
+<span class="err">!</span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">xvfb</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="s1">'swig==4.2.1'</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="s1">'box2d-py==2.3.8'</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="s1">'gymnasium[box2d,atari,accept-rom-license]==0.29.1'</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="s1">'pyvirtualdisplay==3.0'</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="s1">'opencv-python-headless'</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">imageio</span> <span class="n">imageio</span><span class="o">-</span><span class="n">ffmpeg</span>
+<span class="err">!</span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">racousin</span><span class="o">/</span><span class="n">rl_introduction</span><span class="o">.</span><span class="n">git</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span> <span class="mi">2</span><span class="o">&gt;&amp;</span><span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">'gymnasium[box2d,atari,accept-rom-license]==0.29.1'</span>
 </pre></div>
 </div>
 </div>
@@ -7547,9 +7567,13 @@ a.anchor-link {
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">'ignore'</span><span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">gymnasium</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gym</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">sleep</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gymnasium</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gym</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">time</span><span class="p">,</span><span class="n">sleep</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">"darkgrid"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7562,7 +7586,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="module13_exercise4-:-ML---Arena--LunarLander">module13_exercise4 : ML - Arena <a href="https://ml-arena.com/viewcompetition/1" target="_blank"> LunarLander</a><a class="anchor-link" href="#module13_exercise4-:-ML---Arena--LunarLander">¶</a></h1>
+<h1 id="module9_exercise0:-Environment_and_Agent">module9_exercise0: Environment_and_Agent<a class="anchor-link" href="#module9_exercise0:-Environment_and_Agent">¶</a></h1>
 </div>
 </div>
 </div>
@@ -7573,7 +7597,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Objective">Objective<a class="anchor-link" href="#Objective">¶</a></h3><p>Get at list an agent running on ML-Arena <a href="https://ml-arena.com/viewcompetition/1" target="_blank"> LunarLander</a> with mean reward upper than 50</p>
+<h3 id="Introduction-to-Reinforcement-Learning-(RL)">Introduction to Reinforcement Learning (RL)<a class="anchor-link" href="#Introduction-to-Reinforcement-Learning-(RL)">¶</a></h3><p>In RL, we study the interaction between an <strong>agent</strong> and an <strong>environment</strong>. The agent takes actions to achieve a goal, guided by rewards from the environment. Our aim is to develop agents that can learn optimal behaviors through these interactions.</p>
 </div>
 </div>
 </div>
@@ -7584,7 +7608,48 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>You should submit an agent file named <code>agent.py</code> with a class <code>Agent</code> that includes at least the following attributes:</p>
+<h3 id="Creating-an-Environment">Creating an Environment<a class="anchor-link" href="#Creating-an-Environment">¶</a></h3><p>An environment in RL defines the space in which the agent operates. It returns a new state and a reward for each action taken by the agent.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Env</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">terminated</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">action</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">):</span>
+            <span class="n">reward</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">reward</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">terminated</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="p">{}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">terminated</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Building-an-Agent">Building an Agent<a class="anchor-link" href="#Building-an-Agent">¶</a></h3><p>Agents in RL decide which actions to take in an environment. A simple agent might act randomly or follow a predetermined policy.</p>
 </div>
 </div>
 </div>
@@ -7598,11 +7663,10 @@ a.anchor-link {
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Agent</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
+        <span class="k">pass</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">choose_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observation</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">terminated</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">truncated</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span> <span class="c1"># your logic here</span>
-        <span class="k">return</span> <span class="n">action</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">act</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7615,35 +7679,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Description">Description<a class="anchor-link" href="#Description">¶</a></h3><p>This environment is a classic rocket trajectory optimization problem. According to Pontryagin’s maximum principle, it is optimal to fire the engine at full throttle or turn it off. This is the reason why this environment has discrete actions: engine on or off.
-There are two environment versions: discrete or continuous. The landing pad is always at coordinates (0,0). The coordinates are the first two numbers in the state vector. Landing outside of the landing pad is possible. Fuel is infinite, so an agent can learn to fly and then land on its first attempt.</p>
-<h3 id="Action-Space">Action Space<a class="anchor-link" href="#Action-Space">¶</a></h3><p>There are four discrete actions available:</p>
-<ul>
-<li>0: do nothing</li>
-<li>1: fire left orientation engine</li>
-<li>2: fire main engine</li>
-<li>3: fire right orientation engine</li>
-</ul>
-<h3 id="Observation-Space">Observation Space<a class="anchor-link" href="#Observation-Space">¶</a></h3><p>The state is an 8-dimensional vector: the coordinates of the lander in x &amp; y, its linear velocities in x &amp; y, its angle, its angular velocity, and two booleans that represent whether each leg is in contact with the ground or not.</p>
-<h3 id="Rewards">Rewards<a class="anchor-link" href="#Rewards">¶</a></h3><p>After every step a reward is granted. The total reward of an episode is the sum of the rewards for all the steps within that episode.
-For each step, the reward:</p>
-<ul>
-<li>is increased/decreased the closer/further the lander is to the landing pad.</li>
-<li>is increased/decreased the slower/faster the lander is moving.</li>
-<li>is decreased the more the lander is tilted (angle not horizontal).</li>
-<li>is increased by 10 points for each leg that is in contact with the ground.</li>
-<li>is decreased by 0.03 points each frame a side engine is firing.</li>
-<li>is decreased by 0.3 points each frame the main engine is firing.</li>
-</ul>
-<p>The episode receive an additional reward of -100 or +100 points for crashing or landing safely respectively.
-An episode is considered a solution if it scores at least 200 points.</p>
-<h3 id="Starting-State">Starting State<a class="anchor-link" href="#Starting-State">¶</a></h3><p>The lander starts at the top center of the viewport with a random initial force applied to its center of mass.</p>
-<h3 id="Episode-Termination">Episode Termination<a class="anchor-link" href="#Episode-Termination">¶</a></h3><p>The episode finishes if:</p>
-<ul>
-<li>the lander crashes (the lander body gets in contact with the moon);</li>
-<li>the lander gets outside of the viewport (x coordinate is greater than 1);</li>
-<li>the lander is not awake. From the Box2D docs, a body which is not awake is a body which doesn’t move and doesn’t collide with any other body.</li>
-</ul>
+<h3 id="Running-an-Experiment">Running an Experiment<a class="anchor-link" href="#Running-an-Experiment">¶</a></h3><p>To evaluate our agent's performance, we generate trajectories of state-action-reward sequences and compute the total reward.</p>
 </div>
 </div>
 </div>
@@ -7655,35 +7691,15 @@ An episode is considered a solution if it scores at least 200 points.</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">"LunarLander-v2"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span> 
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">run_experiment</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">agent</span><span class="p">,</span> <span class="n">nb_steps</span><span class="p">):</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">state</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nb_steps</span><span class="p">):</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">act</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="n">state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">+=</span> <span class="p">[</span><span class="n">action</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">state</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">res</span>
 </pre></div>
 </div>
 </div>
@@ -7696,7 +7712,17 @@ An episode is considered a solution if it scores at least 200 points.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Before-submit">Before submit<a class="anchor-link" href="#Before-submit">¶</a></h3><p>Test that your agent has the right attributes</p>
+<h2 id="Understanding-the-Environment-and-Agent">Understanding the Environment and Agent<a class="anchor-link" href="#Understanding-the-Environment-and-Agent">¶</a></h2><p><strong>Question 1:</strong> What is the <strong>state space</strong> in the provided <code>Env</code> class?</p>
+<p><strong>Question 2:</strong> What is the <strong>action space</strong> in the provided <code>Env</code>/<code>Agent</code> class?</p>
+<p><strong>Question 3:</strong> What is the <strong>Transition model</strong> in the provided <code>Env</code> class? Is it a bandit environement?</p>
+<p><strong>Question 4:</strong> What is the <strong>Policy</strong> in the provided <code>Agent</code> class?</p>
+<p><strong>Question 5:</strong> What is the <strong>Reward Function</strong> in the provided <code>Env</code> class?</p>
+<p><strong>Question 6:</strong> What object <strong>run_experiment</strong> is returning?</p>
+<p><strong>Exercise 1:</strong> Instantiating the class <code>Agent</code> and <code>Env</code> to <code>run_experiment</code> on <strong>100 steps</strong>.</p>
+<p><strong>Exercise 2:</strong> Compute the <strong>cumulative reward</strong> and <strong>discouted cumultative reward</strong>, also known as the return value. You can return more information from <code>run_experiment</code> to help.</p>
+<p><strong>Question 7:</strong> In this <code>MDP</code>, what is the <strong>Expected Return</strong> when following the random policy of the <code>Agent</code>?</p>
+<p><strong>Question 8:</strong> what would be the <strong>best policy</strong> function for the <code>Env</code> environment?</p>
+<p><strong>Exercise 3:</strong> Implement the best policy function and use it to run the best agent. Compare its performance to the random agent.</p>
 </div>
 </div>
 </div>
@@ -7708,17 +7734,245 @@ An episode is considered a solution if it scores at least 200 points.</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">"LunarLander-v2"</span><span class="p">)</span>
-<span class="n">agent</span> <span class="o">=</span> <span class="n">Agent</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Instantiation</span>
+<span class="n">env</span> <span class="o">=</span> 
+<span class="n">agent</span> <span class="o">=</span> 
+<span class="n">run_experiment</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">best_policy</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+    <span class="k">pass</span> <span class="c1">#TODO</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Best_Agent</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+        <span class="k">pass</span>
 
-<span class="n">observation</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-<span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
-<span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">):</span>
-    <span class="n">action</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">choose_action</span><span class="p">(</span><span class="n">observation</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="o">=</span><span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="o">=</span><span class="n">truncated</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="n">info</span><span class="p">)</span>
-    <span class="n">observation</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
-    <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Cumulative Reward: </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">)</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">act</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">best_policy</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+<span class="c1"># Instantiation</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">Env</span><span class="p">()</span>
+<span class="n">my_random_agent</span> <span class="o">=</span> <span class="n">Agent</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="n">my_best_agent</span> <span class="o">=</span> <span class="n">Best_Agent</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+
+<span class="n">nb_experiment</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">sum_random_agent_rewards</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">sum_best_agent_rewards</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">exp</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nb_experiment</span><span class="p">):</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">random_agent_rewards</span> <span class="o">=</span> <span class="n">run_experiment</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">my_random_agent</span><span class="p">,</span> <span class="n">nb_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">best_agent_rewards</span> <span class="o">=</span> <span class="n">run_experiment</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">my_best_agent</span><span class="p">,</span> <span class="n">nb_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">sum_random_agent_rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">random_agent_rewards</span><span class="p">))</span>
+    <span class="n">sum_best_agent_rewards</span><span class="o">.</span> <span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">best_agent_rewards</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sum_random_agent_rewards</span><span class="p">,</span> <span class="s1">'o'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sum_best_agent_rewards</span><span class="p">,</span><span class="s1">'o'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Best agent vs Random agent / sum reward'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p><strong>Exercise 2:</strong> Compute the <strong>cumulative reward</strong> and <strong>discouted cumultative reward</strong> also known as the return value for each step of the trajectory. Provide the <strong>cumulative reward</strong> and <strong>discouted (0.8) cumultative reward</strong> at step 42.  You can use the <code>rewards</code> return by <code>run_experiment</code> bellow to help.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">run_experiment</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">agent</span><span class="p">,</span> <span class="n">nb_steps</span><span class="p">):</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">state</span><span class="p">]</span>
+    <span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nb_steps</span><span class="p">):</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">act</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="n">state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">+=</span> <span class="p">[</span><span class="n">action</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">state</span><span class="p">]</span>
+        <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">res</span><span class="p">,</span> <span class="n">rewards</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_cumulative_reward</span><span class="p">(</span><span class="n">rewards</span><span class="p">,</span> <span class="n">discout_factor</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">cumulative_rewards</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">rewards</span> <span class="o">=</span> <span class="n">run_experiment</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">agent</span><span class="p">,</span> <span class="n">nb_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">compute_cumulative_reward</span><span class="p">(</span><span class="n">rewards</span><span class="p">)[</span><span class="mi">42</span><span class="p">],</span> <span class="n">compute_cumulative_reward</span><span class="p">(</span><span class="n">rewards</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">)[</span><span class="mi">42</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Start-with-Gymnasium's-Environment">Start with Gymnasium's Environment<a class="anchor-link" href="#Start-with-Gymnasium's-Environment">¶</a></h2><p>In this section, we delve into the diverse range of environments offered by Gymnasium, which is recognized as the gold standard for defining reinforcement learning environments. Our exploration will provide insights into the dynamics of different systems and how they can be modeled and understood within the framework of reinforcement learning.</p>
+<p>Execute the code below to initiate and observe experiments across various environments: <strong>'FrozenLake-v1'</strong>, <strong>'CartPole-v1'</strong>, <strong>'LunarLanderContinuous-v2'</strong>, and <strong>'PongNoFrameskip-v4'</strong>. While these experiments run, visit the Gymnasium documentation to acquaint yourself with the detailed characteristics and nuances of each environment.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rl_introduction.rl_introduction.render_colab</span><span class="w"> </span><span class="kn">import</span> <span class="n">exp_render</span>
+<span class="c1"># Environments to run experiments on</span>
+<span class="n">env_render_configs</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">"name"</span><span class="p">:</span><span class="s1">'FrozenLake-v1'</span><span class="p">,</span> <span class="s2">"fps"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="s2">"nb_step"</span><span class="p">:</span><span class="mi">30</span><span class="p">},</span>
+ <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span><span class="s1">'CartPole-v1'</span><span class="p">,</span> <span class="s2">"fps"</span><span class="p">:</span><span class="mi">17</span><span class="p">,</span> <span class="s2">"nb_step"</span><span class="p">:</span><span class="mi">120</span><span class="p">},</span>
+  <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span><span class="s1">'LunarLanderContinuous-v2'</span><span class="p">,</span> <span class="s2">"fps"</span><span class="p">:</span><span class="mi">30</span><span class="p">,</span> <span class="s2">"nb_step"</span><span class="p">:</span><span class="mi">300</span><span class="p">},</span>
+   <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span><span class="s1">'PongNoFrameskip-v4'</span><span class="p">,</span> <span class="s2">"fps"</span><span class="p">:</span><span class="mi">40</span><span class="p">,</span> <span class="s2">"nb_step"</span><span class="p">:</span><span class="mi">800</span><span class="p">}]</span>
+<span class="k">for</span> <span class="n">env_render_config</span> <span class="ow">in</span> <span class="n">env_render_configs</span><span class="p">:</span>
+  <span class="n">exp_render</span><span class="p">(</span><span class="n">env_render_config</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Questions-on-Environment-Dynamics">Questions on Environment Dynamics<a class="anchor-link" href="#Questions-on-Environment-Dynamics">¶</a></h3><p><strong>Question 1:</strong> Actions and States
+For each environment (FrozenLake-v1, CartPole-v1, LunarLanderContinuous-v2, PongNoFrameskip-v4), identify the action space and state space. Specify whether each is discrete or continuous, and provide their sizes.</p>
+<p>FrozenLake-v1:</p>
+<p>Action Space:
+State Space:</p>
+<p>CartPole-v1:</p>
+<p>Action Space:
+State Space:</p>
+<p>LunarLanderContinuous-v2:</p>
+<p>Action Space:
+State Space:</p>
+<p>PongNoFrameskip-v4:</p>
+<p>Action Space:
+State Space:</p>
+<p><strong>Question 2:</strong> Transition Models
+For each environment, is the transition model deterministic or probabilistic?</p>
+<p>FrozenLake-v1:</p>
+<p>CartPole-v1:</p>
+<p>LunarLanderContinuous-v2:</p>
+<p>PongNoFrameskip-v4:</p>
+<p><strong>Question 3:</strong> Reward Functions
+Define the reward function for each environment.</p>
+<p>FrozenLake-v1:</p>
+<p>CartPole-v1:</p>
+<p>LunarLanderContinuous-v2:</p>
+<p>PongNoFrameskip-v4:</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Exercises-on-Agent-Performance">Exercises on Agent Performance<a class="anchor-link" href="#Exercises-on-Agent-Performance">¶</a></h3><p><strong>Exercise 1:</strong> Running an Experiment</p>
+<p>Instantiate a random agent along with the Gymnasium environment, and run the experiment until completion (terminated=True or truncated = True) for the following four environments: 'FrozenLake-v1', 'CartPole-v1', 'LunarLanderContinuous-v2', and 'PongNoFrameskip-v4'. Compute cumulative reward and number of step for each experiment.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gymnasium</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gym</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">RandomAgent</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">run_experiment</span><span class="p">(</span><span class="n">env_name</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="n">env_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'FrozenLake-v1'</span><span class="p">,</span> <span class="s1">'CartPole-v1'</span><span class="p">,</span> <span class="s1">'LunarLanderContinuous-v2'</span><span class="p">,</span> <span class="s1">'PongNoFrameskip-v4'</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">env_name</span> <span class="ow">in</span> <span class="n">env_names</span><span class="p">:</span>
+    <span class="n">rewards</span><span class="p">,</span> <span class="n">nb_step</span> <span class="o">=</span> <span class="n">run_experiment</span><span class="p">(</span><span class="n">env_name</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">env_name</span><span class="si">}</span><span class="s2"> cumulative reward: </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">)</span><span class="si">}</span><span class="s2">, number steps: </span><span class="si">{</span><span class="n">nb_step</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p><strong>Exercise 2:</strong> Running Experiments and compute cumulative reward
+Conduct 20 experiments for each environment using a random agent. For each environement display the cumulative reward with a discount factor of 0.95.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 </div>
 </div>

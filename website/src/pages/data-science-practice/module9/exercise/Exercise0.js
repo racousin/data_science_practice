@@ -4,9 +4,9 @@ import { Brain } from 'lucide-react';
 import DataInteractionPanel from 'components/DataInteractionPanel';
 
 const Exercise0 = () => {
-  const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module9/exercise/module13_exercise0.ipynb";
-  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module9/exercise/module13_exercise0.html";
-  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/data-science-practice/module9/exercise/module13_exercise0.ipynb";
+  const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module9/exercise/module9_exercise0.ipynb";
+  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module9/exercise/module9_exercise0.html";
+  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/data-science-practice/module9/exercise/module9_exercise0.ipynb";
 
   return (
     <>

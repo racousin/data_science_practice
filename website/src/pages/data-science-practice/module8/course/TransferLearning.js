@@ -3,15 +3,15 @@ import { Container, Grid, Card, Alert, List } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 import { FaLightbulb, FaCode, FaExclamationTriangle, FaTools, FaRocket } from "react-icons/fa";
 import { InlineMath, BlockMath } from 'react-katex';
+
 const TransferLearning = () => {
   return (
     <Container className="py-4">
       <h1>Transfer Learning in NLP</h1>
       {/* Section 1: Introduction */}
         <h2>1. Why Transfer Learning?</h2>
-        <Card className="my-4">
-          <Card.Body>
-            <Card.Title><FaLightbulb className="text-warning me-2" />Transfer Learning in NLP</Card.Title>
+        <Card className="my-4" p="lg">
+            <h3><FaLightbulb className="text-warning me-2" />Transfer Learning in NLP</h3>
             <p>
               Language models like BERT, GPT, and others are trained on billions of data points using millions of dollars worth of computing resources. These models have learned powerful representations of language through this extensive training.
             </p>
@@ -29,7 +29,6 @@ const TransferLearning = () => {
                 <strong>Achieve better performance with less data</strong> - Pre-trained models already understand language structure
               </List.Item>
             </List>
-          </Card.Body>
         </Card>
         <Alert variant="info" className="d-flex align-items-start">
           <FaExclamationTriangle className="me-2 mt-1" />
@@ -51,9 +50,8 @@ const TransferLearning = () => {
         <p>
           Let's see how to use popular pre-trained models in practice:
         </p>
-        <Card className="my-4">
-          <Card.Header as="h3">2.1 Using BERT for Text Classification</Card.Header>
-          <Card.Body>
+        <Card className="my-4" p="lg">
+          <h3>2.1 Using BERT for Text Classification</h3>
             <p>
               BERT produces contextual embeddings excellent for many NLP tasks. Here's how to use a pre-trained BERT model for classification:
             </p>
@@ -95,11 +93,9 @@ cls_embedding = last_hidden_state[:, 0, :]
 print(f"CLS embedding shape: {cls_embedding.shape}")
 # Output: CLS embedding shape: torch.Size([1, 768])`}
             />
-          </Card.Body>
         </Card>
-        <Card className="my-4">
-          <Card.Header as="h3">2.2 Using GPT for Text Generation</Card.Header>
-          <Card.Body>
+        <Card className="my-4" p="lg">
+          <h3>2.2 Using GPT for Text Generation</h3>
             <p>
               GPT models excel at text generation tasks. Here's how to use a pre-trained GPT-2 model:
             </p>
@@ -138,11 +134,9 @@ print(generated_text)
 # Example output: "Transfer learning is useful because it allows us to leverage pre-trained models 
 # that have been trained on massive datasets, saving computational resources and improving performance."`}
             />
-          </Card.Body>
         </Card>
-        <Card className="my-4">
-          <Card.Header as="h3">2.3 Zero-shot and Few-shot Learning with Instruction Models</Card.Header>
-          <Card.Body>
+        <Card className="my-4" p="lg">
+          <h3>2.3 Zero-shot and Few-shot Learning with Instruction Models</h3>
             <p>
               Instruction-tuned models like FLAN-T5 or instruction-tuned versions of GPT can perform tasks without fine-tuning:
             </p>
@@ -180,7 +174,6 @@ print(f"Response: {response}")
             <Alert variant="success" className="mt-3">
               <strong><FaLightbulb className="me-2" />Pro Tip:</strong> Instruction-tuned models can perform a wide variety of tasks without fine-tuning, making them extremely versatile. For specialized tasks, fine-tuning usually provides better results.
             </Alert>
-          </Card.Body>
         </Card>
       
       {/* Section 3: Fine-tuning Models */}
@@ -189,9 +182,8 @@ print(f"Response: {response}")
         <p>
           While pre-trained models provide strong capabilities out-of-the-box, fine-tuning them on domain-specific data often yields significant performance improvements.
         </p>
-        <Card className="my-4">
-          <Card.Header as="h3">3.1 Traditional Fine-tuning</Card.Header>
-          <Card.Body>
+        <Card className="my-4" p="lg">
+          <h3>3.1 Traditional Fine-tuning</h3>
             <p>
               Traditional fine-tuning updates all (or most) of the model's parameters. While effective, this approach requires significant computational resources.
             </p>
@@ -252,11 +244,9 @@ trainer.train()`}
                 </ul>
               </div>
             </Alert>
-          </Card.Body>
         </Card>
-        <Card className="my-4">
-          <Card.Header as="h3">3.2 Parameter-Efficient Fine-tuning with LoRA</Card.Header>
-          <Card.Body>
+        <Card className="my-4" p="lg">
+          <h3>3.2 Parameter-Efficient Fine-tuning with LoRA</h3>
             <p>
               Low-Rank Adaptation (LoRA) is a parameter-efficient fine-tuning technique that significantly reduces trainable parameters by adding small, trainable "update matrices" to frozen pre-trained weights.
             </p>
@@ -343,44 +333,38 @@ lora_model.save_pretrained("./lora_model_saved")`}
               <h4>Advantages of LoRA</h4>
               <Grid>
                 <Grid.Col span={{ md: 6 }}>
-                  <Card className="h-100">
-                    <Card.Body>
-                      <Card.Title className="d-flex align-items-center">
+                  <Card className="h-100" p="md">
+                      <h4 className="d-flex align-items-center">
                         <FaRocket className="text-success me-2" />
                         Efficiency Benefits
-                      </Card.Title>
+                      </h4>
                       <List>
                         <List.Item>Reduces trainable parameters by 99%+</List.Item>
                         <List.Item>Lower memory requirements</List.Item>
                         <List.Item>Faster training times</List.Item>
                         <List.Item>Smaller storage footprint (only save adapter weights)</List.Item>
                       </List>
-                    </Card.Body>
                   </Card>
                 </Grid.Col>
                 <Grid.Col span={{ md: 6 }}>
-                  <Card className="h-100">
-                    <Card.Body>
-                      <Card.Title className="d-flex align-items-center">
+                  <Card className="h-100" p="md">
+                      <h4 className="d-flex align-items-center">
                         <FaTools className="text-primary me-2" />
                         Practical Benefits
-                      </Card.Title>
+                      </h4>
                       <List>
                         <List.Item>Performance comparable to full fine-tuning</List.Item>
                         <List.Item>Reduces risk of catastrophic forgetting</List.Item>
                         <List.Item>Multiple adapters can be combined or switched</List.Item>
                         <List.Item>Enables fine-tuning of models too large for traditional methods</List.Item>
                       </List>
-                    </Card.Body>
                   </Card>
                 </Grid.Col>
               </Grid>
             </div>
-          </Card.Body>
         </Card>
-        <Card className="my-4">
-          <Card.Header as="h3">3.3 Other Parameter-Efficient Fine-tuning Methods</Card.Header>
-          <Card.Body>
+        <Card className="my-4" p="lg">
+          <h3>3.3 Other Parameter-Efficient Fine-tuning Methods</h3>
             <p>
               Beyond LoRA, several other parameter-efficient fine-tuning methods exist:
             </p>
@@ -445,11 +429,9 @@ qlora_model = get_peft_model(model, lora_config)
                 </ul>
               </div>
             </Alert>
-          </Card.Body>
         </Card>
-        <Card className="my-4">
-          <Card.Header as="h3">3.4 Comparing Fine-tuning Methods</Card.Header>
-          <Card.Body>
+        <Card className="my-4" p="lg">
+          <h3>3.4 Comparing Fine-tuning Methods</h3>
             <table className="table table-bordered">
               <thead className="table-light">
                 <tr>
@@ -504,10 +486,10 @@ qlora_model = get_peft_model(model, lora_config)
                 </tr>
               </tbody>
             </table>
-          </Card.Body>
         </Card>
       
     </Container>
   );
 };
+
 export default TransferLearning;

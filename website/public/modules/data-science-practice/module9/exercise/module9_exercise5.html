@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>module8_exercise0</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>module9_exercise5</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7510,7 +7510,7 @@ a.anchor-link {
 </style>
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<main><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=81a8b527-7487-478a-85fc-b9fe29c814ad">
+<main><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7518,369 +7518,25 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
-
-<span class="c1"># URLs of the files</span>
-<span class="n">sample_image_cat</span> <span class="o">=</span> <span class="s1">'https://www.raphaelcousin.com/modules/data-science-practice/module7/exercise/cat.jpg'</span>
-<span class="n">sample_image_dog</span> <span class="o">=</span> <span class="s1">'https://www.raphaelcousin.com/modules/data-science-practice/module7/exercise/dog.jpg'</span>
-
-<span class="c1"># Function to download a file</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">download_file</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">file_name</span><span class="p">):</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>  <span class="c1"># Ensure we notice bad responses</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s1">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Downloaded </span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s1"> from </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-
-<span class="c1"># Downloading the files</span>
-<span class="n">download_file</span><span class="p">(</span><span class="n">sample_image_cat</span><span class="p">,</span> <span class="s1">'cat.jpg'</span><span class="p">)</span>
-<span class="n">download_file</span><span class="p">(</span><span class="n">sample_image_dog</span><span class="p">,</span> <span class="s1">'dog.jpg'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">'ignore'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Downloaded cat.jpg from https://www.raphaelcousin.com/modules/data-science-practice/module7/exercise/cat.jpg
-Downloaded dog.jpg from https://www.raphaelcousin.com/modules/data-science-practice/module7/exercise/dog.jpg
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a747ec72-35a6-4df5-ba42-e34d696b0660">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="PartA:-Image-Processing-Warm-up">PartA: Image Processing Warm-up<a class="anchor-link" href="#PartA:-Image-Processing-Warm-up">¶</a></h1>
+<h3 id="Run-in-collab">Run in collab<a class="anchor-link" href="#Run-in-collab">¶</a></h3><p><a href="https://colab.research.google.com/github/racousin/data_science_practice/blob/master/website/public/modules/data-science-practice/module9/exercise/module9_exercise5.ipynb" target="_parent"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg"/></a></p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=7bb11dbc-d30b-497f-9917-a470b2251871">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span> <span class="c1"># !pip install opencv-python</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6e658dd7-be8d-4ce8-abd9-f27fe1d2a064">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Utility function to display images side by side</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">display_images</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">titles</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">)):</span>
-<span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    Display multiple images in a row</span>
-<span class="sd">    Args:</span>
-<span class="sd">        images: List of images to display</span>
-<span class="sd">        titles: List of titles for each image</span>
-<span class="sd">        figsize: Figure size (width, height)</span>
-<span class="sd">    """</span>
-    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">),</span> <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">axes</span> <span class="o">=</span> <span class="p">[</span><span class="n">axes</span><span class="p">]</span>
-    
-    <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">titles</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># Grayscale image</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'gray'</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>  <span class="c1"># Color image</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">))</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">'off'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=7a72b489-9b98-4f20-84ff-2e7f445b1e8e">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Choose your cat or dog team process one of the image</span>
-<span class="n">path</span> <span class="o">=</span> <span class="s2">"cat.jpg"</span>
-<span class="n">path</span> <span class="o">=</span> <span class="s2">"dog.jpg"</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d7b7a710-34f6-4d12-a76a-1b06b5dd07d1">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="1.-Reading-Images">1. Reading Images<a class="anchor-link" href="#1.-Reading-Images">¶</a></h1>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=4e30488b-25bc-4e25-9722-9751b6599d3c">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Read image using OpenCV (BGR format)</span>
-<span class="n">img_cv</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-
-<span class="c1"># Read image using PIL (RGB format)</span>
-<span class="n">img_pil</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-<span class="n">img_pil_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img_pil</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=e07de622-890b-4b29-a887-5cac8c014d92">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># What the size of the image (How many channels)? On how many bits are encodded the pixel?</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Image Dimensions:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Height: </span><span class="si">{</span><span class="n">height</span><span class="si">}</span><span class="s2"> pixels"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Width: </span><span class="si">{</span><span class="n">width</span><span class="si">}</span><span class="s2"> pixels"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Channels: </span><span class="si">{</span><span class="n">channels</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total pixels: </span><span class="si">{</span><span class="n">height</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">width</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"bits depth:"</span><span class="p">,</span> <span class="n">img_cv</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=61906cf3-5a9e-46a4-8a92-951c248ed481">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># What the average of Red, of Green, of Blue?</span>
-
-<span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
-    <span class="n">channel_data</span> <span class="o">=</span> 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Mean: </span><span class="si">{</span><span class="n">channel_data</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6b9d4635-9118-4352-9c9d-eb86d1a99071">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">display_images</span><span class="p">([</span><span class="n">img_cv</span><span class="p">],</span> <span class="p">[</span><span class="n">path</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1d6a50ac-927d-4cdb-8199-3ae9f93afba5">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="2.-Basic-Image-Manipulations">2. Basic Image Manipulations<a class="anchor-link" href="#2.-Basic-Image-Manipulations">¶</a></h1>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6cd70165-24e2-4aa2-95c4-be0df2d7adfe">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">channels</span> <span class="o">=</span> <span class="n">img_cv</span><span class="o">.</span><span class="n">shape</span>
-
-<span class="c1"># Convert to grayscale</span>
-<span class="n">img_gray</span> <span class="o">=</span> 
-
-<span class="c1"># Rotate image 45deg</span>
-<span class="c1"># Get the image center and create the rotation matrix</span>
-<span class="n">img_rotated</span> <span class="o">=</span> 
-
-<span class="c1"># Flip image horizontally</span>
-<span class="n">img_flipped</span> <span class="o">=</span> 
-
-<span class="c1"># Display original and manipulated images</span>
-<span class="n">display_images</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">img_cv</span><span class="p">,</span> <span class="n">img_gray</span><span class="p">,</span> <span class="n">img_rotated</span><span class="p">,</span> <span class="n">img_flipped</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">'Original'</span><span class="p">,</span> <span class="s1">'Grayscale'</span><span class="p">,</span> <span class="s1">'Rotated 45°'</span><span class="p">,</span> <span class="s1">'Flipped'</span><span class="p">]</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8af1da6b-a97f-42d5-b201-07ac91f59f48">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="3.-Channel-Splitting-and-Histograms">3. Channel Splitting and Histograms<a class="anchor-link" href="#3.-Channel-Splitting-and-Histograms">¶</a></h1>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6c0b200a-f023-4494-a638-4b9dc8358a77">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">img_cv</span><span class="p">)</span>
-
-<span class="c1"># Display individual channels</span>
-<span class="n">display_images</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">r</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">'Blue Channel'</span><span class="p">,</span> <span class="s1">'Green Channel'</span><span class="p">,</span> <span class="s1">'Red Channel'</span><span class="p">]</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=03a2e9de-05e3-4188-888b-b4e75a90250a">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Plot histograms for each channel</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'b'</span><span class="p">,</span> <span class="s1">'g'</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">]</span>
-<span class="n">channels</span> <span class="o">=</span> <span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">r</span><span class="p">]</span>
-<span class="n">titles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Blue'</span><span class="p">,</span> <span class="s1">'Green'</span><span class="p">,</span> <span class="s1">'Red'</span><span class="p">]</span>
-
-<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">channels</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">titles</span><span class="p">)):</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">channel</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s1"> Channel Histogram'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Pixel Value'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Frequency'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=99d083ff-c407-4630-8b0f-1f1cf3b218b3">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="4.-Basic-Image-Transformations">4. Basic Image Transformations<a class="anchor-link" href="#4.-Basic-Image-Transformations">¶</a></h1>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=79dd50b0-c608-4fa7-95be-33b160647431">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Resize image to width//2, height//2</span>
-<span class="n">img_resized</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">img_cv</span><span class="p">,</span> <span class="p">(</span><span class="n">width</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="n">height</span><span class="o">//</span><span class="mi">2</span><span class="p">))</span>
-
-<span class="c1"># Apply Gaussian blur</span>
-<span class="n">img_blurred</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">GaussianBlur</span><span class="p">(</span><span class="n">img_cv</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
-
-<span class="c1"># Apply edge detection</span>
-<span class="n">img_edges</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">Canny</span><span class="p">(</span><span class="n">img_cv</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
-
-<span class="c1"># Display transformations</span>
-<span class="n">display_images</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">img_resized</span><span class="p">,</span> <span class="n">img_blurred</span><span class="p">,</span> <span class="n">img_edges</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">'Resized (50%)'</span><span class="p">,</span> <span class="s1">'Gaussian Blur'</span><span class="p">,</span> <span class="s1">'Edge Detection'</span><span class="p">]</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=36f365f0-e6c6-443b-8dcc-d83262f57c05">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Part-B:-Convolution-Warm-up">Part B: Convolution Warm-up<a class="anchor-link" href="#Part-B:-Convolution-Warm-up">¶</a></h1>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=cec93bee-a324-4d27-81c0-675ed8b7fb08">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">convolve2d</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=285f5b91-eb65-4c0e-8a92-6a3310eec951">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7888,274 +7544,359 @@ Downloaded dog.jpg from https://www.raphaelcousin.com/modules/data-science-pract
 <div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">apply_kernel</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">kernel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    Apply convolution with given kernel and return result</span>
-<span class="sd">    """</span>
-    <span class="k">return</span> <span class="n">convolve2d</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'same'</span><span class="p">,</span> <span class="n">boundary</span><span class="o">=</span><span class="s1">'wrap'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>apt-get<span class="w"> </span>install<span class="w"> </span>swig<span class="w"> </span>build-essential<span class="w"> </span>python-dev<span class="w"> </span>python3-dev<span class="w"> </span>&gt;<span class="w"> </span>/dev/null<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">gym</span><span class="o">==</span><span class="m">0</span>.23.1<span class="w"> </span>&gt;<span class="w"> </span>/dev/null<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gymnasium</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># We will experiment our algo with CartPole</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">'CartPole-v0'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=353e147d-43de-4d81-9424-aee46ae9a6c2">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Simple-geometric-image-forms">Simple geometric image forms<a class="anchor-link" href="#Simple-geometric-image-forms">¶</a></h3>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=bb77f432-b6b4-4531-87d8-88613df8fc17">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">size</span> <span class="o">=</span> <span class="mi">20</span>
-<span class="c1"># Create a simple cross pattern</span>
-<span class="n">cross</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
-<span class="n">cross</span><span class="p">[</span><span class="n">size</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">cross</span><span class="p">[:,</span> <span class="n">size</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-
-<span class="c1"># Create a diagonal line</span>
-<span class="n">diagonal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
-
-<span class="c1"># Create a box</span>
-<span class="n">box</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
-<span class="n">box</span><span class="p">[</span><span class="n">size</span><span class="o">//</span><span class="mi">4</span><span class="p">:</span><span class="mi">3</span><span class="o">*</span><span class="n">size</span><span class="o">//</span><span class="mi">4</span><span class="p">,</span> <span class="n">size</span><span class="o">//</span><span class="mi">4</span><span class="p">:</span><span class="mi">3</span><span class="o">*</span><span class="n">size</span><span class="o">//</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-
-<span class="c1"># Display original patterns</span>
-<span class="n">display_images</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">cross</span><span class="p">,</span> <span class="n">diagonal</span><span class="p">,</span> <span class="n">box</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">'Cross Pattern'</span><span class="p">,</span> <span class="s1">'Diagonal Pattern'</span><span class="p">,</span> <span class="s1">'Box Pattern'</span><span class="p">]</span>
-<span class="p">)</span>
-</pre></div>
+<h3 id="Objective">Objective<a class="anchor-link" href="#Objective">¶</a></h3><p>Here we present an alternative of Q learning: policy gradient algorithm</p>
+<p><strong>Complete the TODO steps! Good luck!</strong></p>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[3], line 15</span>
-<span class="ansi-green-intense-fg ansi-bold">     12</span> box[size<span style="color: rgb(98,98,98)">/</span><span style="color: rgb(98,98,98)">/</span><span style="color: rgb(98,98,98)">4</span>:<span style="color: rgb(98,98,98)">3</span><span style="color: rgb(98,98,98)">*</span>size<span style="color: rgb(98,98,98)">/</span><span style="color: rgb(98,98,98)">/</span><span style="color: rgb(98,98,98)">4</span>, size<span style="color: rgb(98,98,98)">/</span><span style="color: rgb(98,98,98)">/</span><span style="color: rgb(98,98,98)">4</span>:<span style="color: rgb(98,98,98)">3</span><span style="color: rgb(98,98,98)">*</span>size<span style="color: rgb(98,98,98)">/</span><span style="color: rgb(98,98,98)">/</span><span style="color: rgb(98,98,98)">4</span>] <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(98,98,98)">1</span>
-<span class="ansi-green-intense-fg ansi-bold">     14</span> <span style="color: rgb(95,135,135)"># Display original patterns</span>
-<span class="ansi-green-fg">---&gt; 15</span> <span class="ansi-yellow-bg">display_images</span>(
-<span class="ansi-green-intense-fg ansi-bold">     16</span>     [cross, diagonal, box],
-<span class="ansi-green-intense-fg ansi-bold">     17</span>     [<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">Cross Pattern</span><span style="color: rgb(175,0,0)">'</span>, <span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">Diagonal Pattern</span><span style="color: rgb(175,0,0)">'</span>, <span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">Box Pattern</span><span style="color: rgb(175,0,0)">'</span>]
-<span class="ansi-green-intense-fg ansi-bold">     18</span> )
-
-<span class="ansi-red-fg">NameError</span>: name 'display_images' is not defined</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=864de37f-4640-428d-8b25-89538118ed63">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Common-convolution-kernels">Common convolution kernels<a class="anchor-link" href="#Common-convolution-kernels">¶</a></h3>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a36db00b-94bb-464c-bec1-75beb9828060">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Edge detection kernels</span>
-<span class="n">sobel_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-    <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-    <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
-    <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="p">])</span>
-
-<span class="n">sobel_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-    <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
-    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="p">])</span>
-
-<span class="c1"># Sharpening kernel</span>
-<span class="n">sharpen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-    <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
-    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="p">])</span>
-
-<span class="c1"># Gaussian blur kernel (3x3)</span>
-<span class="n">gaussian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-    <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mi">16</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">16</span><span class="p">],</span>
-    <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">8</span><span class="p">],</span>
-    <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mi">16</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">16</span><span class="p">]</span>
-<span class="p">])</span>
-
-<span class="c1"># Display kernels</span>
-<span class="n">display_images</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">sobel_x</span><span class="p">,</span> <span class="n">sobel_y</span><span class="p">,</span> <span class="n">sharpen</span><span class="p">,</span> <span class="n">gaussian</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">'Sobel X'</span><span class="p">,</span> <span class="s1">'Sobel Y'</span><span class="p">,</span> <span class="s1">'Sharpen'</span><span class="p">,</span> <span class="s1">'Gaussian'</span><span class="p">],</span>
-    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="p">)</span>
-</pre></div>
+<h1 id="Policy-gradient">Policy gradient<a class="anchor-link" href="#Policy-gradient">¶</a></h1><p>In policy gradient, we parametrize directly the policy $\pi_\theta$. It's especially welcome when the action space is continuous; in that case greedy policy based on Q-learning need to compute the $argmax_a Q(s,a)$. This could be pretty tedious. More generally, policy gradient algorithms are better to explore large state-action spaces.</p>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a2a51644-ecf7-46c4-849a-41e45505dda0">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Apply convolutions to cross pattern</span>
-<span class="c1"># ----------------------------------</span>
-<span class="c1"># Apply each kernel to the cross pattern</span>
-<span class="n">cross_sobel_x</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">cross</span><span class="p">,</span> <span class="n">sobel_x</span><span class="p">)</span>
-<span class="n">cross_sobel_y</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">cross</span><span class="p">,</span> <span class="n">sobel_y</span><span class="p">)</span>
-<span class="n">cross_sharpen</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">cross</span><span class="p">,</span> <span class="n">sharpen</span><span class="p">)</span>
-<span class="n">cross_gaussian</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">cross</span><span class="p">,</span> <span class="n">gaussian</span><span class="p">)</span>
-
-<span class="n">display_images</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">cross</span><span class="p">,</span> <span class="n">cross_sobel_x</span><span class="p">,</span> <span class="n">cross_sobel_y</span><span class="p">,</span> <span class="n">cross_sharpen</span><span class="p">,</span> <span class="n">cross_gaussian</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">'Original Cross'</span><span class="p">,</span> <span class="s1">'Sobel X'</span><span class="p">,</span> <span class="s1">'Sobel Y'</span><span class="p">,</span> <span class="s1">'Sharpened'</span><span class="p">,</span> <span class="s1">'Gaussian Blur'</span><span class="p">],</span>
-    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=398e4cd4-4784-411c-8ffe-460f971b13ed">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Apply convolutions to diagonal pattern</span>
-<span class="c1"># -------------------------------------</span>
-<span class="n">diag_sobel_x</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">diagonal</span><span class="p">,</span> <span class="n">sobel_x</span><span class="p">)</span>
-<span class="n">diag_sobel_y</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">diagonal</span><span class="p">,</span> <span class="n">sobel_y</span><span class="p">)</span>
-<span class="n">diag_sharpen</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">diagonal</span><span class="p">,</span> <span class="n">sharpen</span><span class="p">)</span>
-<span class="n">diag_gaussian</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">diagonal</span><span class="p">,</span> <span class="n">gaussian</span><span class="p">)</span>
-
-<span class="n">display_images</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">diagonal</span><span class="p">,</span> <span class="n">diag_sobel_x</span><span class="p">,</span> <span class="n">diag_sobel_y</span><span class="p">,</span> <span class="n">diag_sharpen</span><span class="p">,</span> <span class="n">diag_gaussian</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">'Original Diagonal'</span><span class="p">,</span> <span class="s1">'Sobel X'</span><span class="p">,</span> <span class="s1">'Sobel Y'</span><span class="p">,</span> <span class="s1">'Sharpened'</span><span class="p">,</span> <span class="s1">'Gaussian Blur'</span><span class="p">],</span>
-    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=2f292a6b-17a7-461b-b6bb-e8549dc09734">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Apply convolutions to box pattern</span>
-<span class="c1"># --------------------------------</span>
-<span class="n">box_sobel_x</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">sobel_x</span><span class="p">)</span>
-<span class="n">box_sobel_y</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">sobel_y</span><span class="p">)</span>
-<span class="n">box_sharpen</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">sharpen</span><span class="p">)</span>
-<span class="n">box_gaussian</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">gaussian</span><span class="p">)</span>
-
-<span class="n">display_images</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">box</span><span class="p">,</span> <span class="n">box_sobel_x</span><span class="p">,</span> <span class="n">box_sobel_y</span><span class="p">,</span> <span class="n">box_sharpen</span><span class="p">,</span> <span class="n">box_gaussian</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">'Original Box'</span><span class="p">,</span> <span class="s1">'Sobel X'</span><span class="p">,</span> <span class="s1">'Sobel Y'</span><span class="p">,</span> <span class="s1">'Sharpened'</span><span class="p">,</span> <span class="s1">'Gaussian Blur'</span><span class="p">],</span>
-    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=73e3686a-4cd1-4df5-9224-f61b525258bb">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Now Apply convolutions to your gray image (cat or dog)</span>
-
-<span class="n">catodog_sobel_x</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">img_gray</span><span class="p">,</span> <span class="n">sobel_x</span><span class="p">)</span>
-<span class="n">catodog_sobel_y</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">img_gray</span><span class="p">,</span> <span class="n">sobel_y</span><span class="p">)</span>
-<span class="n">catodog_sharpen</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">img_gray</span><span class="p">,</span> <span class="n">sharpen</span><span class="p">)</span>
-<span class="n">catodog_gaussian</span> <span class="o">=</span> <span class="n">apply_kernel</span><span class="p">(</span><span class="n">img_gray</span><span class="p">,</span> <span class="n">gaussian</span><span class="p">)</span>
-
-<span class="n">display_images</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">img_gray</span><span class="p">,</span> <span class="n">catodog_sobel_x</span><span class="p">,</span> <span class="n">catodog_sobel_y</span><span class="p">,</span> <span class="n">catodog_sharpen</span><span class="p">,</span> <span class="n">catodog_gaussian</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">'Original Box'</span><span class="p">,</span> <span class="s1">'Sobel X'</span><span class="p">,</span> <span class="s1">'Sobel Y'</span><span class="p">,</span> <span class="s1">'Sharpened'</span><span class="p">,</span> <span class="s1">'Gaussian Blur'</span><span class="p">],</span>
-    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=007cc399-fac1-4a5c-88a4-c01c139d4870">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Part-C:-Torch-Cnn-Warm-up">Part C: Torch Cnn Warm up<a class="anchor-link" href="#Part-C:-Torch-Cnn-Warm-up">¶</a></h1>
+<p>$J(\pi_{\theta}) = E_{\tau \sim \pi_{\theta}}[{G(\tau)}]$</p>
+<p>We can proof  that:</p>
+<p>$\nabla_{\theta} J(\pi_{\theta}) = E_{\tau \sim \pi_{\theta}}[{\sum_{t=0}^{T} \nabla_{\theta} \log \pi_{\theta}(a_t |s_t) G(\tau)}]$</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=27825ae3-dd28-4c11-95d8-c137fda3cf65">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<ol>
+<li>In discrete action space</li>
+</ol>
+<p>we parametrize $\pi$ with $\theta$, such as $\pi_\theta : S \rightarrow [0,1]^{dim(A)}$ and $\forall s$ $\sum \pi_\theta(s) = 1$.</p>
+<ol start="2">
+<li>In continous action space</li>
+</ol>
+<p>we parametrize $\pi$ with $\theta$, such as $\pi_\theta : S \rightarrow \mu^{dim(A)} \times \sigma^{dim(A)} =  \mathbb{R}^{dim(A)} \times \mathbb{R}_{+,*}^{dim(A)}$</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>In keras, it is easier to pass the loss than the gradient.</p>
+<ol>
+<li>It is possible to show that the loss for discrete action ($1,...,N$) with softmax policy is weighted negative binary crossentropy:
+$-G\sum_{j=1}^N[a^j\log(\hat{a}^j) + (1-a^j)\log(1 - \hat{a}^j)]$</li>
+</ol>
+<p>with:
+$a^j=1$ if $a_t = j$, $0$ otherwise.</p>
+<p>$\hat{a}^j = \pi_\theta(s_t)^j$.</p>
+<p>$G$ is the discounted empirical return $G_t = \sum_{k=0}^{T-t-1} \gamma^k R_{t+k+1}$ from state $s_t$ and $a_t$</p>
+<ol start="2">
+<li>It is possible to show that the loss for conitnous action ($1,...,N$) with multivariate Gaussian (identity Covariance) policy is given by:</li>
+</ol>
+<p>$-G\sum_{j=1}^N[(a^j - \hat{a}^j)^2]$</p>
+<p>$\hat{a}^j = \pi_\theta(s_t)^j$.</p>
+<p>see <a href="https://aleksispi.github.io/assets/pg_autodiff.pdf">https://aleksispi.github.io/assets/pg_autodiff.pdf</a> for more explanation</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h1 id="Reinforce---discrete-action">Reinforce - discrete action<a class="anchor-link" href="#Reinforce---discrete-action">¶</a></h1>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># get another image</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">optim</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="c1"># URLs of the files</span>
-<span class="n">sample_image_catanddog</span> <span class="o">=</span> <span class="s1">'https://www.raphaelcousin.com/modules/data-science-practice/module7/exercise/catanddog.jpg'</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PolicyNetwork</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">output_size</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Initialize the policy network.</span>
 
-<span class="c1"># Function to download a file</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">download_file</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">file_name</span><span class="p">):</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>  <span class="c1"># Ensure we notice bad responses</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s1">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Downloaded </span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s1"> from </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+<span class="sd">        Args:</span>
+<span class="sd">            input_size (int): Dimension of state space</span>
+<span class="sd">            hidden_size (int): Number of hidden units</span>
+<span class="sd">            output_size (int): Dimension of action space</span>
+<span class="sd">        """</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PolicyNetwork</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">output_size</span><span class="p">)</span>
 
-<span class="c1"># Downloading the files</span>
-<span class="n">download_file</span><span class="p">(</span><span class="n">sample_image_catanddog</span><span class="p">,</span> <span class="s1">'catanddog.jpg'</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Forward pass through the network.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x (torch.Tensor): Input state</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            torch.Tensor: Action probabilities</span>
+<span class="sd">        """</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc3</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">REINFORCE</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">hidden_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.99</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Initialize the REINFORCE agent.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            env: Gymnasium environment</span>
+<span class="sd">            hidden_size (int): Number of hidden units in the policy network</span>
+<span class="sd">            learning_rate (float): Learning rate for optimization</span>
+<span class="sd">            gamma (float): Discount factor</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma</span>
+
+        <span class="c1"># Initialize policy network</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">policy</span> <span class="o">=</span> <span class="n">PolicyNetwork</span><span class="p">(</span>
+            <span class="n">input_size</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">hidden_size</span><span class="o">=</span><span class="n">hidden_size</span><span class="p">,</span>
+            <span class="n">output_size</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">policy</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">)</span>
+
+        <span class="c1"># Storage for trajectory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">states</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">select_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Select an action using the policy network.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            state (numpy.ndarray): Current state</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Selected action</span>
+<span class="sd">        """</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="n">probs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">policy</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="n">action_dist</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">probs</span><span class="p">)</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="n">action_dist</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+
+        <span class="c1"># Store log probability for training</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_probs</span> <span class="o">=</span> <span class="n">action_dist</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">action</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">store_transition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">reward</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Store state, action, and reward for the current transition.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            state (numpy.ndarray): Current state</span>
+<span class="sd">            action (int): Selected action</span>
+<span class="sd">            reward (float): Received reward</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">states</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_returns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Calculate discounted returns for the episode.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            torch.Tensor: Tensor of discounted returns</span>
+<span class="sd">        """</span>
+        <span class="n">returns</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Calculate returns backwards</span>
+        <span class="k">for</span> <span class="n">reward</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rewards</span><span class="p">):</span>
+            <span class="n">G</span> <span class="o">=</span> <span class="n">reward</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">*</span> <span class="n">G</span>
+            <span class="n">returns</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">G</span><span class="p">)</span>
+
+        <span class="n">returns</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">returns</span><span class="p">)</span>
+
+        <span class="c1"># Normalize returns for stability</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">returns</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Only normalize if we have more than one return</span>
+            <span class="n">returns</span> <span class="o">=</span> <span class="p">(</span><span class="n">returns</span> <span class="o">-</span> <span class="n">returns</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="p">(</span><span class="n">returns</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">returns</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Update the policy network using the REINFORCE algorithm.</span>
+<span class="sd">        """</span>
+        <span class="n">returns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_returns</span><span class="p">()</span>
+
+        <span class="c1"># Calculate policy loss</span>
+        <span class="n">policy_loss</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">log_prob</span><span class="p">,</span> <span class="n">G</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">saved_log_probs</span><span class="p">,</span> <span class="n">returns</span><span class="p">):</span>
+            <span class="n">policy_loss</span> <span class="o">+=</span> <span class="o">-</span><span class="n">log_prob</span> <span class="o">*</span> <span class="n">G</span>
+
+        <span class="c1"># Optimize the policy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">policy_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+        <span class="c1"># Clear trajectory storage</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">states</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saved_log_probs</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_episodes</span><span class="p">,</span> <span class="n">max_steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Train the agent for a specified number of episodes.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            num_episodes (int): Number of episodes to train</span>
+<span class="sd">            max_steps (int): Maximum steps per episode</span>
+<span class="sd">        """</span>
+        <span class="n">episode_rewards</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">episode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_episodes</span><span class="p">):</span>
+            <span class="n">state</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+            <span class="n">episode_reward</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">saved_log_probs</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_steps</span><span class="p">):</span>
+                <span class="c1"># Select action</span>
+                <span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_action</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">saved_log_probs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_probs</span><span class="p">)</span>
+
+                <span class="c1"># Take action in environment</span>
+                <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+                <span class="n">done</span> <span class="o">=</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span>
+
+                <span class="c1"># Store transition</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">store_transition</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">reward</span><span class="p">)</span>
+                <span class="n">episode_reward</span> <span class="o">+=</span> <span class="n">reward</span>
+
+                <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
+                    <span class="k">break</span>
+
+                <span class="n">state</span> <span class="o">=</span> <span class="n">next_state</span>
+
+            <span class="c1"># Update policy after episode</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_policy</span><span class="p">()</span>
+            <span class="n">episode_rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">episode_reward</span><span class="p">)</span>
+
+            <span class="c1"># Print episode statistics</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">episode</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">avg_reward</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">episode_rewards</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">:])</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Episode </span><span class="si">{</span><span class="n">episode</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">, Average Reward (last 10): </span><span class="si">{</span><span class="n">avg_reward</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">episode_rewards</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create environment</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">'CartPole-v1'</span><span class="p">)</span>
+
+<span class="c1"># Initialize and train agent</span>
+<span class="n">agent</span> <span class="o">=</span> <span class="n">REINFORCE</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="n">rewards</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">num_episodes</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+
+<span class="c1"># Test the trained policy</span>
+<span class="n">state</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>  <span class="c1"># Gymnasium returns (state, info)</span>
+<span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">total_reward</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">select_action</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+    <span class="n">state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>  <span class="c1"># Gymnasium step API</span>
+    <span class="n">done</span> <span class="o">=</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span>
+    <span class="n">total_reward</span> <span class="o">+=</span> <span class="n">reward</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Test Episode Reward: </span><span class="si">{</span><span class="n">total_reward</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -8168,79 +7909,74 @@ Cell <span class="ansi-green-fg">In[3], line 15</span>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Downloaded catanddog.jpg from https://www.raphaelcousin.com/modules/data-science-practice/module7/exercise/catanddog.jpg
+<pre>Episode 10, Average Reward (last 10): 18.50
+Episode 20, Average Reward (last 10): 19.80
+Episode 30, Average Reward (last 10): 24.40
+Episode 40, Average Reward (last 10): 23.90
+Episode 50, Average Reward (last 10): 28.10
+Episode 60, Average Reward (last 10): 43.20
+Episode 70, Average Reward (last 10): 32.20
+Episode 80, Average Reward (last 10): 34.40
+Episode 90, Average Reward (last 10): 67.80
+Episode 100, Average Reward (last 10): 69.30
+Episode 110, Average Reward (last 10): 79.70
+Episode 120, Average Reward (last 10): 103.10
+Episode 130, Average Reward (last 10): 108.50
+Episode 140, Average Reward (last 10): 135.10
+Episode 150, Average Reward (last 10): 166.30
+Episode 160, Average Reward (last 10): 247.10
+Episode 170, Average Reward (last 10): 323.90
+Episode 180, Average Reward (last 10): 197.60
+Episode 190, Average Reward (last 10): 199.00
+Episode 200, Average Reward (last 10): 243.50
+Episode 210, Average Reward (last 10): 320.00
+Episode 220, Average Reward (last 10): 324.70
+Episode 230, Average Reward (last 10): 149.80
+Episode 240, Average Reward (last 10): 284.00
+Episode 250, Average Reward (last 10): 345.40
+Episode 260, Average Reward (last 10): 161.90
+Episode 270, Average Reward (last 10): 80.90
+Episode 280, Average Reward (last 10): 71.10
+Episode 290, Average Reward (last 10): 114.00
+Episode 300, Average Reward (last 10): 101.30
+Episode 310, Average Reward (last 10): 92.60
+Episode 320, Average Reward (last 10): 126.60
+Episode 330, Average Reward (last 10): 104.20
+Episode 340, Average Reward (last 10): 126.40
+Episode 350, Average Reward (last 10): 152.00
+Episode 360, Average Reward (last 10): 157.40
+Episode 370, Average Reward (last 10): 146.60
+Episode 380, Average Reward (last 10): 237.60
+Episode 390, Average Reward (last 10): 416.10
+Episode 400, Average Reward (last 10): 484.80
+Episode 410, Average Reward (last 10): 492.40
+Episode 420, Average Reward (last 10): 434.80
+Episode 430, Average Reward (last 10): 249.00
+Episode 440, Average Reward (last 10): 159.10
+Episode 450, Average Reward (last 10): 411.40
+Episode 460, Average Reward (last 10): 418.10
+Episode 470, Average Reward (last 10): 489.10
+Episode 480, Average Reward (last 10): 286.90
+Episode 490, Average Reward (last 10): 112.70
+Episode 500, Average Reward (last 10): 123.80
+Test Episode Reward: 143.0
 </pre>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=befad088-9084-4e26-9907-cc30c56b7b42">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=228cb00e-6dd1-4ede-b091-0fa6d5ab7f0a">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># read image</span>
-<span class="n">image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">"catanddog.jpg"</span><span class="p">)</span>
-<span class="n">gray_image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
-<span class="c1"># Get dimensions of the image</span>
-<span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">channels</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span>
-
-<span class="c1"># Print the dimensions</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Width: </span><span class="si">{</span><span class="n">width</span><span class="si">}</span><span class="s2">, Height: </span><span class="si">{</span><span class="n">height</span><span class="si">}</span><span class="s2">, Channels: </span><span class="si">{</span><span class="n">channels</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Get dimensions of the image</span>
-<span class="n">height</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">gray_image</span><span class="o">.</span><span class="n">shape</span>
-
-<span class="c1"># Print the dimensions</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Width: </span><span class="si">{</span><span class="n">width</span><span class="si">}</span><span class="s2">, Height: </span><span class="si">{</span><span class="n">height</span><span class="si">}</span><span class="s2">, Channels: 1"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b2b36730-c78e-485f-8443-2f4f218534c6">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">display_images</span><span class="p">([</span><span class="n">image</span><span class="p">,</span> <span class="n">gray_image</span><span class="p">],</span> <span class="p">[</span><span class="s1">'image'</span><span class="p">,</span> <span class="s1">'gray_image'</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4ad835de-7520-42b5-890b-8e9fd6c4a454">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Complete-the-function-to-get-the-output-size-after-a-conv-layer-and-after-a-pool-layer-and-define-it-in-torch-to-validate-the-size">Complete the function to get the output size after a conv layer and after a pool layer and define it in torch to validate the size<a class="anchor-link" href="#Complete-the-function-to-get-the-output-size-after-a-conv-layer-and-after-a-pool-layer-and-define-it-in-torch-to-validate-the-size">¶</a></h3>
+<h3 id="TODO-:-Try-different-hyerparamters-models-(number-of-layers,-nodes)-and-compare-learning-speed-and-stability">TODO : Try different hyerparamters models (number of layers, nodes) and compare learning speed and stability<a class="anchor-link" href="#TODO-:-Try-different-hyerparamters-models-(number-of-layers,-nodes)-and-compare-learning-speed-and-stability">¶</a></h3>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=f531cd4b-fccf-4713-ae06-d58c32bc8f20">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8248,215 +7984,654 @@ Cell <span class="ansi-green-fg">In[3], line 15</span>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch</span><span class="w"> </span><span class="kn">import</span> <span class="n">nn</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create environment</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">'CartPole-v1'</span><span class="p">)</span>
+
+<span class="c1"># Initialize and train agent</span>
+<span class="n">agent</span> <span class="o">=</span> <span class="n">REINFORCE</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="n">rewards</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">num_episodes</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+
+<span class="c1"># Test the trained policy</span>
+<span class="n">state</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>  <span class="c1"># Gymnasium returns (state, info)</span>
+<span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">total_reward</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">select_action</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+    <span class="n">state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>  <span class="c1"># Gymnasium step API</span>
+    <span class="n">done</span> <span class="o">=</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span>
+    <span class="n">total_reward</span> <span class="o">+=</span> <span class="n">reward</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Test Episode Reward: </span><span class="si">{</span><span class="n">total_reward</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=9ee920b2-3e4e-4277-a643-58dfe5a9ab09">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Make the image tensors</span>
-<span class="n">x_rgb</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-<span class="n">x_gray</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">gray_image</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7a7554b5-fe5a-431e-abfd-dc521931abcf">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Conv-Layers">Conv Layers<a class="anchor-link" href="#Conv-Layers">¶</a></h3>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=308a26cd-a119-439c-84e6-de054f1e7e4d">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_conv_output_size</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">padding</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Calculate output size of convolution layer"""</span>
-    <span class="k">return</span> <span class="n">TODO</span>
-</pre></div>
+<h1 id="other-improvements">other improvements<a class="anchor-link" href="#other-improvements">¶</a></h1>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=3fdad82b-272b-4e0a-9f7a-58d1835fd60a">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># A. Configuration RGB : Small kernel (3), no padding, stride 1, 1 filter</span>
-<span class="n">conv1_rgb</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="p">)</span>
-<span class="n">out_size_a</span> <span class="o">=</span> <span class="n">calculate_conv_output_size</span><span class="p">(</span><span class="n">input_size</span><span class="o">=</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Config A - Small kernel (3x3), no padding, stride 1:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Output size: </span><span class="si">{</span><span class="n">out_size_a</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Verification with torch:"</span><span class="p">)</span>
-<span class="n">y_a</span> <span class="o">=</span> <span class="n">conv1_rgb</span><span class="p">(</span><span class="n">x_rgb</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Actual output shape: </span><span class="si">{</span><span class="n">y_a</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=1d476038-7e3d-4ef6-ba61-61dd48298d4f">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># B. Configuration RGB : Larger kernel, padding, stride 2</span>
-<span class="n">conv2_rgb</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="p">)</span>
-<span class="n">out_size_b</span> <span class="o">=</span> <span class="n">calculate_conv_output_size</span><span class="p">(</span><span class="n">input_size</span><span class="o">=</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Config B - Larger kernel (5x5), padding 2, stride 2:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Output size: </span><span class="si">{</span><span class="n">out_size_b</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Verification with torch:"</span><span class="p">)</span>
-<span class="n">y_b</span> <span class="o">=</span> <span class="n">conv2_rgb</span><span class="p">(</span><span class="n">x_rgb</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Actual output shape: </span><span class="si">{</span><span class="n">y_b</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=3153b27f-ccf9-450b-a1bf-cd3c37ef7cde">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># C. Configuration gray : Medium kernel, small padding, stride 1</span>
-<span class="n">conv1_gray</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="p">)</span>
-<span class="n">out_size_c</span> <span class="o">=</span> <span class="n">calculate_conv_output_size</span><span class="p">(</span><span class="n">input_size</span><span class="o">=</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Config C - Medium kernel (4x4), padding 1, stride 1:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Output size: </span><span class="si">{</span><span class="n">out_size_c</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Verification with torch:"</span><span class="p">)</span>
-<span class="n">y_c</span> <span class="o">=</span> <span class="n">conv1_gray</span><span class="p">(</span><span class="n">x_gray</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Actual output shape: </span><span class="si">{</span><span class="n">y_c</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4e42dc19-3e7e-4a8b-bd84-07149bd4d9f5">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Pool-Layers">Pool Layers<a class="anchor-link" href="#Pool-Layers">¶</a></h3>
+<h3 id="GAE(general-advantage-estimation)-actor-critic">GAE(general advantage estimation) actor critic<a class="anchor-link" href="#GAE(general-advantage-estimation)-actor-critic">¶</a></h3><p>We can rewrite the policy gradient</p>
+<p>$\nabla_{\theta} J(\pi_{\theta}) = E_{\tau \sim \pi_{\theta}}[{\sum_{t=0}^{T} \nabla_{\theta} \log \pi_{\theta}(a_t |s_t) \Phi_t}]$,</p>
+<p>whith $\Phi_t$ could be any of:</p>
+<ul>
+<li>$\Phi_t =  G_t$</li>
+<li>$\Phi_t = \sum_{t'=t}^T R_{t+1} - V(s_t)$</li>
+<li>$\Phi_t = \sum_{t'=t}^T R_{t+1} - Q(s_t,a_t)$</li>
+</ul>
+<p>For the last 2 cases we need to estimate V or Q (the critics). We do it as the same way at deepQ.
+<a href="https://arxiv.org/pdf/1506.02438.pdf">https://arxiv.org/pdf/1506.02438.pdf</a></p>
+<p>$\phi_k = \arg \min_{\phi} E_{s_t, G_t \sim \pi_k}[{\left( V_{\phi}(s_t) - G_t \right)^2}]$</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=36c8c5e6-38a3-4a4b-94ce-7698f8ae6dae">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_pool_output_size</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">stride</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Calculate output size of pooling layer"""</span>
-    <span class="k">return</span> <span class="n">TODO</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=fbe3b05a-a698-42bc-8252-f3dc81cf29ba">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Max Pooling after Conv Layer A (RGB)</span>
-<span class="n">pool_a</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="n">kernel_size</span><span class="o">=</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="p">)</span>
-<span class="n">pool_size_a</span> <span class="o">=</span> <span class="n">calculate_pool_output_size</span><span class="p">(</span><span class="n">input_size</span><span class="o">=</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Pooling after Config A:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Output size: </span><span class="si">{</span><span class="n">pool_size_a</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="n">y_pool_a</span> <span class="o">=</span> <span class="n">pool_a</span><span class="p">(</span><span class="n">y_a</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Actual output shape: </span><span class="si">{</span><span class="n">y_pool_a</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">optim</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gymnasium</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gym</span>
 
-<span class="c1"># Max Pooling after Conv Layer C (Grayscale)</span>
-<span class="n">pool_c</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="n">kernel_size</span><span class="o">=</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="p">)</span>
-<span class="n">pool_size_c</span> <span class="o">=</span> <span class="n">calculate_pool_output_size</span><span class="p">(</span><span class="n">input_size</span><span class="o">=</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Pooling after Config C:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Output size: </span><span class="si">{</span><span class="n">pool_size_c</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="n">y_pool_c</span> <span class="o">=</span> <span class="n">pool_c</span><span class="p">(</span><span class="n">y_c</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Actual output shape: </span><span class="si">{</span><span class="n">y_pool_c</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ActorNetwork</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">output_size</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Actor network that outputs action probabilities.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            input_size (int): State dimension</span>
+<span class="sd">            hidden_size (int): Number of hidden units</span>
+<span class="sd">            output_size (int): Action dimension</span>
+<span class="sd">        """</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ActorNetwork</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">output_size</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Forward pass through the actor network.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            state (torch.Tensor): Input state</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            torch.Tensor: Action probabilities</span>
+<span class="sd">        """</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">state</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">action_probs</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc3</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">action_probs</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CriticNetwork</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Critic network that estimates the value function.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            input_size (int): State dimension</span>
+<span class="sd">            hidden_size (int): Number of hidden units</span>
+<span class="sd">        """</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">CriticNetwork</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Forward pass through the critic network.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            state (torch.Tensor): Input state</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            torch.Tensor: Estimated state value</span>
+<span class="sd">        """</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">state</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ActorCritic</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">hidden_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">actor_lr</span><span class="o">=</span><span class="mf">3e-4</span><span class="p">,</span> <span class="n">critic_lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.99</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Initialize the Actor-Critic agent.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            env: Gymnasium environment</span>
+<span class="sd">            hidden_size (int): Number of hidden units in networks</span>
+<span class="sd">            actor_lr (float): Learning rate for actor network</span>
+<span class="sd">            critic_lr (float): Learning rate for critic network</span>
+<span class="sd">            gamma (float): Discount factor</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma</span>
+
+        <span class="c1"># Initialize actor network</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actor</span> <span class="o">=</span> <span class="n">ActorNetwork</span><span class="p">(</span>
+            <span class="n">input_size</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">hidden_size</span><span class="o">=</span><span class="n">hidden_size</span><span class="p">,</span>
+            <span class="n">output_size</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Initialize critic network</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic</span> <span class="o">=</span> <span class="n">CriticNetwork</span><span class="p">(</span>
+            <span class="n">input_size</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">hidden_size</span><span class="o">=</span><span class="n">hidden_size</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Setup optimizers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actor_optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actor</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">actor_lr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic_optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">critic</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">critic_lr</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">select_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Select an action using the actor network.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            state (numpy.ndarray): Current state</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: Selected action and log probability</span>
+<span class="sd">        """</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="n">action_probs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">actor</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">action_probs</span><span class="p">)</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+        <span class="n">log_prob</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">action</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">log_prob</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Estimate the value of a state using the critic network.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            state (numpy.ndarray): Input state</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            torch.Tensor: Estimated state value</span>
+<span class="sd">        """</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">action_log_prob</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">done</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Update both actor and critic networks.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            state (numpy.ndarray): Current state</span>
+<span class="sd">            action_log_prob (torch.Tensor): Log probability of taken action</span>
+<span class="sd">            reward (float): Received reward</span>
+<span class="sd">            next_state (numpy.ndarray): Next state</span>
+<span class="sd">            done (bool): Whether episode has terminated</span>
+<span class="sd">        """</span>
+        <span class="c1"># Convert to tensors</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="n">next_state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">next_state</span><span class="p">)</span>
+        <span class="n">reward</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">([</span><span class="n">reward</span><span class="p">])</span>
+
+        <span class="c1"># Get current and next state values</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="n">next_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic</span><span class="p">(</span><span class="n">next_state</span><span class="p">)</span>
+
+        <span class="c1"># Calculate TD error and value loss</span>
+        <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
+            <span class="n">expected_value</span> <span class="o">=</span> <span class="n">reward</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">expected_value</span> <span class="o">=</span> <span class="n">reward</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">*</span> <span class="n">next_value</span>
+
+        <span class="n">advantage</span> <span class="o">=</span> <span class="n">expected_value</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span> <span class="o">-</span> <span class="n">value</span>
+        <span class="n">critic_loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">expected_value</span><span class="o">.</span><span class="n">detach</span><span class="p">())</span>
+
+        <span class="c1"># Calculate actor loss</span>
+        <span class="n">actor_loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">action_log_prob</span> <span class="o">*</span> <span class="n">advantage</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+
+        <span class="c1"># Update critic</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic_optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">critic_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critic_optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+        <span class="c1"># Update actor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actor_optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">actor_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actor_optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">actor_loss</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">critic_loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_episodes</span><span class="p">,</span> <span class="n">max_steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Train the agent for a specified number of episodes.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            num_episodes (int): Number of episodes to train</span>
+<span class="sd">            max_steps (int): Maximum steps per episode</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: Episode rewards</span>
+<span class="sd">        """</span>
+        <span class="n">episode_rewards</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">episode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_episodes</span><span class="p">):</span>
+            <span class="n">state</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+            <span class="n">episode_reward</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">actor_losses</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">critic_losses</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_steps</span><span class="p">):</span>
+                <span class="c1"># Select and perform action</span>
+                <span class="n">action</span><span class="p">,</span> <span class="n">action_log_prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_action</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+                <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+                <span class="n">done</span> <span class="o">=</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span>
+
+                <span class="c1"># Update networks</span>
+                <span class="n">actor_loss</span><span class="p">,</span> <span class="n">critic_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                    <span class="n">state</span><span class="p">,</span> <span class="n">action_log_prob</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">done</span>
+                <span class="p">)</span>
+                <span class="n">actor_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">actor_loss</span><span class="p">)</span>
+                <span class="n">critic_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">critic_loss</span><span class="p">)</span>
+
+                <span class="n">episode_reward</span> <span class="o">+=</span> <span class="n">reward</span>
+
+                <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
+                    <span class="k">break</span>
+
+                <span class="n">state</span> <span class="o">=</span> <span class="n">next_state</span>
+
+            <span class="n">episode_rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">episode_reward</span><span class="p">)</span>
+
+            <span class="c1"># Print episode statistics</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">episode</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">avg_reward</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">episode_rewards</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">:])</span>
+                <span class="n">avg_actor_loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">actor_losses</span><span class="p">)</span>
+                <span class="n">avg_critic_loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">critic_losses</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Episode </span><span class="si">{</span><span class="n">episode</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Average Reward (last 10): </span><span class="si">{</span><span class="n">avg_reward</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Average Actor Loss: </span><span class="si">{</span><span class="n">avg_actor_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Average Critic Loss: </span><span class="si">{</span><span class="n">avg_critic_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">episode_rewards</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c2952f1d-e19d-471c-bd08-41d3008d7086">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Now-get-the-flaten-size-after-the-pooling-in-order-to-add-the-fully-connected-layer">Now get the flaten size after the pooling in order to add the fully connected layer<a class="anchor-link" href="#Now-get-the-flaten-size-after-the-pooling-in-order-to-add-the-fully-connected-layer">¶</a></h3>
+<h3 id="TODO-:-Try-different-hyerparamters-models-(number-of-layers,-nodes)-and-compare-learning-speed-and-stability">TODO : Try different hyerparamters models (number of layers, nodes) and compare learning speed and stability<a class="anchor-link" href="#TODO-:-Try-different-hyerparamters-models-(number-of-layers,-nodes)-and-compare-learning-speed-and-stability">¶</a></h3>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=948f34c0-d68b-40a0-bf67-2ab26fa3922d">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 4. Flattening Layer</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== Flattening Layer Outputs ==="</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create environment</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">'CartPole-v1'</span><span class="p">)</span>
 
-<span class="c1"># Flatten pooled output from RGB configuration</span>
-<span class="n">flat_size_rgb</span> <span class="o">=</span> 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Flattened size after RGB conv+pool:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Output size: </span><span class="si">{</span><span class="n">flat_size_rgb</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="n">y_flat_rgb</span> <span class="o">=</span> <span class="n">y_pool_a</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">y_pool_a</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Actual output shape: </span><span class="si">{</span><span class="n">y_flat_rgb</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="c1"># Initialize and train agent</span>
+<span class="n">agent</span> <span class="o">=</span> <span class="n">ActorCritic</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="n">rewards</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">num_episodes</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
 
-<span class="c1"># Flatten pooled output from Grayscale configuration</span>
-<span class="n">flat_size_gray</span> <span class="o">=</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Flattened size after Grayscale conv+pool:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Output size: </span><span class="si">{</span><span class="n">flat_size_gray</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="n">y_flat_gray</span> <span class="o">=</span> <span class="n">y_pool_c</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">y_pool_c</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Actual output shape: </span><span class="si">{</span><span class="n">y_flat_gray</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="c1"># Test the trained policy</span>
+<span class="n">state</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">total_reward</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+    <span class="n">action</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">select_action</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+    <span class="n">state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+    <span class="n">done</span> <span class="o">=</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span>
+    <span class="n">total_reward</span> <span class="o">+=</span> <span class="n">reward</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Test Episode Reward: </span><span class="si">{</span><span class="n">total_reward</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=07701cb7-2981-49f9-8ae7-b1d2b87a04b6">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Episode 10
+Average Reward (last 10): 18.70
+Average Actor Loss: 0.1906
+Average Critic Loss: 10.4676
+
+Episode 20
+Average Reward (last 10): 18.20
+Average Actor Loss: -0.1193
+Average Critic Loss: 17.5052
+
+Episode 30
+Average Reward (last 10): 20.90
+Average Actor Loss: 0.0156
+Average Critic Loss: 11.0133
+
+Episode 40
+Average Reward (last 10): 16.70
+Average Actor Loss: -0.1793
+Average Critic Loss: 14.3520
+
+Episode 50
+Average Reward (last 10): 28.30
+Average Actor Loss: -0.0947
+Average Critic Loss: 8.5526
+
+Episode 60
+Average Reward (last 10): 47.20
+Average Actor Loss: 0.0546
+Average Critic Loss: 12.8212
+
+Episode 70
+Average Reward (last 10): 49.40
+Average Actor Loss: -0.2119
+Average Critic Loss: 18.3696
+
+Episode 80
+Average Reward (last 10): 65.60
+Average Actor Loss: -0.0920
+Average Critic Loss: 19.0536
+
+Episode 90
+Average Reward (last 10): 70.20
+Average Actor Loss: 0.0877
+Average Critic Loss: 17.7627
+
+Episode 100
+Average Reward (last 10): 80.20
+Average Actor Loss: -0.4060
+Average Critic Loss: 10.5324
+
+Episode 110
+Average Reward (last 10): 89.60
+Average Actor Loss: -0.6349
+Average Critic Loss: 1.5154
+
+Episode 120
+Average Reward (last 10): 102.20
+Average Actor Loss: -0.1409
+Average Critic Loss: 0.6608
+
+Episode 130
+Average Reward (last 10): 230.80
+Average Actor Loss: -0.0236
+Average Critic Loss: 6.6430
+
+Episode 140
+Average Reward (last 10): 92.20
+Average Actor Loss: -0.2446
+Average Critic Loss: 0.7899
+
+Episode 150
+Average Reward (last 10): 64.20
+Average Actor Loss: -0.0620
+Average Critic Loss: 0.4028
+
+Episode 160
+Average Reward (last 10): 71.30
+Average Actor Loss: -0.0152
+Average Critic Loss: 0.3483
+
+Episode 170
+Average Reward (last 10): 94.40
+Average Actor Loss: -0.0811
+Average Critic Loss: 4.3596
+
+Episode 180
+Average Reward (last 10): 284.70
+Average Actor Loss: 0.0203
+Average Critic Loss: 3.6730
+
+Episode 190
+Average Reward (last 10): 248.60
+Average Actor Loss: -0.0554
+Average Critic Loss: 0.3524
+
+Episode 200
+Average Reward (last 10): 334.00
+Average Actor Loss: -1.7016
+Average Critic Loss: 275.6510
+
+Episode 210
+Average Reward (last 10): 405.00
+Average Actor Loss: -0.1424
+Average Critic Loss: 16.6424
+
+Episode 220
+Average Reward (last 10): 500.00
+Average Actor Loss: 0.0049
+Average Critic Loss: 17.2071
+
+Episode 230
+Average Reward (last 10): 172.70
+Average Actor Loss: -0.0522
+Average Critic Loss: 2.9775
+
+Episode 240
+Average Reward (last 10): 181.10
+Average Actor Loss: -0.0428
+Average Critic Loss: 0.1522
+
+Episode 250
+Average Reward (last 10): 181.30
+Average Actor Loss: -0.1028
+Average Critic Loss: 0.4540
+
+Episode 260
+Average Reward (last 10): 284.40
+Average Actor Loss: 0.0384
+Average Critic Loss: 0.4067
+
+Episode 270
+Average Reward (last 10): 211.00
+Average Actor Loss: -0.0162
+Average Critic Loss: 0.2264
+
+Episode 280
+Average Reward (last 10): 335.60
+Average Actor Loss: 0.0288
+Average Critic Loss: 17.6955
+
+Episode 290
+Average Reward (last 10): 204.70
+Average Actor Loss: -0.5545
+Average Critic Loss: 218.9117
+
+Episode 300
+Average Reward (last 10): 153.10
+Average Actor Loss: -0.1418
+Average Critic Loss: 0.4577
+
+Episode 310
+Average Reward (last 10): 144.80
+Average Actor Loss: -0.0540
+Average Critic Loss: 0.5370
+
+Episode 320
+Average Reward (last 10): 180.00
+Average Actor Loss: -0.0308
+Average Critic Loss: 0.1317
+
+Episode 330
+Average Reward (last 10): 205.40
+Average Actor Loss: -0.0333
+Average Critic Loss: 0.3552
+
+Episode 340
+Average Reward (last 10): 313.00
+Average Actor Loss: -0.0497
+Average Critic Loss: 2.1123
+
+Episode 350
+Average Reward (last 10): 187.10
+Average Actor Loss: -0.0961
+Average Critic Loss: 0.6011
+
+Episode 360
+Average Reward (last 10): 228.30
+Average Actor Loss: -0.0182
+Average Critic Loss: 0.4323
+
+Episode 370
+Average Reward (last 10): 207.10
+Average Actor Loss: -0.0079
+Average Critic Loss: 0.1836
+
+Episode 380
+Average Reward (last 10): 218.80
+Average Actor Loss: -0.0407
+Average Critic Loss: 0.1246
+
+Episode 390
+Average Reward (last 10): 264.00
+Average Actor Loss: -0.0017
+Average Critic Loss: 0.1925
+
+Episode 400
+Average Reward (last 10): 274.80
+Average Actor Loss: -0.0118
+Average Critic Loss: 0.1225
+
+Episode 410
+Average Reward (last 10): 354.80
+Average Actor Loss: -0.1377
+Average Critic Loss: 6.6303
+
+Episode 420
+Average Reward (last 10): 249.60
+Average Actor Loss: -0.0607
+Average Critic Loss: 0.9386
+
+Episode 430
+Average Reward (last 10): 487.70
+Average Actor Loss: -0.0483
+Average Critic Loss: 20.3022
+
+Episode 440
+Average Reward (last 10): 201.30
+Average Actor Loss: 0.0148
+Average Critic Loss: 4.4376
+
+Episode 450
+Average Reward (last 10): 105.40
+Average Actor Loss: -0.0081
+Average Critic Loss: 123.1853
+
+Episode 460
+Average Reward (last 10): 116.20
+Average Actor Loss: -0.0041
+Average Critic Loss: 1.2499
+
+Episode 470
+Average Reward (last 10): 116.70
+Average Actor Loss: 0.0106
+Average Critic Loss: 1.3611
+
+Episode 480
+Average Reward (last 10): 189.40
+Average Actor Loss: -0.0132
+Average Critic Loss: 0.8381
+
+Episode 490
+Average Reward (last 10): 200.70
+Average Actor Loss: -0.0548
+Average Critic Loss: 12.5091
+
+Episode 500
+Average Reward (last 10): 450.30
+Average Actor Loss: -0.0388
+Average Critic Loss: 18.9036
+
+
+Test Episode Reward: 500.0
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h1 id="Actor-Critic-with-other-improvements">Actor Critic with other improvements<a class="anchor-link" href="#Actor-Critic-with-other-improvements">¶</a></h1><p>Architecture Improvements:</p>
+<ul>
+<li>Layer normalization for better stability</li>
+<li>Orthogonal weight initialization</li>
+<li>Separate target network for critic</li>
+<li>PPO-style clipping for more stable updates</li>
+</ul>
+<p>Advanced Features:</p>
+<ul>
+<li>Generalized Advantage Estimation (GAE)</li>
+<li>Entropy regularization for exploration</li>
+<li>Gradient clipping to prevent exploding gradients</li>
+<li>Mini-batch updates for better sample efficiency</li>
+<li>Experience replay buffer with proper advantage computation</li>
+</ul>
+<p>Training Stabilizers:</p>
+<ul>
+<li>Advantage normalization</li>
+<li>Multiple update epochs per batch</li>
+<li>Proper handling of episode termination</li>
+<li>Target network periodic updates</li>
+<li>Proper PPO-style policy updates with clipping</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="TODO-:-Implement-improvments-and-try-them-on-other-environements">TODO : Implement improvments and try them on other environements<a class="anchor-link" href="#TODO-:-Implement-improvments-and-try-them-on-other-environements">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8464,59 +8639,24 @@ Cell <span class="ansi-green-fg">In[3], line 15</span>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 5. Fully Connected Layer with 1 Output</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== Final Fully Connected Layer ==="</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">"LunarLander-v2"</span><span class="p">)</span>
 
-<span class="c1"># FC Layer for RGB path</span>
-<span class="n">fc_rgb</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">flat_size_rgb</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">y_final_rgb</span> <span class="o">=</span> <span class="n">fc_rgb</span><span class="p">(</span><span class="n">y_flat_rgb</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Final output shape (RGB path): </span><span class="si">{</span><span class="n">y_final_rgb</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">agent</span> <span class="o">=</span> <span class="n">ActorCritic</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="n">rewards</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">num_episodes</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
 
-<span class="c1"># FC Layer for Grayscale path</span>
-<span class="n">fc_gray</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">flat_size_gray</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">y_final_gray</span> <span class="o">=</span> <span class="n">fc_gray</span><span class="p">(</span><span class="n">y_flat_gray</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Final output shape (Grayscale path): </span><span class="si">{</span><span class="n">y_final_gray</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=9454ec83-af4c-46f7-9feb-d5fac98b1693">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Complete network architectures</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">RGBNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">RGBNet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">conv</span> <span class="o">=</span> <span class="n">conv1_rgb</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pool</span> <span class="o">=</span> <span class="n">pool_a</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">fc_rgb</span>
-        
-    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">x</span>
+<span class="c1"># Test the trained policy</span>
+<span class="n">state</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">total_reward</span> <span class="o">=</span> <span class="mi">0</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">GrayscaleNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">GrayscaleNet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">conv</span> <span class="o">=</span> <span class="n">conv1_gray</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pool</span> <span class="o">=</span> <span class="n">pool_c</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">fc_gray</span>
-        
-    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">x</span>
+<span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+    <span class="n">action</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">select_action</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">evaluate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+    <span class="n">done</span> <span class="o">=</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span>
+    <span class="n">total_reward</span> <span class="o">+=</span> <span class="n">reward</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Test Episode Reward: </span><span class="si">{</span><span class="n">total_reward</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>

@@ -4,9 +4,9 @@ import { Image } from 'lucide-react';
 import DataInteractionPanel from 'components/DataInteractionPanel';
 
 const Exercise0 = () => {
-  const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/exercise/module8_exercise0.ipynb";
-  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/exercise/module8_exercise0.html";
-  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/data-science-practice/module7/exercise/module8_exercise0.ipynb";
+  const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/exercise/module7_exercise0.ipynb";
+  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/exercise/module7_exercise0.html";
+  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/data-science-practice/module7/exercise/module7_exercise0.ipynb";
 
   return (
     <>
