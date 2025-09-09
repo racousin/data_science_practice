@@ -7628,15 +7628,15 @@ a.anchor-link {
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a tensor that requires gradients and compute a simple function</span>
 <span class="c1"># Create x = 2.0 with requires_grad=True</span>
-<span class="n">x</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># torch.tensor(2.0, requires_grad=True)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="c1"># TODO: Compute y = x^2 + 3*x + 1</span>
-<span class="n">y</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># x**2 + 3*x + 1</span>
+<span class="n">y</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"x = </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"y = </span><span class="si">{</span><span class="n">y</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"x.requires_grad: </span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">requires_grad</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'None'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"y.requires_grad: </span><span class="si">{</span><span class="n">y</span><span class="o">.</span><span class="n">requires_grad</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'None'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"x.requires_grad: </span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">requires_grad</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"y.requires_grad: </span><span class="si">{</span><span class="n">y</span><span class="o">.</span><span class="n">requires_grad</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7652,9 +7652,8 @@ a.anchor-link {
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Compute gradients using backward()</span>
 <span class="c1"># Call y.backward() to compute gradients</span>
-<span class="c1"># y.backward()</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"dy/dx = </span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'None'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"dy/dx = </span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Expected: dy/dx = 2x + 3 = 2*2 + 3 = 7"</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -7696,12 +7695,12 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create two variables with gradients enabled</span>
-<span class="n">x1</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># torch.tensor(1.0, requires_grad=True)</span>
-<span class="n">x2</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># torch.tensor(2.0, requires_grad=True)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create two variables with gradients enabled x1 = 1.0, x2 = 2.0</span>
+<span class="n">x1</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="c1"># TODO: Compute z = x1^2 + x2^3 + x1*x2</span>
-<span class="n">z</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># x1**2 + x2**3 + x1*x2</span>
+<span class="n">z</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"x1 = </span><span class="si">{</span><span class="n">x1</span><span class="si">}</span><span class="s2">, x2 = </span><span class="si">{</span><span class="n">x2</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"z = </span><span class="si">{</span><span class="n">z</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
@@ -7720,10 +7719,9 @@ a.anchor-link {
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Compute gradients for multivariable function</span>
 <span class="c1"># Call z.backward() to compute partial derivatives</span>
-<span class="c1"># z.backward()</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"∂z/∂x1 = </span><span class="si">{</span><span class="n">x1</span><span class="o">.</span><span class="n">grad</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">x1</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nb">hasattr</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="w"> </span><span class="s1">'grad'</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'None'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"∂z/∂x2 = </span><span class="si">{</span><span class="n">x2</span><span class="o">.</span><span class="n">grad</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">x2</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nb">hasattr</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="w"> </span><span class="s1">'grad'</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'None'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"∂z/∂x1 = </span><span class="si">{</span><span class="n">x1</span><span class="o">.</span><span class="n">grad</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">x1</span><span class="s2">")</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"∂z/∂x2 = </span><span class="si">{</span><span class="n">x2</span><span class="o">.</span><span class="n">grad</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">x2</span><span class="s2">")</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Expected: ∂z/∂x1 = 2*x1 + x2 = 2*1 + 2 = 4"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Expected: ∂z/∂x2 = 3*x2^2 + x1 = 3*4 + 1 = 13"</span><span class="p">)</span>
 </pre></div>
@@ -7766,14 +7764,14 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a vector with gradients and compute a scalar loss</span>
-<span class="n">vec_x</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># torch.tensor([1.0, 2.0, 3.0], requires_grad=True)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a vector [1.0, 2.0, 3.0] with gradients and compute a scalar loss</span>
+<span class="n">vec_x</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="c1"># TODO: Compute vec_loss = sum of squares</span>
-<span class="n">vec_loss</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># torch.sum(vec_x**2)</span>
+<span class="c1"># TODO: Compute sum of squares sum(vec_x**2)</span>
+<span class="n">vec_sum</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"vec_x = </span><span class="si">{</span><span class="n">vec_x</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"vec_loss = </span><span class="si">{</span><span class="n">vec_loss</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"vec_sum = </span><span class="si">{</span><span class="n">vec_sum</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7788,10 +7786,9 @@ a.anchor-link {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Compute gradients for vector function</span>
-<span class="c1"># Call vec_loss.backward()</span>
-<span class="c1"># vec_loss.backward()</span>
+<span class="c1"># Call vec_sum.backward()</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"∇vec_loss = </span><span class="si">{</span><span class="n">vec_x</span><span class="o">.</span><span class="n">grad</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">vec_x</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nb">hasattr</span><span class="p">(</span><span class="n">vec_x</span><span class="p">,</span><span class="w"> </span><span class="s1">'grad'</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'None'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"∇vec_sum = </span><span class="si">{</span><span class="n">vec_x</span><span class="o">.</span><span class="n">grad</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Expected: gradient should be 2*vec_x = [2, 4, 6]"</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -7822,14 +7819,14 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a matrix and compute gradients</span>
-<span class="n">mat_A</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># torch.tensor([[1.0, 2.0], [3.0, 4.0]], requires_grad=True)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a matrix [[1.0, 2.0], [3.0, 4.0]] and compute gradients</span>
+<span class="n">mat_A</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="c1"># TODO: Compute mat_loss = sum of squares of all elements</span>
-<span class="n">mat_loss</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># torch.sum(mat_A**2)</span>
+<span class="c1"># TODO: Compute mat_sum = sum of squares of all elements</span>
+<span class="n">mat_sum</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># torch.sum(mat_A**2)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"mat_A = </span><span class="se">\n</span><span class="si">{</span><span class="n">mat_A</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"mat_loss = </span><span class="si">{</span><span class="n">mat_loss</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"mat_sum = </span><span class="si">{</span><span class="n">mat_sum</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7844,10 +7841,9 @@ a.anchor-link {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Compute matrix gradients</span>
-<span class="c1"># Call mat_loss.backward()</span>
-<span class="c1"># mat_loss.backward()</span>
+<span class="c1"># Call mat_sum.backward()</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"∇mat_A = </span><span class="se">\n</span><span class="si">{</span><span class="n">mat_A</span><span class="o">.</span><span class="n">grad</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">mat_A</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nb">hasattr</span><span class="p">(</span><span class="n">mat_A</span><span class="p">,</span><span class="w"> </span><span class="s1">'grad'</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'None'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"∇mat_A = </span><span class="se">\n</span><span class="si">{</span><span class="n">mat_A</span><span class="o">.</span><span class="n">grad</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Expected: gradient should be 2*mat_A"</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -7889,18 +7885,78 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Build a computational graph step by step</span>
-<span class="n">graph_x</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># torch.tensor(2.0, requires_grad=True)</span>
-
-<span class="c1"># TODO: Build computation step by step</span>
-<span class="n">graph_y</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># graph_x**2</span>
-<span class="n">graph_z</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># 3*graph_y + 1</span>
-<span class="n">graph_w</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># graph_z**2</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"x = </span><span class="si">{</span><span class="n">graph_x</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"y = x^2 = </span><span class="si">{</span><span class="n">graph_y</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"z = 3y + 1 = </span><span class="si">{</span><span class="n">graph_z</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"w = z^2 = </span><span class="si">{</span><span class="n">graph_w</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="ch">#!pip install torchviz # uncomment if needed</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torchviz</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_dot</span> <span class="c1"># display with</span>
+<span class="c1"># TODO: Build a computational graph step by step</span>
+<span class="n">x</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># torch.tensor(2.0, requires_grad=True)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"x = </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">dot</span> <span class="o">=</span> <span class="n">make_dot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">"x"</span><span class="p">:</span> <span class="n">x</span><span class="p">})</span>
+<span class="n">dot</span> 
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Build computation step by step</span>
+<span class="n">y</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># xˆ2</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"y = x^2 = </span><span class="si">{</span><span class="n">y</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">dot</span> <span class="o">=</span> <span class="n">make_dot</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">"x"</span><span class="p">:</span> <span class="n">x</span><span class="p">})</span>
+<span class="n">dot</span> 
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">z</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># 3y + 1</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"z = 3y + 1 = </span><span class="si">{</span><span class="n">z</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">dot</span> <span class="o">=</span> <span class="n">make_dot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">"x"</span><span class="p">:</span> <span class="n">x</span><span class="p">})</span>
+<span class="n">dot</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">w</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># z^2</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"w = z^2 = </span><span class="si">{</span><span class="n">w</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">dot</span> <span class="o">=</span> <span class="n">make_dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">"x"</span><span class="p">:</span> <span class="n">x</span><span class="p">})</span>
+<span class="n">dot</span>
 </pre></div>
 </div>
 </div>
@@ -7916,30 +7972,13 @@ a.anchor-link {
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Compute gradients through the computational graph</span>
 <span class="c1"># Call graph_w.backward()</span>
-<span class="c1"># graph_w.backward()</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"dw/dx = </span><span class="si">{</span><span class="n">graph_x</span><span class="o">.</span><span class="n">grad</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">graph_x</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nb">hasattr</span><span class="p">(</span><span class="n">graph_x</span><span class="p">,</span><span class="w"> </span><span class="s1">'grad'</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'None'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"dw/dx = </span><span class="si">{</span><span class="n">graph_x</span><span class="o">.</span><span class="n">grad</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Chain rule: dw/dx = dw/dz * dz/dy * dy/dx"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"dw/dz = 2*z = 2*13 = 26"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"dz/dy = 3"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"dy/dx = 2*x = 2*2 = 4"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Therefore: dw/dx = 26 * 3 * 4 = 312"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Section 4: Computational Graph and Chain Rule</span>
-<span class="n">section_tests</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">EXERCISE1_SECTIONS</span><span class="p">[</span><span class="s2">"Section 4: Computational Graph and Chain Rule"</span><span class="p">]]</span>
-<span class="n">test_runner</span><span class="o">.</span><span class="n">test_section</span><span class="p">(</span><span class="s2">"Section 4: Computational Graph and Chain Rule"</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">section_tests</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -7972,7 +8011,7 @@ a.anchor-link {
     <span class="n">no_grad_result</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># x**2 + 2*x</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"no_grad_result = </span><span class="si">{</span><span class="n">no_grad_result</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"requires_grad: </span><span class="si">{</span><span class="n">no_grad_result</span><span class="o">.</span><span class="n">requires_grad</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">no_grad_result</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'None'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"requires_grad: </span><span class="si">{</span><span class="n">no_grad_result</span><span class="o">.</span><span class="n">requires_grad</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7986,13 +8025,13 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Use detach() to remove tensor from computational graph</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Use .detach() to remove tensor from computational graph</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mi">3</span> <span class="o">+</span> <span class="n">x</span>
-<span class="n">detached_result</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># y.detach()</span>
+<span class="n">y_detached_result</span> <span class="o">=</span> <span class="kc">None</span> 
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Original y requires_grad: </span><span class="si">{</span><span class="n">y</span><span class="o">.</span><span class="n">requires_grad</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Detached result requires_grad: </span><span class="si">{</span><span class="n">detached_result</span><span class="o">.</span><span class="n">requires_grad</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">detached_result</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'None'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Values are equal: </span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">detached_result</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">detached_result</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'None'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Detached result requires_grad: </span><span class="si">{</span><span class="n">y_detached_result</span><span class="o">.</span><span class="n">requires_grad</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Values are equal: </span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">y_detached_result</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8037,7 +8076,7 @@ a.anchor-link {
 <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># TODO: Define function f(x) = x^4</span>
-<span class="n">y</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># x**4</span>
+<span class="n">y</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="c1"># TODO: Compute first derivative</span>
 <span class="c1"># y.backward(create_graph=True)  # create_graph=True allows computing gradients of gradients</span>
@@ -8136,32 +8175,6 @@ a.anchor-link {
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"The gradient plot shows how the derivative changes across the input domain."</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"Notice how the gradient reflects the slope of the original function."</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Final-Validation">Final Validation<a class="anchor-link" href="#Final-Validation">¶</a></h2><p>Run the complete test suite to validate all your solutions.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Display final summary of all tests</span>
-<span class="n">test_runner</span><span class="o">.</span><span class="n">final_summary</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>

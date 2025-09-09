@@ -225,6 +225,8 @@ export const pytorchCourseContentData = {
     ]},
     { to: '/autograd-torch-perspective', label: 'Autograd torch perspective', subLinks: [
     ]},
+    { to: '/py-torch-optimizers', label: 'PyTorch Optimizers', subLinks: [
+    ]},
     { to: '/advanced-gradient-mechanics', label: 'Understanding Gradient Flow', subLinks: [
     ]}
   ],
