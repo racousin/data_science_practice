@@ -11,45 +11,45 @@ class Exercise2Validator(TestValidator):
     """Validator for Module 1 Exercise 2: Gradient Descent"""
     
     # Section 1: Function Definitions
-    def test_f1(self, f1: Callable) -> None:
+    def test_f1(self) -> None:
         """Test function 1 implementation"""
-        self.check_variable(f1, "f1")
+        f1 = self.check_variable("f1", Callable)
         
         # Test function values
         assert abs(f1(0) - 1.0) < 1e-6, "f1(0) should equal 1"
         assert abs(f1(-1) - 0.0) < 1e-6, "f1(-1) should equal 0 (minimum)"
         assert abs(f1(1) - 4.0) < 1e-6, "f1(1) should equal 4"
         
-    def test_grad_f1(self, grad_f1: Callable) -> None:
+    def test_grad_f1(self) -> None:
         """Test gradient of function 1"""
-        self.check_variable(grad_f1, "grad_f1")
+        grad_f1 = self.check_variable("grad_f1", Callable)
         
         # Test gradient values
         assert abs(grad_f1(0) - 2.0) < 1e-6, "grad_f1(0) should equal 2"
         assert abs(grad_f1(-1) - 0.0) < 1e-6, "grad_f1(-1) should equal 0 (at minimum)"
         assert abs(grad_f1(1) - 4.0) < 1e-6, "grad_f1(1) should equal 4"
     
-    def test_f2(self, f2: Callable) -> None:
+    def test_f2(self) -> None:
         """Test function 2 implementation"""
-        self.check_variable(f2, "f2")
+        f2 = self.check_variable("f2", Callable)
         
         # Test function values
         assert abs(f2(0) - 2.0) < 1e-6, "f2(0) should equal 2"
         assert abs(f2(1) - 0.0) < 1e-6, "f2(1) should equal 0"
         assert abs(f2(2) - (-2.0)) < 1e-6, "f2(2) should equal -2 (local minimum)"
         
-    def test_grad_f2(self, grad_f2: Callable) -> None:
+    def test_grad_f2(self) -> None:
         """Test gradient of function 2"""
-        self.check_variable(grad_f2, "grad_f2")
+        grad_f2 = self.check_variable("grad_f2", Callable)
         
         # Test gradient values
         assert abs(grad_f2(0) - 0.0) < 1e-6, "grad_f2(0) should equal 0 (critical point)"
         assert abs(grad_f2(2) - 0.0) < 1e-6, "grad_f2(2) should equal 0 (at local minimum)"
         assert abs(grad_f2(1) - (-3.0)) < 1e-6, "grad_f2(1) should equal -3"
     
-    def test_f3(self, f3: Callable) -> None:
+    def test_f3(self) -> None:
         """Test function 3 implementation"""
-        self.check_variable(f3, "f3")
+        f3 = self.check_variable("f3", Callable)
         
         # Test function values
         point1 = np.array([0, 0])
@@ -61,9 +61,9 @@ class Exercise2Validator(TestValidator):
         point3 = np.array([1, 1])
         assert abs(f3(point3) - 6.0) < 1e-6, "f3([1,1]) should equal 6"
         
-    def test_grad_f3(self, grad_f3: Callable) -> None:
+    def test_grad_f3(self) -> None:
         """Test gradient of function 3"""
-        self.check_variable(grad_f3, "grad_f3")
+        grad_f3 = self.check_variable("grad_f3", Callable)
         
         # Test gradient values
         point1 = np.array([0, 0])
@@ -79,9 +79,9 @@ class Exercise2Validator(TestValidator):
         assert abs(grad2[1] - 0.0) < 1e-6, "grad_f3([-1,1])[1] should equal 0 (at minimum)"
     
     # Section 3: Gradient Descent Implementation
-    def test_gradient_descent_1d(self, gradient_descent_1d: Callable) -> None:
+    def test_gradient_descent_1d(self) -> None:
         """Test 1D gradient descent implementation"""
-        self.check_variable(gradient_descent_1d, "gradient_descent_1d")
+        gradient_descent_1d = self.check_variable("gradient_descent_1d", Callable)
         
         # Simple quadratic test: f(x) = (x-1)^2, gradient = 2(x-1)
         def test_f(x): return (x - 1) ** 2
@@ -100,9 +100,9 @@ class Exercise2Validator(TestValidator):
         for i in range(1, len(trajectory)):
             assert trajectory[i] <= trajectory[i-1] + 1e-10, "Trajectory should be descending"
     
-    def test_gradient_descent_nd(self, gradient_descent_nd: Callable) -> None:
+    def test_gradient_descent_nd(self) -> None:
         """Test n-dimensional gradient descent implementation"""
-        self.check_variable(gradient_descent_nd, "gradient_descent_nd")
+        gradient_descent_nd = self.check_variable("gradient_descent_nd", Callable)
         
         # Simple 2D quadratic: f(x,y) = (x-1)^2 + (y-2)^2
         def test_f(point): 
@@ -127,16 +127,22 @@ class Exercise2Validator(TestValidator):
         assert abs(final_x[0] - 1.0) < 0.01, f"Should converge near x=1, got {final_x[0]}"
         assert abs(final_x[1] - 2.0) < 0.01, f"Should converge near y=2, got {final_x[1]}"
     
-    def test_result_1d(self, result_1d: float, trajectory_1d: List[float]) -> None:
+    def test_result_1d(self) -> None:
         """Test gradient descent result on function 1"""
+        result_1d = self.namespace.get("result_1d")
+        trajectory_1d = self.namespace.get("trajectory_1d")
+        
         if result_1d is None or trajectory_1d is None:
             pytest.skip("gradient_descent_1d not yet implemented")
             
         assert abs(result_1d - (-1.0)) < 0.1, f"Should converge near minimum at x=-1, got {result_1d}"
         assert len(trajectory_1d) > 0, "Trajectory should not be empty"
     
-    def test_result_nd(self, result_nd: np.ndarray, trajectory_nd: np.ndarray) -> None:
+    def test_result_nd(self) -> None:
         """Test gradient descent result on function 3"""
+        result_nd = self.namespace.get("result_nd")
+        trajectory_nd = self.namespace.get("trajectory_nd")
+        
         if result_nd is None or trajectory_nd is None:
             pytest.skip("gradient_descent_nd not yet implemented")
             
@@ -144,31 +150,31 @@ class Exercise2Validator(TestValidator):
         assert abs(result_nd[1] - 1.0) < 0.1, f"Should converge near y=1, got {result_nd[1]}"
     
     # Section 4: Learning Rate Experiments
-    def test_optimal_lr_f1(self, optimal_lr_f1: float) -> None:
+    def test_optimal_lr_f1(self) -> None:
         """Test optimal learning rate for function 1"""
-        self.check_variable(optimal_lr_f1, "optimal_lr_f1")
+        optimal_lr_f1 = self.check_variable("optimal_lr_f1", float)
         
         # For quadratic functions, optimal is around 0.1-0.5
         assert 0.05 <= optimal_lr_f1 <= 0.8, f"Optimal LR for f1 should be between 0.05 and 0.8, got {optimal_lr_f1}"
     
-    def test_optimal_lr_f2(self, optimal_lr_f2: float) -> None:
+    def test_optimal_lr_f2(self) -> None:
         """Test optimal learning rate for function 2"""
-        self.check_variable(optimal_lr_f2, "optimal_lr_f2")
+        optimal_lr_f2 = self.check_variable("optimal_lr_f2", float)
         
         # For cubic functions, need smaller learning rate
         assert 0.01 <= optimal_lr_f2 <= 0.3, f"Optimal LR for f2 should be between 0.01 and 0.3, got {optimal_lr_f2}"
     
-    def test_optimal_lr_f3(self, optimal_lr_f3: float) -> None:
+    def test_optimal_lr_f3(self) -> None:
         """Test optimal learning rate for function 3"""
-        self.check_variable(optimal_lr_f3, "optimal_lr_f3")
+        optimal_lr_f3 = self.check_variable("optimal_lr_f3", float)
         
         # For 2D convex function
         assert 0.05 <= optimal_lr_f3 <= 0.4, f"Optimal LR for f3 should be between 0.05 and 0.4, got {optimal_lr_f3}"
     
     # Section 5: Convergence Analysis
-    def test_check_convergence(self, check_convergence: Callable) -> None:
+    def test_check_convergence(self) -> None:
         """Test convergence checking function"""
-        self.check_variable(check_convergence, "check_convergence")
+        check_convergence = self.check_variable("check_convergence", Callable)
         
         # Test converged trajectory
         converged_traj = [1.0, 0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625, 
