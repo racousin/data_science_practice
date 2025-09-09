@@ -7621,7 +7621,6 @@ where x is the input, W is the weight matrix, and b is the bias vector.</p>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a linear layer that transforms input from 10 features to 5 features</span>
-<span class="c1"># Hint: nn.Linear(input_features, output_features)</span>
 <span class="n">linear_layer_1</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="c1"># Display layer information</span>
@@ -7700,9 +7699,9 @@ where x is the input, W is the weight matrix, and b is the bias vector.</p>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create instances of the three main activation functions</span>
-<span class="n">relu_activation</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Hint: nn.ReLU()</span>
-<span class="n">sigmoid_activation</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Hint: nn.Sigmoid()</span>
-<span class="n">tanh_activation</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Hint: nn.Tanh()</span>
+<span class="n">relu_activation</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">sigmoid_activation</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">tanh_activation</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="c1"># Test the activations with sample input</span>
 <span class="n">test_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">])</span>
@@ -7732,10 +7731,10 @@ where x is the input, W is the weight matrix, and b is the bias vector.</p>
 <span class="n">input_data</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>  <span class="c1"># Batch size 2, 10 features</span>
 
 <span class="c1"># TODO: Pass input_data through linear_layer_1</span>
-<span class="n">linear_output</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Hint: linear_layer_1(input_data)</span>
+<span class="n">linear_output</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="c1"># TODO: Apply ReLU activation to linear_output</span>
-<span class="n">activated_output</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Hint: relu_activation(linear_output)</span>
+<span class="n">activated_output</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="k">if</span> <span class="n">linear_output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">activated_output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Input shape: </span><span class="si">{</span><span class="n">input_data</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
@@ -7786,11 +7785,6 @@ where x is the input, W is the weight matrix, and b is the bias vector.</p>
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a simple 2-layer MLP using nn.Sequential</span>
 <span class="c1"># Input: 8 features -&gt; Hidden: 4 neurons with ReLU -&gt; Output: 2 neurons</span>
 <span class="n">simple_mlp</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="c1"># Hint: nn.Sequential(</span>
-<span class="c1">#     nn.Linear(8, 4),</span>
-<span class="c1">#     nn.ReLU(),</span>
-<span class="c1">#     nn.Linear(4, 2)</span>
-<span class="c1"># )</span>
 
 <span class="k">if</span> <span class="n">simple_mlp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"Simple MLP architecture:"</span><span class="p">)</span>
@@ -7815,8 +7809,6 @@ where x is the input, W is the weight matrix, and b is the bias vector.</p>
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a deeper MLP with 3 hidden layers</span>
 <span class="c1"># Input: 10 -&gt; Hidden1: 8 (ReLU) -&gt; Hidden2: 6 (ReLU) -&gt; Hidden3: 4 (ReLU) -&gt; Output: 2</span>
 <span class="n">deep_mlp</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="c1"># Hint: Use nn.Sequential with alternating Linear and ReLU layers</span>
-
 <span class="c1"># TODO: Calculate the total number of parameters in deep_mlp</span>
 <span class="c1"># Parameters per layer: (input_size * output_size) + output_size</span>
 <span class="c1"># Layer 1: (10 * 8) + 8 = 88</span>
@@ -7876,7 +7868,7 @@ where x is the input, W is the weight matrix, and b is the bias vector.</p>
 <span class="n">forward_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
 
 <span class="c1"># TODO: Pass the input through simple_mlp</span>
-<span class="n">simple_output</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Hint: simple_mlp(forward_input)</span>
+<span class="n">simple_output</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="k">if</span> <span class="n">simple_output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Input shape: </span><span class="si">{</span><span class="n">forward_input</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
@@ -7898,14 +7890,6 @@ where x is the input, W is the weight matrix, and b is the bias vector.</p>
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a network with mixed activation functions</span>
 <span class="c1"># Input: 6 -&gt; Hidden1: 4 (ReLU) -&gt; Hidden2: 3 (Tanh) -&gt; Output: 1 (Sigmoid)</span>
 <span class="n">mixed_activation_mlp</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="c1"># Hint: nn.Sequential(</span>
-<span class="c1">#     nn.Linear(6, 4),</span>
-<span class="c1">#     nn.ReLU(),</span>
-<span class="c1">#     nn.Linear(4, 3),</span>
-<span class="c1">#     nn.Tanh(),</span>
-<span class="c1">#     nn.Linear(3, 1),</span>
-<span class="c1">#     nn.Sigmoid()</span>
-<span class="c1"># )</span>
 
 <span class="c1"># TODO: Perform forward pass with batch size 5</span>
 <span class="n">mixed_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
@@ -7970,7 +7954,6 @@ where x is the input, W is the weight matrix, and b is the bias vector.</p>
 <span class="sd">        Total number of parameters</span>
 <span class="sd">    """</span>
     <span class="c1"># TODO: Complete this function</span>
-    <span class="c1"># Hint: Use model.parameters() and sum the number of elements</span>
     <span class="k">return</span> <span class="kc">None</span>
 
 <span class="c1"># Test your function</span>

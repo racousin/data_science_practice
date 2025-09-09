@@ -7631,7 +7631,6 @@ a.anchor-link {
     <span class="n">loss</span> <span class="o">=</span> <span class="n">initial_loss</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.05</span> <span class="o">*</span> <span class="n">epoch</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
     
     <span class="c1"># TODO: Log the loss value using writer.add_scalar()</span>
-    <span class="c1"># Hint: writer.add_scalar('Loss/train', loss, epoch)</span>
     <span class="n">writer</span><span class="o">.</span><span class="n">add_scalar</span><span class="p">(</span><span class="s1">'Loss/train'</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">epoch</span><span class="p">)</span>
     
     <span class="c1"># Simulate validation loss (slightly higher)</span>
@@ -7693,7 +7692,6 @@ a.anchor-link {
 <span class="n">dummy_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
 <span class="c1"># TODO: Use writer.add_graph() to visualize the model</span>
-<span class="c1"># Hint: writer.add_graph(model, dummy_input)</span>
 <span class="n">writer</span><span class="o">.</span><span class="n">add_graph</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dummy_input</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"Model graph added to TensorBoard"</span><span class="p">)</span>
@@ -7761,12 +7759,10 @@ a.anchor-link {
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">deep_model</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">():</span>
         <span class="k">if</span> <span class="s1">'weight'</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
             <span class="c1"># TODO: Add histogram for weights</span>
-            <span class="c1"># Hint: writer.add_histogram(f'Weights/{name}', param, epoch)</span>
             <span class="n">writer</span><span class="o">.</span><span class="n">add_histogram</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Weights/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">'</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">epoch</span><span class="p">)</span>
             
         <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">grad</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># TODO: Add histogram for gradients</span>
-            <span class="c1"># Hint: writer.add_histogram(f'Gradients/{name}', param.grad, epoch)</span>
             <span class="n">writer</span><span class="o">.</span><span class="n">add_histogram</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Gradients/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">'</span><span class="p">,</span> <span class="n">param</span><span class="o">.</span><span class="n">grad</span><span class="p">,</span> <span class="n">epoch</span><span class="p">)</span>
     
     <span class="c1"># Update weights</span>
@@ -7834,7 +7830,6 @@ a.anchor-link {
         <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
         
         <span class="c1"># TODO: Log the loss for this learning rate</span>
-        <span class="c1"># Hint: writer.add_scalar('Loss', loss.item(), step)</span>
         <span class="n">writer</span><span class="o">.</span><span class="n">add_scalar</span><span class="p">(</span><span class="s1">'Loss'</span><span class="p">,</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">step</span><span class="p">)</span>
         
         <span class="c1"># Log learning rate (constant in this case)</span>
@@ -7914,7 +7909,6 @@ a.anchor-link {
         <span class="n">ax2</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
         
         <span class="c1"># TODO: Add the figure to TensorBoard</span>
-        <span class="c1"># Hint: writer.add_figure('Training_Analysis', fig, epoch)</span>
         <span class="n">writer</span><span class="o">.</span><span class="n">add_figure</span><span class="p">(</span><span class="s1">'Training_Analysis'</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">epoch</span><span class="p">)</span>
         
         <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>  <span class="c1"># Close to free memory</span>
@@ -7966,7 +7960,6 @@ a.anchor-link {
 <span class="n">embeddings</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">embeddings</span><span class="p">)</span>
 
 <span class="c1"># TODO: Add embeddings to TensorBoard</span>
-<span class="c1"># Hint: writer.add_embedding(embeddings, metadata=labels, tag='embeddings')</span>
 <span class="n">writer</span><span class="o">.</span><span class="n">add_embedding</span><span class="p">(</span>
     <span class="n">embeddings</span><span class="p">,</span>
     <span class="n">metadata</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
