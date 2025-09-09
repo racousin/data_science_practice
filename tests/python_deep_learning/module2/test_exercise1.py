@@ -88,20 +88,20 @@ class Exercise1Validator(TestValidator):
         expected_values = torch.tensor([1.0, 2.0, 3.0])
         assert torch.allclose(vec_x, expected_values), f"vec_x should be [1.0, 2.0, 3.0], got {vec_x}"
     
-    def test_vec_loss(self, namespace: Dict[str, Any]) -> None:
+    def test_vec_sum(self, namespace: Dict[str, Any]) -> None:
         """Test vector loss computation"""
-        self.check_variable(namespace, 'vec_loss', "vec_loss = sum of squares")
-        vec_loss = namespace['vec_loss']
+        self.check_variable(namespace, 'vec_sum', "vec_sum = sum of squares")
+        vec_sum = namespace['vec_sum']
         vec_x = namespace['vec_x']
         expected_loss = torch.sum(vec_x**2)
-        assert torch.isclose(vec_loss, expected_loss), "vec_loss should be sum of squares of vec_x"
+        assert torch.isclose(vec_sum, expected_loss), "vec_sum should be sum of squares of vec_x"
     
     def test_vec_x_grad(self, namespace: Dict[str, Any]) -> None:
         """Test vector gradient computation"""
         self.check_variable(namespace, 'vec_x', "vec_x tensor")
         vec_x = namespace['vec_x']
         if vec_x.grad is None:
-            raise AssertionError("vec_x.grad not computed. Please call vec_loss.backward()")
+            raise AssertionError("vec_x.grad not computed. Please call vec_sum.backward()")
         expected_grad = 2 * vec_x.detach()
         assert torch.allclose(vec_x.grad, expected_grad), f"vec_x.grad should be 2*vec_x = {expected_grad}, got {vec_x.grad}"
     
@@ -114,20 +114,20 @@ class Exercise1Validator(TestValidator):
         expected_values = torch.tensor([[1.0, 2.0], [3.0, 4.0]])
         assert torch.allclose(mat_A, expected_values), f"mat_A should be [[1, 2], [3, 4]], got {mat_A}"
     
-    def test_mat_loss(self, namespace: Dict[str, Any]) -> None:
+    def test_mat_sum(self, namespace: Dict[str, Any]) -> None:
         """Test matrix loss computation"""
-        self.check_variable(namespace, 'mat_loss', "mat_loss = sum of squares")
-        mat_loss = namespace['mat_loss']
+        self.check_variable(namespace, 'mat_sum', "mat_sum = sum of squares")
+        mat_sum = namespace['mat_sum']
         mat_A = namespace['mat_A']
         expected_loss = torch.sum(mat_A**2)
-        assert torch.isclose(mat_loss, expected_loss), "mat_loss should be sum of squares of mat_A"
+        assert torch.isclose(mat_sum, expected_loss), "mat_sum should be sum of squares of mat_A"
     
     def test_mat_A_grad(self, namespace: Dict[str, Any]) -> None:
         """Test matrix gradient computation"""
         self.check_variable(namespace, 'mat_A', "mat_A tensor")
         mat_A = namespace['mat_A']
         if mat_A.grad is None:
-            raise AssertionError("mat_A.grad not computed. Please call mat_loss.backward()")
+            raise AssertionError("mat_A.grad not computed. Please call mat_sum.backward()")
         expected_grad = 2 * mat_A.detach()
         assert torch.allclose(mat_A.grad, expected_grad), f"mat_A.grad should be 2*mat_A"
     
@@ -214,10 +214,10 @@ EXERCISE1_SECTIONS = {
     ],
     "Section 3: Vector and Matrix Gradients": [
         ("test_vec_x", "Create vector [1.0, 2.0, 3.0] with requires_grad=True"),
-        ("test_vec_loss", "Compute vec_loss = sum of squares"),
+        ("test_vec_sum", "Compute vec_sum = sum of squares"),
         ("test_vec_x_grad", "Compute gradient for vector"),
         ("test_mat_A", "Create 2x2 matrix [[1, 2], [3, 4]] with requires_grad=True"),
-        ("test_mat_loss", "Compute mat_loss = sum of squares"),
+        ("test_mat_sum", "Compute mat_sum = sum of squares"),
         ("test_mat_A_grad", "Compute gradient for matrix"),
     ],
     "Section 4: Computational Graph and Chain Rule": [
