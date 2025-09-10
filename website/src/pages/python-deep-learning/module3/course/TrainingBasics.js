@@ -14,7 +14,24 @@ const TrainingBasics = () => {
             Training Basics
           </Title>
         </div>
-        
+        <div data-slide>
+                  <Text mb="md">
+            Let's consider some X and y data. Let's use synthetic data to illustrate:
+            </Text>
+                      <CodeBlock language="python" code={`import torch
+
+# Set seed for reproducibility
+torch.manual_seed(42)
+
+# Total dataset parameters
+n_total = 1000
+n_features = 20
+
+# Generate complete dataset
+X = torch.randn(n_total, n_features)
+y = torch.rand(n_total, 1)`} />
+          Our journey: 1. Define a <strong>model</strong> size and architecture that respects X and y shapes. 2. Choose a <strong>loss</strong> function to measure the error between predictions and true values. 3. Select an <strong>optimizer</strong>. 4. <strong>Train</strong> the model through iterative optimization. 5. <strong>Evaluate</strong> model performance.
+          </div>
         <div data-slide>
           <Title order={2} mb="md">1. Building a Neural Network Model</Title>
           <Text mb="md">
@@ -41,7 +58,17 @@ const TrainingBasics = () => {
         </div>
 
         <div data-slide>
-          <Title order={2} mb="md">2. Optimizer Setup</Title>
+          <Title order={2} mb="md">2. Loss Function</Title>
+          <Text mb="md">
+            The loss function measures how wrong our predictions are. Mean Squared Error (MSE) is commonly 
+            used for regression:
+          </Text>
+          
+          <CodeBlock language="python" code={`# Define loss function
+criterion = nn.MSELoss()`} />
+        </div>
+        <div data-slide>
+          <Title order={2} mb="md">3. Optimizer Setup</Title>
           <Text mb="md">
             The optimizer updates model parameters based on computed gradients. SGD (Stochastic Gradient Descent) 
             is the simplest optimizer:
@@ -58,112 +85,137 @@ optimizer = optim.SGD(model.parameters(), lr=0.01)`} />
           </Text>
         </div>
 
-        <div data-slide>
-          <Title order={2} mb="md">3. Loss Function</Title>
-          <Text mb="md">
-            The loss function measures how wrong our predictions are. Mean Squared Error (MSE) is commonly 
-            used for regression:
-          </Text>
-          
-          <CodeBlock language="python" code={`# Define loss function
-criterion = nn.MSELoss()`} />
-        </div>
 
         <div data-slide>
-          <Title order={2} mb="md">4. Creating Simple Training Data</Title>
+          <Title order={2} mb="md">4. Creating Training, Validation, and Test Data</Title>
           <Text mb="md">
-            Let's create simple tensors to demonstrate training. We'll generate random data for a 
-            regression problem:
+            In machine learning, we split our data into three sets, each serving a distinct purpose:
           </Text>
           
-          <CodeBlock language="python" code={`import torch
+          <List mb="md">
+            <List.Item><strong>Training Set (60-80%):</strong> Used to train the model and update parameters</List.Item>
+            <List.Item><strong>Validation Set (10-20%):</strong> Used to tune hyperparameters and prevent overfitting</List.Item>
+            <List.Item><strong>Test Set (10-20%):</strong> Used for final evaluation, never touched during training</List.Item>
+          </List>
 
-# Create simple training data
-n_samples = 100
-n_features = 20
 
-# Random input features (100 samples, 20 features each)
-X_train = torch.randn(n_samples, n_features)
 
-# Random target values
-y_train = torch.rand(n_samples, 1)
+</div>
+ <div data-slide>
+          <CodeBlock language="python" code={`# Calculate split sizes
+n_train = int(0.7 * n_total)  # 700 samples
+n_val = int(0.15 * n_total)    # 150 samples
+n_test = n_total - n_train - n_val  # 150 samples
 
-print(f"Input shape: {X_train.shape}")
-print(f"Target shape: {y_train.shape}")`} />
+# Perform the splits
+X_train = X[:n_train]
+y_train = y[:n_train]
 
-          <Text mt="md">
-            We're working directly with tensors - no datasets or data loaders needed for basic training.
+X_val = X[n_train:n_train+n_val]
+y_val = y[n_train:n_train+n_val]
+
+X_test = X[n_train+n_val:]
+y_test = y[n_train+n_val:]`} />
+
+          <Text mb="md">
+            <strong>Important:</strong> Never use the test set during training or hyperparameter tuning. 
+            It should only be used once at the very end to get an unbiased estimate of model performance.
           </Text>
+
         </div>
 
         <div data-slide>
           <Title order={2} mb="md">5. The Training Loop</Title>
           <Text mb="md">
-            The training loop is the heart of deep learning. It repeats these steps:
+            A proper training loop monitors both training and validation performance to detect overfitting:
           </Text>
           
           <List mb="md">
-            <List.Item>Forward pass: compute predictions</List.Item>
-            <List.Item>Calculate loss</List.Item>
-            <List.Item>Backward pass: compute gradients</List.Item>
-            <List.Item>Update parameters</List.Item>
+            <List.Item><strong>Training phase:</strong> Model learns from data (gradients enabled)</List.Item>
+            <List.Item><strong>Validation phase:</strong> Model evaluated without learning (no gradients)</List.Item>
           </List>
           
+          <Text mb="md">
+            Initialize tracking variables:
+          </Text>
+
           <CodeBlock language="python" code={`# Training parameters
 num_epochs = 100
-training_history = []
-
-# Training loop
-for epoch in range(num_epochs):
-    # 1. Zero gradients (important!)
+train_losses = []
+val_losses = []`} />
+          <Text mb="md">
+            <strong>Key Points:</strong>
+            <List size="sm">
+              <List.Item><strong>Epoch:</strong> One complete pass through the entire training dataset</List.Item>
+              <List.Item><code>model.train()</code> enables dropout and batch norm training behavior</List.Item>
+              <List.Item><code>model.eval()</code> disables dropout and uses running stats for batch norm</List.Item>
+              <List.Item><code>torch.no_grad()</code> disables gradient computation for efficiency</List.Item>
+              <List.Item>If validation loss increases while training loss decreases, you're overfitting!</List.Item>
+            </List>
+          </Text>
+          </div>
+          <div data-slide>
+          <Text mb="md">
+            The complete training and validation loop:
+          </Text>
+          
+          <CodeBlock language="python" code={`for epoch in range(num_epochs):
+    # ===== TRAINING PHASE =====
+    model.train()  # Set model to training mode
+    
+    # 1. Zero gradients
     optimizer.zero_grad()
-    
-    # 2. Forward pass
-    predictions = model(X_train)
-    
-    # 3. Calculate loss
-    loss = criterion(predictions, y_train)
-    
-    # 4. Backward pass
-    loss.backward()
-    
+    # 2. Forward pass on training data
+    train_pred = model(X_train)
+    # 3. Calculate training loss
+    train_loss = criterion(train_pred, y_train)
+    # 4. Backward pass (compute gradients)
+    train_loss.backward()
     # 5. Update parameters
     optimizer.step()
     
-    # Store loss for visualization
-    training_history.append(loss.item())
+    # ===== VALIDATION PHASE =====
+    model.eval()  # Set model to evaluation mode
     
-    # Print progress every 10 epochs
-    if (epoch + 1) % 10 == 0:
-        print(f'Epoch {epoch+1}/{num_epochs}, Loss: {loss.item():.4f}')`} />
+    with torch.no_grad():  # Disable gradient computation
+        val_pred = model(X_val)
+        val_loss = criterion(val_pred, y_val)
+    
+    # Store losses for visualization
+    train_losses.append(train_loss.item())
+    val_losses.append(val_loss.item())
+    # Print progress every 20 epochs
+    if (epoch + 1) % 20 == 0:
+        print(f'Epoch [{epoch+1}/{num_epochs}]')
+        print(f'  Train Loss: {train_loss.item():.4f}')
+        print(f'  Val Loss:   {val_loss.item():.4f}')`} />
+
+
         </div>
 
         <div data-slide>
-          <Title order={2} mb="md">6. Visualizing Training History</Title>
+          <Title order={2} mb="md">6. Visualizing Training and Validation History</Title>
           <Text mb="md">
-            Tracking and visualizing the training history helps us understand if the model is learning properly:
+            Plotting both training and validation losses helps identify overfitting and underfitting:
           </Text>
           
           <CodeBlock language="python" code={`import matplotlib.pyplot as plt
 
-# Plot training history
-plt.figure(figsize=(10, 5))
-plt.plot(training_history, label='Training Loss')
+# Plot training and validation history
+plt.figure(figsize=(12, 5))
+plt.plot(train_losses, label='Training Loss', linewidth=2)
+plt.plot(val_losses, label='Validation Loss', linewidth=2)
 plt.xlabel('Epoch')
 plt.ylabel('Loss')
-plt.title('Training History')
+plt.title('Training and Validation Loss Over Time')
 plt.legend()
-plt.grid(True)
+plt.grid(True, alpha=0.3)
 plt.show()`} />
-          
-          <Text mt="md" mb="md">
-            A healthy training curve should show decreasing loss over time. If the loss stops decreasing, 
-            the model may have converged. If it increases, the learning rate might be too high.
-          </Text>
-          
+</div>
+          <div data-slide>
           <Flex direction="column" align="center">
             <Image
-              src="/assets/python-deep-learning/module3/training_history.png"
+              src="/assets/python-deep-learning/module3/training_validation_loss.png"
               alt="Training History"
               style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
               fluid
@@ -173,15 +225,9 @@ plt.show()`} />
 
         <div data-slide>
           <Title order={2} mb="md">7. Model Evaluation (Inference)</Title>
-          <Text mb="md">
-            After training, we evaluate the model on new data without updating weights:
-          </Text>
-          
-          <CodeBlock language="python" code={`# Create test data
-X_test = torch.randn(20, n_features)
-y_test = torch.rand(20, 1)
 
-# Set model to evaluation mode (disables dropout, etc.)
+          
+          <CodeBlock language="python" code={`# Set model to evaluation mode (disables dropout, etc.)
 model.eval()
 
 # Evaluate without computing gradients
@@ -194,7 +240,9 @@ with torch.no_grad():  # Disable gradient computation for efficiency
     
     print(f"Test Loss: {test_loss.item():.4f}")`} />
         </div>
-
+          <Text mb="md">
+            If test loss is significantly higher than training loss, the model may be overfitting.
+          </Text>
       </Stack>
     </Container>
   );

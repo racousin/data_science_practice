@@ -31,10 +31,10 @@ const EssentialLayers = () => {
           <Text>where <InlineMath math="x \in \mathbb{R}^{n \times d_{in}}" />, <InlineMath math="W \in \mathbb{R}^{d_{out} \times d_{in}}" />, <InlineMath math="b \in \mathbb{R}^{d_{out}}" /></Text>
           <Text mt="xs"><strong>Input/Output Shape:</strong></Text>
           <List>
-            <List.Item>Input: <InlineMath math="(batch\_size, in\_features)" /></List.Item>
-            <List.Item>Output: <InlineMath math="(batch\_size, out\_features)" /></List.Item>
+            <List.Item>Input: <InlineMath math="(\text{batch\_size}, \text{in\_features})" /></List.Item>
+            <List.Item>Output: <InlineMath math="(\text{batch\_size}, \text{out\_features})" /></List.Item>
           </List>
-          <Text mt="xs"><strong>Parameters:</strong> <InlineMath math="in\_features \times out\_features + out\_features" /></Text>
+          <Text mt="xs"><strong>Parameters:</strong> <InlineMath math="\text{in\_features} \times \text{out\_features} + \text{out\_features}" /></Text>
           <CodeBlock language="python" code={`nn.Linear(in_features=128, out_features=64)
 # Performs: output = input @ weight.T + bias`}/>
           </div>
@@ -48,11 +48,11 @@ const EssentialLayers = () => {
           <Text>where <InlineMath math="s" /> is stride, <InlineMath math="W" /> is the kernel weights</Text>
           <Text mt="xs"><strong>Input/Output Shape (Conv2d):</strong></Text>
           <List>
-            <List.Item>Input: <InlineMath math="(batch, in\_channels, height, width)" /></List.Item>
-            <List.Item>Output: <InlineMath math="(batch, out\_channels, H_{out}, W_{out})" /></List.Item>
+            <List.Item>Input: <InlineMath math="(\text{batch}, \text{in\_channels}, \text{height}, \text{width})" /></List.Item>
+            <List.Item>Output: <InlineMath math="(\text{batch}, \text{out\_channels}, H_{out}, W_{out})" /></List.Item>
           </List>
           <Text>where <InlineMath math="H_{out} = \lfloor \frac{H + 2p - k}{s} \rfloor + 1" />, <InlineMath math="W_{out} = \lfloor \frac{W + 2p - k}{s} \rfloor + 1" /></Text>
-          <Text mt="xs"><strong>Parameters:</strong> <InlineMath math="(kernel\_size^2 \times in\_channels + 1) \times out\_channels" /></Text>
+          <Text mt="xs"><strong>Parameters:</strong> <InlineMath math="(\text{kernel\_size}^2 \times \text{in\_channels} + 1) \times \text{out\_channels}" /></Text>
           <CodeBlock language="python" code={`nn.Conv2d(in_channels=3, out_channels=64, kernel_size=3, stride=1, padding=1)
 # Slides kernel across input, computing local feature maps`}/>
           </div>
@@ -69,11 +69,11 @@ const EssentialLayers = () => {
           <BlockMath math="h_t = o_t \odot \tanh(c_t)" />
           <Text mt="xs"><strong>Input/Output Shape (LSTM):</strong></Text>
           <List>
-            <List.Item>Input: <InlineMath math="(seq\_len, batch, input\_size)" /></List.Item>
-            <List.Item>Output: <InlineMath math="(seq\_len, batch, hidden\_size)" /></List.Item>
-            <List.Item>Hidden: <InlineMath math="(num\_layers, batch, hidden\_size)" /></List.Item>
+            <List.Item>Input: <InlineMath math="(\text{seq\_len}, \text{batch}, \text{input\_size})" /></List.Item>
+            <List.Item>Output: <InlineMath math="(\text{seq\_len}, \text{batch}, \text{hidden\_size})" /></List.Item>
+            <List.Item>Hidden: <InlineMath math="(\text{num\_layers}, \text{batch}, \text{hidden\_size})" /></List.Item>
           </List>
-          <Text mt="xs"><strong>Parameters per layer:</strong> <InlineMath math="4 \times (input\_size \times hidden\_size + hidden\_size^2 + 2 \times hidden\_size)" /></Text>
+          <Text mt="xs"><strong>Parameters per layer:</strong> <InlineMath math="4 \times (\text{input\_size} \times \text{hidden\_size} + \text{hidden\_size}^2 + 2 \times \text{hidden\_size})" /></Text>
           <CodeBlock language="python" code= {`nn.LSTM(input_size=128, hidden_size=256, num_layers=2)
 # Process sequences with memory of previous inputs`}/>
           </div>
@@ -89,14 +89,40 @@ const EssentialLayers = () => {
           <BlockMath math="head_i = Attention(QW_i^Q, KW_i^K, VW_i^V)" />
           <Text mt="xs"><strong>Input/Output Shape:</strong></Text>
           <List>
-            <List.Item>Query: <InlineMath math="(seq\_len, batch, embed\_dim)" /></List.Item>
-            <List.Item>Key: <InlineMath math="(seq\_len, batch, embed\_dim)" /></List.Item>
-            <List.Item>Value: <InlineMath math="(seq\_len, batch, embed\_dim)" /></List.Item>
-            <List.Item>Output: <InlineMath math="(seq\_len, batch, embed\_dim)" /></List.Item>
+            <List.Item>Query: <InlineMath math="(\text{seq\_len}, \text{batch}, \text{embed\_dim})" /></List.Item>
+            <List.Item>Key: <InlineMath math="(\text{seq\_len}, \text{batch}, \text{embed\_dim})" /></List.Item>
+            <List.Item>Value: <InlineMath math="(\text{seq\_len}, \text{batch}, \text{embed\_dim})" /></List.Item>
+            <List.Item>Output: <InlineMath math="(\text{seq\_len}, \text{batch}, \text{embed\_dim})" /></List.Item>
           </List>
-          <Text mt="xs"><strong>Parameters:</strong> <InlineMath math="4 \times embed\_dim^2" /> (for Q, K, V, and output projections)</Text>
+          <Text mt="xs"><strong>Parameters:</strong> <InlineMath math="4 \times \text{embed\_dim}^2" /> (for Q, K, V, and output projections)</Text>
           <CodeBlock language="python" code={`nn.MultiheadAttention(embed_dim=512, num_heads=8)
 # Computes weighted importance between sequence elements`}/>
+        </div>
+
+        <div data-slide>
+          <Title order={3} mt="md">Why Specialized Layers Outperform MLPs</Title>
+          <Text>
+            These architectures achieve <strong>better performance with fewer parameters</strong> by exploiting data structure instead of learning it from scratch.
+          </Text>
+          
+          <Text mt="md"><strong>Key Example - Images:</strong></Text>
+          <Text>
+            When you flatten a 28×28 image for an MLP, you lose spatial proximity information. Pixels next to each other become arbitrary positions in a vector. The MLP must learn these relationships from scratch using many parameters.
+          </Text>
+          <Text mt="sm">
+            CNNs preserve the 2D structure. A 3×3 filter naturally captures local patterns (edges, corners) using only 9 shared weights instead of hundreds of connections per neuron.
+          </Text>
+
+          <Text mt="md"><strong>The Pattern:</strong></Text>
+          <List>
+            <List.Item><strong>CNNs:</strong> Exploit spatial locality in images</List.Item>
+            <List.Item><strong>LSTMs:</strong> Exploit temporal dependencies in sequences</List.Item>
+            <List.Item><strong>Attention:</strong> Exploit relational structure between elements</List.Item>
+          </List>
+
+          <Text mt="md">
+            <strong>Result:</strong> By building the right inductive bias into the architecture, we get better generalization with fewer parameters.
+          </Text>
         </div>
 
         

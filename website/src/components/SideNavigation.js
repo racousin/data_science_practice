@@ -266,6 +266,7 @@ export const pytorchExerciseContentData = {
     { to: '/exercise3', label: 'Exercise 2.3: Gradient Flow' }
   ],
   'module3': [
+    { to: '/exercise0', label: 'Exercise 3.0: Training Basic' },
     { to: '/exercise1', label: 'Exercise 3.1: Data Pipeline & Training Loop' },
     { to: '/exercise2', label: 'Exercise 3.2: Essential Layers' },
     { to: '/exercise3', label: 'Exercise 3.3: Monitoring & Visualization with TensorBoard' }

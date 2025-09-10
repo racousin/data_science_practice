@@ -52,7 +52,7 @@ nn.init.constant_(layer.bias, 0)  # Typically zero for biases`}
         <div data-slide>
         <div>
           <Image
-            src="/assets/data-science-practice/module7/weight_distributions.png"
+            src="/assets/python-deep-learning/module3/weight_distributions.png"
             alt="Weight initialization distributions comparison"
             radius="md"
           />

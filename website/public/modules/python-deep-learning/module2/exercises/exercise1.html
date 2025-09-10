@@ -7720,8 +7720,8 @@ a.anchor-link {
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Compute gradients for multivariable function</span>
 <span class="c1"># Call z.backward() to compute partial derivatives</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"∂z/∂x1 = </span><span class="si">{</span><span class="n">x1</span><span class="o">.</span><span class="n">grad</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">x1</span><span class="s2">")</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"∂z/∂x2 = </span><span class="si">{</span><span class="n">x2</span><span class="o">.</span><span class="n">grad</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">x2</span><span class="s2">")</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"∂z/∂x1 = </span><span class="si">{</span><span class="n">x1</span><span class="o">.</span><span class="n">grad</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"∂z/∂x2 = </span><span class="si">{</span><span class="n">x2</span><span class="o">.</span><span class="n">grad</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Expected: ∂z/∂x1 = 2*x1 + x2 = 2*1 + 2 = 4"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Expected: ∂z/∂x2 = 3*x2^2 + x1 = 3*4 + 1 = 13"</span><span class="p">)</span>
 </pre></div>
@@ -7971,7 +7971,7 @@ a.anchor-link {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Compute gradients through the computational graph</span>
-<span class="c1"># Call graph_w.backward()</span>
+<span class="c1"># Call w.backward()</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"dw/dx = </span><span class="si">{</span><span class="n">graph_x</span><span class="o">.</span><span class="n">grad</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Chain rule: dw/dx = dw/dz * dz/dy * dy/dx"</span><span class="p">)</span>
