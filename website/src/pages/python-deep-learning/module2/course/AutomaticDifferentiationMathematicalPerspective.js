@@ -74,37 +74,43 @@ how do we compute efficiently <InlineMath>{` \\nabla_\\theta \\mathcal{L}`}</Inl
 <div data-slide>
   <Title order={3} mt="lg">Automatic Differentiation Modes</Title>
   
-  <Grid gutter="xl">
-    <Grid.Col span={6}>
-      <Box className="p-4 bg-blue-50 rounded">
-        <Title order={4}>Forward Mode</Title>
-        <Text>
-          Propagates derivatives forward through computation graph from inputs to outputs.
-        </Text>
-        <List>
-          <List.Item>Efficient for functions with few inputs and many outputs</List.Item>
-          <List.Item>Computes one input derivative at a time</List.Item>
-          <List.Item>O(n) complexity for n inputs</List.Item>
-        </List>
-        <BlockMath>{`\\dot{y} = \\frac{\\partial f}{\\partial x}\\dot{x}`}</BlockMath>
-      </Box>
-    </Grid.Col>
+<Grid gutter="xl">
+  <Grid.Col span={6}>
+    <Box className="p-4 bg-blue-50 rounded">
+      <Title order={4}>Forward Mode</Title>
+      <Text>
+        Propagates derivatives forward through computation graph from inputs to outputs.
+      </Text>
+      <List>
+        <List.Item>Efficient for functions with few inputs and many outputs</List.Item>
+        <List.Item>Computes one input derivative at a time</List.Item>
+        <List.Item>O(n) complexity for n inputs</List.Item>
+      </List>
+      <BlockMath>{`L(w,b)= wx + b`}</BlockMath>
+ <Text size="sm" c="dimmed" mt="xs">
+        2 separate forward passes needed for 2 gradients
+      </Text>
+    </Box>
+  </Grid.Col>
 
-    <Grid.Col span={6}>
-      <Box className="p-4 bg-green-50 rounded">
-        <Title order={4}>Reverse Mode (Backpropagation)</Title>
-        <Text>
-          Propagates derivatives backward from outputs to inputs.
-        </Text>
-        <List>
-          <List.Item>Efficient for functions with many inputs and few outputs</List.Item>
-          <List.Item>Computes all input derivatives in one pass</List.Item>
-          <List.Item>O(1) complexity regardless of input size</List.Item>
-        </List>
-        <BlockMath>{`\\bar{x} = \\bar{y}\\frac{\\partial f}{\\partial x}`}</BlockMath>
-      </Box>
-    </Grid.Col>
-  </Grid>
+  <Grid.Col span={6}>
+    <Box className="p-4 bg-green-50 rounded">
+      <Title order={4}>Reverse Mode (Backpropagation)</Title>
+      <Text>
+        Propagates derivatives backward from outputs to inputs.
+      </Text>
+      <List>
+        <List.Item>Efficient for functions with many inputs and few outputs</List.Item>
+        <List.Item>Computes all input derivatives in one pass</List.Item>
+        <List.Item>O(1) complexity regardless of input size</List.Item>
+      </List>
+      <BlockMath>{`L(w,b)= wx + b`}</BlockMath>
+<Text size="sm" c="dimmed" mt="xs">
+        1 backward pass computes all 2 gradients at once
+      </Text>
+    </Box>
+  </Grid.Col>
+</Grid>
 
   <Text mt="md">
     Backpropagation is reverse-mode automatic differentiation specialized for scalar outputs (loss function),
@@ -135,8 +141,8 @@ how do we compute efficiently <InlineMath>{` \\nabla_\\theta \\mathcal{L}`}</Inl
           <Table.Td>
             <InlineMath>{`w_{ij}^k`}</InlineMath>
           </Table.Td>
-          <Table.Td>Weight for node j in layer k receiving input from node i</Table.Td>
-          <Table.Td>
+           <Table.Td>Weight for node j in layer k receiving input from node i layer k-1</Table.Td>
+<Table.Td>
             <InlineMath>{`w_{ij}^k \\in \\mathbb{R}`}</InlineMath>
           </Table.Td>
         </Table.Tr>
@@ -144,27 +150,27 @@ how do we compute efficiently <InlineMath>{` \\nabla_\\theta \\mathcal{L}`}</Inl
           <Table.Td>
             <InlineMath>{`b_i^k`}</InlineMath>
           </Table.Td>
-          <Table.Td>Bias for node i in layer k</Table.Td>
+          <Table.Td>Bias for node j in layer k</Table.Td>
           <Table.Td>
-            <InlineMath>{`b_i^k \\in \\mathbb{R}`}</InlineMath>
+            <InlineMath>{`b_j^k \\in \\mathbb{R}`}</InlineMath>
           </Table.Td>
         </Table.Tr>
         <Table.Tr>
           <Table.Td>
-            <InlineMath>{`a_i^k`}</InlineMath>
+            <InlineMath>{`a_j^k`}</InlineMath>
           </Table.Td>
-          <Table.Td>Product sum plus bias (pre-activation) for node i in layer k</Table.Td>
+          <Table.Td>Product sum plus bias (pre-activation) for node j in layer k</Table.Td>
           <Table.Td>
-            <InlineMath>{`a_i^k = \\sum_{j=1}^{r_{k-1}} w_{ij}^k o_j^{k-1} + b_i^k = \\sum_{j=0}^{r_{k-1}} w_{ij}^k o_j^{k-1} (o_0^{k-1}=1)`}</InlineMath>
+            <InlineMath>{`a_j^k = \\sum_{i=1}^{r_{k-1}} w_{ij}^k o_i^{k-1} + b_j^k = \\sum_{i=0}^{r_{k-1}} w_{ij}^k o_i^{k-1} (o_0^{k-1}=1)`}</InlineMath>
           </Table.Td>
         </Table.Tr>
         <Table.Tr>
           <Table.Td>
-            <InlineMath>{`o_i^k`}</InlineMath>
+            <InlineMath>{`o_j^k`}</InlineMath>
           </Table.Td>
-          <Table.Td>Output (post-activation) for node i in layer k</Table.Td>
+          <Table.Td>Output (post-activation) for node j in layer k</Table.Td>
           <Table.Td>
-            <InlineMath>{`o_i^k = g^k(a_i^k)`}</InlineMath>
+            <InlineMath>{`o_j^k = g^k(a_j^k)`}</InlineMath>
           </Table.Td>
         </Table.Tr>
         <Table.Tr>

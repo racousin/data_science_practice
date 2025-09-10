@@ -103,7 +103,7 @@ print(f"w.grad_fn: {w.grad_fn}")  # <MulBackward0>`} />
       <Flex direction="column" align="center" mt="md">
               <CodeBlock language="python" code={`x = torch.tensor(2.0, requires_grad=True)
 y = torch.tensor(3.0, requires_grad=True)
-w = z / 2.`} />
+w = z / torch.tensor(2.0)`} />
         <Image
           src="/assets/python-deep-learning/module2/graph2.png"
           alt="Autograd Overview"
@@ -321,7 +321,7 @@ y = torch.sin(u)  # y = sin(u) = sin(x²)`} />
       </div>
       <div data-slide>
 <Title order={4} mt="lg">Step 1: Initialize</Title>
-<CodeBlock language="python" code={`upstream_grad = torch.tensor(1.0)  # dL/dy = 1
+<CodeBlock language="python" code={`upstream_grad = torch.tensor(1.0)  # dL/dy = dL/dL = 1 (in case no loss function)
 print(f"Starting: dL/dy = {upstream_grad}")
 # u = 1² = 1, y = sin(1) ≈ 0.841`} />
 
@@ -534,11 +534,11 @@ history = []`} />
 
       <CodeBlock language="python" code={`for step in range(20):
     # Forward pass
-    loss = (x - 3) ** 2
-    history.append(loss.item())
+    f = (x - 3) ** 2
+    history.append(f.item())
     
     # Backward pass
-    loss.backward()
+    f.backward()
     
     # Gradient descent step
     with torch.no_grad():  # Don't track this operation
@@ -546,16 +546,16 @@ history = []`} />
         x.grad.zero_()  # Clear gradient for next iteration
     
     if step % 5 == 0:
-        print(f"Step {step}: x = {x.item():.3f}, loss = {loss.item():.3f}")`} />
+        print(f"Step {step}: x = {x.item():.3f}, f = {f.item():.3f}")`} />
 
       <Text mt="md">
         Output shows convergence to the minimum at x = 3:
       </Text>
 
       <CodeBlock language="python" code={`# Step 0: x = 0.000, loss = 9.000
-# Step 5: x = 2.046, loss = 0.913  
-# Step 10: x = 2.651, loss = 0.122
-# Step 15: x = 2.893, loss = 0.011`} />
+# Step 5: x = 2.046, f = 0.913  
+# Step 10: x = 2.651, f = 0.122
+# Step 15: x = 2.893, f = 0.011`} />
 </div>
 
     </Container>
