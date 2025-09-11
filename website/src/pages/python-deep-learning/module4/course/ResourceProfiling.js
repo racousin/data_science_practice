@@ -11,32 +11,16 @@ const ResourceProfiling = () => {
         <Title order={1}>Model Resource Profiling</Title>
         
         <Text>
-          Understanding how deep learning models utilize system resources is crucial for optimization.
           We'll explore how different model components consume memory and compute resources.
         </Text>
 We will use this simple MLP model to illustrate following sections
-          <CodeBlock language="python" code={`class MLP(nn.Module):
-    def __init__(self, input_size=784, hidden_size=256, num_classes=10):
-        super().__init__()
-        self.fc1 = nn.Linear(input_size, hidden_size)
-        self.relu = nn.ReLU()
-        self.fc2 = nn.Linear(hidden_size, num_classes)
-
-    def forward(self, x):
-        x = self.fc1(x)
-        x = self.relu(x)
-        x = self.fc2(x)
-        return x`}/>
         </div>
-        <div data-slide>
+<div data-slide>
           <Title id="gpu-vs-cpu" order={2} mt="xl">GPU vs CPU Performance</Title>
           
-          <Text>
-            Understanding when to use GPU vs CPU is crucial for efficient training:
-          </Text>
 
             <Title order={4}>Performance Characteristics</Title>
-            <Group position="apart" mt="md">
+            <Group justify="center" mt="md">
               <div>
                 <Badge color="blue" size="lg">CPU</Badge>
                 <List size="sm" mt="sm">
@@ -89,39 +73,9 @@ We will use this simple MLP model to illustrate following sections
           <Text>
             As we discussed in Module 1, your computer's operating system kernel runs on the CPU with its RAM. 
             All data must pass through CPU RAM before reaching the GPU for processing. This CPU-to-GPU memory 
-            transfer can become a significant bottleneck since data needs to travel across the PCIe bus between 
-            these two separate memory spaces. Understanding and optimizing these transfers is crucial for performance.
+            transfer can become a significant bottleneck.
           </Text>
 
-          <CodeBlock language="python" code={`def measure_transfer_overhead(size_mb=100):
-    """Measure CPU-GPU transfer overhead"""
-    size_elements = int(size_mb * 1024 * 1024 / 4)  # 32-bit floats
-    
-    # Create CPU tensor
-    cpu_tensor = torch.randn(size_elements)
-    
-    # Measure CPU to GPU
-    start = time.time()
-    gpu_tensor = cpu_tensor.cuda()
-    torch.cuda.synchronize()
-    cpu_to_gpu_time = time.time() - start
-    
-    # Measure GPU to CPU
-    start = time.time()
-    cpu_tensor_back = gpu_tensor.cpu()
-    torch.cuda.synchronize()
-    gpu_to_cpu_time = time.time() - start
-    
-    print(f"Transfer {size_mb}MB:")
-    print(f"  CPU → GPU: {cpu_to_gpu_time*1000:.2f}ms ({size_mb/cpu_to_gpu_time:.1f} MB/s)")
-    print(f"  GPU → CPU: {gpu_to_cpu_time*1000:.2f}ms ({size_mb/gpu_to_cpu_time:.1f} MB/s)")
-    
-    return cpu_to_gpu_time, gpu_to_cpu_time
-
-# Test different sizes
-for size in [10, 100, 500]:
-    measure_transfer_overhead(size)
-    print()`} />
     </div>
     <div data-slide>
           <Flex direction="column" align="center" mt="md">
@@ -274,18 +228,8 @@ for size in [10, 100, 500]:
 <div data-slide>
         <Title order={2}>Model Complexity Estimation</Title>
         
-        <Text>
-          Understanding the computational complexity of neural networks 
-          is essential for designing efficient models and choosing appropriate hardware.
-        </Text>
 
-        <Title order={3}>Number of Operations Estimation (FLOPs)</Title>
-        
-        <Text>
-          FLOPs (Floating Point Operations) provide a hardware-independent measure of computational complexity.
-          We count multiply-add operations as 2 FLOPs.
-        </Text>
-</div>
+        </div>
 <div data-slide>
         <Title order={4}>Number of Operations for Forward Pass</Title>
         
@@ -439,25 +383,6 @@ Self CUDA time total: 29.184us`}/>
           </Text>
 
           <CodeBlock language="python" code={`def profile_training_components(model, dataloader, optimizer):
-    """Profile different components of training loop"""
-    
-    with profile(
-        activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
-        profile_memory=True,
-        record_shapes=True,
-        with_stack=True
-    ) as prof:
-        for batch_idx, (data, target) in enumerate(dataloader):
-            if batch_idx >= 6:  # Profile 4 batches
-                break
-            if batch_idx < 2: # 2 warmup to avoid initial noise
-                data, target = data.cuda(), target.cuda()
-                output = model(data)
-                loss = F.cross_entropy(output, target)
-                loss.backward()
-                optimizer.step()
-                optimizer.zero_grad()
-            else:
               with record_function("data_transfer"):
                   data, target = data.cuda(), target.cuda()
               
@@ -475,26 +400,7 @@ Self CUDA time total: 29.184us`}/>
                   optimizer.zero_grad()
     
     return prof`} />
-    <CodeBlock code={`Time breakdown:
-  data_transfer: 7.7%
-  forward: 12.5%
-  loss: 6.3%
-  backward: 30.2%
-  optimizer_step: 43.2%`}/>
 </div>
-<div data-slide>
-          <Text mt="md" size="sm">
-            <strong>Profiling insights:</strong>
-          </Text>
-          <List size="sm" mt="xs">
-            <List.Item><strong>Optimizer step (43.2%):</strong> Largest bottleneck - gradient updates and parameter optimization dominate training time</List.Item>
-            <List.Item><strong>Backward pass (30.2%):</strong> Second most expensive - gradient computation through the network</List.Item>
-            <List.Item><strong>Forward pass (12.5%):</strong> Relatively efficient compared to backward pass</List.Item>
-            <List.Item><strong>Data transfer (7.7%):</strong> CPU to GPU transfer is minimal - good data pipeline efficiency</List.Item>
-            <List.Item><strong>Loss computation (6.3%):</strong> Negligible overhead from loss calculation</List.Item>
-          </List>
-
-          </div>
           <div data-slide>
           <Flex direction="column" align="center" mt="md">
             <Image
@@ -506,30 +412,7 @@ Self CUDA time total: 29.184us`}/>
           </Flex>
           </div>
            <div data-slide>
-          <CodeBlock language="python" code={`def profile_model_flops(model, input_shape):
-    """Use PyTorch profiler to measure actual FLOPs"""
-    model.eval()
-    inputs = torch.randn(input_shape)
-    
-    with profile(activities=[ProfilerActivity.CPU], with_flops=True) as prof:
-        with torch.no_grad():
-            model(inputs)
-    
-    # Get FLOPs from profiler
-    flops = sum([int(evt.flops) for evt in prof.events() if evt.flops])
-    
-    print(f"Measured FLOPs: {flops:,}")
-    print(f"GFLOPs: {flops / 1e9:.3f}")
-    
-    # Print top operations by FLOPs
-    events = sorted([evt for evt in prof.events() if evt.flops], 
-                   key=lambda x: x.flops, reverse=True)[:5]
-    
-    print("\nTop operations by FLOPs:")
-    for evt in events:
-        print(f"  {evt.name}: {evt.flops:,} FLOPs")
-    
-    return flops`} />
+          <CodeBlock language="python" code={`flops = sum([int(evt.flops) for evt in prof.events() if evt.flops])`} />
                     <Flex direction="column" align="center" mt="md">
             <Image
               src="/assets/python-deep-learning/module4/flop.png"

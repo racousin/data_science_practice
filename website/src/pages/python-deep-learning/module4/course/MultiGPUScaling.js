@@ -71,6 +71,10 @@ const MultiGPUScaling = () => {
         </Grid>
 </div>
 <div data-slide>
+  https://huggingface.co/spaces/nanotron/ultrascale-playbook?section=high-level_overview
+</div>
+{/* 
+<div data-slide>
         <Title order={3} mt="lg">Memory and Compute Distribution</Title>
         
         <Text>For a model with P parameters, batch size B, and N GPUs:</Text>
@@ -139,63 +143,9 @@ const MultiGPUScaling = () => {
           <List.Item>All models are updated with the averaged gradients</List.Item>
         </List>
 
-        <Title order={3} mt="lg">PyTorch Implementation</Title>
-</div>
-<div data-slide>
-        <Title order={4} mt="md">DataParallel (DP) - Single Node</Title>
-        
-        <CodeBlock language="python">{`import torch
-import torch.nn as nn
-
-# Simple DataParallel - single process, multiple GPUs
-model = MyModel()
-if torch.cuda.device_count() > 1:
-    model = nn.DataParallel(model)
-model = model.cuda()
-
-# Training loop remains the same
-for data, target in dataloader:
-    output = model(data)  # Automatically distributed
-    loss = criterion(output, target)
-    loss.backward()  # Gradients automatically synchronized
-    optimizer.step()`}</CodeBlock>
-
-        <Alert icon={<IconAlertCircle />} color="yellow" mt="md">
-          DataParallel has significant Python GIL overhead. Use DistributedDataParallel for better performance.
-        </Alert>
-</div>
-<div data-slide>
-        <Title order={4} mt="md">DistributedDataParallel (DDP) - Multi-Node</Title>
-
-        <CodeBlock language="python">{`import torch
-import torch.distributed as dist
-from torch.nn.parallel import DistributedDataParallel as DDP
-
-def setup(rank, world_size):
-    dist.init_process_group("nccl", rank=rank, world_size=world_size)
-
-def train(rank, world_size):
-    setup(rank, world_size)
     
-    # Create model and move to GPU
-    model = MyModel().to(rank)
-    ddp_model = DDP(model, device_ids=[rank])
-    
-    # Use DistributedSampler for proper data distribution
-    sampler = torch.utils.data.distributed.DistributedSampler(
-        dataset, num_replicas=world_size, rank=rank
-    )
-    dataloader = DataLoader(dataset, sampler=sampler, batch_size=batch_size)
-    
-    for epoch in range(num_epochs):
-        sampler.set_epoch(epoch)  # Ensure different shuffling each epoch
-        for data, target in dataloader:
-            output = ddp_model(data.to(rank))
-            loss = criterion(output, target.to(rank))
-            loss.backward()
-            optimizer.step()
-            optimizer.zero_grad()`}</CodeBlock>
 </div>
+
 <div data-slide>
         <Title order={3} mt="lg">Gradient Synchronization</Title>
 
@@ -243,46 +193,7 @@ def train(rank, world_size):
           <List.Item>Gradients flow backward through the same path</List.Item>
         </List>
 </div>
-        <Title order={3} mt="lg">Naive Model Parallelism</Title>
 
-        <CodeBlock language="python">{`import torch
-import torch.nn as nn
-
-class ModelParallelNet(nn.Module):
-    def __init__(self):
-        super().__init__()
-        # First half on GPU 0
-        self.layer1 = nn.Linear(1000, 500).to('cuda:0')
-        self.layer2 = nn.Linear(500, 500).to('cuda:0')
-        
-        # Second half on GPU 1
-        self.layer3 = nn.Linear(500, 500).to('cuda:1')
-        self.layer4 = nn.Linear(500, 10).to('cuda:1')
-    
-    def forward(self, x):
-        x = x.to('cuda:0')
-        x = torch.relu(self.layer1(x))
-        x = torch.relu(self.layer2(x))
-        
-        # Transfer to GPU 1
-        x = x.to('cuda:1')
-        x = torch.relu(self.layer3(x))
-        x = self.layer4(x)
-        return x
-
-model = ModelParallelNet()
-
-# Training - labels must be on the last GPU
-for data, target in dataloader:
-    output = model(data)
-    loss = criterion(output, target.to('cuda:1'))
-    loss.backward()
-    optimizer.step()`}</CodeBlock>
-
-        <Alert icon={<IconAlertCircle />} color="yellow" mt="md">
-          <strong>Problem:</strong> Naive model parallelism has poor GPU utilization. 
-          While GPU 0 processes layer 1, GPU 1 is idle, and vice versa.
-        </Alert>
 
         <Title order={3} mt="lg">GPU Utilization in Model Parallelism</Title>
 
@@ -319,31 +230,6 @@ for data, target in dataloader:
           Common pipeline schedules include GPipe and 1F1B (one-forward-one-backward):
         </Text>
 
-        <CodeBlock language="python">{`# Conceptual pipeline parallelism with micro-batches
-# Using PyTorch's pipe (requires fairscale or torch.distributed.pipeline)
-
-from torch.distributed.pipeline.sync import Pipe
-
-# Define model with balance indicating layer distribution
-model = nn.Sequential(
-    nn.Linear(1000, 500),
-    nn.ReLU(),
-    nn.Linear(500, 500),
-    nn.ReLU(),
-    nn.Linear(500, 500),
-    nn.ReLU(),
-    nn.Linear(500, 10)
-)
-
-# Create pipeline with 4 GPUs and 8 micro-batches
-model = Pipe(model, balance=[2, 2, 2, 1], devices=[0, 1, 2, 3], chunks=8)
-
-# Training
-for data, target in dataloader:
-    output = model(data)
-    loss = criterion(output, target)
-    loss.backward()
-    optimizer.step()`}</CodeBlock>
 
         <Title order={3} mt="lg">Pipeline Efficiency</Title>
 
@@ -650,7 +536,7 @@ for data, target in dataloader:
             hardware setup (especially interconnect bandwidth), and scaling requirements. 
             Profile and experiment to find the best configuration.
           </Alert>
-        </Paper>
+        </Paper> */}
 
       </Stack>
     </Container>

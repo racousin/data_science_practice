@@ -78,24 +78,35 @@ Original function: 0.019s
 Compiled function: 0.007s
 Speedup: 2.89x`} />
 </div>
-<div data-slide>
-Behavior of torch.compile with Nested Modules and Function Calls
+    <div data-slide>
+      <Stack spacing="md">
+        <Title order={3}>Behavior of torch.compile with Nested Modules and Function Calls</Title>
+        
+        <Text>
+          When you use torch.compile, the compiler will try to recursively compile every function call 
+          inside the target function or module that is not in a skip list (such as built-ins, some 
+          functions in the torch.* namespace).
+        </Text>
 
-When you use torch.compile, the compiler will try to recursively compile every function call inside the target function or module inside the target function or module that is not in a skip list (such as built-ins, some functions in the torch.* namespace).
 
-Best Practices:
+        <List type="ordered" spacing="xs">
+          <List.Item>
+            <Text weight={500}>Top-Level Compilation:</Text> One approach is to compile at the highest 
+            level possible (i.e., when the top-level module is initialized/called) and selectively 
+            disable compilation when encountering excessive graph breaks or errors. If there are still 
+            many compile issues, compile individual subcomponents instead.
+          </List.Item>
+          
+          <List.Item>
+            <Text weight={500}>Modular Testing:</Text> Test individual functions and modules with 
+            torch.compile before integrating them into larger models to isolate potential issues.
+          </List.Item>
 
-1. Top-Level Compilation: One approach is to compile at the highest level possible (i.e., when the top-level module is initialized/called) and selectively disable compilation when encountering excessive graph breaks or errors. If there are still many compile issues, compile individual subcomponents instead.
-
-2. Modular Testing: Test individual functions and modules with torch.compile before integrating them into larger models to isolate potential issues.
-
-
-            <List size="sm">
-              <List.Item>First call will be slower due to compilation overhead</List.Item>
-              <List.Item>Best for static input shapes - dynamic shapes may cause recompilation</List.Item>
-            </List>
-
-        </div>
+          <List.Item>First call will be slower due to compilation overhead</List.Item>
+          <List.Item>Best for static input shapes - dynamic shapes may cause recompilation</List.Item>
+        </List>
+      </Stack>
+    </div>
 <div data-slide>
         
           <Title id="mixed-precision" order={2} mt="xl">Mixed Precision Training</Title>
@@ -121,8 +132,7 @@ data = data.to(torch.float16)
 # - Gradient underflow (gradients become zero)
 # - Loss of precision in weight updates
 # - Training instability`} />
-</div>
-<div data-slide>
+
           <Title order={3} mt="lg">How Mixed Precision Works</Title>
           
           <Text>
@@ -157,25 +167,6 @@ data = data.to(torch.float16)
             </List>
 </div>
 <div data-slide>
-          <CodeBlock language="python" code={`# What happens under the hood:
-with autocast():
-    # Input activations cast to FP16
-    x_fp16 = x.to(torch.float16)
-    
-    # Weights temporarily cast to FP16 for computation
-    w_fp16 = model.weight.to(torch.float16)  
-    
-    # Forward pass in FP16
-    output = torch.matmul(x_fp16, w_fp16)  # FP16 computation
-    
-    # Loss computed in FP32 for stability
-    loss = criterion(output.float(), target)  # Cast back to FP32
-
-# Master weights remain in FP32 throughout
-print(model.weight.dtype)  # torch.float32
-print(optimizer.param_groups[0]['params'][0].dtype)  # torch.float32`} />
-</div>
-<div data-slide>
           <Title order={3} mt="lg">Key Benefits</Title>
           
           <Paper p="md" withBorder>
@@ -194,58 +185,6 @@ print(optimizer.param_groups[0]['params'][0].dtype)  # torch.float32`} />
               </Grid.Col>
             </Grid>
           </Paper>
-
-          <Title order={3} mt="lg">Implementation Details</Title>
-
-          <Text>The technique involves three key components:</Text>
-
-          <Title order={4} mt="md">1. Automatic Loss Scaling</Title>
-          <Text>Prevents gradient underflow by scaling the loss before backpropagation:</Text>
-          
-          <CodeBlock language="python" code={`from torch.cuda.amp import GradScaler
-
-# Initialize gradient scaler
-scaler = GradScaler()
-
-# Scale loss before backward pass
-scaled_loss = scaler.scale(loss)
-scaled_loss.backward()
-
-# Unscale gradients before optimizer step
-scaler.unscale_(optimizer)`} />
-
-          <Title order={4} mt="md">2. Smart Precision Casting</Title>
-          <Text>Autocast automatically chooses the right precision for each operation:</Text>
-          
-          <CodeBlock language="python" code={`from torch.cuda.amp import autocast
-
-# Operations inside autocast use FP16 where safe
-with autocast():
-    output = model(input)  # FP16 computation
-    loss = criterion(output, target)  # Loss stays in FP32
-    
-# Gradients computed in FP16, master weights stay FP32`} />
-
-          <Title order={4} mt="md">3. Complete Training Loop</Title>
-          <Text>Combining all components for mixed precision training:</Text>
-          
-          <CodeBlock language="python" code={`def train_mixed_precision(model, dataloader, optimizer):
-    scaler = GradScaler()
-    
-    for data, target in dataloader:
-        optimizer.zero_grad()
-        
-        # Forward pass with autocast
-        with autocast():
-            output = model(data)
-            loss = criterion(output, target)
-        
-        # Backward with gradient scaling
-        scaler.scale(loss).backward()
-        
-        # Update weights with unscaled gradients
-        scaler.step(optimizer)
-        scaler.update()`} />
 
 </div>
         <div data-slide>
@@ -266,37 +205,10 @@ with autocast():
             </List>
 </div>
 <div data-slide>
-
-          <CodeBlock language="python" code={`from torch.utils.checkpoint import checkpoint
-
-class CheckpointedLayer(nn.Module):
-    def __init__(self, in_features, out_features):
-        super().__init__()
-        self.linear = nn.Linear(in_features, out_features)
-        self.norm = nn.LayerNorm(out_features)
-        self.activation = nn.GELU()
-    
-    def forward(self, x):
-        # Without checkpointing: stores all intermediate values
-        # x -> linear_out -> norm_out -> activation_out
-        
-        # With checkpointing: only stores input and output
-        if self.training:
-            # Wrap the computation in checkpoint
-            return checkpoint(self._forward_impl, x)
-        else:
-            return self._forward_impl(x)
-    
-    def _forward_impl(self, x):
-        x = self.linear(x)
-        x = self.norm(x)
-        return self.activation(x)`} />
-</div>
-<div data-slide>
           <Title order={3} mt="lg">2. CPU Offloading</Title>
           
           <Text>
-            Modern optimizers like Adam maintain momentum and variance buffers that double or triple 
+            Modern optimizers like Adam maintain momentum and variance buffers that double  
             the memory needed for parameters. CPU offloading moves these optimizer states to system RAM, 
             keeping only the model weights on GPU.
           </Text>
@@ -317,38 +229,6 @@ class CheckpointedLayer(nn.Module):
           </Text>
           </div>
 <div data-slide>
-          <CodeBlock language="python" code={`# Simplified CPU offloading concept
-class CPUOffloadAdam:
-    def __init__(self, params, lr=0.001):
-        self.params = list(params)
-        self.lr = lr
-        # Keep optimizer states on CPU instead of GPU
-        self.m = {id(p): torch.zeros_like(p, device='cpu') for p in self.params}
-        self.v = {id(p): torch.zeros_like(p, device='cpu') for p in self.params}
-        self.t = 0
-    
-    def step(self):
-        self.t += 1
-        for p in self.params:
-            if p.grad is None:
-                continue
-            
-            # Transfer gradient to CPU for computation
-            grad_cpu = p.grad.cpu()
-            
-            # Update moments on CPU (no GPU memory used)
-            self.m[id(p)] = 0.9 * self.m[id(p)] + 0.1 * grad_cpu
-            self.v[id(p)] = 0.999 * self.v[id(p)] + 0.001 * grad_cpu**2
-            
-            # Compute update on CPU
-            m_hat = self.m[id(p)] / (1 - 0.9**self.t)
-            v_hat = self.v[id(p)] / (1 - 0.999**self.t)
-            update = self.lr * m_hat / (torch.sqrt(v_hat) + 1e-8)
-            
-            # Apply update to GPU parameters
-            p.data.add_(update.to(p.device), alpha=-1)`} />
-</div>
-<div data-slide>
           <Title order={3} mt="lg">3. Memory Efficient Attention</Title>
           
           <Text>
@@ -366,64 +246,6 @@ class CPUOffloadAdam:
               <List.Item><strong>Benefits:</strong> 10-100× less memory, 2-4× faster on long sequences</List.Item>
             </List>
           </Paper>
-</div>
-<div data-slide>
-          <CodeBlock language="python" code={`# Standard attention (high memory usage)
-def standard_attention(Q, K, V):
-    # Q, K, V: [batch, heads, seq_len, dim]
-    scores = torch.matmul(Q, K.transpose(-2, -1)) / math.sqrt(Q.size(-1))
-    # scores: [batch, heads, seq_len, seq_len] - O(n²) memory!
-    attn_weights = F.softmax(scores, dim=-1)
-    output = torch.matmul(attn_weights, V)
-    return output
-
-# Using Flash Attention (memory efficient)
-from flash_attn import flash_attn_func
-
-def efficient_attention(Q, K, V):
-    # Flash Attention processes in blocks, never materializing full attention matrix
-    # Memory: O(n) instead of O(n²)
-    output = flash_attn_func(Q, K, V, dropout_p=0.0, causal=False)
-    return output`} />
-</div>
-<div data-slide>
-          <Title order={3} mt="lg">4. Activation Recomputation</Title>
-          
-          <Text>
-            Similar to gradient checkpointing but more fine-grained. Instead of saving all 
-            activations or checkpointing entire layers, selectively recompute expensive 
-            but memory-light operations while caching memory-heavy but compute-light operations.
-          </Text>
-
-          <Paper p="md" withBorder>
-            <Title order={4}>Smart Recomputation Strategy</Title>
-            <List spacing="sm" mt="md">
-              <List.Item><strong>Recompute:</strong> Activation functions (GELU, ReLU), dropout, normalization</List.Item>
-              <List.Item><strong>Cache:</strong> Linear projections, convolutions (memory-heavy)</List.Item>
-              <List.Item><strong>Rationale:</strong> Activations are fast to recompute but large to store</List.Item>
-            </List>
-          </Paper>
-</div>
-<div data-slide>
-          <CodeBlock language="python" code={`class SelectiveRecomputation(nn.Module):
-    def __init__(self, dim):
-        super().__init__()
-        self.linear1 = nn.Linear(dim, dim * 4)  # Expensive to recompute
-        self.linear2 = nn.Linear(dim * 4, dim)  # Expensive to recompute
-        self.activation = nn.GELU()  # Cheap to recompute
-        self.dropout = nn.Dropout(0.1)  # Cheap to recompute
-    
-    def forward(self, x):
-        # Cache the expensive linear computation
-        hidden = self.linear1(x)
-        
-        if self.training:
-            # Don't save activation output - recompute in backward
-            hidden = checkpoint(lambda h: self.dropout(self.activation(h)), hidden)
-        else:
-            hidden = self.dropout(self.activation(hidden))
-        
-        return self.linear2(hidden)`} />
 </div>
 
        <div data-slide>
@@ -504,7 +326,6 @@ dataloader = DataLoader(dataset, num_workers=4, prefetch_factor=4)`} />
         <List spacing="sm" mt="md">
           <List.Item><strong>Reduced Model Size:</strong> 50-90% parameter reduction is common</List.Item>
           <List.Item><strong>Faster Inference:</strong> Less computation with sparse operations</List.Item>
-          <List.Item><strong>Lower Memory Footprint:</strong> Crucial for edge deployment</List.Item>
           <List.Item><strong>Maintained Accuracy:</strong> Often within 1-2% of original performance</List.Item>
         </List>
 </div>
@@ -517,23 +338,6 @@ dataloader = DataLoader(dataset, num_workers=4, prefetch_factor=4)`} />
           assuming they contribute least to the output.
         </Text>
         
-        <CodeBlock language="python" code={`# Unstructured magnitude pruning - removes individual weights
-import torch.nn.utils.prune as prune
-
-# Prune 30% of weights with smallest magnitude
-prune.l1_unstructured(model.linear, name='weight', amount=0.3)
-
-# The pruned weights become zero but structure remains
-print(model.linear.weight)  # Contains zeros where pruned`} />
-
-        <Text mt="md">
-          After pruning, weights are masked with zeros. The mask is applied during forward pass:
-        </Text>
-
-        <CodeBlock language="python" code={`# How pruning masks work internally
-weight_orig = model.linear.weight_orig  # Original weights
-weight_mask = model.linear.weight_mask  # Binary mask (0 or 1)
-effective_weight = weight_orig * weight_mask  # Zeros where pruned`} />
 </div>
 <div data-slide>
         <Title order={4} mt="md">2. Structured Pruning</Title>
@@ -542,16 +346,6 @@ effective_weight = weight_orig * weight_mask  # Zeros where pruned`} />
           This creates actual speedup on standard hardware without special sparse operations.
         </Text>
         
-        <CodeBlock language="python" code={`# Structured pruning - remove entire channels
-prune.ln_structured(
-    model.conv, 
-    name='weight', 
-    amount=0.3,  # Remove 30% of channels
-    n=2,  # L2 norm for importance
-    dim=0  # Prune along output channel dimension
-)
-
-# Results in smaller conv layer: fewer output channels`} />
 </div>
 <div data-slide>
         <Title order={4} mt="md">3. Iterative Pruning with Fine-tuning</Title>
@@ -560,102 +354,7 @@ prune.ln_structured(
           to recover accuracy. This typically yields better results than one-shot pruning.
         </Text>
         
-        <CodeBlock language="python" code={`def iterative_pruning(model, dataloader, sparsity_levels):
-    """Gradually increase sparsity with retraining"""
-    for sparsity in sparsity_levels:  # e.g., [0.2, 0.4, 0.6, 0.8]
-        # Apply pruning to reach target sparsity
-        for module in model.modules():
-            if isinstance(module, nn.Linear):
-                prune.l1_unstructured(module, 'weight', amount=sparsity)
-        
-        # Fine-tune for several epochs to recover accuracy
-        train_epochs(model, dataloader, epochs=5)
-        
-        # Evaluate pruned model
-        accuracy = evaluate(model, test_loader)
-        print(f"Sparsity: {sparsity:.1%}, Accuracy: {accuracy:.2%}")`} />
 </div>
-<div data-slide>
-        <Title order={4} mt="md">4. Lottery Ticket Hypothesis</Title>
-        <Text>
-          Theory that dense networks contain sparse subnetworks (winning tickets) that can 
-          achieve comparable accuracy when trained from the original initialization.
-        </Text>
-        
-        <Paper p="md" withBorder>
-          <Title order={5}>Lottery Ticket Procedure:</Title>
-          <List spacing="sm" size="sm" mt="sm">
-            <List.Item>1. Train network to convergence</List.Item>
-            <List.Item>2. Prune p% of smallest magnitude weights</List.Item>
-            <List.Item>3. Reset remaining weights to original initialization</List.Item>
-            <List.Item>4. Retrain sparse network from scratch</List.Item>
-            <List.Item>5. Winning tickets match original accuracy at high sparsity</List.Item>
-          </List>
-        </Paper>
-</div>
-<div data-slide>
-        <Title order={4} mt="md">5. Dynamic Sparsity</Title>
-        <Text>
-          Allows pruned connections to regrow during training, enabling the network to 
-          explore different sparse topologies and find better configurations.
-        </Text>
-        
-        <CodeBlock language="python" code={`class DynamicSparsity:
-    def update_mask(self, model, epoch):
-        """Prune and regrow connections dynamically"""
-        if epoch % 10 == 0:  # Update every 10 epochs
-            # Prune: remove 20% of smallest weights
-            prune_weights(model, amount=0.2)
-            
-            # Regrow: add back 20% connections with highest gradient
-            regrow_weights(model, amount=0.2)
-            
-            # Maintains constant sparsity while exploring topologies`} />
-</div>
-        <Title order={3} mt="lg">Practical Considerations</Title>
-
-        <Alert color="blue" mt="md">
-          <Text weight={500}>Best Practices for Pruning:</Text>
-          <List size="sm" mt="xs">
-            <List.Item>Start with a well-trained model - pruning from scratch is harder</List.Item>
-            <List.Item>Use gradual pruning schedules rather than aggressive one-shot pruning</List.Item>
-            <List.Item>Different layers have different sensitivity - prune early layers less</List.Item>
-            <List.Item>Structured pruning gives real speedup, unstructured needs special hardware</List.Item>
-            <List.Item>Combine with quantization for maximum compression</List.Item>
-          </List>
-        </Alert>
-
-        <Title order={4} mt="md">Making Pruning Permanent</Title>
-        <Text>
-          After pruning, remove the masks and create a truly smaller model:
-        </Text>
-        
-        <CodeBlock language="python" code={`# Remove pruning reparameterization
-for module in model.modules():
-    if isinstance(module, nn.Linear):
-        if hasattr(module, 'weight_orig'):
-            prune.remove(module, 'weight')
-
-# For structured pruning, actually resize layers
-def resize_pruned_model(model):
-    """Create new model with pruned architecture"""
-    # Count remaining channels/neurons after structured pruning
-    # Instantiate new smaller model with reduced dimensions
-    # Copy non-zero weights to new model
-    return smaller_model`} />
-
-        <Paper p="md" withBorder mt="md">
-          <Title order={4}>Compression Results in Practice</Title>
-          <Text size="sm" mt="xs">
-            Typical compression ratios achieved through pruning:
-          </Text>
-          <List size="sm" mt="xs">
-            <List.Item>ResNet-50: 70-80% sparsity with &lt;1% accuracy loss</List.Item>
-            <List.Item>BERT: 40-60% sparsity maintaining downstream task performance</List.Item>
-            <List.Item>GPT models: 50% unstructured sparsity with minimal perplexity increase</List.Item>
-            <List.Item>CNNs: 90%+ sparsity possible with careful iterative pruning</List.Item>
-          </List>
-        </Paper>
 
       </Stack>
     </Container>

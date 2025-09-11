@@ -143,52 +143,6 @@ optimizer = torch.optim.SGD([
     {'params': model.fc.parameters(), 'lr': 1e-2}
 ], momentum=0.9)`}/>
 </div>
-<div data-slide>
-        <Title order={2} mt="xl">Complete Fine-Tuning Example</Title>
-
-        <Paper p="md" withBorder>
-          <Text>
-            Here's a complete example fine-tuning ResNet for a custom classification task:
-          </Text>
-        </Paper>
-
-        <CodeBlock
-          language="python"
-          code={`
-import torch
-import torch.nn as nn
-import torchvision.models as models
-
-# 1. Load pre-trained model
-model = models.resnet18(pretrained=True)
-
-# 2. Freeze all parameters
-for param in model.parameters():
-    param.requires_grad = False
-
-# 3. Replace classifier for 5 classes
-num_classes = 5
-model.fc = nn.Sequential(
-    nn.Linear(512, 256),
-    nn.ReLU(),
-    nn.Dropout(0.2),
-    nn.Linear(256, num_classes)
-)
-
-# 4. Setup optimizer (only new layers will update)
-optimizer = torch.optim.Adam(model.fc.parameters(), lr=0.001)
-
-# 5. Training loop (simplified)
-model.train()
-for epoch in range(10):
-    for inputs, labels in dataloader:
-        optimizer.zero_grad()
-        outputs = model(inputs)
-        loss = nn.CrossEntropyLoss()(outputs, labels)
-        loss.backward()
-        optimizer.step()`}/>
-</div>
-
       </Stack>
     </Container>
   );

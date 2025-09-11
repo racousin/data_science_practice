@@ -62,9 +62,10 @@ Each exercise notebook (`/website/public/modules/python-deep-learning/module{N}/
 - Exercise 3: Monitoring & Visualization with TensorBoard
 
 #### Module 4: Performance Optimization & Scale
-- Exercise 1: Model Resource Profiling
+- Exercise 1: Resource Profiling
+- Exercise 2: Performance Optimization Techniques
 - Exercise 2: Fine Tunning
-- Exercise 3: Performance Optimization Techniques
+
 ### Development Guidelines
 
 1. **Consistency**: All exercises must follow the exact patternß
