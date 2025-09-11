@@ -7894,27 +7894,25 @@ $$y = 2\sin(2\pi x_1) + 3\cos(\pi x_2) + x_1^2 - 2x_2^2 + x_1 \cdot x_2 + x_3^3 
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="si">{</span><span class="s1">'='</span><span class="o">*</span><span class="mi">50</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Training with batch size: </span><span class="si">{</span><span class="n">bs</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'='</span><span class="o">*</span><span class="mi">50</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">train_loader_bs</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">bs</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">val_loader_bs</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">val_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">bs</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Create fresh model and optimizer for fair comparison</span>
+    <span class="n">model_bs</span> <span class="o">=</span> <span class="n">RegressionModel</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">hidden_dims</span><span class="o">=</span><span class="p">[</span><span class="mi">64</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">16</span><span class="p">])</span>
+    <span class="n">optimizer_bs</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model_bs</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span> <span class="k">if</span> <span class="n">model_bs</span> <span class="k">else</span> <span class="kc">None</span>
     
-    <span class="c1"># Create new dataloaders with current batch size</span>
-    <span class="k">if</span> <span class="n">X_train</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">train_loader_bs</span> <span class="o">=</span> <span class="n">create_dataloader</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">bs</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">val_loader_bs</span> <span class="o">=</span> <span class="n">create_dataloader</span><span class="p">(</span><span class="n">X_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">bs</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        
-        <span class="c1"># Create fresh model and optimizer for fair comparison</span>
-        <span class="n">model_bs</span> <span class="o">=</span> <span class="n">RegressionModel</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">hidden_dims</span><span class="o">=</span><span class="p">[</span><span class="mi">64</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">16</span><span class="p">])</span>
-        <span class="n">optimizer_bs</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model_bs</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span> <span class="k">if</span> <span class="n">model_bs</span> <span class="k">else</span> <span class="kc">None</span>
-        
-        <span class="c1"># Train the model</span>
-        <span class="k">if</span> <span class="n">model_bs</span> <span class="ow">and</span> <span class="n">criterion</span> <span class="ow">and</span> <span class="n">optimizer_bs</span> <span class="ow">and</span> <span class="n">train_loader_bs</span><span class="p">:</span>
-            <span class="n">train_losses</span><span class="p">,</span> <span class="n">val_losses</span> <span class="o">=</span> <span class="n">train_model</span><span class="p">(</span>
-                <span class="n">model_bs</span><span class="p">,</span> <span class="n">train_loader_bs</span><span class="p">,</span> <span class="n">val_loader_bs</span><span class="p">,</span> 
-                <span class="n">criterion</span><span class="p">,</span> <span class="n">optimizer_bs</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">50</span>
-            <span class="p">)</span>
-            <span class="n">results</span><span class="p">[</span><span class="n">bs</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s1">'train_losses'</span><span class="p">:</span> <span class="n">train_losses</span><span class="p">,</span>
-                <span class="s1">'val_losses'</span><span class="p">:</span> <span class="n">val_losses</span><span class="p">,</span>
-                <span class="s1">'model'</span><span class="p">:</span> <span class="n">model_bs</span>
-            <span class="p">}</span>
+    <span class="c1"># Train the model</span>
+    <span class="k">if</span> <span class="n">model_bs</span> <span class="ow">and</span> <span class="n">criterion</span> <span class="ow">and</span> <span class="n">optimizer_bs</span> <span class="ow">and</span> <span class="n">train_loader_bs</span>
+    <span class="p">:</span>
+        <span class="n">train_losses</span><span class="p">,</span> <span class="n">val_losses</span> <span class="o">=</span> <span class="n">train_model</span><span class="p">(</span>
+            <span class="n">model_bs</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">val_loader</span><span class="p">,</span> 
+            <span class="n">criterion</span><span class="p">,</span> <span class="n">optimizer_bs</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">50</span>
+        <span class="p">)</span>
+        <span class="n">results</span><span class="p">[</span><span class="n">bs</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">'train_losses'</span><span class="p">:</span> <span class="n">train_losses</span><span class="p">,</span>
+            <span class="s1">'val_losses'</span><span class="p">:</span> <span class="n">val_losses</span><span class="p">,</span>
+            <span class="s1">'model'</span><span class="p">:</span> <span class="n">model_bs</span>
+        <span class="p">}</span>
 </pre></div>
 </div>
 </div>
