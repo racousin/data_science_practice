@@ -233,9 +233,9 @@ export const pytorchCourseContentData = {
   'module3': [
     { to: '/training-basics', label: 'Training Basics', subLinks: [
     ]},
-    { to: '/data-pipeline-training-loop', label: 'Data Pipeline Essential Components', subLinks: [
-    ]},
     { to: '/essential-layers', label: 'NN Essential Components', subLinks: [
+    ]},
+    { to: '/data-pipeline-training-loop', label: 'Data Pipeline Essential Components', subLinks: [
     ]},
     { to: '/monitoring-visualization', label: 'Monitoring & Visualization', subLinks: [
     ]}

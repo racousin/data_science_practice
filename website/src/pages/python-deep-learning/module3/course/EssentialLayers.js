@@ -2,6 +2,7 @@ import React from 'react';
 import { Title, Text, Stack, Accordion, Container, List, Code } from '@mantine/core';
 import CodeBlock from 'components/CodeBlock';
 import { InlineMath, BlockMath } from 'react-katex';
+import WeightInitialization from './EssentialComponents/WeightInitialization';
 import 'katex/dist/katex.min.css';
 
 // Import components
@@ -112,22 +113,206 @@ const EssentialLayers = () => {
           <Text mt="sm">
             CNNs preserve the 2D structure. A 3×3 filter naturally captures local patterns (edges, corners) using only 9 shared weights instead of hundreds of connections per neuron.
           </Text>
-
-          <Text mt="md"><strong>The Pattern:</strong></Text>
-          <List>
-            <List.Item><strong>CNNs:</strong> Exploit spatial locality in images</List.Item>
-            <List.Item><strong>LSTMs:</strong> Exploit temporal dependencies in sequences</List.Item>
-            <List.Item><strong>Attention:</strong> Exploit relational structure between elements</List.Item>
-          </List>
-
-          <Text mt="md">
-            <strong>Result:</strong> By building the right inductive bias into the architecture, we get better generalization with fewer parameters.
-          </Text>
         </div>
 
         
-          
-          
+          <div data-slide>
+  <Title order={2} mb="md">nn.Module Overview</Title>
+  <Text mb="md">
+    <Code>nn.Module</Code> is the base class for all neural network components in PyTorch. 
+    It provides automatic differentiation machinery and parameter management.
+  </Text>
+  
+  <CodeBlock language="python" code={`class MyModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        # Layer definitions stored as module attributes
+        self.layer1 = nn.Linear(784, 128)
+        self.layer2 = nn.Linear(128, 10)
+    
+    def forward(self, x):
+        # Computation graph definition
+        x = torch.relu(self.layer1(x))
+        return self.layer2(x)`} />
+</div>
+
+<div data-slide>
+  <Title order={2} mb="md">The __init__ Method</Title>
+  <Text mb="md">
+    The constructor registers all components that contain learnable parameters.
+  </Text>
+  
+  <CodeBlock language="python" code={`def __init__(self):
+    super().__init__()`} />
+  
+  <Text mt="sm" mb="sm">
+    Pre-built layers contain parameters that will be automatically tracked:
+  </Text>
+  
+  <CodeBlock language="python" code={`    # Pre-built layers (contain parameters)
+    self.conv = nn.Conv2d(3, 64, kernel_size=3)
+    self.bn = nn.BatchNorm2d(64)
+    self.fc = nn.Linear(64 * 28 * 28, 10)`} />
+  
+  <Text mt="sm" mb="sm">
+    Manual layer parameters must be wrapped in <Code>nn.Parameter</Code> to be tracked:
+  </Text>
+  
+  <CodeBlock language="python" code={`    # Manual layers parameters
+    self.params = nn.Parameter(torch.zeros(10))
+    # self.params = torch.zeros(10, requires_grad=True)  # will not work correctly`} />
+  
+  <Text mt="sm" mb="sm">
+    Non-parameter attributes (buffers) are tensors that move with the model but aren't trainable:
+  </Text>
+  
+  <CodeBlock language="python" code={`    # Non-parameter attributes (buffers)
+    self.register_buffer('running_mean', torch.zeros(64)))`} />
+  
+  <Text mt="sm" mb="sm">
+    Regular Python attributes are not tracked, so it's okay to define them directly in forward:
+  </Text>
+  
+  <CodeBlock language="python" code={`    # Regular Python attributes (not tracked)
+    self.activation = nn.ReLU()`} />
+  
+</div>
+
+<div data-slide>
+  <Title order={2} mb="md">The forward Method</Title>
+  <Text mb="md">
+    Defines the computation performed at every call. Constructs the computational 
+    graph dynamically during execution.
+  </Text>
+  
+  <CodeBlock language="python" code={`def forward(self, x):
+    # Sequential operations
+    x = self.conv(x)
+    x = self.bn(x)
+    x = torch.relu(x)
+    x = x.view(x.size(0), -1)  # Reshape
+    x = self.fc(x)
+    return x
+    
+# Usage
+model = MyModel()
+output = model(input_tensor)  # Calls forward()
+# Equivalent to: output = model.forward(input_tensor)`} />
+  
+</div>
+
+<div data-slide>
+  <Title order={2} mb="md">Training and Evaluation Modes</Title>
+  <Text mb="md">
+    Modules have two modes affecting specific layers that behave differently during training and inference. 
+    Mode setting propagates to all submodules.
+  </Text>
+  
+  <CodeBlock language="python" code={`model.train()     # Set training mode (default)
+model.eval()      # Set evaluation mode
+
+# Check current mode
+if model.training:
+    print("Training mode")`} />
+  
+  <Text mt="md" mb="sm">
+    <strong>Layers affected by mode:</strong>
+  </Text>
+
+  
+  <CodeBlock language="python" code={`# Example behavior differences
+dropout = nn.Dropout(p=0.5)
+batchnorm = nn.BatchNorm1d(100)
+
+# Training mode: dropout active, batchnorm updates stats
+model.train()
+x = dropout(x)      # ~50% of values set to zero
+x = batchnorm(x)    # Uses batch mean/var, updates running stats
+
+# Evaluation mode: dropout inactive, batchnorm uses fixed stats  
+model.eval()
+x = dropout(x)      # No dropout applied, x passes through unchanged
+x = batchnorm(x)    # Uses fixed running mean/var, no updates`} />
+</div>
+
+<div data-slide>
+  <Title order={2} mb="md">Accessing Parameters</Title>
+  <Text mb="md">
+    Multiple methods to access and inspect model parameters for optimization, 
+    saving, or analysis.
+  </Text>
+  
+  <CodeBlock language="python" code={`# Iterator of parameter tensors
+for param in model.parameters():
+    print(param.shape, param.requires_grad)
+
+# Iterator of (name, tensor) pairs
+for name, param in model.named_parameters():
+    print(f"{name}: {param.shape}")
+    # Example: "layer1.weight: torch.Size([128, 784])"
+
+# Dictionary of all parameters
+state = model.state_dict()
+print(state.keys())
+# dict_keys(['layer1.weight', 'layer1.bias', ...])
+
+# Count parameters
+total_params = sum(p.numel() for p in model.parameters())
+trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)`} />
+</div>
+
+<div data-slide>
+  <Title order={2} mb="md">Custom Layers with Direct Parameters</Title>
+  <Text mb="md">
+    Define learnable parameters directly using <Code>nn.Parameter</Code> for 
+    custom operations not covered by standard layers.
+  </Text>
+  
+  <CodeBlock language="python" code={`class CustomLayer(nn.Module):
+    def __init__(self, in_features, out_features):
+        super().__init__()
+        # Direct parameter definition
+        self.weight = nn.Parameter(torch.randn(out_features, in_features))
+        self.bias = nn.Parameter(torch.zeros(out_features))
+        
+        # Non-learnable buffer
+        self.register_buffer('scale', torch.ones(1))
+    
+    def forward(self, x):
+        # Custom computation
+        return torch.matmul(x, self.weight.t()) + self.bias * self.scale
+
+# You can then use it as pre-build layers
+CustomLayer(10, 5)`} />
+</div>
+
+<div data-slide>
+  <Title order={2} mb="md">Module Composition</Title>
+  <Text mb="md">
+    Modules can contain other modules, creating hierarchical structures. 
+    Parameter management propagates through the hierarchy.
+  </Text>
+  
+  <CodeBlock language="python" code={`class Block(nn.Module):
+    def __init__(self, dim):
+        super().__init__()
+        self.norm = nn.LayerNorm(dim)
+        self.mlp = nn.Sequential(
+            nn.Linear(dim, 4 * dim),
+            nn.GELU(),
+            nn.Linear(4 * dim, dim)
+        )
+    
+    def forward(self, x):
+        return x + self.mlp(self.norm(x))
+
+model = nn.Sequential(
+    Block(512),
+    Block(512),
+    nn.Linear(512, 10)
+)`} />
+</div>
+          <WeightInitialization/>
           <Activation/>
         
           <Title order={2}>Regularization Layers</Title>

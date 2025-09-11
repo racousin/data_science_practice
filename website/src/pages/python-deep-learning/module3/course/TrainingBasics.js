@@ -35,8 +35,8 @@ y = torch.rand(n_total, 1)`} />
         <div data-slide>
           <Title order={2} mb="md">1. Building a Neural Network Model</Title>
           <Text mb="md">
-            Every PyTorch model inherits from <Code>nn.Module</Code>. This provides the foundation for 
-            automatic gradient computation and parameter management.
+            In the forward pass, you must respect the size of your input (e.g., first layer with input size matching your features) 
+            and output (returning a tensor with size matching your target y).
           </Text>
           
           <CodeBlock language="python" code={`class MyModel(nn.Module):
@@ -51,10 +51,6 @@ y = torch.rand(n_total, 1)`} />
         x = torch.relu(self.layer1(x))
         return self.layer2(x)`} />
           
-          <Text mt="md">
-            The <Code>__init__</Code> method defines the layers, while <Code>forward</Code> specifies 
-            how data flows through them.
-          </Text>
         </div>
 
         <div data-slide>
@@ -65,7 +61,16 @@ y = torch.rand(n_total, 1)`} />
           </Text>
           
           <CodeBlock language="python" code={`# Define loss function
-criterion = nn.MSELoss()`} />
+criterion = nn.MSELoss()
+
+# Example: Computing loss between predictions and targets
+y_pred = torch.tensor([[1.5, 2.0], [3.0, 4.5]], requires_grad=True)
+y_true = torch.tensor([[1.0, 2.5], [3.5, 4.0]])
+
+# Calculate MSE loss
+loss = criterion(y_pred, y_true)
+print(f"MSE Loss: {loss.item():.4f}")
+# Output: MSE Loss: 0.1875`} />
         </div>
         <div data-slide>
           <Title order={2} mb="md">3. Optimizer Setup</Title>
@@ -147,8 +152,6 @@ val_losses = []`} />
             <strong>Key Points:</strong>
             <List size="sm">
               <List.Item><strong>Epoch:</strong> One complete pass through the entire training dataset</List.Item>
-              <List.Item><code>model.train()</code> enables dropout and batch norm training behavior</List.Item>
-              <List.Item><code>model.eval()</code> disables dropout and uses running stats for batch norm</List.Item>
               <List.Item><code>torch.no_grad()</code> disables gradient computation for efficiency</List.Item>
               <List.Item>If validation loss increases while training loss decreases, you're overfitting!</List.Item>
             </List>

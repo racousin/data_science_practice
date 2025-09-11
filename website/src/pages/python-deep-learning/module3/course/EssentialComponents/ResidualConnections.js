@@ -10,19 +10,11 @@ const SkipConnections = () => {
       <div data-slide>
       <Title order={3} mt="md">Skip Connections</Title>
       <Text>
-        Skip connections are a fundamental architectural pattern in neural networks that create shortcuts 
-        to bypass one or more layers. They address key challenges in training deep networks by providing 
-        alternative pathways for information and gradient flow. While residual connections (introduced by He et al. 
-        in 2015) are the most well-known type of skip connection, the general principle has been applied in 
-        various forms across different network architectures.
-      </Text>
-      <Text>
           <strong>Identity skip connections:</strong> The input is directly added to the output of a block 
           (<InlineMath>{`y = F(x) + x`}</InlineMath>). This is the core of residual connections.
         </Text>
         </div>
         <div data-slide>
-      <Title order={3}>Core Principles of Skip Connections</Title>
 
       <List>
         <List.Item>They create alternative paths for information flow</List.Item>
@@ -33,7 +25,6 @@ const SkipConnections = () => {
 
 </div>
         <div data-slide>
-      <Title order={3}>Implementation with PyTorch</Title>
       <CodeBlock
         language="python"
         code={`

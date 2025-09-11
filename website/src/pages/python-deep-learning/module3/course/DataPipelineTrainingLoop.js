@@ -5,7 +5,7 @@ import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
 
 
-import WeightInitialization from './EssentialComponents/WeightInitialization';
+
 import Optimization from './EssentialComponents/Optimization';
 import EarlyStopping from './EssentialComponents/EarlyStopping';
 import CustomLoss from './EssentialComponents/CustomLoss';
@@ -66,6 +66,12 @@ dataloader = DataLoader(
           <Text>
             Number of samples processed together. Balance between memory usage and training speed:
           </Text>
+          <Text mt="xs" mb="xs">
+            <strong>Relationship:</strong> Steps per epoch = Total observations ÷ Batch size
+          </Text>
+          <Text size="sm" c="dimmed" mb="sm">
+            Example: 10,000 samples with batch_size=32 → 313 steps per epoch (10,000 ÷ 32 = 312.5, rounded up)
+          </Text>
           <List>
             <List.Item><strong>Large batch size:</strong> More stable gradients, faster per epoch</List.Item>
             <List.Item><strong>Small batch size:</strong> Less memory, more gradient noise (can help generalization), more updates per epoch</List.Item>
@@ -73,71 +79,6 @@ dataloader = DataLoader(
           </div>
           
 
-         <div data-slide>
-          <Title order={2}>nn Components</Title>
-          
-          <Title order={3} mt="md">nn.Module Overview</Title>
-          <Text>
-            Base class for all neural network components. Handles parameters and gradients automatically.
-          </Text>
-          
-          <Title order={3} mt="md">nn.Module Core Features</Title>
-          <Text>
-            The nn.Module class provides essential functionality for all neural network layers and models:
-          </Text>
-          <List>
-            <List.Item><strong>Automatic Parameter Management:</strong> Registers all trainable parameters</List.Item>
-            <List.Item><strong>GPU Movement:</strong> Move entire model to GPU with .to(device)</List.Item>
-            <List.Item><strong>Mode Switching:</strong> Toggle between training and evaluation modes</List.Item>
-            <List.Item><strong>Gradient Management:</strong> Automatic gradient computation and storage</List.Item>
-            <List.Item><strong>State Dict:</strong> Save and load model parameters</List.Item>
-          </List>
-          </div>
-          <div data-slide>
-          <Title order={3} mt="md">nn.Module Methods</Title>
-          <Text>
-            Essential methods provided by nn.Module:
-          </Text>
-          <CodeBlock language="python" code={`# Model manipulation
-model.to(device)            # Move to device (CPU/GPU)
-model.half()                # Convert to half precision
-model.double()              # Convert to double precision
-model.requires_grad_(False) # Freeze all parameters
-
-# Mode control
-model.train()               # Enable dropout, batch norm updates
-model.eval()                # Disable dropout, freeze batch norm`}/>
-</div>
-<div data-slide>
-<CodeBlock language="python" code={`
-class SimpleModel(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.fc1 = nn.Linear(10, 5)   # Named 'fc1'
-        self.fc2 = nn.Linear(5, 2)    # Named 'fc2'
-
-model = SimpleModel()
-
-# Parameter access methods
-model.parameters()           # Iterator of tensors only (no names)
-model.named_parameters()     # Iterator of (name, tensor) pairs  
-model.state_dict()          # OrderedDict with all parameters & buffers
-
-# Example outputs:
-list(model.parameters())    # [tensor([[...]]), tensor([...]), ...]
-
-dict(model.named_parameters())  # {'fc1.weight': tensor([5, 10]),  <- layer_name.parameter_type
-                                # 'fc1.bias': tensor([5]),
-                                # 'fc2.weight': tensor([2, 5]),
-                                # 'fc2.bias': tensor([2])}
-
-model.state_dict().keys()   # odict_keys(['fc1.weight', 'fc1.bias', 'fc2.weight', 'fc2.bias'])
-model.state_dict()['fc1.weight']  # Access specific tensor by name`}/>
-          </div>
-          
-          
-          <WeightInitialization/>
-         
           
           <Optimization/>
           

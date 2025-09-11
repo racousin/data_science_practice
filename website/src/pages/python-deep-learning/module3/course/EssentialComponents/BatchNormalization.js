@@ -13,14 +13,12 @@ const BatchNormalization = () => {
       <Text>
         Batch Normalization (BatchNorm) is a technique introduced by Sergey Ioffe and Christian Szegedy in 2015
         that normalizes the intermediate activations of neural networks, significantly improving training 
-        stability and speed. It addresses the internal covariate shift problem by normalizing layer inputs.
+        stability and speed.
       </Text>
       <CodeBlock
         language="python"
         code={`self.bn1 = nn.BatchNorm1d(256)`}
       />
-      </div>
-      <div data-slide>
       <Text>
         Consider a mini-batch of activations at some layer: <InlineMath>{`\\mathcal{B} = \\{x_1, x_2, ..., x_m\\}`}</InlineMath>
       </Text>

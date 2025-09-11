@@ -16,14 +16,12 @@ const Dropout = () => {
         language="python"
         code={`nn.Dropout(p=0.5)`}
       />
-      </div>
-      <div data-slide>
       <div>
         <Title order={4} mb="md">Key Properties</Title>
         <Text>
           <strong>Training:</strong> Each neuron has a probability p of being dropped (set to 0), remaining neurons are scaled by <InlineMath math="1/(1-p)" />.
         </Text>
-        <BlockMath math="y_{train} = \frac{x \odot m}{1-p}" />
+        <BlockMath math="output_{train} = \frac{x \odot m}{1-p}" />
         <Text size="sm" mb="md" color="dimmed">where m is a binary mask with m_i ~ Bernoulli(1-p)</Text>
               <CodeBlock 
         language="python"
@@ -33,16 +31,11 @@ output = model(x)  # Some neurons randomly dropped, others scaled by 2.0
 `}
       />
       </div>
-      <div data-slide>
         <Text>
           <strong>Inference:</strong> All neurons are active, no scaling is applied.
         </Text>
-        <BlockMath math="y_{eval} = x" />
+        <BlockMath math="output_{eval} = x" />
         
-        <Text>
-          <strong>Common dropout rates:</strong> 0.2 to 0.5 (20% to 50% of neurons dropped)
-        </Text>
-      </div>
 
       <CodeBlock 
         language="python"
@@ -51,6 +44,9 @@ model.eval()
 output = model(x)  # All neurons active, no scaling applied
 `}
       />
+              <Text>
+          <strong>Common dropout rates:</strong> 0.2 to 0.5 (20% to 50% of neurons dropped)
+        </Text>
       </div>
     </Stack>
   );

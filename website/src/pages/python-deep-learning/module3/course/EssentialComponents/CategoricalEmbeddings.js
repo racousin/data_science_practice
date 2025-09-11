@@ -17,13 +17,11 @@ const CategoricalEmbeddings = () => {
       <div data-slide>
       <Title order={3} mt="md">Embeddings</Title>
       <Text>
-        Handling categorical variables effectively is crucial in deep learning. While traditional methods like one-hot encoding 
-        work for small categorical spaces, they become inefficient with high cardinality. Neural network embeddings offer a 
+        Handling categorical variables effectively is crucial in deep learning. Neural network embeddings offer a 
         powerful alternative, learning dense vector representations of categorical data.
       </Text>
 
       <Stack spacing="xs">
-        <Text weight={500}>Key Concepts:</Text>
         <Text>
           1. An embedding layer transforms categorical indices into dense vectors of fixed size
         </Text>
