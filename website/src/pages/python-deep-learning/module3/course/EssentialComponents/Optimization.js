@@ -1,5 +1,5 @@
 import React from 'react';
-import { Title, Text, Stack, Group } from '@mantine/core';
+import { Title, Text, Stack, Group, Image, Flex } from '@mantine/core';
 import CodeBlock from 'components/CodeBlock';
 import 'katex/dist/katex.min.css';
 import { BlockMath } from 'react-katex';
@@ -13,6 +13,14 @@ const Optimization = () => {
                     <CodeBlock
         language="python"
         code={`import torch.optim as optim`}/>
+                  <Flex direction="column" align="center" mt="md" mb="md">
+                    <Image
+                      src="/assets/python-deep-learning/module3/optimize_with_momentum.gif"
+                      alt="Gradient Flow Visualization"
+                      style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+                      fluid
+                    />
+                              </Flex>
         </div>
         <div data-slide>
       <div>
@@ -23,19 +31,22 @@ const Optimization = () => {
         language="python"
         code={`sgd = optim.SGD(model.parameters(), lr=0.01)`}
       />
+      <Text>Stored values SGD: No additional state</Text>
       </div></div>
 <div data-slide>
       {/* Momentum */}
       <div>
         <Title order={4}>SGD with Momentum</Title>
-        <BlockMath>{`v_{t+1} = \\beta v_t + \\nabla L(w_t)`}</BlockMath>
-        <BlockMath>{`w_{t+1} = w_t - \\eta v_{t+1}`}</BlockMath>
+        <BlockMath>{`m_{t} = \\beta m_{t-1} + (1-\\beta)\\nabla L(w_t)`}</BlockMath>
+        <BlockMath>{`w_{t+1} = w_t - \\eta m_{t}`}</BlockMath>
         <Text size="sm">Adds velocity term to dampen oscillations and accelerate convergence</Text>
       </div>
               <CodeBlock
         language="python"
         code={`momentum = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)`}
-      /></div>
+      />
+            <Text>Stored values SGD: Velocity buffer for each parameter</Text>
+      </div>
       <div data-slide>
       {/* Adam */}
       <div>
@@ -54,7 +65,12 @@ const Optimization = () => {
                     <CodeBlock
         language="python"
         code={`adam = optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999))`}
-      /></div>
+      />
+      <Text>First moment (m) and second moment (v) estimates for each parameter</Text>
+      </div>
+
+      
+
 
     </Stack>
   );

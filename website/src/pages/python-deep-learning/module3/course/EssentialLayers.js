@@ -202,6 +202,41 @@ output = model(input_tensor)  # Calls forward()
 </div>
 
 <div data-slide>
+  <Title order={2} mb="md">Forward Method with Multiple Inputs</Title>
+  <Text mb="md">
+    The forward method can accept multiple inputs to handle complex data scenarios.
+  </Text>
+  
+  <Text mt="md" mb="sm">
+    <strong>Example: Combining Continuous and Categorical Features</strong>
+  </Text>
+  
+  <CodeBlock language="python" code={`
+    def forward(self, x_continuous, x_categorical):
+        # Process continuous features (e.g., price, age, temperature)
+        cont = self.linear1(x_continuous)
+        cont = torch.relu(cont)
+        
+        # Process categorical features (e.g., category IDs)
+        cat = self.embedding(x_categorical)
+        cat = torch.relu(cat)
+        
+        # Combine both feature types
+        combined = torch.cat([cont, cat], dim=1)
+ 
+        # Final processing
+        x = self.linear2(combined)
+        x = torch.relu(x)
+        
+        return x
+
+### usage
+# Forward pass with multiple inputs
+predictions = model(continuous_features, categorical_features)
+`} />
+</div>
+
+<div data-slide>
   <Title order={2} mb="md">Training and Evaluation Modes</Title>
   <Text mb="md">
     Modules have two modes affecting specific layers that behave differently during training and inference. 
@@ -311,7 +346,9 @@ model = nn.Sequential(
     Block(512),
     nn.Linear(512, 10)
 )`} />
+
 </div>
+<div data-slide></div>
           <WeightInitialization/>
           <Activation/>
         

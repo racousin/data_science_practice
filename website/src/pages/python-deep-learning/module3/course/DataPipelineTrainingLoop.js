@@ -24,7 +24,7 @@ const DataPipelineTrainingLoop = () => {
           <div data-slide>
           <Title order={3} mt="md">Dataset</Title>
           <Text>
-            Container that defines how to access your data. Implement <Code>__len__</Code> and <Code>__getitem__</Code> methods.
+            Data abstraction: Provides a consistent interface to access your data, regardless of whether it's stored in files, databases, or memory. Implement <Code>__len__</Code> and <Code>__getitem__</Code> methods.
           </Text>
           <CodeBlock language="python" code={`class CustomDataset(torch.utils.data.Dataset):
     def __init__(self, data_path):
