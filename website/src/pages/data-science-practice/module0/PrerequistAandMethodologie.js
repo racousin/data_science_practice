@@ -38,7 +38,7 @@ const PrerequisiteAndMethodology = () => {
               </a>
               .
             </li>
-            <li>
+            {/* <li>
               <strong>Email Registration for Course Repository:</strong> Once
               you have your GitHub username, send an email to{" "}
               <a href="mailto:raphaelcousin.education@gmail.com">
@@ -56,7 +56,7 @@ const PrerequisiteAndMethodology = () => {
                 <i>data_science_practice</i>
               </a>{" "}
               repository in order to submit your exercises answers.
-            </li>
+            </li> */}
             <li>
               After receiving the invitation, accept it to access and you can
               start with the <Link to="/module1/course/">Module 1: Git</Link>
