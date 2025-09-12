@@ -80,30 +80,28 @@ Speedup: 2.89x`} />
 </div>
     <div data-slide>
       <Stack spacing="md">
-        <Title order={3}>Behavior of torch.compile with Nested Modules and Function Calls</Title>
+        <Title order={3}>torch.compile with Nested Modules</Title>
         
         <Text>
-          When you use torch.compile, the compiler will try to recursively compile every function call 
-          inside the target function or module that is not in a skip list (such as built-ins, some 
-          functions in the torch.* namespace).
+          torch.compile recursively compiles all nested function calls except built-ins and torch.* functions.
         </Text>
 
-
-        <List type="ordered" spacing="xs">
+        <List spacing="xs">
           <List.Item>
-            <Text weight={500}>Top-Level Compilation:</Text> One approach is to compile at the highest 
-            level possible (i.e., when the top-level module is initialized/called) and selectively 
-            disable compilation when encountering excessive graph breaks or errors. If there are still 
-            many compile issues, compile individual subcomponents instead.
+            <strong>Top-Level Strategy:</strong> Compile at the highest level, disable for problematic components
           </List.Item>
           
           <List.Item>
-            <Text weight={500}>Modular Testing:</Text> Test individual functions and modules with 
-            torch.compile before integrating them into larger models to isolate potential issues.
+            <strong>Test Incrementally:</strong> Verify individual modules before full integration
           </List.Item>
 
-          <List.Item>First call will be slower due to compilation overhead</List.Item>
-          <List.Item>Best for static input shapes - dynamic shapes may cause recompilation</List.Item>
+          <List.Item>
+            <strong>First call slower:</strong> Compilation overhead on initial execution
+          </List.Item>
+          
+          <List.Item>
+            <strong>Static shapes preferred:</strong> Dynamic shapes trigger recompilation
+          </List.Item>
         </List>
       </Stack>
     </div>
@@ -116,8 +114,6 @@ Speedup: 2.89x`} />
             this naive approach can impact training stability. Mixed precision training provides
             a sophisticated solution that combines the benefits of both precisions.
           </Text>
-</div>
-<div data-slide>
           <Title order={3} mt="lg">Basic Precision Casting</Title>
           
           <Text>
@@ -133,58 +129,24 @@ data = data.to(torch.float16)
 # - Loss of precision in weight updates
 # - Training instability`} />
 
-          <Title order={3} mt="lg">How Mixed Precision Works</Title>
-          
-          <Text>
-            Standard training uses 32-bit floating point (FP32) for all computations.
-            Mixed precision training strategically combines:
-          </Text>
-          
+
+</div>
+<div data-slide>
+            <Title order={3} mt="lg">How Mixed Precision Works</Title>
+
           <List>
             <List.Item><strong>FP16:</strong> For most forward and backward pass computations</List.Item>
             <List.Item><strong>FP32:</strong> For operations needing higher precision (loss scaling, weight updates)</List.Item>
           </List>
-</div>
-<div data-slide>
-          <Title order={4} mt="md">What Gets Cast to FP16 vs FP32?</Title>
+                <Flex direction="column" align="center" mt="md">
+                  <Image
+                    src="/assets/python-deep-learning/module4/mixed.jpg"
+                    alt="Matrix Multiplication Parallelization"
+                    style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+                    fluid
+                  />
           
-
-            <Text weight={500} mb="sm">During mixed precision training:</Text>
-            
-            <Title order={5}>FP16 (Half Precision):</Title>
-            <List size="sm">
-              <List.Item><strong>Activations:</strong> Intermediate layer outputs during forward pass</List.Item>
-              <List.Item><strong>Gradients:</strong> Computed gradients during backward pass</List.Item>
-              <List.Item><strong>Forward computations:</strong> Matrix multiplications, convolutions</List.Item>
-            </List>
-            
-            <Title order={5} mt="md">FP32 (Full Precision):</Title>
-            <List size="sm">
-              <List.Item><strong>Master weights:</strong> The actual model parameters always stay in FP32</List.Item>
-              <List.Item><strong>Loss values:</strong> Final loss computation remains in FP32 for stability</List.Item>
-              <List.Item><strong>Optimizer states:</strong> Adam moments, SGD momentum buffers</List.Item>
-              <List.Item><strong>Weight updates:</strong> Gradient application to parameters</List.Item>
-            </List>
-</div>
-<div data-slide>
-          <Title order={3} mt="lg">Key Benefits</Title>
-          
-          <Paper p="md" withBorder>
-            <Grid>
-              <Grid.Col span={4}>
-                <Badge color="green" size="lg">Memory Efficiency</Badge>
-                <Text size="sm" mt="xs">FP16 uses half the memory, enabling larger models or batch sizes</Text>
-              </Grid.Col>
-              <Grid.Col span={4}>
-                <Badge color="blue" size="lg">Speed Improvements</Badge>
-                <Text size="sm" mt="xs">Modern GPUs (V100, A100) have Tensor Cores for faster FP16 operations</Text>
-              </Grid.Col>
-              <Grid.Col span={4}>
-                <Badge color="purple" size="lg">Maintained Accuracy</Badge>
-                <Text size="sm" mt="xs">Preserves model quality through gradient scaling and FP32 master weights</Text>
-              </Grid.Col>
-            </Grid>
-          </Paper>
+                </Flex>
 
 </div>
         <div data-slide>
@@ -203,9 +165,21 @@ data = data.to(torch.float16)
               <List.Item><strong>Trade-off:</strong> ~30% slower training for ~60% memory reduction</List.Item>
               <List.Item><strong>Best for:</strong> Very deep networks with sequential layers</List.Item>
             </List>
+
+            <CodeBlock language="python" mt="md" code=
+{`def forward(self, x):
+        # Standard forward (stores all activations)
+        # x = self.layer1(x)
+        # x = self.layer2(x)
+        
+        # With checkpointing (recomputes layer1 in backward)
+        x = checkpoint(self.layer1, x)
+        x = checkpoint(self.layer2, x)
+        return self.layer3(x)`}
+            />
 </div>
 <div data-slide>
-          <Title order={3} mt="lg">2. CPU Offloading</Title>
+          <Title order={3} mt="lg">CPU Offloading</Title>
           
           <Text>
             Modern optimizers like Adam maintain momentum and variance buffers that double  
@@ -213,7 +187,6 @@ data = data.to(torch.float16)
             keeping only the model weights on GPU.
           </Text>
 
-          <Paper p="md" withBorder>
             <Title order={4}>Memory Breakdown for Adam Optimizer</Title>
             <List spacing="sm" mt="md">
               <List.Item><strong>Model Parameters:</strong> Original weights (FP32)</List.Item>
@@ -222,22 +195,37 @@ data = data.to(torch.float16)
               <List.Item><strong>Second Moment (v):</strong> Running average of squared gradients</List.Item>
               <List.Item><strong>Total:</strong> 4× parameter memory for Adam vs 2× for SGD</List.Item>
             </List>
-          </Paper>
 
           <Text mt="md">
             By offloading optimizer states to CPU, we reduce GPU memory from 4× to 2× parameter size:
           </Text>
+
+          <CodeBlock language="python" mt="md" code=
+{`# Standard optimizer - everything on GPU
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+
+# CPU offloading with libraries like DeepSpeed or FairScale
+from fairscale.optim import OSS
+
+# Offload optimizer states to CPU
+optimizer = OSS(
+    params=model.parameters(),
+    optim=torch.optim.Adam,
+    optim_params={"lr": 1e-3},
+)`}/>
           </div>
 <div data-slide>
-          <Title order={3} mt="lg">3. Memory Efficient Attention</Title>
+          <Title order={3} mt="lg">Memory Efficient Attention</Title>
           
           <Text>
             Standard attention mechanisms have O(n²) memory complexity for sequence length n. 
             Memory-efficient implementations like Flash Attention reorganize computations to 
             reduce memory usage while maintaining mathematical equivalence.
+            {' '}<a href="https://arxiv.org/abs/2205.14135" target="_blank" rel="noopener noreferrer">
+              Read the Flash Attention paper for more details
+            </a>.
           </Text>
 
-          <Paper p="md" withBorder>
             <Title order={4}>Flash Attention Key Concepts</Title>
             <List spacing="sm" mt="md">
               <List.Item><strong>Tiling:</strong> Process attention in blocks instead of full matrices</List.Item>
@@ -245,7 +233,6 @@ data = data.to(torch.float16)
               <List.Item><strong>Recomputation:</strong> Recompute softmax normalization instead of storing</List.Item>
               <List.Item><strong>Benefits:</strong> 10-100× less memory, 2-4× faster on long sequences</List.Item>
             </List>
-          </Paper>
 </div>
 
        <div data-slide>
@@ -256,20 +243,21 @@ data = data.to(torch.float16)
             This can become a bottleneck if the GPU processes data faster than it can be loaded, leaving the GPU idle.
           </Text>
 
-          <Title order={3}>Understanding DataLoader Parameters</Title>
+          <Title order={3}>DataLoader Parameters</Title>
 
           <Title order={4} mt="md">1. num_workers - Parallel Data Loading</Title>
           <Text mb="sm">
             Controls how many subprocesses load data in parallel. Each worker loads batches independently, 
             allowing data preparation to happen while the GPU processes the current batch.
           </Text>
-          </div> 
+
                  
           <CodeBlock language="python" code={`# Default: single-threaded loading (slow)
 dataloader = DataLoader(dataset, batch_size=32, num_workers=0)
 
 # Optimized: parallel loading with multiple workers
 dataloader = DataLoader(dataset, batch_size=32, num_workers=4)`} />
+          </div> 
 <div data-slide>
           <Title order={4} mt="md">2. pin_memory - Faster GPU Transfer</Title>
           <Text mb="sm">
@@ -281,8 +269,7 @@ dataloader = DataLoader(dataset, pin_memory=False)
 
 # With pinned memory: CPU → Pinned → GPU (faster)
 dataloader = DataLoader(dataset, pin_memory=True)`} />
-</div>
-<div data-slide>
+
           <Title order={4} mt="md">3. persistent_workers - Avoid Worker Restart</Title>
           <Text mb="sm">
             Keeps worker processes alive between epochs instead of shutting down and restarting them. 
@@ -293,8 +280,6 @@ dataloader = DataLoader(dataset, num_workers=4, persistent_workers=False)
 
 # Workers stay alive (faster epoch transitions)
 dataloader = DataLoader(dataset, num_workers=4, persistent_workers=True)`} />
-</div>
-<div data-slide>
           <Title order={4} mt="md">4. prefetch_factor - Batch Prefetching</Title>
           <Text mb="sm">
             Number of batches each worker prefetches. Workers prepare future batches while the model 
@@ -308,7 +293,7 @@ dataloader = DataLoader(dataset, num_workers=4, prefetch_factor=4)`} />
 </div>
 <div data-slide>
         
-        <Title id="pruning-optimization" order={2} mt="xl">Pruning Optimization</Title>
+        <Title id="pruning-optimization" order={2} mt="xl">Inference optimization : Pruning Optimization</Title>
         
         <Text>
           Neural network pruning removes redundant parameters to create smaller, faster models without 
@@ -338,16 +323,12 @@ dataloader = DataLoader(dataset, num_workers=4, prefetch_factor=4)`} />
           assuming they contribute least to the output.
         </Text>
         
-</div>
-<div data-slide>
         <Title order={4} mt="md">2. Structured Pruning</Title>
         <Text>
           Removes entire neurons, channels, or filters instead of individual weights. 
           This creates actual speedup on standard hardware without special sparse operations.
         </Text>
         
-</div>
-<div data-slide>
         <Title order={4} mt="md">3. Iterative Pruning with Fine-tuning</Title>
         <Text>
           Gradually prune the network in steps, retraining between each pruning iteration 

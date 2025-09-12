@@ -71,7 +71,15 @@ const MultiGPUScaling = () => {
         </Grid>
 </div>
 <div data-slide>
-  https://huggingface.co/spaces/nanotron/ultrascale-playbook?section=high-level_overview
+  <Title order={3}>To Dig Deeper into the Topic</Title>
+  <Text mt="md">
+    I recommend following the Ultrascale Playbook:
+  </Text>
+  <Text size="lg" weight={500} mt="md">
+    <a href="https://huggingface.co/spaces/nanotron/ultrascale-playbook" target="_blank" rel="noopener noreferrer">
+      https://huggingface.co/spaces/nanotron/ultrascale-playbook
+    </a>
+  </Text>
 </div>
 {/* 
 <div data-slide>

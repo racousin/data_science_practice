@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Title, Text, Stack, Alert, List, Paper } from '@mantine/core';
+import { Container, Title, Text, Stack, Alert, List, Paper, Flex, Image } from '@mantine/core';
 import CodeBlock from '../../../../components/CodeBlock';
 
 const FineTuning = () => {
@@ -7,20 +7,25 @@ const FineTuning = () => {
     <Container fluid>
       <Stack spacing="md">
         <div data-slide>
-        <Title order={1}>Fine-Tuning Pre-trained Models</Title>
+        <Title order={1}>Transfer learning: Fine-Tuning Pre-trained Models</Title>
         
         <Text>
-          Fine-tuning is a powerful technique where we leverage pre-trained models and adapt them to 
-          new tasks. Instead of training from scratch, we start with weights learned on large datasets 
-          and modify them for our specific use case.
+          Fine-tuning is a powerful technique in transfer learning where we leverage pre-trained models 
+          and adapt them to new tasks. Transfer learning allows us to apply knowledge gained from one 
+          domain to solve problems in another related domain. Instead of training from scratch, we start 
+          with weights learned on large datasets and modify them for our specific use case.
         </Text>
+              <Flex direction="column" align="center" mt="md">
+        <Image
+          src="/assets/python-deep-learning/module4/finetuning.gif"
+          alt="Matrix Multiplication Parallelization"
+          style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+          fluid
+        />
 
-        <Alert color="blue" mb="md">
-          <Text>
-            <strong>Key Concept:</strong> Pre-trained models have already learned useful features. 
-            We can reuse these features and adapt only the necessary parts for our task.
-          </Text>
-        </Alert>
+      </Flex>
+
+
 </div>
         <div data-slide>
         <Title order={2} mt="xl">Why Fine-Tuning?</Title>
@@ -31,6 +36,33 @@ const FineTuning = () => {
           <List.Item><strong>Better Performance:</strong> Often achieves better results than training from scratch</List.Item>
           <List.Item><strong>Resource Efficient:</strong> Requires less computational resources and time</List.Item>
         </List>
+</div>
+        <div data-slide>
+        <Title order={2} mt="xl">Pre-trained Architectures and Weights</Title>
+        
+        <Text>
+          PyTorch provides a rich ecosystem of pre-trained models through different libraries and model zoos:
+        </Text>
+
+        <List spacing="sm" mt="md">
+          <List.Item>
+            <strong>torchvision.models:</strong> Computer vision models (ResNet, VGG, EfficientNet, Vision Transformer, etc.)
+            pre-trained on ImageNet-1K, ImageNet-21K, or other datasets
+          </List.Item>
+          <List.Item>
+            <strong>Hugging Face Model Hub:</strong> Thousands of models for NLP, vision, audio, and multimodal tasks.
+            Access via the transformers library with models like BERT, GPT, CLIP, etc.
+          </List.Item>
+          <List.Item>
+            <strong>timm (PyTorch Image Models):</strong> Extensive collection of state-of-the-art vision models
+            with consistent APIs and pre-trained weights
+          </List.Item>
+          <List.Item>
+            <strong>PyTorch Hub:</strong> Repository of pre-trained models from research papers,
+            accessible via torch.hub.load()
+          </List.Item>
+        </List>
+
 </div>
         <div data-slide>
         <Title order={2} mt="xl">Fine-Tuning Process</Title>
@@ -100,7 +132,20 @@ for param in model.parameters():
 
 # Unfreeze only the final layer
 for param in model.fc.parameters():
-    param.requires_grad = True`}/>
+    param.requires_grad = True
+
+# Train the model as usual
+optimizer = torch.optim.Adam(model.fc.parameters(), lr=0.001)
+criterion = torch.nn.CrossEntropyLoss()
+
+# Training loop
+for epoch in range(num_epochs):
+    for inputs, labels in dataloader:
+        optimizer.zero_grad()
+        outputs = model(inputs)
+        loss = criterion(outputs, labels)
+        loss.backward()
+        optimizer.step()`}/>
 </div>
 <div data-slide>
         <Title order={2} mt="xl">Advanced Fine-Tuning Strategies</Title>

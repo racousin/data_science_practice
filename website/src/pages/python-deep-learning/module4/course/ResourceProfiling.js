@@ -13,7 +13,6 @@ const ResourceProfiling = () => {
         <Text>
           We'll explore how different model components consume memory and compute resources.
         </Text>
-We will use this simple MLP model to illustrate following sections
         </div>
 <div data-slide>
           <Title id="gpu-vs-cpu" order={2} mt="xl">GPU vs CPU Performance</Title>
@@ -50,24 +49,6 @@ We will use this simple MLP model to illustrate following sections
           </Flex>
           </div>
           <div data-slide>
-                      <Title order={4}>Batch Size Impact on training</Title>
-                      
-                      <List spacing="sm" mt="md">
-                        <List.Item>
-                          <strong>Linear scaling with activations:</strong> Activation memory scales linearly with batch size
-                        </List.Item>
-                        <List.Item>
-                          <strong>Fixed parameter memory:</strong> Model and optimizer memory independent of batch size
-                        </List.Item>
-                        <List.Item>
-                          <strong>Gradient noise:</strong> Smaller batches → noisier gradients → better generalization
-                        </List.Item>
-                        <List.Item>
-                          <strong>Hardware utilization:</strong> Larger batches → better GPU utilization
-                        </List.Item>
-                      </List>
-</div>
-          <div data-slide>
           <Title order={3} mt="lg">Memory Transfer Overhead</Title>
           
           <Text>
@@ -75,7 +56,17 @@ We will use this simple MLP model to illustrate following sections
             All data must pass through CPU RAM before reaching the GPU for processing. This CPU-to-GPU memory 
             transfer can become a significant bottleneck.
           </Text>
-
+      <Flex direction="column" align="center" mt="md">
+        <Image
+          src="/assets/python-deep-learning/module1/gpuworkflow.jpg"
+          alt="Matrix Multiplication Parallelization"
+          style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+          fluid
+        />
+        <Text component="p" ta="center" mt="xs">
+          Source: https://www.cse.iitm.ac.in/
+        </Text>
+      </Flex>
     </div>
     <div data-slide>
           <Flex direction="column" align="center" mt="md">
@@ -123,7 +114,7 @@ We will use this simple MLP model to illustrate following sections
             </Text>
             
             <BlockMath>
-              {`\\text{Total Memory} = \\text{Parameters} + \\text{Gradients} + \\text{Optimizer States} + \\text{Activations}`}
+              {`\\text{Total Memory} = \\text{Parameters} + \\text{Gradients} + \\text{Optimizer States} + \\text{Activations} +(\\text{Computation Graph})`}
             </BlockMath>
 </div>
 <div data-slide>
@@ -225,6 +216,47 @@ We will use this simple MLP model to illustrate following sections
             </Text>
 </div>
 
+        <div data-slide>
+          <Title order={3} mt="lg">Graph Memory</Title>
+          
+          <Text>
+            During training, PyTorch builds a computational graph to track operations for automatic differentiation.
+            This graph stores the relationships between tensors and operations needed for backpropagation.
+          </Text>
+
+          <Text mt="md">Key components of graph memory:</Text>
+          <List size="sm" mt="sm">
+            <List.Item><strong>Node metadata:</strong> Information about each operation in the graph</List.Item>
+            <List.Item><strong>Edge connections:</strong> Links between tensors and operations</List.Item>
+            <List.Item><strong>Gradient functions:</strong> Pointers to functions that compute gradients during backward pass</List.Item>
+            <List.Item><strong>Tensor references:</strong> Pointers to saved activations and gradients (not the data itself)</List.Item>
+          </List>
+
+          <Text mt="md">
+            Graph nodes contain mostly pointers, not actual tensor data. Each layer typically creates 3-10 nodes 
+            depending on complexity, with each node requiring approximately 300 bytes for metadata and pointer references.
+          </Text>
+
+          <BlockMath>
+            {`\\text{Graph Memory} = \\text{nodes} \\times (\\text{metadata\\_size} + \\text{pointer\\_references})`}
+          </BlockMath>
+
+          <Text mt="sm">
+            <strong>Example:</strong> GPT-3 with 96 layers:
+          </Text>
+          <List size="xm" mt="sm">
+            <List.Item>Nodes per layer: ~8 (average)</List.Item>
+            <List.Item>Memory per node: ~300 bytes</List.Item>
+            <List.Item>Total graph memory: 96 × 8 × 300 ≈ 230KB</List.Item>
+            <List.Item>Compare to model size: 175B parameters = 700GB in float32</List.Item>
+          </List>
+
+          <Text mt="md" size="sm">
+            <strong>Key insight:</strong> Graph memory is typically only 0.1-1% of total memory usage. 
+            The graph stores pointers to tensors, not the tensors themselves!
+          </Text>
+        </div>
+
 <div data-slide>
         <Title order={2}>Model Complexity Estimation</Title>
         
@@ -236,7 +268,7 @@ We will use this simple MLP model to illustrate following sections
         <Text mt="md">
           <strong>Single Neuron:</strong> For input size n and single output:
         </Text>
-        <CodeBlock language="python" code={`# Matrix multiplication: y = Wx + b
+        <CodeBlock language="python" code={`# Vector multiplication: y = Wx + b
 # Operations: n multiplications + (n-1) additions + 1 bias addition
 FLOPs = 2n`} />
         
@@ -246,7 +278,6 @@ FLOPs = 2n`} />
         <List mt="sm" spacing="xs">
           <List.Item>ReLU: 1 FLOP per element (comparison)</List.Item>
           <List.Item>Sigmoid/Tanh: ~10-20 FLOPs per element (exponential operations)</List.Item>
-          <List.Item>Softmax: ~5m FLOPs for m outputs (exp + normalization)</List.Item>
         </List>
         
         <Text mt="md">
@@ -254,33 +285,37 @@ FLOPs = 2n`} />
         </Text>
         <CodeBlock language="python" code={`# Linear layer: Y = XW + b
 # X: batch_size × n, W: n × m, b: m
-FLOPs_per_sample = 2nm  # Matrix multiplication
-FLOPs_batch = batch_size × 2nm`} />
+FLOPs_per_sample = 2nm  # Matrix multiplication per sample
+FLOPs_batch = batch_size × 2nm  # Total FLOPs scale with batch size`} />
 </div>
 <div data-slide>
         <Title order={4} mt="lg">Number of Operations for Backward Pass</Title>
         
         <Text mt="md">
-          The backward pass typically requires 2-3× the FLOPs of the forward pass:
+          During backpropagation, we need to compute two things:
+        </Text>
+        
+        <Text mt="md">
+          For a layer with input size n and output size m:
         </Text>
         
         <List mt="md" spacing="sm">
           <List.Item>
-            <strong>Gradient w.r.t weights:</strong> dL/dW = X^T × dL/dY
-            <CodeBlock language="python" code={`FLOPs = 2nm (same as forward)`} />
+            <strong>Weight gradients (for updating weights):</strong> We calculate how much each weight contributed to the loss
+            <CodeBlock language="python" code={`# dL/dW = X^T × dL/dY
+FLOPs_per_sample = 2nm
+FLOPs_batch = batch_size × 2nm  # Scales with batch size`} />
           </List.Item>
           <List.Item>
-            <strong>Gradient w.r.t inputs:</strong> dL/dX = dL/dY × W^T
-            <CodeBlock language="python" code={`FLOPs = 2nm (same as forward)`} />
-          </List.Item>
-          <List.Item>
-            <strong>Gradient w.r.t bias:</strong> dL/db = sum(dL/dY)
-            <CodeBlock language="python" code={`FLOPs = m`} />
+            <strong>Gradient propagation (for previous layers):</strong> We calculate the gradient to send back to earlier layers in the network
+            <CodeBlock language="python" code={`# dL/dX = dL/dY × W^T  
+FLOPs_per_sample = 2nm
+FLOPs_batch = batch_size × 2nm  # Scales with batch size`} />
           </List.Item>
         </List>
         
         <Text mt="md">
-          <strong>Total backward FLOPs ≈ 2 × forward FLOPs</strong>
+          <strong>Key insight:</strong> The backward pass takes about 2× the computations of the forward pass. We compute weight gradients to update our parameters, and we also compute the gradient signal to send backward through the network (in chain rule).
         </Text>
 </div>
 <div data-slide>
@@ -293,17 +328,18 @@ FLOPs_batch = batch_size × 2nm`} />
         <List mt="md" spacing="sm">
           <List.Item>
             <strong>SGD:</strong> W = W - lr × dW
-            <CodeBlock language="python" code={`FLOPs = 2 × num_parameters`} />
+            <CodeBlock language="python" code={`FLOPs = 2 × num_parameters  # Independent of batch size!`} />
           </List.Item>
           <List.Item>
             <strong>SGD with Momentum:</strong> v = β×v + dW; W = W - lr×v
-            <CodeBlock language="python" code={`FLOPs = 4 × num_parameters`} />
+            <CodeBlock language="python" code={`FLOPs = 4 × num_parameters  # Independent of batch size!`} />
           </List.Item>
           <List.Item>
             <strong>Adam:</strong> Updates both first and second moments
-            <CodeBlock language="python" code={`FLOPs = 8 × num_parameters`} />
+            <CodeBlock language="python" code={`FLOPs = 8 × num_parameters  # Independent of batch size!`} />
           </List.Item>
         </List>
+
         </div>
         <div data-slide>
         <Text mt="md">
@@ -342,36 +378,29 @@ with profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
 
 # Print memory summary
 print(prof.key_averages().table(sort_by="self_cuda_memory_usage", row_limit=10))`} />
-<CodeBlock language="python" code={`-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
-                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg       CPU Mem  Self CPU Mem      CUDA Mem  Self CUDA Mem    # of Calls  
--------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
-                                            aten::addmm         4.52%     211.996us        77.31%       3.627ms       1.814ms      26.432us        90.57%      40.544us      20.272us           0 B           0 B      33.50 KB      33.50 KB             2  
-                                        aten::clamp_min         0.71%      33.130us         1.00%      47.066us      47.066us       2.752us         9.43%       2.752us       2.752us           0 B           0 B      32.00 KB      32.00 KB             1  
-                                           aten::linear         7.82%     366.919us        98.21%       4.608ms       2.304ms       0.000us         0.00%      40.544us      20.272us           0 B           0 B      33.50 KB           0 B             2  
-                                                aten::t         0.80%      37.622us        13.08%     613.940us     306.970us       0.000us         0.00%       0.000us       0.000us           0 B           0 B           0 B           0 B             2  
-                                        aten::transpose        12.03%     564.421us        12.28%     576.318us     288.159us       0.000us         0.00%       0.000us       0.000us           0 B           0 B           0 B           0 B             2  
-                                       aten::as_strided         0.25%      11.897us         0.25%      11.897us       5.948us       0.000us         0.00%       0.000us       0.000us           0 B           0 B           0 B           0 B             2  
-                                           Unrecognized        49.10%       2.304ms        49.10%       2.304ms       2.304ms      14.112us        48.36%      14.112us      14.112us           0 B           0 B           0 B           0 B             1  
-          cudaOccupancyMaxActiveBlocksPerMultiprocessor        22.25%       1.044ms        22.25%       1.044ms       1.044ms       0.000us         0.00%       0.000us       0.000us           0 B           0 B           0 B           0 B             1  
-                                       cudaLaunchKernel         1.74%      81.598us         1.74%      81.598us      20.399us       0.000us         0.00%       0.000us       0.000us           0 B           0 B           0 B           0 B             4  
-                        ampere_sgemm_32x32_sliced1x4_tn         0.00%       0.000us         0.00%       0.000us       0.000us      21.824us        74.78%      21.824us      10.912us           0 B           0 B           0 B           0 B             2  
--------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+<CodeBlock language="python" code={`---------------------------------  ------------  ------------  ------------  ------------  ------------  
+                             Name    Self CPU %   CPU total %  Self CUDA %      CUDA Mem    # of Calls  
+---------------------------------  ------------  ------------  ------------  ------------  ------------  
+                     aten::linear         7.82%        98.21%        0.00%      33.50 KB             2  
+                      aten::addmm         4.52%        77.31%       90.57%      33.50 KB             2  
+                  aten::transpose        12.03%        12.28%        0.00%           0 B             2  
+                  aten::clamp_min         0.71%         1.00%        9.43%      32.00 KB             1  
+                     Unrecognized        49.10%        49.10%       48.36%           0 B             1  
+cudaOccupancyMaxActiveBlocksPer..        22.25%        22.25%        0.00%           0 B             1  
+---------------------------------  ------------  ------------  ------------  ------------  ------------  
 Self CPU time total: 4.692ms
 Self CUDA time total: 29.184us`}/>
 </div>
 <div data-slide>
           <Text mt="md" size="sm">
-            <strong>Column explanations:</strong>
+            <strong>Key columns:</strong>
           </Text>
           <List size="sm" mt="xs">
             <List.Item><strong>Name:</strong> Operation name (e.g., aten::linear for linear layers, aten::addmm for matrix multiply-add)</List.Item>
-            <List.Item><strong>Self CPU %/Self CPU:</strong> Time spent in this operation alone on CPU (excluding child operations)</List.Item>
-            <List.Item><strong>CPU total %/CPU total:</strong> Total CPU time including all child operations</List.Item>
-            <List.Item><strong>CPU time avg:</strong> Average CPU time per call</List.Item>
-            <List.Item><strong>Self CUDA/Self CUDA %:</strong> Time spent in this operation alone on GPU</List.Item>
-            <List.Item><strong>CUDA total/CUDA time avg:</strong> Total GPU time including child operations</List.Item>
-            <List.Item><strong>CPU Mem/Self CPU Mem:</strong> Total and self CPU memory allocated</List.Item>
-            <List.Item><strong>CUDA Mem/Self CUDA Mem:</strong> Total and self GPU memory allocated</List.Item>
+            <List.Item><strong>Self CPU %:</strong> Time spent in this operation alone on CPU (excluding child operations)</List.Item>
+            <List.Item><strong>CPU total %:</strong> Total CPU time including all child operations</List.Item>
+            <List.Item><strong>Self CUDA %:</strong> Time spent in this operation alone on GPU</List.Item>
+            <List.Item><strong>CUDA Mem:</strong> Total GPU memory allocated by this operation</List.Item>
             <List.Item><strong># of Calls:</strong> Number of times this operation was executed</List.Item>
           </List>
 </div>
