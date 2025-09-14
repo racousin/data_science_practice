@@ -11,8 +11,15 @@ aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
 aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
 aws configure set default.region $AWS_DEFAULT_REGION
 
-
-aws s3 cp s3://www.raphaelcousin.com/repositories/$GITHUB_REPOSITORY_NAME/students/config/students.json students.json
+# Check if students.json exists on S3, create empty dict if not
+if ! aws s3 ls s3://www.raphaelcousin.com/repositories/$GITHUB_REPOSITORY_NAME/students/config/students.json > /dev/null 2>&1; then
+  echo "students.json does not exist. Creating empty dict..."
+  echo "{}" > students.json
+  aws s3 cp students.json s3://www.raphaelcousin.com/repositories/$GITHUB_REPOSITORY_NAME/students/config/students.json
+  echo "Created empty students.json on S3."
+else
+  aws s3 cp s3://www.raphaelcousin.com/repositories/$GITHUB_REPOSITORY_NAME/students/config/students.json students.json
+fi
 
 if jq -e 'has("'"$USER"'")' students.json; then
   echo "$USER is already in the list."

@@ -67,7 +67,7 @@ jobs:
         aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
 
     - name: Set Script Permissions
-      run: chmod +x ./scripts/* ./tests/*/module*/exercise*.sh ./tests/data-science-practice/run_tests_and_update_results.sh
+      run: chmod +x ./scripts/* ./tests/*/exercise*.sh ./tests/run_tests_and_update_results.sh
 
     - name: Check and Add User to Students List
       run: ./scripts/check-and-add-user.sh ${{ env.AUTHOR }} ${{ env.GITHUB_REPOSITORY_NAME }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_DEFAULT_REGION }}
@@ -84,6 +84,6 @@ jobs:
           echo "No MODULEs changed. Skipping tests."
         else
           echo "Running tests for changed modules: ${{ env.CHANGED_MODULES }}"
-          ./tests/data-science-practice/run_tests_and_update_results.sh ${{ env.AUTHOR }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_DEFAULT_REGION }} "${{ env.CHANGED_MODULES }}" ${{ env.GITHUB_REPOSITORY_NAME }}
+          ./tests/run_tests_and_update_results.sh ${{ env.AUTHOR }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_DEFAULT_REGION }} "${{ env.CHANGED_MODULES }}" ${{ env.GITHUB_REPOSITORY_NAME }}
           ./scripts/compute_progress_percentage.sh ${{ env.AUTHOR }} ${{ env.GITHUB_REPOSITORY_NAME }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ secrets.AWS_DEFAULT_REGION }}
         fi
