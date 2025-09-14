@@ -29,43 +29,62 @@ const ProgressBar = ({ progressPercent, errorPercent }) => {
 
 
 const StudentsList = () => {
-  const { repositoryId } = useParams();
+  const { repoName } = useParams();
   const [students, setStudents] = useState([]);
   const [error, setError] = useState("");
   const [filter, setFilter] = useState("");
-  const [sortConfig, setSortConfig] = useState({ key: "name", direction: "ascending" });
+  const [sortConfig, setSortConfig] = useState({ key: "fullName", direction: "ascending" });
 
   const fetchStudents = () => {
     const cacheBuster = `?t=${new Date().getTime()}`;
-    fetch(`/repositories/${repositoryId}/students/config/students.json${cacheBuster}`)
+    const url = `/repositories/${repoName}/students/config/students.json${cacheBuster}`;
+
+    fetch(url)
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-        return response.json();
+
+        // Check if response is JSON
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("text/html")) {
+          throw new Error("Received HTML instead of JSON - file not found");
+        }
+
+        return response.text().then(text => {
+          try {
+            return JSON.parse(text);
+          } catch (e) {
+            throw new Error("Invalid JSON response");
+          }
+        });
       })
       .then((data) => {
-        const formattedData = Object.entries(data).map(([name, details]) => {
-          const progress = parseFloat(details.progress_percentage) * 100;
-          const errors = parseFloat(details.error_percentage) * 100;
+        const formattedData = Object.entries(data).map(([username, details]) => {
+          const progress = parseFloat(details.progress_percentage || 0) * 100;
+          const errors = parseFloat(details.error_percentage || 0) * 100;
           return {
-            name,
+            username,
+            fullName: `${details.firstname} ${details.lastname}`,
+            githubUsername: details.github_username,
+            nbReview: details.nb_review || 0,
             ...details,
             progress_percentage: progress,
             error_percentage: errors,
           };
         });
         setStudents(formattedData);
+        setError("");
       })
       .catch((error) => {
-        console.error("Error fetching student list:", error);
-        setError("Failed to fetch student data.");
+        setError(`Failed to fetch student data: ${error.message}`);
+        setStudents([]);
       });
   };
 
   useEffect(() => {
     fetchStudents();
-  }, [repositoryId]);
+  }, [repoName]);
 
   const sortedStudents = useMemo(() => {
     let sortableItems = [...students];
@@ -85,7 +104,8 @@ const StudentsList = () => {
 
   const filteredStudents = useMemo(() => {
     return sortedStudents.filter((student) =>
-      student.name.toLowerCase().includes(filter.toLowerCase())
+      student.fullName.toLowerCase().includes(filter.toLowerCase()) ||
+      student.githubUsername.toLowerCase().includes(filter.toLowerCase())
     );
   }, [sortedStudents, filter]);
 
@@ -108,9 +128,6 @@ const StudentsList = () => {
     return null;
   };
 
-  const handleHardRefresh = () => {
-    fetchStudents();
-  };
 
   return (
     <Container size="xl" py="xl">
@@ -126,7 +143,7 @@ const StudentsList = () => {
           Refresh Data
         </Button>
       </Group>
-      <Title order={1}>Student List: {repositoryId}</Title>
+      <Title order={1}>Student List: {repoName}</Title>
       {error && <Alert color="red" mb="md">{error}</Alert>}
       
       <TextInput
@@ -141,9 +158,21 @@ const StudentsList = () => {
         <Table.Thead>
           <Table.Tr>
             <Table.Th>
-              <Group gap="xs" style={{cursor: 'pointer'}} onClick={() => requestSort('name')}>
+              <Group gap="xs" style={{cursor: 'pointer'}} onClick={() => requestSort('fullName')}>
                 <Text>Name</Text>
-                {getSortIcon('name')}
+                {getSortIcon('fullName')}
+              </Group>
+            </Table.Th>
+            <Table.Th>
+              <Group gap="xs" style={{cursor: 'pointer'}} onClick={() => requestSort('githubUsername')}>
+                <Text>Username</Text>
+                {getSortIcon('githubUsername')}
+              </Group>
+            </Table.Th>
+            <Table.Th>
+              <Group gap="xs" style={{cursor: 'pointer'}} onClick={() => requestSort('nbReview')}>
+                <Text>Reviews</Text>
+                {getSortIcon('nbReview')}
               </Group>
             </Table.Th>
             <Table.Th>
@@ -158,8 +187,19 @@ const StudentsList = () => {
         <Table.Tbody>
           {filteredStudents.map((student, index) => (
             <Table.Tr key={index}>
-              <Table.Td>{student.name}</Table.Td>
-              <Table.Td style={{ width: '40%' }}>
+              <Table.Td>{student.fullName}</Table.Td>
+              <Table.Td>
+                <a
+                  href={`https://github.com/${student.githubUsername}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: '#0969da', textDecoration: 'none' }}
+                >
+                  {student.githubUsername}
+                </a>
+              </Table.Td>
+              <Table.Td>{student.nbReview}</Table.Td>
+              <Table.Td style={{ width: '30%' }}>
                 <ProgressBar
                   progressPercent={student.progress_percentage}
                   errorPercent={student.error_percentage}
@@ -168,7 +208,7 @@ const StudentsList = () => {
               <Table.Td>
                 <Button
                   component={Link}
-                  to={`/student/${repositoryId}/${student.name}`}
+                  to={`/courses/data-science-practice/student/${repoName}/${student.githubUsername}`}
                   variant="light"
                   size="sm"
                 >

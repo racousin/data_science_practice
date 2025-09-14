@@ -1,1 +1,22 @@
-{"thesuperstudent":{"progress_percentage":0.2}}
+  {
+    "octocat": {
+      "firstname": "Test",
+      "lastname": "User",
+      "github_username": "octocat",
+      "registered_at": "2025-09-14T14:37:03.530460Z",
+      "course_year": "2025",
+      "progress_percentage": 0,
+      "error_percentage": 0,
+      "nb_review": 0
+    },
+    "thestudentsuper": {
+      "firstname": "raphael",
+      "lastname": "cousin",
+      "github_username": "thestudentsuper",
+      "registered_at": "2025-09-14T14:52:04.180181Z",
+      "course_year": "2025",
+      "progress_percentage": 0,
+      "error_percentage": 0,
+      "nb_review": 0
+    }
+  }
