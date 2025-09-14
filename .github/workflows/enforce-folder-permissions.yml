@@ -3,7 +3,7 @@ name: Enforce and Evaluate
 on:
   pull_request:
     branches:
-      - main
+      - main2
 
 jobs:
   enforce-and-evaluate:

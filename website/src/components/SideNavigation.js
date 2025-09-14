@@ -44,7 +44,14 @@ export const courseContentData = {
     { to: '/working-with-remote-repositories', label: 'Remote Repositories' },
     { to: '/branching-and-merging', label: 'Branching & Merging' },
     { to: '/collaborating', label: 'Collaborating' },
-    { to: '/best-practices-and-resources', label: 'Best Practices' }
+    { to: '/best-practices-and-resources', label: 'Best Practices' },
+        { to: '/git-hub-desktop', label: 'GitHub Desktop', subLinks: [
+      { id: 'what-is-github-desktop', label: 'What is GitHub Desktop?' },
+      { id: 'installation', label: 'Installation' },
+      { id: 'main-functionalities', label: 'Main Functionalities' },
+      { id: 'usage-guide', label: 'Usage Guide' },
+      { id: 'advantages', label: 'Advantages' }
+    ]}
   ],
   'module2': [
     { to: '/Introduction', label: 'Introduction' },
@@ -163,8 +170,12 @@ export const courseContentData = {
 export const exerciseContentData = {
   'module1': [
     { to: '/exercise1', label: <span>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></span> },
-    { to: '/exercise2', label: 'Exercise 2' }
-  ],
+    { to: '/exercise2', label: 'Exercise 2' },
+    { to: '/exercise3', label: 'Exercise 3' },
+    { to: '/exercise4', label: 'Exercise 4' },
+    { to: '/exercise2', label: 'Exercise 5' }
+    
+    ],
   'module2': [
     { to: '/exercise1', label: <span>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></span> },
     { to: '/exercise2', label: 'Exercise 2' }

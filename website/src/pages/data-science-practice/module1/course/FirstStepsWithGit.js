@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Grid, Image, Flex } from '@mantine/core';
+import { Container, Grid, Image, Flex, Text } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 const FirstStepsWithGit = () => {
   return (
@@ -208,7 +208,7 @@ Changes to be committed:
               style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
               fluid
             />
-            <p>Git Workflow Diagram</p>
+            <Text>Git Workflow Diagram</Text>
           </Flex>
         </Grid.Col>
       </Grid>

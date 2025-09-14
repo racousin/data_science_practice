@@ -29,10 +29,10 @@ const EvaluationModal = ({ module }) => {
               </Accordion.Control>
               <Accordion.Panel>
                 <Text mb="xs">Navigate to your project directory:</Text>
-                <CodeBlock code="cd data_science_practice_2024" />
+                <CodeBlock code="cd data_science_practice_2025" language="bash" />
                 <Text mb="xs" mt="sm">Ensure you are on the main branch and your repository is up to date:</Text>
                 <CodeBlock code={`git checkout main
-git pull origin main`} />
+git pull origin main`} language="bash" />
               </Accordion.Panel>
             </Accordion.Item>
 
@@ -42,9 +42,9 @@ git pull origin main`} />
               </Accordion.Control>
               <Accordion.Panel>
                 <Text mb="xs">Create and switch to a new branch for your exercise:</Text>
-                <CodeBlock code={`git checkout -b exercise_branch/$username/module${module}`} />
+                <CodeBlock code={`git checkout -b exercise_branch/$username/module${module}`} language="bash" />
                 <Text mb="xs" mt="sm">Create a directory for your module (if it doesn't already exist):</Text>
-                <CodeBlock code={`mkdir -p $username/module${module}`} />
+                <CodeBlock code={`mkdir -p $username/module${module}`} language="bash" />
                 <Text mt="sm">Perform your work in this directory.</Text>
               </Accordion.Panel>
             </Accordion.Item>
@@ -55,11 +55,11 @@ git pull origin main`} />
               </Accordion.Control>
               <Accordion.Panel>
                 <Text mb="xs">Stage your changes for commit:</Text>
-                <CodeBlock code={`git add $username/module${module}/your_files`} />
+                <CodeBlock code={`git add $username/module${module}/your_files`} language="bash" />
                 <Text mb="xs" mt="sm">Commit your changes:</Text>
-                <CodeBlock code="git commit -m 'Update exercise files'" />
+                <CodeBlock code="git commit -m 'Update exercise files'" language="bash" />
                 <Text mb="xs" mt="sm">Push your branch to the repository:</Text>
-                <CodeBlock code={`git push origin exercise_branch/$username/module${module}`} />
+                <CodeBlock code={`git push origin exercise_branch/$username/module${module}`} language="bash" />
               </Accordion.Panel>
             </Accordion.Item>
 
@@ -70,7 +70,7 @@ git pull origin main`} />
               <Accordion.Panel>
                 <Text mb="xs">After pushing your work to your remote branch:</Text>
                 <List>
-                  <List.Item>Visit <Anchor href="https://github.com/racousin/data_science_practice_2024/pulls" target="_blank">GitHub Pull Requests</Anchor>.</List.Item>
+                  <List.Item>Visit <Anchor href="https://github.com/racousin/data_science_practice_2025/pulls" target="_blank">GitHub Pull Requests</Anchor>.</List.Item>
                   <List.Item>Create a new pull request from your exercise branch to the main branch.</List.Item>
                   <List.Item>Request a review and make necessary changes based on feedback.</List.Item>
                   <List.Item>Merge the pull request once approved.</List.Item>
