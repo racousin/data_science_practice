@@ -36,6 +36,7 @@ const Student = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [overallProgress, setOverallProgress] = useState({ progress: 0, errors: 0 });
+  const [studentName, setStudentName] = useState("");
 
   const fetchData = () => {
     const cacheBuster = `?t=${new Date().getTime()}`;
@@ -46,31 +47,51 @@ const Student = () => {
     ])
       .then(([overallResponse, detailsResponse]) => {
         if (!overallResponse.ok || !detailsResponse.ok) {
-          throw new Error("Failed to load the data");
+          throw new Error(`Failed to load the data - Status: ${overallResponse.status}, ${detailsResponse.status}`);
         }
+
+        // Check if responses are JSON
+        const overallContentType = overallResponse.headers.get("content-type");
+        const detailsContentType = detailsResponse.headers.get("content-type");
+
+        if ((overallContentType && overallContentType.includes("text/html")) ||
+            (detailsContentType && detailsContentType.includes("text/html"))) {
+          throw new Error("Received HTML instead of JSON - file not found");
+        }
+
         return Promise.all([overallResponse.json(), detailsResponse.json()]);
       })
       .then(([overallData, detailsData]) => {
-        const studentOverall = overallData[studentId];
+        // Find student data by matching github_username
+        let studentOverall = null;
+        for (const [key, value] of Object.entries(overallData)) {
+          if (value.github_username === studentId) {
+            studentOverall = value;
+            break;
+          }
+        }
+
         if (studentOverall) {
           setOverallProgress({
-            progress: parseFloat(studentOverall.progress_percentage) * 100,
-            errors: parseFloat(studentOverall.error_percentage) * 100
+            progress: parseFloat(studentOverall.progress_percentage || 0) * 100,
+            errors: parseFloat(studentOverall.error_percentage || 0) * 100
           });
+          setStudentName(`${studentOverall.firstname} ${studentOverall.lastname}`);
         }
         setModulesResults(detailsData);
+        setError("");
         setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
-        setError("Failed to fetch student data.");
+        setError(`Failed to fetch student data: ${error.message}`);
         setLoading(false);
       });
   };
 
   useEffect(() => {
     fetchData();
-  }, [repositoryId]);
+  }, [repositoryId, studentId]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -98,7 +119,7 @@ const Student = () => {
           Refresh Data
         </Button>
       </Group>
-      <Title order={1} mb="md">Results for {studentId}</Title>
+      <Title order={1} mb="md">Results for {studentName || studentId}</Title>
       <OverallProgress progress={overallProgress.progress} errors={overallProgress.errors} />
       {error && <Alert color="red" mb="md" title="Error">{error}</Alert>}
       <Accordion variant="contained">
