@@ -51,7 +51,8 @@ echo -e "${GREEN}✅ Build completed successfully${NC}"
 echo -e "${YELLOW}☁️  Uploading to S3...${NC}"
 
 # Sync build directory to S3 bucket
-aws s3 sync $BUILD_DIR s3://$S3_BUCKET --delete --region eu-west-3
+# Exclude repositories folder from deletion to preserve course data
+aws s3 sync $BUILD_DIR s3://$S3_BUCKET --delete --exclude "repositories/*" --region eu-west-3
 
 if [ $? -ne 0 ]; then
     echo -e "${RED}❌ S3 upload failed!${NC}"
