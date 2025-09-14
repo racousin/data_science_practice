@@ -101,27 +101,6 @@ jobs:
       </div>
 
       <div data-slide>
-        <Title order={2} mb="md">Using Actions from the Marketplace</Title>
-        <Text mb="md">
-          GitHub provides pre-built actions that you can use in your workflows:
-        </Text>
-        <List spacing="md">
-          <List.Item>
-            <Code>actions/checkout</Code> - Check out your repository code
-          </List.Item>
-          <List.Item>
-            <Code>actions/setup-python</Code> - Set up Python environment
-          </List.Item>
-          <List.Item>
-            <Code>actions/upload-artifact</Code> - Upload build artifacts
-          </List.Item>
-          <List.Item>
-            <Code>actions/cache</Code> - Cache dependencies for faster builds
-          </List.Item>
-        </List>
-      </div>
-
-      <div data-slide>
         <Title order={2} mb="md">Environment Variables and Secrets</Title>
         <Text mb="md">
           Store sensitive data securely and access it in workflows:
@@ -134,23 +113,6 @@ jobs:
         />
         <Text size="sm" mt="md">
           Secrets are encrypted and never exposed in logs. Define them in repository settings.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={2} mb="md">Matrix Builds</Title>
-        <Text mb="md">
-          Test across multiple versions or configurations:
-        </Text>
-        <CodeBlock
-          code={`strategy:
-  matrix:
-    python: ['3.8', '3.9', '3.10']
-    os: [ubuntu-latest, windows-latest]`}
-          language="yaml"
-        />
-        <Text size="sm" mt="md">
-          This creates 6 jobs testing all combinations of Python versions and operating systems.
         </Text>
       </div>
 
@@ -170,26 +132,6 @@ jobs:
         </Text>
       </div>
 
-      <div data-slide>
-        <Title order={2} mb="md">Best Practices</Title>
-        <List spacing="md">
-          <List.Item>
-            Keep workflows simple and focused on a single purpose
-          </List.Item>
-          <List.Item>
-            Use caching to speed up workflows (dependencies, build artifacts)
-          </List.Item>
-          <List.Item>
-            Set timeouts to prevent workflows from running indefinitely
-          </List.Item>
-          <List.Item>
-            Use secrets for sensitive data, never hardcode credentials
-          </List.Item>
-          <List.Item>
-            Test workflows in a separate branch before merging to main
-          </List.Item>
-        </List>
-      </div>
     </>
   );
 };

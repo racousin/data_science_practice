@@ -45,13 +45,8 @@ export const courseContentData = {
     { to: '/branching-and-merging', label: 'Branching & Merging' },
     { to: '/collaborating', label: 'Collaborating' },
     { to: '/best-practices-and-resources', label: 'Best Practices' },
-        { to: '/git-hub-desktop', label: 'GitHub Desktop', subLinks: [
-      { id: 'what-is-github-desktop', label: 'What is GitHub Desktop?' },
-      { id: 'installation', label: 'Installation' },
-      { id: 'main-functionalities', label: 'Main Functionalities' },
-      { id: 'usage-guide', label: 'Usage Guide' },
-      { id: 'advantages', label: 'Advantages' }
-    ]}
+        { to: '/git-hub-desktop', label: 'GitHub Desktop'},
+            { to: '/git-hub-actions', label: 'GitHub Actions'}
   ],
   'module2': [
     { to: '/Introduction', label: 'Introduction' },

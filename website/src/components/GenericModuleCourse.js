@@ -45,7 +45,7 @@ const GenericModuleCourse = ({ courseId }) => {
       isCourse={true}
       title={`Module ${moduleNum}: ${moduleName}`}
       courseLinks={routeLinks}
-      enableSlides={courseId === 'python-deep-learning'}
+      enableSlides={courseId === 'python-deep-learning' || courseId === 'data-science-practice'}
     >
       {location.pathname === `/courses/${courseId}/${moduleId}/course` && (
         <>
