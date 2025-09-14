@@ -13,7 +13,7 @@ const PrerequisiteAndMethodology = () => {
     >
       <Grid>
         <Grid.Col>
-          <p>Last Updated: {"2024-09-20"}</p>
+          <p>Last Updated: {"2025-09-15"}</p>
         </Grid.Col>
       </Grid>
       <Grid>
@@ -38,25 +38,49 @@ const PrerequisiteAndMethodology = () => {
               </a>
               .
             </li>
-            {/* <li>
-              <strong>Email Registration for Course Repository:</strong> Once
-              you have your GitHub username, send an email to{" "}
-              <a href="mailto:raphaelcousin.education@gmail.com">
-                raphaelcousin.education@gmail.com
-              </a>{" "}
-              with the subject
-              "2024_github_account_registration:$name:$surname:$username",
-              replacing $name, $surname, and $username with your actual details.
-              You will receive an invitation to join the{" "}
-              <a
-                href="https://github.com/racousin/data_science_practice_2024"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <i>data_science_practice</i>
-              </a>{" "}
-              repository in order to submit your exercises answers.
-            </li> */}
+            <li>
+              <strong>Course Registration:</strong>
+              <p>
+                <a
+                  href="{registration_url}"
+                  style={{
+                    display: 'inline-block',
+                    padding: '10px 20px',
+                    backgroundColor: '#0366d6',
+                    color: 'white',
+                    textDecoration: 'none',
+                    borderRadius: '5px'
+                  }}
+                >
+                  Complete Registration
+                </a>
+              </p>
+
+              <p>When registering, you will need to provide:</p>
+              <ul>
+                <li>Your first and last name</li>
+                <li>Your GitHub username</li>
+              </ul>
+
+              <p>
+                Your registration will allow you to make changes on the course repository{" "}
+                <a
+                  href="https://github.com/racousin/data_science_practice_2025"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  https://github.com/racousin/data_science_practice_2025
+                </a>{" "}
+                and view your results on{" "}
+                <a
+                  href="https://www.raphaelcousin.com/courses/data-science-practice/students/data_science_practice_2025"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  https://www.raphaelcousin.com/courses/data-science-practice/students/data_science_practice_2025
+                </a>.
+              </p>
+            </li>
             <li>
               After receiving the invitation, accept it to access and you can
               start with the <Link to="/module1/course/">Module 1: Git</Link>

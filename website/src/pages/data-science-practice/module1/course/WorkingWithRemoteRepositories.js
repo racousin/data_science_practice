@@ -29,6 +29,7 @@ const WorkingWithRemoteRepositories = () => {
                   src="/assets/data-science-practice/module1/Git_Remote_Workflow.png"
                   alt="Git_Remote_Workflow"
                   fluid
+                  style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
                 />
                 <p>Git_Remote_Workflow</p>
               </div>
@@ -241,9 +242,10 @@ origin	git@github.com:racousin/data_science_practice_2024.git (push)
             <Grid.Col span={{ xs: 12 }} md={10} lg={8}>
               <div className="text-center">
                 <Image
-                  src="/assets/data-science-practice/module1/Git_Fetch_Merge_Pull.png"
+                  src="/assets/data-science-practice/module1/view.png"
                   alt="Git_Fetch_Merge_Pull"
                   fluid
+                  style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
                 />
                 <p>Git_Fetch_Merge_Pull</p>
               </div>

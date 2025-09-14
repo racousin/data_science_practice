@@ -2,75 +2,47 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## PRIMARY FOCUS: Python Deep Learning Exercise Development
+## PRIMARY FOCUS: Data Science Practice Course Review & Improvement
 
-We are actively developing exercises for the Python Deep Learning course. Each exercise follows a standardized pattern that ensures consistency and quality.
+We are reviewing and improving the Data Science Practice course week by week. The course content is located in `website/public/repositories/data_science_practice` and uses a dedicated GitHub repository for student submissions.
 
-### Exercise Structure Pattern
+### Course Structure
 
-Each exercise notebook (`/website/public/modules/python-deep-learning/module{N}/exercises/exercise{N}.ipynb`) must include:
-
-1. **Title and Learning Objectives**
-   ```markdown
-   # Module N - Exercise N: Topic Name
-   
-   ## Learning Objectives
-   - Clear, specific learning goals
-   - One objective per line
-   - Actionable and measurable
-   ```
-
-
-3. **Environment Setup**
-   - Import necessary libraries (torch, numpy, matplotlib, etc.)
-   - Set random seeds for reproducibility
-   - Verify CUDA availability if relevant
-
-4. **Section Pattern**
-   Each section follows this structure:
-   ```markdown
-   ## Section N: Topic Name
-   
-   Brief description of what students will learn in this section.
-   Theorical and mathematical questions
-   ```
-   
-   ```python
-   # TODO comments for each task the student needs to complete
-   # Students replace None with their implementation
-   variable_name = None
-   
-   # Display/verification code to help students check their work
-   print(f"Your result: {variable_name}")
-   ```
-
-
-#### Module 1: Foundations of Deep Learning
-- Exercise 1: Environment & Basics
-- Exercise 2: Gradient Descent
-- Exercise 3: First Step with MLP
-
-#### Module 2: Automatic Differentiation
-- Exercise 1: Autograd Exploration
-- Exercise 2: Optimization with PyTorch Autograd
-- Exercise 3: Gradient Flow
-
-#### Module 3: Neural Network Training & Monitoring
-- Exercise 0: Training Basic
-- Exercise 1: Data Pipeline & Training Loop
-- Exercise 2: Essential Layers
-- Exercise 3: Monitoring & Visualization with TensorBoard
-
-#### Module 4: Performance Optimization & Scale
-- Exercise 1: Resource Profiling
-- Exercise 2: Performance Optimization Techniques
-- Exercise 2: Fine Tunning
+- **Repository**: `data_science_practice_2025` (student submission repository)
+- **Website Integration**: Students update their answers directly to the repository with validation through the website
+- **Content Location**: `/website/public/repositories/data_science_practice/`
+- **Workflows**: `.github/workflows/` contains automation for validation and permissions
 
 ### Development Guidelines
 
-1. **Consistency**: All exercises must follow the exact patternß
-2. **Progressive Difficulty**: Start simple, gradually increase complexityß
-3. **Clear TODOs**: Every student task starts with `# TODO:` comment
-4. **Immediate Feedback**: Tests run after each section for validation
-5. **Self-Contained**: No external dependencies beyond PyTorch and standard libraries
-6. **Colab-Friendly**: Everything runs in Google Colab without additional setup
+1. **Tone**: Maintain neutral and scientific tone throughout all content
+2. **Weekly Review Process**:
+   - Review existing content for clarity and accuracy
+   - Add exercises where needed to reinforce concepts
+   - Implement tests to validate student submissions
+   - Ensure workflows are functioning correctly
+3. **Testing**: Regularly test GitHub workflows to ensure validation pipeline works
+4. **Exercise Development**:
+   - Each exercise should have clear objectives
+   - Include automated tests where applicable
+   - Ensure compatibility with the website validation system
+5. **Student Workflow**:
+   - Students push to `data_science_practice_2025` repository
+   - Automatic validation through website integration
+   - Immediate feedback on submissions
+
+### Technical Requirements
+
+1. **Consistency**: All exercises must follow established patterns
+2. **Progressive Difficulty**: Build complexity gradually throughout the course
+3. **Automated Validation**: All exercises should include validation tests
+4. **Clear Instructions**: Every task should have unambiguous requirements
+5. **Website Integration**: Ensure all content works with the validation system
+
+### Workflow Testing Checklist
+
+- [ ] Verify GitHub Actions are triggered correctly
+- [ ] Test student submission validation
+- [ ] Check website integration endpoints
+- [ ] Validate permission enforcement
+- [ ] Test PR review tracking

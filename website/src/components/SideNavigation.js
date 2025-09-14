@@ -162,42 +162,42 @@ export const courseContentData = {
 // Exercise links for modules that have exercises
 export const exerciseContentData = {
   'module1': [
-    { to: '/exercise1', label: 'Exercise 1' },
+    { to: '/exercise1', label: <span>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></span> },
     { to: '/exercise2', label: 'Exercise 2' }
   ],
   'module2': [
-    { to: '/exercise1', label: 'Exercise 1' },
+    { to: '/exercise1', label: <span>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></span> },
     { to: '/exercise2', label: 'Exercise 2' }
   ],
   'module3': [
     { to: '/exercise0', label: 'Exercise 0' },
-    { to: '/exercise1', label: 'Exercise 1' },
+    { to: '/exercise1', label: <span>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></span> },
     { to: '/exercise2', label: 'Exercise 2' }
   ],
   'module4': [
-    { to: '/exercise1', label: 'Exercise 1' }
+    { to: '/exercise1', label: <span>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></span> }
   ],
   'module5': [
-    { to: '/exercise1', label: 'Exercise 1' },
+    { to: '/exercise1', label: <span>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></span> },
     { to: '/exercise2', label: 'Exercise 2' }
   ],
   'module6': [
-    { to: '/exercise1', label: 'Exercise 1' },
+    { to: '/exercise1', label: <span>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></span> },
     { to: '/exercise2', label: 'Exercise 2' }
   ],
   'module7': [
     { to: '/exercise0', label: 'Exercise 0' },
-    { to: '/exercise1', label: 'Exercise 1' }
+    { to: '/exercise1', label: <span>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></span> }
   ],
   'module8': [
     { to: '/exercise0', label: 'Exercise 0' },
-    { to: '/exercise1', label: 'Exercise 1' },
+    { to: '/exercise1', label: <span>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></span> },
     { to: '/exercise2', label: 'Exercise 2' },
     { to: '/exercise3', label: 'Exercise 3' }
   ],
   'module9': [
     { to: '/exercise0', label: 'Exercise 0' },
-    { to: '/exercise1', label: 'Exercise 1' },
+    { to: '/exercise1', label: <span>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></span> },
     { to: '/exercise2', label: 'Exercise 2' },
     { to: '/exercise3', label: 'Exercise 3' },
     { to: '/exercise4', label: 'Exercise 4' },

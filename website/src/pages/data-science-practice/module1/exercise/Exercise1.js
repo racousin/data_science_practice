@@ -6,7 +6,7 @@ const Exercise1 = () => {
   return (
     <Container fluid>
       <h1 className="my-4">
-        Exercise 1: Add a simple file to repository through pull request
+        Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span>: Add a simple file to repository through pull request
       </h1>
       <p>
         In this exercise, you are tasked with creating a file named{" "}

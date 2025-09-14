@@ -4,6 +4,12 @@ const Introduction = () => {
   return (
     <Container fluid>
       <h2>Introduction</h2>
+                      <Image
+                        src="/assets/data-science-practice/module1/merge.gif"
+                        alt="Git_Fetch_Merge_Pull"
+                        fluid
+                        style={{ maxWidth: 'min(600px, 60vw)', height: 'auto' }}
+                      />
       <Grid>
         <Grid.Col span={{ md: 12 }}>
           <p>

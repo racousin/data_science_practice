@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Grid, Image } from '@mantine/core';
+import { Container, Grid, Image, Flex } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 const FirstStepsWithGit = () => {
   return (
@@ -200,14 +200,16 @@ Changes to be committed:
       </Grid>
       <Grid className="justify-content-center">
         <Grid.Col span={{ xs: 12 }} md={10} lg={8}>
-          <div className="text-center">
+          <Flex direction="column" align="center">
+            
             <Image
               src="/assets/data-science-practice/module1/Git_Workflow.png"
               alt="Git Workflow Diagram"
+              style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
               fluid
             />
             <p>Git Workflow Diagram</p>
-          </div>
+          </Flex>
         </Grid.Col>
       </Grid>
       {/* Why commits are important */}
@@ -328,6 +330,7 @@ ncept into refacto/multi_ml
             <Image
               src="/assets/data-science-practice/module1/Git_Commit_History.png"
               alt="Git_Commit_History"
+              style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
               fluid
             />
             <p>Git_Commit_History</p>
@@ -447,6 +450,7 @@ index 8430408..9201842 100644
             <Image
               src="/assets/data-science-practice/module1/Git_Commit_History_Revert.png"
               alt="Git_Commit_History_Revert"
+              style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
               fluid
             />
             <p>Git_Commit_Revert</p>

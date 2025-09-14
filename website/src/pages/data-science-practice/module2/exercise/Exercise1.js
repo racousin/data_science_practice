@@ -5,7 +5,7 @@ import EvaluationModal from "components/EvaluationModal";
 const Exercise1 = () => {
   return (
     <Container fluid>
-      <h1 className="my-4">Exercise 1: Creating a Python Package</h1>
+      <h1 className="my-4">Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span>: Creating a Python Package</h1>
       <p>
         In this exercise, you will create a Python package named `mysupertools`
         with a module that contains a function to multiply two values. This
