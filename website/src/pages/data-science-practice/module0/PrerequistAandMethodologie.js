@@ -140,7 +140,7 @@ const PrerequisiteAndMethodology = () => {
           <li>
             <strong>If not done, clone the repository:</strong>
             <CodeBlock
-              code={`git clone https://github.com/racousin/data_science_practice_2024.git`}
+              code={`git clone https://github.com/racousin/data_science_practice_2025.git`}
             />
           </li>
           <li>
@@ -188,7 +188,7 @@ const PrerequisiteAndMethodology = () => {
             <strong>Go to GitHub to create a new pull request:</strong>
             <p>
               Visit{" "}
-              <a href="https://github.com/racousin/data_science_practice_2024/pulls">
+              <a href="https://github.com/racousin/data_science_practice_2025/pulls">
                 GitHub Pull Requests
               </a>{" "}
               to create a new pull request from branch{" "}

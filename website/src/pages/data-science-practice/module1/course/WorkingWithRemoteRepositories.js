@@ -134,8 +134,8 @@ const WorkingWithRemoteRepositories = () => {
               <CodeBlock code="git remote -v" />
               <CodeBlock
                 code={`$ git remote -v
-origin	git@github.com:racousin/data_science_practice_2024.git (fetch)
-origin	git@github.com:racousin/data_science_practice_2024.git (push)
+origin	git@github.com:racousin/data_science_practice_2025.git (fetch)
+origin	git@github.com:racousin/data_science_practice_2025.git (push)
 `}
                 language=""
               />
