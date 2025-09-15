@@ -4,8 +4,6 @@ import { Link } from "react-router-dom";
 import CodeBlock from "components/CodeBlock";
 import ModuleFrame from "components/ModuleFrame";
 const PrerequisiteAndMethodology = () => {
-  const registration_url = "https://register.raphaelcousin.com/?token=dsp2025-temp-token";
-
   return (
     <ModuleFrame
       module={0}
@@ -44,7 +42,7 @@ const PrerequisiteAndMethodology = () => {
               <strong>Course Registration:</strong>
               <p>
                 <a
-                  href="{registration_url}"
+                  href="https://register.raphaelcousin.com/?token=dsp2025-temp-token"
                   style={{
                     display: 'inline-block',
                     padding: '10px 20px',
