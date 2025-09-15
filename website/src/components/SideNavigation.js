@@ -54,7 +54,8 @@ export const courseContentData = {
     { to: '/setting-up-python-environment', label: 'Environment Setup' },
     { to: '/installing-packages', label: 'Installing Packages' },
     { to: '/building-packages', label: 'Building Packages' },
-    { to: '/best-practices-and-ressources', label: 'Best Practices' }
+    { to: '/syntax-and-linting', label: 'Building Packages' },
+    { to: '/unit-and-integration-tests', label: 'Unit And Integration Tests' }
   ],
   'module3': [
     { to: '/Introduction', label: 'Introduction', subLinks: [
@@ -173,7 +174,9 @@ export const exerciseContentData = {
     ],
   'module2': [
     { to: '/exercise1', label: <span>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></span> },
-    { to: '/exercise2', label: 'Exercise 2' }
+    { to: '/exercise2', label: 'Exercise 2' },
+    { to: '/exercise3', label: 'Exercise 3' },
+    { to: '/exercise4', label: 'Exercise 4' }
   ],
   'module3': [
     { to: '/exercise0', label: 'Exercise 0' },
