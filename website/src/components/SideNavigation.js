@@ -169,6 +169,7 @@ export const exerciseContentData = {
     { to: '/exercise1', label: <span>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></span> },
     { to: '/exercise2', label: 'Exercise 2' },
     { to: '/exercise3', label: 'Exercise 3' },
+    { to: '/exercise4', label: 'Exercise 4' },
   ],
   'module3': [
     { to: '/exercise0', label: 'Exercise 0' },
