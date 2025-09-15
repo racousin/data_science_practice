@@ -140,7 +140,7 @@ const PrerequisiteAndMethodology = () => {
           <li>
             <strong>If not done, clone the repository:</strong>
             <CodeBlock
-              code={`git clone https://github.com/racousin/data_science_practice_2025.git`}
+              code={`git clone git@github.com:racousin/data_science_practice_2025.git`}
             />
           </li>
           <li>

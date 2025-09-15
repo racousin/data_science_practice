@@ -27,7 +27,7 @@ const Exercise4 = () => {
       <Text size="md" mb="sm">Create a new repository for your package:</Text>
       <CodeBlock
         code={`# Create repository on GitHub: data-utils-package
-git clone https://github.com/your-username/data-utils-package.git
+git clone git@github.com:your-username/data-utils-package.git
 cd data-utils-package`}
         language="bash"
       />

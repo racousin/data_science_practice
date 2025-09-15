@@ -34,7 +34,7 @@ const Exercise3 = () => {
       <Title order={3} mt="lg" mb="sm">Student B: Accept and Clone</Title>
       <Text size="md" mb="sm">Accept the invitation and clone the repository:</Text>
       <CodeBlock
-        code={`git clone https://github.com/studentA-username/math-docs.git
+        code={`git clone git@github.com:studentA-username/math-docs.git
 cd math-docs`}
         language="bash"
       />

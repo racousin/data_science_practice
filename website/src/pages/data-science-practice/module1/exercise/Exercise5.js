@@ -58,7 +58,7 @@ const Exercise5 = () => {
       <Title order={3} mt="lg" mb="sm">Step 3: Fork and Clone</Title>
       <Text size="md" mb="sm">Fork scikit-learn to your GitHub account, then:</Text>
       <CodeBlock
-        code={`git clone https://github.com/YOUR-USERNAME/scikit-learn.git
+        code={`git clone git@github.com:YOUR-USERNAME/scikit-learn.git
 cd scikit-learn
 git remote add upstream https://github.com/scikit-learn/scikit-learn.git`}
         language="bash"

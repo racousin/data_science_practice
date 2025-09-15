@@ -1,67 +1,64 @@
 import React from "react";
-import { Container, Grid, Image } from '@mantine/core';
+import { Container, Grid, Image, Title, Text, List } from '@mantine/core';
 const Introduction = () => {
   return (
     <Container fluid>
-      <h2>Introduction</h2>
+      <Title order={2} mb="md">Introduction</Title>
       <Grid>
         <Grid.Col span={{ md: 12 }}>
-          <h4>Why Use Python Environments?</h4>
-          <p>
+          <Title order={4} mb="sm">Why Use Python Environments?</Title>
+          <Text size="md" mb="md">
             Python environments are isolated contexts where Python packages and
             dependencies are installed. This isolation prevents version
             conflicts and ensures that projects can be developed and tested in
             settings that closely mimic their production environments.
-          </p>
-          <h4>The Importance of Package Management</h4>
-          <p>
+          </Text>
+          <Title order={4} mb="sm">The Importance of Package Management</Title>
+          <Text size="md" mb="md">
             Package management involves organizing, installing, and maintaining
-            software libraries that projects depend on. Python’s package
+            software libraries that projects depend on. Python's package
             ecosystem includes thousands of third-party modules available on the
             Python Package Index (PyPI), which can be managed using tools like
             pip and conda.
-          </p>
-          <h4>Key Tools for Python Environments and Package Management</h4>
-          <p>
+          </Text>
+          <Title order={4} mb="sm">Key Tools for Python Environments and Package Management</Title>
+          <Text size="md" mb="md">
             The following tools are commonly used for managing Python
             environments and packages:
-          </p>
-          <ul>
-            <li>
-              <strong>pip:</strong> Python’s standard package-management system
+          </Text>
+          <List spacing="sm">
+            <List.Item>
+              <Text component="span" fw={700}>pip:</Text> Python's standard package-management system
               used to install and manage software packages.
-            </li>
-            <li>
-              <strong>virtualenv:</strong> A tool to create isolated Python
+            </List.Item>
+            <List.Item>
+              <Text component="span" fw={700}>virtualenv:</Text> A tool to create isolated Python
               environments.
-            </li>
-            <li>
-              <strong>conda:</strong> An open-source package management system
+            </List.Item>
+            <List.Item>
+              <Text component="span" fw={700}>conda:</Text> An open-source package management system
               and environment management system.
-            </li>
-            <li>
-              <strong>Poetry:</strong> An open-source package management system
+            </List.Item>
+            <List.Item>
+              <Text component="span" fw={700}>Poetry:</Text> An open-source package management system
               and environment management system.
-            </li>
-            <li>
-              <strong>Pipenv:</strong> An open-source package management system
+            </List.Item>
+            <List.Item>
+              <Text component="span" fw={700}>Pipenv:</Text> An open-source package management system
               and environment management system.
-            </li>
-          </ul>
+            </List.Item>
+          </List>
         </Grid.Col>
       </Grid>
-      {/* <Grid>
+      <Grid>
         <Grid.Col span={{ md: 10 }}>
           <Image
-            src="/assets/python-environments.png"
-            alt="Python Environments and Package Management"
+            src="/assets/data-science-practice/module2/python.png"
+            alt="Q-values"
             fluid
           />
-          <p className="text-center">
-            Fig.1 - Python Environments and Package Management
-          </p>
         </Grid.Col>
-      </Grid> */}
+      </Grid>
     </Container>
   );
 };

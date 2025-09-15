@@ -1,40 +1,40 @@
 import React from "react";
-import { Container, Grid } from '@mantine/core';
+import { Container, Grid, Title, Text, List, Anchor, Code } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 const InstallPython = () => {
   return (
     <Container fluid>
-      <h1 className="my-4">Installing Python</h1>
+      <Title order={1} mb="lg">Installing Python</Title>
       <Grid>
         <Grid.Col span={{ md: 12 }}>
-          <h3 id="windows">Windows</h3>
-          <p>Follow these steps to install Python on Windows:</p>
-          <ol>
-            <li>
+          <Title order={3} id="windows" mb="sm">Windows</Title>
+          <Text size="md" mb="sm">Follow these steps to install Python on Windows:</Text>
+          <List type="ordered" spacing="sm">
+            <List.Item>
               Download the latest version of Python from the official Python
               website:
               <br />
-              <a
+              <Anchor
                 href="https://www.python.org/downloads/windows/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 Python Downloads for Windows
-              </a>
-            </li>
-            <li>
+              </Anchor>
+            </List.Item>
+            <List.Item>
               Run the downloaded installer. Ensure to select "Add Python 3.x to
               PATH" at the start of the installation process.
-            </li>
-            <li>Follow the installation prompts to complete the setup.</li>
-          </ol>
-          <h3 id="mac">MacOS</h3>
-          <p>
+            </List.Item>
+            <List.Item>Follow the installation prompts to complete the setup.</List.Item>
+          </List>
+          <Title order={3} id="mac" mb="sm">MacOS</Title>
+          <Text size="md" mb="sm">
             MacOS comes with Python pre-installed. To check the installed
             version:
-          </p>
-          <ol>
-            <li>
+          </Text>
+          <List type="ordered" spacing="sm">
+            <List.Item>
               Open a terminal window and type the following command to check
               your current Python version:
               <CodeBlock code={`python3 --version`} />
@@ -47,26 +47,26 @@ Python 3.10.12
               />
               or try:
               <CodeBlock code={`python --version`} />
-            </li>
-            <li>
+            </List.Item>
+            <List.Item>
               If you need a newer version, consider installing Python via{" "}
-              <a
+              <Anchor
                 href="https://brew.sh/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 Homebrew
-              </a>{" "}
+              </Anchor>{" "}
               or directly from the Python website.
-            </li>
-          </ol>
-          <h3 id="linux">Linux</h3>
-          <p>
+            </List.Item>
+          </List>
+          <Title order={3} id="linux" mb="sm">Linux</Title>
+          <Text size="md" mb="sm">
             Most Linux distributions come with Python pre-installed. To verify
             or install Python, you can use your distribution's package manager:
-          </p>
-          <ol>
-            <li>
+          </Text>
+          <List type="ordered" spacing="sm">
+            <List.Item>
               Open a terminal window and check the installed version of Python:
               <CodeBlock code={`python3 --version`} />
               <CodeBlock
@@ -78,28 +78,28 @@ Python 3.10.12
               />
               or try:
               <CodeBlock code={`python --version`} />
-            </li>
-            <li>
+            </List.Item>
+            <List.Item>
               If Python is not installed, or if you need a different version,
-              use your distribution’s package manager to install Python. For
+              use your distribution's package manager to install Python. For
               example, on Ubuntu, you would use:
               <CodeBlock code={`sudo apt-get install python3`} />
-            </li>
-          </ol>
+            </List.Item>
+          </List>
         </Grid.Col>
       </Grid>
       <Grid>
         <Grid.Col span={{ md: 12 }}>
-          <h3 id="install-pip">Install pip</h3>
-          <p>
-            <code>pip</code> is Python's package installer and is included by
+          <Title order={3} id="install-pip" mb="sm">Install pip</Title>
+          <Text size="md" mb="sm">
+            <Code>pip</Code> is Python's package installer and is included by
             default with Python versions 3.4 and above. It's crucial for
-            managing third-party Python packages. Here’s how to ensure it is
+            managing third-party Python packages. Here's how to ensure it is
             installed and up to date:
-          </p>
-          <ol>
-            <li>
-              To check if <code>pip</code> is installed, open a terminal or
+          </Text>
+          <List type="ordered" spacing="sm">
+            <List.Item>
+              To check if <Code>pip</Code> is installed, open a terminal or
               command prompt and type:
               <CodeBlock code={`pip --version`} />
               <CodeBlock
@@ -109,35 +109,35 @@ pip 22.0.2 from /usr/lib/python3/dist-packages/pip (python 3.10)
 `}
                 language=""
               />
-            </li>
-            <li>
-              If <code>pip</code> is not installed, you can install it by
-              downloading <code>get-pip.py</code>:
+            </List.Item>
+            <List.Item>
+              If <Code>pip</Code> is not installed, you can install it by
+              downloading <Code>get-pip.py</Code>:
               <br />
-              <a
+              <Anchor
                 href="https://bootstrap.pypa.io/get-pip.py"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 Download get-pip.py
-              </a>
-            </li>
-            <li>
+              </Anchor>
+            </List.Item>
+            <List.Item>
               After downloading, run the following command in the directory
-              where <code>get-pip.py</code> is located:
+              where <Code>get-pip.py</Code> is located:
               <CodeBlock code={`python get-pip.py`} />
-            </li>
-            <li>
-              To upgrade an existing <code>pip</code> installation to the latest
+            </List.Item>
+            <List.Item>
+              To upgrade an existing <Code>pip</Code> installation to the latest
               version, use:
               <CodeBlock code={`pip install --upgrade pip`} />
-            </li>
-          </ol>
-          <p>
-            Ensuring <code>pip</code> is installed and up to date allows you to
+            </List.Item>
+          </List>
+          <Text size="md" mt="sm">
+            Ensuring <Code>pip</Code> is installed and up to date allows you to
             easily manage and install packages, which are often necessary for
             development projects.
-          </p>
+          </Text>
         </Grid.Col>
       </Grid>
     </Container>

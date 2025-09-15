@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Grid } from '@mantine/core';
 import CodeBlock from "components/CodeBlock";
 
-const IDE = () => {
+const Ide = () => {
   return (
     <Container fluid>
       <div data-slide>
@@ -57,18 +57,6 @@ const IDE = () => {
         </ul>
       </div>
 
-      <div data-slide>
-        <h2>Jupyter Lab</h2>
-        <p>
-          A web-based interactive development environment for notebooks, code, and data.
-        </p>
-        <ul>
-          <li>Interactive notebooks with rich output</li>
-          <li>Built-in data visualization</li>
-          <li>Flexible user interface</li>
-          <li>Support for multiple programming languages</li>
-        </ul>
-      </div>
 
       <div data-slide>
         <h2>Setting Up VS Code for Python</h2>
@@ -88,7 +76,6 @@ const IDE = () => {
         <ul>
           <li><strong>Python:</strong> Core Python language support</li>
           <li><strong>Jupyter:</strong> Jupyter notebook support in VS Code</li>
-          <li><strong>Python Docstring Generator:</strong> Auto-generate docstrings</li>
           <li><strong>GitLens:</strong> Enhanced Git capabilities</li>
           <li><strong>Pylance:</strong> Fast, feature-rich Python language server</li>
         </ul>
@@ -135,4 +122,4 @@ mkdir data notebooks src tests`} language="bash" />
   );
 };
 
-export default IDE;
+export default Ide;

@@ -20,7 +20,7 @@ const Exercise2 = () => {
       <Title order={3} mt="lg" mb="sm">1. Repository Setup</Title>
       <Text size="md" mb="sm">Create and clone your repository:</Text>
       <CodeBlock
-        code={`git clone https://github.com/your-username/math-docs.git
+        code={`git clone git@github.com:your-username/math-docs.git
 cd math-docs`}
         language="bash"
       />

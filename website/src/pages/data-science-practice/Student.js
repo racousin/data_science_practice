@@ -154,7 +154,7 @@ const Student = () => {
                         </Alert>
                       )} */}
                       <Text size="sm" mb="xs">Logs:</Text>
-                      <Code block mb="xs">{exerciseDetails.logs || "No logs available"}</Code>
+                      <Code block mb="xs" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{exerciseDetails.logs || "No logs available"}</Code>
                       <Text size="sm" c="dimmed">
                         Updated: {exerciseDetails.updated_time_utc ? formatDate(exerciseDetails.updated_time_utc) : "Not updated"}
                       </Text>
