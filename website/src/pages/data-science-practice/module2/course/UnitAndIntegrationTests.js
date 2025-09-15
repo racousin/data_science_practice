@@ -19,58 +19,7 @@ const UnitAndIntegrationTests = () => {
             <ul>
               <li><strong>Unit Tests:</strong> Test individual functions or methods in isolation</li>
               <li><strong>Integration Tests:</strong> Test how multiple components work together</li>
-              <li><strong>End-to-End Tests:</strong> Test complete workflows from user perspective</li>
             </ul>
-          </Grid.Col>
-        </Grid>
-      </div>
-
-      <div data-slide>
-        <h3>Unit Testing with unittest</h3>
-        <Grid>
-          <Grid.Col span={{ md: 12 }}>
-            <p>
-              Python's built-in unittest module provides a framework for writing
-              and running tests. It follows the xUnit pattern used in many programming languages.
-            </p>
-            <h4>Basic Test Structure</h4>
-            <CodeBlock
-              code={`import unittest
-
-class TestMathOperations(unittest.TestCase):
-    def test_addition(self):
-        result = 2 + 3
-        self.assertEqual(result, 5)`}
-              language="python"
-            />
-          </Grid.Col>
-        </Grid>
-      </div>
-
-      <div data-slide>
-        <h3>Common Assertion Methods</h3>
-        <Grid>
-          <Grid.Col span={{ md: 12 }}>
-            <CodeBlock
-              code={`# Equality assertions
-self.assertEqual(a, b)
-self.assertNotEqual(a, b)
-
-# Boolean assertions
-self.assertTrue(x)
-self.assertFalse(x)`}
-              language="python"
-            />
-
-            <CodeBlock
-              code={`# Exception assertions
-self.assertRaises(ValueError, func, args)
-
-# Membership assertions
-self.assertIn(item, container)
-self.assertNotIn(item, container)`}
-              language="python"
-            />
           </Grid.Col>
         </Grid>
       </div>
@@ -106,12 +55,6 @@ def test_add_numbers():
         <h3>Running Tests</h3>
         <Grid>
           <Grid.Col span={{ md: 12 }}>
-            <h4>Running unittest</h4>
-            <CodeBlock
-              code={`python -m unittest test_module.py`}
-              language="bash"
-            />
-
             <h4>Running pytest</h4>
             <CodeBlock
               code={`pytest test_module.py`}

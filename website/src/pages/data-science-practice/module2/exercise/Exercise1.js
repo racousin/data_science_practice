@@ -74,9 +74,6 @@ description = "A simple tool package with multiplication function"
 authors = [{name = "Your Name", email = "your.email@example.com"}]
 requires-python = ">=3.8"
 classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
 ]
 
 [tool.setuptools.packages.find]

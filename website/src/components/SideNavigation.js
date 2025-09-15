@@ -43,9 +43,9 @@ export const courseContentData = {
   'module2': [
     { to: '/Introduction', label: 'Introduction' },
     { to: '/install-python', label: 'Install Python' },
-    { to: '/ide', label: 'IDE' },
     { to: '/setting-up-python-environment', label: 'Environment Setup' },
     { to: '/installing-packages', label: 'Installing Packages' },
+    { to: '/ide', label: 'IDE' },
     { to: '/building-packages', label: 'Building Packages' },
     { to: '/syntax-and-linting', label: 'Building Packages' },
     { to: '/unit-and-integration-tests', label: 'Unit And Integration Tests' }
@@ -169,7 +169,6 @@ export const exerciseContentData = {
     { to: '/exercise1', label: <span>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></span> },
     { to: '/exercise2', label: 'Exercise 2' },
     { to: '/exercise3', label: 'Exercise 3' },
-    { to: '/exercise4', label: 'Exercise 4' }
   ],
   'module3': [
     { to: '/exercise0', label: 'Exercise 0' },

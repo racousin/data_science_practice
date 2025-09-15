@@ -1,382 +1,291 @@
 import React from "react";
-import { Container, Grid } from '@mantine/core';
+import { Container, Grid, Title, Text, List, Alert } from '@mantine/core';
+import { IconAlertCircle } from '@tabler/icons-react';
 import CodeBlock from "components/CodeBlock";
 import EvaluationModal from "components/EvaluationModal";
 
 const Exercise3 = () => {
   return (
     <Container fluid>
-      <h1 className="my-4">Exercise 3: Comprehensive Unit Testing</h1>
-      <p>
-        In this exercise, you will create a comprehensive testing suite for a data processing package.
-        You'll implement both unittest and pytest testing approaches, write test cases for edge cases,
-        and organize tests following best practices.
-      </p>
+      <Title order={1} mb="md">Exercise 3<span style={{color: 'red', fontWeight: 'bold'}}>*</span>: Package Distribution and Jupyter Integration</Title>
 
-      <Grid>
-        <Grid.Col>
-          <h2>Instructions</h2>
-          <ol>
-            <li>Your final directory structure should look like this:</li>
-            <CodeBlock
-              code={`$username/module2/dataprocessor/
-                ├── setup.py
-                ├── README.md
-                └── dataprocessor/
-                    ├── __init__.py
-                    ├── math_utils.py
-                    ├── string_utils.py
-                    ├── data_validator.py
-                    └── tests/
-                        ├── __init__.py
-                        ├── test_math_utils_unittest.py
-                        ├── test_string_utils_pytest.py
-                        └── test_data_validator_pytest.py`}
-            />
+      <Text size="md" mb="md">
+        Learn how to complete your package for distribution and integrate it with Jupyter notebooks
+        for interactive data science workflows.
+      </Text>
 
-            <li>
-              In <code>math_utils.py</code>, implement these functions:
-              <ul>
-                <li><code>calculate_mean(numbers)</code>: Calculate arithmetic mean</li>
-                <li><code>calculate_median(numbers)</code>: Calculate median value</li>
-                <li><code>factorial(n)</code>: Calculate factorial of n</li>
-              </ul>
-              <CodeBlock
-                code={`def calculate_mean(numbers):
-    """Calculate the arithmetic mean of a list of numbers."""
-    # Implement function that returns mean or raises ValueError for empty list
-    pass
+      <Title order={2} mb="md" mt="xl">Prerequisites</Title>
+      <Text size="md" mb="md">
+        This exercise continues with your mathtools package from Exercise 2:
+        <code>git@github.com:your-username/math-docs.git</code>
+      </Text>
 
-def calculate_median(numbers):
-    """Calculate the median of a list of numbers."""
-    # Implement function that returns median or raises ValueError for empty list
-    pass
+      <Title order={2} mb="md" mt="xl">Step 1: Complete Package Configuration</Title>
 
-def factorial(n):
-    """Calculate factorial of n."""
-    # Implement function that returns factorial or raises ValueError for negative numbers
-    pass`}
-                language="python"
-              />
-            </li>
+      <Text size="md" mb="md">
+        Let's complete your package with essential distribution files.
+      </Text>
 
-            <li>
-              In <code>string_utils.py</code>, implement these functions:
-              <ul>
-                <li><code>capitalize_words(text)</code>: Capitalize first letter of each word</li>
-                <li><code>count_vowels(text)</code>: Count vowels in text</li>
-                <li><code>reverse_string(text)</code>: Reverse a string</li>
-              </ul>
-              <CodeBlock
-                code={`def capitalize_words(text):
-    """Capitalize the first letter of each word in the text."""
-    # Implement function that handles None input appropriately
-    pass
+      <Title order={3} mb="sm">Switch to Your Testing Branch</Title>
+      <CodeBlock
+        code={`cd math-docs/mathtools
+git checkout testing-exercise`}
+        language="bash"
+      />
 
-def count_vowels(text):
-    """Count the number of vowels in the text (case insensitive)."""
-    # Implement function that counts a, e, i, o, u
-    pass
+      <Title order={3} mb="sm" mt="lg">Add .gitignore File</Title>
+      <Text size="md" mb="md">
+        Create <code>.gitignore</code> to exclude unnecessary files:
+      </Text>
+      <CodeBlock
+        code={`__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+.DS_Store`}
+        language="text"
+      />
 
-def reverse_string(text):
-    """Reverse the given string."""
-    # Implement function that handles None and empty string
-    pass`}
-                language="python"
-              />
-            </li>
+      <Text size="md" mb="md">
+        <strong>Why .gitignore?</strong> Prevents Python cache files and build artifacts
+        from cluttering your repository.
+      </Text>
 
-            <li>
-              In <code>data_validator.py</code>, implement these functions:
-              <ul>
-                <li><code>validate_email(email)</code>: Check if email format is valid</li>
-                <li><code>validate_phone(phone)</code>: Check if phone number format is valid</li>
-                <li><code>validate_age(age)</code>: Check if age is valid (0-150)</li>
-              </ul>
-              <CodeBlock
-                code={`import re
+      <Title order={3} mb="sm" mt="lg">Create requirements.txt</Title>
+      <Text size="md" mb="md">
+        Add <code>requirements.txt</code> for development dependencies:
+      </Text>
+      <CodeBlock
+        code={`pytest>=6.0
+jupyter>=1.0.0
+notebook>=6.0.0`}
+        language="text"
+      />
 
-def validate_email(email):
-    """Validate email format using regex."""
-    # Implement basic email validation
-    pass
+      <Text size="md" mb="md">
+        <strong>What's this for?</strong> Other developers can install all dependencies
+        with <code>pip install -r requirements.txt</code>.
+      </Text>
 
-def validate_phone(phone):
-    """Validate phone number format (xxx-xxx-xxxx)."""
-    # Implement phone validation for format xxx-xxx-xxxx
-    pass
+      <Title order={3} mb="sm" mt="lg">Update pyproject.toml</Title>
+      <Text size="md" mb="md">
+        Add Jupyter as an optional dependency in your existing <code>pyproject.toml</code>:
+      </Text>
+      <CodeBlock
+        code={`[project.optional-dependencies]
+test = ["pytest>=6.0"]
+jupyter = ["jupyter>=1.0.0", "notebook>=6.0.0"]`}
+        language="toml"
+      />
 
-def validate_age(age):
-    """Validate age is between 0 and 150."""
-    # Implement age validation
-    pass`}
-                language="python"
-              />
-            </li>
+      <Title order={2} mb="md" mt="xl">Step 2: Create a Jupyter Notebook</Title>
 
-            <li>
-              Create <code>test_math_utils_unittest.py</code> using Python's unittest framework:
-              <CodeBlock
-                code={`import unittest
-from dataprocessor.math_utils import calculate_mean, calculate_median, factorial
+      <Text size="md" mb="md">
+        Let's create a simple notebook that demonstrates your mathtools package.
+      </Text>
 
-class TestMathUtils(unittest.TestCase):
+      <Title order={3} mb="sm">Install Jupyter Dependencies</Title>
+      <CodeBlock
+        code={`pip install -e .[jupyter]`}
+        language="bash"
+      />
 
-    def test_calculate_mean_normal(self):
-        """Test mean calculation with normal inputs."""
-        # Test with positive numbers
-        # Test with negative numbers
-        # Test with mixed numbers
-        pass
+      <Title order={3} mb="sm" mt="lg">Create Demo Notebook</Title>
+      <Text size="md" mb="md">
+        Create <code>demo_notebook.ipynb</code> in your mathtools directory:
+      </Text>
+      <CodeBlock
+        code={`jupyter notebook`}
+        language="bash"
+      />
 
-    def test_calculate_mean_edge_cases(self):
-        """Test mean calculation edge cases."""
-        # Test with empty list (should raise ValueError)
-        # Test with single number
-        # Test with zeros
-        pass
+      <Text size="md" mb="md">
+        In the notebook, create these cells:
+      </Text>
 
-    def test_calculate_median_odd_count(self):
-        """Test median with odd number of elements."""
-        pass
+      <Title order={4} mb="sm" mt="md">Cell 1: Import and Setup</Title>
+      <CodeBlock
+        code={`# Demo of mathtools package
+from mathtools.calculator import add, multiply
+import matplotlib.pyplot as plt
+import numpy as np
 
-    def test_calculate_median_even_count(self):
-        """Test median with even number of elements."""
-        pass
+print("Testing mathtools package in Jupyter!")
+print(f"5 + 3 = {add(5, 3)}")
+print(f"4 * 7 = {multiply(4, 7)}")`}
+        language="python"
+      />
 
-    def test_factorial_positive(self):
-        """Test factorial with positive integers."""
-        # Test factorial(0) == 1
-        # Test factorial(5) == 120
-        pass
+      <Title order={4} mb="sm" mt="md">Cell 2: Visualize Results</Title>
+      <CodeBlock
+        code={`# Create some data using our functions
+x = np.arange(1, 11)
+y_add = [add(i, 5) for i in x]
+y_mult = [multiply(i, 2) for i in x]
 
-    def test_factorial_negative(self):
-        """Test factorial with negative numbers."""
-        # Should raise ValueError
-        pass
+plt.figure(figsize=(10, 4))
+plt.subplot(1, 2, 1)
+plt.plot(x, y_add, 'b-o')
+plt.title('Addition: x + 5')
+plt.xlabel('x')
+plt.ylabel('Result')
 
-if __name__ == '__main__':
-    unittest.main()`}
-                language="python"
-              />
-            </li>
+plt.subplot(1, 2, 2)
+plt.plot(x, y_mult, 'r-s')
+plt.title('Multiplication: x * 2')
+plt.xlabel('x')
+plt.ylabel('Result')
+plt.tight_layout()
+plt.show()`}
+        language="python"
+      />
 
-            <li>
-              Create <code>test_string_utils_pytest.py</code> using pytest framework:
-              <CodeBlock
-                code={`import pytest
-from dataprocessor.string_utils import capitalize_words, count_vowels, reverse_string
 
-def test_capitalize_words_normal():
-    """Test word capitalization with normal inputs."""
-    # Test "hello world" -> "Hello World"
-    # Test "python programming" -> "Python Programming"
-    pass
+      <Text size="md" mb="md">
+        <strong>What did we create?</strong> A notebook that demonstrates your package
+        with visualizations and interactive features.
+      </Text>
 
-def test_capitalize_words_edge_cases():
-    """Test word capitalization edge cases."""
-    # Test empty string
-    # Test None input
-    # Test single character
-    # Test multiple spaces
-    pass
+      <Title order={2} mb="md" mt="xl">Step 3: Google Colab Integration</Title>
 
-def test_count_vowels_normal():
-    """Test vowel counting with normal inputs."""
-    # Test "hello" -> 2
-    # Test "programming" -> 3
-    pass
+      <Text size="md" mb="md">
+        Now let's make your package work in Google Colab.
+      </Text>
 
-def test_count_vowels_case_insensitive():
-    """Test vowel counting is case insensitive."""
-    # Test "HELLO" -> 2
-    # Test "AeIoU" -> 5
-    pass
+      <Title order={3} mb="sm">Make Repository Public</Title>
+      <Text size="md" mb="md">
+        First, ensure your repository is public on GitHub:
+      </Text>
+      <List spacing="sm" size="md" mb="md">
+        <List.Item>Go to your repository settings</List.Item>
+        <List.Item>Scroll to "Danger Zone"</List.Item>
+        <List.Item>Click "Change repository visibility" → "Make public"</List.Item>
+      </List>
 
-def test_count_vowels_edge_cases():
-    """Test vowel counting edge cases."""
-    # Test empty string -> 0
-    # Test consonants only -> 0
-    # Test None input
-    pass
+      <Title order={3} mb="sm" mt="lg">Commit Your Changes</Title>
+      <CodeBlock
+        code={`git add .
+git commit -m "Add package distribution files and Jupyter demo"
+git push origin testing-exercise`}
+        language="bash"
+      />
 
-def test_reverse_string_normal():
-    """Test string reversal with normal inputs."""
-    # Test "hello" -> "olleh"
-    # Test "Python" -> "nohtyP"
-    pass
+      <Title order={3} mb="sm" mt="lg">Save and Push Your Notebook</Title>
+      <Text size="md" mb="md">
+        Save your notebook as <code>colab_demo.ipynb</code> and push to GitHub:
+      </Text>
+      <CodeBlock
+        code={`# Save notebook, then commit
+git add colab_demo.ipynb
+git commit -m "Add Colab demo notebook"
+git push origin testing-exercise`}
+        language="bash"
+      />
 
-def test_reverse_string_edge_cases():
-    """Test string reversal edge cases."""
-    # Test empty string
-    # Test single character
-    # Test None input
-    pass`}
-                language="python"
-              />
-            </li>
+      <Title order={3} mb="sm" mt="lg">Open Notebook in Colab</Title>
+      <Text size="md" mb="md">
+        Now you can open your notebook directly from GitHub in Colab:
+      </Text>
 
-            <li>
-              Create <code>test_data_validator_pytest.py</code> with comprehensive validation tests:
-              <CodeBlock
-                code={`import pytest
-from dataprocessor.data_validator import validate_email, validate_phone, validate_age
+      <Text size="md" mb="md">
+        <strong>Method 1: Direct URL</strong><br/>
+        Use this URL pattern (replace with your username):
+      </Text>
+      <CodeBlock
+        code={`https://colab.research.google.com/github/your-username/math-docs/blob/testing-exercise/mathtools/colab_demo.ipynb`}
+        language="text"
+      />
 
-class TestEmailValidation:
+      <Title order={3} mb="sm" mt="lg">Add Colab Badge to README</Title>
+      <Text size="md" mb="md">
+        Update your <code>mathtools/README.md</code> with a Colab badge:
+      </Text>
+      <CodeBlock
+        code={`# Mathtools Package
 
-    def test_valid_emails(self):
-        """Test valid email formats."""
-        valid_emails = [
-            "test@example.com",
-            "user.name@domain.co.uk",
-            "user+tag@example.org"
-        ]
-        # Test each valid email returns True
-        pass
+Simple calculator package with CLI functionality.
 
-    def test_invalid_emails(self):
-        """Test invalid email formats."""
-        invalid_emails = [
-            "notanemail",
-            "@example.com",
-            "test@",
-            "test..double@example.com"
-        ]
-        # Test each invalid email returns False
-        pass
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/your-username/math-docs/blob/testing-exercise/mathtools/colab_demo.ipynb)
 
-class TestPhoneValidation:
+## Installation
+\`\`\`bash
+git clone https://github.com/your-username/math-docs.git
+cd math-docs/mathtools
+pip install -e .
+\`\`\`
 
-    def test_valid_phones(self):
-        """Test valid phone formats."""
-        # Test "123-456-7890" -> True
-        # Test "999-888-7777" -> True
-        pass
+## Usage
+\`\`\`bash
+# Command line
+mathcalc add 5 3
+mathcalc multiply 4 7
 
-    def test_invalid_phones(self):
-        """Test invalid phone formats."""
-        # Test "1234567890" -> False (no dashes)
-        # Test "123-45-6789" -> False (wrong format)
-        # Test "abc-def-ghij" -> False (not numbers)
-        pass
+# In Python
+from mathtools.calculator import add, multiply
+result = add(10, 15)
+\`\`\`
 
-class TestAgeValidation:
+## Demo
+See the interactive demo in the Colab notebook above!`}
+        language="markdown"
+      />
 
-    def test_valid_ages(self):
-        """Test valid age ranges."""
-        # Test ages 0, 25, 100, 150
-        pass
+      <Text size="md" mb="md">
+        <strong>What's the Colab badge?</strong> The badge provides a direct link to open
+        your notebook in Colab. Anyone can click it and immediately run your code!
+      </Text>
 
-    def test_invalid_ages(self):
-        """Test invalid age ranges."""
-        # Test negative ages, ages > 150
-        pass`}
-                language="python"
-              />
-            </li>
+      <Title order={3} mb="sm" mt="lg">Test Your Colab Integration</Title>
+      <Text size="md" mb="md">
+        In your Colab notebook, add this first cell to install your package:
+      </Text>
+      <CodeBlock
+        code={`# Install mathtools package from GitHub
+!git clone https://github.com/your-username/math-docs.git
+!cd math-docs/mathtools && pip install -e .`}
+        language="python"
+      />
 
-            <li>
-              Update your <code>setup.py</code> to include testing dependencies:
-              <CodeBlock
-                code={`from setuptools import setup, find_packages
+      <Text size="md" mb="md">
+        <strong>Important:</strong> When someone opens your notebook in Colab, they'll need
+        to run this installation cell first to use your package.
+      </Text>
 
-setup(
-    name='dataprocessor',
-    version='1.0.0',
-    packages=find_packages(exclude=['dataprocessor.tests']),
-    install_requires=[
-        'pytest',
-    ],
-    extras_require={
-        'dev': ['pytest', 'pytest-cov'],
-    },
-    author='Your Name',
-    description='A comprehensive data processing package with full test coverage',
-    python_requires='>=3.6',
-)`}
-                language="python"
-              />
-            </li>
-          </ol>
-        </Grid.Col>
-      </Grid>
+      <Title order={2} mb="md" mt="xl">Why This Workflow Matters</Title>
 
-      <Grid>
-        <Grid.Col>
-          <h2>Testing Requirements</h2>
-          <p>Your tests must cover the following scenarios:</p>
-          <ol>
-            <li><strong>Normal Cases:</strong> Test functions with typical valid inputs</li>
-            <li><strong>Edge Cases:</strong> Test with empty inputs, None values, boundary conditions</li>
-            <li><strong>Error Cases:</strong> Test that appropriate exceptions are raised</li>
-            <li><strong>Data Types:</strong> Test with different data types where applicable</li>
-          </ol>
+      <Text size="md" mb="md">
+        You've now created a complete data science package workflow:
+      </Text>
 
-          <h3>Specific Test Cases to Implement</h3>
-          <ul>
-            <li><strong>Math Utils:</strong>
-              <ul>
-                <li>Mean of [1, 2, 3, 4, 5] should be 3.0</li>
-                <li>Median of [1, 2, 3] should be 2</li>
-                <li>Median of [1, 2, 3, 4] should be 2.5</li>
-                <li>Factorial of 5 should be 120</li>
-                <li>Factorial of negative number should raise ValueError</li>
-              </ul>
-            </li>
-            <li><strong>String Utils:</strong>
-              <ul>
-                <li>capitalize_words("hello world") should return "Hello World"</li>
-                <li>count_vowels("programming") should return 3</li>
-                <li>reverse_string("python") should return "nohtyp"</li>
-              </ul>
-            </li>
-            <li><strong>Data Validator:</strong>
-              <ul>
-                <li>validate_email("test@example.com") should return True</li>
-                <li>validate_phone("123-456-7890") should return True</li>
-                <li>validate_age(25) should return True</li>
-                <li>validate_age(-5) should return False</li>
-              </ul>
-            </li>
-          </ul>
-        </Grid.Col>
-      </Grid>
+      <List spacing="sm" size="md" mb="md">
+        <List.Item><strong>Local development:</strong> Write and test code locally</List.Item>
+        <List.Item><strong>Package distribution:</strong> Share code as installable packages</List.Item>
+        <List.Item><strong>Jupyter integration:</strong> Interactive development and demos</List.Item>
+        <List.Item><strong>Cloud accessibility:</strong> Anyone can run your code in Colab</List.Item>
+      </List>
 
-      <Grid>
-        <Grid.Col>
-          <h2>Running Your Tests</h2>
-          <p>To verify your implementation:</p>
-          <ol>
-            <li>Install your package with development dependencies:</li>
-            <CodeBlock code={`pip install -e $username/module2/dataprocessor[dev]`} />
-
-            <li>Run unittest tests:</li>
-            <CodeBlock code={`python -m unittest dataprocessor.tests.test_math_utils_unittest`} />
-
-            <li>Run pytest tests:</li>
-            <CodeBlock code={`pytest dataprocessor/tests/test_string_utils_pytest.py -v`} />
-
-            <li>Run all tests:</li>
-            <CodeBlock code={`pytest dataprocessor/tests/ -v`} />
-
-            <li>Run tests with coverage report:</li>
-            <CodeBlock code={`pytest dataprocessor/tests/ --cov=dataprocessor --cov-report=html`} />
-
-            <li>Test specific functionality in Python:</li>
-            <CodeBlock
-              code={`from dataprocessor.math_utils import calculate_mean
-from dataprocessor.string_utils import capitalize_words
-from dataprocessor.data_validator import validate_email
-
-# Test the functions
-print(calculate_mean([1, 2, 3, 4, 5]))  # Should print 3.0
-print(capitalize_words("hello world"))   # Should print "Hello World"
-print(validate_email("test@example.com"))  # Should print True`}
-              language="python"
-            />
-          </ol>
-        </Grid.Col>
-      </Grid>
+      <Text size="md" mb="md">
+        Your package can now be used by anyone, anywhere, without complex setup.
+      </Text>
 
       <Grid>
         <Grid.Col>
