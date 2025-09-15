@@ -7,7 +7,7 @@ const Exercise5 = () => {
   return (
     <Container fluid>
       <Title order={1} mb="lg">
-        Exercise 5: Your First Open Source Contribution 🚀
+        Exercise 5: Your First Open Source Contribution
       </Title>
 
       <Alert icon={<IconRocket />} color="violet" mb="lg">
@@ -165,40 +165,6 @@ git push origin descriptive-branch-name`}
       <Alert icon={<IconGitPullRequest />} color="green" mb="lg">
         Pro tip: While waiting for review, help by reviewing other PRs.
         This builds your reputation and understanding of the codebase.
-      </Alert>
-
-      <Title order={2} mt="xl" mb="md">Celebration Milestone 🎉</Title>
-      <Text size="md" mb="md">
-        When your PR is merged:
-      </Text>
-      <List spacing="sm" mb="md">
-        <List.Item>You become an official scikit-learn contributor</List.Item>
-        <List.Item>Your name appears in the contributor list</List.Item>
-        <List.Item>Add "Open Source Contributor to scikit-learn" to your resume</List.Item>
-        <List.Item>Share your achievement on LinkedIn/Twitter</List.Item>
-      </List>
-
-      <Title order={2} mt="xl" mb="md">Alternative Projects for First Contributors</Title>
-      <Text size="md" mb="md">
-        If scikit-learn feels overwhelming, consider these beginner-friendly alternatives:
-      </Text>
-      <List spacing="sm" mb="md">
-        <List.Item><strong>NumPy</strong>: Focus on documentation improvements</List.Item>
-        <List.Item><strong>Pandas</strong>: Many "good first issue" opportunities</List.Item>
-        <List.Item><strong>Matplotlib</strong>: Always needs example improvements</List.Item>
-        <List.Item><strong>First Contributions</strong>: A practice repository for beginners</List.Item>
-      </List>
-
-      <Title order={2} mt="xl" mb="md">Your Journey Starts Here</Title>
-      <Text size="md" mb="lg">
-        Remember: Every expert was once a beginner. The maintainers were once making their
-        first contribution too. Be brave, be respectful, and welcome to the open source community!
-      </Text>
-
-      <Alert color="violet" mb="lg">
-        <strong>Assignment:</strong> Submit the URL of your pull request (even if still under review)
-        as proof of your first open source contribution attempt. Whether it gets merged or not,
-        you've taken the crucial first step!
       </Alert>
 
       <Space h="xl" />

@@ -155,12 +155,6 @@ git push origin add-formulas`}
         <List.Item>Multiple merged pull requests in the history</List.Item>
       </List>
 
-      <Title order={2} mt="xl" mb="md">Switch Roles</Title>
-      <Text size="md" mb="md">
-        Once complete, switch roles! Student B creates a new repository and Student A becomes the collaborator.
-        This ensures both students experience both perspectives of collaboration.
-      </Text>
-
       <Space h="xl" />
     </Container>
   );

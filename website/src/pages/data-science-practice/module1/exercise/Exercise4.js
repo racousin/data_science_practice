@@ -112,7 +112,7 @@ jobs:
     - name: Count Markdown files
       run: |
         count=$(find . -name "*.md" -type f | wc -l)
-        echo "📝 Found $count Markdown file(s)"
+        echo "Found $count Markdown file(s)"
 
     - name: Check Markdown structure
       run: |
@@ -120,9 +120,9 @@ jobs:
         for file in $(find . -name "*.md" -type f); do
           echo "Checking $file"
           if grep -q "^# " "$file"; then
-            echo "✅ $file has a main heading"
+            echo "$file has a main heading"
           else
-            echo "⚠️  $file missing main heading"
+            echo "$file missing main heading"
           fi
         done
 
@@ -166,7 +166,7 @@ jobs:
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: '👋 Thanks for opening this issue! We appreciate your contribution to the math-docs project.'
+            body: 'Thanks for opening this issue! We appreciate your contribution to the math-docs project.'
           })`}
         language="yaml"
       />

@@ -8,7 +8,15 @@ const FirstStepsWithGit = () => {
       <div data-slide>
         <Title order={2} mb="md">First Steps with Git</Title>
       </div>
-
+            <Flex direction="column" align="center">
+              <Image
+                src="/assets/data-science-practice/module1/commit-main.svg"
+                alt="Git Workflow Diagram"
+                style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+                fluid
+              />
+              <Text>Source: https://marklodato.github.io/visual-git-guide/index-en.html</Text>
+            </Flex>
       <div data-slide>
         <Grid>
           <Grid.Col>
@@ -373,7 +381,7 @@ ncept into refacto/multi_ml
               <Image
                 src="/assets/data-science-practice/module1/Git_Commit_History.png"
                 alt="Git_Commit_History"
-                style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+                style={{ maxWidth: 'min(500px, 60vw)', height: 'auto' }}
                 fluid
               />
               <Text>Git_Commit_History</Text>
@@ -452,6 +460,34 @@ Date:   Thu Jul 4 12:12:14 2024 +0200
       </div>
 
       <div data-slide>
+        <Title order={4} mb="md">Viewing a Specific Commit</Title>
+        <Text size="md" mb="md">
+          To see detailed information about a specific commit, including the changes it introduced, use:
+        </Text>
+        <CodeBlock code="git show <commit_hash>" />
+        <CodeBlock
+          code={`$ git show 58ad9c9a1ca32944e9440c354631f5985a262d6e
+commit 58ad9c9a1ca32944e9440c354631f5985a262d6e (HEAD -> master)
+Author: username <username@mail.com>
+Date:   Thu Jul 4 12:12:29 2024 +0200
+
+    Add modify content
+
+diff --git a/example.txt b/example.txt
+index 8430408..9201842 100644
+--- a/example.txt
++++ b/example.txt
+@@ -1 +1 @@
+-Initial content
++Modify content`}
+          language=""
+        />
+        <Text size="md" mb="md">
+          This command displays the commit metadata and the exact changes made in that commit.
+        </Text>
+      </div>
+
+      <div data-slide>
         <Title order={4} mb="md">Viewing the Difference</Title>
         <Text size="md" mb="md">To see what was changed with a previous commit, you can use:</Text>
         <CodeBlock code="git diff <commit_hash>" />
@@ -501,7 +537,7 @@ index 8430408..9201842 100644
               <Image
                 src="/assets/data-science-practice/module1/Git_Commit_History_Revert.png"
                 alt="Git_Commit_History_Revert"
-                style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+                style={{ maxWidth: 'min(600px, 60vw)', height: 'auto' }}
                 fluid
               />
               <Text>Git_Commit_Revert</Text>

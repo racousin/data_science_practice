@@ -86,7 +86,7 @@ const modules = [
   },
   {
     id: 3,
-    title: "Data Science landscape",
+    title: "Data Science Methodology",
     linkCourse: "/module3/course",
     linkExercise: "/module3/exercise",
     tags: ["Machine Learning", "Analysis"],

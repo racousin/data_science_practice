@@ -29,28 +29,21 @@ import {
 // Course content links for modules with hierarchical structure including sublinks
 export const courseContentData = {
   'module1': [
-    { to: '/Introduction', label: 'Introduction', subLinks: [
-      { id: 'what-is-version-control', label: 'What is Version Control?' },
-      { id: 'git-vs-other-vcs', label: 'Git vs Other VCS' },
-      { id: 'git-terminology', label: 'Git Terminology' }
-    ]},
-    { to: '/installing-git', label: 'Installing Git', subLinks: [
-      { id: 'windows', label: 'Windows Installation' },
-      { id: 'mac', label: 'Mac Installation' },
-      { id: 'linux', label: 'Linux Installation' }
-    ]},
+    { to: '/Introduction', label: 'Introduction'},
+    { to: '/installing-git', label: 'Installing Git'},
     { to: '/first-steps-with-git', label: 'First Steps with Git' },
     { to: '/configure-and-access-github', label: 'Configure GitHub' },
     { to: '/working-with-remote-repositories', label: 'Remote Repositories' },
     { to: '/branching-and-merging', label: 'Branching & Merging' },
     { to: '/collaborating', label: 'Collaborating' },
-    { to: '/best-practices-and-resources', label: 'Best Practices' },
+    { to: '/cheatsheet', label: 'Cheatsheet' },
         { to: '/git-hub-desktop', label: 'GitHub Desktop'},
             { to: '/git-hub-actions', label: 'GitHub Actions'}
   ],
   'module2': [
     { to: '/Introduction', label: 'Introduction' },
     { to: '/install-python', label: 'Install Python' },
+    { to: '/ide', label: 'IDE' },
     { to: '/setting-up-python-environment', label: 'Environment Setup' },
     { to: '/installing-packages', label: 'Installing Packages' },
     { to: '/building-packages', label: 'Building Packages' },
@@ -169,7 +162,7 @@ export const exerciseContentData = {
     { to: '/exercise2', label: 'Exercise 2' },
     { to: '/exercise3', label: 'Exercise 3' },
     { to: '/exercise4', label: 'Exercise 4' },
-    { to: '/exercise2', label: 'Exercise 5' }
+    { to: '/exercise5', label: 'Exercise 5' }
     
     ],
   'module2': [
@@ -326,7 +319,7 @@ export const coursesData = {
       { id: 'module0', name: 'Prerequisites & Methodology', icon: IconChartBar },
       { id: 'module1', name: 'Git and Github', icon: IconGitBranch },
       { id: 'module2', name: 'Python Environment', icon: IconBrandPython },
-      { id: 'module3', name: 'Data Science Landscape', icon: IconChartBar },
+      { id: 'module3', name: 'Data Science Methodology', icon: IconChartBar },
       { id: 'module4', name: 'Data Collection', icon: IconDatabase },
       { id: 'module5', name: 'Data Preprocessing', icon: IconFilter },
       { id: 'module6', name: 'Tabular Models', icon: IconTable },

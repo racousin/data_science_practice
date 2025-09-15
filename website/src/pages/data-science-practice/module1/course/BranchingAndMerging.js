@@ -64,33 +64,7 @@ Switched to a new branch 'newbranch'
         </Grid>
       </div>
 
-      <div data-slide>
-        <List spacing="sm">
-          <List.Item>
-            <strong>Fast-forward Merge:</strong>
-            <Text size="md" mb="md">
-              Occurs when the target branch hasn't diverged from the source
-              branch. Git simply moves the pointer forward.
-            </Text>
-            <CodeBlock
-              code={`git checkout main
-git merge feature-branch`}
-            />
-            <CodeBlock
-              code={`$ git checkout main
-Switched to branch 'main'
-$ git merge feature-branch
-Updating 22a36a3..3951f63
-Fast-forward
- example.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)`}
-              language=""
-            />
-          </List.Item>
-        </List>
-      </div>
-
-      <div data-slide>
+<div data-slide>
         <List spacing="sm">
           <List.Item>
             <strong>Three-way Merge:</strong>
@@ -111,6 +85,21 @@ Merge made by the 'recursive' strategy.
  1 file changed, 1 insertion(+), 1 deletion(-)`}
               language=""
             />
+            <Text size="sm" mt="md" c="dimmed">
+              Visual example:
+            </Text>
+            <CodeBlock
+              code={`Before merge:
+A---B---C---F (main)
+     \\
+      D---E (feature-branch)
+
+After three-way merge:
+A---B---C---F---M (main)  ← M is merge commit
+     \\         /
+      D---E----`}
+              language=""
+            />
           </List.Item>
         </List>
       </div>
@@ -128,6 +117,21 @@ Merge made by the 'recursive' strategy.
 git merge --squash feature-branch
 git commit -m "Squashed feature-branch changes"`}
             />
+            <Text size="sm" mt="md" c="dimmed">
+              Visual example:
+            </Text>
+            <CodeBlock
+              code={`Before squash merge:
+A---B---C (main)
+     \\
+      D---E---F (feature-branch)
+
+After squash merge:
+A---B---C---S (main)  ← S contains all changes from D,E,F
+     \\
+      D---E---F (feature-branch, unchanged)`}
+              language=""
+            />
           </List.Item>
           <List.Item>
             <strong>Rebase:</strong>
@@ -140,6 +144,21 @@ git commit -m "Squashed feature-branch changes"`}
 git rebase main
 git checkout main
 git merge feature-branch`}
+            />
+            <Text size="sm" mt="md" c="dimmed">
+              Visual example:
+            </Text>
+            <CodeBlock
+              code={`Before rebase:
+A---B---C---F (main)
+     \\
+      D---E (feature-branch)
+
+After rebase + merge:
+A---B---C---F---D'---E' (main)
+                     ↑
+            feature-branch`}
+              language=""
             />
           </List.Item>
         </List>
@@ -156,6 +175,47 @@ git merge feature-branch`}
             <CodeBlock
               code={`git checkout main
 git merge --no-ff feature-branch`}
+            />
+            <Text size="sm" mt="md" c="dimmed">
+              Visual example:
+            </Text>
+            <CodeBlock
+              code={`Before --no-ff merge:
+A---B---C (main)
+         \\
+          D---E (feature-branch)
+
+Without --no-ff (fast-forward):
+A---B---C---D---E (main)
+
+With --no-ff:
+A---B---C---M (main)  ← M is merge commit
+         \\ /
+          D---E`}
+              language=""
+            />
+          </List.Item>
+          <List.Item>
+            <strong>Fast-forward Merge (for comparison):</strong>
+            <Text size="md" mb="md">
+              When target branch hasn't diverged, Git simply moves the pointer forward.
+            </Text>
+            <CodeBlock
+              code={`git checkout main
+git merge feature-branch  # Results in fast-forward`}
+            />
+            <Text size="sm" mt="md" c="dimmed">
+              Visual example:
+            </Text>
+            <CodeBlock
+              code={`Before fast-forward:
+A---B---C (main)
+         \\
+          D---E (feature-branch)
+
+After fast-forward:
+A---B---C---D---E (main, feature-branch)`}
+              language=""
             />
           </List.Item>
         </List>
