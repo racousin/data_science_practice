@@ -7,7 +7,7 @@ import EvaluationModal from "components/EvaluationModal";
 const Exercise4 = () => {
   return (
     <Container fluid>
-      <Title order={1} mb="md">Exercise 4<span style={{color: 'red', fontWeight: 'bold'}}>*</span>: Data Science Workflow Integration</Title>
+      <Title order={1} mb="md">Exercise 4: Data Science Workflow Integration</Title>
 
       <Text size="md" mb="md">
         Extend your mathtools package with basic data science capabilities and learn how

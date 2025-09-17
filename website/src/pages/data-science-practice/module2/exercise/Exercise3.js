@@ -7,7 +7,7 @@ import EvaluationModal from "components/EvaluationModal";
 const Exercise3 = () => {
   return (
     <Container fluid>
-      <Title order={1} mb="md">Exercise 3<span style={{color: 'red', fontWeight: 'bold'}}>*</span>: Package Distribution and Jupyter Integration</Title>
+      <Title order={1} mb="md">Exercise 3: Package Distribution and Jupyter Integration</Title>
 
       <Text size="md" mb="md">
         Learn how to complete your package for distribution and integrate it with Jupyter notebooks

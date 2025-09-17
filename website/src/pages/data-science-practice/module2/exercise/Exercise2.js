@@ -7,7 +7,7 @@ import EvaluationModal from "components/EvaluationModal";
 const Exercise2 = () => {
   return (
     <Container fluid>
-      <Title order={1} mb="md">Exercise 2<span style={{color: 'red', fontWeight: 'bold'}}>*</span>: Understanding Unit Tests and CI</Title>
+      <Title order={1} mb="md">Exercise 2: Understanding Unit Tests and CI</Title>
 
       <Text size="md" mb="md">
         Learn why unit tests and continuous integration are essential for software development
