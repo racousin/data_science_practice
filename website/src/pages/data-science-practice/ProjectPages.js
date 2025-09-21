@@ -10,7 +10,7 @@ const ProjectPages = () => {
         {
       year: '2025',
       title: 'Data Science Practice Project 2025',
-      status: 'upcoming',
+      status: 'on-going',
       path: '/courses/data-science-practice/project/2025'
     },
     {
@@ -39,17 +39,17 @@ const ProjectPages = () => {
                     <Text weight={500}>{project.year}</Text>
                   </Group>
                   <Badge 
-                    color={project.status === 'completed' ? 'green' : project.status === 'active' ? 'blue' : 'gray'}
+                    color={project.status === 'on-going' ? 'green' : project.status === 'active' ? 'blue' : 'gray'}
                     variant="light"
                   >
-                    {project.status === 'completed' ? 'Completed' : project.status === 'active' ? 'Active' : 'Upcoming'}
+                    {project.status === 'on-going' ? 'On-going' : project.status === 'active' ? 'Active' : 'Completed'}
                   </Badge>
                 </Group>
               </Card.Section>
 
               <Stack spacing="sm" mt="md">
                 <Text size="lg" weight={500}>{project.title}</Text>
-                <Text size="sm" c="dimmed">
+                <Text size="sm" c="dimmed"> 
                   {project.description}
                 </Text>
                 
@@ -57,10 +57,10 @@ const ProjectPages = () => {
                 <Button 
                   fullWidth 
                   mt="md"
-                  variant={project.status === 'completed' || project.status === 'active' ? 'filled' : 'light'}
+                  variant={project.status === 'on-going' || project.status === 'active' ? 'filled' : 'light'}
                   onClick={() => navigate(project.path)}
                 >
-                  {project.status === 'upcoming' ? 'Coming Soon' : 'View Project'}
+                  {project.status === 'on-going' ? 'View Project' : 'View Project'}
                 </Button>
               </Stack>
             </Card>

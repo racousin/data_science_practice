@@ -440,7 +440,7 @@ l: \\mathbb{R}^{k \\times n} \\times \\mathbb{R}^{k \\times n} & \\to \\mathbb{R
               <Title order={3} mb="md">The Gradient Descent Algorithm</Title>
               <Text size="lg" mb="md">
                 Gradient descent is the workhorse of machine learning optimization. It iteratively updates parameters 
-                in the direction that reduces the loss function <InlineMath>{`l(\\theta) = l(Y, f_{\\theta}(X)`}</InlineMath>. 
+                in the direction that reduces the loss function <InlineMath>{`l(\\theta) = l(Y, f_{\\theta}(X))`}</InlineMath>. 
               </Text>
               
               <Grid gutter="lg">
@@ -457,7 +457,7 @@ l: \\mathbb{R}^{k \\times n} \\times \\mathbb{R}^{k \\times n} & \\to \\mathbb{R
                 <Grid.Col span={6}>
                   <Paper className="p-4 bg-white">
                     <Title order={4} mb="sm">1. Update Rule</Title>
-                    <BlockMath>{`\\theta_{t+1} = \\theta_t - \\eta \\nabla_\\theta \\mathcal{L}(\\theta_t)`}</BlockMath>
+                    <BlockMath>{`\\theta_{t+1} = \\theta_t - \\eta \\nabla_\\theta \\mathcal{l}(\\theta_t)`}</BlockMath>
                   </Paper>
 
                 </Grid.Col>
@@ -769,7 +769,59 @@ l: \\mathbb{R}^{k \\times n} \\times \\mathbb{R}^{k \\times n} & \\to \\mathbb{R
   </Text>
 </div>
 
-      
+<div data-slide>
+  <Title order={2} mb="xl" className="slide-title">
+    Parametric vs Non-Parametric Models
+  </Title>
+
+  <Grid gutter="lg">
+    <Grid.Col span={6}>
+      <Paper className="p-4 bg-blue-50">
+        <Title order={3} mb="sm">Parametric Models</Title>
+        <Text size="sm" mb="md">Fixed number of parameters regardless of dataset size</Text>
+
+        <Text fw="bold" size="sm" mb="xs">Learning:</Text>
+        <Text size="sm" mb="md">Gradient descent</Text>
+
+        <Text fw="bold" size="sm" mb="xs">Optimization:</Text>
+        <BlockMath>{`\\arg\\min_{\\theta \\in \\mathbb{R}^p} \\ell(Y, f_\\theta(X))`}</BlockMath>
+
+        <Text fw="bold" size="sm" mb="xs">Examples:</Text>
+        <List size="sm">
+          <List.Item>Linear Regression</List.Item>
+          <List.Item>Logistic Regression</List.Item>
+          <List.Item>Neural Networks</List.Item>
+        </List>
+      </Paper>
+    </Grid.Col>
+
+    <Grid.Col span={6}>
+      <Paper className="p-4 bg-green-50">
+        <Title order={3} mb="sm">Non-Parametric Models</Title>
+        <Text size="sm" mb="md">Number of parameters grows with data</Text>
+
+        <Text fw="bold" size="sm" mb="xs">Learning:</Text>
+        <Text size="sm" mb="md">Various techniques (not gradient descent)</Text>
+
+        <Text fw="bold" size="sm" mb="xs">Optimization:</Text>
+        <BlockMath>{`\\arg\\min_{f \\in \\mathcal{F}} \\ell(Y, f(X))`}</BlockMath>
+
+        <Text fw="bold" size="sm" mb="xs">Examples:</Text>
+        <List size="sm">
+          <List.Item>KNN (K-Nearest Neighbors)</List.Item>
+          <List.Item>Kernel Methods</List.Item>
+          <List.Item>Decision Trees</List.Item>
+        </List>
+      </Paper>
+    </Grid.Col>
+  </Grid>
+
+  <Text size="lg" mb="md" mt="xl" ta="center">
+    The objective remains the same, just the function space (and the way we minimize) will differ
+  </Text>
+</div>
+
+
       </Stack>
     </Container>
   );

@@ -1,189 +1,202 @@
 import React from "react";
-import { Container, Grid } from '@mantine/core';
+import { Container, Title, Text, List } from '@mantine/core';
 const MachineLearningPipeline = () => {
   return (
     <Container fluid>
-      <h1 className="my-4">Machine Learning Pipeline</h1>
-      <p>
-        The machine learning pipeline is a systematic approach to developing and
-        deploying ML models. It consists of several interconnected stages, each
-        crucial for creating effective and reliable models.
-      </p>
-      <Grid>
-        <Grid.Col span={{ md: 12 }}>
-        <h2 id="problem-definition">0. Problem Definition</h2>
-          <p>
-            <strong>Objective:</strong> Clearly define the problem and set project goals
-          </p>
-          <p>
-            <strong>Input:</strong> Business challenge or opportunity
-          </p>
-          <p>
-            <strong>Output:</strong> Well-defined problem statement, project objectives, and success criteria
-          </p>
-          <p>
-            <strong>Key Considerations:</strong>
-          </p>
-          <ul>
-            <li>Identify the core business problem or opportunity</li>
-            <li>Determine if machine learning is the appropriate solution</li>
-            <li>Define specific, measurable, achievable, relevant, and time-bound (SMART) objectives</li>
-            <li>Establish clear success criteria and metrics</li>
-            <li>Align ML goals with overall business strategy</li>
-          </ul>
-          <p>
-            <strong>Roles:</strong> Business Analyst, Data Scientist, Domain Expert, Project Manager
-          </p>
-          <p>
-            <strong>Tools:</strong> Project management software, collaboration tools
-          </p>
-          <h2 id = "data-collection">1. Data Collection</h2>
-          <p>
-            <strong>Objective:</strong> Gather relevant data to address the defined problem
-          </p>
-          <p>
-            <strong>Input:</strong> Problem statement, data requirements
-          </p>
-          <p>
-            <strong>Output:</strong> Raw dataset(s), data documentation
-          </p>
-          <p>
-            <strong>Key Considerations:</strong>
-          </p>
-          <ul>
-            <li>Identify appropriate data sources based on the problem definition</li>
-            <li>Assess data availability, quality, and relevance</li>
-            <li>Ensure data collection adheres to technical, legal, and ethical standards</li>
-            <li>Set up data versioning and storage systems</li>
-            <li>Document data sources, collection methods, and any known limitations</li>
-          </ul>
-          <p>
-            <strong>Roles:</strong> Data Engineer, Data Scientist, Domain Expert
-          </p>
-          <p>
-            <strong>Tools:</strong> SQL, Hadoop, Apache Kafka, web scraping tools, data cataloging software
-          </p>
-          <h2 id="data-cleaning">2. Data Preprocessing and Feature Engineering</h2>
-          <p>
-            <strong>Objective:</strong> Clean data and create informative
-            features
-          </p>
-          <p>
-            <strong>Input:</strong> Raw dataset(s)
-          </p>
-          <p>
-            <strong>Output:</strong> Processed dataset with engineered features
-          </p>
-          <p>
-            <strong>Key Considerations:</strong>
-          </p>
-          <ul>
-            <li>Handle missing data, outliers, and inconsistencies</li>
-            <li>Normalize or standardize features as needed</li>
-            <li>Create domain-specific features</li>
-            <li>Apply dimensionality reduction techniques if necessary</li>
-          </ul>
-          <p>
-            <strong>Roles:</strong> Data Scientist, Machine Learning Engineer
-          </p>
-          <p>
-            <strong>Tools:</strong> Pandas, NumPy, Scikit-learn, OpenCV, NLTK,
-            TensorFlow
-          </p>
-          <h2 id="model-building">3. Model Selection, Training, and Evaluation</h2>
-          <p>
-            <strong>Objective:</strong> Select, train, and evaluate appropriate
-            ML models
-          </p>
-          <p>
-            <strong>Input:</strong> Processed dataset
-          </p>
-          <p>
-            <strong>Output:</strong> Trained and validated model(s)
-          </p>
-          <p>
-            <strong>Key Considerations:</strong>
-          </p>
-          <ul>
-            <li>
-              Choose algorithms based on problem type and data characteristics
-            </li>
-            <li>Split data into training, validation, and test sets</li>
-            <li>Implement cross-validation and hyperparameter tuning</li>
-            <li>Evaluate model performance using appropriate metrics</li>
-            <li>Analyze error patterns and model behavior</li>
-          </ul>
-          <p>
-            <strong>Roles:</strong> Data Scientist, Machine Learning Engineer,
-            Research Scientist
-          </p>
-          <p>
-            <strong>Tools:</strong> Scikit-learn, TensorFlow, PyTorch, Keras,
-            XGBoost, Hugging Face
-          </p>
-          <h2 id="deployment">4. Deployment, Monitoring, and Maintenance</h2>
-          <p>
-            <strong>Objective:</strong> Deploy model to production and maintain
-            performance
-          </p>
-          <p>
-            <strong>Input:</strong> Validated model
-          </p>
-          <p>
-            <strong>Output:</strong> Deployed model, monitoring system
-          </p>
-          <p>
-            <strong>Key Considerations:</strong>
-          </p>
-          <ul>
-            <li>Prepare model for production environment</li>
-            <li>Set up necessary infrastructure and APIs</li>
-            <li>Implement monitoring for model performance and data drift</li>
-            <li>Establish protocols for model updates and retraining</li>
-          </ul>
-          <p>
-            <strong>Roles:</strong> MLOps Engineer, DevOps Engineer, Data
-            Engineer
-          </p>
-          <p>
-            <strong>Tools:</strong> Docker, Kubernetes, MLflow, Kubeflow,
-            TensorFlow Serving
-          </p>
-          <h2 id="monitoring">5. Model Interpretability and Explainability</h2>
-          <p>
-            <strong>Objective:</strong> Understand and explain model decisions
-          </p>
-          <p>
-            <strong>Input:</strong> Trained model, test data
-          </p>
-          <p>
-            <strong>Output:</strong> Model explanations, feature importance
-          </p>
-          <p>
-            <strong>Key Considerations:</strong>
-          </p>
-          <ul>
-            <li>Implement appropriate explainability techniques</li>
-            <li>Ensure compliance with regulatory requirements</li>
-            <li>Communicate insights to stakeholders effectively</li>
-          </ul>
-          <p>
-            <strong>Roles:</strong> Data Scientist, Domain Expert
-          </p>
-          <p>
-            <strong>Tools:</strong> SHAP, LIME, Captum, TensorBoard
-          </p>
-          <h2 id="best-practices">Best Practices: Baseline and Iterate</h2>
-      <p>
-        <strong>Objective:</strong> Establish simple, effective baseline approaches and iterate throughout the ML pipeline
-      </p>
-      <p>
-        <strong>Key Principles:</strong>
-      </p>
-      <ol>
-        <li>Always start with the easiest solution before moving to more complex approaches</li>
-        <li>Continuously iterate and improve upon your baseline</li>
-      </ol>
+      <div data-slide>
+        <Title order={1} mb="md">Machine Learning Pipeline</Title>
+        <Text size="md" mb="md">
+          The machine learning pipeline is a systematic approach to developing and
+          deploying ML models. It consists of several interconnected stages, each
+          crucial for creating effective and reliable models.
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={2} id="problem-definition" mb="md">0. Problem Definition</Title>
+        <Text size="md" mb="sm">
+          <strong>Objective:</strong> Clearly define the problem and set project goals
+        </Text>
+        <Text size="md" mb="sm">
+          <strong>Input:</strong> Business challenge or opportunity
+        </Text>
+        <Text size="md" mb="sm">
+          <strong>Output:</strong> Well-defined problem statement, project objectives, and success criteria
+        </Text>
+        <Text size="md" mb="sm">
+          <strong>Key Considerations:</strong>
+        </Text>
+        <List spacing="sm" mb="md">
+          <List.Item>Identify the core business problem or opportunity</List.Item>
+          <List.Item>Determine if machine learning is the appropriate solution</List.Item>
+          <List.Item>Define specific, measurable, achievable, relevant, and time-bound (SMART) objectives</List.Item>
+          <List.Item>Establish clear success criteria and metrics</List.Item>
+          <List.Item>Align ML goals with overall business strategy</List.Item>
+        </List>
+        <Text size="md" mb="sm">
+          <strong>Roles:</strong> Business Analyst, Data Scientist, Domain Expert, Project Manager
+        </Text>
+        <Text size="md" mb="md">
+          <strong>Tools:</strong> Project management software, collaboration tools
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={2} id="data-collection" mb="md">1. Data Collection</Title>
+        <Text size="md" mb="sm">
+          <strong>Objective:</strong> Gather relevant data to address the defined problem
+        </Text>
+        <Text size="md" mb="sm">
+          <strong>Input:</strong> Problem statement, data requirements
+        </Text>
+        <Text size="md" mb="sm">
+          <strong>Output:</strong> Raw dataset(s), data documentation
+        </Text>
+        <Text size="md" mb="sm">
+          <strong>Key Considerations:</strong>
+        </Text>
+        <List spacing="sm" mb="md">
+          <List.Item>Identify appropriate data sources based on the problem definition</List.Item>
+          <List.Item>Assess data availability, quality, and relevance</List.Item>
+          <List.Item>Ensure data collection adheres to technical, legal, and ethical standards</List.Item>
+          <List.Item>Set up data versioning and storage systems</List.Item>
+          <List.Item>Document data sources, collection methods, and any known limitations</List.Item>
+        </List>
+        <Text size="md" mb="sm">
+          <strong>Roles:</strong> Data Engineer, Data Scientist, Domain Expert
+        </Text>
+        <Text size="md" mb="md">
+          <strong>Tools:</strong> SQL, Hadoop, Apache Kafka, web scraping tools, data cataloging software
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={2} id="data-cleaning" mb="md">2. Data Preprocessing and Feature Engineering</Title>
+        <Text size="md" mb="sm">
+          <strong>Objective:</strong> Clean data and create informative features
+        </Text>
+        <Text size="md" mb="sm">
+          <strong>Input:</strong> Raw dataset(s)
+        </Text>
+        <Text size="md" mb="sm">
+          <strong>Output:</strong> Processed dataset with engineered features
+        </Text>
+        <Text size="md" mb="sm">
+          <strong>Key Considerations:</strong>
+        </Text>
+        <List spacing="sm" mb="md">
+          <List.Item>Handle missing data, outliers, and inconsistencies</List.Item>
+          <List.Item>Normalize or standardize features as needed</List.Item>
+          <List.Item>Create domain-specific features</List.Item>
+          <List.Item>Apply dimensionality reduction techniques if necessary</List.Item>
+        </List>
+        <Text size="md" mb="sm">
+          <strong>Roles:</strong> Data Scientist, Machine Learning Engineer
+        </Text>
+        <Text size="md" mb="md">
+          <strong>Tools:</strong> Pandas, NumPy, Scikit-learn, OpenCV, NLTK, TensorFlow
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={2} id="model-building" mb="md">3. Model Selection, Training, and Evaluation</Title>
+        <Text size="md" mb="sm">
+          <strong>Objective:</strong> Select, train, and evaluate appropriate ML models
+        </Text>
+        <Text size="md" mb="sm">
+          <strong>Input:</strong> Processed dataset
+        </Text>
+        <Text size="md" mb="sm">
+          <strong>Output:</strong> Trained and validated model(s)
+        </Text>
+        <Text size="md" mb="sm">
+          <strong>Key Considerations:</strong>
+        </Text>
+        <List spacing="sm" mb="md">
+          <List.Item>Choose algorithms based on problem type and data characteristics</List.Item>
+          <List.Item>Split data into training, validation, and test sets</List.Item>
+          <List.Item>Implement cross-validation and hyperparameter tuning</List.Item>
+          <List.Item>Evaluate model performance using appropriate metrics</List.Item>
+          <List.Item>Analyze error patterns and model behavior</List.Item>
+        </List>
+        <Text size="md" mb="sm">
+          <strong>Roles:</strong> Data Scientist, Machine Learning Engineer, Research Scientist
+        </Text>
+        <Text size="md" mb="md">
+          <strong>Tools:</strong> Scikit-learn, TensorFlow, PyTorch, Keras, XGBoost, Hugging Face
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={2} id="deployment" mb="md">4. Deployment, Monitoring, and Maintenance</Title>
+        <Text size="md" mb="sm">
+          <strong>Objective:</strong> Deploy model to production and maintain performance
+        </Text>
+        <Text size="md" mb="sm">
+          <strong>Input:</strong> Validated model
+        </Text>
+        <Text size="md" mb="sm">
+          <strong>Output:</strong> Deployed model, monitoring system
+        </Text>
+        <Text size="md" mb="sm">
+          <strong>Key Considerations:</strong>
+        </Text>
+        <List spacing="sm" mb="md">
+          <List.Item>Prepare model for production environment</List.Item>
+          <List.Item>Set up necessary infrastructure and APIs</List.Item>
+          <List.Item>Implement monitoring for model performance and data drift</List.Item>
+          <List.Item>Establish protocols for model updates and retraining</List.Item>
+        </List>
+        <Text size="md" mb="sm">
+          <strong>Roles:</strong> MLOps Engineer, DevOps Engineer, Data Engineer
+        </Text>
+        <Text size="md" mb="md">
+          <strong>Tools:</strong> Docker, Kubernetes, MLflow, Kubeflow, TensorFlow Serving
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={2} id="monitoring" mb="md">5. Model Interpretability and Explainability</Title>
+        <Text size="md" mb="sm">
+          <strong>Objective:</strong> Understand and explain model decisions
+        </Text>
+        <Text size="md" mb="sm">
+          <strong>Input:</strong> Trained model, test data
+        </Text>
+        <Text size="md" mb="sm">
+          <strong>Output:</strong> Model explanations, feature importance
+        </Text>
+        <Text size="md" mb="sm">
+          <strong>Key Considerations:</strong>
+        </Text>
+        <List spacing="sm" mb="md">
+          <List.Item>Implement appropriate explainability techniques</List.Item>
+          <List.Item>Ensure compliance with regulatory requirements</List.Item>
+          <List.Item>Communicate insights to stakeholders effectively</List.Item>
+        </List>
+        <Text size="md" mb="sm">
+          <strong>Roles:</strong> Data Scientist, Domain Expert
+        </Text>
+        <Text size="md" mb="md">
+          <strong>Tools:</strong> SHAP, LIME, Captum, TensorBoard
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={2} id="best-practices" mb="md">Best Practices: Baseline and Iterate</Title>
+        <Text size="md" mb="sm">
+          <strong>Objective:</strong> Establish simple, effective baseline approaches and iterate throughout the ML pipeline
+        </Text>
+        <Text size="md" mb="sm">
+          <strong>Key Principles:</strong>
+        </Text>
+        <List type="ordered" spacing="sm" mb="md">
+          <List.Item>Always start with the easiest solution before moving to more complex approaches</List.Item>
+          <List.Item>Continuously iterate and improve upon your baseline</List.Item>
+        </List>
+      </div>
+
+      <div data-slide>
       {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
   <defs>
     <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
@@ -214,98 +227,106 @@ const MachineLearningPipeline = () => {
   <text x="560" y="250" font-family="Arial" font-size="12" fill="#333" text-anchor="middle">Optimize Model</text>
   <text x="710" y="250" font-family="Arial" font-size="12" fill="#333" text-anchor="middle">Improve Monitoring</text>
 </svg> */}
-      <p>
-        <strong>Application across pipeline stages:</strong>
-      </p>
-      <ol>
-        <li>
-          <strong>Problem Definition:</strong>
-          <ul>
-            <li>Start with a clear, simple problem statement</li>
-            <li>Define straightforward, measurable success criteria</li>
-            <li>Consider if the problem can be solved without ML first</li>
-            <li>Iterate on the problem definition as you gain more insights</li>
-          </ul>
-        </li>
-        <li>
-          <strong>Data Collection:</strong>
-          <ul>
-            <li>Begin with readily available, structured data sources</li>
-            <li>Use simple random sampling before complex sampling techniques</li>
-            <li>Start with a smaller, manageable dataset before scaling up</li>
-            <li>Iteratively expand your dataset as you identify gaps or biases</li>
-          </ul>
-        </li>
-        <li>
-          <strong>Data Preprocessing and Feature Engineering:</strong>
-          <ul>
-            <li>Use basic cleaning techniques (e.g., removing duplicates, handling missing values) before advanced methods</li>
-            <li>Start with raw features before creating complex engineered features</li>
-            <li>Apply simple scaling (e.g., min-max scaling) before more complex normalizations</li>
-            <li>Iteratively refine your preprocessing steps and feature set</li>
-          </ul>
-        </li>
-        <li>
-          <strong>Model Selection, Training, and Evaluation:</strong>
-          <ul>
-            <li>Begin with simple, interpretable models (e.g., linear regression, logistic regression, decision trees)</li>
-            <li>Use basic cross-validation before advanced techniques</li>
-            <li>Start with default hyperparameters before extensive tuning</li>
-            <li>Iteratively experiment with different models and techniques, building upon what works</li>
-          </ul>
-        </li>
-        <li>
-          <strong>Deployment, Monitoring, and Maintenance:</strong>
-          <ul>
-            <li>Deploy models using simple, reliable methods first (e.g., REST API)</li>
-            <li>Start with basic monitoring metrics before implementing complex tracking systems</li>
-            <li>Use manual retraining processes before automating the entire pipeline</li>
-            <li>Iteratively improve your deployment and monitoring processes based on real-world performance</li>
-          </ul>
-        </li>
-      </ol>
-      <p>
-        <strong>Benefits of the Baseline and Iterate Approach:</strong>
-      </p>
-      <ul>
-        <li>Quickly establishes a performance benchmark</li>
-        <li>Provides early insights into the problem and data</li>
-        <li>Serves as a sanity check for more complex solutions</li>
-        <li>Helps identify when additional complexity is truly necessary</li>
-        <li>Ensures resources are used efficiently</li>
-        <li>Facilitates easier debugging and maintenance</li>
-        <li>Allows for continuous improvement and adaptation to changing conditions</li>
-        <li>Builds team confidence and stakeholder trust through incremental progress</li>
-      </ul>
-      <p>
-        <strong>Iteration Process:</strong>
-      </p>
-      <ol>
-        <li>Establish a baseline solution for each pipeline stage</li>
-        <li>Measure and document the performance of the baseline</li>
-        <li>Identify the most significant bottlenecks or areas for improvement</li>
-        <li>Propose and implement small, incremental changes</li>
-        <li>Evaluate the impact of each change</li>
-        <li>If beneficial, incorporate the change into the new baseline</li>
-        <li>Repeat steps 3-6, continuously refining your solution</li>
-      </ol>
-      <p>
-        <strong>When to move beyond the baseline:</strong>
-      </p>
-      <ul>
-        <li>When baseline performance doesn't meet project requirements</li>
-        <li>If the problem complexity clearly demands more advanced techniques</li>
-        <li>When there's a significant and measurable improvement from more complex approaches</li>
-        <li>As you iterate and gain a deeper understanding of the problem and data</li>
-      </ul>
-      <p>
-        <strong>Roles:</strong> All team members (Data Scientists, ML Engineers, Project Managers, Domain Experts)
-      </p>
-      <p>
-        <strong>Tools:</strong> Version control systems (e.g., Git), experiment tracking tools (e.g., MLflow), collaboration platforms, in addition to stage-specific tools
-      </p>
-        </Grid.Col>
-      </Grid>
+        <Text size="md" mb="sm">
+          <strong>Application across pipeline stages:</strong>
+        </Text>
+        <List type="ordered" spacing="md" mb="md">
+          <List.Item>
+            <strong>Problem Definition:</strong>
+            <List spacing="xs" ml="md">
+              <List.Item>Start with a clear, simple problem statement</List.Item>
+              <List.Item>Define straightforward, measurable success criteria</List.Item>
+              <List.Item>Consider if the problem can be solved without ML first</List.Item>
+              <List.Item>Iterate on the problem definition as you gain more insights</List.Item>
+            </List>
+          </List.Item>
+          <List.Item>
+            <strong>Data Collection:</strong>
+            <List spacing="xs" ml="md">
+              <List.Item>Begin with readily available, structured data sources</List.Item>
+              <List.Item>Use simple random sampling before complex sampling techniques</List.Item>
+              <List.Item>Start with a smaller, manageable dataset before scaling up</List.Item>
+              <List.Item>Iteratively expand your dataset as you identify gaps or biases</List.Item>
+            </List>
+          </List.Item>
+          <List.Item>
+            <strong>Data Preprocessing and Feature Engineering:</strong>
+            <List spacing="xs" ml="md">
+              <List.Item>Use basic cleaning techniques (e.g., removing duplicates, handling missing values) before advanced methods</List.Item>
+              <List.Item>Start with raw features before creating complex engineered features</List.Item>
+              <List.Item>Apply simple scaling (e.g., min-max scaling) before more complex normalizations</List.Item>
+              <List.Item>Iteratively refine your preprocessing steps and feature set</List.Item>
+            </List>
+          </List.Item>
+          <List.Item>
+            <strong>Model Selection, Training, and Evaluation:</strong>
+            <List spacing="xs" ml="md">
+              <List.Item>Begin with simple, interpretable models (e.g., linear regression, logistic regression, decision trees)</List.Item>
+              <List.Item>Use basic cross-validation before advanced techniques</List.Item>
+              <List.Item>Start with default hyperparameters before extensive tuning</List.Item>
+              <List.Item>Iteratively experiment with different models and techniques, building upon what works</List.Item>
+            </List>
+          </List.Item>
+          <List.Item>
+            <strong>Deployment, Monitoring, and Maintenance:</strong>
+            <List spacing="xs" ml="md">
+              <List.Item>Deploy models using simple, reliable methods first (e.g., REST API)</List.Item>
+              <List.Item>Start with basic monitoring metrics before implementing complex tracking systems</List.Item>
+              <List.Item>Use manual retraining processes before automating the entire pipeline</List.Item>
+              <List.Item>Iteratively improve your deployment and monitoring processes based on real-world performance</List.Item>
+            </List>
+          </List.Item>
+        </List>
+      </div>
+
+      <div data-slide>
+        <Text size="md" mb="sm">
+          <strong>Benefits of the Baseline and Iterate Approach:</strong>
+        </Text>
+        <List spacing="sm" mb="md">
+          <List.Item>Quickly establishes a performance benchmark</List.Item>
+          <List.Item>Provides early insights into the problem and data</List.Item>
+          <List.Item>Serves as a sanity check for more complex solutions</List.Item>
+          <List.Item>Helps identify when additional complexity is truly necessary</List.Item>
+          <List.Item>Ensures resources are used efficiently</List.Item>
+          <List.Item>Facilitates easier debugging and maintenance</List.Item>
+          <List.Item>Allows for continuous improvement and adaptation to changing conditions</List.Item>
+          <List.Item>Builds team confidence and stakeholder trust through incremental progress</List.Item>
+        </List>
+      </div>
+
+      <div data-slide>
+        <Text size="md" mb="sm">
+          <strong>Iteration Process:</strong>
+        </Text>
+        <List type="ordered" spacing="sm" mb="md">
+          <List.Item>Establish a baseline solution for each pipeline stage</List.Item>
+          <List.Item>Measure and document the performance of the baseline</List.Item>
+          <List.Item>Identify the most significant bottlenecks or areas for improvement</List.Item>
+          <List.Item>Propose and implement small, incremental changes</List.Item>
+          <List.Item>Evaluate the impact of each change</List.Item>
+          <List.Item>If beneficial, incorporate the change into the new baseline</List.Item>
+          <List.Item>Repeat steps 3-6, continuously refining your solution</List.Item>
+        </List>
+      </div>
+
+      <div data-slide>
+        <Text size="md" mb="sm">
+          <strong>When to move beyond the baseline:</strong>
+        </Text>
+        <List spacing="sm" mb="md">
+          <List.Item>When baseline performance doesn't meet project requirements</List.Item>
+          <List.Item>If the problem complexity clearly demands more advanced techniques</List.Item>
+          <List.Item>When there's a significant and measurable improvement from more complex approaches</List.Item>
+          <List.Item>As you iterate and gain a deeper understanding of the problem and data</List.Item>
+        </List>
+        <Text size="md" mb="sm">
+          <strong>Roles:</strong> All team members (Data Scientists, ML Engineers, Project Managers, Domain Experts)
+        </Text>
+        <Text size="md" mb="md">
+          <strong>Tools:</strong> Version control systems (e.g., Git), experiment tracking tools (e.g., MLflow), collaboration platforms, in addition to stage-specific tools
+        </Text>
+      </div>
     </Container>
   );
 };

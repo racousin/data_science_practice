@@ -91,9 +91,6 @@ export const courseContentData = {
       { id: 'google-colab', label: 'Google Colab' }
     ]},
     { to: '/case-study', label: 'EDA Case Study' },
-    { to: '/model-baseline-case-study', label: 'Model Baseline Case Study' }
-    ,
-    { to: '/case-study', label: 'EDA Case Study' },
     { to: '/case-study-ml', label: 'Model Baseline Case Study' }
   ],
   'module4': [
