@@ -85,11 +85,6 @@ export const courseContentData = {
       { id: 'time-series-metrics', label: 'Time Series Metrics' },
       { id: 'choosing-metrics', label: 'Choosing the Right Metric' }
     ]},
-    { to: '/exploratory-data-analysis', label: 'Exploratory Data Analysis', subLinks: [
-      { id: 'main-components', label: 'Main Components of EDA' },
-      { id: 'jupyter-notebooks', label: 'Jupyter Notebooks' },
-      { id: 'google-colab', label: 'Google Colab' }
-    ]},
     { to: '/case-study', label: 'EDA Case Study' },
     { to: '/case-study-ml', label: 'Model Baseline Case Study' }
   ],

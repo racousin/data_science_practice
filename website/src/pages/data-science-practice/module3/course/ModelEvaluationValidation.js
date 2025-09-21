@@ -358,6 +358,109 @@ average_mse = np.mean(mse_scores)
 print("Average MSE across all folds:", average_mse)`}
         />
       </div>
+      <div data-slide>
+        <Title order={2} id="stratified-cv" mb="md">Stratified Cross-Validation</Title>
+        <Title order={3} mb="md" ta="center">Stratified K-Fold Cross-Validation (K=5)</Title>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+          <defs>
+            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+              <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+            </marker>
+          </defs>
+          <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold">Stratified K-Fold Cross-Validation (K=5)</text>
+
+          <text x="70" y="55" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Original Dataset Distribution:</text>
+          <rect x="250" y="40" width="100" height="25" fill="#ff9999" stroke="#333" stroke-width="1"/>
+          <text x="300" y="57" text-anchor="middle" font-family="Arial, sans-serif" font-size="12">Class A (60%)</text>
+          <rect x="350" y="40" width="67" height="25" fill="#99ccff" stroke="#333" stroke-width="1"/>
+          <text x="383" y="57" text-anchor="middle" font-family="Arial, sans-serif" font-size="12">Class B (40%)</text>
+
+          <g transform="translate(50, 85)">
+            <rect x="0" y="0" width="84" height="50" fill="#ff9999" stroke="#333" stroke-width="2"/>
+            <rect x="84" y="0" width="56" height="50" fill="#99ccff" stroke="#333" stroke-width="2"/>
+            <rect x="140" y="0" width="336" height="50" fill="#ffcccc" stroke="#333" stroke-width="2"/>
+            <rect x="476" y="0" width="224" height="50" fill="#ccddff" stroke="#333" stroke-width="2"/>
+            <text x="-10" y="30" text-anchor="end" font-family="Arial, sans-serif" font-size="14">Fold 1</text>
+
+            <rect x="0" y="60" width="84" height="50" fill="#ffcccc" stroke="#333" stroke-width="2"/>
+            <rect x="84" y="60" width="56" height="50" fill="#ccddff" stroke="#333" stroke-width="2"/>
+            <rect x="140" y="60" width="84" height="50" fill="#ff9999" stroke="#333" stroke-width="2"/>
+            <rect x="224" y="60" width="56" height="50" fill="#99ccff" stroke="#333" stroke-width="2"/>
+            <rect x="280" y="60" width="252" height="50" fill="#ffcccc" stroke="#333" stroke-width="2"/>
+            <rect x="532" y="60" width="168" height="50" fill="#ccddff" stroke="#333" stroke-width="2"/>
+            <text x="-10" y="90" text-anchor="end" font-family="Arial, sans-serif" font-size="14">Fold 2</text>
+
+            <rect x="0" y="120" width="168" height="50" fill="#ffcccc" stroke="#333" stroke-width="2"/>
+            <rect x="168" y="120" width="112" height="50" fill="#ccddff" stroke="#333" stroke-width="2"/>
+            <rect x="280" y="120" width="84" height="50" fill="#ff9999" stroke="#333" stroke-width="2"/>
+            <rect x="364" y="120" width="56" height="50" fill="#99ccff" stroke="#333" stroke-width="2"/>
+            <rect x="420" y="120" width="168" height="50" fill="#ffcccc" stroke="#333" stroke-width="2"/>
+            <rect x="588" y="120" width="112" height="50" fill="#ccddff" stroke="#333" stroke-width="2"/>
+            <text x="-10" y="150" text-anchor="end" font-family="Arial, sans-serif" font-size="14">Fold 3</text>
+
+            <rect x="0" y="180" width="252" height="50" fill="#ffcccc" stroke="#333" stroke-width="2"/>
+            <rect x="252" y="180" width="168" height="50" fill="#ccddff" stroke="#333" stroke-width="2"/>
+            <rect x="420" y="180" width="84" height="50" fill="#ff9999" stroke="#333" stroke-width="2"/>
+            <rect x="504" y="180" width="56" height="50" fill="#99ccff" stroke="#333" stroke-width="2"/>
+            <rect x="560" y="180" width="84" height="50" fill="#ffcccc" stroke="#333" stroke-width="2"/>
+            <rect x="644" y="180" width="56" height="50" fill="#ccddff" stroke="#333" stroke-width="2"/>
+            <text x="-10" y="210" text-anchor="end" font-family="Arial, sans-serif" font-size="14">Fold 4</text>
+
+            <rect x="0" y="240" width="336" height="50" fill="#ffcccc" stroke="#333" stroke-width="2"/>
+            <rect x="336" y="240" width="224" height="50" fill="#ccddff" stroke="#333" stroke-width="2"/>
+            <rect x="560" y="240" width="84" height="50" fill="#ff9999" stroke="#333" stroke-width="2"/>
+            <rect x="644" y="240" width="56" height="50" fill="#99ccff" stroke="#333" stroke-width="2"/>
+            <text x="-10" y="270" text-anchor="end" font-family="Arial, sans-serif" font-size="14">Fold 5</text>
+          </g>
+
+          <rect x="50" y="380" width="20" height="20" fill="#ffcccc" stroke="#333" stroke-width="1"/>
+          <text x="80" y="395" font-family="Arial, sans-serif" font-size="14">Training - Class A</text>
+          <rect x="200" y="380" width="20" height="20" fill="#ccddff" stroke="#333" stroke-width="1"/>
+          <text x="230" y="395" font-family="Arial, sans-serif" font-size="14">Training - Class B</text>
+          <rect x="350" y="380" width="20" height="20" fill="#ff9999" stroke="#333" stroke-width="1"/>
+          <text x="380" y="395" font-family="Arial, sans-serif" font-size="14">Validation - Class A</text>
+          <rect x="520" y="380" width="20" height="20" fill="#99ccff" stroke="#333" stroke-width="1"/>
+          <text x="550" y="395" font-family="Arial, sans-serif" font-size="14">Validation - Class B</text>
+
+          <text x="400" y="425" text-anchor="middle" font-family="Arial, sans-serif" font-size="14">Each fold maintains the same class distribution as the original dataset.</text>
+        </svg>
+        <Group spacing="md" mb="md">
+          <Group spacing="xs">
+            <Box w={20} h={20} style={{ backgroundColor: '#ffcccc', border: '1px solid #333' }} />
+            <Text size="sm">Training - Class A</Text>
+          </Group>
+          <Group spacing="xs">
+            <Box w={20} h={20} style={{ backgroundColor: '#ccddff', border: '1px solid #333' }} />
+            <Text size="sm">Training - Class B</Text>
+          </Group>
+          <Group spacing="xs">
+            <Box w={20} h={20} style={{ backgroundColor: '#ff9999', border: '1px solid #333' }} />
+            <Text size="sm">Validation - Class A</Text>
+          </Group>
+          <Group spacing="xs">
+            <Box w={20} h={20} style={{ backgroundColor: '#99ccff', border: '1px solid #333' }} />
+            <Text size="sm">Validation - Class B</Text>
+          </Group>
+        </Group>
+        <Text size="sm" ta="center" mb="md">Each fold maintains the same class distribution as the original dataset.</Text>
+        <Text size="md" mb="md">
+          For classification problems with imbalanced classes, stratified cross-validation ensures each fold maintains the same class distribution:
+        </Text>
+        <List spacing="sm" mb="md">
+          <List.Item><Text component="span" weight={600}>Preserves class ratios:</Text> Each fold has the same proportion of each class</List.Item>
+          <List.Item><Text component="span" weight={600}>Reduces variance:</Text> More stable performance estimates across folds</List.Item>
+          <List.Item><Text component="span" weight={600}>Better for imbalanced data:</Text> Prevents folds with too few minority class samples</List.Item>
+        </List>
+        <CodeBlock
+          language="python"
+          code={`from sklearn.model_selection import StratifiedKFold
+# For imbalanced classification data
+skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+scores = cross_val_score(model, X, y, cv=skf)
+print("Stratified CV scores:", scores)
+print("Mean CV score:", scores.mean())`}
+        />
+      </div>
     </Container>
   );
 };
