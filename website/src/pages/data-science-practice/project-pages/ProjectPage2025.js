@@ -54,7 +54,7 @@ const ProjectPage2025 = () => {
       <List spacing="sm" mb="xl">
         <List.Item>
           <Badge color="blue" variant="light" mr="sm">October 14th</Badge>
-        f  Send email to raphaelcousin.education@gmail.com with:
+        Send email to raphaelcousin.education@gmail.com with:
           <List withPadding mt="xs">
             <List.Item>Team members</List.Item>
             <List.Item>Chosen project</List.Item>
@@ -63,7 +63,7 @@ const ProjectPage2025 = () => {
         </List.Item>
         <List.Item>
           <Badge color="red" variant="light" mr="sm">November 11th, midnight (French time)</Badge>
-          Project freeze date
+          Project freeze date (send your agent name in ml-arena leaderboard)
         </List.Item>
       </List>
 
@@ -71,9 +71,8 @@ const ProjectPage2025 = () => {
 
       <Title order={3} mb="sm">4.1 Performance (50% of project grade)</Title>
       <List spacing="sm" mb="md">
-        <List.Item>Model/algorithm performance on chosen challenge</List.Item>
-        <List.Item>Efficiency metrics (Permuted MNIST) or learning stability (Bipedal Walker)</List.Item>
-        <List.Item>Benchmarking against baseline models</List.Item>
+        <List.Item>Model/algorithm performance on ml-arena.com</List.Item>
+
       </List>
 
       <Title order={3} mb="sm">4.2 Deliverables (50% of project grade)</Title>
@@ -88,9 +87,9 @@ const ProjectPage2025 = () => {
 
       <Title order={4} mb="sm">Bonus Features</Title>
       <List spacing="sm">
-        <List.Item>Google Colab integration</List.Item>
-        <List.Item>Docker deployment</List.Item>
+        <List.Item>Paper implementation</List.Item>
         <List.Item>GitHub Actions with CI tests</List.Item>
+        <List.Item>Docker deployment</List.Item>
       </List>
     </Container>
   );

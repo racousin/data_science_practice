@@ -1,11 +1,47 @@
 import React from "react";
-import { Container, Grid, Image, Title, Text, List, Box, Stack, Group, Paper } from '@mantine/core';
+import { Container, Grid, Image, Title, Text, List, Box, Stack, Group, Paper, Flex } from '@mantine/core';
 import { BlockMath, InlineMath } from "react-katex";
 import CodeBlock from "components/CodeBlock";
 const ModelEvaluation = () => {
   // todo add leaking data issue
   return (
     <Container fluid>
+
+      <div data-slide>
+        <Title order={2} id="overfitting-underfitting" mb="md">Overfitting and Underfitting</Title>
+        <Grid>
+          <Grid.Col span={{ md: 6 }}>
+            <Title order={3} mb="sm">Overfitting</Title>
+            <List spacing="sm" mb="md">
+              <List.Item>Model learns noise in training data</List.Item>
+              <List.Item>Low training error, high validation/test error</List.Item>
+              <List.Item>Poor generalization to new data</List.Item>
+            </List>
+            <Image
+                src="/assets/data-science-practice/module3/overfitting_illustration.png"
+                alt="overfitting_illustration"
+                fluid
+                mb="md"
+              />
+
+          </Grid.Col>
+          <Grid.Col span={{ md: 6 }}>
+            <Title order={3} mb="sm">Underfitting</Title>
+            <List spacing="sm" mb="md">
+              <List.Item>Model is too simple to capture patterns</List.Item>
+              <List.Item>High training error, high validation/test error</List.Item>
+              <List.Item>Poor performance on all datasets</List.Item>
+            </List>
+            <Image
+                src="/assets/data-science-practice/module3/underfitting_illustration.png"
+                alt="underfitting_illustration"
+                fluid
+                mb="md"
+              />
+
+          </Grid.Col>
+        </Grid>
+      </div>
       <div data-slide>
         <Title order={1} mb="md">Model Evaluation</Title>
         <Text size="md" mb="md">
@@ -64,14 +100,6 @@ const ModelEvaluation = () => {
         <Text size="md" mb="md">
           To evaluate models properly, we split our data into three sets:
         </Text>
-        <Box mb="md">
-          <BlockMath math="D = D_{train} \cup D_{val} \cup D_{test}" />
-        </Box>
-        <List spacing="sm" mb="md">
-          <List.Item><Text component="span" weight={600}>Training set (D_train):</Text> Used to fit the model (60-80% of data)</List.Item>
-          <List.Item><Text component="span" weight={600}>Validation set (D_val):</Text> Used for tuning and model selection (10-20% of data)</List.Item>
-          <List.Item><Text component="span" weight={600}>Test set (D_test):</Text> Used for final performance estimation (10-20% of data)</List.Item>
-        </List>
         <CodeBlock
           language="python"
           code={`from sklearn.model_selection import train_test_split
@@ -99,99 +127,102 @@ val_error = mean_squared_error(y_val, model.predict(X_val))
 test_error = mean_squared_error(y_test, model.predict(X_test))`}
         />
       </div>
+
+
+
+
       <div data-slide>
-        <Title order={2} id="overfitting-underfitting" mb="md">Overfitting and Underfitting</Title>
-        <Grid>
-          <Grid.Col span={{ md: 6 }}>
-            <Title order={3} mb="sm">Overfitting</Title>
-            <List spacing="sm" mb="md">
-              <List.Item>Model learns noise in training data</List.Item>
-              <List.Item>Low training error, high validation/test error</List.Item>
-              <List.Item>Poor generalization to new data</List.Item>
-            </List>
-            <Image
-                src="/assets/data-science-practice/module3/overfitting_illustration.png"
-                alt="overfitting_illustration"
-                fluid
-                mb="md"
-              />
-            <CodeBlock
-              language="python"
-              code={`from numpy.polynomial import Polynomial
-# Generate training data (complete noise between 0 and 5)
-x_train = np.linspace(0, 5, 10)
-y_train = np.random.rand(10)
-# Generate testing data (complete noise between 5 and 10)
-x_test = np.linspace(5, 10, 50)
-y_test = np.random.rand(50)`}
-            />
-            <CodeBlock
-              language="python"
-              code={`# Fit a high-degree polynomial (overfitting)
-poly = Polynomial.fit(x_train, y_train, deg=12)
-# Calculate predictions
-y_train_pred = poly(x_train)
-y_test_pred = poly(x_test)
-# Calculate errors
-train_error = np.mean((y_train - y_train_pred)**2)
-test_error = np.mean((y_test - y_test_pred)**2)`}
-            />
-          </Grid.Col>
-          <Grid.Col span={{ md: 6 }}>
-            <Title order={3} mb="sm">Underfitting</Title>
-            <List spacing="sm" mb="md">
-              <List.Item>Model is too simple to capture patterns</List.Item>
-              <List.Item>High training error, high validation/test error</List.Item>
-              <List.Item>Poor performance on all datasets</List.Item>
-            </List>
-            <Image
-                src="/assets/data-science-practice/module3/underfitting_illustration.png"
-                alt="underfitting_illustration"
-                fluid
-                mb="md"
-              />
-            <CodeBlock
-              language="python"
-              code={`from sklearn.linear_model import LinearRegression
-# Generate data
-x = np.linspace(0, 99, 100)
-y = x % 2 + np.random.normal(0, 0.01, 100)
-# Split into training and testing sets
-x_train, y_train = x[:50], y[:50]
-x_test, y_test = x[50:], y[50:]`}
-            />
-            <CodeBlock
-              language="python"
-              code={`# Fit a linear model (underfitting)
-model = LinearRegression()
-model.fit(x_train.reshape(-1, 1), y_train)
-# Calculate predictions
-y_train_pred = model.predict(x_train.reshape(-1, 1))
-y_test_pred = model.predict(x_test.reshape(-1, 1))
-# Calculate errors
-train_error = np.mean((y_train - y_train_pred)**2)
-test_error = np.mean((y_test - y_test_pred)**2)`}
-            />
-          </Grid.Col>
-        </Grid>
-      </div>
-      <div data-slide>
-        <Title order={2} id="bias-variance" mb="md">Bias-Variance Tradeoff</Title>
-        <Text size="md" mb="md">
-          The generalization error can be decomposed into:
+        <Title order={1} mb="lg">Hyperparameters in Machine Learning</Title>
+        <Text size="lg" mb="md">
+          Hyperparameters are configuration settings that control the learning process of machine learning algorithms.
+          Unlike model parameters, hyperparameters are set before training begins and are not learned from data.
         </Text>
-        <Box mb="md">
-          <BlockMath math="E[(y - \hat{f}(x))^2] = \text{Bias}[\hat{f}(x)]^2 + \text{Var}[\hat{f}(x)] + \sigma^2" />
-        </Box>
-        <List spacing="sm" mb="md">
-          <List.Item><Text component="span" weight={600}>Bias:</Text> Error from oversimplifying the model</List.Item>
-          <List.Item><Text component="span" weight={600}>Variance:</Text> Error from model's sensitivity to training data</List.Item>
-          <List.Item><Text component="span" weight={600}>Irreducible Error (σ²):</Text> Inherent noise in the problem</List.Item>
+        <Text size="md" mb="md">
+          Key characteristics of hyperparameters:
+        </Text>
+        <List spacing="sm">
+          <List.Item>Set before training starts</List.Item>
+          <List.Item>Control the learning algorithm behavior</List.Item>
+          <List.Item>Not learned from training data</List.Item>
+          <List.Item>Significantly impact model performance</List.Item>
         </List>
       </div>
+
+      <div data-slide>
+        <Title order={2} mb="md">Types of Hyperparameters</Title>
+        <Text size="md" mb="md">
+          Hyperparameters can be categorized into several types:
+        </Text>
+        <List spacing="sm" mb="md">
+          <List.Item><strong>Learning Rate:</strong> Controls how much model weights are updated during training</List.Item>
+          <List.Item><strong>Regularization:</strong> Prevents overfitting by adding penalties to model complexity</List.Item>
+          <List.Item><strong>Model Architecture:</strong> Defines the structure of the algorithm</List.Item>
+          <List.Item><strong>Training Configuration:</strong> Controls training process settings</List.Item>
+        </List>
+        <Text size="md">
+          The choice of hyperparameters directly affects model accuracy, training time, and generalization ability.
+        </Text>
+      </div>
+      <div data-slide>
+                                    <Flex direction="column" align="center">
+                              <Image
+                                src="/assets/data-science-practice/module3/hyperparam.png"
+                                alt="Yutong Liu & The Bigger Picture"
+                                style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+                                fluid
+                              />
+                            </Flex>
+                            </div>
+      <div data-slide>
+        <Title order={2} mb="md">Linear Regression Hyperparameters</Title>
+        <Text size="md" mb="md">
+          Linear regression hyperparameters control regularization and solver behavior:
+        </Text>
+        <CodeBlock
+          code={`from sklearn.linear_model import LinearRegression, Ridge
+
+# Basic Linear Regression
+lr = LinearRegression(fit_intercept=True)
+
+# Ridge Regression with regularization
+ridge = Ridge(alpha=1.0, solver='auto')`}
+          language="python"
+        />
+        <Text size="md" mt="md">
+          Key hyperparameters: <InlineMath>{'\\alpha'}</InlineMath> (regularization strength),
+          fit_intercept (whether to calculate intercept), solver (optimization algorithm).
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={2} mb="md">Logistic Regression Hyperparameters</Title>
+        <Text size="md" mb="md">
+          Logistic regression offers more hyperparameters for classification tasks:
+        </Text>
+        <CodeBlock
+          code={`from sklearn.linear_model import LogisticRegression
+
+# Logistic Regression with key hyperparameters
+log_reg = LogisticRegression(
+    C=1.0,           # Inverse regularization strength
+    penalty='l2',    # Regularization type
+    solver='lbfgs',  # Optimization algorithm
+    max_iter=100     # Maximum iterations
+)`}
+          language="python"
+        />
+        <Text size="md" mt="md">
+          C parameter: <InlineMath>{'C = \\frac{1}{\\lambda}'}</InlineMath> where <InlineMath>{'\\lambda'}</InlineMath> is regularization strength.
+          Smaller C means stronger regularization.
+        </Text>
+      </div>
+
+      
       <div data-slide>
         <Title order={2} id="cross-validation" mb="md">Cross-Validation</Title>
-        <Title order={3} mb="md" ta="center">K-Fold Cross-Validation (K=5)</Title>
+        <Text size="md" mb="md">
+          Cross-validation is particularly useful when you have limited data and want to make the most of it. It provides a more reliable estimate of model performance than a single train-validation split and helps detect overfitting by testing the model's ability to generalize across different data subsets.
+        </Text>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
   <defs>
     <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
@@ -256,7 +287,6 @@ print("Mean CV score:", scores.mean())`}
       <div data-slide>
         <Title order={2} id="time-series-cv" mb="md">Time Series Cross-Validation</Title>
         <Stack spacing="xs" mb="md">
-          <Title order={3} ta="center" mb="sm">Time Series Cross-Validation</Title>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
   <defs>
     <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
@@ -360,89 +390,7 @@ print("Average MSE across all folds:", average_mse)`}
       </div>
       <div data-slide>
         <Title order={2} id="stratified-cv" mb="md">Stratified Cross-Validation</Title>
-        <Title order={3} mb="md" ta="center">Stratified K-Fold Cross-Validation (K=5)</Title>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
-          <defs>
-            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
-              <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
-            </marker>
-          </defs>
-          <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold">Stratified K-Fold Cross-Validation (K=5)</text>
-
-          <text x="70" y="55" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Original Dataset Distribution:</text>
-          <rect x="250" y="40" width="100" height="25" fill="#ff9999" stroke="#333" stroke-width="1"/>
-          <text x="300" y="57" text-anchor="middle" font-family="Arial, sans-serif" font-size="12">Class A (60%)</text>
-          <rect x="350" y="40" width="67" height="25" fill="#99ccff" stroke="#333" stroke-width="1"/>
-          <text x="383" y="57" text-anchor="middle" font-family="Arial, sans-serif" font-size="12">Class B (40%)</text>
-
-          <g transform="translate(50, 85)">
-            <rect x="0" y="0" width="84" height="50" fill="#ff9999" stroke="#333" stroke-width="2"/>
-            <rect x="84" y="0" width="56" height="50" fill="#99ccff" stroke="#333" stroke-width="2"/>
-            <rect x="140" y="0" width="336" height="50" fill="#ffcccc" stroke="#333" stroke-width="2"/>
-            <rect x="476" y="0" width="224" height="50" fill="#ccddff" stroke="#333" stroke-width="2"/>
-            <text x="-10" y="30" text-anchor="end" font-family="Arial, sans-serif" font-size="14">Fold 1</text>
-
-            <rect x="0" y="60" width="84" height="50" fill="#ffcccc" stroke="#333" stroke-width="2"/>
-            <rect x="84" y="60" width="56" height="50" fill="#ccddff" stroke="#333" stroke-width="2"/>
-            <rect x="140" y="60" width="84" height="50" fill="#ff9999" stroke="#333" stroke-width="2"/>
-            <rect x="224" y="60" width="56" height="50" fill="#99ccff" stroke="#333" stroke-width="2"/>
-            <rect x="280" y="60" width="252" height="50" fill="#ffcccc" stroke="#333" stroke-width="2"/>
-            <rect x="532" y="60" width="168" height="50" fill="#ccddff" stroke="#333" stroke-width="2"/>
-            <text x="-10" y="90" text-anchor="end" font-family="Arial, sans-serif" font-size="14">Fold 2</text>
-
-            <rect x="0" y="120" width="168" height="50" fill="#ffcccc" stroke="#333" stroke-width="2"/>
-            <rect x="168" y="120" width="112" height="50" fill="#ccddff" stroke="#333" stroke-width="2"/>
-            <rect x="280" y="120" width="84" height="50" fill="#ff9999" stroke="#333" stroke-width="2"/>
-            <rect x="364" y="120" width="56" height="50" fill="#99ccff" stroke="#333" stroke-width="2"/>
-            <rect x="420" y="120" width="168" height="50" fill="#ffcccc" stroke="#333" stroke-width="2"/>
-            <rect x="588" y="120" width="112" height="50" fill="#ccddff" stroke="#333" stroke-width="2"/>
-            <text x="-10" y="150" text-anchor="end" font-family="Arial, sans-serif" font-size="14">Fold 3</text>
-
-            <rect x="0" y="180" width="252" height="50" fill="#ffcccc" stroke="#333" stroke-width="2"/>
-            <rect x="252" y="180" width="168" height="50" fill="#ccddff" stroke="#333" stroke-width="2"/>
-            <rect x="420" y="180" width="84" height="50" fill="#ff9999" stroke="#333" stroke-width="2"/>
-            <rect x="504" y="180" width="56" height="50" fill="#99ccff" stroke="#333" stroke-width="2"/>
-            <rect x="560" y="180" width="84" height="50" fill="#ffcccc" stroke="#333" stroke-width="2"/>
-            <rect x="644" y="180" width="56" height="50" fill="#ccddff" stroke="#333" stroke-width="2"/>
-            <text x="-10" y="210" text-anchor="end" font-family="Arial, sans-serif" font-size="14">Fold 4</text>
-
-            <rect x="0" y="240" width="336" height="50" fill="#ffcccc" stroke="#333" stroke-width="2"/>
-            <rect x="336" y="240" width="224" height="50" fill="#ccddff" stroke="#333" stroke-width="2"/>
-            <rect x="560" y="240" width="84" height="50" fill="#ff9999" stroke="#333" stroke-width="2"/>
-            <rect x="644" y="240" width="56" height="50" fill="#99ccff" stroke="#333" stroke-width="2"/>
-            <text x="-10" y="270" text-anchor="end" font-family="Arial, sans-serif" font-size="14">Fold 5</text>
-          </g>
-
-          <rect x="50" y="380" width="20" height="20" fill="#ffcccc" stroke="#333" stroke-width="1"/>
-          <text x="80" y="395" font-family="Arial, sans-serif" font-size="14">Training - Class A</text>
-          <rect x="200" y="380" width="20" height="20" fill="#ccddff" stroke="#333" stroke-width="1"/>
-          <text x="230" y="395" font-family="Arial, sans-serif" font-size="14">Training - Class B</text>
-          <rect x="350" y="380" width="20" height="20" fill="#ff9999" stroke="#333" stroke-width="1"/>
-          <text x="380" y="395" font-family="Arial, sans-serif" font-size="14">Validation - Class A</text>
-          <rect x="520" y="380" width="20" height="20" fill="#99ccff" stroke="#333" stroke-width="1"/>
-          <text x="550" y="395" font-family="Arial, sans-serif" font-size="14">Validation - Class B</text>
-
-          <text x="400" y="425" text-anchor="middle" font-family="Arial, sans-serif" font-size="14">Each fold maintains the same class distribution as the original dataset.</text>
-        </svg>
-        <Group spacing="md" mb="md">
-          <Group spacing="xs">
-            <Box w={20} h={20} style={{ backgroundColor: '#ffcccc', border: '1px solid #333' }} />
-            <Text size="sm">Training - Class A</Text>
-          </Group>
-          <Group spacing="xs">
-            <Box w={20} h={20} style={{ backgroundColor: '#ccddff', border: '1px solid #333' }} />
-            <Text size="sm">Training - Class B</Text>
-          </Group>
-          <Group spacing="xs">
-            <Box w={20} h={20} style={{ backgroundColor: '#ff9999', border: '1px solid #333' }} />
-            <Text size="sm">Validation - Class A</Text>
-          </Group>
-          <Group spacing="xs">
-            <Box w={20} h={20} style={{ backgroundColor: '#99ccff', border: '1px solid #333' }} />
-            <Text size="sm">Validation - Class B</Text>
-          </Group>
-        </Group>
-        <Text size="sm" ta="center" mb="md">Each fold maintains the same class distribution as the original dataset.</Text>
+        
         <Text size="md" mb="md">
           For classification problems with imbalanced classes, stratified cross-validation ensures each fold maintains the same class distribution:
         </Text>

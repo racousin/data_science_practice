@@ -1,5 +1,6 @@
 import React from "react";
-import { Container, Title, Text, List } from '@mantine/core';
+import { Container, Title, Text, List, Flex, Image } from '@mantine/core';
+
 const MachineLearningPipeline = () => {
   return (
     <Container fluid>
@@ -10,6 +11,14 @@ const MachineLearningPipeline = () => {
           deploying ML models. It consists of several interconnected stages, each
           crucial for creating effective and reliable models.
         </Text>
+                                    <Flex direction="column" align="center">
+                              <Image
+                                src="/assets/data-science-practice/module3/pipeline.png"
+                                alt="Yutong Liu & The Bigger Picture"
+                                style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+                                fluid
+                              />
+                            </Flex>
       </div>
 
       <div data-slide>
@@ -29,7 +38,7 @@ const MachineLearningPipeline = () => {
         <List spacing="sm" mb="md">
           <List.Item>Identify the core business problem or opportunity</List.Item>
           <List.Item>Determine if machine learning is the appropriate solution</List.Item>
-          <List.Item>Define specific, measurable, achievable, relevant, and time-bound (SMART) objectives</List.Item>
+          <List.Item>Define specific, measurable, achievable, relevant, and time-bound objectives</List.Item>
           <List.Item>Establish clear success criteria and metrics</List.Item>
           <List.Item>Align ML goals with overall business strategy</List.Item>
         </List>
@@ -279,54 +288,6 @@ const MachineLearningPipeline = () => {
         </List>
       </div>
 
-      <div data-slide>
-        <Text size="md" mb="sm">
-          <strong>Benefits of the Baseline and Iterate Approach:</strong>
-        </Text>
-        <List spacing="sm" mb="md">
-          <List.Item>Quickly establishes a performance benchmark</List.Item>
-          <List.Item>Provides early insights into the problem and data</List.Item>
-          <List.Item>Serves as a sanity check for more complex solutions</List.Item>
-          <List.Item>Helps identify when additional complexity is truly necessary</List.Item>
-          <List.Item>Ensures resources are used efficiently</List.Item>
-          <List.Item>Facilitates easier debugging and maintenance</List.Item>
-          <List.Item>Allows for continuous improvement and adaptation to changing conditions</List.Item>
-          <List.Item>Builds team confidence and stakeholder trust through incremental progress</List.Item>
-        </List>
-      </div>
-
-      <div data-slide>
-        <Text size="md" mb="sm">
-          <strong>Iteration Process:</strong>
-        </Text>
-        <List type="ordered" spacing="sm" mb="md">
-          <List.Item>Establish a baseline solution for each pipeline stage</List.Item>
-          <List.Item>Measure and document the performance of the baseline</List.Item>
-          <List.Item>Identify the most significant bottlenecks or areas for improvement</List.Item>
-          <List.Item>Propose and implement small, incremental changes</List.Item>
-          <List.Item>Evaluate the impact of each change</List.Item>
-          <List.Item>If beneficial, incorporate the change into the new baseline</List.Item>
-          <List.Item>Repeat steps 3-6, continuously refining your solution</List.Item>
-        </List>
-      </div>
-
-      <div data-slide>
-        <Text size="md" mb="sm">
-          <strong>When to move beyond the baseline:</strong>
-        </Text>
-        <List spacing="sm" mb="md">
-          <List.Item>When baseline performance doesn't meet project requirements</List.Item>
-          <List.Item>If the problem complexity clearly demands more advanced techniques</List.Item>
-          <List.Item>When there's a significant and measurable improvement from more complex approaches</List.Item>
-          <List.Item>As you iterate and gain a deeper understanding of the problem and data</List.Item>
-        </List>
-        <Text size="md" mb="sm">
-          <strong>Roles:</strong> All team members (Data Scientists, ML Engineers, Project Managers, Domain Experts)
-        </Text>
-        <Text size="md" mb="md">
-          <strong>Tools:</strong> Version control systems (e.g., Git), experiment tracking tools (e.g., MLflow), collaboration platforms, in addition to stage-specific tools
-        </Text>
-      </div>
     </Container>
   );
 };

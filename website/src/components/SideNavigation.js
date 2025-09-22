@@ -52,39 +52,18 @@ export const courseContentData = {
   ],
   'module3': [
     { to: '/Introduction', label: 'Introduction', subLinks: [
-      { id: 'data', label: 'The Data' },
-      { id: 'applications', label: 'The Applications' },
-      { id: 'roles', label: 'Roles in Data Science' },
-      { id: 'tools', label: 'The Data Science Tools' }
     ]},
     { to: '/machine-learning-pipeline', label: 'ML Pipeline', subLinks: [
-      { id: 'problem-definition', label: 'Problem Definition' },
-      { id: 'data-collection', label: 'Data Collection' },
-      { id: 'data-cleaning', label: 'Data Preprocessing and Feature Engineering' },
-      { id: 'model-building', label: 'Model Selection, Training, and Evaluation' },
-      { id: 'deployment', label: 'Deployment, Monitoring, and Maintenance' },
-      { id: 'monitoring', label: 'Model Interpretability and Explainability' },
-      { id: 'best-practices', label: 'Best Practices: Baseline and Iterate' }
     ]},
-    { to: '/model-training-prediction', label: 'Model Training & Prediction', subLinks: [
-      { id: 'model-fitting', label: 'Training' },
-      { id: 'prediction', label: 'Prediction' }
+    { to: '/models-objective', label: 'Models Training & Prediction', subLinks: [
     ]},
+    
+        { to: '/evaluation-metrics', label: 'Evaluation Metrics', subLinks: [
+    ]},
+
     { to: '/model-evaluation-validation', label: 'Model Evaluation', subLinks: [
-      { id: 'performance-metrics', label: 'Performance Metrics' },
-      { id: 'overfitting-underfitting', label: 'Overfitting and Underfitting' },
-      { id: 'bias-variance', label: 'Bias-Variance Tradeoff' },
-      { id: 'cross-validation', label: 'Cross-Validation' },
-      { id: 'time-series-cv', label: 'Time Series Cross-Validation' }
     ]},
-    { to: '/evaluation-metrics', label: 'Evaluation Metrics', subLinks: [
-      { id: 'regression-metrics', label: 'Regression Metrics' },
-      { id: 'binary-classification-metrics', label: 'Binary Classification Metrics' },
-      { id: 'multi-class-classification-metrics', label: 'Multi-class Classification Metrics' },
-      { id: 'ranking-metrics', label: 'Ranking Metrics' },
-      { id: 'time-series-metrics', label: 'Time Series Metrics' },
-      { id: 'choosing-metrics', label: 'Choosing the Right Metric' }
-    ]},
+
     { to: '/case-study', label: 'EDA Case Study' },
     { to: '/case-study-ml', label: 'Model Baseline Case Study' }
   ],

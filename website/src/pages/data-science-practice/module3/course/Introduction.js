@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Title, Text, List, Image } from '@mantine/core';
+import { Container, Title, Text, List, Image, Flex } from '@mantine/core';
 
 const Introduction = () => {
   return (
@@ -11,124 +11,23 @@ const Introduction = () => {
           knowledge from data, which are typically large and complex. Data science
           involves various techniques from statistics, machine learning, and
           computer science to analyze data to make informed decisions.
+          Interestingly, data science as a formal discipline didn't really exist 20 years ago,
+          and the job now covers a vast array of topics and continues to evolve rapidly
+          as new technologies and methodologies emerge.
         </Text>
+                    <Flex direction="column" align="center">
+                      <Image
+                        src="/assets/data-science-practice/module3/ds.png"
+                        alt="Yutong Liu & The Bigger Picture"
+                        style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+                        fluid
+                      />
+                      <Text component="p" ta="center" mt="xs">
+                        Source: https://medium.com/analytics-vidhya
+                      </Text>
+                    </Flex>
       </div>
 
-      <div data-slide>
-        <Title order={3} mb="md" id="data">The Data</Title>
-        <Text size="md" mb="md">
-          Data is the cornerstone of the modern digital economy, powering
-          everything from daily business decisions to advanced artificial
-          intelligence systems. As of 2024, the data landscape is
-          characterized by unprecedented growth, diversity, and strategic
-          importance across all industries.
-        </Text>
-
-        <Title order={4} mb="sm">Exponential Growth in Data Volume</Title>
-        <Text size="md" mb="md">
-          Recent studies suggest that the global data sphere is expected to
-          grow to over 200 zettabytes by 2025, with a significant portion
-          being generated in real time. This growth is fueled by pervasive
-          computing devices, including mobiles, sensors, and the increasing
-          number of Internet of Things (IoT) deployments.
-        </Text>
-
-        <Title order={4} mb="sm">Variety and Complexity of Data</Title>
-        <Text size="md" mb="md">
-          Data today comes in various forms: structured data in traditional
-          databases, semi-structured data from web applications, and a vast
-          amount of unstructured data from sources like social media, videos,
-          and the ubiquitous sensors. This variety adds layers of complexity
-          to data processing and analytics.
-        </Text>
-
-        <Title order={4} mb="sm">Key Players in the Data Ecosystem</Title>
-        <Text size="md" mb="md">
-          Major technology firms play a pivotal role in shaping the data
-          landscape. Companies such as Amazon Web Services, Microsoft Azure,
-          and Google Cloud are leading in cloud storage and computing,
-          providing the backbone for storing and processing this vast amount
-          of data. Social media giants like Facebook and TikTok contribute
-          significantly to the generation of user-generated content, offering
-          rich datasets that are invaluable for insights and marketing.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md" id="applications">"Recent" Breakthroughs in AI Applications</Title>
-        <Text size="md" mb="md">
-          Recent years have seen remarkable advancements in AI applications
-          across various domains, demonstrating the transformative power of
-          data science and machine learning. Here are some notable
-          breakthroughs:
-        </Text>
-
-        <Title order={4} mb="sm">AlphaFold: Revolutionizing Protein Structure Prediction</Title>
-        <Text size="md" mb="sm">
-          In 2020, DeepMind's AlphaFold achieved a major breakthrough in the
-          protein folding problem. It predicted protein structures with
-          unprecedented accuracy, reaching a median score of 92.4 GDT across
-          all targets in CASP14. This advancement has significant implications
-          for drug discovery and understanding diseases at a molecular level.
-        </Text>
-        <Text size="sm" mb="md" fs="italic">
-          Source: Jumper, J., Evans, R., Pritzel, A. et al. Highly accurate
-          protein structure prediction with AlphaFold. Nature 596, 583–589
-          (2021).
-        </Text>
-
-        <Title order={4} mb="sm">GPT-3 and ChatGPT: Advancing Natural Language Processing</Title>
-        <Text size="md" mb="sm">
-          OpenAI's GPT-3, released in 2020, demonstrated remarkable natural
-          language understanding and generation capabilities. Its successor,
-          ChatGPT, launched in 2022, showed even more impressive results in
-          conversational AI. ChatGPT reached 100 million monthly active users
-          just two months after its launch, showcasing unprecedented adoption
-          rates for an AI application.
-        </Text>
-        <Text size="sm" mb="md" fs="italic">
-          Source: OpenAI. (2023). ChatGPT: Optimizing Language Models for
-          Dialogue.
-        </Text>
-
-        <Title order={4} mb="sm">DALL-E and Midjourney: AI in Image Generation</Title>
-        <Text size="md" mb="sm">
-          AI models like DALL-E 2 (2022) and Midjourney have shown remarkable
-          capabilities in generating high-quality images from text
-          descriptions. These models have achieved human-level performance in
-          certain image generation tasks, with DALL-E 2 scoring 66.4% on the
-          CLIP score metric for image-text similarity.
-        </Text>
-        <Text size="sm" mb="md" fs="italic">
-          Source: Ramesh, A., et al. (2022). Hierarchical Text-Conditional
-          Image Generation with CLIP Latents. arXiv:2204.06125.
-        </Text>
-
-        <Title order={4} mb="sm">AlphaGo and MuZero: Mastering Complex Games</Title>
-        <Text size="md" mb="sm">
-          DeepMind's AlphaGo defeated the world champion in Go in 2016, a feat
-          previously thought to be decades away. Its successor, MuZero,
-          demonstrated even more general capabilities, mastering chess, shogi,
-          and Atari games without being taught the rules, achieving superhuman
-          performance in all of these domains.
-        </Text>
-        <Text size="sm" mb="md" fs="italic">
-          Source: Silver, D., et al. (2020). Mastering Atari, Go, Chess and
-          Shogi by Planning with a Learned Model. Nature 588, 604–609.
-        </Text>
-
-        <Title order={4} mb="sm">GPT-4: Multimodal AI</Title>
-        <Text size="md" mb="sm">
-          Released in 2023, GPT-4 showcased impressive multimodal
-          capabilities, able to process both text and images. It demonstrated
-          human-level performance on various academic and professional tests,
-          scoring in the 90th percentile on the Uniform Bar Exam and
-          outperforming 99% of human test-takers on the Biology Olympiad.
-        </Text>
-        <Text size="sm" mb="md" fs="italic">
-          Source: OpenAI. (2023). GPT-4 Technical Report.
-        </Text>
-      </div>
 
       <div data-slide>
         <Title order={2} mb="md" id="roles">Roles in Data Science</Title>
@@ -191,15 +90,19 @@ const Introduction = () => {
           <strong>Key Skills:</strong> SQL, data visualization tools (Tableau,
           Power BI), statistical analysis, business intelligence
         </Text>
-
-        <div style={{ textAlign: 'center' }}>
-          <Image
-            src="/assets/data-science-practice/module3/job-type.png"
-            alt="Jobs in Data Science"
-            style={{ maxWidth: '100%' }}
-          />
+</div>
+<div data-slide>
+                              <Flex direction="column" align="center">
+                      <Image
+                        src="/assets/data-science-practice/module3/job-type.png"
+                        alt="Yutong Liu & The Bigger Picture"
+                        style={{ maxWidth: 'min(900px, 90vw)', height: 'auto' }}
+                        fluid
+                      />
+                    </Flex>
         </div>
-        <Title order={3} mb="md">Specialized and Emerging Roles</Title>
+<div data-slide>
+        <Title order={3} mb="md">Other Specialized Roles</Title>
 
         <Title order={4} mb="sm">Research Scientist</Title>
         <Text size="md" mb="sm">
@@ -234,67 +137,8 @@ const Introduction = () => {
           <strong>Key Skills:</strong> Data modeling, system design, data
           governance, cloud architecture
         </Text>
-
-        <Title order={3} mb="md">Business and Domain-Specific Roles</Title>
-
-        <Title order={4} mb="sm">Business Intelligence Developer</Title>
-        <Text size="md" mb="sm">
-          BI Developers create and manage platforms for data visualization and
-          reporting. They transform complex data into easily understandable
-          dashboards and reports for business stakeholders.
-        </Text>
-        <Text size="md" mb="md">
-          <strong>Key Skills:</strong> BI tools (Power BI, Tableau), data
-          warehousing, SQL, business analysis
-        </Text>
-
-        <Title order={4} mb="sm">Domain Expert</Title>
-        <Text size="md" mb="sm">
-          Domain Experts bring specific industry or field knowledge to data
-          science projects. They help interpret results in the context of the
-          business and ensure that data science solutions align with
-          industry-specific needs and regulations.
-        </Text>
-        <Text size="md" mb="md">
-          <strong>Key Skills:</strong> Deep industry knowledge, ability to
-          translate between technical and business languages
-        </Text>
-
-        <Title order={3} mb="md">Leadership and Management Roles</Title>
-
-        <Title order={4} mb="sm">Chief Data Officer (CDO)</Title>
-        <Text size="md" mb="sm">
-          The CDO is responsible for enterprise-wide data strategy,
-          governance, and utilization. They ensure that the organization
-          leverages its data assets effectively and in compliance with
-          regulations.
-        </Text>
-        <Text size="md" mb="md">
-          <strong>Key Skills:</strong> Strategic planning, data governance,
-          executive communication, change management
-        </Text>
-
-        <Title order={4} mb="sm">Data Science Manager / Team Lead</Title>
-        <Text size="md" mb="sm">
-          Data Science Managers oversee teams of data professionals, aligning
-          data science projects with business objectives. They manage
-          resources, timelines, and stakeholder expectations.
-        </Text>
-        <Text size="md" mb="md">
-          <strong>Key Skills:</strong> Project management, team leadership,
-          technical expertise, stakeholder management
-        </Text>
-
-        <Text size="md" mb="md">
-          These roles often have overlapping responsibilities, and their
-          specific duties can vary significantly among organizations. The
-          common goal remains: to harness the power of data to drive
-          decision-making, innovation, and business value. As the field of
-          data science continues to evolve, new roles may emerge, and existing
-          ones may transform to meet the ever-changing challenges of working
-          with data.
-        </Text>
-      </div>
+</div>
+        
 
       <div data-slide>
         <Title order={3} mb="md" id="tools">The Data Science Tools</Title>
@@ -303,7 +147,16 @@ const Introduction = () => {
           professionals manage data, perform analyses, build models, and
           visualize results.
         </Text>
-
+                    <Flex direction="column" align="center">
+                      <Image
+                        src="/assets/data-science-practice/module3/landscape.png"
+                        alt="Yutong Liu & The Bigger Picture"
+                        style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+                        fluid
+                      />
+                    </Flex>
+                    </div>
+                    <div data-slide>
         <Title order={4} mb="sm">Programming Languages</Title>
         <List spacing="sm" mb="md">
           <List.Item>
@@ -317,7 +170,8 @@ const Introduction = () => {
             rigorous statistical analysis.
           </List.Item>
         </List>
-
+        </div>
+<div data-slide>
         <Title order={4} mb="sm">Data Management and Big Data</Title>
         <List spacing="sm" mb="md">
           <List.Item>
@@ -336,7 +190,8 @@ const Introduction = () => {
             and complex iterative algorithms.
           </List.Item>
         </List>
-
+        </div>
+<div data-slide>
         <Title order={4} mb="sm">Machine Learning Library</Title>
         <List spacing="sm" mb="md">
           <List.Item>
@@ -352,7 +207,8 @@ const Introduction = () => {
             use in the research community, particularly in academia.
           </List.Item>
         </List>
-
+        </div>
+<div data-slide>
         <Title order={4} mb="sm">Data Visualization Tools</Title>
         <List spacing="sm" mb="md">
           <List.Item>
@@ -372,19 +228,8 @@ const Introduction = () => {
             visualizations.
           </List.Item>
         </List>
-
-        <Title order={4} mb="sm">AI-Powered Coding Assistants</Title>
-        <List spacing="sm" mb="md">
-          <List.Item>
-            <strong>ChatGPT:</strong> A large language model capable of generating code, explaining concepts, and assisting with problem-solving in data science.
-          </List.Item>
-          <List.Item>
-            <strong>GitHub Copilot:</strong> An AI pair programmer that suggests code completions and entire functions in real-time.
-          </List.Item>
-          <List.Item>
-            <strong>Claude:</strong> An AI assistant that can help with code generation, debugging, and explaining data science concepts.
-          </List.Item>
-        </List>
+        </div>
+<div data-slide>
 
         <Title order={4} mb="sm">Project Management and Version Control</Title>
         <List spacing="sm" mb="md">
@@ -395,8 +240,9 @@ const Introduction = () => {
             <strong>Jira:</strong> An agile project management tool used for issue tracking, bug tracking, and project management in data science teams.
           </List.Item>
         </List>
-
-        <Title order={4} mb="sm">Cloud Tools</Title>
+        </div>
+<div data-slide>
+        <Title order={4} mb="sm">Infrastructure and Cloud Tools</Title>
         <List spacing="sm" mb="md">
           <List.Item>
             <strong>Amazon Web Services (AWS):</strong> Offers a wide range of cloud computing services, including EC2 for compute power, S3 for storage, and SageMaker for machine learning.
@@ -407,10 +253,15 @@ const Introduction = () => {
           <List.Item>
             <strong>Microsoft Azure:</strong> Features services such as Azure Databricks for big data analytics, Azure Machine Learning for building and deploying models, and Azure Data Lake for data storage.
           </List.Item>
-          <List.Item>
-            <strong>Databricks:</strong> A unified analytics platform built on top of Apache Spark, offering collaborative notebooks and integrated workflows for big data processing and machine learning.
-          </List.Item>
         </List>
+                            <Flex direction="column" align="center">
+                      <Image
+                        src="/assets/data-science-practice/module3/cloud.jpeg"
+                        alt="Yutong Liu & The Bigger Picture"
+                        style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+                        fluid
+                      />
+                    </Flex>
       </div>
     </Container>
   );
