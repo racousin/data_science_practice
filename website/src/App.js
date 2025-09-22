@@ -18,6 +18,10 @@ import Projects from "./pages/Projects";
 import DataSciencePractice from "./courses/DataSciencePractice";
 import PythonDeepLearning from "./courses/PythonDeepLearning";
 
+// Standalone data endpoints
+import ScrapableData from "./pages/data-science-practice/module4/ScrapableData";
+import ApiDoc from "./pages/data-science-practice/module4/ApiDoc";
+
 // Initialize Google Analytics
 import ReactGA from "react-ga4";
 ReactGA.initialize("G-0VW1PJ0H17");
@@ -104,6 +108,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/courses" element={<CoursesList />} />
             <Route path="/projects" element={<Projects />} />
+            <Route path="/module4/scrapable-data" element={<ScrapableData />} />
+            <Route path="/module4/api-doc" element={<ApiDoc />} />
           </Route>
           
           {/* Routes with sidebar */}
