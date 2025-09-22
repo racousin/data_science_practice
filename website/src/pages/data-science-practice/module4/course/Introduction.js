@@ -27,91 +27,95 @@ const Introduction = () => {
   return (
     <Container fluid>
       <Stack gap="xl">
-        {/* Main Introduction */}
-        <Stack gap="md">
-          <Text size="lg" c="dimmed">Module 4: Data Collection</Text>
-          <Title order={1} id="introduction" className="text-blue-700">Introduction</Title>
-          <Text>
-            Data collection is the first critical step in the data pipeline, where you gather raw data from various 
-            sources to feed into your data analysis, model building, or reporting. Understanding different types of 
-            data and collection methods is crucial for effective data science projects.
-          </Text>
-        </Stack>
+        <div data-slide>
+          <Stack gap="md">
+            <Text size="lg" c="dimmed">Module 4: Data Collection</Text>
+            <Title order={1} id="introduction" className="text-blue-700">Introduction</Title>
+            <Text>
+              Data collection is the first critical step in the data pipeline, where you gather raw data from various
+              sources to feed into your data analysis, model building, or reporting. Understanding different types of
+              data and collection methods is crucial for effective data science projects.
+            </Text>
+          </Stack>
+        </div>
 
-        {/* Types of Data */}
-        <Stack gap="md">
-          <Title order={2} id="types">Types of Data</Title>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <DataTypeSection
-              title="Structured Data"
-              description="Organized in a predefined format, typically in tables with rows and columns."
-              examples="Relational databases, spreadsheets"
-              extraInfo="Easy to search and analyze"
-            />
-            <DataTypeSection
-              title="Semi-structured Data"
-              description="Has some organizational properties but doesn't conform to a rigid structure."
-              examples="JSON, XML"
-              extraInfo="More flexible than structured data"
-            />
-            <DataTypeSection
-              title="Unstructured Data"
-              description="Data with no predefined format or organization."
-              examples="Text documents, images, audio files"
-              extraInfo="Most abundant form of data"
-            />
-          </div>
-        </Stack>
+        <div data-slide>
+          <Stack gap="md">
+            <Title order={2} id="types">Types of Data</Title>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <DataTypeSection
+                title="Structured Data"
+                description="Organized in a predefined format, typically in tables with rows and columns."
+                examples="Relational databases, spreadsheets"
+                extraInfo="Easy to search and analyze"
+              />
+              <DataTypeSection
+                title="Semi-structured Data"
+                description="Has some organizational properties but doesn't conform to a rigid structure."
+                examples="JSON, XML"
+                extraInfo="More flexible than structured data"
+              />
+              <DataTypeSection
+                title="Unstructured Data"
+                description="Data with no predefined format or organization."
+                examples="Text documents, images, audio files"
+                extraInfo="Most abundant form of data"
+              />
+            </div>
+          </Stack>
+        </div>
 
-        {/* Data Sources */}
-        <Stack gap="md">
-          <Title order={2} id="sources">Data Sources</Title>
-          <Group justify="center" gap="xl">
-            <DataSourceIcon Icon={IconFileText} label="Files(CSV, Excel, etc.)" />
-            <DataSourceIcon Icon={IconDatabase} label="Databases(SQL, NoSQL)" />
-            <DataSourceIcon Icon={IconServer} label="APIs(Web Services)" />
-            <DataSourceIcon Icon={IconWorld} label="Web Scraping" />
-          </Group>
-        </Stack>
+        <div data-slide>
+          <Stack gap="md">
+            <Title order={2} id="sources">Data Sources</Title>
+            <Group justify="center" gap="xl">
+              <DataSourceIcon Icon={IconFileText} label="Files(CSV, Excel, etc.)" />
+              <DataSourceIcon Icon={IconDatabase} label="Databases(SQL, NoSQL)" />
+              <DataSourceIcon Icon={IconServer} label="APIs(Web Services)" />
+              <DataSourceIcon Icon={IconWorld} label="Web Scraping" />
+            </Group>
+          </Stack>
+        </div>
 
-        {/* Collection Methods */}
-        <Stack gap="md">
-          <Title order={2} id="collection-methods">Collection Methods</Title>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Paper p="lg" radius="md" className="bg-slate-50">
-              <Stack gap="sm">
-                <Text size="lg" fw={500} className="text-blue-600">Batch Collection</Text>
-                <List>
-                  <List.Item>Processes data in large, discrete chunks</List.Item>
-                  <List.Item>Scheduled intervals (daily, weekly, monthly)</List.Item>
-                  <List.Item>Suitable for historical data analysis</List.Item>
-                  <List.Item>Efficient for large-scale processing</List.Item>
-                </List>
-              </Stack>
-            </Paper>
-            <Paper p="lg" radius="md" className="bg-slate-50">
-              <Stack gap="sm">
-                <Text size="lg" fw={500} className="text-blue-600">Streaming Collection</Text>
-                <List>
-                  <List.Item>Real-time or near real-time processing</List.Item>
-                  <List.Item>Continuous data ingestion</List.Item>
-                  <List.Item>Ideal for time-sensitive applications</List.Item>
-                  <List.Item>Enables immediate insights</List.Item>
-                </List>
-              </Stack>
-            </Paper>
-          </div>
-        </Stack>
+        <div data-slide>
+          <Stack gap="md">
+            <Title order={2} id="collection-methods">Collection Methods</Title>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Paper p="lg" radius="md" className="bg-slate-50">
+                <Stack gap="sm">
+                  <Text size="lg" fw={500} className="text-blue-600">Batch Collection</Text>
+                  <List>
+                    <List.Item>Processes data in large, discrete chunks</List.Item>
+                    <List.Item>Scheduled intervals (daily, weekly, monthly)</List.Item>
+                    <List.Item>Suitable for historical data analysis</List.Item>
+                    <List.Item>Efficient for large-scale processing</List.Item>
+                  </List>
+                </Stack>
+              </Paper>
+              <Paper p="lg" radius="md" className="bg-slate-50">
+                <Stack gap="sm">
+                  <Text size="lg" fw={500} className="text-blue-600">Streaming Collection</Text>
+                  <List>
+                    <List.Item>Real-time or near real-time processing</List.Item>
+                    <List.Item>Continuous data ingestion</List.Item>
+                    <List.Item>Ideal for time-sensitive applications</List.Item>
+                    <List.Item>Enables immediate insights</List.Item>
+                  </List>
+                </Stack>
+              </Paper>
+            </div>
+          </Stack>
+        </div>
 
-        {/* Data Integration Example */}
-        <Stack gap="md">
-          <Title order={2} id="integration-example">Data Integration Example</Title>
-          <Text>
-            Here's a practical example of combining data from multiple sources using pandas:
-          </Text>
-          <CodeBlock
-            language="python"
-            code={`
+        <div data-slide>
+          <Stack gap="md">
+            <Title order={2} id="integration-example">Data Integration Example</Title>
+            <Text>
+              Here's a practical example of combining data from multiple sources using pandas:
+            </Text>
+            <CodeBlock
+              language="python"
+              code={`
 import pandas as pd
 from sqlalchemy import create_engine
 
@@ -124,7 +128,7 @@ customers_df = pd.read_sql('SELECT * FROM customers', engine)
 
 # Merge datasets on customer_id
 merged_df = pd.merge(
-    sales_df, 
+    sales_df,
     customers_df,
     on='customer_id',
     how='inner'
@@ -133,42 +137,44 @@ merged_df = pd.merge(
 # Basic data quality checks
 print("Missing values:", merged_df.isnull().sum())
 print("Duplicate rows:", merged_df.duplicated().sum())
-            `}
-          />
-        </Stack>
+              `}
+            />
+          </Stack>
+        </div>
 
-        {/* Key Considerations */}
-        <Stack gap="md">
-          <Title order={2} id="considerations">Key Considerations</Title>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Paper p="lg" radius="md" className="bg-slate-50">
-              <Stack gap="sm">
-                <Group align="center" gap="xs">
-                  <IconChartBar className="text-blue-600" />
-                  <Text fw={500}>Data Size Impact</Text>
-                </Group>
-                <List>
-                  <List.Item>Consider storage format (CSV vs Parquet)</List.Item>
-                  <List.Item>Memory constraints and optimization</List.Item>
-                  <List.Item>Processing time requirements</List.Item>
-                </List>
-              </Stack>
-            </Paper>
-            <Paper p="lg" radius="md" className="bg-slate-50">
-              <Stack gap="sm">
-                <Group align="center" gap="xs">
-                  <IconCloudDataConnection className="text-blue-600" />
-                  <Text fw={500}>Data Quality</Text>
-                </Group>
-                <List>
-                  <List.Item>Completeness and accuracy checks</List.Item>
-                  <List.Item>Consistency across sources</List.Item>
-                  <List.Item>Regular validation procedures</List.Item>
-                </List>
-              </Stack>
-            </Paper>
-          </div>
-        </Stack>
+        <div data-slide>
+          <Stack gap="md">
+            <Title order={2} id="considerations">Key Considerations</Title>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Paper p="lg" radius="md" className="bg-slate-50">
+                <Stack gap="sm">
+                  <Group align="center" gap="xs">
+                    <IconChartBar className="text-blue-600" />
+                    <Text fw={500}>Data Size Impact</Text>
+                  </Group>
+                  <List>
+                    <List.Item>Consider storage format (CSV vs Parquet)</List.Item>
+                    <List.Item>Memory constraints and optimization</List.Item>
+                    <List.Item>Processing time requirements</List.Item>
+                  </List>
+                </Stack>
+              </Paper>
+              <Paper p="lg" radius="md" className="bg-slate-50">
+                <Stack gap="sm">
+                  <Group align="center" gap="xs">
+                    <IconCloudDataConnection className="text-blue-600" />
+                    <Text fw={500}>Data Quality</Text>
+                  </Group>
+                  <List>
+                    <List.Item>Completeness and accuracy checks</List.Item>
+                    <List.Item>Consistency across sources</List.Item>
+                    <List.Item>Regular validation procedures</List.Item>
+                  </List>
+                </Stack>
+              </Paper>
+            </div>
+          </Stack>
+        </div>
       </Stack>
     </Container>
   );
