@@ -9,7 +9,7 @@ const Exercise1 = () => {
   const testDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module4/exercise/Neighborhood_Market_data.csv";
   const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module4/exercise/module4_exercise1.ipynb";
   const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module4/exercise/module4_exercise1.html";
-  const notebookColabUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module4/exercise/module4_exercise1.ipynb";
+  const notebookColabUrl = "website/public/modules/data-science-practice/module4/exercise/module4_exercise1.ipynb";
 
   const metadata = {
     description: "This dataset contains sales information from multiple stores to predict sales for Neighborhood_Market.",
