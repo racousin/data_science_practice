@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Title, Text, Stack, Group, Paper, List, Divider } from '@mantine/core';
+import { Container, Title, Text, Stack, Group, Paper, List, Divider, Flex, Image } from '@mantine/core';
 import { IconFileText, IconDatabase, IconServer, IconWorld, IconChartBar, IconCloudDataConnection } from '@tabler/icons-react';
 import CodeBlock from "components/CodeBlock";
 
@@ -42,6 +42,14 @@ const Introduction = () => {
         <div data-slide>
           <Stack gap="md">
             <Title order={2} id="types">Types of Data</Title>
+                                                <Flex direction="column" align="center">
+                                  <Image
+                                    src="/assets/data-science-practice/module4/data.png"
+                                    alt="Yutong Liu & The Bigger Picture"
+                                    style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+                                    fluid
+                                  />
+                                </Flex>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <DataTypeSection
                 title="Structured Data"

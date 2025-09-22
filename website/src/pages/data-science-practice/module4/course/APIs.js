@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Title, Text, Accordion, Stack, List, Paper, Table } from '@mantine/core';
+import { Container, Title, Text, Stack, List, Paper, Table } from '@mantine/core';
 import { Globe, Lock, ArrowLeftRight, Code } from 'lucide-react';
 import CodeBlock from "components/CodeBlock";
 
@@ -15,16 +15,12 @@ const SectionIcon = ({ type }) => {
 };
 
 const APISection = ({ type, title, content }) => (
-  <Accordion.Item value={type}>
-    <Accordion.Control icon={<SectionIcon type={type} />}>
-      {title}
-    </Accordion.Control>
-    <Accordion.Panel>
-      <Stack gap="md">
-        {content}
-      </Stack>
-    </Accordion.Panel>
-  </Accordion.Item>
+  <div data-slide>
+    <Title order={2}>{title}</Title>
+    <Stack gap="md">
+      {content}
+    </Stack>
+  </div>
 );
 
 const APIs = () => {
@@ -191,20 +187,17 @@ if result:
 
   return (
     <Container fluid>
-      <Stack gap="xl">
-        <div>
-          <Title order={1}>APIs (Application Programming Interfaces)</Title>
-          <Text mt="md">
-            APIs are essential tools in data science for accessing and collecting data from various sources. They provide structured methods for data retrieval and manipulation, enabling efficient data collection pipelines.
-          </Text>
-        </div>
+      <div data-slide>
+        <Title order={1}>APIs (Application Programming Interfaces)</Title>
+        <Text size="lg" mt="md">
+          APIs are essential tools in data science for accessing and collecting data from various sources.
+          They provide structured methods for data retrieval and manipulation, enabling efficient data collection pipelines.
+        </Text>
+      </div>
 
-        <Accordion>
-          {sections.map(section => (
-            <APISection key={section.type} {...section} />
-          ))}
-        </Accordion>
-      </Stack>
+      {sections.map(section => (
+        <APISection key={section.type} {...section} />
+      ))}
     </Container>
   );
 };

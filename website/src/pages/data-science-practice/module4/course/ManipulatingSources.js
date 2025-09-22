@@ -1,28 +1,31 @@
 import React from 'react';
-import { Text, Title, Paper, Stack, List } from '@mantine/core';
+import { Text, Title, Paper, Stack, List, Container } from '@mantine/core';
 import { Database, FileSpreadsheet, Globe } from 'lucide-react';
 import CodeBlock from "components/CodeBlock";
 
 const ManipulatingSources = () => {
   return (
-    <Stack gap="xl">
-      <div>
+    <Container fluid>
+      <div data-slide>
         <Title order={1}>Manipulating Different Sources with pandas</Title>
-        <Text mt="md">
-          Data science projects often require combining data from multiple sources. pandas provides essential tools 
+        <Text size="lg" mt="md">
+          Data science projects often require combining data from multiple sources. pandas provides essential tools
           to read, transform, and combine data from various formats into a unified dataset.
         </Text>
       </div>
 
-      <Paper p="lg" radius="md" className="bg-slate-50">
+      <div data-slide>
         <Title order={2}>Reading from Different Sources</Title>
+        <Text mb="md">
+          pandas supports reading data from various formats with specialized functions for each source type.
+        </Text>
         <CodeBlock
           language="python"
           code={`# Reading from common data sources
 import pandas as pd
 
 # CSV files
-df_csv = pd.read_csv('data.csv', 
+df_csv = pd.read_csv('data.csv',
                      parse_dates=['date_column'],    # Parse date columns
                      dtype={'id': str})              # Specify column types
 
@@ -33,9 +36,18 @@ df_excel = pd.read_excel('data.xlsx',
 
 # JSON data
 df_json = pd.read_json('data.json',
-                      orient='records')             # Specify JSON structure
+                      orient='records')             # Specify JSON structure`}
+        />
+      </div>
 
-# SQL databases
+      <div data-slide>
+        <Title order={2}>Database and API Sources</Title>
+        <Text mb="md">
+          For dynamic data sources like databases and APIs, pandas integrates with external libraries.
+        </Text>
+        <CodeBlock
+          language="python"
+          code={`# SQL databases
 from sqlalchemy import create_engine
 engine = create_engine('database_url')
 df_sql = pd.read_sql('SELECT * FROM table', engine)
@@ -45,10 +57,13 @@ import requests
 response = requests.get('api_url').json()
 df_api = pd.DataFrame(response['data'])`}
         />
-      </Paper>
+      </div>
 
-      <Paper p="lg" radius="md" className="bg-slate-50">
+      <div data-slide>
         <Title order={2}>Data Type Management</Title>
+        <Text mb="md">
+          Converting data types ensures consistent processing and prevents errors in analysis.
+        </Text>
         <CodeBlock
           language="python"
           code={`# Common data type operations
@@ -68,11 +83,13 @@ df['date'] = pd.to_datetime(df['date'])            # String to datetime
 # Verify datatypes
 print(df.dtypes)`}
         />
-      </Paper>
+      </div>
 
-      <Paper p="lg" radius="md" className="bg-slate-50">
+      <div data-slide>
         <Title order={2}>Combining DataFrames</Title>
-        <Text mt="md">pandas offers three main ways to combine DataFrames:</Text>
+        <Text mb="md">
+          pandas offers three main methods to combine DataFrames: merge, concat, and join.
+        </Text>
         <CodeBlock
           language="python"
           code={`# Different methods to combine DataFrames
@@ -100,30 +117,8 @@ df_joined = df1.join(
     how='left'
 )`}
         />
-      </Paper>
-
-      <Paper p="lg" radius="md" className="bg-slate-50">
-        <Title order={2}>Common Integration Patterns</Title>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-          <div>
-            <Title order={3} size="h5">When to Use Merge</Title>
-            <List size="sm" mt="xs">
-              <List.Item>Combining related data with shared keys</List.Item>
-              <List.Item>Matching records from different sources</List.Item>
-              <List.Item>Need control over how records are matched</List.Item>
-            </List>
-          </div>
-          <div>
-            <Title order={3} size="h5">When to Use Concat</Title>
-            <List size="sm" mt="xs">
-              <List.Item>Combining similar data structures</List.Item>
-              <List.Item>Appending new records to existing data</List.Item>
-              <List.Item>Combining data with the same columns</List.Item>
-            </List>
-          </div>
-        </div>
-      </Paper>
-    </Stack>
+      </div>
+    </Container>
   );
 };
 

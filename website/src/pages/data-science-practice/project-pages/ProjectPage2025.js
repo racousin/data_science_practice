@@ -87,7 +87,7 @@ const ProjectPage2025 = () => {
 
       <Title order={4} mb="sm">Bonus Features</Title>
       <List spacing="sm">
-        <List.Item>Paper implementation</List.Item>
+        <List.Item>Paper research and implementation</List.Item>
         <List.Item>GitHub Actions with CI tests</List.Item>
         <List.Item>Docker deployment</List.Item>
       </List>

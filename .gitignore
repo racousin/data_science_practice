@@ -17,6 +17,7 @@ racousin/
 exp/
 venv/
 website/public/modules/venv
+permuted_mnist/
 
 *test.csv
 *train.csv

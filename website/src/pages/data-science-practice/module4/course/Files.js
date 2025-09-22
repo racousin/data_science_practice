@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Title, Text, Accordion, Code, Table, Stack, Paper, List } from '@mantine/core';
+import { Container, Title, Text, Code, Table, Stack, Paper, List } from '@mantine/core';
 import { FileText, FileSpreadsheet, Database, FileJson, FileCode, FileImage } from 'lucide-react';
 import CodeBlock from "components/CodeBlock";
 
@@ -18,37 +18,31 @@ const FileTypeIcon = ({ type }) => {
 };
 
 const FileTypeItem = ({ type, name, description, metadata, sample, code }) => (
-  <Accordion.Item value={type}>
-    <Accordion.Control icon={<FileTypeIcon type={type} />}>
-      {name}
-    </Accordion.Control>
-    <Accordion.Panel>
-      <Stack spacing="md">
-        <Text>{description}</Text>
-        <Title order={4}>Metadata</Title>
-        <Table>
-          <tbody>
-            {Object.entries(metadata).map(([key, value]) => (
-              <tr key={key}>
-                <td><strong>{key}</strong></td>
-                <td>{value}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-        {sample && (
-          <>
-            <Title order={4}>Sample Data</Title>
-            <Paper p="xs" withBorder>
-              <Code block>{sample}</Code>
-            </Paper>
-          </>
-        )}
-        <Title order={4}>Reading the File</Title>
-        <CodeBlock language="python" code={code} />
-      </Stack>
-    </Accordion.Panel>
-  </Accordion.Item>
+  <Stack spacing="md" mb="xl">
+    <Title order={3}>{name}</Title>
+    <Text>{description}</Text>
+    <Title order={4}>Metadata</Title>
+    <Table>
+      <tbody>
+        {Object.entries(metadata).map(([key, value]) => (
+          <tr key={key}>
+            <td><strong>{key}</strong></td>
+            <td>{value}</td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+    {sample && (
+      <>
+        <Title order={4}>Sample Data</Title>
+        <Paper p="xs" withBorder>
+          <Code block>{sample}</Code>
+        </Paper>
+      </>
+    )}
+    <Title order={4}>Reading the File</Title>
+    <CodeBlock language="python" code={code} />
+  </Stack>
 );
 
 const Files = () => {
@@ -252,41 +246,58 @@ print(f"Data type: {img_array.dtype}")`
 
   return (
     <Container fluid>
-      <Title order={1}>Files</Title>
-      
-      <Title id="metadata" order={2} mt="xl">File Metadata</Title>
-      <Text>
-        File metadata is crucial information about a file that describes its structure, content, and how to interpret it. 
-        Key metadata elements include:
-      </Text>
-      <List>
-        <List.Item>File format and extension</List.Item>
-        <List.Item>Encoding (e.g., UTF-8, ASCII)</List.Item>
-        <List.Item>Structure (e.g., headers, delimiters for structured data)</List.Item>
-        <List.Item>Size and creation/modification dates</List.Item>
-        <List.Item>Author or owner information</List.Item>
-      </List>
+      <div data-slide>
+        <Title order={1}>Files</Title>
+        <Text size="lg" mt="md">
+          Understanding different file formats and how to work with them is essential for data science.
+          Files can be categorized based on their structure and data organization.
+        </Text>
+      </div>
 
-      <Title id="structured" order={2} mt="xl">Structured Files</Title>
-      <Accordion>
+      <div data-slide>
+        <Title id="metadata" order={2}>File Metadata</Title>
+        <Text>
+          File metadata is crucial information about a file that describes its structure, content, and how to interpret it.
+          Key metadata elements include:
+        </Text>
+        <List mt="md">
+          <List.Item>File format and extension</List.Item>
+          <List.Item>Encoding (e.g., UTF-8, ASCII)</List.Item>
+          <List.Item>Structure (e.g., headers, delimiters for structured data)</List.Item>
+          <List.Item>Size and creation/modification dates</List.Item>
+          <List.Item>Author or owner information</List.Item>
+        </List>
+      </div>
+
+      <div data-slide>
+        <Title id="structured" order={2}>Structured Files</Title>
+        <Text mb="md">
+          Structured files have a well-defined format with organized rows and columns, making them easy to process and analyze.
+        </Text>
         {structuredFiles.map(file => (
           <FileTypeItem key={file.type} {...file} />
         ))}
-      </Accordion>
+      </div>
 
-      <Title id="semi" order={2} mt="xl">Semi-Structured Files</Title>
-      <Accordion>
+      <div data-slide>
+        <Title id="semi" order={2}>Semi-Structured Files</Title>
+        <Text mb="md">
+          Semi-structured files have some organization but are more flexible than structured formats, often using hierarchical or nested structures.
+        </Text>
         {semiStructuredFiles.map(file => (
           <FileTypeItem key={file.type} {...file} />
         ))}
-      </Accordion>
+      </div>
 
-      <Title id="unstructured" order={2} mt="xl">Unstructured Files</Title>
-      <Accordion>
+      <div data-slide>
+        <Title id="unstructured" order={2}>Unstructured Files</Title>
+        <Text mb="md">
+          Unstructured files contain data without a predefined format or organization, requiring special processing techniques to extract meaningful information.
+        </Text>
         {unstructuredFiles.map(file => (
           <FileTypeItem key={file.type} {...file} />
         ))}
-      </Accordion>
+      </div>
 
     </Container>
   );

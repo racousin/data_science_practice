@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Title, Text, Accordion, Stack, List, Paper, Table } from '@mantine/core';
+import { Container, Title, Text, Stack, List, Paper, Table } from '@mantine/core';
 import { Database, Table as TableIcon } from 'lucide-react';
 import CodeBlock from "components/CodeBlock";
 
@@ -9,30 +9,24 @@ const DatabaseIcon = ({ type }) => {
 };
 
 const DatabaseItem = ({ type, name, description, characteristics, examples, code }) => (
-  <Accordion.Item value={type}>
-    <Accordion.Control icon={<DatabaseIcon type={type} />}>
-      {name}
-    </Accordion.Control>
-    <Accordion.Panel>
-      <Stack gap="md">
-        <Text>{description}</Text>
-        <Title order={4}>Characteristics</Title>
-        <List>
-          {characteristics.map((char, index) => (
-            <List.Item key={index}>{char}</List.Item>
-          ))}
-        </List>
-        <Title order={4}>Popular Examples</Title>
-        <List>
-          {examples.map((example, index) => (
-            <List.Item key={index}>{example}</List.Item>
-          ))}
-        </List>
-        <Title order={4}>Basic Usage Principles</Title>
-        <CodeBlock language="python" code={code} />
-      </Stack>
-    </Accordion.Panel>
-  </Accordion.Item>
+  <Stack gap="md" mb="xl">
+    <Title order={3}>{name}</Title>
+    <Text>{description}</Text>
+    <Title order={4}>Characteristics</Title>
+    <List>
+      {characteristics.map((char, index) => (
+        <List.Item key={index}>{char}</List.Item>
+      ))}
+    </List>
+    <Title order={4}>Popular Examples</Title>
+    <List>
+      {examples.map((example, index) => (
+        <List.Item key={index}>{example}</List.Item>
+      ))}
+    </List>
+    <Title order={4}>Basic Usage Principles</Title>
+    <CodeBlock language="python" code={code} />
+  </Stack>
 );
 
 const Databases = () => {
@@ -209,48 +203,50 @@ results = collection.aggregate(pipeline)`
 
   return (
     <Container fluid>
-      <Stack gap="xl">
-        <div>
-          <Title order={1}>Databases</Title>
-          <Text mt="md">
-            Databases are fundamental to data science, providing organized storage and efficient retrieval of data. 
-            Understanding the differences between SQL and NoSQL databases is crucial for choosing the right tool for your data needs.
-          </Text>
-        </div>
+      <div data-slide>
+        <Title order={1}>Databases</Title>
+        <Text size="lg" mt="md">
+          Databases are fundamental to data science, providing organized storage and efficient retrieval of data.
+          Understanding the differences between SQL and NoSQL databases is crucial for choosing the right tool for your data needs.
+        </Text>
+      </div>
 
-        <div>
-          <Title order={2} id="comparison">Database Comparison</Title>
-          <Paper p="md" radius="md" className="bg-slate-50">
-            <Table striped highlightOnHover>
-              <thead>
-                <tr>
-                  <th>Feature</th>
-                  <th>SQL Databases</th>
-                  <th>NoSQL Databases</th>
+      <div data-slide>
+        <Title order={2} id="comparison">Database Comparison</Title>
+        <Text mb="md">
+          SQL and NoSQL databases have different strengths and are suited for different use cases.
+        </Text>
+        <Paper p="md" radius="md" className="bg-slate-50">
+          <Table striped highlightOnHover>
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>SQL Databases</th>
+                <th>NoSQL Databases</th>
+              </tr>
+            </thead>
+            <tbody>
+              {comparisonData.map((row, index) => (
+                <tr key={index}>
+                  <td><Text fw={500}>{row.feature}</Text></td>
+                  <td>{row.sql}</td>
+                  <td>{row.nosql}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {comparisonData.map((row, index) => (
-                  <tr key={index}>
-                    <td><Text fw={500}>{row.feature}</Text></td>
-                    <td>{row.sql}</td>
-                    <td>{row.nosql}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </Paper>
-        </div>
+              ))}
+            </tbody>
+          </Table>
+        </Paper>
+      </div>
 
-        <div>
-          <Title order={2} id="implementations">Database Implementations</Title>
-          <Accordion>
-            {databaseTypes.map(db => (
-              <DatabaseItem key={db.type} {...db} />
-            ))}
-          </Accordion>
-        </div>
-      </Stack>
+      <div data-slide>
+        <Title order={2} id="implementations">Database Implementations</Title>
+        <Text mb="md">
+          Let's explore the specific characteristics and usage patterns of SQL and NoSQL databases.
+        </Text>
+        {databaseTypes.map(db => (
+          <DatabaseItem key={db.type} {...db} />
+        ))}
+      </div>
     </Container>
   );
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Title, Paper, List, ThemeIcon } from '@mantine/core';
+import { Text, Title, Paper, List, ThemeIcon, Flex, Image, Container, Grid } from '@mantine/core';
 import { CheckCircle, AlertTriangle, RefreshCw, Filter } from 'lucide-react';
 
 const QualitySection = ({ icon: Icon, title, description, points }) => (
@@ -70,44 +70,42 @@ const DataQuality = () => {
   ];
 
   return (
-    <div>
-      <Title order={1}>Data Quality</Title>
-      
-      <Text mt="md">
-        Data quality is fundamental to reliable analysis and decision-making. A robust data quality framework 
-        ensures that data is trustworthy, consistent, and fit for its intended use.
-      </Text>
-
-      <div className="grid grid-cols-1 gap-4 mt-8">
-        {qualityDimensions.map((dim, index) => (
-          <QualitySection key={index} {...dim} />
-        ))}
+    <Container fluid>
+      <div data-slide>
+        <Title order={1}>Data Quality</Title>
+        <Text size="lg" mt="md">
+          Data quality is fundamental to reliable analysis and decision-making. A robust data quality framework
+          ensures that data is trustworthy, consistent, and fit for its intended use.
+        </Text>
       </div>
 
-      <Paper p="lg" mt="xl" radius="md">
-        <Title order={2} size="h3">Implementing Quality Controls</Title>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-          <div>
-            <Title order={3} size="h5">Prevention Strategies</Title>
-            <List size="sm" mt="xs">
-              <List.Item>Standardized data collection procedures</List.Item>
-              <List.Item>Clear data ownership and responsibilities</List.Item>
-              <List.Item>Regular team training on data standards</List.Item>
-              <List.Item>Automated validation at data entry</List.Item>
-            </List>
-          </div>
-          <div>
-            <Title order={3} size="h5">Monitoring Practices</Title>
-            <List size="sm" mt="xs">
-              <List.Item>Regular data quality assessments</List.Item>
-              <List.Item>Quality metrics tracking and reporting</List.Item>
-              <List.Item>Stakeholder feedback integration</List.Item>
-              <List.Item>Documentation of quality issues</List.Item>
-            </List>
-          </div>
-        </div>
-      </Paper>
-    </div>
+      <div data-slide>
+        <Title order={2} mb="md">Data Quality Framework</Title>
+        <Flex direction="column" align="center" mb="md">
+          <Image
+            src="/assets/data-science-practice/module4/quality.webp"
+            alt="Data Quality Framework Visualization"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
+          />
+        </Flex>
+        <Text>
+          Data quality can be measured across four key dimensions, each addressing different aspects
+          of data reliability and usability.
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={2} mb="md">Four Dimensions of Data Quality</Title>
+        <Grid gutter="lg">
+          {qualityDimensions.map((dim, index) => (
+            <Grid.Col span={6} key={index}>
+              <QualitySection {...dim} />
+            </Grid.Col>
+          ))}
+        </Grid>
+      </div>
+    </Container>
   );
 };
 

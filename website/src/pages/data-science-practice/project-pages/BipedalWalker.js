@@ -1,6 +1,6 @@
 import React from 'react';
-import { Container, Title, Text, List, Code, Alert } from '@mantine/core';
-import { IconRobot, IconInfoCircle, IconCalendarEvent } from '@tabler/icons-react';
+import { Container, Title, Text, List, Alert, Anchor, Paper, Group, Stack } from '@mantine/core';
+import { IconRobot, IconInfoCircle, IconTrophy, IconClock, IconCpu, IconDatabase } from '@tabler/icons-react';
 import CodeBlock from 'components/CodeBlock';
 
 const BipedalWalker = () => {
@@ -8,12 +8,8 @@ const BipedalWalker = () => {
     <Container size="lg" py="xl">
       <Title order={1} mb="lg">
         <IconRobot size={32} style={{ marginRight: '10px', verticalAlign: 'middle' }} />
-        Option B: Bipedal Walker - Reinforcement Learning
+        Bipedal Walker Challenge
       </Title>
-
-      <Alert icon={<IconCalendarEvent />} color="orange" mb="xl">
-        <strong>Important:</strong> RL session scheduled for October 6th. Attendance recommended for this project option.
-      </Alert>
 
       <Title order={2} mb="md">Challenge Overview</Title>
       <Text mb="md">
@@ -22,159 +18,369 @@ const BipedalWalker = () => {
         stable walking behavior and efficient learning progression.
       </Text>
 
-      <Alert icon={<IconInfoCircle />} color="blue" mb="xl">
-        <strong>Goal:</strong> Train an RL agent to achieve consistent walking performance with stable
-        learning convergence and robust locomotion strategies.
+      <Alert icon={<IconTrophy />} color="blue" mb="md">
+        <Text weight={600} mb="sm">Competition Details</Text>
+        <Text size="sm">
+          Test your agent against others on the ML Arena platform:
+        </Text>
+        <Anchor href="https://ml-arena.com/viewcompetition/10" target="_blank" size="sm">
+          https://ml-arena.com/viewcompetition/10
+        </Anchor>
       </Alert>
 
-      <Title order={2} mb="md">Environment Description</Title>
+      <Paper p="md" withBorder mb="xl">
+        <Group spacing="xl">
+          <Stack spacing="xs">
+            <Group spacing="xs">
+              <IconClock size={20} />
+              <Text weight={500}>Training Time</Text>
+            </Group>
+            <Text size="sm">Flexible (days to weeks)</Text>
+          </Stack>
+          <Stack spacing="xs">
+            <Group spacing="xs">
+              <IconDatabase size={20} />
+              <Text weight={500}>Environment</Text>
+            </Group>
+            <Text size="sm">OpenAI Gym / Gymnasium</Text>
+          </Stack>
+          <Stack spacing="xs">
+            <Group spacing="xs">
+              <IconCpu size={20} />
+              <Text weight={500}>Compute</Text>
+            </Group>
+            <Text size="sm">CPU or GPU supported</Text>
+          </Stack>
+        </Group>
+      </Paper>
+
+      <Title order={2} mb="md">How the Challenge Works</Title>
       <Text mb="md">
-        The Bipedal Walker environment (OpenAI Gym) presents the following characteristics:
+        The Bipedal Walker environment simulates a 2D robot that must learn to walk:
       </Text>
       <List spacing="sm" mb="md">
-        <List.Item><strong>Agent:</strong> 2D bipedal robot with 4 joints (hip and knee for each leg)</List.Item>
-        <List.Item><strong>Observation Space:</strong> 24-dimensional continuous state vector</List.Item>
-        <List.Item><strong>Action Space:</strong> 4-dimensional continuous control (torque for each joint)</List.Item>
-        <List.Item><strong>Physics:</strong> Box2D physics simulation with realistic dynamics</List.Item>
-        <List.Item><strong>Terrain:</strong> Randomly generated ground with varying difficulty</List.Item>
+        <List.Item>
+          <strong>2D Physics Simulation:</strong> A bipedal robot with 4 joints (hip and knee for each leg)
+          must learn to coordinate movement in a Box2D physics environment.
+        </List.Item>
+        <List.Item>
+          <strong>Continuous Control:</strong> The agent outputs torque values for each joint,
+          requiring smooth, coordinated control policies.
+        </List.Item>
+        <List.Item>
+          <strong>Sparse Rewards:</strong> The agent receives rewards for forward progress but
+          is heavily penalized for falling, making exploration challenging.
+        </List.Item>
+        <List.Item>
+          <strong>Generalization Required:</strong> The terrain is randomly generated each episode,
+          requiring robust locomotion strategies.
+        </List.Item>
       </List>
 
-      <Title order={2} mb="md">State and Action Spaces</Title>
+      <Alert icon={<IconInfoCircle />} color="yellow" mb="xl">
+        <Text weight={500}>Key Challenge</Text>
+        <Text size="sm">
+          Unlike supervised learning, the agent must learn through trial and error. Early training
+          will involve many falls and failures before discovering stable walking gaits.
+        </Text>
+      </Alert>
 
-      <Title order={3} mb="sm">Observation Space (24 dimensions)</Title>
-      <List spacing="sm" mb="md">
-        <List.Item>Hull angle and angular velocity</List.Item>
-        <List.Item>Hull position and velocity (x, y)</List.Item>
-        <List.Item>Joint positions and velocities for both legs</List.Item>
-        <List.Item>Ground contact sensors for both legs</List.Item>
-        <List.Item>10 LIDAR sensors for terrain perception</List.Item>
-      </List>
+      <Title order={2} mb="md">Getting Started</Title>
 
-      <Title order={3} mb="sm">Action Space (4 dimensions)</Title>
-      <List spacing="sm" mb="xl">
-        <List.Item>Hip joint torque for left and right legs</List.Item>
-        <List.Item>Knee joint torque for left and right legs</List.Item>
-        <List.Item>Actions are continuous values in range [-1, 1]</List.Item>
-      </List>
-
-      <Title order={2} mb="md">Reward Structure</Title>
+      <Title order={3} mb="sm">1. Set Up the Environment</Title>
       <Text mb="md">
-        Understanding the reward function is crucial for successful training:
+        Install Gymnasium and create the BipedalWalker environment:
       </Text>
-      <List spacing="sm" mb="md">
-        <List.Item><strong>Forward Progress:</strong> +1.3 * forward_velocity for moving right</List.Item>
-        <List.Item><strong>Energy Penalty:</strong> -0.00035 * torque^2 for each joint</List.Item>
-        <List.Item><strong>Termination Penalty:</strong> -100 if the agent falls (hull touches ground)</List.Item>
-        <List.Item><strong>Success Bonus:</strong> Additional reward for completing the course</List.Item>
-      </List>
-
       <CodeBlock
-        code={`import gym
+        code={`# Install dependencies
+pip install gymnasium[box2d]
+pip install stable-baselines3  # Optional: for RL algorithms
 
-# Initialize environment
-env = gym.make('BipedalWalker-v3')
-observation = env.reset()
+# Test the environment
+import gymnasium as gym
 
-# Episode loop
-for step in range(1000):
-    action = agent.get_action(observation)  # Your RL agent
-    observation, reward, done, info = env.step(action)
+env = gym.make('BipedalWalker-v3', render_mode='human')
+observation, info = env.reset(seed=42)
 
-    if done:
-        break
+for _ in range(1000):
+    action = env.action_space.sample()  # Random action
+    observation, reward, terminated, truncated, info = env.step(action)
+
+    if terminated or truncated:
+        observation, info = env.reset()
 
 env.close()`}
         language="python"
       />
 
-      <Title order={2} mb="md">Evaluation Metrics</Title>
+      <Title order={3} mb="sm" mt="lg">2. Understand the Observation and Action Spaces</Title>
       <Text mb="md">
-        Your RL agent will be evaluated on multiple performance criteria:
-      </Text>
-
-      <Title order={3} mb="sm">Performance Metrics</Title>
-      <List spacing="sm" mb="md">
-        <List.Item><strong>Average Episode Reward:</strong> Mean reward over 100 test episodes</List.Item>
-        <List.Item><strong>Success Rate:</strong> Percentage of episodes where agent completes the course</List.Item>
-        <List.Item><strong>Walking Stability:</strong> Consistency in forward progress without falling</List.Item>
-        <List.Item><strong>Sample Efficiency:</strong> Episodes required to achieve stable performance</List.Item>
-      </List>
-
-      <Title order={3} mb="sm">Learning Metrics</Title>
-      <List spacing="sm" mb="xl">
-        <List.Item><strong>Convergence Speed:</strong> Time to reach stable performance</List.Item>
-        <List.Item><strong>Learning Stability:</strong> Variance in performance during training</List.Item>
-        <List.Item><strong>Final Performance:</strong> Best sustained performance level achieved</List.Item>
-      </List>
-
-      <Title order={2} mb="md">Recommended Algorithms</Title>
-      <Text mb="md">
-        Consider these RL algorithms suitable for continuous control tasks:
-      </Text>
-
-      <Title order={3} mb="sm">Policy Gradient Methods</Title>
-      <List spacing="sm" mb="md">
-        <List.Item><strong>PPO (Proximal Policy Optimization):</strong> Stable, sample-efficient, widely used</List.Item>
-        <List.Item><strong>SAC (Soft Actor-Critic):</strong> Off-policy, good for exploration</List.Item>
-        <List.Item><strong>TD3 (Twin Delayed DDPG):</strong> Improved DDPG with better stability</List.Item>
-      </List>
-
-      <Title order={3} mb="sm">Implementation Frameworks</Title>
-      <List spacing="sm" mb="md">
-        <List.Item><strong>Stable-Baselines3:</strong> High-quality implementations of RL algorithms</List.Item>
-        <List.Item><strong>Ray RLlib:</strong> Scalable RL library with distributed training</List.Item>
-        <List.Item><strong>Custom Implementation:</strong> PyTorch/TensorFlow from scratch</List.Item>
-      </List>
-
-      <Title order={2} mb="md">Training Considerations</Title>
-
-      <Title order={3} mb="sm">Hyperparameter Tuning</Title>
-      <List spacing="sm" mb="md">
-        <List.Item><strong>Learning Rate:</strong> Critical for stable policy updates</List.Item>
-        <List.Item><strong>Network Architecture:</strong> Hidden layer sizes and activation functions</List.Item>
-        <List.Item><strong>Batch Size:</strong> Balance between stability and sample efficiency</List.Item>
-        <List.Item><strong>Exploration Strategy:</strong> Noise parameters for action exploration</List.Item>
-      </List>
-
-      <Title order={3} mb="sm">Training Strategies</Title>
-      <List spacing="sm" mb="xl">
-        <List.Item><strong>Curriculum Learning:</strong> Start with easier terrain, gradually increase difficulty</List.Item>
-        <List.Item><strong>Reward Shaping:</strong> Additional intermediate rewards for learning guidance</List.Item>
-        <List.Item><strong>Experience Replay:</strong> Efficient use of collected experience data</List.Item>
-        <List.Item><strong>Regularization:</strong> Prevent overfitting to specific terrain patterns</List.Item>
-      </List>
-
-      <Title order={2} mb="md">Baseline Performance</Title>
-      <Text mb="md">
-        Your solution should exceed these baseline benchmarks:
+        The environment provides rich sensory information:
       </Text>
       <List spacing="sm" mb="md">
-        <List.Item><strong>Random Policy:</strong> ~-100 average reward (falls immediately)</List.Item>
-        <List.Item><strong>Basic PPO:</strong> ~200-250 average reward after training</List.Item>
-        <List.Item><strong>Tuned Algorithm:</strong> ~300+ average reward with consistent walking</List.Item>
+        <List.Item><strong>Observation Space:</strong> 24-dimensional vector including hull angle, velocity, joint positions, and LIDAR readings</List.Item>
+        <List.Item><strong>Action Space:</strong> 4 continuous values [-1, 1] for hip and knee torques</List.Item>
+        <List.Item><strong>Reward Signal:</strong> Forward progress minus energy costs and fall penalties</List.Item>
       </List>
 
-      <Title order={2} mb="md">Package Structure</Title>
-      <Text mb="md">Your RL package should include:</Text>
+      <Title order={3} mb="sm">3. Implement Your Agent</Title>
+      <Text mb="md">
+        Your RL agent should follow a standard interface:
+      </Text>
+      <CodeBlock
+        code={`class RLAgent:
+    def __init__(self, observation_space, action_space):
+        """Initialize your agent with networks and hyperparameters"""
+        self.observation_space = observation_space
+        self.action_space = action_space
+        # Initialize policy network, value network, etc.
+
+    def get_action(self, observation, training=True):
+        """Select action given observation"""
+        # Return action in [-1, 1]^4
+        pass
+
+    def train(self, buffer):
+        """Update policy using collected experience"""
+        pass
+
+    def save(self, path):
+        """Save model weights"""
+        pass
+
+    def load(self, path):
+        """Load model weights"""
+        pass`}
+        language="python"
+      />
+
+      <Title order={2} mb="md">Strategic Advice</Title>
+
+      <Title order={3} mb="sm">Start Simple</Title>
+      <Text mb="md">
+        Begin with proven baseline algorithms:
+      </Text>
       <List spacing="sm" mb="md">
-        <List.Item><Code>src/</Code> - Core RL algorithm implementations</List.Item>
-        <List.Item><Code>agents/</Code> - Agent architectures and neural network models</List.Item>
-        <List.Item><Code>environments/</Code> - Environment wrappers and modifications</List.Item>
-        <List.Item><Code>training/</Code> - Training loops and hyperparameter configurations</List.Item>
-        <List.Item><Code>evaluation/</Code> - Testing and performance analysis tools</List.Item>
-        <List.Item><Code>notebooks/</Code> - Training progress visualization and analysis</List.Item>
-        <List.Item><Code>saved_models/</Code> - Trained model checkpoints</List.Item>
+        <List.Item>
+          <strong>PPO (Proximal Policy Optimization):</strong> Stable and sample-efficient,
+          great starting point. Use Stable-Baselines3 implementation.
+        </List.Item>
+        <List.Item>
+          <strong>SAC (Soft Actor-Critic):</strong> Good for continuous control,
+          handles exploration well.
+        </List.Item>
+        <List.Item>
+          <strong>Monitor Everything:</strong> Track episode rewards, episode lengths,
+          and learning curves.
+        </List.Item>
+      </List>
+
+      <Title order={3} mb="sm" mt="lg">Optimize Systematically</Title>
+      <Text mb="md">
+        Once you have a baseline, improve methodically:
+      </Text>
+      <List spacing="sm" mb="md">
+        <List.Item>
+          <strong>Hyperparameter Tuning:</strong> Learning rate, batch size, and network architecture
+          significantly impact performance.
+        </List.Item>
+        <List.Item>
+          <strong>Reward Shaping:</strong> Consider adding intermediate rewards for
+          maintaining balance or lifting legs.
+        </List.Item>
+        <List.Item>
+          <strong>Curriculum Learning:</strong> Start with easier terrain or shorter episodes,
+          gradually increase difficulty.
+        </List.Item>
+        <List.Item>
+          <strong>Observation Normalization:</strong> Normalize inputs for stable training.
+        </List.Item>
+      </List>
+
+      <Title order={3} mb="sm" mt="lg">Advanced Approaches</Title>
+      <Text mb="md">
+        For cutting-edge performance:
+      </Text>
+      <List spacing="sm" mb="md">
+        <List.Item>
+          <strong>Evolutionary Strategies:</strong> Population-based training can find
+          robust solutions.
+        </List.Item>
+        <List.Item>
+          <strong>Imitation Learning:</strong> Bootstrap from expert demonstrations
+          or successful trajectories.
+        </List.Item>
+        <List.Item>
+          <strong>Domain Randomization:</strong> Train on varied physics parameters
+          for robustness.
+        </List.Item>
+        <List.Item>
+          <strong>Hierarchical RL:</strong> Separate high-level gait planning from
+          low-level control.
+        </List.Item>
+      </List>
+
+      <Alert icon={<IconInfoCircle />} color="green" mb="xl">
+        <Text weight={500}>Pro Tips</Text>
+        <List spacing="xs" size="sm" mt="xs">
+          <List.Item>Use vectorized environments for faster training</List.Item>
+          <List.Item>Implement early stopping to prevent overfitting</List.Item>
+          <List.Item>Save checkpoints regularly during training</List.Item>
+          <List.Item>Visualize learned behavior to debug issues</List.Item>
+        </List>
+      </Alert>
+
+      <Title order={2} mb="md">Testing Your Agent</Title>
+
+      <Title order={3} mb="sm">Local Testing</Title>
+      <Text mb="md">
+        Evaluate your trained agent:
+      </Text>
+      <CodeBlock
+        code={`import gymnasium as gym
+import numpy as np
+from your_package.agent import RLAgent
+
+# Load environment and agent
+env = gym.make('BipedalWalker-v3')
+agent = RLAgent.load('path/to/model')
+
+# Evaluate over multiple episodes
+rewards = []
+for episode in range(100):
+    observation, info = env.reset()
+    episode_reward = 0
+
+    while True:
+        action = agent.get_action(observation, training=False)
+        observation, reward, terminated, truncated, info = env.step(action)
+        episode_reward += reward
+
+        if terminated or truncated:
+            break
+
+    rewards.append(episode_reward)
+
+print(f"Average Reward: {np.mean(rewards):.2f} ± {np.std(rewards):.2f}")
+print(f"Success Rate: {np.mean(np.array(rewards) > 250):.1%}")`}
+        language="python"
+      />
+
+      <Title order={3} mb="sm" mt="lg">Competition Submission</Title>
+      <Text mb="md">
+        Submit your agent to ML Arena:
+      </Text>
+      <List spacing="sm" mb="md">
+        <List.Item>
+          Visit <Anchor href="https://ml-arena.com/viewcompetition/10" target="_blank">the competition page</Anchor>
+        </List.Item>
+        <List.Item>Upload your agent code and trained model weights</List.Item>
+        <List.Item>Include a requirements.txt with dependencies</List.Item>
+        <List.Item>Your agent will be evaluated on multiple random seeds</List.Item>
+      </List>
+
+      <Title order={2} mb="md">Expected Performance</Title>
+      <Text mb="md">
+        Typical performance ranges after training:
+      </Text>
+      <List spacing="sm" mb="md">
+        <List.Item><strong>Random Policy:</strong> -100 to -50 (falls immediately)</List.Item>
+        <List.Item><strong>Basic PPO (1M steps):</strong> 200-250 average reward</List.Item>
+        <List.Item><strong>Tuned PPO/SAC:</strong> 280-320 average reward</List.Item>
+        <List.Item><strong>State-of-the-art:</strong> 330+ with consistent walking</List.Item>
+      </List>
+
+      <Title order={2} mb="md">Building a Reproducible Project</Title>
+      <Text mb="md">
+        Structure your project for reproducibility and experimentation:
+      </Text>
+
+      <Title order={3} mb="sm">Recommended Structure</Title>
+      <CodeBlock
+        code={`bipedal_walker_rl/
+├── report.ipynb         # Results and analysis notebook
+├── train.py            # Main training script
+├── evaluate.py         # Evaluation script
+├── requirements.txt    # Dependencies
+├── configs/
+│   ├── ppo_config.yaml # PPO hyperparameters
+│   └── sac_config.yaml # SAC hyperparameters
+├── src/
+│   ├── agents/
+│   │   ├── ppo.py     # PPO implementation
+│   │   ├── sac.py     # SAC implementation
+│   │   └── networks.py # Neural network architectures
+│   ├── utils/
+│   │   ├── buffer.py   # Experience replay buffer
+│   │   ├── logger.py   # Training metrics logging
+│   │   └── wrappers.py # Environment wrappers
+│   └── training/
+│       ├── trainer.py  # Training loop
+│       └── evaluator.py # Evaluation utilities
+├── experiments/
+│   └── logs/           # Training logs and metrics
+├── models/
+│   ├── checkpoints/    # Saved model weights
+│   └── best_model.zip  # Best performing model
+└── notebooks/
+    ├── exploration.ipynb # Environment exploration
+    └── analysis.ipynb    # Results visualization`}
+        language="text"
+      />
+
+      <Title order={3} mb="sm" mt="lg">Key Components</Title>
+      <List spacing="sm" mb="md">
+        <List.Item>
+          <strong>Reproducible Training:</strong> Set random seeds and log all hyperparameters
+        </List.Item>
+        <List.Item>
+          <strong>Modular Design:</strong> Separate algorithms, networks, and utilities
+        </List.Item>
+        <List.Item>
+          <strong>Experiment Tracking:</strong> Use tensorboard or wandb for metrics
+        </List.Item>
+        <List.Item>
+          <strong>Checkpointing:</strong> Save models regularly during training
+        </List.Item>
       </List>
 
       <Title order={2} mb="md">Success Criteria</Title>
       <Text mb="md">A successful RL submission will demonstrate:</Text>
-      <List spacing="sm">
+      <List spacing="sm" mb="xl">
         <List.Item>Consistent walking behavior across multiple test episodes</List.Item>
         <List.Item>Stable learning progression with convergence analysis</List.Item>
         <List.Item>Robust performance on different terrain configurations</List.Item>
         <List.Item>Clear documentation of hyperparameter choices and training process</List.Item>
         <List.Item>Comparative analysis with baseline algorithms and ablation studies</List.Item>
         <List.Item>Reproducible training pipeline with proper random seeding</List.Item>
+      </List>
+
+      <Alert icon={<IconRobot />} color="blue">
+        <Text weight={500}>Remember</Text>
+        <Text size="sm">
+          Reinforcement learning requires patience and systematic experimentation. Early attempts
+          will likely fail, but each failure provides valuable information about what doesn't work.
+          Focus on understanding why agents fail before trying complex solutions.
+        </Text>
+      </Alert>
+
+      <Title order={2} mb="md" mt="xl">Additional Resources</Title>
+      <List spacing="sm">
+        <List.Item>
+          <Anchor href="https://gymnasium.farama.org/environments/box2d/bipedal_walker/" target="_blank">
+            Gymnasium Documentation
+          </Anchor> - Official environment documentation and details
+        </List.Item>
+        <List.Item>
+          <Anchor href="https://ml-arena.com/viewcompetition/10" target="_blank">
+            Competition Page
+          </Anchor> - Submit and track your progress
+        </List.Item>
+        <List.Item>
+          <Anchor href="https://www.raphaelcousin.com/courses/data-science-practice/module9/course/model-free-methods" target="_blank">
+            Module 9: Model-Free Methods
+          </Anchor> - Reinforcement learning course materials
+        </List.Item>
       </List>
     </Container>
   );

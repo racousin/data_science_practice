@@ -243,6 +243,14 @@ const Introduction = () => {
         </div>
 <div data-slide>
         <Title order={4} mb="sm">Infrastructure and Cloud Tools</Title>
+                                    <Flex direction="column" align="center">
+                      <Image
+                        src="/assets/data-science-practice/module3/cloud.jpeg"
+                        alt="Yutong Liu & The Bigger Picture"
+                        style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+                        fluid
+                      />
+                    </Flex>
         <List spacing="sm" mb="md">
           <List.Item>
             <strong>Amazon Web Services (AWS):</strong> Offers a wide range of cloud computing services, including EC2 for compute power, S3 for storage, and SageMaker for machine learning.
@@ -254,15 +262,19 @@ const Introduction = () => {
             <strong>Microsoft Azure:</strong> Features services such as Azure Databricks for big data analytics, Azure Machine Learning for building and deploying models, and Azure Data Lake for data storage.
           </List.Item>
         </List>
+
+      </div>
+   
+              <div data-slide>
                             <Flex direction="column" align="center">
                       <Image
-                        src="/assets/data-science-practice/module3/cloud.jpeg"
+                        src="/assets/data-science-practice/module3/pyramid.png"
                         alt="Yutong Liu & The Bigger Picture"
                         style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
                         fluid
                       />
                     </Flex>
-      </div>
+                    </div>
     </Container>
   );
 };

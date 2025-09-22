@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Title, Text, Accordion, Stack, List, Paper, Alert } from '@mantine/core';
+import { Container, Title, Text, Stack, List, Paper, Alert } from '@mantine/core';
 import { Globe, Shield, Code, FileSearch } from 'lucide-react';
 import CodeBlock from "components/CodeBlock";
 
@@ -14,16 +14,12 @@ const SectionIcon = ({ type }) => {
 };
 
 const ScrapingSection = ({ type, title, content }) => (
-  <Accordion.Item value={type}>
-    <Accordion.Control icon={<SectionIcon type={type} />}>
-      {title}
-    </Accordion.Control>
-    <Accordion.Panel>
-      <Stack gap="md">
-        {content}
-      </Stack>
-    </Accordion.Panel>
-  </Accordion.Item>
+  <div data-slide>
+    <Title order={2}>{title}</Title>
+    <Stack gap="md">
+      {content}
+    </Stack>
+  </div>
 );
 
 const WebScraping = () => {
@@ -181,20 +177,17 @@ if __name__ == "__main__":
 
   return (
     <Container fluid>
-      <Stack gap="xl">
-        <div>
-          <Title order={1}>Web Scraping</Title>
-          <Text mt="md">
-            Web scraping enables automated data collection from websites when APIs aren't available. This guide covers the fundamentals and best practices, with a practical example of building a price tracker.
-          </Text>
-        </div>
+      <div data-slide>
+        <Title order={1}>Web Scraping</Title>
+        <Text size="lg" mt="md">
+          Web scraping enables automated data collection from websites when APIs aren't available.
+          This guide covers the fundamentals and best practices, with a practical example of building a price tracker.
+        </Text>
+      </div>
 
-        <Accordion>
-          {sections.map(section => (
-            <ScrapingSection key={section.type} {...section} />
-          ))}
-        </Accordion>
-      </Stack>
+      {sections.map(section => (
+        <ScrapingSection key={section.type} {...section} />
+      ))}
     </Container>
   );
 };
