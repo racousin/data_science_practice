@@ -1,6 +1,5 @@
 import React from 'react';
-import { Container, Title, Text, Stack, List, Group, Table } from '@mantine/core';
-import { IconCheck, IconX } from '@tabler/icons-react';
+import { Container, Title, Text, Stack, List, Flex, Image } from '@mantine/core';
 import CodeBlock from 'components/CodeBlock';
 import { InlineMath, BlockMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
@@ -11,246 +10,210 @@ const Models = () => {
       <Title order={1} mt="xl" mb="md">Machine Learning Models</Title>
 
       <Stack spacing="xl">
-        <ModelSection
-          title="Linear Models"
-          id="linear-models"
-          math={<BlockMath math="y = \beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_nx_n + \epsilon" />}
-          description="Linear models assume a linear relationship between the input features and the target variable. They are simple yet powerful for many tasks."
-          hyperparameters={[
-            { name: 'fit_intercept', description: 'Whether to calculate the intercept (β₀)' },
-            { name: 'normalize', description: 'Whether to normalize the input features' },
-            { name: 'C', description: 'Inverse of regularization strength (for regularized models)' },
-            { name: 'penalty', description: 'Type of regularization (L1, L2, ElasticNet)' },
-          ]}
-          checks={{
-            unscaled: false,
-            missing: false,
-            categorical: false,
-            regression: true,
-            classification: true
-          }}
-          bayesianOptimization={`
-from skopt import BayesSearchCV
-from skopt.space import Real, Integer, Categorical
-from sklearn.linear_model import LogisticRegression, LinearRegression
+        <div data-slide>
+          <Title order={2}>Linear Models</Title>
+          <BlockMath math="y = \beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_nx_n + \epsilon" />
 
+          <Title order={3} mt="lg">Learning Principle</Title>
+          <Text mb="md">
+            Linear models minimize the residual sum of squares <InlineMath math="\sum_{i=1}^n (y_i - \hat{y}_i)^2" /> through closed-form solution <InlineMath math="\beta = (X^TX)^{-1}X^Ty" /> or gradient descent for large datasets.
+          </Text>
+
+          <Title order={3}>Key Hyperparameters</Title>
+          <List spacing="sm">
+            <List.Item>
+              <strong>C</strong> (regularization): Controls overfitting. Small C = strong regularization, large C = weak regularization. Typical range: <InlineMath math="10^{-3}" /> to <InlineMath math="10^{3}" />
+            </List.Item>
+            <List.Item>
+              <strong>penalty</strong>: L1 produces sparse models (feature selection), L2 handles collinearity, ElasticNet combines both with mixing parameter <InlineMath math="\alpha" />
+            </List.Item>
+            <List.Item>
+              <strong>solver</strong>: 'liblinear' for small datasets, 'sag'/'saga' for large datasets, 'lbfgs' for multiclass problems
+            </List.Item>
+          </List>
+
+          <CodeBlock language="python" code={`# Optimization example
+from sklearn.linear_model import LogisticRegression
+model = LogisticRegression(C=1.0, penalty='l2', solver='lbfgs')
+model.fit(X_train, y_train)`} />
+
+          <Title order={3} mt="lg">Bayesian Optimization</Title>
+          <CodeBlock language="python" code={`from skopt import BayesSearchCV
+from skopt.space import Real, Categorical
+from sklearn.linear_model import LogisticRegression, Ridge
+
+# Classification
 param_space = {
-    'C': Real(1e-6, 1e+6, prior='log-uniform'),
-    'penalty': Categorical(['l1', 'l2', 'elasticnet']),
-    'l1_ratio': Real(0, 1),
-    'solver': Categorical(['newton-cg', 'lbfgs', 'liblinear', 'sag', 'saga'])
+    'C': Real(1e-3, 1e3, prior='log-uniform'),
+    'penalty': Categorical(['l1', 'l2']),
+    'solver': Categorical(['liblinear', 'saga'])
 }
+opt = BayesSearchCV(LogisticRegression(), param_space, n_iter=32, cv=5)
 
-# For classification
-opt_clf = BayesSearchCV(LogisticRegression(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
-opt_clf.fit(X_train, y_train)
+# Regression
+param_space_reg = {'alpha': Real(1e-3, 1e3, prior='log-uniform')}
+opt_reg = BayesSearchCV(Ridge(), param_space_reg, n_iter=32, cv=5)`} />
+        </div>
 
-# For regression
-opt_reg = BayesSearchCV(LinearRegression(), {}, n_iter=50, cv=5, n_jobs=-1, verbose=0)
-opt_reg.fit(X_train, y_train)
+        <div data-slide>
+          <Title order={2}>K-Nearest Neighbors (KNN)</Title>
+          <BlockMath math="f(x) = \frac{1}{k} \sum_{i \in N_k(x, D)} y_i" />
 
-print("Best parameters (classification):", opt_clf.best_params_)
-print("Best cross-validation score (classification):", opt_clf.best_score_)
-print("Best parameters (regression):", opt_reg.best_params_)
-print("Best cross-validation score (regression):", opt_reg.best_score_)
-          `}
-        />
+          <Title order={3} mt="lg">Learning Principle</Title>
+          <Text mb="md">
+            KNN is a lazy learner - no explicit training phase. Predictions are made by finding k nearest points using distance metric <InlineMath math="d(x_i, x_j)" /> and aggregating their labels (majority vote for classification, mean for regression).
+          </Text>
 
-        <ModelSection
-          title="K-Nearest Neighbors (KNN)"
-          id="knn"
-          math={<BlockMath math="f(x) = \frac{1}{k} \sum_{i \in N_k(x, D)} y_i" />}
-          description="KNN is a non-parametric method used for classification and regression. It uses the k nearest neighbors of a query point to make predictions."
-          hyperparameters={[
-            { name: 'n_neighbors', description: 'Number of neighbors to use' },
-            { name: 'weights', description: 'Weight function used in prediction' },
-            { name: 'metric', description: 'Distance metric to use' },
-            { name: 'p', description: 'Power parameter for Minkowski metric' },
-          ]}
-          checks={{
-            unscaled: false,
-            missing: false,
-            categorical: false,
-            regression: true,
-            classification: true
-          }}
-          bayesianOptimization={`
-from skopt import BayesSearchCV
-from skopt.space import Real, Integer, Categorical
+          <Title order={3}>Key Hyperparameters</Title>
+          <List spacing="sm">
+            <List.Item>
+              <strong>n_neighbors (k)</strong>: Small k = high variance (overfitting), large k = high bias (underfitting). Odd values prevent ties. Typical: 3-20
+            </List.Item>
+            <List.Item>
+              <strong>weights</strong>: 'uniform' treats all neighbors equally, 'distance' weights by <InlineMath math="1/d" /> giving closer points more influence
+            </List.Item>
+            <List.Item>
+              <strong>metric & p</strong>: Euclidean (p=2), Manhattan (p=1), or Minkowski (general). Choice depends on feature scale and domain
+            </List.Item>
+          </List>
+
+          <CodeBlock language="python" code={`# KNN with distance weighting
+from sklearn.neighbors import KNeighborsClassifier
+model = KNeighborsClassifier(n_neighbors=5, weights='distance')
+model.fit(X_train, y_train)`} />
+
+          <Title order={3} mt="lg">Bayesian Optimization</Title>
+          <CodeBlock language="python" code={`from skopt import BayesSearchCV
+from skopt.space import Integer, Categorical
 from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
 
 param_space = {
-    'n_neighbors': Integer(1, 50),
+    'n_neighbors': Integer(3, 30),
     'weights': Categorical(['uniform', 'distance']),
-    'metric': Categorical(['euclidean', 'manhattan', 'minkowski']),
-    'p': Integer(1, 5)
+    'metric': Categorical(['euclidean', 'manhattan'])
 }
 
-# For classification
-opt_clf = BayesSearchCV(KNeighborsClassifier(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
-opt_clf.fit(X_train, y_train)
+# Classification & Regression use same hyperparameters
+opt_clf = BayesSearchCV(KNeighborsClassifier(), param_space, n_iter=32, cv=5)
+opt_reg = BayesSearchCV(KNeighborsRegressor(), param_space, n_iter=32, cv=5)`} />
 
-# For regression
-opt_reg = BayesSearchCV(KNeighborsRegressor(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
-opt_reg.fit(X_train, y_train)
+          <Flex direction="column" align="center" mt="md">
+            <Image
+              src="/assets/data-science-practice/module6/knn.png"
+              style={{ maxWidth: 'min(600px, 80vw)', height: 'auto' }}
+              fluid
+            />
+          </Flex>
+        </div>
 
-print("Best parameters (classification):", opt_clf.best_params_)
-print("Best cross-validation score (classification):", opt_clf.best_score_)
-print("Best parameters (regression):", opt_reg.best_params_)
-print("Best cross-validation score (regression):", opt_reg.best_score_)
-          `}
-        />
+        <div data-slide>
+          <Title order={2}>Support Vector Machines (SVM)</Title>
+          <BlockMath math="\min_{\mathbf{w},b} \frac{1}{2}||\mathbf{w}||^2 + C\sum_{i=1}^n \xi_i" />
 
-        <ModelSection
-          title="Support Vector Machines (SVM)"
-          id="svm"
-          math={<BlockMath math="f(x) = \text{sign}(\mathbf{w}^T\mathbf{x} + b)" />}
-          description="SVM finds the hyperplane that best separates classes in the feature space. It can be used for both classification and regression."
-          hyperparameters={[
-            { name: 'C', description: 'Regularization parameter' },
-            { name: 'kernel', description: 'Kernel type to be used' },
-            { name: 'gamma', description: 'Kernel coefficient for RBF, poly and sigmoid kernels' },
-            { name: 'degree', description: 'Degree of the polynomial kernel function' },
-          ]}
-          checks={{
-            unscaled: false,
-            missing: false,
-            categorical: false,
-            regression: true,
-            classification: true
-          }}
-          bayesianOptimization={`
-from skopt import BayesSearchCV
-from skopt.space import Real, Integer, Categorical
+          <Title order={3} mt="lg">Learning Principle</Title>
+          <Text mb="md">
+            SVM maximizes margin between classes by solving quadratic optimization. Maps data to higher dimensions via kernel trick: <InlineMath math="K(x_i, x_j) = \phi(x_i)^T\phi(x_j)" /> without explicit transformation.
+          </Text>
+
+          <Title order={3}>Key Hyperparameters</Title>
+          <List spacing="sm">
+            <List.Item>
+              <strong>C</strong>: Trade-off between margin maximization and misclassification. Small C = soft margin, large C = hard margin. Range: <InlineMath math="10^{-2}" /> to <InlineMath math="10^{4}" />
+            </List.Item>
+            <List.Item>
+              <strong>kernel</strong>: 'linear' for linearly separable, 'rbf' (Gaussian) for non-linear, 'poly' for polynomial boundaries
+            </List.Item>
+            <List.Item>
+              <strong>gamma</strong>: Kernel coefficient controlling influence radius. Small = far reach, large = close reach. Auto = <InlineMath math="1/(n\_features \cdot var(X))" />
+            </List.Item>
+          </List>
+
+          <CodeBlock language="python" code={`# SVM with RBF kernel
+from sklearn.svm import SVC
+model = SVC(kernel='rbf', C=1.0, gamma='scale')
+model.fit(X_train, y_train)`} />
+
+          <Title order={3} mt="lg">Bayesian Optimization</Title>
+          <CodeBlock language="python" code={`from skopt import BayesSearchCV
+from skopt.space import Real, Categorical
 from sklearn.svm import SVC, SVR
 
 param_space = {
-    'C': Real(1e-6, 1e+6, prior='log-uniform'),
-    'gamma': Real(1e-6, 1e+1, prior='log-uniform'),
-    'kernel': Categorical(['rbf', 'linear', 'poly']),
-    'degree': Integer(1, 5)
+    'C': Real(1e-2, 1e4, prior='log-uniform'),
+    'gamma': Real(1e-4, 1e1, prior='log-uniform'),
+    'kernel': Categorical(['rbf', 'linear'])
 }
 
-# For classification
-opt_clf = BayesSearchCV(SVC(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
-opt_clf.fit(X_train, y_train)
+opt_clf = BayesSearchCV(SVC(), param_space, n_iter=32, cv=5)
+opt_reg = BayesSearchCV(SVR(), param_space, n_iter=32, cv=5)`} />
 
-# For regression
-opt_reg = BayesSearchCV(SVR(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
-opt_reg.fit(X_train, y_train)
+          <Flex direction="column" align="center" mt="md">
+            <Image
+              src="/assets/data-science-practice/module6/svm.png"
+              style={{ maxWidth: 'min(600px, 80vw)', height: 'auto' }}
+              fluid
+            />
+          </Flex>
+        </div>
 
-print("Best parameters (classification):", opt_clf.best_params_)
-print("Best cross-validation score (classification):", opt_clf.best_score_)
-print("Best parameters (regression):", opt_reg.best_params_)
-print("Best cross-validation score (regression):", opt_reg.best_score_)
-          `}
-        />
+        <div data-slide>
+          <Title order={2}>Decision Trees</Title>
+          <BlockMath math="\text{Gain}(S, A) = H(S) - \sum_{v \in Values(A)} \frac{|S_v|}{|S|} H(S_v)" />
 
-        <ModelSection
-          title="Decision Trees"
-          id="decision-trees"
-          math={<BlockMath math="\text{Information Gain} = H(S) - \sum_{i=1}^m \frac{|S_i|}{|S|} H(S_i)" />}
-          description="Decision Trees are non-parametric supervised learning methods used for classification and regression. The model is represented as a tree structure."
-          hyperparameters={[
-            { name: 'max_depth', description: 'Maximum depth of the tree' },
-            { name: 'min_samples_split', description: 'Minimum number of samples required to split an internal node' },
-            { name: 'min_samples_leaf', description: 'Minimum number of samples required to be at a leaf node' },
-            { name: 'max_features', description: 'Number of features to consider when looking for the best split' },
-          ]}
-          checks={{
-            unscaled: true,
-            missing: false,
-            categorical: true,
-            regression: true,
-            classification: true
-          }}
-          bayesianOptimization={`
-from skopt import BayesSearchCV
-from skopt.space import Real, Integer, Categorical
+          <Title order={3} mt="lg">Learning Principle</Title>
+          <Text mb="md">
+            Trees recursively partition feature space using greedy splits that maximize information gain (entropy reduction) or minimize Gini impurity: <InlineMath math="Gini = 1 - \sum_{i=1}^C p_i^2" />. Each node tests one feature, creating axis-aligned decision boundaries.
+          </Text>
+
+          <Title order={3}>Key Hyperparameters</Title>
+          <List spacing="sm">
+            <List.Item>
+              <strong>max_depth</strong>: Controls tree complexity. Deep trees overfit, shallow trees underfit. Start with 3-10 for interpretability
+            </List.Item>
+            <List.Item>
+              <strong>min_samples_split</strong>: Minimum samples to split node. Higher values prevent overfitting. Typical: 2-20 or 1-5% of data
+            </List.Item>
+            <List.Item>
+              <strong>max_features</strong>: Features considered per split. 'sqrt' for classification, 'auto' for regression, reduces variance
+            </List.Item>
+            <List.Item>
+              <strong>criterion</strong>: 'gini' for Gini impurity (faster), 'entropy' for information gain (slightly better for imbalanced data)
+            </List.Item>
+          </List>
+
+          <CodeBlock language="python" code={`# Decision tree with pruning
+from sklearn.tree import DecisionTreeClassifier
+model = DecisionTreeClassifier(max_depth=5, min_samples_split=20)
+model.fit(X_train, y_train)`} />
+
+          <Title order={3} mt="lg">Bayesian Optimization</Title>
+          <CodeBlock language="python" code={`from skopt import BayesSearchCV
+from skopt.space import Integer, Real, Categorical
 from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 
 param_space = {
-    'max_depth': Integer(1, 20),
-    'min_samples_split': Integer(2, 20),
+    'max_depth': Integer(2, 15),
+    'min_samples_split': Integer(2, 50),
     'min_samples_leaf': Integer(1, 20),
-    'max_features': Real(0.1, 1.0)
+    'max_features': Categorical(['sqrt', 'log2', None])
 }
 
-# For classification
-opt_clf = BayesSearchCV(DecisionTreeClassifier(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
-opt_clf.fit(X_train, y_train)
+opt_clf = BayesSearchCV(DecisionTreeClassifier(), param_space, n_iter=32, cv=5)
+opt_reg = BayesSearchCV(DecisionTreeRegressor(), param_space, n_iter=32, cv=5)`} />
 
-# For regression
-opt_reg = BayesSearchCV(DecisionTreeRegressor(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
-opt_reg.fit(X_train, y_train)
+          <Flex direction="column" align="center" mt="md">
+            <Image
+              src="/assets/data-science-practice/module6/tree.png"
+              style={{ maxWidth: 'min(600px, 80vw)', height: 'auto' }}
+              fluid
+            />
+          </Flex>
+        </div>
 
-print("Best parameters (classification):", opt_clf.best_params_)
-print("Best cross-validation score (classification):", opt_clf.best_score_)
-print("Best parameters (regression):", opt_reg.best_params_)
-print("Best cross-validation score (regression):", opt_reg.best_score_)
-          `}
-        />
+
       </Stack>
     </Container>
   );
 };
-
-const ModelSection = ({ title, id, math, description, hyperparameters, checks, bayesianOptimization }) => (
-  <Stack spacing="md">
-    <Title order={2} id={id}>{title}</Title>
-    {math}
-    <Text>{description}</Text>
-    <Title order={3}>Key Hyperparameters</Title>
-    <Table>
-      <thead>
-        <tr>
-          <th>Parameter</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        {hyperparameters.map((param, index) => (
-          <tr key={index}>
-            <td><code>{param.name}</code></td>
-            <td>{param.description}</td>
-          </tr>
-        ))}
-      </tbody>
-    </Table>
-    <Title order={3}>Model Characteristics</Title>
-    <Table>
-      <thead>
-        <tr>
-          <th>Characteristic</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Robust to unscaled data</td>
-          <td>{checks.unscaled ? <IconCheck color="green" /> : <IconX color="red" />}</td>
-        </tr>
-        <tr>
-          <td>Handles missing values</td>
-          <td>{checks.missing ? <IconCheck color="green" /> : <IconX color="red" />}</td>
-        </tr>
-        {/* <tr>
-          <td>Handles categorical data</td>
-          <td>{checks.categorical ? <IconCheck color="green" /> : <IconX color="red" />}</td>
-        </tr> */}
-        <tr>
-          <td>Supports regression</td>
-          <td>{checks.regression ? <IconCheck color="green" /> : <IconX color="red" />}</td>
-        </tr>
-        <tr>
-          <td>Supports classification</td>
-          <td>{checks.classification ? <IconCheck color="green" /> : <IconX color="red" />}</td>
-        </tr>
-      </tbody>
-    </Table>
-    <Title order={3}>Bayesian Optimization Cheat Sheet</Title>
-    <CodeBlock language="python" code={bayesianOptimization} />
-  </Stack>
-);
 
 export default Models;

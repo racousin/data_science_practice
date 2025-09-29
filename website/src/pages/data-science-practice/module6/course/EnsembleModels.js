@@ -1,6 +1,5 @@
 import React from 'react';
-import { Container, Title, Text, Stack, List, Group, Table, Badge } from '@mantine/core';
-import { IconCheck, IconX } from '@tabler/icons-react';
+import { Container, Title, Text, Stack, List, Flex, Image } from '@mantine/core';
 import CodeBlock from 'components/CodeBlock';
 import { InlineMath, BlockMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
@@ -11,334 +10,316 @@ const EnsembleModels = () => {
       <Title order={1} mt="xl" mb="md">Ensemble Models</Title>
 
       <Stack spacing="xl">
-        <ModelSection
-          title="Boosting"
-          id="boosting"
-          math={<BlockMath math="F_m(x) = F_{m-1}(x) + \alpha_m h_m(x)" />}
-          description="Boosting builds models sequentially, where each new model tries to correct the errors of the previous ones. It converts weak learners into strong learners."
-          submodels={[
-            {
-              name: "AdaBoost",
-              description: "Adjusts weights of misclassified instances after each iteration.",
-              hyperparameters: [
-                { name: 'n_estimators', description: 'Number of weak learners' },
-                { name: 'learning_rate', description: 'Weight applied to each classifier at each boosting iteration' },
-              ],
-              checks: {
-                unscaled: false,
-                missing: false,
-                categorical: false,
-                regression: true,
-                classification: true
-              },
-              bayesianOptimization: `
-from skopt import BayesSearchCV
-from skopt.space import Real, Integer
-from sklearn.ensemble import AdaBoostClassifier, AdaBoostRegressor
+        <div data-slide>
+          <Title order={2}>Random Forests</Title>
+          <BlockMath math="f(x) = \frac{1}{B} \sum_{b=1}^B f_b(x)" />
 
-param_space = {
-    'n_estimators': Integer(50, 500),
-    'learning_rate': Real(0.01, 1.0, prior='log-uniform'),
-}
+          <Title order={3} mt="lg">Learning Principle</Title>
+          <Text mb="md">
+            Random Forests combine bagging with random feature selection. Each tree is trained on bootstrap sample with <InlineMath math="\sqrt{p}" /> features randomly selected at each split. Reduces variance through averaging uncorrelated trees.
+          </Text>
 
-# For classification
-opt_clf = BayesSearchCV(AdaBoostClassifier(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
-opt_clf.fit(X_train, y_train)
+          <Title order={3}>Key Hyperparameters</Title>
+          <List spacing="sm">
+            <List.Item>
+              <strong>n_estimators</strong>: Number of trees. More trees = better performance but diminishing returns. Typical: 100-500
+            </List.Item>
+            <List.Item>
+              <strong>max_features</strong>: Features per split. 'sqrt' for classification, 'auto' (all) for regression, controls diversity-accuracy trade-off
+            </List.Item>
+            <List.Item>
+              <strong>max_depth</strong>: Tree depth. None = fully grown trees (high variance), shallow = underfitting. Often left unlimited
+            </List.Item>
+            <List.Item>
+              <strong>min_samples_split</strong>: Minimum samples to split. Higher values prevent overfitting. Typical: 2-20
+            </List.Item>
+          </List>
 
-# For regression
-opt_reg = BayesSearchCV(AdaBoostRegressor(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
-opt_reg.fit(X_train, y_train)
-              `
-            },
-            {
-              name: "Gradient Boosting",
-              description: "Minimizes the loss function of the entire ensemble using gradient descent.",
-              hyperparameters: [
-                { name: 'n_estimators', description: 'Number of boosting stages to perform' },
-                { name: 'learning_rate', description: 'Shrinks the contribution of each tree' },
-                { name: 'max_depth', description: 'Maximum depth of the individual regression estimators' },
-              ],
-              checks: {
-                unscaled: true,
-                missing: false,
-                categorical: false,
-                regression: true,
-                classification: true
-              },
-              bayesianOptimization: `
-from skopt import BayesSearchCV
-from skopt.space import Real, Integer
-from sklearn.ensemble import GradientBoostingClassifier, GradientBoostingRegressor
+          <CodeBlock language="python" code={`# Random Forest with typical settings
+from sklearn.ensemble import RandomForestClassifier
+model = RandomForestClassifier(n_estimators=200, max_features='sqrt')
+model.fit(X_train, y_train)`} />
 
-param_space = {
-    'n_estimators': Integer(50, 500),
-    'learning_rate': Real(0.01, 1.0, prior='log-uniform'),
-    'max_depth': Integer(3, 10),
-    'min_samples_split': Integer(2, 20),
-    'min_samples_leaf': Integer(1, 20)
-}
-
-# For classification
-opt_clf = BayesSearchCV(GradientBoostingClassifier(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
-opt_clf.fit(X_train, y_train)
-
-# For regression
-opt_reg = BayesSearchCV(GradientBoostingRegressor(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
-opt_reg.fit(X_train, y_train)
-              `
-            }
-          ]}
-        />
-
-        <ModelSection
-          title="Random Forests"
-          id="random-forests"
-          math={<BlockMath math="f(x) = \frac{1}{B} \sum_{b=1}^B f_b(x)" />}
-          description="Random Forests are an ensemble of decision trees, where each tree is trained on a random subset of the data and features. The final prediction is the average (for regression) or majority vote (for classification) of all trees."
-          hyperparameters={[
-            { name: 'n_estimators', description: 'Number of trees in the forest' },
-            { name: 'max_depth', description: 'Maximum depth of the trees' },
-            { name: 'min_samples_split', description: 'Minimum number of samples required to split an internal node' },
-            { name: 'min_samples_leaf', description: 'Minimum number of samples required to be at a leaf node' },
-            { name: 'max_features', description: 'Number of features to consider when looking for the best split' },
-          ]}
-          checks={{
-            unscaled: true,
-            missing: true,
-            categorical: false,
-            regression: true,
-            classification: true
-          }}
-          bayesianOptimization={`
-from skopt import BayesSearchCV
-from skopt.space import Real, Integer, Categorical
+          <Title order={3} mt="lg">Bayesian Optimization</Title>
+          <CodeBlock language="python" code={`from skopt import BayesSearchCV
+from skopt.space import Integer, Categorical
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 
 param_space = {
-    'n_estimators': Integer(10, 500),
-    'max_depth': Integer(1, 20),
+    'n_estimators': Integer(50, 300),
+    'max_depth': Integer(5, 30),
     'min_samples_split': Integer(2, 20),
-    'min_samples_leaf': Integer(1, 20),
-    'max_features': Real(0.1, 1.0)
+    'max_features': Categorical(['sqrt', 'log2', 0.5])
 }
 
-# For classification
-opt_clf = BayesSearchCV(RandomForestClassifier(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
-opt_clf.fit(X_train, y_train)
+opt_clf = BayesSearchCV(RandomForestClassifier(), param_space, n_iter=32, cv=5)
+opt_reg = BayesSearchCV(RandomForestRegressor(), param_space, n_iter=32, cv=5)`} />
 
-# For regression
-opt_reg = BayesSearchCV(RandomForestRegressor(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
-opt_reg.fit(X_train, y_train)
-          `}
-        />
+          <Flex direction="column" align="center" mt="md">
+            <Image
+              src="/assets/data-science-practice/module6/rf.webp"
+              style={{ maxWidth: 'min(600px, 80vw)', height: 'auto' }}
+              fluid
+            />
+          </Flex>
+        </div>
 
-        <ModelSection
-          title="Advanced Gradient Boosting"
-          id="advanced-gradient-boosting"
-          math={<BlockMath math="L(\phi) = \sum_i l(y_i, \hat{y}_i) + \sum_k \Omega(f_k)" />}
-          description="Advanced Gradient Boosting implementations like XGBoost, LightGBM, and CatBoost offer improved performance and efficiency over traditional Gradient Boosting."
-          submodels={[
-            {
-              name: "XGBoost",
-              description: "Optimized distributed gradient boosting library.",
-              hyperparameters: [
-                { name: 'n_estimators', description: 'Number of gradient boosted trees' },
-                { name: 'learning_rate', description: 'Boosting learning rate' },
-                { name: 'max_depth', description: 'Maximum tree depth for base learners' },
-                { name: 'subsample', description: 'Subsample ratio of the training instance' },
-                { name: 'colsample_bytree', description: 'Subsample ratio of columns when constructing each tree' },
-              ],
-              checks: {
-                unscaled: true,
-                missing: true,
-                categorical: false,
-                regression: true,
-                classification: true
-              },
-              bayesianOptimization: `
-from skopt import BayesSearchCV
-from skopt.space import Real, Integer, Categorical
+        <div data-slide>
+          <Title order={2}>AdaBoost</Title>
+          <BlockMath math="\alpha_t = \frac{1}{2}\ln\left(\frac{1-\epsilon_t}{\epsilon_t}\right), \quad w_i^{(t+1)} = w_i^{(t)} e^{-\alpha_t y_i h_t(x_i)}" />
+
+          <Title order={3} mt="lg">Learning Principle</Title>
+          <Text mb="md">
+            AdaBoost sequentially trains weak learners on weighted data. Misclassified samples receive higher weights <InlineMath math="w_i" />, forcing subsequent learners to focus on hard cases. Final prediction combines all learners weighted by their accuracy.
+          </Text>
+
+          <Title order={3}>Key Hyperparameters</Title>
+          <List spacing="sm">
+            <List.Item>
+              <strong>n_estimators</strong>: Number of weak learners. More = better fit but risk overfitting. Typical: 50-200
+            </List.Item>
+            <List.Item>
+              <strong>learning_rate</strong>: Shrinks contribution of each classifier. Small = needs more estimators. Range: 0.01-1.0
+            </List.Item>
+            <List.Item>
+              <strong>base_estimator</strong>: Weak learner type. Default: DecisionTreeClassifier(max_depth=1) - decision stumps
+            </List.Item>
+          </List>
+
+          <CodeBlock language="python" code={`# AdaBoost with decision stumps
+from sklearn.ensemble import AdaBoostClassifier
+model = AdaBoostClassifier(n_estimators=100, learning_rate=1.0)
+model.fit(X_train, y_train)`} />
+
+          <Title order={3} mt="lg">Bayesian Optimization</Title>
+          <CodeBlock language="python" code={`from skopt import BayesSearchCV
+from skopt.space import Integer, Real
+from sklearn.ensemble import AdaBoostClassifier, AdaBoostRegressor
+
+param_space = {
+    'n_estimators': Integer(50, 200),
+    'learning_rate': Real(0.01, 2.0, prior='log-uniform')
+}
+
+opt_clf = BayesSearchCV(AdaBoostClassifier(), param_space, n_iter=32, cv=5)
+opt_reg = BayesSearchCV(AdaBoostRegressor(), param_space, n_iter=32, cv=5)`} />
+        </div>
+
+        <div data-slide>
+          <Title order={2}>Gradient Boosting</Title>
+          <BlockMath math="F_m(x) = F_{m-1}(x) + \gamma_m h_m(x), \quad h_m = \arg\min_h \sum_{i=1}^n L(y_i, F_{m-1}(x_i) + h(x_i))" />
+
+          <Title order={3} mt="lg">Learning Principle</Title>
+          <Text mb="md">
+            Gradient boosting fits new predictors to residual errors made by previous predictors. Each tree corrects its predecessor by minimizing loss gradient. Learning rate <InlineMath math="\gamma" /> controls contribution of each tree.
+          </Text>
+
+          <Title order={3}>Key Hyperparameters</Title>
+          <List spacing="sm">
+            <List.Item>
+              <strong>n_estimators</strong>: Number of boosting stages. More stages = better fit but slower and risk overfitting. Typical: 100-1000
+            </List.Item>
+            <List.Item>
+              <strong>learning_rate</strong>: Shrinkage coefficient. Small values need more trees but generalize better. Range: 0.01-0.3
+            </List.Item>
+            <List.Item>
+              <strong>max_depth</strong>: Tree complexity. Shallow trees (3-8) work well, acting as weak learners
+            </List.Item>
+            <List.Item>
+              <strong>subsample</strong>: Fraction of samples for fitting. Values {'<'} 1.0 lead to stochastic gradient boosting, reducing variance
+            </List.Item>
+          </List>
+
+          <CodeBlock language="python" code={`# Gradient Boosting with typical settings
+from sklearn.ensemble import GradientBoostingClassifier
+model = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=3)
+model.fit(X_train, y_train)`} />
+
+          <Title order={3} mt="lg">Bayesian Optimization</Title>
+          <CodeBlock language="python" code={`from skopt import BayesSearchCV
+from skopt.space import Integer, Real
+from sklearn.ensemble import GradientBoostingClassifier, GradientBoostingRegressor
+
+param_space = {
+    'n_estimators': Integer(50, 300),
+    'learning_rate': Real(0.01, 0.3, prior='log-uniform'),
+    'max_depth': Integer(3, 8),
+    'subsample': Real(0.7, 1.0)
+}
+
+opt_clf = BayesSearchCV(GradientBoostingClassifier(), param_space, n_iter=32, cv=5)
+opt_reg = BayesSearchCV(GradientBoostingRegressor(), param_space, n_iter=32, cv=5)`} />
+
+          <Flex direction="column" align="center" mt="md">
+            <Image
+              src="/assets/data-science-practice/module6/adaboost.jpg"
+              style={{ maxWidth: 'min(600px, 80vw)', height: 'auto' }}
+              fluid
+            />
+          </Flex>
+        </div>
+
+        <div data-slide>
+          <Title order={2}>XGBoost</Title>
+          <BlockMath math="\mathcal{L}(\phi) = \sum_i l(y_i, \hat{y}_i) + \sum_k \Omega(f_k), \quad \Omega(f) = \gamma T + \frac{1}{2}\lambda ||w||^2" />
+
+          <Title order={3} mt="lg">Learning Principle</Title>
+          <Text mb="md">
+            XGBoost optimizes a regularized objective combining loss and complexity penalty. Uses second-order Taylor expansion for optimization and implements column subsampling. Handles sparse data efficiently through default direction learning.
+            {' '}<a href="https://arxiv.org/pdf/1603.02754.pdf" target="_blank" rel="noopener noreferrer">[Chen & Guestrin, 2016]</a>
+          </Text>
+
+          <Title order={3}>Key Hyperparameters</Title>
+          <List spacing="sm">
+            <List.Item>
+              <strong>n_estimators</strong>: Boosting rounds. Use early stopping to find optimal value. Typical: 100-1000
+            </List.Item>
+            <List.Item>
+              <strong>learning_rate (eta)</strong>: Step size shrinkage. Lower values prevent overfitting. Range: 0.01-0.3
+            </List.Item>
+            <List.Item>
+              <strong>max_depth</strong>: Tree depth. Deeper trees capture more complex patterns. Range: 3-10
+            </List.Item>
+            <List.Item>
+              <strong>subsample</strong>: Row sampling ratio. Prevents overfitting. Range: 0.5-1.0
+            </List.Item>
+            <List.Item>
+              <strong>colsample_bytree</strong>: Column sampling ratio. Adds regularization. Range: 0.3-1.0
+            </List.Item>
+            <List.Item>
+              <strong>reg_lambda (λ)</strong>: L2 regularization on weights. Higher values = more conservative model
+            </List.Item>
+          </List>
+
+          <CodeBlock language="python" code={`# XGBoost with regularization
+from xgboost import XGBClassifier
+model = XGBClassifier(n_estimators=200, learning_rate=0.1,
+                      max_depth=6, subsample=0.8)
+model.fit(X_train, y_train)`} />
+
+          <Title order={3} mt="lg">Bayesian Optimization</Title>
+          <CodeBlock language="python" code={`from skopt import BayesSearchCV
+from skopt.space import Integer, Real
 from xgboost import XGBClassifier, XGBRegressor
 
 param_space = {
-    'n_estimators': Integer(50, 1000),
-    'learning_rate': Real(0.01, 1.0, prior='log-uniform'),
+    'n_estimators': Integer(100, 500),
+    'learning_rate': Real(0.01, 0.3, prior='log-uniform'),
     'max_depth': Integer(3, 10),
-    'subsample': Real(0.5, 1.0),
-    'colsample_bytree': Real(0.5, 1.0)
+    'subsample': Real(0.6, 1.0),
+    'colsample_bytree': Real(0.6, 1.0)
 }
 
-# For classification
-opt_clf = BayesSearchCV(XGBClassifier(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
-opt_clf.fit(X_train, y_train)
+opt_clf = BayesSearchCV(XGBClassifier(use_label_encoder=False), param_space, n_iter=32, cv=5)
+opt_reg = BayesSearchCV(XGBRegressor(), param_space, n_iter=32, cv=5)`} />
+        </div>
 
-# For regression
-opt_reg = BayesSearchCV(XGBRegressor(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
-opt_reg.fit(X_train, y_train)
-              `
-            },
-            {
-              name: "LightGBM",
-              description: "Light Gradient Boosting Machine, uses histogram-based algorithms.",
-              hyperparameters: [
-                { name: 'n_estimators', description: 'Number of boosting iterations' },
-                { name: 'learning_rate', description: 'Boosting learning rate' },
-                { name: 'num_leaves', description: 'Maximum tree leaves for base learners' },
-                { name: 'feature_fraction', description: 'Fraction of features to be used in each iteration' },
-                { name: 'bagging_fraction', description: 'Fraction of data to be used for each iteration' },
-              ],
-              checks: {
-                unscaled: true,
-                missing: true,
-                categorical: true,
-                regression: true,
-                classification: true
-              },
-              bayesianOptimization: `
-from skopt import BayesSearchCV
-from skopt.space import Real, Integer, Categorical
+        <div data-slide>
+          <Title order={2}>LightGBM</Title>
+          <BlockMath math="\text{Gain} = \frac{1}{2} \left[ \frac{(\sum_{i \in L} g_i)^2}{n_L} + \frac{(\sum_{i \in R} g_i)^2}{n_R} - \frac{(\sum_{i} g_i)^2}{n} \right]" />
+
+          <Title order={3} mt="lg">Learning Principle</Title>
+          <Text mb="md">
+            LightGBM uses histogram-based algorithms for faster training. Implements Gradient-based One-Side Sampling (GOSS) to keep instances with large gradients and Exclusive Feature Bundling (EFB) to reduce features. Grows trees leaf-wise rather than level-wise.
+            {' '}<a href="https://papers.nips.cc/paper/2017/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf" target="_blank" rel="noopener noreferrer">[Ke et al., NeurIPS 2017]</a>
+          </Text>
+
+          <Title order={3}>Key Hyperparameters</Title>
+          <List spacing="sm">
+            <List.Item>
+              <strong>num_leaves</strong>: Maximum leaves in one tree. Should be {'<'} <InlineMath math="2^{\text{max\_depth}}" />. Typical: 31-127
+            </List.Item>
+            <List.Item>
+              <strong>learning_rate</strong>: Boosting learning rate. Lower = more rounds needed. Range: 0.01-0.3
+            </List.Item>
+            <List.Item>
+              <strong>feature_fraction</strong>: Randomly select features for each iteration. Prevents overfitting. Range: 0.5-1.0
+            </List.Item>
+            <List.Item>
+              <strong>bagging_fraction</strong>: Randomly select data for each iteration. Speeds up training. Range: 0.5-1.0
+            </List.Item>
+            <List.Item>
+              <strong>lambda_l1/l2</strong>: L1/L2 regularization. Controls model complexity
+            </List.Item>
+          </List>
+
+          <CodeBlock language="python" code={`# LightGBM with leaf-wise growth
+from lightgbm import LGBMClassifier
+model = LGBMClassifier(num_leaves=31, learning_rate=0.1,
+                       feature_fraction=0.9)
+model.fit(X_train, y_train)`} />
+
+          <Title order={3} mt="lg">Bayesian Optimization</Title>
+          <CodeBlock language="python" code={`from skopt import BayesSearchCV
+from skopt.space import Integer, Real
 from lightgbm import LGBMClassifier, LGBMRegressor
 
 param_space = {
-    'n_estimators': Integer(50, 1000),
-    'learning_rate': Real(0.01, 1.0, prior='log-uniform'),
     'num_leaves': Integer(20, 100),
-    'feature_fraction': Real(0.5, 1.0),
-    'bagging_fraction': Real(0.5, 1.0)
+    'learning_rate': Real(0.01, 0.3, prior='log-uniform'),
+    'feature_fraction': Real(0.6, 1.0),
+    'bagging_fraction': Real(0.6, 1.0),
+    'min_child_samples': Integer(5, 30)
 }
 
-# For classification
-opt_clf = BayesSearchCV(LGBMClassifier(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
-opt_clf.fit(X_train, y_train)
+opt_clf = BayesSearchCV(LGBMClassifier(verbosity=-1), param_space, n_iter=32, cv=5)
+opt_reg = BayesSearchCV(LGBMRegressor(verbosity=-1), param_space, n_iter=32, cv=5)`} />
+        </div>
 
-# For regression
-opt_reg = BayesSearchCV(LGBMRegressor(), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
-opt_reg.fit(X_train, y_train)
-              `
-            },
-            {
-              name: "CatBoost",
-              description: "Implements ordered boosting and an innovative algorithm for processing categorical features.",
-              hyperparameters: [
-                { name: 'iterations', description: 'Number of boosting iterations' },
-                { name: 'learning_rate', description: 'Boosting learning rate' },
-                { name: 'depth', description: 'Depth of the tree' },
-                { name: 'l2_leaf_reg', description: 'L2 regularization coefficient' },
-                { name: 'border_count', description: 'Number of splits for numerical features' },
-              ],
-              checks: {
-                unscaled: true,
-                missing: true,
-                categorical: true,
-                regression: true,
-                classification: true
-              },
-              bayesianOptimization: `
-from skopt import BayesSearchCV
-from skopt.space import Real, Integer, Categorical
+        <div data-slide>
+          <Title order={2}>CatBoost</Title>
+          <BlockMath math="\text{Ordered TS} = \frac{\sum_{j=1}^{p-1} [x_{j,k} = x_{i,k}] \cdot y_j + a \cdot P}{\sum_{j=1}^{p-1} [x_{j,k} = x_{i,k}] + a}" />
+
+          <Title order={3} mt="lg">Learning Principle</Title>
+          <Text mb="md">
+            CatBoost implements ordered boosting to prevent prediction shift caused by target leakage. Uses symmetric trees as base predictors and novel algorithm for processing categorical features through target statistics with random permutations.
+            {' '}<a href="https://arxiv.org/pdf/1706.09516.pdf" target="_blank" rel="noopener noreferrer">[Prokhorenkova et al., NeurIPS 2018]</a>
+          </Text>
+
+          <Title order={3}>Key Hyperparameters</Title>
+          <List spacing="sm">
+            <List.Item>
+              <strong>iterations</strong>: Number of trees. CatBoost prevents overfitting well, can use more. Typical: 500-2000
+            </List.Item>
+            <List.Item>
+              <strong>learning_rate</strong>: Step size. CatBoost auto-adjusts if not set. Range: 0.01-0.3
+            </List.Item>
+            <List.Item>
+              <strong>depth</strong>: Tree depth. Symmetric trees, so depth has larger impact. Range: 4-10
+            </List.Item>
+            <List.Item>
+              <strong>l2_leaf_reg</strong>: L2 regularization coefficient. Higher = more conservative. Range: 1-10
+            </List.Item>
+            <List.Item>
+              <strong>cat_features</strong>: List of categorical feature indices. Handles categoricals natively without encoding
+            </List.Item>
+          </List>
+
+          <CodeBlock language="python" code={`# CatBoost with categorical features
+from catboost import CatBoostClassifier
+model = CatBoostClassifier(iterations=1000, depth=6, learning_rate=0.1,
+                          cat_features=categorical_indices, verbose=False)
+model.fit(X_train, y_train)`} />
+
+          <Title order={3} mt="lg">Bayesian Optimization</Title>
+          <CodeBlock language="python" code={`from skopt import BayesSearchCV
+from skopt.space import Integer, Real
 from catboost import CatBoostClassifier, CatBoostRegressor
 
 param_space = {
-    'iterations': Integer(50, 1000),
-    'learning_rate': Real(0.01, 1.0, prior='log-uniform'),
-    'depth': Integer(3, 10),
-    'l2_leaf_reg': Real(1e-3, 10, prior='log-uniform'),
-    'border_count': Integer(32, 255)
+    'iterations': Integer(200, 1000),
+    'depth': Integer(4, 10),
+    'learning_rate': Real(0.01, 0.3, prior='log-uniform'),
+    'l2_leaf_reg': Real(1, 10, prior='log-uniform')
 }
 
-# For classification
-opt_clf = BayesSearchCV(CatBoostClassifier(verbose=False), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
-opt_clf.fit(X_train, y_train)
+opt_clf = BayesSearchCV(CatBoostClassifier(verbose=False), param_space, n_iter=32, cv=5)
+opt_reg = BayesSearchCV(CatBoostRegressor(verbose=False), param_space, n_iter=32, cv=5)`} />
+        </div>
 
-# For regression
-opt_reg = BayesSearchCV(CatBoostRegressor(verbose=False), param_space, n_iter=50, cv=5, n_jobs=-1, verbose=0)
-opt_reg.fit(X_train, y_train)
-              `
-            }
-          ]}
-        />
       </Stack>
     </Container>
   );
 };
-
-const ModelSection = ({ title, id, math, description, hyperparameters, submodels, checks, bayesianOptimization }) => (
-  <Stack spacing="md">
-    <Title order={2} id={id}>{title}</Title>
-    {math}
-    <Text>{description}</Text>
-    {submodels ? (
-      submodels.map((submodel, index) => (
-        <Stack key={index} spacing="sm">
-          <Title order={3}>{submodel.name}</Title>
-          <Text>{submodel.description}</Text>
-          <HyperparameterTable hyperparameters={submodel.hyperparameters} />
-          <ChecksTable checks={submodel.checks} />
-          <Title order={4}>Bayesian Optimization Cheat Sheet</Title>
-          <CodeBlock language="python" code={submodel.bayesianOptimization} />
-        </Stack>
-      ))
-    ) : (
-      <>
-        <HyperparameterTable hyperparameters={hyperparameters} />
-        <ChecksTable checks={checks} />
-        <Title order={3}>Bayesian Optimization Cheat Sheet</Title>
-        <CodeBlock language="python" code={bayesianOptimization} />
-      </>
-    )}
-  </Stack>
-);
-
-const HyperparameterTable = ({ hyperparameters }) => (
-  <Table>
-    <thead>
-      <tr>
-        <th>Parameter</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      {hyperparameters.map((param, index) => (
-        <tr key={index}>
-          <td><code>{param.name}</code></td>
-          <td>{param.description}</td>
-        </tr>
-      ))}
-    </tbody>
-  </Table>
-);
-
-const ChecksTable = ({ checks }) => (
-  <Table>
-    <thead>
-      <tr>
-        <th>Check</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Robust to unscaled data</td>
-        <td>{checks.unscaled ? <IconCheck color="green" /> : <IconX color="red" />}</td>
-      </tr>
-      <tr>
-        <td>Handles missing values</td>
-        <td>{checks.missing ? <IconCheck color="green" /> : <IconX color="red" />}</td>
-      </tr>
-      {/* <tr>
-        <td>Handles categorical data</td>
-        <td>{checks.categorical ? <IconCheck color="green" /> : <IconX color="red" />}</td>
-      </tr> */}
-      <tr>
-        <td>Supports regression</td>
-        <td>{checks.regression ? <IconCheck color="green" /> : <IconX color="red" />}</td>
-      </tr>
-      <tr>
-        <td>Supports classification</td>
-        <td>{checks.classification ? <IconCheck color="green" /> : <IconX color="red" />}</td>
-      </tr>
-    </tbody>
-  </Table>
-);
 
 export default EnsembleModels;
