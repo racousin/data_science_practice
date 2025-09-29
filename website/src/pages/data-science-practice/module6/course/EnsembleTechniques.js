@@ -145,8 +145,9 @@ const EnsembleTechniques = () => {
 
       <Stack spacing="xl">
         <Title order={3} id="bagging">Bagging (Bootstrap Aggregating)</Title>
-
+<BaggingSVG/>
         <Title order={3} id="stacking">Stacking</Title>
+        <StackingSVG/>
       </Stack>
     </Container>
   );

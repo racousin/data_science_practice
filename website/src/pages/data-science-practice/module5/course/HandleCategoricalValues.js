@@ -154,14 +154,13 @@ plt.show()
           />
         
 
-        <Group grow align="flex-start" spacing="xl">
-          <Title order={3} id="one-hot-encoding">One-Hot Encoding</Title>
-            <Text>
-              One-hot encoding creates a new binary column for each category. It's useful for nominal data and models expecting numerical input.
-            </Text>
-            <CodeBlock
-              language="python"
-              code={`
+        <Title order={3} id="one-hot-encoding">One-Hot Encoding</Title>
+        <Text>
+          One-hot encoding creates a new binary column for each category. It's useful for nominal data and models expecting numerical input.
+        </Text>
+        <CodeBlock
+          language="python"
+          code={`
 import pandas as pd
 
 # Sample dataset
@@ -196,17 +195,16 @@ print(df_encoded)
 # 2           0            1          0           1            0           0
 # 3           0            0          1           0            1           0
 # 4           1            0          0           0            0           1
-              `}
-            />
-          
+          `}
+        />
 
-          <Title order={3} id="label-encoding">Label Encoding</Title>
-            <Text>
-              Label encoding converts each category to a number. It's particularly useful for ordinal data where the order matters.
-            </Text>
-            <CodeBlock
-              language="python"
-              code={`
+        <Title order={3} id="label-encoding">Label Encoding</Title>
+        <Text>
+          Label encoding converts each category to a number. It's particularly useful for ordinal data where the order matters.
+        </Text>
+        <CodeBlock
+          language="python"
+          code={`
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 
@@ -252,10 +250,8 @@ print("Size:", dict(zip(le.classes_, le.transform(le.classes_))))
 # Encoding mappings:
 # Color: {'blue': 0, 'green': 1, 'red': 2}
 # Size: {'large': 0, 'medium': 1, 'small': 2}
-              `}
-            />
-          
-        </Group>
+          `}
+        />
 
         <Title order={3} id="advanced-techniques">Advanced Techniques</Title>
           <Stack spacing="md">
