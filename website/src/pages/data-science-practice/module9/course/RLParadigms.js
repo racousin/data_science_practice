@@ -133,7 +133,16 @@ class Agent:
 
         <BanditParadigms/>
       </div>
-
+      <div data-slide>
+              <Center>
+                <Image
+                  src="/assets/data-science-practice/module9/bandit.png"
+                  alt="Value Function Decomposition"
+                  w="75%"
+                  h="auto"
+                />
+              </Center>
+      </div>
       <div data-slide>
         <Title order={3} id="model-based-vs-free" mb="md">
           Model-Based vs Model-Free Approaches

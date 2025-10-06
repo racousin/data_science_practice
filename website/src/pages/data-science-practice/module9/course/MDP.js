@@ -72,6 +72,7 @@ for episode in range(100):
     print(f"Episode {episode}: total_reward={total_reward}")`;
 
   return (
+    <>
     <div data-slide>
       <Title order={2} mb="md">Environment</Title>
       <Text mb="md">
@@ -92,7 +93,8 @@ for episode in range(100):
         </List.Item>
       </List>
       <CodeBlock code={environmentCode} language="python"/>
-
+      </div>
+<div data-slide>
       <Title order={2} mt="xl" mb="md">Agent</Title>
       <Text mb="md">
         The agent makes decisions and learns from experience. Essential components include:
@@ -106,7 +108,8 @@ for episode in range(100):
         </List.Item>
       </List>
       <CodeBlock code={agentCode} language="python"/>
-
+      </div>
+<div data-slide>
       <Title order={2} mt="xl" mb="md">Experiment</Title>
       <Text mb="md">
         The training loop that connects the environment and agent. Key components:
@@ -127,6 +130,7 @@ for episode in range(100):
       </List>
       <CodeBlock code={experimentCode} language="python"/>
     </div>
+    </>
   );
 };
 
@@ -142,7 +146,7 @@ const MDP = () => {
             <Image
               src="/assets/data-science-practice/module9/mdp.jpg"
               alt="MDP Illustration"
-              w="75%"
+              w="85%"
               h="auto"
             />
             <Text size="sm">
@@ -151,7 +155,8 @@ const MDP = () => {
             </Text>
           </Stack>
         </Center>
-
+        </div>
+<div data-slide>
         <Title order={3} mt="xl" mb="md">Glossary</Title>
         <List>
           <List.Item>

@@ -17,7 +17,7 @@ const Exercise2 = () => {
 
         <Text className="text-gray-700">
           In this exercise, you'll train an agent for the 8x8 FrozenLake environment and submit it to the ml-arena.com platform
-          for evaluation. Your agent will need to achieve a mean reward of at least 0.4 over runs to be validated.
+          for evaluation. Your agent will need to achieve a mean reward of at least 0.35 over runs to be validated.
         </Text>
 
         <Stack spacing="lg">

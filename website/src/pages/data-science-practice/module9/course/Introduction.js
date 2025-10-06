@@ -45,8 +45,8 @@ const MLParadigmsComparison = () => {
       title: "Unsupervised Learning",
       bgColor: "bg-green-50",
       description: "Discovering hidden patterns and structure in unlabeled data x. The model learns internal representations or groupings by optimizing objectives like reconstruction error, density estimation, or clustering criteria. Key approaches include dimensionality reduction via learned encodings z = e_θ(x), generative modeling of p(x), and clustering to identify natural groupings.",
-      formula: "\\min_{\\theta} \\mathcal{L}(\\theta) = \\min_{\\theta} \\sum_{i=1}^n \\ell(f_\\theta(x_i), x_i)",
-      formulaDesc: "Optimizing internal data representation or clustering objective",
+      formula: "\\max_{\\theta} \\sum_{i=1}^n \\log p_\\theta(x_i)",
+      formulaDesc: "Maximizing data likelihood under the learned model",
       characteristics: [
         "Only unlabeled inputs x available",
         "Internal representation learning",
@@ -117,9 +117,9 @@ const RLApplications = () => {
         Reinforcement Learning has revolutionized numerous fields with its ability to learn complex decision-making strategies:
       </Text>
 
-      <Grid>
+      <Grid align="center">
         <Grid.Col span={{ base: 12, md: 5 }}>
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 gap-4 w-full">
             {applications.map((app, index) => (
               <div key={index} className="p-4 bg-gray-50 rounded-lg">
                 <Title order={4} className="mb-2" style={{ color: '#0096FF' }}>
@@ -133,7 +133,7 @@ const RLApplications = () => {
           </div>
         </Grid.Col>
 
-        <Grid.Col span={{ base: 12, md: 7 }} className="flex items-stretch">
+        <Grid.Col span={{ base: 12, md: 7 }}>
           <div className="bg-gray-100 w-full p-8 rounded-lg flex items-center justify-center min-h-[400px]">
             <div className="w-full relative">
               <Image

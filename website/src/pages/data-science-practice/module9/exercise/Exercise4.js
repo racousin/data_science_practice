@@ -12,12 +12,12 @@ const Exercise2 = () => {
     <Container fluid>
       <Stack spacing="xl" className="p-6">
         <div className="flex items-center gap-3">
-          <Title order={1} className="text-2xl font-bold">Exercise 4: LunarLander Competition Challenge</Title>
+          <Title order={1} className="text-2xl font-bold">Exercise 4: LunarLander</Title>
         </div>
 
         <Text className="text-gray-700">
           In this exercise, you'll train an agent for the LunarLander environment and submit it to the ml-arena.com platform
-          for evaluation. Your agent will need to achieve a mean reward of at least 50 over runs to be validated.
+          for evaluation. 
         </Text>
 
         <Stack spacing="lg">
@@ -25,7 +25,7 @@ const Exercise2 = () => {
           <div>
             <Title order={2} className="text-xl font-semibold mb-4">Part A: Agent Development</Title>
             <Text className="text-gray-700 mb-4">
-              Train your agent on the gymnasium LunarLander-v2 environment:
+              Train your agent on the gymnasium LunarLander-v3 environment:
             </Text>
             <List spacing="sm" className="ml-6">
               <List.Item>Implement and optimize a Deep Q-Learning (or another algo)</List.Item>
@@ -56,7 +56,7 @@ const Exercise2 = () => {
           </List>
           </div>
           {/* Requirements Section */}
-          <div>
+          {/* <div>
             <Alert 
               icon={<AlertTriangle className="w-5 h-5" />}
               title="Validation Requirements"
@@ -71,7 +71,7 @@ const Exercise2 = () => {
                 raphaelcousin.teaching@gmail.com
               </Text>
             </Alert>
-          </div>
+          </div> */}
         </Stack>
 
 
