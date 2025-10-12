@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Title, Text, Stack, Box, Image, List, Group } from '@mantine/core';
+import { Container, Title, Text, Stack, Box, Image, List, Group, Flex } from '@mantine/core';
 import CodeBlock from 'components/CodeBlock';
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
@@ -13,16 +13,18 @@ const Segmentation = () => {
       <div data-slide>
         <Title order={2} mb="md">Introduction and Applications</Title>
 
-        <Box mb="md">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/data-science-practice/module7/segmentation-intro.png"
             alt="Image segmentation visualization showing different segmentation masks"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
             mb="sm"
           />
           <Text size="sm">
             Image segmentation assigns a class label to every pixel in the image
           </Text>
-        </Box>
+        </Flex>
 
         <Text mb="md">
           Image segmentation partitions an image into meaningful regions by assigning a label
@@ -30,7 +32,7 @@ const Segmentation = () => {
           scene content.
         </Text>
 
-        <Text mb="md" weight={500}>Main Applications:</Text>
+        <Title order={3} mb="sm">Main Applications:</Title>
         <List mb="md">
           <List.Item>Medical imaging: tumor delineation, organ segmentation</List.Item>
           <List.Item>Autonomous driving: road, vehicle, pedestrian segmentation</List.Item>
@@ -44,16 +46,18 @@ const Segmentation = () => {
       <div data-slide>
         <Title order={2} mb="md">Types of Segmentation</Title>
 
-        <Box mb="md">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/data-science-practice/module7/segmentation-types-comparison.jpg"
             alt="Comparison of semantic, instance, and panoptic segmentation"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
             mb="sm"
           />
           <Text size="sm">
             Comparison: semantic (classes only), instance (individual objects), panoptic (both)
           </Text>
-        </Box>
+        </Flex>
 
         <Group grow mb="md">
           <Box p="md">
@@ -121,14 +125,14 @@ const Segmentation = () => {
       <div data-slide>
         <Title order={2} mb="md">Data Format: X and Y</Title>
 
-        <Text mb="md" weight={500}>Input (X):</Text>
+        <Title order={3} mb="sm">Input (X):</Title>
         <Text mb="md">
           Images in standard formats, typically normalized. Common sizes:
           <InlineMath>{'\\mathbb{R}^{3 \\times 512 \\times 512}'}</InlineMath> or
           <InlineMath>{'\\mathbb{R}^{3 \\times 1024 \\times 2048}'}</InlineMath>.
         </Text>
 
-        <Text mb="md" weight={500}>Ground Truth (Y):</Text>
+        <Title order={3} mb="sm">Ground Truth (Y):</Title>
         <Text mb="md">
           Label maps matching input spatial dimensions. Each value represents a class index.
         </Text>
@@ -150,24 +154,24 @@ mask = torch.randint(0, 21, (512, 512))  # 21 classes
       <div data-slide>
         <Title order={2} mb="md">Evaluation Metrics</Title>
 
-        <Text mb="md" weight={500}>Pixel Accuracy:</Text>
+        <Title order={3} mb="sm">Pixel Accuracy:</Title>
         <BlockMath>
           {`\\text{Accuracy} = \\frac{\\sum_{i,j} \\mathbb{1}[y_{i,j} = \\hat{y}_{i,j}]}{H \\times W}`}
         </BlockMath>
 
-        <Text mb="md" weight={500}>Intersection over Union (IoU):</Text>
+        <Title order={3} mb="sm">Intersection over Union (IoU):</Title>
         <Text mb="md">Per-class metric measuring overlap between prediction and ground truth:</Text>
         <BlockMath>
           {`\\text{IoU}_k = \\frac{|P_k \\cap G_k|}{|P_k \\cup G_k|}`}
         </BlockMath>
 
-        <Text mb="md" weight={500}>Mean IoU (mIoU):</Text>
+        <Title order={3} mb="sm">Mean IoU (mIoU):</Title>
         <Text mb="md">Average IoU across all classes:</Text>
         <BlockMath>
           {`\\text{mIoU} = \\frac{1}{K} \\sum_{k=1}^K \\text{IoU}_k`}
         </BlockMath>
 
-        <Text mb="md" weight={500}>Dice Coefficient:</Text>
+        <Title order={3} mb="sm">Dice Coefficient:</Title>
         <Text mb="md">Commonly used in medical imaging:</Text>
         <BlockMath>
           {`\\text{Dice}_k = \\frac{2|P_k \\cap G_k|}{|P_k| + |G_k|}`}
@@ -178,7 +182,7 @@ mask = torch.randint(0, 21, (512, 512))  # 21 classes
       <div data-slide>
         <Title order={2} mb="md">Loss Functions</Title>
 
-        <Text mb="md" weight={500}>Cross-Entropy Loss:</Text>
+        <Title order={3} mb="sm">Cross-Entropy Loss:</Title>
         <Text mb="md">
           Standard loss for pixel-wise classification:
         </Text>
@@ -186,7 +190,7 @@ mask = torch.randint(0, 21, (512, 512))  # 21 classes
           {`\\mathcal{L}_{CE} = -\\frac{1}{HW} \\sum_{i=1}^H \\sum_{j=1}^W \\sum_{k=0}^K y_{i,j,k} \\log(\\hat{y}_{i,j,k})`}
         </BlockMath>
 
-        <Text mb="md" weight={500}>Weighted Cross-Entropy:</Text>
+        <Title order={3} mb="sm">Weighted Cross-Entropy:</Title>
         <Text mb="md">
           Addresses class imbalance by weighting classes differently:
         </Text>
@@ -194,7 +198,7 @@ mask = torch.randint(0, 21, (512, 512))  # 21 classes
           {`\\mathcal{L}_{WCE} = -\\frac{1}{HW} \\sum_{i,j} \\sum_{k=0}^K w_k \\cdot y_{i,j,k} \\log(\\hat{y}_{i,j,k})`}
         </BlockMath>
 
-        <Text mb="md" weight={500}>Dice Loss:</Text>
+        <Title order={3} mb="sm">Dice Loss:</Title>
         <Text mb="md">
           Directly optimizes the Dice coefficient:
         </Text>
@@ -202,7 +206,7 @@ mask = torch.randint(0, 21, (512, 512))  # 21 classes
           {`\\mathcal{L}_{Dice} = 1 - \\frac{2\\sum_{i,j} p_{i,j} g_{i,j}}{\\sum_{i,j} p_{i,j} + \\sum_{i,j} g_{i,j}}`}
         </BlockMath>
 
-        <Text mb="md" weight={500}>Focal Loss:</Text>
+        <Title order={3} mb="sm">Focal Loss:</Title>
         <Text mb="md">
           Focuses on hard-to-classify pixels:
         </Text>
@@ -247,16 +251,18 @@ output = classifier(upsampled)  # [B, K, H, W]`}
       <div data-slide>
         <Title order={2} mb="md">U-Net Architecture</Title>
 
-        <Box mb="md">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/data-science-practice/module7/unet-architecture.png"
             alt="U-Net architecture diagram showing encoder-decoder with skip connections"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
             mb="sm"
           />
           <Text size="sm">
             U-Net architecture: symmetric encoder-decoder with skip connections for precise localization
           </Text>
-        </Box>
+        </Flex>
 
         <Text mb="md">
           U-Net is a widely-used architecture, particularly in medical imaging, featuring
@@ -295,23 +301,25 @@ output = final_conv(d1)`}
       <div data-slide>
         <Title order={2} mb="md">DeepLab Series</Title>
 
-        <Box mb="md">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/data-science-practice/module7/deeplab-aspp.png"
             alt="DeepLab ASPP module with multiple atrous convolutions"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
             mb="sm"
           />
           <Text size="sm">
             DeepLab ASPP module: parallel atrous convolutions at different rates for multi-scale features
           </Text>
-        </Box>
+        </Flex>
 
         <Text mb="md">
           DeepLab introduced atrous (dilated) convolutions and spatial pyramid pooling for
           multi-scale segmentation.
         </Text>
 
-        <Text mb="md" weight={500}>Key Components:</Text>
+        <Title order={3} mb="sm">Key Components:</Title>
         <List mb="md">
           <List.Item>Atrous convolutions: Expand receptive field without reducing resolution</List.Item>
           <List.Item>Atrous Spatial Pyramid Pooling (ASPP): Captures multi-scale context</List.Item>
@@ -343,7 +351,7 @@ def aspp(features):
           Recent architectures leverage transformers for global context modeling.
         </Text>
 
-        <Text mb="md" weight={500}>SegFormer:</Text>
+        <Title order={3} mb="sm">SegFormer:</Title>
         <Text mb="md">
           Efficient transformer architecture combining hierarchical features.
         </Text>
@@ -363,7 +371,7 @@ fused = mlp_decoder(features)
 output = segmentation_head(fused)`}
         />
 
-        <Text mb="md" weight={500}>Mask2Former:</Text>
+        <Title order={3} mb="sm">Mask2Former:</Title>
         <Text mb="md">
           Universal architecture for semantic, instance, and panoptic segmentation using
           masked attention.
@@ -374,23 +382,25 @@ output = segmentation_head(fused)`}
       <div data-slide>
         <Title order={2} mb="md">Instance Segmentation</Title>
 
-        <Box mb="md">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/data-science-practice/module7/mask-rcnn-architecture.webp"
             alt="Mask R-CNN architecture with mask prediction branch"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
             mb="sm"
           />
           <Text size="sm">
             Mask R-CNN architecture: adds mask prediction branch to Faster R-CNN
           </Text>
-        </Box>
+        </Flex>
 
         <Text mb="md">
           Instance segmentation extends object detection by predicting pixel-level masks
           for each object instance.
         </Text>
 
-        <Text mb="md" weight={500}>Mask R-CNN:</Text>
+        <Title order={3} mb="sm">Mask R-CNN:</Title>
         <Text mb="md">
           Extends Faster R-CNN by adding a mask prediction branch in parallel with the
           bounding box branch.

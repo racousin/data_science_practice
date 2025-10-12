@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Title, Text, Stack, Box, Image, List, Group } from '@mantine/core';
+import { Container, Title, Text, Stack, Box, Image, List, Group, Flex } from '@mantine/core';
 import CodeBlock from 'components/CodeBlock';
 import DataInteractionPanel from 'components/DataInteractionPanel';
 import 'katex/dist/katex.min.css';
@@ -31,16 +31,18 @@ const GenerativeModel = () => {
       <div data-slide>
         <Title order={2} mb="md">Introduction to Generative Models</Title>
 
-        <Box mb="md">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/data-science-practice/module7/generative-models-examples.png"
             alt="Examples of generated images from different generative models"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
             mb="sm"
           />
           <Text size="sm">
             Generated images from various generative models: VAE, GAN, Flow, and Diffusion
           </Text>
-        </Box>
+        </Flex>
 
         <Text mb="md">
           Generative models learn the underlying probability distribution of data to generate
@@ -49,7 +51,7 @@ const GenerativeModel = () => {
           <InlineMath>{'P(x,y)'}</InlineMath>.
         </Text>
 
-        <Text mb="md" weight={500}>Main Applications:</Text>
+        <Title order={3} mb="sm">Main Applications:</Title>
         <List mb="md">
           <List.Item>Image synthesis: creating realistic images from noise or descriptions</List.Item>
           <List.Item>Data augmentation: generating training samples for other models</List.Item>
@@ -100,16 +102,18 @@ const GenerativeModel = () => {
       <div data-slide>
         <Title order={2} mb="md">Variational Autoencoders (VAE)</Title>
 
-        <Box mb="md">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/data-science-practice/module7/vae-architecture.png"
             alt="VAE architecture showing encoder, latent space, and decoder"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
             mb="sm"
           />
           <Text size="sm">
             VAE architecture: encoder maps to latent distribution, decoder reconstructs from samples
           </Text>
-        </Box>
+        </Flex>
 
         <Text mb="md">
           VAEs combine deep learning with variational inference to learn a continuous latent
@@ -117,7 +121,7 @@ const GenerativeModel = () => {
           and a decoder that reconstructs data from latent samples.
         </Text>
 
-        <Text mb="md" weight={500}>Core Objective:</Text>
+        <Title order={3} mb="sm">Core Objective:</Title>
         <Text mb="md">
           Learn parameters to maximize the evidence lower bound (ELBO):
         </Text>
@@ -147,13 +151,13 @@ const GenerativeModel = () => {
           {`\\mathcal{L}_{VAE} = \\mathcal{L}_{recon} + \\beta \\cdot \\mathcal{L}_{KL}`}
         </BlockMath>
 
-        <Text mb="md" weight={500}>Reconstruction Loss:</Text>
+        <Title order={3} mb="sm">Reconstruction Loss:</Title>
         <Text mb="md">Measures how well the decoder reconstructs the input:</Text>
         <BlockMath>
           {`\\mathcal{L}_{recon} = -\\mathbb{E}_{q_\\phi(z|x)}[\\log p_\\theta(x|z)] \\approx \\|x - \\hat{x}\\|^2`}
         </BlockMath>
 
-        <Text mb="md" weight={500}>KL Divergence:</Text>
+        <Title order={3} mb="sm">KL Divergence:</Title>
         <Text mb="md">Regularizes latent space to match the prior:</Text>
         <BlockMath>
           {`\\mathcal{L}_{KL} = D_{KL}(q_\\phi(z|x) \\| p(z)) = \\frac{1}{2}\\sum_{j=1}^d (1 + \\log\\sigma_j^2 - \\mu_j^2 - \\sigma_j^2)`}
@@ -220,16 +224,18 @@ self.decoder = nn.Sequential(
       <div data-slide>
         <Title order={2} mb="md">Generative Adversarial Networks (GAN)</Title>
 
-        <Box mb="md">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/data-science-practice/module7/gan-architecture.webp"
             alt="GAN architecture with generator and discriminator networks"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
             mb="sm"
           />
           <Text size="sm">
             GAN architecture: generator creates fake samples, discriminator classifies real vs fake
           </Text>
-        </Box>
+        </Flex>
 
         <Text mb="md">
           GANs learn to generate data through adversarial training between two networks:
@@ -237,7 +243,7 @@ self.decoder = nn.Sequential(
           real from fake samples.
         </Text>
 
-        <Text mb="md" weight={500}>Min-Max Objective:</Text>
+        <Title order={3} mb="sm">Min-Max Objective:</Title>
         <BlockMath>
           {`\\min_G \\max_D V(D,G) = \\mathbb{E}_{x \\sim p_{data}}[\\log D(x)] + \\mathbb{E}_{z \\sim p_z}[\\log(1-D(G(z)))]`}
         </BlockMath>
@@ -255,12 +261,12 @@ self.decoder = nn.Sequential(
 
         <Text mb="md">Training alternates between updating discriminator and generator:</Text>
 
-        <Text mb="md" weight={500}>Discriminator Loss:</Text>
+        <Title order={3} mb="sm">Discriminator Loss:</Title>
         <BlockMath>
           {`\\mathcal{L}_D = -\\mathbb{E}_{x \\sim p_{data}}[\\log D(x)] - \\mathbb{E}_{z \\sim p_z}[\\log(1-D(G(z)))]`}
         </BlockMath>
 
-        <Text mb="md" weight={500}>Generator Loss (non-saturating):</Text>
+        <Title order={3} mb="sm">Generator Loss (non-saturating):</Title>
         <BlockMath>
           {`\\mathcal{L}_G = -\\mathbb{E}_{z \\sim p_z}[\\log D(G(z))]`}
         </BlockMath>
@@ -270,7 +276,7 @@ self.decoder = nn.Sequential(
           variety), vanishing gradients, and training instability.
         </Text>
 
-        <Text mb="md" weight={500}>Improved GAN variants:</Text>
+        <Title order={3} mb="sm">Improved GAN variants:</Title>
         <List mb="md">
           <List.Item>DCGAN: Uses convolutional architectures with architectural guidelines</List.Item>
           <List.Item>WGAN: Wasserstein loss for more stable training</List.Item>
@@ -320,16 +326,18 @@ g_loss.backward()`}
       <div data-slide>
         <Title order={2} mb="md">Normalizing Flows</Title>
 
-        <Box mb="md">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/data-science-practice/module7/normalizing-flow-diagram.png"
             alt="Normalizing flow transformation from base to data distribution"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
             mb="sm"
           />
           <Text size="sm">
             Normalizing flow: invertible transformations between simple and complex distributions
           </Text>
-        </Box>
+        </Flex>
 
         <Text mb="md">
           Normalizing flows learn an invertible transformation between a simple base
@@ -337,7 +345,7 @@ g_loss.backward()`}
           computation.
         </Text>
 
-        <Text mb="md" weight={500}>Key Property:</Text>
+        <Title order={3} mb="sm">Key Property:</Title>
         <Text mb="md">
           Through a sequence of invertible transformations <InlineMath>{'f = f_1 \\circ f_2 \\circ \\ldots \\circ f_K'}</InlineMath>:
         </Text>
@@ -365,7 +373,7 @@ g_loss.backward()`}
       <div data-slide>
         <Title order={2} mb="md">Flow-Based Model Architectures</Title>
 
-        <Text mb="md" weight={500}>Coupling Layers (RealNVP, Glow):</Text>
+        <Title order={3} mb="sm">Coupling Layers (RealNVP, Glow):</Title>
         <Text mb="md">
           Split input into two parts, transform one conditioned on the other:
         </Text>
@@ -399,16 +407,18 @@ log_det = scale.sum(dim=[1,2,3])`}
       <div data-slide>
         <Title order={2} mb="md">Diffusion Models</Title>
 
-        <Box mb="md">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/data-science-practice/module7/diffusion-process.ppm"
             alt="Diffusion model forward and reverse process"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
             mb="sm"
           />
           <Text size="sm">
             Diffusion process: forward noising (fixed) and reverse denoising (learned)
           </Text>
-        </Box>
+        </Flex>
 
         <Text mb="md">
           Diffusion models learn to generate data by reversing a gradual noising process.
@@ -416,7 +426,7 @@ log_det = scale.sum(dim=[1,2,3])`}
           in sample quality.
         </Text>
 
-        <Text mb="md" weight={500}>Forward Process (Fixed):</Text>
+        <Title order={3} mb="sm">Forward Process (Fixed):</Title>
         <Text mb="md">
           Gradually adds Gaussian noise over T timesteps:
         </Text>
@@ -442,7 +452,7 @@ log_det = scale.sum(dim=[1,2,3])`}
       <div data-slide>
         <Title order={2} mb="md">Diffusion Reverse Process</Title>
 
-        <Text mb="md" weight={500}>Reverse Process (Learned):</Text>
+        <Title order={3} mb="sm">Reverse Process (Learned):</Title>
         <Text mb="md">
           Learn to denoise by predicting the reverse transition:
         </Text>
@@ -456,7 +466,7 @@ log_det = scale.sum(dim=[1,2,3])`}
           added at each timestep.
         </Text>
 
-        <Text mb="md" weight={500}>Training Objective (Simplified):</Text>
+        <Title order={3} mb="sm">Training Objective (Simplified):</Title>
         <BlockMath>
           {`\\mathcal{L}_{simple} = \\mathbb{E}_{t, x_0, \\epsilon}[\\|\\epsilon - \\epsilon_\\theta(x_t, t)\\|^2]`}
         </BlockMath>
@@ -518,19 +528,19 @@ def sample(model, shape):
           (class labels, text, images) to control generation.
         </Text>
 
-        <Text mb="md" weight={500}>Conditional VAE:</Text>
+        <Title order={3} mb="sm">Conditional VAE:</Title>
         <Text mb="md">
           Condition encoder and decoder on label <InlineMath>{'y'}</InlineMath>:
           <InlineMath>{'q_\\phi(z|x,y)'}</InlineMath> and <InlineMath>{'p_\\theta(x|z,y)'}</InlineMath>
         </Text>
 
-        <Text mb="md" weight={500}>Conditional GAN:</Text>
+        <Title order={3} mb="sm">Conditional GAN:</Title>
         <Text mb="md">
           Both generator and discriminator receive conditioning:
           <InlineMath>{'G(z,y)'}</InlineMath> and <InlineMath>{'D(x,y)'}</InlineMath>
         </Text>
 
-        <Text mb="md" weight={500}>Classifier-Free Guidance (Diffusion):</Text>
+        <Title order={3} mb="sm">Classifier-Free Guidance (Diffusion):</Title>
         <Text mb="md">
           Train both conditional and unconditional models jointly:
         </Text>
@@ -596,7 +606,7 @@ def sample(model, shape):
           of sample quality and diversity.
         </Text>
 
-        <Text mb="md" weight={500}>Fréchet Inception Distance (FID):</Text>
+        <Title order={3} mb="sm">Fréchet Inception Distance (FID):</Title>
         <Text mb="md">
           Measures distance between feature distributions of real and generated images:
         </Text>
@@ -604,7 +614,7 @@ def sample(model, shape):
           {`FID = \\|\\mu_r - \\mu_g\\|^2 + \\text{Tr}(\\Sigma_r + \\Sigma_g - 2(\\Sigma_r \\Sigma_g)^{1/2})`}
         </BlockMath>
 
-        <Text mb="md" weight={500}>Inception Score (IS):</Text>
+        <Title order={3} mb="sm">Inception Score (IS):</Title>
         <Text mb="md">
           Evaluates sample quality and diversity based on classifier predictions:
         </Text>
@@ -612,7 +622,7 @@ def sample(model, shape):
           {`IS = \\exp(\\mathbb{E}_x[D_{KL}(p(y|x) \\| p(y))])`}
         </BlockMath>
 
-        <Text mb="md" weight={500}>Precision and Recall:</Text>
+        <Title order={3} mb="sm">Precision and Recall:</Title>
         <Text mb="md">
           Separately measure sample quality (precision) and diversity (recall).
           Lower FID is better; higher IS is better.

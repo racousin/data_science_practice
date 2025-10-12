@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Title, Text, Box, List, Group, Image } from '@mantine/core';
+import { Container, Title, Text, Box, List, Group, Image, Flex } from '@mantine/core';
 import CodeBlock from 'components/CodeBlock';
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
@@ -14,16 +14,18 @@ const ThreeDCNN = () => {
       <div data-slide>
         <Title order={2} mb="md">From 2D to 3D Convolutions</Title>
 
-        <Box mb="md">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/data-science-practice/module7/2d-vs-3d-convolution.png"
             alt="Comparison of 2D and 3D convolution operations"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
             mb="sm"
           />
           <Text size="sm">
             2D convolutions operate on spatial dimensions (H×W), 3D convolutions add temporal/depth dimension
           </Text>
-        </Box>
+        </Flex>
 
         <Text mb="md">
           While 2D CNNs process spatial information in images, 3D CNNs extend convolution operations
@@ -78,7 +80,7 @@ const ThreeDCNN = () => {
       <div data-slide>
         <Title order={2} mb="md">Data Representation</Title>
 
-        <Text mb="md" weight={500}>Video Data:</Text>
+        <Title order={3} mb="sm">Video Data:</Title>
         <Text mb="md">
           Videos are represented as 5D tensors with dimensions:
         </Text>
@@ -93,7 +95,7 @@ const ThreeDCNN = () => {
           <List.Item>H, W: Spatial dimensions (height, width)</List.Item>
         </List>
 
-        <Text mb="md" weight={500}>Medical Volumetric Data:</Text>
+        <Title order={3} mb="sm">Medical Volumetric Data:</Title>
         <Text mb="md">
           CT/MRI scans represented as 4D tensors:
         </Text>
@@ -112,16 +114,18 @@ const ThreeDCNN = () => {
       <div data-slide>
         <Title order={2} mb="md">3D Convolution Operation</Title>
 
-        <Box mb="md">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/data-science-practice/module7/3d-convolution-operation.png"
             alt="3D convolution kernel sliding across spatiotemporal volume"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
             mb="sm"
           />
           <Text size="sm">
             3D convolution kernel slides across all three dimensions simultaneously
           </Text>
-        </Box>
+        </Flex>
 
         <Text mb="md">
           A 3D convolution extends the 2D operation to include the temporal or depth dimension:
@@ -157,7 +161,7 @@ conv3d = nn.Conv3d(
       <div data-slide>
         <Title order={2} mb="md">3D CNN Architectures</Title>
 
-        <Text mb="md" weight={500}>C3D (3D ConvNets):</Text>
+        <Title order={3} mb="sm">C3D (3D ConvNets):</Title>
         <Text mb="md">
           Applies 3D convolutions throughout the network. Uses 3×3×3 kernels consistently.
         </Text>
@@ -172,13 +176,13 @@ model = nn.Sequential(
 )`}
         />
 
-        <Text mb="md" weight={500}>I3D (Inflated 3D):</Text>
+        <Title order={3} mb="sm">I3D (Inflated 3D):</Title>
         <Text mb="md">
           Inflates 2D filters from pre-trained models (e.g., ImageNet) into 3D by repeating
           weights along the temporal dimension, enabling transfer learning.
         </Text>
 
-        <Text mb="md" weight={500}>(2+1)D Convolutions:</Text>
+        <Title order={3} mb="sm">(2+1)D Convolutions:</Title>
         <Text mb="md">
           Factorizes 3D convolutions into separate spatial (2D) and temporal (1D) operations,
           reducing parameters while maintaining performance.
@@ -197,7 +201,7 @@ model = nn.Sequential(
           3D CNNs are significantly more expensive than 2D CNNs:
         </Text>
 
-        <Text mb="md" weight={500}>Parameter Count:</Text>
+        <Title order={3} mb="sm">Parameter Count:</Title>
         <Text mb="md">
           A 3D kernel has more parameters than its 2D counterpart:
         </Text>
@@ -213,7 +217,7 @@ model = nn.Sequential(
           <List.Item>3D: 3 × 3 × 3 × 64 × 64 = 110,592 parameters (3× more)</List.Item>
         </List>
 
-        <Text mb="md" weight={500}>Solutions:</Text>
+        <Title order={3} mb="sm">Solutions:</Title>
         <List mb="md">
           <List.Item>Factorized convolutions: (2+1)D reduces parameters</List.Item>
           <List.Item>Depthwise separable 3D convolutions</List.Item>
@@ -230,20 +234,20 @@ model = nn.Sequential(
           Metrics depend on the task:
         </Text>
 
-        <Text mb="md" weight={500}>Video Classification:</Text>
+        <Title order={3} mb="sm">Video Classification:</Title>
         <List mb="md">
           <List.Item>Top-1/Top-5 accuracy</List.Item>
           <List.Item>Per-class accuracy</List.Item>
           <List.Item>Confusion matrices</List.Item>
         </List>
 
-        <Text mb="md" weight={500}>Action Detection:</Text>
+        <Title order={3} mb="sm">Action Detection:</Title>
         <List mb="md">
           <List.Item>Temporal IoU (tIoU): Intersection over union of temporal segments</List.Item>
           <List.Item>Mean Average Precision (mAP) at various tIoU thresholds</List.Item>
         </List>
 
-        <Text mb="md" weight={500}>Medical Volumetric Segmentation:</Text>
+        <Title order={3} mb="sm">Medical Volumetric Segmentation:</Title>
         <List mb="md">
           <List.Item>3D Dice coefficient</List.Item>
           <List.Item>Volumetric IoU</List.Item>
@@ -259,7 +263,7 @@ model = nn.Sequential(
           Beyond 3D CNNs, other architectures model temporal information:
         </Text>
 
-        <Text mb="md" weight={500}>RNN/LSTM-Based (Legacy):</Text>
+        <Title order={3} mb="sm">RNN/LSTM-Based (Legacy):</Title>
         <Text mb="md">
           Process video frame-by-frame through recurrent connections. Less common now due to
           training difficulties and sequential processing limitations.
@@ -270,7 +274,7 @@ model = nn.Sequential(
           </Link>
         </Text>
 
-        <Text mb="md" weight={500}>Transformer-Based (Current Trend):</Text>
+        <Title order={3} mb="sm">Transformer-Based (Current Trend):</Title>
         <Text mb="md">
           Apply self-attention mechanisms over space and time. Examples: ViViT, TimeSformer,
           Video Swin Transformer. These models treat video frames as sequences of patches.
@@ -281,7 +285,7 @@ model = nn.Sequential(
           </Link>
         </Text>
 
-        <Text mb="md" weight={500}>Hybrid Approaches:</Text>
+        <Title order={3} mb="sm">Hybrid Approaches:</Title>
         <Text mb="md">
           Combine 3D CNNs for local spatiotemporal features with attention for long-range
           dependencies, achieving best of both worlds.
@@ -339,14 +343,14 @@ output = model(video)  # [4, 101] class scores`}
       <div data-slide>
         <Title order={2} mb="md">Best Practices and Tips</Title>
 
-        <Text mb="md" weight={500}>Data Preprocessing:</Text>
+        <Title order={3} mb="sm">Data Preprocessing:</Title>
         <List mb="md">
           <List.Item>Sample fixed-length clips from videos (e.g., 16 or 32 frames)</List.Item>
           <List.Item>Apply temporal augmentation: random cropping in time</List.Item>
           <List.Item>Normalize across spatial and temporal dimensions</List.Item>
         </List>
 
-        <Text mb="md" weight={500}>Training Strategies:</Text>
+        <Title order={3} mb="sm">Training Strategies:</Title>
         <List mb="md">
           <List.Item>Transfer learning: Initialize from 2D models when possible (I3D approach)</List.Item>
           <List.Item>Use smaller batch sizes due to memory constraints</List.Item>
@@ -354,7 +358,7 @@ output = model(video)  # [4, 101] class scores`}
           <List.Item>Mixed precision training (FP16) to reduce memory usage</List.Item>
         </List>
 
-        <Text mb="md" weight={500}>Architecture Choices:</Text>
+        <Title order={3} mb="sm">Architecture Choices:</Title>
         <List mb="md">
           <List.Item>Start with (2+1)D for parameter efficiency</List.Item>
           <List.Item>Use temporal stride to reduce computation</List.Item>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Title, Text, Box, List, Group, Image } from '@mantine/core';
+import { Container, Title, Text, Box, List, Group, Image, Flex } from '@mantine/core';
 import CodeBlock from 'components/CodeBlock';
 import DataInteractionPanel from 'components/DataInteractionPanel';
 import 'katex/dist/katex.min.css';
@@ -31,16 +31,18 @@ const ObjectDetection = () => {
       <div data-slide>
         <Title order={2} mb="md">Introduction and Applications</Title>
 
-        <Box mb="md">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/data-science-practice/module7/object-detection-examples.jpeg"
             alt="Object detection examples showing bounding boxes on various objects"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
             mb="sm"
           />
           <Text size="sm">
             Object detection example: multiple objects detected with bounding boxes and class labels
           </Text>
-        </Box>
+        </Flex>
 
         <Text mb="md">
           Object detection extends image classification by not only identifying what objects are present
@@ -48,7 +50,7 @@ const ObjectDetection = () => {
           applications in computer vision.
         </Text>
 
-        <Text mb="md" weight={500}>Main Applications:</Text>
+        <Title order={3} mb="sm">Main Applications:</Title>
         <List mb="md">
           <List.Item>Autonomous vehicles: detecting pedestrians, vehicles, traffic signs</List.Item>
           <List.Item>Surveillance systems: identifying persons or suspicious objects</List.Item>
@@ -92,13 +94,13 @@ const ObjectDetection = () => {
       <div data-slide>
         <Title order={2} mb="md">Data Format: X and Y</Title>
 
-        <Text mb="md" weight={500}>Input (X):</Text>
+        <Title order={3} mb="sm">Input (X):</Title>
         <Text mb="md">
           Images of fixed or variable size, typically normalized to a standard input size.
           Common formats: <InlineMath>{'\\mathbb{R}^{3 \\times H \\times W}'}</InlineMath> with H, W in {`{224, 416, 512, 640}`}.
         </Text>
 
-        <Text mb="md" weight={500}>Ground Truth (Y):</Text>
+        <Title order={3} mb="sm">Ground Truth (Y):</Title>
         <Text mb="md">
           For each image, a set of annotations consisting of:
         </Text>
@@ -128,18 +130,20 @@ annotations = {
           and assessing both localization and classification accuracy.
         </Text>
 
-        <Box mb="md">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/data-science-practice/module7/iou-visualization.ppm"
             alt="IoU visualization showing intersection and union of bounding boxes"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
             mb="sm"
           />
           <Text size="sm">
             IoU (Intersection over Union) visualization: ratio of overlapping area to total area
           </Text>
-        </Box>
+        </Flex>
 
-        <Text mb="md" weight={500}>Intersection over Union (IoU):</Text>
+        <Title order={3} mb="sm">Intersection over Union (IoU):</Title>
         <BlockMath>
           {`\\text{IoU}(B_{pred}, B_{gt}) = \\frac{\\text{Area}(B_{pred} \\cap B_{gt})}{\\text{Area}(B_{pred} \\cup B_{gt})}`}
         </BlockMath>
@@ -148,7 +152,7 @@ annotations = {
           A prediction is considered correct if IoU exceeds a threshold (typically 0.5).
         </Text>
 
-        <Text mb="md" weight={500}>Average Precision (AP):</Text>
+        <Title order={3} mb="sm">Average Precision (AP):</Title>
         <Text mb="md">
           Computed from the precision-recall curve for each class. Mean Average Precision (mAP)
           averages AP across all classes. Variants include:
@@ -173,7 +177,7 @@ annotations = {
           {`\\mathcal{L}_{total} = \\lambda_{cls} \\mathcal{L}_{cls} + \\lambda_{box} \\mathcal{L}_{box} + \\lambda_{obj} \\mathcal{L}_{obj}`}
         </BlockMath>
 
-        <Text mb="md" weight={500}>Classification Loss:</Text>
+        <Title order={3} mb="sm">Classification Loss:</Title>
         <Text mb="md">
           Cross-entropy loss for predicting object class:
         </Text>
@@ -181,7 +185,7 @@ annotations = {
           {`\\mathcal{L}_{cls} = -\\sum_{i=1}^N \\sum_{k=1}^K y_{i,k} \\log(\\hat{p}_{i,k})`}
         </BlockMath>
 
-        <Text mb="md" weight={500}>Localization Loss:</Text>
+        <Title order={3} mb="sm">Localization Loss:</Title>
         <Text mb="md">
           Measures difference between predicted and ground truth bounding boxes:
         </Text>
@@ -189,7 +193,7 @@ annotations = {
           {`\\mathcal{L}_{box} = \\sum_{i=1}^N \\mathbb{1}_{obj}^{(i)} \\text{smooth}_{L1}(b_i - \\hat{b}_i)`}
         </BlockMath>
 
-        <Text mb="md" weight={500}>Objectness Loss:</Text>
+        <Title order={3} mb="sm">Objectness Loss:</Title>
         <Text mb="md">
           Binary loss indicating whether a region contains an object:
         </Text>
@@ -206,18 +210,20 @@ annotations = {
           Two-stage detectors first generate region proposals, then classify and refine them.
         </Text>
 
-        <Box mb="md">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/data-science-practice/module7/faster-rcnn-architecture.jpg"
             alt="Faster R-CNN architecture diagram"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
             mb="sm"
           />
           <Text size="sm">
             Faster R-CNN architecture: RPN generates proposals, then ROI pooling and classification
           </Text>
-        </Box>
+        </Flex>
 
-        <Text mb="md" weight={500}>R-CNN Family (R-CNN, Fast R-CNN, Faster R-CNN):</Text>
+        <Title order={3} mb="sm">R-CNN Family (R-CNN, Fast R-CNN, Faster R-CNN):</Title>
 
         <List mb="md">
           <List.Item>Stage 1: Region Proposal Network (RPN) generates candidate boxes</List.Item>
@@ -250,18 +256,20 @@ classes, boxes = rcnn_head(roi_features)`}
           One-stage detectors predict classes and boxes directly from feature maps in a single pass.
         </Text>
 
-        <Box mb="md">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/data-science-practice/module7/yolo-grid.webp"
             alt="YOLO grid-based detection visualization"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
             mb="sm"
           />
           <Text size="sm">
             YOLO architecture: image divided into grid cells, each predicting bounding boxes
           </Text>
-        </Box>
+        </Flex>
 
-        <Text mb="md" weight={500}>YOLO (You Only Look Once):</Text>
+        <Title order={3} mb="sm">YOLO (You Only Look Once):</Title>
         <Text mb="md">
           Divides image into grid cells. Each cell predicts bounding boxes and class probabilities.
         </Text>
@@ -277,7 +285,7 @@ predictions = detection_head(features)
 # 5 = (x, y, w, h, objectness)`}
         />
 
-        <Text mb="md" weight={500}>SSD (Single Shot Detector):</Text>
+        <Title order={3} mb="sm">SSD (Single Shot Detector):</Title>
         <Text mb="md">
           Uses multiple feature maps at different scales for multi-scale detection.
         </Text>
@@ -296,7 +304,7 @@ predictions = detection_head(features)
           and sizes directly.
         </Text>
 
-        <Text mb="md" weight={500}>FCOS (Fully Convolutional One-Stage):</Text>
+        <Title order={3} mb="sm">FCOS (Fully Convolutional One-Stage):</Title>
         <List mb="md">
           <List.Item>Predicts object center location</List.Item>
           <List.Item>Regresses distances to bounding box edges</List.Item>
@@ -319,18 +327,20 @@ boxes = decode_boxes(box_regression, locations)`}
       <div data-slide>
         <Title order={2} mb="md">Transformer-Based Detectors</Title>
 
-        <Box mb="md">
+        <Flex direction="column" align="center" mb="md">
           <Image
             src="/assets/data-science-practice/module7/detr-architecture.png"
             alt="DETR architecture with transformer encoder-decoder"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
             mb="sm"
           />
           <Text size="sm">
             DETR architecture: CNN backbone, transformer encoder-decoder, and parallel prediction heads
           </Text>
-        </Box>
+        </Flex>
 
-        <Text mb="md" weight={500}>DETR (DEtection TRansformer):</Text>
+        <Title order={3} mb="sm">DETR (DEtection TRansformer):</Title>
         <Text mb="md">
           Formulates object detection as a set prediction problem using transformers.
         </Text>
