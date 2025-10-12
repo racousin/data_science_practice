@@ -1,20 +1,90 @@
 import React, { useState } from 'react';
-import { Container, Tabs, Title, Text, Stack, Group, ThemeIcon, Paper } from '@mantine/core';
+import { Container, Tabs, Title, Text, Stack, Group, ThemeIcon, Paper, List } from '@mantine/core';
 import { Maximize, Filter, Contrast, Binary, Sparkles, Target, RotateCw, Database, Shield } from 'lucide-react';
 import GeometricTransforms from './Enhancement/GeometricTransforms';
 import FilteringMethods from './Enhancement/FilteringMethods';
 import ContrastEnhancement from './Enhancement/ContrastEnhancement';
+import CodeBlock from 'components/CodeBlock';
 
 export default function Enhancement() {
   const [activeTab, setActiveTab] = useState('geometry');
 
   return (
     <Container size="lg" className="py-8">
+      <div data-slide>
+        <Title order={2} mb="md">PyTorch Data Transformations</Title>
+
+        <Text mb="md">
+          PyTorch provides a powerful transformation pipeline through torchvision.transforms. Start by importing the necessary modules:
+        </Text>
+
+        <CodeBlock
+          language="python"
+          code={`from torchvision import transforms
+from PIL import Image`}
+        />
+
+        <Text mt="lg" mb="md">
+          Load an image using PIL, which PyTorch transforms expect as input:
+        </Text>
+
+        <CodeBlock
+          language="python"
+          code={`image = Image.open('ship.jpg')
+print(f"Original size: {image.size}")`}
+        />
+
+        <Text mt="lg" mb="md">
+          Define a transformation pipeline using transforms.Compose. This allows chaining multiple operations:
+        </Text>
+
+        <CodeBlock
+          language="python"
+          code={`transform = transforms.Compose([
+    transforms.Resize((224, 224)),
+    transforms.ToTensor()
+])`}
+        />
+
+        <Text mt="lg" mb="md">
+          Apply the transformation pipeline to your image:
+        </Text>
+
+        <CodeBlock
+          language="python"
+          code={`tensor_image = transform(image)
+print(f"Tensor shape: {tensor_image.shape}")`}
+        />
+
+        <Text mt="lg" mb="md">
+          Common transformations for data augmentation:
+        </Text>
+
+        <List spacing="xs" mb="md">
+          <List.Item><Text component="span" fw={500}>RandomHorizontalFlip</Text> - Randomly flip images horizontally</List.Item>
+          <List.Item><Text component="span" fw={500}>RandomRotation</Text> - Apply random rotations within a degree range</List.Item>
+          <List.Item><Text component="span" fw={500}>ColorJitter</Text> - Randomly change brightness, contrast, saturation</List.Item>
+          <List.Item><Text component="span" fw={500}>Normalize</Text> - Standardize pixel values using mean and standard deviation</List.Item>
+        </List>
+
+        <CodeBlock
+          language="python"
+          code={`augmentation = transforms.Compose([
+    transforms.RandomHorizontalFlip(p=0.5),
+    transforms.RandomRotation(degrees=15),
+    transforms.ColorJitter(brightness=0.2),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                       std=[0.229, 0.224, 0.225])
+])`}
+        />
+      </div>
+
       <Stack spacing="xl" mb="xl">
         <div>
           <Title className="text-3xl font-bold mb-4">Image Enhancement in Deep Learning</Title>
           <Text className="text-gray-700 mb-6">
-            Image enhancement techniques are essential for addressing fundamental limitations of Convolutional Neural Networks (CNNs) 
+            Image enhancement techniques are essential for addressing fundamental limitations of Convolutional Neural Networks (CNNs)
             and overcoming common data challenges in deep learning projects.
           </Text>
           
