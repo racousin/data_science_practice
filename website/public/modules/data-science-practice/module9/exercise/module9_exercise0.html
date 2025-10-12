@@ -7854,7 +7854,7 @@ a.anchor-link {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="Start-with-Gymnasium's-Environment">Start with Gymnasium's Environment<a class="anchor-link" href="#Start-with-Gymnasium's-Environment">¶</a></h2><p>In this section, we delve into the diverse range of environments offered by Gymnasium, which is recognized as the gold standard for defining reinforcement learning environments. Our exploration will provide insights into the dynamics of different systems and how they can be modeled and understood within the framework of reinforcement learning.</p>
-<p>Execute the code below to initiate and observe experiments across various environments: <strong>'FrozenLake-v1'</strong>, <strong>'CartPole-v1'</strong>, <strong>'LunarLanderContinuous-v2'</strong>, and <strong>'PongNoFrameskip-v4'</strong>. While these experiments run, visit the Gymnasium documentation to acquaint yourself with the detailed characteristics and nuances of each environment.</p>
+<p>Execute the code below to initiate and observe experiments across various environments: <strong>'FrozenLake-v1'</strong>, <strong>'CartPole-v1'</strong>, <strong>'LunarLanderContinuous-v3'</strong>, and <strong>'PongNoFrameskip-v4'</strong>. While these experiments run, visit the Gymnasium documentation to acquaint yourself with the detailed characteristics and nuances of each environment.</p>
 </div>
 </div>
 </div>
@@ -7870,7 +7870,7 @@ a.anchor-link {
 <span class="c1"># Environments to run experiments on</span>
 <span class="n">env_render_configs</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">"name"</span><span class="p">:</span><span class="s1">'FrozenLake-v1'</span><span class="p">,</span> <span class="s2">"fps"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="s2">"nb_step"</span><span class="p">:</span><span class="mi">30</span><span class="p">},</span>
  <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span><span class="s1">'CartPole-v1'</span><span class="p">,</span> <span class="s2">"fps"</span><span class="p">:</span><span class="mi">17</span><span class="p">,</span> <span class="s2">"nb_step"</span><span class="p">:</span><span class="mi">120</span><span class="p">},</span>
-  <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span><span class="s1">'LunarLanderContinuous-v2'</span><span class="p">,</span> <span class="s2">"fps"</span><span class="p">:</span><span class="mi">30</span><span class="p">,</span> <span class="s2">"nb_step"</span><span class="p">:</span><span class="mi">300</span><span class="p">},</span>
+  <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span><span class="s1">'LunarLanderContinuous-v3'</span><span class="p">,</span> <span class="s2">"fps"</span><span class="p">:</span><span class="mi">30</span><span class="p">,</span> <span class="s2">"nb_step"</span><span class="p">:</span><span class="mi">300</span><span class="p">},</span>
    <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span><span class="s1">'PongNoFrameskip-v4'</span><span class="p">,</span> <span class="s2">"fps"</span><span class="p">:</span><span class="mi">40</span><span class="p">,</span> <span class="s2">"nb_step"</span><span class="p">:</span><span class="mi">800</span><span class="p">}]</span>
 <span class="k">for</span> <span class="n">env_render_config</span> <span class="ow">in</span> <span class="n">env_render_configs</span><span class="p">:</span>
   <span class="n">exp_render</span><span class="p">(</span><span class="n">env_render_config</span><span class="p">)</span>
@@ -7887,14 +7887,14 @@ a.anchor-link {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h3 id="Questions-on-Environment-Dynamics">Questions on Environment Dynamics<a class="anchor-link" href="#Questions-on-Environment-Dynamics">¶</a></h3><p><strong>Question 1:</strong> Actions and States
-For each environment (FrozenLake-v1, CartPole-v1, LunarLanderContinuous-v2, PongNoFrameskip-v4), identify the action space and state space. Specify whether each is discrete or continuous, and provide their sizes.</p>
+For each environment (FrozenLake-v1, CartPole-v1, LunarLanderContinuous-v3, PongNoFrameskip-v4), identify the action space and state space. Specify whether each is discrete or continuous, and provide their sizes.</p>
 <p>FrozenLake-v1:</p>
 <p>Action Space:
 State Space:</p>
 <p>CartPole-v1:</p>
 <p>Action Space:
 State Space:</p>
-<p>LunarLanderContinuous-v2:</p>
+<p>LunarLanderContinuous-v3:</p>
 <p>Action Space:
 State Space:</p>
 <p>PongNoFrameskip-v4:</p>
@@ -7904,13 +7904,13 @@ State Space:</p>
 For each environment, is the transition model deterministic or probabilistic?</p>
 <p>FrozenLake-v1:</p>
 <p>CartPole-v1:</p>
-<p>LunarLanderContinuous-v2:</p>
+<p>LunarLanderContinuous-v3:</p>
 <p>PongNoFrameskip-v4:</p>
 <p><strong>Question 3:</strong> Reward Functions
 Define the reward function for each environment.</p>
 <p>FrozenLake-v1:</p>
 <p>CartPole-v1:</p>
-<p>LunarLanderContinuous-v2:</p>
+<p>LunarLanderContinuous-v3:</p>
 <p>PongNoFrameskip-v4:</p>
 </div>
 </div>
@@ -7923,7 +7923,7 @@ Define the reward function for each environment.</p>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h3 id="Exercises-on-Agent-Performance">Exercises on Agent Performance<a class="anchor-link" href="#Exercises-on-Agent-Performance">¶</a></h3><p><strong>Exercise 1:</strong> Running an Experiment</p>
-<p>Instantiate a random agent along with the Gymnasium environment, and run the experiment until completion (terminated=True or truncated = True) for the following four environments: 'FrozenLake-v1', 'CartPole-v1', 'LunarLanderContinuous-v2', and 'PongNoFrameskip-v4'. Compute cumulative reward and number of step for each experiment.</p>
+<p>Instantiate a random agent along with the Gymnasium environment, and run the experiment until completion (terminated=True or truncated = True) for the following four environments: 'FrozenLake-v1', 'CartPole-v1', 'LunarLanderContinuous-v3', and 'PongNoFrameskip-v4'. Compute cumulative reward and number of step for each experiment.</p>
 </div>
 </div>
 </div>
@@ -7943,7 +7943,7 @@ Define the reward function for each environment.</p>
 <span class="k">def</span><span class="w"> </span><span class="nf">run_experiment</span><span class="p">(</span><span class="n">env_name</span><span class="p">):</span>
     <span class="k">pass</span>
 
-<span class="n">env_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'FrozenLake-v1'</span><span class="p">,</span> <span class="s1">'CartPole-v1'</span><span class="p">,</span> <span class="s1">'LunarLanderContinuous-v2'</span><span class="p">,</span> <span class="s1">'PongNoFrameskip-v4'</span><span class="p">]</span>
+<span class="n">env_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'FrozenLake-v1'</span><span class="p">,</span> <span class="s1">'CartPole-v1'</span><span class="p">,</span> <span class="s1">'LunarLanderContinuous-v3'</span><span class="p">,</span> <span class="s1">'PongNoFrameskip-v4'</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">env_name</span> <span class="ow">in</span> <span class="n">env_names</span><span class="p">:</span>
     <span class="n">rewards</span><span class="p">,</span> <span class="n">nb_step</span> <span class="o">=</span> <span class="n">run_experiment</span><span class="p">(</span><span class="n">env_name</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">env_name</span><span class="si">}</span><span class="s2"> cumulative reward: </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">)</span><span class="si">}</span><span class="s2">, number steps: </span><span class="si">{</span><span class="n">nb_step</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>

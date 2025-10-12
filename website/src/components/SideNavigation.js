@@ -103,6 +103,10 @@ export const courseContentData = {
     { to: '/Introduction', label: 'Introduction' },
     { to: '/cnn-essentials', label: 'CNN Essentials' },
     { to: '/transfer-learning', label: 'Transfer Learning' },
+    { to: '/object-detection', label: 'Object Detection' },
+    { to: '/segmentation', label: 'Segmentation' },
+    { to: '/generative-model', label: 'Generative Models' },
+    { to: '/three-d-cnn', label: '3D CNN' },
     { to: '/enhancement', label: 'Enhancement Techniques' },
     { to: '/case-study', label: 'Case Study' }
   ],

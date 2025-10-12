@@ -1,6 +1,5 @@
 import React from 'react';
-import { Title, Text, Stack, Accordion, Container, Image } from '@mantine/core';
-import CodeBlock from 'components/CodeBlock';
+import { Title, Text, Stack, Accordion, Container } from '@mantine/core';
 import 'katex/dist/katex.min.css';
 
 // Import components
@@ -11,52 +10,39 @@ import CNNBackpropagation from './CNNEssentials/CNNBackpropagation';
 
 const CNNEssentials = () => {
   return (
-    <Container fluid>
-      <Stack spacing="xl">
-        <Title id="cnn-essentials" order={1}>Essential Components of Convolutional Neural Networks</Title>
-        
-        <Text size="lg">
-          Convolutional Neural Networks (CNNs) are specialized deep learning architectures 
-          designed for processing grid-like data. The fundamental components of CNNs:
-        </Text>
+    <Container size="lg">
+      <Title id="cnn-essentials" order={1} mb="xl">Essential Components of Convolutional Neural Networks</Title>
 
-        <Accordion variant="separated">
-          <Accordion.Item value="convolution-basics">
-            <Accordion.Control>
-              <Title order={3} id="convolution">Convolution Operations</Title>
-            </Accordion.Control>
-            <Accordion.Panel>
-              <ConvolutionBasics />
-            </Accordion.Panel>
-          </Accordion.Item>
+      <Text size="lg" mb="xl">
+        Convolutional Neural Networks (CNNs) are specialized deep learning architectures
+        designed for processing grid-like data. The fundamental components of CNNs:
+      </Text>
 
-          <Accordion.Item value="pooling">
-            <Accordion.Control>
-              <Title order={3} id="pooling">Pooling</Title>
-            </Accordion.Control>
-            <Accordion.Panel>
-              <Pooling />
-            </Accordion.Panel>
-          </Accordion.Item>
+      <div data-slide>
+        <Title order={2} id="convolution" mb="md">Convolution Operations</Title>
+        <ConvolutionBasics />
+      </div>
 
-          <Accordion.Item value="architectures">
-            <Accordion.Control>
-              <Title order={3} id="architectures">CNN Architectures</Title>
-            </Accordion.Control>
-            <Accordion.Panel>
-              <Architectures />
-            </Accordion.Panel>
-          </Accordion.Item>
-          <Accordion.Item value="cnn-backpropagation">
-            <Accordion.Control>
-              <Title order={3} id="cnn-backpropagation">CNN Backpropagation</Title>
-            </Accordion.Control>
-            <Accordion.Panel>
-              <CNNBackpropagation />
-            </Accordion.Panel>
-          </Accordion.Item>
-        </Accordion>
-      </Stack>
+      <div data-slide>
+        <Title order={2} id="pooling" mb="md">Pooling</Title>
+        <Pooling />
+      </div>
+
+      <div data-slide>
+        <Title order={2} id="architectures" mb="md">CNN Architectures</Title>
+        <Architectures />
+      </div>
+
+      <Accordion variant="separated" mt="xl">
+        <Accordion.Item value="cnn-backpropagation">
+          <Accordion.Control>
+            <Title order={2} id="cnn-backpropagation">CNN Backpropagation</Title>
+          </Accordion.Control>
+          <Accordion.Panel>
+            <CNNBackpropagation />
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
     </Container>
   );
 };
