@@ -1,10 +1,28 @@
 import React from 'react';
 import { Container, Title, Text, Stack, Box, Image, List, Group } from '@mantine/core';
 import CodeBlock from 'components/CodeBlock';
+import DataInteractionPanel from 'components/DataInteractionPanel';
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
+import { Code } from 'lucide-react';
 
 const GenerativeModel = () => {
+  // Notebook URLs
+  const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/course/module7_course_generation.ipynb";
+  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/course/module7_course_generation.html";
+  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/data-science-practice/module7/course/module7_course_generation.ipynb";
+
+  const metadata = {
+    description: "Fun image generation with Conditional DCGAN on MNIST - train fast on GPU, generate specific digits on demand.",
+    source: "MNIST Dataset",
+    target: "Conditional image generation (controllable digit generation)",
+    listData: [
+      { name: "Conditional DCGAN", description: "Generate specific digits (0-9) on demand" },
+      { name: "Fast Training", description: "~10 minutes on GPU, watch quality improve in real-time" },
+      { name: "Latent Exploration", description: "Interpolate between digits, explore learned space" }
+    ],
+  };
+
   return (
     <Container size="lg">
       <Title order={1} id="generative-models" mb="xl">Generative Models for Images</Title>
@@ -599,6 +617,24 @@ def sample(model, shape):
           Separately measure sample quality (precision) and diversity (recall).
           Lower FID is better; higher IS is better.
         </Text>
+      </div>
+
+      {/* Slide 17: Practical Application */}
+      <div data-slide>
+        <Title order={2} mb="md">
+          <Code className="inline-block mr-2" size={24} />
+          Practical Application: Conditional DCGAN
+        </Title>
+        <Text mb="md">
+          This notebook demonstrates fun, controllable image generation with Conditional DCGAN.
+          Train quickly on GPU, generate specific digits on demand, and explore smooth latent space interpolations.
+        </Text>
+        <DataInteractionPanel
+          notebookUrl={notebookUrl}
+          notebookHtmlUrl={notebookHtmlUrl}
+          notebookColabUrl={notebookColabUrl}
+          metadata={metadata}
+        />
       </div>
 
     </Container>

@@ -1,10 +1,28 @@
 import React from 'react';
 import { Container, Title, Text, Box, List, Group, Image } from '@mantine/core';
 import CodeBlock from 'components/CodeBlock';
+import DataInteractionPanel from 'components/DataInteractionPanel';
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
+import { Code } from 'lucide-react';
 
 const ObjectDetection = () => {
+  // Notebook URLs
+  const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/course/module7_course_detection.ipynb";
+  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/course/module7_course_detection.html";
+  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/data-science-practice/module7/course/module7_course_detection.ipynb";
+
+  const metadata = {
+    description: "Practical object detection using YOLOv8 - from pre-trained detection to fine-tuning on custom pedestrian dataset.",
+    source: "COCO Dataset / Penn-Fudan Pedestrian Detection",
+    target: "Object detection (bounding boxes + class labels)",
+    listData: [
+      { name: "Pre-trained YOLOv8", description: "Immediate detection on sample images (80 classes)" },
+      { name: "Custom Fine-tuning", description: "Train pedestrian detector on Penn-Fudan dataset" },
+      { name: "Deployment Ready", description: "Export to ONNX/TorchScript for production" }
+    ],
+  };
+
   return (
     <Container size="lg">
       <Title order={1} id="object-detection" mb="xl">Object Detection</Title>
@@ -303,7 +321,7 @@ boxes = decode_boxes(box_regression, locations)`}
 
         <Box mb="md">
           <Image
-            src="/assets/data-science-practice/module7/detr-architecture.jpeg"
+            src="/assets/data-science-practice/module7/detr-architecture.png"
             alt="DETR architecture with transformer encoder-decoder"
             mb="sm"
           />
@@ -428,6 +446,24 @@ scores = predictions[0]['scores']`}
           Filter predictions by confidence threshold and apply non-maximum suppression (NMS)
           to remove overlapping detections.
         </Text>
+      </div>
+
+      {/* Slide 12: Practical Application */}
+      <div data-slide>
+        <Title order={2} mb="md">
+          <Code className="inline-block mr-2" size={24} />
+          Practical Application: YOLOv8 Object Detection
+        </Title>
+        <Text mb="md">
+          This notebook demonstrates a complete, production-ready object detection workflow using YOLOv8.
+          Start with pre-trained detection, then fine-tune on a custom pedestrian dataset - fast training and excellent results.
+        </Text>
+        <DataInteractionPanel
+          notebookUrl={notebookUrl}
+          notebookHtmlUrl={notebookHtmlUrl}
+          notebookColabUrl={notebookColabUrl}
+          metadata={metadata}
+        />
       </div>
 
     </Container>
