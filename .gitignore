@@ -9,6 +9,8 @@ website/public/modules/sandbox/
 **/data_save/**
 **/data/**
 
+website/public/modules/data-science-practice/module7/course/ship_yolo_dataset/
+
 **/module7/**/*_features.csv
 **/module7/**/*.zip
 **module8_course_train.zip

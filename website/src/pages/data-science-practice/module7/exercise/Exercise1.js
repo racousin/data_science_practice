@@ -11,42 +11,42 @@ const Exercise1 = () => {
   const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/data-science-practice/module7/exercise/module7_exercise1.ipynb";
   
   const metadata = {
-    description: "The CIFAR-10 dataset consists of 60,000 32x32 color images divided into 10 classes, with 6,000 images per class. There are 50,000 training images and 10,000 test images.",
-    source: "CIFAR-10 Dataset",
-    target: "Image class label (0-9)",
+    description: "A boat detection dataset from satellite imagery containing images with annotated bounding boxes in YOLO format. The dataset is split into training and test sets for fine-tuning object detection models.",
+    source: "Kaggle Ship Detection Dataset",
+    target: "Bounding box predictions (YOLO format)",
     listData: [
-      { name: "image", description: "32x32x3 RGB image values (3072 values: 1024 for each color channel)" },
-      { name: "label", description: "Target class (0: airplane, 1: automobile, 2: bird, 3: cat, 4: deer, 5: dog, 6: frog, 7: horse, 8: ship, 9: truck)", isTarget: true }
+      { name: "images", description: "Satellite images with varying dimensions containing boats" },
+      { name: "labels", description: "YOLO format annotations: class_id (0=boat), x_center, y_center, width, height (normalized 0-1)", isTarget: true }
     ],
   };
 
   return (
     <Container fluid className="p-4">
       <Stack spacing="lg">
-        <Title order={1}>Exercise 1: CIFAR-10 Image Classification with PyTorch</Title>
-        
+        <Title order={1}>Exercise 1: Boat Object Detection with YOLO</Title>
+
         <Stack spacing="md">
           <Title order={2} id="overview">Overview</Title>
           <List>
-            <List.Item>Explore and analyze the CIFAR-10 dataset structure</List.Item>
-            <List.Item>Develop a CNN model using PyTorch for multi-class image classification</List.Item>
-            <List.Item>Generate predictions and evaluate model performance</List.Item>
+            <List.Item>Load and visualize the boat detection dataset with bounding boxes</List.Item>
+            <List.Item>Fine-tune a YOLOv8 model for boat detection in satellite imagery</List.Item>
+            <List.Item>Generate predictions on test set and evaluate performance</List.Item>
           </List>
 
           <Title order={2} id="expected-output">Expected Output</Title>
           <Text>Submit a Jupyter Notebook (<Code>exercise1.ipynb</Code>) containing:</Text>
           <List>
-            <List.Item>CNN architecture implementation and training pipeline</List.Item>
-            <List.Item>Data augmentation and preprocessing steps (optional)</List.Item>
-            <List.Item>Model evaluation and performance analysis</List.Item>
+            <List.Item>YOLO model fine-tuning on the boat detection dataset</List.Item>
+            <List.Item>Training configuration and hyperparameter tuning</List.Item>
+            <List.Item>Visualization of predictions with bounding boxes</List.Item>
           </List>
 
           <Title order={2} id="evaluation">Evaluation</Title>
-          <Text>Create a <Code>submission.csv</Code> with predictions:</Text>
+          <Text>Create a <Code>predictions.csv</Code> with bounding box predictions:</Text>
           <CodeBlock
-            code={`index,label\n0,4\n1,7\n2,2\n3,1\n...`}
+            code={`image_id,box_idx,class_id,confidence,x_center,y_center,width,height\n0,0,0,0.95,0.5234,0.6123,0.1234,0.2345\n0,1,0,0.87,0.3456,0.4567,0.0987,0.1543\n1,0,0,0.92,0.7123,0.5432,0.1567,0.2234\n...`}
           />
-          <Text>Target accuracy threshold: 80% on the test set</Text>
+          <Text>Target mAP50 threshold: 0.73 on the test set</Text>
         </Stack>
 
         <DataInteractionPanel

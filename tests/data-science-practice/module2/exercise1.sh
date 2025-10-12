@@ -20,21 +20,65 @@ TESTS_DIR="./tests/data-science-practice/module2"
 
 mkdir -p $RESULTS_DIR  # Ensure results directory exists
 
-sudo apt-get install -y xmlstarlet
+# Install xmlstarlet if not available (macOS users should use: brew install xmlstarlet)
+if ! command -v xmlstarlet &> /dev/null; then
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        sudo apt-get update && sudo apt-get install -y xmlstarlet
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        echo "Please install xmlstarlet using: brew install xmlstarlet"
+        exit 1
+    fi
+fi
 
 # Setup a Python virtual environment
-# python3 -m venv venv
+python3 -m venv venv
 source venv/bin/activate
 
 PACKAGE_DIR="$(pwd)/${USERNAME}/module2/mysupertools"
 if [ ! -d "$PACKAGE_DIR" ]; then
-  echo "{\"is_passed_test\": false, \"score\": \"0\", \"logs\": \"Package directory not found at $PACKAGE_DIR.\", \"updated_time_utc\": \"$CURRENT_UTC_TIME\"}" > $RESULT_FILE
+  LOGS="No folder module2/mysupertools/"
+  echo "{\"is_passed_test\": false, \"score\": \"0\", \"logs\": \"$LOGS\", \"updated_time_utc\": \"$CURRENT_UTC_TIME\"}" > $RESULT_FILE
+  exit 1
+fi
+
+# Check for build artifacts that should not be committed
+FOUND_ARTIFACTS=""
+
+# Check for build/dist directories
+if [ -d "$PACKAGE_DIR/build" ]; then
+  FOUND_ARTIFACTS="${FOUND_ARTIFACTS}build/ "
+fi
+if [ -d "$PACKAGE_DIR/dist" ]; then
+  FOUND_ARTIFACTS="${FOUND_ARTIFACTS}dist/ "
+fi
+
+# Check for .egg-info directories
+EGG_INFO_DIRS=$(find "$PACKAGE_DIR" -name "*.egg-info" -type d 2>/dev/null)
+if [ -n "$EGG_INFO_DIRS" ]; then
+  FOUND_ARTIFACTS="${FOUND_ARTIFACTS}$(basename $EGG_INFO_DIRS) "
+fi
+
+# Check for __pycache__ directories
+PYCACHE_DIRS=$(find "$PACKAGE_DIR" -name "__pycache__" -type d 2>/dev/null)
+if [ -n "$PYCACHE_DIRS" ]; then
+  FOUND_ARTIFACTS="${FOUND_ARTIFACTS}__pycache__/ "
+fi
+
+# Check for .pyc files
+PYC_FILES=$(find "$PACKAGE_DIR" -name "*.pyc" -type f 2>/dev/null)
+if [ -n "$PYC_FILES" ]; then
+  FOUND_ARTIFACTS="${FOUND_ARTIFACTS}*.pyc "
+fi
+
+if [ -n "$FOUND_ARTIFACTS" ]; then
+  LOGS="Build artifacts found that should not be committed: ${FOUND_ARTIFACTS}. Remove them from the repository in a new branch and try again."
+  echo "{\"is_passed_test\": false, \"score\": \"0\", \"logs\": \"$LOGS\", \"updated_time_utc\": \"$CURRENT_UTC_TIME\"}" > $RESULT_FILE
   exit 1
 fi
 
 # Attempt to install the package using pip
 if ! pip install $PACKAGE_DIR; then
-  LOGS="Failed to install package from $PACKAGE_DIR."
+  LOGS="Failed to install package from ${USERNAME}/module2/mysupertools. Expected structure:\\n${USERNAME}/module2/mysupertools/\\n    ├── pyproject.toml\\n    └── mysupertools/\\n        ├── __init__.py\\n        └── tool/\\n            ├── __init__.py\\n            └── operation_a_b.py\\n\\nNote: pyproject.toml should be in module2/mysupertools/"
   echo "{\"is_passed_test\": false, \"score\": \"0\", \"logs\": \"$LOGS\", \"updated_time_utc\": \"$CURRENT_UTC_TIME\"}" > $RESULT_FILE
   exit 1
 fi
@@ -46,8 +90,8 @@ if ! python -m pytest $TESTS_DIR/test_exercise1.py --junitxml=results.xml; then
   if [ -f results.xml ] && [ -s results.xml ]; then
     # Extract error messages from the XML file using xmlstarlet
     ERROR_DETAILS=$(xmlstarlet sel -t -m "//error | //failure" -v . -n results.xml | \
-            sed ':a;N;$!ba;s/\\/\\\\/g; s/"/\\"/g; s/\n/\\n/g; s/&gt;/>/g; s/&lt;/</g; s/&amp;/&/g' | \
-            tr -d '\r' | \
+            sed 's/\\/\\\\/g; s/"/\\"/g; s/&gt;/>/g; s/&lt;/</g; s/&amp;/&/g' | \
+            tr -d '\r\n' | \
             awk '{gsub(/[[:cntrl:]]/, ""); print}')
 
   else
