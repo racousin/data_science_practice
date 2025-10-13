@@ -176,7 +176,20 @@ mask = torch.randint(0, 21, (512, 512))  # 21 classes
         <BlockMath>
           {`\\text{Dice}_k = \\frac{2|P_k \\cap G_k|}{|P_k| + |G_k|}`}
         </BlockMath>
-      </div>
+
+                <Flex direction="column" align="center" mb="md">
+                  <Image
+                    src="/assets/data-science-practice/module7/dicevsiou.png"
+                    alt="Dice vs IoU comparison"
+                    style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+                    fluid
+                    mb="sm"
+                  />
+                  <Text size="sm">
+                    Dice vs IoU: Comparison of two popular segmentation metrics
+                  </Text>
+              </Flex>
+            </div>
 
       {/* Slide 6: Loss Functions */}
       <div data-slide>

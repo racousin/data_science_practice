@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Title, Text, Stack, Group, Box, Image, List } from '@mantine/core';
+import { Container, Title, Text, Stack, Group, Box, Image, List, Flex } from '@mantine/core';
 import CodeBlock from 'components/CodeBlock';
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
@@ -62,12 +62,18 @@ def apply_convolution(image_tensor):
       <div data-slide>
         <Title order={2} id="digital-representation" mb="md">Digital Image Representation</Title>
 
-        <Box p="md" mb="md" >
-          <Image src="/assets/data-science-practice/module7/gray.png" alt="Grayscale representation" mb="sm" />
+        <Flex direction="column" align="center" mb="md">
+          <Image
+            src="/assets/data-science-practice/module7/gray.png"
+            alt="Grayscale representation"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
           <Text size="sm">
             Single channel grayscale image: each pixel represents intensity from 0 (black) to max value 8 (white)
           </Text>
-        </Box>
+        </Flex>
 
         <Text mb="md">
           At its core, a digital image is a structured grid of numerical values. Each point in this grid,
@@ -79,41 +85,59 @@ def apply_convolution(image_tensor):
       <div data-slide>
         <Title order={2} mb="md">Color Depth</Title>
 
-        <Box p="md" mb="md" >
-          <Image src="/assets/data-science-practice/module7/bit-depth-representation.png" alt="Bit depth visualization" mb="sm" />
+        <Flex direction="column" align="center" mb="md">
+          <Image
+            src="/assets/data-science-practice/module7/bit-depth-representation.png"
+            alt="Bit depth visualization"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
           <Text size="sm" mb="xs">Bit depth determines the range of possible values:</Text>
           <List size="sm">
             <List.Item>2-bit: 2 levels (0-1)</List.Item>
             <List.Item>8-bit: 256 levels (0-255)</List.Item>
             <List.Item>16-bit: 65,536 levels (0-65535)</List.Item>
           </List>
-        </Box>
+        </Flex>
       </div>
 
       {/* Slide 3: Color Channels */}
       <div data-slide>
         <Title order={2} mb="md">Color Channels</Title>
 
-        <Box p="md" mb="md" >
-          <Image src="/assets/data-science-practice/module7/rgb.png" alt="RGB channel separation" mb="sm" />
+        <Flex direction="column" align="center" mb="md">
+          <Image
+            src="/assets/data-science-practice/module7/rgb.png"
+            alt="RGB channel separation"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
           <Text size="sm">
             RGB images consist of three channels, each representing the intensity of Red, Green, and Blue components (usually on 8-bit)
           </Text>
-        </Box>
+        </Flex>
       </div>
 
       {/* Slide 4: Extended Channel Applications */}
       <div data-slide>
         <Title order={2} mb="md">Extended Channel Applications</Title>
 
-        <Box p="md" mb="md" >
-          <Image src="/assets/data-science-practice/module7/satelite.png" alt="Multi-spectral satellite imagery" mb="sm" />
+        <Flex direction="column" align="center" mb="md">
+          <Image
+            src="/assets/data-science-practice/module7/satelite.png"
+            alt="Multi-spectral satellite imagery"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
           <Text size="sm" mb="xs">Images can contain multiple layers beyond RGB:</Text>
           <List size="sm">
             <List.Item>Satellite imagery: Near Infrared, Thermal, Altitude, etc.</List.Item>
             <List.Item>Medical imaging: Different sensor readings</List.Item>
           </List>
-        </Box>
+        </Flex>
 
         <Text mb="md">
           Mathematically, a general image is represented as a H × W × C tensor, where:
@@ -247,7 +271,14 @@ def apply_convolution(image_tensor):
       <div data-slide>
         <Title order={3} mb="md">2D Convolution Operation</Title>
 
-        <Image src="/assets/data-science-practice/module7/conv2.png" alt="conv" mb="md" />
+        <Flex direction="column" align="center" mb="md">
+          <Image
+            src="/assets/data-science-practice/module7/conv2.png"
+            alt="conv"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
+          />
+        </Flex>
 
         <Text mb="md">
           Concretely, a 2D convolution is the operation that computes a weighted sum between
@@ -284,7 +315,14 @@ def apply_convolution(image_tensor):
           Convolutional Neural Networks (CNNs) are specialized deep learning models that process grid-like data using convolutional layers. Unlike traditional neural networks, CNNs automatically learn spatial hierarchies of features through multiple layers of convolutions.
         </Text>
 
-        <Image src="/assets/data-science-practice/module7/cnn-network.jpg" alt="conv" mb="md" />
+        <Flex direction="column" align="center" mb="md">
+          <Image
+            src="/assets/data-science-practice/module7/cnn-network.jpg"
+            alt="conv"
+            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+            fluid
+          />
+        </Flex>
 
         <Text mb="md">
           The backpropagation process in CNNs follows the same principles as in fully connected networks, but with kernel weight sharing and local connectivity constraints.
@@ -314,7 +352,20 @@ def apply_convolution(image_tensor):
             <Text weight={600} mb="xs">Deep Layers</Text>
             <Text size="sm">Recognize complex objects and their arrangements</Text>
           </Box>
+
         </Group>
+                          <Flex direction="column" align="center" mb="md">
+                    <Image
+                      src="/assets/data-science-practice/module7/cnn-learn.png"
+                      alt="Learning Hierarchy"
+                      style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+                      fluid
+                      mb="sm"
+                    />
+                    <Text size="sm">
+                      Learning Hierarchy: Early layers detect edges, middle layers detect textures, and deep layers recognize objects.
+                    </Text>
+                  </Flex>
       </div>
       {/* Slide 15: Parameter Efficiency */}
       <div data-slide>
@@ -346,6 +397,15 @@ def apply_convolution(image_tensor):
         <Text>
           parameters, while maintaining the ability to detect features anywhere in the image.
         </Text>
+                                  <Flex direction="column" align="center" mb="md">
+                    <Image
+                      src="/assets/data-science-practice/module7/mlpvscnn.png"
+                      alt="mlp-vs-cnn"
+                      style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+                      fluid
+                      mb="sm"
+                    />
+                  </Flex>
       </div>
     </Container>
   );

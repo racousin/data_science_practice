@@ -285,14 +285,6 @@ predictions = detection_head(features)
 # 5 = (x, y, w, h, objectness)`}
         />
 
-        <Title order={3} mb="sm">SSD (Single Shot Detector):</Title>
-        <Text mb="md">
-          Uses multiple feature maps at different scales for multi-scale detection.
-        </Text>
-
-        <Text mt="md">
-          Advantages: Fast inference. Disadvantages: May sacrifice accuracy for speed.
-        </Text>
       </div>
 
       {/* Slide 8: Anchor-Free Detectors */}

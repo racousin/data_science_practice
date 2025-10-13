@@ -4,19 +4,21 @@ import DataInteractionPanel from 'components/DataInteractionPanel';
 import CodeBlock from 'components/CodeBlock';
 
 const Exercise1 = () => {
-  const trainDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/exercise/module7_exercise_train.zip";
-  const testDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/exercise/module7_exercise_test_features.csv";
+  const trainDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/exercise/module7_exercise1_train.zip";
+  const testDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/exercise/X_test.pkl";
   const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/exercise/module7_exercise1.ipynb";
   const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module7/exercise/module7_exercise1.html";
   const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/data-science-practice/module7/exercise/module7_exercise1.ipynb";
   
   const metadata = {
-    description: "A boat detection dataset from satellite imagery containing images with annotated bounding boxes in YOLO format. The dataset is split into training and test sets for fine-tuning object detection models.",
+    description: "A boat detection dataset from satellite imagery containing images with annotated bounding boxes in YOLO format. Training data includes labels; test data is provided for prediction only.",
     source: "Kaggle Ship Detection Dataset",
     target: "Bounding box predictions (YOLO format)",
     listData: [
-      { name: "images", description: "Satellite images with varying dimensions containing boats" },
-      { name: "labels", description: "YOLO format annotations: class_id (0=boat), x_center, y_center, width, height (normalized 0-1)", isTarget: true }
+      { name: "X_train.pkl", description: "Training images as numpy arrays (list of image arrays)" },
+      { name: "y_train.pkl", description: "Training labels in YOLO format: [class_id, x_center, y_center, width, height] (normalized 0-1)" },
+      { name: "train_files.pkl", description: "Filenames corresponding to training images" },
+      { name: "X_test.pkl", description: "Test images as numpy arrays (labels withheld for evaluation)", isTarget: true }
     ],
   };
 

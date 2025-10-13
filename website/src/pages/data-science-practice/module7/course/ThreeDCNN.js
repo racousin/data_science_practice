@@ -114,18 +114,6 @@ const ThreeDCNN = () => {
       <div data-slide>
         <Title order={2} mb="md">3D Convolution Operation</Title>
 
-        <Flex direction="column" align="center" mb="md">
-          <Image
-            src="/assets/data-science-practice/module7/3d-convolution-operation.png"
-            alt="3D convolution kernel sliding across spatiotemporal volume"
-            style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            3D convolution kernel slides across all three dimensions simultaneously
-          </Text>
-        </Flex>
 
         <Text mb="md">
           A 3D convolution extends the 2D operation to include the temporal or depth dimension:

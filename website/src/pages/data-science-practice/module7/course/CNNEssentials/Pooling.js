@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Stack, Code, Image, Table, Grid, List, Title, Accordion } from '@mantine/core';
+import { Text, Stack, Code, Image, Table, Grid, List, Title, Accordion, Flex } from '@mantine/core';
 import CodeBlock from 'components/CodeBlock';
 import { BlockMath, InlineMath } from 'react-katex';
 
@@ -159,7 +159,16 @@ const Pooling = () => {
         Where <InlineMath>{`R_{i,j}`}</InlineMath> represents the pooling region centered
         at position <InlineMath>(i,j)</InlineMath>.
       </Text>
-      <Image src="/assets/data-science-practice/module7/pooling.png" alt="pooling" />
+
+      <Flex direction="column" align="center" mb="md">
+        <Image
+          src="/assets/data-science-practice/module7/pooling.png"
+          alt="pooling"
+          style={{ maxWidth: 'min(600px, 70vw)', height: 'auto' }}
+          fluid
+        />
+      </Flex>
+
       <Text weight={700}>2. Implementation Examples</Text>
       
 
