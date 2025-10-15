@@ -48,7 +48,7 @@ const Exercise1 = () => {
           <CodeBlock
             code={`image_id,box_idx,class_id,confidence,x_center,y_center,width,height\n0,0,0,0.95,0.5234,0.6123,0.1234,0.2345\n0,1,0,0.87,0.3456,0.4567,0.0987,0.1543\n1,0,0,0.92,0.7123,0.5432,0.1567,0.2234\n...`}
           />
-          <Text>Target mAP50 threshold: 0.73 on the test set</Text>
+          <Text>Target mAP50 threshold: 0.70 on the test set</Text>
         </Stack>
 
         <DataInteractionPanel

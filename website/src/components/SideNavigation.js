@@ -111,13 +111,16 @@ export const courseContentData = {
     { to: '/case-study', label: 'Case Study' }
   ],
   'module8': [
-    { to: '/Introduction', label: 'Introduction to NLP' },
-    { to: '/text-numerical-representation', label: 'Text Numerical Representation' },
-    { to: '/rnn', label: 'RNN' },
-    { to: '/transformer-components', label: 'Transformer Components' },
-    { to: '/transformer-architectures', label: 'Transformer Architectures' },
-    { to: '/transfer-learning', label: 'Transfer Learning' },
-    { to: '/nlp-evaluation', label: 'NLP Evaluation' }
+    { to: '/introduction', label: 'Introduction' },
+    { to: '/tokenization', label: 'Tokenization' },
+    { to: '/metrics-and-loss', label: 'Metrics and Loss' },
+    { to: '/recurrent-networks', label: 'Recurrent Networks' },
+    { to: '/attention-layer', label: 'Attention Layer' },
+    { to: '/transformer', label: 'Transformer' },
+    { to: '/llm-transfer-learning', label: 'LLM and Transfer Learning' },
+    { to: '/embeddings', label: 'Embeddings' },
+    { to: '/rag', label: 'RAG' },
+    { to: '/agentic', label: 'Agentic' }
   ],
   'module9': [
     { to: '/Introduction', label: 'Introduction' },
