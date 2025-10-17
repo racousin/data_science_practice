@@ -284,113 +284,108 @@ tokens = list(text)  # 18 tokens total`}
       </div>
 
       <div data-slide>
+        <Title order={2}>N-grams</Title>
+
+        <Text mt="md">
+          N-grams are sequences of N consecutive tokens.
+        </Text>
+
+
+                <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/N-grams.webp"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+        </Flex>
+
+      </div>
+
+      <div data-slide>
         <Title order={2}>Byte-Pair Encoding (BPE)</Title>
 
         <Text mt="md">
           BPE is a subword tokenization method that starts with characters and iteratively merges
-          the most frequent adjacent pairs to build larger tokens. This creates a vocabulary between
+          the most frequent adjacent pairs (2-grams) to build larger tokens. This creates a vocabulary between
           character-level and word-level.
         </Text>
 
-        <Title order={3} mt="lg">Process</Title>
-
-        <Text mt="md">
-          Using the same text: "playing games"
-        </Text>
-
-        <Text mt="md">
-          Step 1: Start with character-level tokens
-        </Text>
+        <Title order={3} mt="lg">Training Corpus</Title>
 
         <CodeBlock
           language="python"
-          code={`text = "playing games"
-tokens = ['p','l','a','y','i','n','g',' ','g','a','m','e','s']
-# Initial vocabulary: all unique characters`}
+          code={`# Training data
+corpus = ["low", "low", "low", "lowest", "lowest"]
+
+# Initial: split into characters
+# "l o w", "l o w", "l o w", "l o w e s t", "l o w e s t"`}
         />
 
         <Text mt="md">
-          Step 2: Find the most frequent adjacent pair and merge it
+          Initial vocabulary: ['l', 'o', 'w', 'e', 's', 't']
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={2}>BPE: Iterative Merging</Title>
+
+        <Text mt="md">
+          Step 1: Count all adjacent character pairs
         </Text>
 
         <CodeBlock
           language="python"
-          code={`# Suppose 'in' appears frequently in training data
-# Merge 'i' + 'n' → 'in'
-tokens = ['p','l','a','y','in','g',' ','g','a','m','e','s']`}
+          code={`# Pair frequencies:
+# ('l','o'): 5 times  ← most frequent
+# ('o','w'): 5 times  ← most frequent
+# ('w','e'): 2 times
+# ('e','s'): 2 times
+# ('s','t'): 2 times`}
         />
 
         <Text mt="md">
-          Step 3: Continue merging frequent pairs
+          Step 2: Merge most frequent pair ('l','o') → 'lo'
         </Text>
 
         <CodeBlock
           language="python"
-          code={`# Merge 'play' → common subword
-# Merge 'ing' → common suffix
-tokens = ['play','ing',' ','game','s']  # 5 tokens
-token_ids = [1234, 567, 0, 891, 23]`}
+          code={`# After merge:
+# "lo w", "lo w", "lo w", "lo w e s t", "lo w e s t"
+# Vocabulary: ['l', 'o', 'w', 'e', 's', 't', 'lo']`}
+        />
+
+        <Text mt="md">
+          Step 3: Continue merging ('lo','w') → 'low'
+        </Text>
+
+        <CodeBlock
+          language="python"
+          code={`# After merge:
+# "low", "low", "low", "low e s t", "low e s t"
+# Vocabulary: ['l', 'o', 'w', 'e', 's', 't', 'lo', 'low']`}
         />
       </div>
 
       <div data-slide>
-        <Title order={2}>BPE: How It Learns</Title>
+        <Title order={2}>BPE: Tokenizing New Words</Title>
 
         <Text mt="md">
-          BPE learns from a training corpus by counting pair frequencies:
+          After training, BPE can tokenize any word using learned subwords:
         </Text>
 
         <CodeBlock
           language="python"
-          code={`# Training corpus
-corpus = ["playing", "playing", "played", "player"]
-# Initial: split into characters with word boundary marker
-# "p l a y i n g </w>", "p l a y e d </w>", ...`}
-        />
+          code={`# Vocabulary learned: ['l', 'o', 'w', 'e', 's', 't', 'lo', 'low']
 
-        <Text mt="md">
-          Count frequencies and merge iteratively:
-        </Text>
-
-        <CodeBlock
-          language="python"
-          code={`# Iteration 1: ('p','l') appears 4 times → merge to 'pl'
-# Iteration 2: ('pl','a') appears 4 times → merge to 'pla'
-# Iteration 3: ('pla','y') appears 4 times → merge to 'play'
-# ... continue until target vocabulary size`}
-        />
-
-        <Text mt="md">
-          The result is a vocabulary of frequent subwords:
-        </Text>
-
-        <CodeBlock
-          language="python"
-          code={`vocabulary = ['play', 'ing', 'ed', 'er', ...]
-# "playing" → ['play', 'ing']
-# "player" → ['play', 'er']`}
-        />
-      </div>
-
-      <div data-slide>
-        <Title order={2}>BPE: Handling Unknown Words</Title>
-
-        <Text mt="md">
-          BPE can tokenize any word by breaking it into known subwords:
-        </Text>
-
-        <CodeBlock
-          language="python"
-          code={`# New word not seen during training
-text = "playing videogames"
-# "videogames" broken into subwords`}
+# Tokenize "low"
+tokens = ["low"]  # Found as single token`}
         />
 
         <CodeBlock
           language="python"
-          code={`# BPE finds the longest matching subwords
-tokens = ['play', 'ing', ' ', 'video', 'game', 's']
-# No <UNK> token needed!`}
+          code={`# Tokenize "lower" (not in training data)
+tokens = ["low", "e", "r"]  # "low" found, rest as characters`}
         />
 
         <Title order={3} mt="lg">Trade-offs</Title>
@@ -399,7 +394,8 @@ tokens = ['play', 'ing', ' ', 'video', 'game', 's']
         <List spacing="xs" mt="sm">
           <List.Item>Balanced vocabulary size (moderate, not too large or small)</List.Item>
           <List.Item>Handles unknown words by breaking them into subwords</List.Item>
-          <List.Item>Captures morphology (play, playing, player share "play")</List.Item>
+          <List.Item>Captures morphology (low, lower, lowest share "low")</List.Item>
+          <List.Item>Most widely used in modern NLP (GPT, BERT, etc.)</List.Item>
         </List>
 
         <Text mt="md" fw={500}>Disadvantages:</Text>
@@ -408,6 +404,39 @@ tokens = ['play', 'ing', ' ', 'video', 'game', 's']
           <List.Item>More complex than word or character tokenization</List.Item>
           <List.Item>Tokenization depends on the training data distribution</List.Item>
         </List>
+      </div>
+
+      <div data-slide>
+        <Title order={2}>Real-World BPE Tokenizer Examples</Title>
+
+        <Title order={3} mt="lg">GPT-2 Tokenizer (2019)</Title>
+
+        <List spacing="sm" mt="sm">
+          <List.Item><strong>Vocabulary Size:</strong> 50,257 tokens</List.Item>
+          <List.Item><strong>Training Corpus:</strong> WebText - 8 million web pages from Reddit outbound links</List.Item>
+          <List.Item><strong>Merge Rules:</strong> BPE merge operations</List.Item>
+        </List>
+
+        <Text mt="md">
+          Source: "Language Models are Unsupervised Multitask Learners" (Radford et al., 2019)
+        </Text>
+      </div>
+
+      <div data-slide>
+
+        <Title order={3} mt="lg">Llama 3 Tokenizer (2024)</Title>
+
+        <List spacing="sm" mt="sm">
+          <List.Item><strong>Vocabulary Size:</strong> 128,256 tokens</List.Item>
+            <List.Item><strong>Training Corpus:</strong> Multilingual data including non-English languages</List.Item>
+          <List.Item><strong>Algorithm:</strong> tiktoken-based BPE</List.Item>
+
+        </List>
+
+
+        <Text mt="md">
+          Source: "The Llama 3 Herd of Models" (Meta AI, 2024)
+        </Text>
       </div>
 
       <div data-slide>

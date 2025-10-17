@@ -43,18 +43,6 @@ const MetricsAndLoss = () => {
           <List.Item><InlineMath math="\hat{y} \in \mathbb{R}^K" />: Output from softmax layer</List.Item>
         </List>
 
-        <Flex direction="column" align="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/cross-entropy-visualization.png"
-            alt="Visualization of cross-entropy loss computation with probability distributions"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            Cross-entropy loss: measuring divergence between predicted and true distributions
-          </Text>
-        </Flex>
       </div>
 
       <div data-slide>
@@ -115,7 +103,18 @@ print(f"Loss: {loss.item():.4f}")
         </Text>
 
         <BlockMath math="PPL = \exp(L_{CE}) = \exp\left(-\frac{1}{T}\sum_{t=1}^{T}\log P(w_t | w_{< t})\right)" />
-
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/perplixity.webp"
+            alt="Perplexity values comparison across different language models"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Perplexity benchmarks: lower values indicate better language models
+          </Text>
+        </Flex>
         <Text mt="lg">
           <strong>Interpretation:</strong> Perplexity represents the average number of choices the model
           is uncertain about at each step.
@@ -135,83 +134,9 @@ print(f"Perplexity: {perplexity.item():.2f}")
 # Output: Perplexity: 50126.84`}
         />
 
-        <Flex direction="column" align="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/perplexity-comparison.png"
-            alt="Perplexity values comparison across different language models"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            Perplexity benchmarks: lower values indicate better language models
-          </Text>
-        </Flex>
+
       </div>
 
-      <div data-slide>
-        <Title order={2}>Classification Metrics</Title>
-
-        <Text mt="md">
-          For text classification tasks (sentiment analysis, topic classification, NER):
-        </Text>
-
-        <Title order={3} mt="lg">Accuracy</Title>
-        <BlockMath math="\text{Accuracy} = \frac{\text{Number of correct predictions}}{\text{Total predictions}}" />
-
-        <Title order={3} mt="lg">Precision</Title>
-        <BlockMath math="\text{Precision} = \frac{TP}{TP + FP}" />
-
-        <Title order={3} mt="lg">Recall</Title>
-        <BlockMath math="\text{Recall} = \frac{TP}{TP + FN}" />
-
-        <Title order={3} mt="lg">F1 Score</Title>
-        <BlockMath math="F_1 = 2 \cdot \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}" />
-
-        <Flex direction="column" align="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/confusion-matrix-metrics.png"
-            alt="Confusion matrix showing TP, FP, TN, FN and derived metrics"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            Classification metrics derived from confusion matrix: precision, recall, and F1
-          </Text>
-        </Flex>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Classification Metrics Example</Title>
-
-        <CodeBlock
-          language="python"
-          code={`from sklearn.metrics import accuracy_score, precision_recall_fscore_support
-
-# Example predictions for sentiment classification (0=negative, 1=positive)
-y_true = [1, 0, 1, 1, 0, 1, 0, 0, 1, 1]
-y_pred = [1, 0, 1, 0, 0, 1, 0, 1, 1, 1]
-
-# Calculate metrics
-accuracy = accuracy_score(y_true, y_pred)
-print(f"Accuracy: {accuracy:.3f}")
-# Output: Accuracy: 0.800`}
-        />
-
-        <CodeBlock
-          language="python"
-          code={`# Calculate precision, recall, F1
-precision, recall, f1, _ = precision_recall_fscore_support(
-    y_true, y_pred, average='binary'
-)
-
-print(f"Precision: {precision:.3f}")
-print(f"Recall: {recall:.3f}")
-print(f"F1: {f1:.3f}")
-# Output: Precision: 0.833, Recall: 0.833, F1: 0.833`}
-        />
-      </div>
 
       <div data-slide>
         <Title order={2}>BLEU Score</Title>
@@ -242,7 +167,7 @@ print(f"F1: {f1:.3f}")
 
         <Flex direction="column" align="center" mt="xl" mb="md">
           <Image
-            src="/assets/data-science-practice/module8/bleu-ngram-overlap.png"
+            src="/assets/data-science-practice/module8/bleu.png"
             alt="Visualization of n-gram overlap between reference and candidate translations"
             style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
             fluid
@@ -314,15 +239,12 @@ print(f"BLEU score: {score3:.4f}")
 
         <Flex direction="column" align="center" mt="xl" mb="md">
           <Image
-            src="/assets/data-science-practice/module8/rouge-metrics-comparison.png"
+            src="/assets/data-science-practice/module8/rouge.jpeg"
             alt="Comparison of ROUGE-N and ROUGE-L metrics for text summarization"
             style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
             fluid
             mb="sm"
           />
-          <Text size="sm">
-            ROUGE metrics: recall-oriented evaluation with n-grams and LCS
-          </Text>
         </Flex>
       </div>
 
@@ -380,169 +302,8 @@ print(f"ROUGE-L: {scores['rougeL'].fmeasure:.4f}")
         <Text mt="sm">
           <strong>Target shape:</strong> Original token IDs <InlineMath math="\in \mathbb{Z}^{|M|}" /> (only for masked positions)
         </Text>
-
-        <Flex direction="column" align="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/masked-language-modeling.png"
-            alt="Illustration of masked language modeling with token masking and prediction"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            Masked language modeling: predicting masked tokens from bidirectional context
-          </Text>
-        </Flex>
       </div>
 
-      <div data-slide>
-        <Title order={2}>Sequence-to-Sequence Loss</Title>
-
-        <Text mt="md">
-          For tasks like translation where input and output sequences differ:
-        </Text>
-
-        <BlockMath math="L_{seq2seq} = -\frac{1}{T_{tgt}}\sum_{t=1}^{T_{tgt}}\sum_{k=1}^{K} y_k^{(t)} \log(\hat{y}_k^{(t)})" />
-
-        <Text mt="lg">
-          <strong>Input shapes:</strong>
-        </Text>
-        <List spacing="xs" mt="sm">
-          <List.Item>Source sequence: <InlineMath math="\in \mathbb{Z}^{T_{src}}" /></List.Item>
-          <List.Item>Target sequence: <InlineMath math="\in \mathbb{Z}^{T_{tgt}}" /></List.Item>
-        </List>
-
-        <Text mt="lg">
-          <strong>Note:</strong> Loss is computed only on the target sequence, and typically
-          ignores padding tokens using an attention mask.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Handling Padding in Loss</Title>
-
-        <Text mt="md">
-          Variable-length sequences are padded to uniform length. Loss computation should ignore padding tokens.
-        </Text>
-
-        <CodeBlock
-          language="python"
-          code={`import torch
-import torch.nn.functional as F
-
-# Sequences with padding (padding_idx=0)
-logits = torch.randn(2, 10, 1000)  # (batch_size, seq_len, vocab_size)
-targets = torch.tensor([
-    [45, 123, 67, 89, 0, 0, 0, 0, 0, 0],  # Sequence 1 (length 4)
-    [12, 34, 56, 78, 90, 23, 45, 0, 0, 0]  # Sequence 2 (length 7)
-])`}
-        />
-
-        <CodeBlock
-          language="python"
-          code={`# Compute loss with padding ignored
-loss = F.cross_entropy(
-    logits.view(-1, 1000),
-    targets.view(-1),
-    ignore_index=0  # Ignore padding tokens
-)
-print(f"Loss (ignoring padding): {loss.item():.4f}")`}
-        />
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Label Smoothing</Title>
-
-        <Text mt="md">
-          Label smoothing prevents overconfident predictions by distributing a small amount of
-          probability mass to incorrect classes.
-        </Text>
-
-        <BlockMath math="y'_k = (1 - \epsilon) \cdot y_k + \frac{\epsilon}{K}" />
-
-        <Text mt="lg">
-          Where:
-        </Text>
-        <List spacing="xs" mt="sm">
-          <List.Item><InlineMath math="\epsilon" />: Smoothing parameter (typically 0.1)</List.Item>
-          <List.Item><InlineMath math="K" />: Number of classes (vocabulary size)</List.Item>
-        </List>
-
-        <Text mt="lg">
-          <strong>Effect:</strong> Reduces overfitting and improves generalization, particularly for large vocabularies.
-        </Text>
-
-        <Text mt="sm" size="sm" fs="italic">
-          Reference: Szegedy et al., "Rethinking the Inception Architecture" (2016) - https://arxiv.org/abs/1512.00567
-        </Text>
-
-        <Flex direction="column" align="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/label-smoothing-effect.png"
-            alt="Comparison of hard labels vs smoothed labels probability distributions"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            Label smoothing: preventing overconfident predictions by distributing probability mass
-          </Text>
-        </Flex>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Task-Specific Metrics Summary</Title>
-
-        <Table striped mt="md">
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>Task</Table.Th>
-              <Table.Th>Primary Loss</Table.Th>
-              <Table.Th>Evaluation Metrics</Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>
-            <Table.Tr>
-              <Table.Td>Language Modeling</Table.Td>
-              <Table.Td>Cross-Entropy</Table.Td>
-              <Table.Td>Perplexity</Table.Td>
-            </Table.Tr>
-            <Table.Tr>
-              <Table.Td>Text Classification</Table.Td>
-              <Table.Td>Cross-Entropy</Table.Td>
-              <Table.Td>Accuracy, F1, Precision, Recall</Table.Td>
-            </Table.Tr>
-            <Table.Tr>
-              <Table.Td>Machine Translation</Table.Td>
-              <Table.Td>Cross-Entropy</Table.Td>
-              <Table.Td>BLEU, METEOR</Table.Td>
-            </Table.Tr>
-            <Table.Tr>
-              <Table.Td>Summarization</Table.Td>
-              <Table.Td>Cross-Entropy</Table.Td>
-              <Table.Td>ROUGE, BLEU</Table.Td>
-            </Table.Tr>
-            <Table.Tr>
-              <Table.Td>Question Answering</Table.Td>
-              <Table.Td>Cross-Entropy</Table.Td>
-              <Table.Td>Exact Match, F1</Table.Td>
-            </Table.Tr>
-          </Table.Tbody>
-        </Table>
-
-        <Flex direction="column" align="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/nlp-metrics-overview.png"
-            alt="Overview of NLP metrics and their applications across different tasks"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            Task-specific metrics: matching evaluation methods to NLP objectives
-          </Text>
-        </Flex>
-      </div>
     </>
   );
 };
