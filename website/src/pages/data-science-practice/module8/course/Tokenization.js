@@ -1,6 +1,5 @@
 import React from "react";
 import { Text, Title, List, Flex, Image } from '@mantine/core';
-import { InlineMath, BlockMath } from 'react-katex';
 import CodeBlock from "components/CodeBlock";
 import InteractiveTokenizer from "components/InteractiveTokenizer";
 
@@ -8,7 +7,7 @@ const Tokenization = () => {
   return (
     <>
       <div data-slide>
-        <Title order={1}>Tokenization</Title>
+        <Title order={1}>Tokenization - Represent text as numerical values</Title>
 
         <Text mt="md">
           Tokenization is the process of breaking text into smaller units (tokens) that serve as the basic elements
@@ -19,280 +18,245 @@ const Tokenization = () => {
           Different tokenization approaches balance trade-offs between vocabulary size, semantic granularity,
           and handling of unseen words.
         </Text>
-      </div>
-
-
-      <div data-slide>
-        <Title order={2}>Formal Components of Tokenization</Title>
-
-        <Title order={3} mt="md">Tokenization Function</Title>
-        <Text mt="sm">
-          A function <InlineMath math="T" /> that maps text strings to sequences of tokens:
-        </Text>
-        <BlockMath math="T: \mathcal{S} \rightarrow \mathcal{V}^*" />
-        <Text>
-          Where <InlineMath math="\mathcal{S}" /> is the space of all text strings and <InlineMath math="\mathcal{V}" /> is the token vocabulary.
-        </Text>
-
-        <Title order={3} mt="lg">Vocabulary</Title>
-        <Text mt="sm">
-          A finite set <InlineMath math="\mathcal{V} = \{t_1, t_2, ..., t_{|\mathcal{V}|}\}" /> containing all possible tokens.
-        </Text>
-        <Text mt="sm">
-          The vocabulary size <InlineMath math="|\mathcal{V}|" /> is a critical hyperparameter affecting model size and performance.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Token Encoding and Decoding</Title>
-
-        <Title order={3} mt="md">Token Encoder</Title>
-        <Text mt="sm">
-          A function <InlineMath math="E" /> that maps tokens to integer indices:
-        </Text>
-        <BlockMath math="E: \mathcal{V} \rightarrow \{1, 2, ..., |\mathcal{V}|\}" />
-
-        <Title order={3} mt="lg">Token Decoder</Title>
-        <Text mt="sm">
-          A function <InlineMath math="D" /> that maps integer indices back to tokens:
-        </Text>
-        <BlockMath math="D: \{1, 2, ..., |\mathcal{V}|\} \rightarrow \mathcal{V}" />
-        <Text mt="sm">
-          Where <InlineMath math="D = E^{-1}" />, the inverse of the encoder.
-        </Text>
-
-        <Title order={3} mt="lg">Reconstructor</Title>
-        <Text mt="sm">
-          A function <InlineMath math="R" /> that maps token sequences back to text:
-        </Text>
-        <BlockMath math="R: \mathcal{V}^* \rightarrow \mathcal{S}" />
-        <Text mt="sm">
-          In an ideal tokenizer, <InlineMath math="R \circ T" /> is the identity function, ensuring lossless reconstruction.
-        </Text>
-
-        <Flex direction="column" align="center" mt="xl" mb="md">
+                <Flex direction="column" align="center" mt="xl" mb="md">
           <Image
-            src="/assets/data-science-practice/module8/tokenization-pipeline.png"
+            src="/assets/data-science-practice/module8/tokenize1.jpg"
             alt="Diagram showing the tokenization pipeline from text to tokens to indices and back"
             style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
             fluid
             mb="sm"
           />
-          <Text size="sm">
-            Complete tokenization pipeline: T (tokenize) → E (encode) → D (decode) → R (reconstruct)
-          </Text>
         </Flex>
       </div>
 
+
+      <div data-slide>
+
+        <Text mt="md">
+          Tokenization involves three key components that work together to convert text into numerical representations:
+        </Text>
+
+        <Title order={3} mt="lg">1. Vocabulary</Title>
+        <Text mt="sm">
+          A fixed collection of all possible tokens that the tokenizer recognizes. Each unique token in the vocabulary is assigned a unique integer identifier (token ID).
+        </Text>
+        <Text mt="lg">
+          The vocabulary size is a critical parameter affecting both model size and performance. Larger vocabularies require more parameters but can represent text more precisely.
+        </Text>
+        <Title order={3} mt="lg">2. Tokens</Title>
+        <Text mt="sm">
+          The individual units that text is split into. These can be words, characters, or subword pieces depending on the tokenization strategy.
+        </Text>
+
+
+        <Title order={3} mt="lg">3. Token IDs</Title>
+        <Text mt="sm">
+          Integer identifiers assigned to each token in the vocabulary. These numbers are what neural networks actually process.
+        </Text>
+
+
+      </div>
       <div data-slide>
         <Title order={2}>Special Tokens</Title>
 
         <Text mt="md">
-          Most tokenizers include special tokens in their vocabulary:
+          Most tokenizers include special tokens in their vocabulary for specific purposes:
         </Text>
 
         <List spacing="sm" mt="md">
-          <List.Item><strong>[UNK] or &lt;unk&gt;</strong>: Unknown token for out-of-vocabulary items</List.Item>
-          <List.Item><strong>[PAD] or &lt;pad&gt;</strong>: Padding token to make sequences uniform length</List.Item>
-          <List.Item><strong>[BOS]/[EOS] or &lt;s&gt;/&lt;/s&gt;</strong>: Beginning/End of sequence markers</List.Item>
-          <List.Item><strong>[CLS]/[SEP]</strong>: Classification and separator tokens for models like BERT</List.Item>
+          <List.Item><strong>&lt;PAD&gt;</strong>: Padding token to make sequences uniform length</List.Item>
+          <List.Item><strong>&lt;UNK&gt;</strong>: Unknown token for out-of-vocabulary words</List.Item>
+          <List.Item><strong>&lt;BOS&gt;/&lt;EOS&gt;</strong>: Beginning/End of sequence markers</List.Item>
+          <List.Item><strong>[CLS]/[SEP]</strong>: Classification and separator tokens (used in BERT)</List.Item>
         </List>
 
-        <Flex direction="column" align="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/special-tokens-examples.png"
-            alt="Examples of sequences with special tokens for different models"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            Special token usage in BERT and GPT models
-          </Text>
-        </Flex>
+        <Text mt="md">
+          These special tokens are included in the vocabulary and have their own unique token IDs, just like regular tokens.
+        </Text>
+
       </div>
 
       <div data-slide>
-        <Title order={2}>Simple Tokenization Example</Title>
+        <Title order={2}>Example: Complete Tokenization Process</Title>
 
+        <Text mt="md">
+          Consider the text: "Natural language processing is fascinating!"
+        </Text>
+
+        <Title order={3} mt="lg">Split into Tokens</Title>
         <CodeBlock
           language="python"
-          code={`# Example text
-text = "Natural language processing is fascinating!"
+          code={`text = "Natural language processing is fascinating!"
 
-# 1. Tokenization (word-level)
-tokens = ["Natural", "language", "processing", "is", "fascinating", "!"]`}
-        />
-
-        <CodeBlock
-          language="python"
-          code={`# 2. Vocabulary creation
 vocabulary = {
-    "<PAD>": 0,  # Special padding token
-    "<UNK>": 1,  # Unknown token
+    "<PAD>": 0,      # Special: padding token
+    "<UNK>": 1,      # Special: unknown token
     "Natural": 2,
     "language": 3,
     "processing": 4,
     "is": 5,
     "fascinating": 6,
     "!": 7
-}`}
+}
+
+# Vocabulary size: 8 tokens
+
+tokens = ["Natural", "language", "processing", "is", "fascinating", "!"]`}
         />
       </div>
 
       <div data-slide>
-        <Title order={2}>Token Encoding and Reconstruction</Title>
 
+        <Title order={3} mt="md">Convert Tokens to IDs</Title>
         <CodeBlock
           language="python"
-          code={`# 3. Token encoding (converting to indices)
-encoded = [2, 3, 4, 5, 6, 7]
+          code={`# Look up each token in the vocabulary
+token_ids = [2, 3, 4, 5, 6, 7]
 
-# 4. Token decoding (converting back to tokens)
-decoded = ["Natural", "language", "processing", "is", "fascinating", "!"]`}
+# These numbers are what the model processes`}
         />
 
+        <Title order={3} mt="lg">Convert IDs Back to Tokens</Title>
         <CodeBlock
           language="python"
-          code={`# 5. Reconstruction (joining tokens back to text)
-reconstructed = "Natural language processing is fascinating!"
+          code={`# Reverse lookup: IDs → tokens
+decoded_tokens = ["Natural", "language", "processing", "is", "fascinating", "!"]`}
+        />
 
-# Handling out-of-vocabulary words
+        <Title order={3} mt="lg">Reconstruct Text</Title>
+        <CodeBlock
+          language="python"
+          code={`# Join tokens to form original text
+reconstructed = "Natural language processing is fascinating!"`}
+        />
+
+        <Title order={3} mt="lg">Handling Unknown Words</Title>
+        <CodeBlock
+          language="python"
+          code={`# New text with words not in vocabulary
 new_text = "Natural language understanding is amazing!"
-# "understanding" and "amazing" are not in vocabulary, so they become <UNK>
-new_encoded = [2, 3, 1, 5, 1, 7]  # Using <UNK> (index 1) for OOV words`}
+
+# "understanding" and "amazing" → <UNK> (ID: 1)
+new_token_ids = [2, 3, 1, 5, 1, 7]`}
         />
       </div>
 
-      <div data-slide>
-        <Title order={2}>Interactive Tokenization Demo</Title>
 
-        <Text mt="md">
-          Experiment with GPT tokenization by entering text below. Each colored badge represents a single token.
-          Hover over tokens to see their unique token IDs.
-        </Text>
-
-        <InteractiveTokenizer />
-
-        <Text mt="lg" size="sm">
-          Notice how the tokenizer handles:
-        </Text>
-        <List spacing="xs" mt="sm" size="sm">
-          <List.Item>Spaces and punctuation as separate or combined tokens</List.Item>
-          <List.Item>Common words as single tokens</List.Item>
-          <List.Item>Uncommon or made-up words split into subword units</List.Item>
-        </List>
-      </div>
 
       <div data-slide>
         <Title order={2}>Word-Level Tokenization</Title>
 
         <Text mt="md">
           Word tokenization splits text at word boundaries, typically using spaces and punctuation as delimiters.
+          Each complete word becomes a single token.
         </Text>
 
-        <Title order={3} mt="lg">Formal Representation</Title>
-        <Text mt="sm">
-          Given a vocabulary <InlineMath math="V = \{w_1, w_2, ..., w_{|V|}\}" /> of unique words:
-        </Text>
-        <BlockMath math="\text{Tokenize}_{word}: \mathcal{S} \rightarrow V^*" />
+        <Title order={3} mt="lg">Process</Title>
 
         <Text mt="md">
-          <strong>Dimension:</strong> For a vocabulary of size <InlineMath math="|V|" />, each token is represented
-          as an index in the range <InlineMath math="\{1, 2, ..., |V|\}" />.
+          Consider the text: "playing games"
         </Text>
+
+        <CodeBlock
+          language="python"
+          code={`text = "playing games"
+tokens = text.split()  # Split on spaces
+print(tokens)  # ['playing', 'games']`}
+        />
 
         <Text mt="md">
-          <strong>Typical vocabulary size:</strong> 10,000 - 100,000 tokens
+          Each word is then mapped to a unique ID from the vocabulary:
         </Text>
+
+        <CodeBlock
+          language="python"
+          code={`vocabulary = {"playing": 1523, "games": 2847}
+token_ids = [1523, 2847]`}
+        />
 
         <Text mt="md">
-          <strong>Reconstruction:</strong> Text can be reconstructed by joining tokens with spaces.
+          If a word is not in the vocabulary, it becomes an unknown token:
         </Text>
 
-        <Flex direction="column" align="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/word-level-tokenization.png"
-            alt="Example of word-level tokenization showing vocabulary and encoding"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            Word-level tokenization with vocabulary mapping and OOV handling
-          </Text>
-        </Flex>
+        <CodeBlock
+          language="python"
+          code={`text = "playing videogames"  # "videogames" not in vocab
+tokens = ["playing", "<UNK>"]
+token_ids = [1523, 0]  # <UNK> mapped to ID 0`}
+        />
+
+        <Title order={3} mt="lg">Trade-offs</Title>
+
+        <Text mt="md" fw={500}>Advantages:</Text>
+        <List spacing="xs" mt="sm">
+          <List.Item>Preserves semantic meaning - each token is a complete word</List.Item>
+          <List.Item>Intuitive and easy to interpret</List.Item>
+        </List>
+
+        <Text mt="md" fw={500}>Disadvantages:</Text>
+        <List spacing="xs" mt="sm">
+          <List.Item>Large vocabulary required (tens of thousands of words)</List.Item>
+          <List.Item>Cannot handle unknown words - they become &lt;UNK&gt;</List.Item>
+          <List.Item>Cannot capture morphological relationships (play, playing, played are separate)</List.Item>
+        </List>
       </div>
 
       <div data-slide>
         <Title order={2}>Character-Level Tokenization</Title>
 
         <Text mt="md">
-          Character tokenization breaks text into individual characters, offering a very small vocabulary
-          but requiring longer sequences.
+          Character tokenization breaks text into individual characters. This creates very long sequences
+          but uses a minimal vocabulary.
         </Text>
 
-        <Title order={3} mt="lg">Formal Representation</Title>
-        <Text mt="sm">
-          Given a character set <InlineMath math="\mathcal{C} = \{c_1, c_2, ..., c_{|\mathcal{C}|}\}" />:
-        </Text>
-        <BlockMath math="\text{Tokenize}_{char}: \mathcal{S} \rightarrow \mathcal{C}^*" />
-
-        <Text mt="md">
-          <strong>Dimension:</strong> For a character set of size <InlineMath math="|\mathcal{C}|" /> (typically 26-128),
-          each character is represented as an index in <InlineMath math="\{1, 2, ..., |\mathcal{C}|\}" />.
-        </Text>
-
-        <Text mt="md">
-          <strong>Typical vocabulary size:</strong> 26-256 tokens
-        </Text>
-
-        <Text mt="md">
-          <strong>Reconstruction:</strong> Text can be perfectly reconstructed by joining characters with no separator.
-        </Text>
-
-        <Flex direction="column" align="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/character-level-tokenization.png"
-            alt="Example of character-level tokenization showing individual character encoding"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            Character-level tokenization: small vocabulary, long sequences
-          </Text>
-        </Flex>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Character Tokenization Example</Title>
+        <Title order={3} mt="lg">Process</Title>
 
         <CodeBlock
           language="python"
-          code={`# Character tokenization
-text = "Hello World!"
-
-# Tokenization (text → character tokens)
-char_tokens = list(text)
-print("Character tokens:", char_tokens)
-# Output: ['H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd', '!']`}
+          code={`text = "playing games"
+tokens = list(text)  # Split into characters
+print(tokens)  # ['p','l','a','y','i','n','g',' ','g','a','m','e','s']`}
         />
+
+        <Text mt="md">
+          Each character is mapped to a unique ID:
+        </Text>
 
         <CodeBlock
           language="python"
-          code={`# Create character vocabulary and map to indices
-char_vocab = sorted(set(char_tokens))
-char_to_idx = {char: idx for idx, char in enumerate(char_vocab, 1)}
-
-print("Vocabulary size:", len(char_vocab))
-# Output: Vocabulary size: 9
-
-# Convert to numerical representation
-numerical_chars = [char_to_idx[char] for char in char_tokens]
-print("Numerical representation:", numerical_chars)
-# Output: [3, 6, 7, 7, 8, 1, 4, 8, 9, 7, 5, 2]`}
+          code={`# Build vocabulary from unique characters
+vocab = {' ': 0, 'a': 1, 'e': 2, 'g': 3, 'i': 4, 'l': 5,
+         'm': 6, 'n': 7, 'p': 8, 's': 9, 'y': 10}
+token_ids = [8,5,1,10,4,7,3,0,3,1,6,2,9]  # 13 tokens`}
         />
+
+        <Text mt="md">
+          Character-level tokenization never encounters unknown characters if the vocabulary includes
+          all possible characters:
+        </Text>
+
+        <CodeBlock
+          language="python"
+          code={`text = "playing videogames"
+# All characters are in vocabulary - no <UNK> needed
+tokens = list(text)  # 18 tokens total`}
+        />
+
+        <Title order={3} mt="lg">Trade-offs</Title>
+
+        <Text mt="md" fw={500}>Advantages:</Text>
+        <List spacing="xs" mt="sm">
+          <List.Item>Very small vocabulary (typically less than 100 tokens)</List.Item>
+          <List.Item>No unknown tokens - handles any text</List.Item>
+          <List.Item>Works well for languages without clear word boundaries</List.Item>
+        </List>
+
+        <Text mt="md" fw={500}>Disadvantages:</Text>
+        <List spacing="xs" mt="sm">
+          <List.Item>Very long sequences (each character is a token)</List.Item>
+          <List.Item>Loses semantic information - individual characters have no meaning</List.Item>
+          <List.Item>Model must learn to compose characters into meaningful units</List.Item>
+        </List>
       </div>
 
       <div data-slide>
@@ -317,338 +281,154 @@ print("Numerical representation:", numerical_chars)
           These methods enable models to handle out-of-vocabulary words by decomposing them into known subword units.
         </Text>
 
-        <Flex direction="column" align="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/tokenization-comparison.png"
-            alt="Comparison of word-level, character-level, and subword tokenization approaches"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            Comparison: word-level vs character-level vs subword tokenization
-          </Text>
-        </Flex>
       </div>
 
       <div data-slide>
         <Title order={2}>Byte-Pair Encoding (BPE)</Title>
 
         <Text mt="md">
-          BPE iteratively merges the most frequent adjacent character pairs or byte pairs to form new subword tokens.
+          BPE is a subword tokenization method that starts with characters and iteratively merges
+          the most frequent adjacent pairs to build larger tokens. This creates a vocabulary between
+          character-level and word-level.
         </Text>
 
-        <Title order={3} mt="lg">Formal Representation</Title>
-        <Text mt="sm">
-          Given an initial character vocabulary <InlineMath math="\mathcal{C}" /> and a target vocabulary size <InlineMath math="k" />:
-        </Text>
-        <BlockMath math="\text{BPE}: \mathcal{C}^* \times \mathbb{N} \rightarrow \mathcal{V}^*" />
+        <Title order={3} mt="lg">Process</Title>
 
         <Text mt="md">
-          Where <InlineMath math="\mathcal{V}" /> is the learned vocabulary with <InlineMath math="|\mathcal{V}| = |\mathcal{C}| + k" /> tokens
-          after <InlineMath math="k" /> merge operations.
+          Using the same text: "playing games"
         </Text>
 
         <Text mt="md">
-          <strong>Typical vocabulary size:</strong> 30,000 - 50,000 tokens
+          Step 1: Start with character-level tokens
         </Text>
 
-        <Text mt="sm" size="sm" fs="italic">
-          Reference: Sennrich et al., "Neural Machine Translation of Rare Words with Subword Units" (2016) - https://arxiv.org/abs/1508.07909
+        <CodeBlock
+          language="python"
+          code={`text = "playing games"
+tokens = ['p','l','a','y','i','n','g',' ','g','a','m','e','s']
+# Initial vocabulary: all unique characters`}
+        />
+
+        <Text mt="md">
+          Step 2: Find the most frequent adjacent pair and merge it
         </Text>
+
+        <CodeBlock
+          language="python"
+          code={`# Suppose 'in' appears frequently in training data
+# Merge 'i' + 'n' → 'in'
+tokens = ['p','l','a','y','in','g',' ','g','a','m','e','s']`}
+        />
+
+        <Text mt="md">
+          Step 3: Continue merging frequent pairs
+        </Text>
+
+        <CodeBlock
+          language="python"
+          code={`# Merge 'play' → common subword
+# Merge 'ing' → common suffix
+tokens = ['play','ing',' ','game','s']  # 5 tokens
+token_ids = [1234, 567, 0, 891, 23]`}
+        />
       </div>
 
       <div data-slide>
-        <Title order={2}>BPE Algorithm</Title>
+        <Title order={2}>BPE: How It Learns</Title>
 
-        <List ordered spacing="sm" mt="md">
-          <List.Item>Start with a vocabulary of individual characters</List.Item>
-          <List.Item>Count frequencies of adjacent character pairs in the corpus</List.Item>
-          <List.Item>Merge the most frequent pair to create a new token</List.Item>
-          <List.Item>Update frequencies with the new token</List.Item>
-          <List.Item>Repeat steps 2-4 until reaching desired vocabulary size or frequency threshold</List.Item>
-        </List>
+        <Text mt="md">
+          BPE learns from a training corpus by counting pair frequencies:
+        </Text>
 
-        <Flex direction="column" align="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/bpe-algorithm-flow.png"
-            alt="Flowchart of the BPE algorithm showing iterative merging process"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            BPE algorithm: iterative pair frequency analysis and merging
-          </Text>
-        </Flex>
+        <CodeBlock
+          language="python"
+          code={`# Training corpus
+corpus = ["playing", "playing", "played", "player"]
+# Initial: split into characters with word boundary marker
+# "p l a y i n g </w>", "p l a y e d </w>", ...`}
+        />
+
+        <Text mt="md">
+          Count frequencies and merge iteratively:
+        </Text>
+
+        <CodeBlock
+          language="python"
+          code={`# Iteration 1: ('p','l') appears 4 times → merge to 'pl'
+# Iteration 2: ('pl','a') appears 4 times → merge to 'pla'
+# Iteration 3: ('pla','y') appears 4 times → merge to 'play'
+# ... continue until target vocabulary size`}
+        />
+
+        <Text mt="md">
+          The result is a vocabulary of frequent subwords:
+        </Text>
+
+        <CodeBlock
+          language="python"
+          code={`vocabulary = ['play', 'ing', 'ed', 'er', ...]
+# "playing" → ['play', 'ing']
+# "player" → ['play', 'er']`}
+        />
       </div>
 
       <div data-slide>
-        <Title order={2}>BPE Example: Initial State</Title>
+        <Title order={2}>BPE: Handling Unknown Words</Title>
 
         <Text mt="md">
-          Consider a tiny corpus: ["low", "lower", "lowest", "newer", "wider"]
+          BPE can tokenize any word by breaking it into known subwords:
         </Text>
 
-        <Text mt="lg"><strong>Initial state:</strong></Text>
-        <Text mt="sm">
-          Initial vocabulary: ['l', 'o', 'w', 'e', 'r', 's', 't', 'n', 'i', 'd'] (10 tokens)
-        </Text>
-        <Text mt="sm">
-          Initial segmentation:
-        </Text>
+        <CodeBlock
+          language="python"
+          code={`# New word not seen during training
+text = "playing videogames"
+# "videogames" broken into subwords`}
+        />
+
+        <CodeBlock
+          language="python"
+          code={`# BPE finds the longest matching subwords
+tokens = ['play', 'ing', ' ', 'video', 'game', 's']
+# No <UNK> token needed!`}
+        />
+
+        <Title order={3} mt="lg">Trade-offs</Title>
+
+        <Text mt="md" fw={500}>Advantages:</Text>
         <List spacing="xs" mt="sm">
-          <List.Item>"l o w" (3 tokens)</List.Item>
-          <List.Item>"l o w e r" (5 tokens)</List.Item>
-          <List.Item>"l o w e s t" (6 tokens)</List.Item>
-          <List.Item>"n e w e r" (5 tokens)</List.Item>
-          <List.Item>"w i d e r" (5 tokens)</List.Item>
+          <List.Item>Balanced vocabulary size (moderate, not too large or small)</List.Item>
+          <List.Item>Handles unknown words by breaking them into subwords</List.Item>
+          <List.Item>Captures morphology (play, playing, player share "play")</List.Item>
+        </List>
+
+        <Text mt="md" fw={500}>Disadvantages:</Text>
+        <List spacing="xs" mt="sm">
+          <List.Item>Requires training on a corpus to learn merge operations</List.Item>
+          <List.Item>More complex than word or character tokenization</List.Item>
+          <List.Item>Tokenization depends on the training data distribution</List.Item>
         </List>
       </div>
 
       <div data-slide>
-        <Title order={2}>BPE Example: Iterations</Title>
-
-        <Text mt="md"><strong>Iteration 1:</strong></Text>
-        <Text mt="sm">Frequency count: ('e', 'r') appears 3 times</Text>
-        <Text mt="sm">Merge 'e' + 'r' → 'er'</Text>
-        <Text mt="sm">Updated vocabulary: [..., 'er'] (11 tokens)</Text>
-
-        <Text mt="lg"><strong>Iteration 2:</strong></Text>
-        <Text mt="sm">Frequency count: ('l', 'o') appears 3 times</Text>
-        <Text mt="sm">Merge 'l' + 'o' → 'lo'</Text>
-        <Text mt="sm">Updated vocabulary: [..., 'er', 'lo'] (12 tokens)</Text>
-
-        <Text mt="lg"><strong>Iteration 3:</strong></Text>
-        <Text mt="sm">Frequency count: ('lo', 'w') appears 3 times</Text>
-        <Text mt="sm">Merge 'lo' + 'w' → 'low'</Text>
-        <Text mt="sm">Updated vocabulary: [..., 'er', 'lo', 'low'] (13 tokens)</Text>
-
-        <Flex direction="column" align="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/bpe-merge-tree.png"
-            alt="Visual representation of BPE merge iterations forming a tree structure"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            BPE merge tree: progressive token formation from characters
-          </Text>
-        </Flex>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>BPE in Practice</Title>
-
-        <CodeBlock
-          language="python"
-          code={`from transformers import GPT2Tokenizer
-
-# Load a pre-trained BPE tokenizer (GPT-2 uses BPE)
-tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
-
-text = "Natural language processing is powerful."`}
-        />
-
-        <CodeBlock
-          language="python"
-          code={`# Tokenization (text → BPE tokens)
-tokens = tokenizer.tokenize(text)
-print("BPE tokens:", tokens)
-# Output: ['Natural', ' language', ' processing', ' is', ' powerful', '.']
-
-# Convert to token IDs
-token_ids = tokenizer.encode(text)
-print("Token IDs:", token_ids)
-# Output: [8241, 2061, 4915, 318, 5411, 13]`}
-        />
-
-        <CodeBlock
-          language="python"
-          code={`# Vocabulary size
-print("Vocabulary size:", len(tokenizer))
-# Output: Vocabulary size: 50257
-
-# Reconstruction (token IDs → text)
-reconstructed_text = tokenizer.decode(token_ids)
-print("Reconstructed text:", reconstructed_text)
-# Output: Natural language processing is powerful.`}
-        />
-      </div>
-
-      <div data-slide>
-        <Title order={2}>WordPiece</Title>
+        <Title order={2}>Interactive Tokenization</Title>
 
         <Text mt="md">
-          WordPiece is similar to BPE but uses a likelihood-based criterion for merging tokens instead of frequency.
-          It marks subword units that don't begin words with '##' to aid in reconstruction.
+          Experiment with GPT tokenization by entering text below. Each colored badge represents a single token.
         </Text>
 
-        <Title order={3} mt="lg">Merge Criterion</Title>
-        <Text mt="sm">
-          WordPiece selects the merge that maximizes:
-        </Text>
-        <BlockMath math="\text{score}(x,y) = \frac{\text{freq}(xy)}{\text{freq}(x) \times \text{freq}(y)}" />
-        <Text mt="sm">
-          This likelihood ratio prefers merges where the combined token <InlineMath math="xy" /> appears more frequently
-          than would be expected if <InlineMath math="x" /> and <InlineMath math="y" /> were independent.
-        </Text>
+        <InteractiveTokenizer />
 
-        <Text mt="md">
-          <strong>Typical vocabulary size:</strong> ~30,000 tokens
+        <Text mt="lg" size="sm">
+          Notice how the tokenizer handles:
         </Text>
-
-        <Text mt="sm" size="sm" fs="italic">
-          Reference: Schuster & Nakajima, "Japanese and Korean Voice Search" (2012) - https://research.google/pubs/pub37842/
-        </Text>
-
-        <Flex direction="column" align="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/bpe-vs-wordpiece.png"
-            alt="Comparison between BPE and WordPiece merge criteria"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            BPE vs WordPiece: frequency-based vs likelihood-based merging
-          </Text>
-        </Flex>
+        <List spacing="xs" mt="sm" size="sm">
+          <List.Item>Spaces and punctuation as separate or combined tokens</List.Item>
+          <List.Item>Common words as single tokens</List.Item>
+          <List.Item>Uncommon or made-up words split into subword units</List.Item>
+        </List>
       </div>
 
-      <div data-slide>
-        <Title order={2}>WordPiece Example</Title>
-
-        <CodeBlock
-          language="python"
-          code={`from transformers import BertTokenizer
-
-# Load a pre-trained WordPiece tokenizer (BERT uses WordPiece)
-tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
-
-text = "Natural language processing uses wordpiece tokenization."`}
-        />
-
-        <CodeBlock
-          language="python"
-          code={`# Tokenization (text → WordPiece tokens)
-tokens = tokenizer.tokenize(text)
-print("WordPiece tokens:", tokens)
-# Output: ['natural', 'language', 'processing', 'uses', 'word', '##piece', 'token', '##ization', '.']
-
-# Notice how "wordpiece" is split into "word" and "##piece"
-# The "##" prefix indicates this is a continuation of the previous token`}
-        />
-
-        <CodeBlock
-          language="python"
-          code={`# Convert to token IDs (includes [CLS] and [SEP] tokens)
-token_ids = tokenizer.encode(text)
-print("Token IDs:", token_ids)
-# Output: [101, 2269, 2653, 6254, 2224, 2773, 12195, 2106, 10104, 1012, 102]
-
-# Vocabulary size
-print("Vocabulary size:", len(tokenizer))
-# Output: Vocabulary size: 30522
-
-# Reconstruction
-reconstructed_text = tokenizer.decode(token_ids)
-print("Reconstructed text:", reconstructed_text)
-# Output: natural language processing uses wordpiece tokenization.`}
-        />
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Subword Markers</Title>
-
-        <Text mt="md">
-          Different tokenizers use distinctive markers to indicate token positions within words:
-        </Text>
-
-        <List spacing="sm" mt="lg">
-          <List.Item>
-            <strong>WordPiece:</strong> Uses "##" prefix to mark subword tokens that continue a word
-            <br />Example: "tokenization" → ["token", "##ization"]
-          </List.Item>
-          <List.Item>
-            <strong>SentencePiece:</strong> Uses "▁" (underscore) prefix to mark tokens that begin words
-            <br />Example: "tokenization" → ["▁token", "ization"]
-          </List.Item>
-          <List.Item>
-            <strong>BPE:</strong> Typically doesn't use explicit markers in the original formulation
-            <br />(though implementations vary)
-          </List.Item>
-        </List>
-
-        <Flex direction="column" align="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/subword-markers-comparison.png"
-            alt="Comparison of subword markers used by different tokenizers"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            Different marker conventions: WordPiece (##), SentencePiece (▁), and BPE
-          </Text>
-        </Flex>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Tokenization Trade-offs</Title>
-
-        <Title order={3} mt="md">Word-Level</Title>
-        <List spacing="xs" mt="sm">
-          <List.Item><strong>Pros:</strong> Preserves semantic units, intuitive</List.Item>
-          <List.Item><strong>Cons:</strong> Large vocabulary, OOV problem, morphological variation</List.Item>
-        </List>
-
-        <Title order={3} mt="lg">Character-Level</Title>
-        <List spacing="xs" mt="sm">
-          <List.Item><strong>Pros:</strong> Small vocabulary, no OOV problem</List.Item>
-          <List.Item><strong>Cons:</strong> Very long sequences, loses semantic information</List.Item>
-        </List>
-
-        <Title order={3} mt="lg">Subword-Level</Title>
-        <List spacing="xs" mt="sm">
-          <List.Item><strong>Pros:</strong> Balanced vocabulary size, handles OOV words, captures morphology</List.Item>
-          <List.Item><strong>Cons:</strong> Requires training, adds complexity</List.Item>
-        </List>
-
-        <Flex direction="column" align="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/tokenization-tradeoffs.png"
-            alt="Comparison table of tokenization approaches showing vocabulary size vs sequence length tradeoffs"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            Tokenization strategy tradeoffs: vocabulary size, sequence length, and semantic granularity
-          </Text>
-        </Flex>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Practical Considerations</Title>
-
-        <Title order={3} mt="md">Vocabulary Size Impact</Title>
-        <Text mt="sm">
-          Vocabulary size <InlineMath math="|\mathcal{V}|" /> directly affects:
-        </Text>
-        <List spacing="xs" mt="sm">
-          <List.Item><strong>Model size:</strong> Embedding layer has <InlineMath math="|\mathcal{V}| \times d" /> parameters</List.Item>
-          <List.Item><strong>Sequence length:</strong> Smaller vocabulary → longer sequences</List.Item>
-          <List.Item><strong>Training efficiency:</strong> Larger vocabulary → more parameters to train</List.Item>
-          <List.Item><strong>Generalization:</strong> Larger vocabulary → more data needed for rare tokens</List.Item>
-        </List>
-
-        <Text mt="lg">
-          Modern models typically use subword tokenization with vocabularies of 30K-50K tokens,
-          balancing expressiveness and efficiency.
-        </Text>
-      </div>
     </>
   );
 };
