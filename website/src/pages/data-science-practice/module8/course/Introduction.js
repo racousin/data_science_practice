@@ -41,7 +41,7 @@ const Introduction = () => {
 
         <Flex direction="column" align="center" mt="xl" mb="md">
           <Image
-            src="/assets/data-science-practice/module8/text-structure-hierarchy.png"
+            src="/assets/data-science-practice/module8/Hierarchical-nlp.png"
             alt="Hierarchical levels of text structure from characters to documents"
             style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
             fluid
@@ -68,60 +68,165 @@ const Introduction = () => {
 
         <Flex direction="column" align="center" mt="xl" mb="md">
           <Image
-            src="/assets/data-science-practice/module8/sequential-dependencies.png"
+            src="/assets/data-science-practice/module8/NatureofText.png"
             alt="Visualization of sequential dependencies in text"
             style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
             fluid
             mb="sm"
           />
-          <Text size="sm">
-            Long-range dependencies and word order effects in text sequences
-          </Text>
         </Flex>
 
-        <Text mt="lg">
-          Mathematically, text sequences can be represented as:
-        </Text>
-
-        <BlockMath>
-          {`\\mathcal{S} = (w_1, w_2, \\ldots, w_n) \\quad \\text{where } w_i \\in \\mathcal{V}`}
-        </BlockMath>
-
-        <Text mt="md">
-          Where <InlineMath math="\mathcal{S}" /> is a sequence and <InlineMath math="\mathcal{V}" /> is the vocabulary.
-        </Text>
       </div>
 
       <div data-slide>
-        <Title order={2}>Text Structure Types</Title>
+        <Title order={2}>Character Encodings and Text Representation</Title>
 
-        <Title order={3} mt="md">Structured Text</Title>
-        <Text>
-          Follows consistent format and organization: database records, XML/JSON documents, forms and templates, tables and CSV files.
+        <Text mt="md">
+          Text processing begins with understanding how characters are encoded and represented digitally.
         </Text>
 
-        <Title order={3} mt="lg">Semi-structured Text</Title>
-        <Text>
-          Contains some organizational elements: email (headers + body), social media posts (metadata + content), HTML web pages,
-          academic papers with sections.
+        <Title order={3} mt="lg">ASCII and Extended Character Sets</Title>
+        <Text mt="sm">
+          ASCII (American Standard Code for Information Interchange) represents 128 characters using 7 bits:
+          uppercase letters (A-Z: 65-90), lowercase letters (a-z: 97-122), digits (0-9: 48-57), and special characters.
         </Text>
 
-        <Title order={3} mt="lg">Unstructured Text</Title>
-        <Text>
-          Free-form with minimal explicit organization: conversational text, novels and stories, customer reviews, transcribed speech.
+        <Text mt="md">
+          The case difference is systematic: uppercase 'A' (65) and lowercase 'a' (97) differ by 32.
+          This property enables efficient case transformations but introduces complexity for case-insensitive matching.
+        </Text>
+                <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/ascii.webp"
+            alt="ASCII"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+        </Flex>
+
+        <Title order={3} mt="lg">Unicode and Multilingual Text</Title>
+        <Text mt="sm">
+          Unicode extends beyond ASCII to support diverse writing systems: Latin scripts (English, French, German),
+          non-Latin alphabets (Cyrillic, Greek, Arabic, Hebrew), logographic systems (Chinese, Japanese), and complex scripts
+          (Devanagari, Thai). UTF-8 encoding uses 1-4 bytes per character, making it variable-length and space-efficient.
+        </Text>
+
+        <Text mt="md">
+          Special characters present unique challenges: punctuation varies by language (English period vs. Arabic question mark),
+          whitespace includes spaces, tabs, and line breaks, diacritics modify base characters (é, ñ, ü),
+          and emojis require multi-byte encoding (🙂 = U+1F642).
         </Text>
 
         <Flex direction="column" align="center" mt="xl" mb="md">
           <Image
-            src="/assets/data-science-practice/module8/text-structure-types.png"
-            alt="Examples of structured, semi-structured, and unstructured text"
+            src="/assets/data-science-practice/module8/utf.png"
+            alt="Comparison of ASCII and Unicode character encodings with examples"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+        </Flex>
+      </div>
+
+      <div data-slide>
+        <Title order={2}>Language Diversity at Scale</Title>
+
+        <Text mt="md">
+          Human language exhibits remarkable diversity across multiple dimensions, creating substantial challenges for NLP systems.
+        </Text>
+
+        <Title order={3} mt="lg">Languages and Writing Systems</Title>
+        <List spacing="sm" mt="sm">
+          <List.Item><strong>~7,000 living languages</strong> worldwide (Ethnologue 2023)</List.Item>
+          <List.Item><strong>~300 writing systems</strong> across history, with ~150 currently in use</List.Item>
+          <List.Item><strong>26 letters</strong> in English alphabet vs. <strong>50,000+ characters</strong> in Chinese writing system</List.Item>
+        </List>
+
+        <Title order={3} mt="lg">Vocabulary and Text Volume</Title>
+        <List spacing="sm" mt="sm">
+          <List.Item><strong>170,000+ words</strong> in current English usage (Oxford English Dictionary)</List.Item>
+          <List.Item><strong>~130 million books</strong> published in all languages throughout history</List.Item>
+          <List.Item><strong>2.5 million+ books</strong> published annually worldwide</List.Item>
+          <List.Item><strong>Billions of web pages</strong> containing trillions of words across languages</List.Item>
+        </List>
+
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/world-of-languages-large.png"
+            alt="Visualization of language diversity statistics and writing system examples"
             style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
             fluid
             mb="sm"
           />
           <Text size="sm">
-            Comparison of structured, semi-structured, and unstructured text formats
+            Global language diversity: distribution of speakers, writing systems, and text resources
           </Text>
+        </Flex>
+
+        <Text mt="lg" size="sm" fs="italic">
+          References: Ethnologue (2023) - https://www.ethnologue.com; Unicode Standard v15.1 (2023) - https://unicode.org;
+          Oxford English Dictionary - https://oed.com; Google Books Library Project (2010) - http://booksearch.blogspot.com/2010/08/books-of-world.html
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={2}>Sequence Representations Beyond Natural Language</Title>
+
+        <Text mt="md">
+          The principles of text processing extend to other sequential symbolic data with finite alphabets.
+        </Text>
+
+        <Title order={3} mt="lg">Biological Sequences</Title>
+        <Text mt="sm">
+          DNA sequences use four nucleotide bases: A (Adenine), T (Thymine), G (Guanine), C (Cytosine).
+          These sequences encode genetic information where order determines biological function.
+          Protein sequences use 20 amino acids represented by single-letter codes (A, C, D, E, F, G, H, I, K, L, M, N, P, Q, R, S, T, V, W, Y).
+        </Text>
+
+        <Title order={3} mt="lg">Musical Sequences</Title>
+        <Text mt="sm">
+          Music can be represented symbolically through MIDI note numbers (0-127), pitch classes (C, C#, D, D#, E, F, F#, G, G#, A, A#, B),
+          duration values (whole, half, quarter notes), and ABC notation for folk music transcription.
+          Sequential models can learn patterns in melodies, harmonies, and compositional structures.
+        </Text>
+
+        <Title order={3} mt="lg">Chemical Representations</Title>
+        <Text mt="sm">
+          SMILES (Simplified Molecular Input Line Entry System) notation represents molecular structures as text strings
+          using characters for atoms (C, N, O, S), bonds (-, =, #), and branches (parentheses).
+          InChI provides standardized chemical structure representations for database searching and compound identification.
+        </Text>
+
+        <Title order={3} mt="lg">Mathematical Expressions</Title>
+        <Text mt="sm">
+          Mathematical notation forms a symbolic language with operators (+, -, ×, ÷, =), variables (x, y, z),
+          functions (sin, cos, log), Greek letters (α, β, γ), and special symbols (∫, ∑, ∂).
+          LaTeX provides a standardized text representation for mathematical expressions, enabling symbolic computation and automated theorem proving.
+        </Text>
+
+        <Title order={3} mt="lg">Programming Code</Title>
+        <Text mt="sm">
+          Source code combines natural language elements (variable names, comments) with formal syntax rules (keywords, operators, delimiters).
+          Programming languages like Python, Java, and C++ have finite token vocabularies including keywords (if, while, return),
+          operators (=, +, ==), and punctuation (braces, parentheses, semicolons). Code exhibits sequential dependencies through control flow,
+          function calls, and variable scope.
+        </Text>
+
+        <Text mt="lg">
+          These diverse sequence types share fundamental properties with natural language: discrete vocabularies,
+          sequential dependencies, and meaningful patterns that can be learned through similar computational approaches.
+        </Text>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/dna.jpg"
+            alt="Examples of non-language sequences: DNA"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
         </Flex>
       </div>
 
@@ -164,18 +269,6 @@ const Introduction = () => {
           </Table.Tbody>
         </Table>
 
-        <Flex direction="column" align="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/nlp-evolution-timeline.png"
-            alt="Timeline of NLP evolution from rule-based to transformer era"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            Evolution of NLP approaches from 1950s to present
-          </Text>
-        </Flex>
 
         <Text mt="lg" size="sm" fs="italic">
           Reference: Vaswani et al., "Attention Is All You Need" (2017) - https://arxiv.org/abs/1706.03762
@@ -197,7 +290,7 @@ const Introduction = () => {
 
         <Flex direction="column" align="center" mt="xl" mb="md">
           <Image
-            src="/assets/data-science-practice/module8/text-to-value-tasks.png"
+            src="/assets/data-science-practice/module8/sentimentanalysis.avif"
             alt="Examples of text classification and regression tasks"
             style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
             fluid
@@ -209,30 +302,6 @@ const Introduction = () => {
         </Flex>
       </div>
 
-      <div data-slide>
-        <Title order={2}>Sequence Labeling Tasks</Title>
-
-        <Text mt="md"><strong>Token Classification</strong></Text>
-        <BlockMath>{`f: \\{w_1,\\ldots,w_n\\} \\rightarrow \\{c_1,\\ldots,c_n\\}`}</BlockMath>
-        <Text size="sm">Assigns a label to each token (Named Entity Recognition, Part-of-Speech tagging)</Text>
-
-        <Text mt="lg"><strong>Span Detection</strong></Text>
-        <BlockMath>{`f: \\mathcal{S} \\rightarrow \\{(s_i, e_i, c_i)\\}_{i=1}^N`}</BlockMath>
-        <Text size="sm">Identifies spans with start positions (s), end positions (e), and classes (c)</Text>
-
-        <Flex direction="column" align="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/sequence-labeling-examples.png"
-            alt="Examples of token classification and span detection with NER and POS tagging"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            Token-level labeling: NER and POS tagging examples
-          </Text>
-        </Flex>
-      </div>
 
       <div data-slide>
         <Title order={2}>Text to Text Tasks</Title>
@@ -247,7 +316,7 @@ const Introduction = () => {
 
         <Flex direction="column" align="center" mt="xl" mb="md">
           <Image
-            src="/assets/data-science-practice/module8/text-to-text-tasks.png"
+            src="/assets/data-science-practice/module8/text2text.png"
             alt="Examples of machine translation and summarization"
             style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
             fluid
@@ -261,10 +330,6 @@ const Introduction = () => {
 
       <div data-slide>
         <Title order={2}>Generative Tasks</Title>
-
-        <Text mt="md"><strong>Conditional Text Generation</strong></Text>
-        <BlockMath>{`f: \\mathcal{C} \\rightarrow \\mathcal{S}`}</BlockMath>
-        <Text size="sm">Generates text based on conditioning input (dialogue systems, code generation, style transfer)</Text>
 
         <Text mt="lg"><strong>Language Modeling</strong></Text>
         <BlockMath>{`P(w_t | w_1, w_2, \\ldots, w_{t-1})`}</BlockMath>
@@ -313,3 +378,17 @@ const Introduction = () => {
 };
 
 export default Introduction;
+
+
+
+        // <Text mt="lg">
+        //   Mathematically, text sequences can be represented as:
+        // </Text>
+
+        // <BlockMath>
+        //   {`\\mathcal{S} = (w_1, w_2, \\ldots, w_n) \\quad \\text{where } w_i \\in \\mathcal{V}`}
+        // </BlockMath>
+
+        // <Text mt="md">
+        //   Where <InlineMath math="\mathcal{S}" /> is a sequence and <InlineMath math="\mathcal{V}" /> is the vocabulary.
+        // </Text>

@@ -37,6 +37,17 @@ export default function Agentic() {
           Modern LLM-based agents combine language understanding with tool use and reasoning
           to accomplish complex tasks across multiple steps.
         </Text>
+        <Flex justify="center" mt="lg">
+          <Image
+            src="/api/placeholder/800/500"
+            alt="AI agent components showing autonomy, reactivity, pro-activeness, and social ability"
+            style={{ maxWidth: '100%' }}
+          />
+        </Flex>
+        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
+          Core characteristics of AI agents: autonomous operation, environmental perception,
+          goal-oriented behavior, and interaction capabilities.
+        </Text>
       </div>
 
       <div data-slide>
@@ -128,6 +139,17 @@ export default function Agentic() {
           This interleaving allows agents to adjust their reasoning based on actual outcomes,
           making them more robust to errors and unexpected situations.
         </Text>
+        <Flex justify="center" mt="lg">
+          <Image
+            src="/api/placeholder/800/500"
+            alt="ReAct framework diagram showing the cycle of Thought, Action, and Observation"
+            style={{ maxWidth: '100%' }}
+          />
+        </Flex>
+        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
+          ReAct framework: Interleaving reasoning traces (Thought) with action execution (Action)
+          and environmental feedback (Observation) for robust decision-making.
+        </Text>
       </div>
 
       <div data-slide>
@@ -205,6 +227,17 @@ Action 3: Finish[2.2 million]`}
           where <InlineMath>q</InlineMath> is the query, <InlineMath>c</InlineMath> is context,
           and <InlineMath>h</InlineMath> is history.
         </Text>
+        <Flex justify="center" mt="lg">
+          <Image
+            src="/api/placeholder/800/500"
+            alt="Agent tools ecosystem showing search, computation, data access, and communication tools"
+            style={{ maxWidth: '100%' }}
+          />
+        </Flex>
+        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
+          Agent tools ecosystem: Various tool categories (search, computation, data access, modification,
+          communication) extend agent capabilities beyond text generation.
+        </Text>
       </div>
 
       <div data-slide>
@@ -259,6 +292,17 @@ def calculator(expression: str) -> str:
           Memory management is crucial for token efficiency. Agents must balance maintaining
           sufficient context with staying within model token limits.
         </Text>
+        <Flex justify="center" mt="lg">
+          <Image
+            src="/api/placeholder/800/500"
+            alt="Agent memory types: short-term, long-term, and episodic memory systems"
+            style={{ maxWidth: '100%' }}
+          />
+        </Flex>
+        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
+          Agent memory architecture: Short-term (conversation history), long-term (vector database),
+          and episodic (past experiences) memory systems for context management.
+        </Text>
       </div>
 
       <div data-slide>
@@ -291,6 +335,17 @@ for step in plan:
     result = executor.execute(step)
     plan.update(result)`}
         />
+        <Flex justify="center" mt="lg">
+          <Image
+            src="/api/placeholder/800/500"
+            alt="Agent planning strategies: Chain-of-Thought, Tree-of-Thought, and Plan-and-Execute comparison"
+            style={{ maxWidth: '100%' }}
+          />
+        </Flex>
+        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
+          Planning strategies comparison: Sequential CoT, branching ToT for exploration,
+          and structured Plan-and-Execute for complex multi-step tasks.
+        </Text>
       </div>
 
       <div data-slide>
@@ -308,6 +363,17 @@ for step in plan:
         <Text mt="md">
           The AgentExecutor handles the ReAct loop: prompting the LLM, parsing tool calls,
           executing tools, and feeding observations back to the LLM until the task completes.
+        </Text>
+        <Flex justify="center" mt="lg">
+          <Image
+            src="/api/placeholder/800/500"
+            alt="LangChain agent architecture showing Agent, Tools, AgentExecutor, and Memory components"
+            style={{ maxWidth: '100%' }}
+          />
+        </Flex>
+        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
+          LangChain agent architecture: Core agent (LLM decision-maker), tools (function library),
+          AgentExecutor (runtime manager), and memory (context storage) working together.
         </Text>
       </div>
 
@@ -412,6 +478,17 @@ def get_weather_detailed(location: str, units: str) -> str:
     """Get weather with specific units."""
     return f"Temp: 22°C" if units == "celsius" else "Temp: 72°F"`}
         />
+        <Flex justify="center" mt="lg">
+          <Image
+            src="/api/placeholder/800/500"
+            alt="Custom tool creation workflow showing function definition, schema specification, and registration"
+            style={{ maxWidth: '100%' }}
+          />
+        </Flex>
+        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
+          Custom tool creation process: Define function with type hints, add descriptive docstrings,
+          specify parameter schemas, and register with agent for dynamic invocation.
+        </Text>
       </div>
 
       <div data-slide>
@@ -440,6 +517,17 @@ def get_weather_detailed(location: str, units: str) -> str:
           The executor handles errors, retries, and token management. It also provides callbacks
           for logging and monitoring agent behavior during execution.
         </Text>
+        <Flex justify="center" mt="lg">
+          <Image
+            src="/api/placeholder/800/500"
+            alt="Agent execution loop flowchart showing decision, action, observation, and update cycle"
+            style={{ maxWidth: '100%' }}
+          />
+        </Flex>
+        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
+          Agent execution loop: Iterative cycle of LLM decision-making, tool execution,
+          observation processing, state updates, and completion checking.
+        </Text>
       </div>
 
       <div data-slide>
@@ -464,6 +552,17 @@ reviewer = Agent(role="Reviewer", tools=[review])`}
         />
         <Text mt="sm">
           Each agent focuses on its expertise, and a coordinator manages the workflow.
+        </Text>
+        <Flex justify="center" mt="lg">
+          <Image
+            src="/api/placeholder/800/500"
+            alt="Multi-agent system patterns: hierarchical, collaborative, competitive, and sequential"
+            style={{ maxWidth: '100%' }}
+          />
+        </Flex>
+        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
+          Multi-agent collaboration patterns: Hierarchical delegation, peer collaboration,
+          competitive solution generation, and sequential processing workflows.
         </Text>
       </div>
 
@@ -527,6 +626,17 @@ manager.send(Message(
         memory.store(task, result)
         self_evaluate(result)`}
         />
+        <Flex justify="center" mt="lg">
+          <Image
+            src="/api/placeholder/800/500"
+            alt="AutoGPT architecture showing goal management, task generation, memory, and self-criticism"
+            style={{ maxWidth: '100%' }}
+          />
+        </Flex>
+        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
+          AutoGPT architecture: Goal-driven autonomous agent with task generation, vector memory,
+          self-evaluation, and internet access for minimal human intervention.
+        </Text>
       </div>
 
       <div data-slide>
@@ -556,6 +666,17 @@ while task_list:
         <Text mt="md">
           BabyAGI uses vector embeddings to maintain context and prioritize tasks effectively.
         </Text>
+        <Flex justify="center" mt="lg">
+          <Image
+            src="/api/placeholder/800/500"
+            alt="BabyAGI architecture with execution, task creation, and prioritization agents"
+            style={{ maxWidth: '100%' }}
+          />
+        </Flex>
+        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
+          BabyAGI loop: Three-component system with execution agent (completes tasks),
+          task creation agent (generates new tasks), and prioritization agent (reorders queue).
+        </Text>
       </div>
 
       <div data-slide>
@@ -583,6 +704,17 @@ while task_list:
         <Title order={4} mt="lg">Robustness</Title>
         <Text mt="sm">
           Performance under errors, ambiguous instructions, and edge cases.
+        </Text>
+        <Flex justify="center" mt="lg">
+          <Image
+            src="/api/placeholder/800/500"
+            alt="Agent evaluation metrics dashboard showing success rate, efficiency, quality, and robustness"
+            style={{ maxWidth: '100%' }}
+          />
+        </Flex>
+        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
+          Agent evaluation framework: Multi-dimensional assessment including task success rate,
+          efficiency metrics (steps, tokens, time), quality measures, and robustness testing.
         </Text>
       </div>
 
@@ -613,6 +745,17 @@ while task_list:
         />
         <Text mt="sm">
           Additional safety: human-in-the-loop for critical actions, tool sandboxing, and output validation.
+        </Text>
+        <Flex justify="center" mt="lg">
+          <Image
+            src="/api/placeholder/800/500"
+            alt="Agent safety mechanisms: error handling, resource limits, and validation strategies"
+            style={{ maxWidth: '100%' }}
+          />
+        </Flex>
+        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
+          Agent safety mechanisms: Iteration limits to prevent infinite loops, timeout constraints,
+          error handling, human-in-the-loop approval, and tool sandboxing for secure execution.
         </Text>
       </div>
 
@@ -708,6 +851,17 @@ for agent in agents:
     agent.contribute(workspace)
 final_output = workspace.get_result()`}
         />
+        <Flex justify="center" mt="lg">
+          <Image
+            src="/api/placeholder/800/500"
+            alt="Advanced agent patterns: hierarchical and collaborative agent architectures"
+            style={{ maxWidth: '100%' }}
+          />
+        </Flex>
+        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
+          Advanced agent patterns: Hierarchical decomposition with manager-worker structure
+          and collaborative peer-to-peer workspace sharing for complex task solving.
+        </Text>
       </div>
 
       <div data-slide>
@@ -821,27 +975,6 @@ final_output = workspace.get_result()`}
         </List>
       </div>
 
-      <div data-slide>
-        <Title order={2}>Summary</Title>
-        <Text mt="md">
-          AI agents represent a paradigm shift from single-turn interactions to autonomous,
-          multi-step task execution. Key takeaways:
-        </Text>
-        <List mt="md" spacing="sm">
-          <List.Item>Agents combine perception, reasoning, and action in iterative loops</List.Item>
-          <List.Item>ReAct pattern enables robust decision-making through explicit reasoning</List.Item>
-          <List.Item>Tools extend agent capabilities to interact with external systems</List.Item>
-          <List.Item>Memory systems allow agents to maintain context and learn from experience</List.Item>
-          <List.Item>Multi-agent systems enable specialization and collaboration</List.Item>
-          <List.Item>LangChain provides practical framework for agent implementation</List.Item>
-          <List.Item>Safety mechanisms are essential for reliable agent deployment</List.Item>
-        </List>
-        <Text mt="lg">
-          The agent paradigm is rapidly evolving, with improvements in planning, tool use,
-          error recovery, and multi-agent coordination. As LLMs become more capable,
-          agents will handle increasingly complex and open-ended tasks.
-        </Text>
-      </div>
     </div>
   );
 }

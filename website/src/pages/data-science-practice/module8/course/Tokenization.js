@@ -438,6 +438,19 @@ print("Numerical representation:", numerical_chars)
         <Text mt="sm">Frequency count: ('lo', 'w') appears 3 times</Text>
         <Text mt="sm">Merge 'lo' + 'w' → 'low'</Text>
         <Text mt="sm">Updated vocabulary: [..., 'er', 'lo', 'low'] (13 tokens)</Text>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/bpe-merge-tree.png"
+            alt="Visual representation of BPE merge iterations forming a tree structure"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            BPE merge tree: progressive token formation from characters
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -504,6 +517,19 @@ print("Reconstructed text:", reconstructed_text)
         <Text mt="sm" size="sm" fs="italic">
           Reference: Schuster & Nakajima, "Japanese and Korean Voice Search" (2012) - https://research.google/pubs/pub37842/
         </Text>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/bpe-vs-wordpiece.png"
+            alt="Comparison between BPE and WordPiece merge criteria"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            BPE vs WordPiece: frequency-based vs likelihood-based merging
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -569,6 +595,19 @@ print("Reconstructed text:", reconstructed_text)
             <br />(though implementations vary)
           </List.Item>
         </List>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/subword-markers-comparison.png"
+            alt="Comparison of subword markers used by different tokenizers"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Different marker conventions: WordPiece (##), SentencePiece (▁), and BPE
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -591,6 +630,19 @@ print("Reconstructed text:", reconstructed_text)
           <List.Item><strong>Pros:</strong> Balanced vocabulary size, handles OOV words, captures morphology</List.Item>
           <List.Item><strong>Cons:</strong> Requires training, adds complexity</List.Item>
         </List>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/tokenization-tradeoffs.png"
+            alt="Comparison table of tokenization approaches showing vocabulary size vs sequence length tradeoffs"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Tokenization strategy tradeoffs: vocabulary size, sequence length, and semantic granularity
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -610,29 +662,6 @@ print("Reconstructed text:", reconstructed_text)
         <Text mt="lg">
           Modern models typically use subword tokenization with vocabularies of 30K-50K tokens,
           balancing expressiveness and efficiency.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Summary</Title>
-
-        <Text mt="md">
-          Tokenization transforms raw text into discrete units suitable for numerical processing.
-        </Text>
-
-        <Text mt="md">
-          The choice of tokenization strategy involves trade-offs between:
-        </Text>
-        <List spacing="xs" mt="sm">
-          <List.Item>Vocabulary size and model complexity</List.Item>
-          <List.Item>Sequence length and computational cost</List.Item>
-          <List.Item>Semantic granularity and flexibility</List.Item>
-          <List.Item>Handling of rare/unknown words</List.Item>
-        </List>
-
-        <Text mt="lg">
-          Subword tokenization (BPE, WordPiece) has become the dominant approach in modern NLP,
-          powering models like GPT, BERT, and T5.
         </Text>
       </div>
     </>

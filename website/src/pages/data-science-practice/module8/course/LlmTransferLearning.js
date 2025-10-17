@@ -55,6 +55,14 @@ const LlmTransferLearning = () => {
           Where <InlineMath math="\theta^*" /> represents pre-trained parameters and <InlineMath math="\theta_{\text{task}}" />
           represents task-specific parameters.
         </Text>
+
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/modules/data-science-practice/module8/transfer-learning-paradigm.png"
+            alt="Transfer learning paradigm showing pre-training and fine-tuning stages"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -87,6 +95,14 @@ const LlmTransferLearning = () => {
         <BlockMath>
           {`\\mathcal{L}_{\\text{span}} = -\\sum_{s \\in \\mathcal{S}} \\log P(s | \\text{context}; \\theta)`}
         </BlockMath>
+
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/modules/data-science-practice/module8/pretraining-objectives.png"
+            alt="Comparison of different pre-training objectives: CLM, MLM, and Span Corruption"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -119,6 +135,14 @@ const LlmTransferLearning = () => {
           <List.Item>World knowledge and factual information</List.Item>
           <List.Item>Commonsense reasoning patterns</List.Item>
         </List>
+
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/modules/data-science-practice/module8/hierarchical-representations.png"
+            alt="Hierarchical feature learning in transformer models across layers"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -153,6 +177,14 @@ const LlmTransferLearning = () => {
           This ecosystem provides a standardized framework for model development, training, and deployment,
           significantly reducing the barrier to entry for NLP applications.
         </Text>
+
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/modules/data-science-practice/module8/huggingface-ecosystem.png"
+            alt="Hugging Face ecosystem components and their relationships"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -314,6 +346,14 @@ generated_text = tokenizer.decode(outputs[0])`}
           Key generation parameters: temperature (controls randomness), top_p (nucleus sampling),
           max_length (maximum tokens), and do_sample (whether to use sampling vs greedy decoding).
         </Text>
+
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/modules/data-science-practice/module8/text-generation-sampling.png"
+            alt="Text generation strategies: greedy, sampling, and nucleus sampling"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -347,6 +387,14 @@ generated_text = tokenizer.decode(outputs[0])`}
           Common zero-shot applications include sentiment analysis, topic classification, translation,
           summarization, and question answering.
         </Text>
+
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/modules/data-science-practice/module8/zero-shot-learning.png"
+            alt="Zero-shot learning framework and application examples"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -437,6 +485,14 @@ Sentiment:"""`}
           Few-shot learning works because large language models can recognize patterns and adapt their
           behavior based on in-context examples without parameter updates.
         </Text>
+
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/modules/data-science-practice/module8/few-shot-learning.png"
+            alt="Few-shot learning and in-context learning mechanism"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -468,6 +524,14 @@ Sentiment:"""`}
           <List.Item>Risk of catastrophic forgetting</List.Item>
           <List.Item>Requires storing full model copy for each task</List.Item>
         </List>
+
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/modules/data-science-practice/module8/fine-tuning-process.png"
+            alt="Traditional fine-tuning process and parameter updates"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -508,6 +572,14 @@ Sentiment:"""`}
           <List.Item>Higher layers: larger learning rate (e.g., 3e-5)</List.Item>
           <List.Item>Task head: largest learning rate (e.g., 5e-5)</List.Item>
         </List>
+
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/modules/data-science-practice/module8/layer-freezing-strategies.png"
+            alt="Layer freezing and gradual unfreezing strategies"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -607,6 +679,14 @@ trainer.train()`}
         <BlockMath>
           {`\\theta = \\{\\theta_{\\text{frozen}}, \\theta_{\\text{trainable}}\\} \\quad \\text{where } |\\theta_{\\text{trainable}}| \\ll |\\theta_{\\text{frozen}}|`}
         </BlockMath>
+
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/modules/data-science-practice/module8/peft-comparison.png"
+            alt="Parameter efficient fine-tuning methods comparison"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -648,6 +728,14 @@ trainer.train()`}
         <Text mt="lg" size="sm" fs="italic">
           Reference: Hu et al., "LoRA: Low-Rank Adaptation of Large Language Models" (2021) - https://arxiv.org/abs/2106.09685
         </Text>
+
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/modules/data-science-practice/module8/lora-architecture-diagram.png"
+            alt="LoRA architecture showing low-rank decomposition matrices"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -691,6 +779,14 @@ trainer.train()`}
         <Text mt="md">
           Where <InlineMath math="\alpha" /> is a hyperparameter (typically set to 16 or 32).
         </Text>
+
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/modules/data-science-practice/module8/lora-forward-pass.png"
+            alt="LoRA forward pass computation flow"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -725,6 +821,14 @@ trainer.train()`}
           <List.Item>Reduction: 0.39% of original parameters</List.Item>
           <List.Item>Memory savings: 256× reduction</List.Item>
         </List>
+
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/modules/data-science-practice/module8/lora-parameter-efficiency.png"
+            alt="LoRA parameter reduction and memory savings visualization"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -819,6 +923,14 @@ model = AutoModelForCausalLM.from_pretrained(
         <Text mt="md" size="sm">
           QLoRA enables fine-tuning of 65B parameter models on a single 48GB GPU.
         </Text>
+
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/modules/data-science-practice/module8/qlora-quantization.png"
+            alt="QLoRA quantization scheme and memory optimization"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -857,6 +969,14 @@ model = AutoModelForCausalLM.from_pretrained(
         <Text size="sm">
           Only the prompt embedding matrix P is trained; extremely parameter-efficient (as few as 20 tokens).
         </Text>
+
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/modules/data-science-practice/module8/peft-methods-comparison.png"
+            alt="Comparison of Prefix Tuning, Adapters, and Prompt Tuning architectures"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -891,6 +1011,14 @@ model = AutoModelForCausalLM.from_pretrained(
         <Text mt="md" size="sm" fs="italic">
           Reference: Hinton et al., "Distilling the Knowledge in a Neural Network" (2015) - https://arxiv.org/abs/1503.02531
         </Text>
+
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/modules/data-science-practice/module8/knowledge-distillation-diagram.png"
+            alt="Knowledge distillation from teacher to student model"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -932,6 +1060,14 @@ model = AutoModelForCausalLM.from_pretrained(
           Temperature <InlineMath math="\tau > 1" /> softens probability distributions, and
           <InlineMath math="\alpha" /> balances the two objectives (typically 0.1-0.3).
         </Text>
+
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/modules/data-science-practice/module8/distillation-loss-components.png"
+            alt="Components of distillation loss and temperature scaling"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -1017,6 +1153,14 @@ optimizer.step()`}
           Keeps base model frozen and adds small trainable modules. Optimizes training efficiency
           rather than inference efficiency.
         </Text>
+
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/modules/data-science-practice/module8/compression-techniques.png"
+            alt="Overview of model compression techniques and their tradeoffs"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -1081,6 +1225,14 @@ optimizer.step()`}
         <Text mt="md" size="sm">
           Note: Metrics are approximate and depend on specific implementation and model architecture.
         </Text>
+
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/modules/data-science-practice/module8/efficiency-comparison-chart.png"
+            alt="Visual comparison of computational efficiency metrics across methods"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -1109,33 +1261,14 @@ optimizer.step()`}
           <List.Item>Save checkpoints regularly during training</List.Item>
           <List.Item>Evaluate on held-out test set only once at the end</List.Item>
         </List>
-      </div>
 
-      <div data-slide>
-        <Title order={2}>Summary</Title>
-
-        <Text mt="md">
-          Transfer learning has revolutionized NLP by enabling practitioners to leverage pre-trained
-          models for diverse applications with minimal resources.
-        </Text>
-
-        <Title order={3} mt="lg">Key Concepts</Title>
-        <List spacing="xs" mt="xs">
-          <List.Item>Pre-training on large corpora provides transferable representations</List.Item>
-          <List.Item>Zero-shot and few-shot learning enable task solving without fine-tuning</List.Item>
-          <List.Item>Hugging Face ecosystem provides standardized tools for model usage</List.Item>
-          <List.Item>Parameter-efficient methods (LoRA, QLoRA) democratize fine-tuning</List.Item>
-          <List.Item>Knowledge distillation creates efficient deployment models</List.Item>
-        </List>
-
-        <Title order={3} mt="lg">Choosing an Approach</Title>
-        <List spacing="xs" mt="xs">
-          <List.Item>Zero-shot: Quick prototyping and general tasks</List.Item>
-          <List.Item>Few-shot: Limited data or rapid adaptation</List.Item>
-          <List.Item>LoRA: Best balance of performance and efficiency</List.Item>
-          <List.Item>Full fine-tuning: Maximum performance with sufficient resources</List.Item>
-          <List.Item>Distillation: Production deployment with latency constraints</List.Item>
-        </List>
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/modules/data-science-practice/module8/fine-tuning-best-practices.png"
+            alt="Best practices workflow for fine-tuning LLMs"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>

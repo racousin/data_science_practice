@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Title, List, Table } from '@mantine/core';
+import { Text, Title, List, Table, Flex, Image } from '@mantine/core';
 import { InlineMath, BlockMath } from 'react-katex';
 import CodeBlock from "components/CodeBlock";
 
@@ -42,6 +42,19 @@ const MetricsAndLoss = () => {
           <List.Item><InlineMath math="\hat{y}_k" />: Predicted probability of class k</List.Item>
           <List.Item><InlineMath math="\hat{y} \in \mathbb{R}^K" />: Output from softmax layer</List.Item>
         </List>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/cross-entropy-visualization.png"
+            alt="Visualization of cross-entropy loss computation with probability distributions"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Cross-entropy loss: measuring divergence between predicted and true distributions
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -121,6 +134,19 @@ perplexity = torch.exp(loss)
 print(f"Perplexity: {perplexity.item():.2f}")
 # Output: Perplexity: 50126.84`}
         />
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/perplexity-comparison.png"
+            alt="Perplexity values comparison across different language models"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Perplexity benchmarks: lower values indicate better language models
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -141,6 +167,19 @@ print(f"Perplexity: {perplexity.item():.2f}")
 
         <Title order={3} mt="lg">F1 Score</Title>
         <BlockMath math="F_1 = 2 \cdot \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}" />
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/confusion-matrix-metrics.png"
+            alt="Confusion matrix showing TP, FP, TN, FN and derived metrics"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Classification metrics derived from confusion matrix: precision, recall, and F1
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -200,6 +239,19 @@ print(f"F1: {f1:.3f}")
         <Text mt="sm" size="sm" fs="italic">
           Reference: Papineni et al., "BLEU: a Method for Automatic Evaluation of Machine Translation" (2002) - https://aclanthology.org/P02-1040.pdf
         </Text>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/bleu-ngram-overlap.png"
+            alt="Visualization of n-gram overlap between reference and candidate translations"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            BLEU score calculation: n-gram precision with brevity penalty
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -259,6 +311,19 @@ print(f"BLEU score: {score3:.4f}")
         <Text mt="sm" size="sm" fs="italic">
           Reference: Lin, "ROUGE: A Package for Automatic Evaluation of Summaries" (2004) - https://aclanthology.org/W04-1013.pdf
         </Text>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/rouge-metrics-comparison.png"
+            alt="Comparison of ROUGE-N and ROUGE-L metrics for text summarization"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            ROUGE metrics: recall-oriented evaluation with n-grams and LCS
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -315,6 +380,19 @@ print(f"ROUGE-L: {scores['rougeL'].fmeasure:.4f}")
         <Text mt="sm">
           <strong>Target shape:</strong> Original token IDs <InlineMath math="\in \mathbb{Z}^{|M|}" /> (only for masked positions)
         </Text>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/masked-language-modeling.png"
+            alt="Illustration of masked language modeling with token masking and prediction"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Masked language modeling: predicting masked tokens from bidirectional context
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -397,6 +475,19 @@ print(f"Loss (ignoring padding): {loss.item():.4f}")`}
         <Text mt="sm" size="sm" fs="italic">
           Reference: Szegedy et al., "Rethinking the Inception Architecture" (2016) - https://arxiv.org/abs/1512.00567
         </Text>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/label-smoothing-effect.png"
+            alt="Comparison of hard labels vs smoothed labels probability distributions"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Label smoothing: preventing overconfident predictions by distributing probability mass
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -438,31 +529,19 @@ print(f"Loss (ignoring padding): {loss.item():.4f}")`}
             </Table.Tr>
           </Table.Tbody>
         </Table>
-      </div>
 
-      <div data-slide>
-        <Title order={2}>Summary</Title>
-
-        <List spacing="sm" mt="md">
-          <List.Item>
-            <strong>Cross-entropy loss</strong> is the foundation for most NLP training objectives,
-            applied per-token and averaged over sequences
-          </List.Item>
-          <List.Item>
-            <strong>Perplexity</strong> provides an interpretable measure of language model quality
-          </List.Item>
-          <List.Item>
-            <strong>BLEU and ROUGE</strong> evaluate generation quality through n-gram overlap
-          </List.Item>
-          <List.Item>
-            <strong>Classification metrics</strong> (accuracy, F1) assess prediction quality for
-            discriminative tasks
-          </List.Item>
-          <List.Item>
-            <strong>Padding handling</strong> and <strong>label smoothing</strong> are critical
-            implementation details for effective training
-          </List.Item>
-        </List>
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/nlp-metrics-overview.png"
+            alt="Overview of NLP metrics and their applications across different tasks"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Task-specific metrics: matching evaluation methods to NLP objectives
+          </Text>
+        </Flex>
       </div>
     </>
   );

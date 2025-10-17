@@ -50,6 +50,19 @@ const AttentionLayer = () => {
           <strong>Solution:</strong> Allow decoder to "attend" to different parts of the encoder's hidden states,
           creating a dynamic context vector for each output token.
         </Text>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/seq2seq-bottleneck-problem.png"
+            alt="Sequence-to-sequence bottleneck problem visualization"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Sequence-to-sequence bottleneck problem visualization
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -77,6 +90,19 @@ const AttentionLayer = () => {
           Where Q (query), K (keys), and V (values) are matrices representing different aspects
           of the input.
         </Text>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/attention-mechanism-diagram.png"
+            alt="Attention mechanism diagram showing Q, K, V interaction"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Attention mechanism diagram showing Q, K, V interaction
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -129,6 +155,19 @@ const AttentionLayer = () => {
         <BlockMath>{`
           \\text{Output} = AV \\in \\mathbb{R}^{n_q \\times d_v}
         `}</BlockMath>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/scaled-dot-product-attention.png"
+            alt="Scaled dot-product attention computation steps"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Scaled dot-product attention computation steps
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -157,6 +196,19 @@ const AttentionLayer = () => {
         <BlockMath>{`
           \\text{Var}\\left(\\frac{q \\cdot k}{\\sqrt{d_k}}\\right) = 1
         `}</BlockMath>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/scaling-factor-effect.png"
+            alt="Effect of scaling factor on softmax gradient"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Effect of scaling factor on softmax gradient
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -285,6 +337,19 @@ print(attention_weights[0, 0, :])
         <Text mt="lg">
           Used in language modeling where position i cannot attend to positions j > i.
         </Text>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/attention-masking-types.png"
+            alt="Different types of attention masks: padding and causal"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Different types of attention masks: padding and causal
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -351,6 +416,19 @@ output, attn = scaled_dot_product_attention(Q, K, V, mask=mask.unsqueeze(0))`}
           <List.Item><InlineMath>{`W_i^V \\in \\mathbb{R}^{d_{model} \\times d_v}`}</InlineMath>: Value projection for head i</List.Item>
           <List.Item><InlineMath>{`W^O \\in \\mathbb{R}^{hd_v \\times d_{model}}`}</InlineMath>: Output projection</List.Item>
         </List>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/multi-head-attention-architecture.png"
+            alt="Multi-head attention architecture with parallel attention heads"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Multi-head attention architecture with parallel attention heads
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -511,6 +589,19 @@ print(f"Dimension per head: {mha.d_k}")  # 64`}
         <Text size="sm">
           Used in: Transformer decoder attending to encoder output (encoder-decoder attention)
         </Text>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/self-cross-attention-comparison.png"
+            alt="Self-attention vs cross-attention mechanisms"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Self-attention vs cross-attention mechanisms
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -560,6 +651,19 @@ print(f"Dimension per head: {mha.d_k}")  # 64`}
           This quadratic complexity motivates efficient attention variants for long sequences
           (e.g., sparse attention, linear attention).
         </Text>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/attention-complexity-comparison.png"
+            alt="Comparison of computational complexity between RNN and attention mechanisms"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Comparison of computational complexity between RNN and attention mechanisms
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -587,6 +691,19 @@ print(f"Dimension per head: {mha.d_k}")  # 64`}
         <Text mt="lg">
           This parallelizability is a key advantage of attention-based models over RNNs.
         </Text>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/attention-parallelization-diagram.png"
+            alt="Parallel computation in attention mechanism vs sequential RNN processing"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Parallel computation in attention mechanism vs sequential RNN processing
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -610,6 +727,19 @@ print(f"Dimension per head: {mha.d_k}")  # 64`}
         <Text mt="md">
           This is handled at the model level (before attention), which we'll cover in the Transformer section.
         </Text>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/positional-encoding-visualization.png"
+            alt="Positional encoding visualization in attention mechanism"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Positional encoding visualization in attention mechanism
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -639,30 +769,6 @@ print(f"Dimension per head: {mha.d_k}")  # 64`}
         </List>
       </div>
 
-      <div data-slide>
-        <Title order={2}>Summary</Title>
-
-        <List spacing="sm" mt="md">
-          <List.Item>
-            Attention computes weighted combinations of values based on query-key compatibility
-          </List.Item>
-          <List.Item>
-            Scaled dot-product attention: <InlineMath>{`\\text{softmax}(QK^T/\\sqrt{d_k})V`}</InlineMath>
-          </List.Item>
-          <List.Item>
-            Multi-head attention runs h parallel attention operations for richer representations
-          </List.Item>
-          <List.Item>
-            Complexity: <InlineMath>{`O(n^2d)`}</InlineMath> in sequence length, fully parallelizable
-          </List.Item>
-          <List.Item>
-            Parameters: <InlineMath>{`4d_{model}^2`}</InlineMath> for multi-head attention layer
-          </List.Item>
-          <List.Item>
-            Masks enable causal attention (autoregressive) and padding handling
-          </List.Item>
-        </List>
-      </div>
     </>
   );
 };

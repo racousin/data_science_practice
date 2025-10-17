@@ -51,6 +51,20 @@ const Embeddings = () => {
 
       <div data-slide>
         <Title order={3} mb="md">
+          Dimensionality Reduction Visualization
+        </Title>
+        <Image
+          src="/assets/data-science-practice/module8/dimensionality-reduction.png"
+          alt="One-Hot vs Dense Embeddings"
+          caption="Visualization comparing sparse one-hot encoding to dense embeddings"
+        />
+        <Text size="sm" mt="md">
+          Dense embeddings dramatically reduce dimensionality while capturing semantic relationships.
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
           Learned Embeddings Introduction
         </Title>
         <Text mb="md">
@@ -64,6 +78,20 @@ const Embeddings = () => {
           <List.Item><strong>GloVe</strong>: Factorizes global co-occurrence statistics</List.Item>
           <List.Item><strong>FastText</strong>: Extends Word2Vec with character n-grams</List.Item>
         </List>
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
+          Word Embeddings Visualization
+        </Title>
+        <Image
+          src="/assets/data-science-practice/module8/word-embeddings-visualization.png"
+          alt="Word Embeddings Visualization"
+          caption="Visualization of word embeddings in reduced dimensional space"
+        />
+        <Text size="sm" mt="md">
+          Word embeddings map discrete words to continuous vector spaces where semantic relationships are preserved geometrically.
+        </Text>
       </div>
 
       <div data-slide>
@@ -107,7 +135,7 @@ const Embeddings = () => {
         <Text mb="md">
           Semantic similarity between words <InlineMath math="w_i" /> and <InlineMath math="w_j" /> is measured using cosine similarity:
         </Text>
-        <BlockMath math="\text{similarity}(w_i, w_j) = \frac{\vec{e}_i \cdot \vec{e}_j}{||\vec{e}_i|| \cdot ||\vec{e}_j||}" />
+        <BlockMath math="\text{similarity}(w_i, w_j) = \frac{\vec{e}_i \cdot \vec{e}_j}{||\vec{e}_i|| \cdot ||\vec{e}_i||}" />
         <Text mt="md">
           Semantic relationships emerge as directions in the embedding space:
         </Text>
@@ -116,6 +144,20 @@ const Embeddings = () => {
           <List.Item>The vector from "cat" to "kitten" is similar to "dog" to "puppy" (age)</List.Item>
           <List.Item>Words like "big", "large", "huge" cluster together</List.Item>
         </List>
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
+          Semantic Clustering
+        </Title>
+        <Image
+          src="/assets/data-science-practice/module8/semantic-clustering.png"
+          alt="Semantic Clustering in Embeddings"
+          caption="Visualization of semantic clustering in embedding space"
+        />
+        <Text size="sm" mt="md">
+          Similar words cluster together in the embedding space, with distances reflecting semantic relatedness.
+        </Text>
       </div>
 
       <div data-slide>
@@ -132,6 +174,20 @@ const Embeddings = () => {
         <BlockMath math="\vec{v}_{\text{king}} - \vec{v}_{\text{queen}} \approx \vec{v}_{\text{man}} - \vec{v}_{\text{woman}}" />
         <Text>
           The difference vectors capture the concept of "gender" in this embedding space.
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
+          Vector Arithmetic Visualization
+        </Title>
+        <Image
+          src="/assets/data-science-practice/module8/vector-arithmetic.png"
+          alt="Vector Arithmetic in Embeddings"
+          caption="Visualization of vector arithmetic performing analogy tasks (king - man + woman = queen)"
+        />
+        <Text size="sm" mt="md">
+          Vector arithmetic operations in embedding space can capture semantic relationships like gender, tense, and more.
         </Text>
       </div>
 
@@ -166,6 +222,20 @@ const Embeddings = () => {
           <List.Item><strong>CBOW (Continuous Bag of Words)</strong>: Predicts a target word given its context words</List.Item>
           <List.Item><strong>Skip-gram</strong>: Predicts context words given a target word</List.Item>
         </List>
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
+          Word2Vec Architectures
+        </Title>
+        <Image
+          src="/assets/data-science-practice/module8/word2vec-architectures.png"
+          alt="Word2Vec Architectures"
+          caption="Comparison of CBOW and Skip-gram architectures"
+        />
+        <Text size="sm" mt="md">
+          Both architectures use shallow neural networks but differ in their prediction objectives.
+        </Text>
       </div>
 
       <div data-slide>
@@ -231,6 +301,20 @@ const Embeddings = () => {
 
       <div data-slide>
         <Title order={3} mb="md">
+          Negative Sampling Illustration
+        </Title>
+        <Image
+          src="/assets/data-science-practice/module8/negative-sampling.png"
+          alt="Negative Sampling in Word2Vec"
+          caption="Visualization of negative sampling: distinguishing true context words from random samples"
+        />
+        <Text size="sm" mt="md">
+          Negative sampling approximates the softmax by training to distinguish true context words from random negatives.
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
           Skip-gram Optimizations
         </Title>
         <Text mb="md">
@@ -245,6 +329,20 @@ const Embeddings = () => {
         </Text>
         <Text mt="md">
           <strong>2. Hierarchical Softmax</strong>: Uses a binary tree structure to reduce complexity from <InlineMath math="O(|V|)" /> to <InlineMath math="O(\log |V|)" />.
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
+          Skip-gram vs CBOW
+        </Title>
+        <Image
+          src="/assets/data-science-practice/module8/skipgram-vs-cbow.png"
+          alt="Skip-gram vs CBOW Comparison"
+          caption="Detailed comparison of Skip-gram and CBOW prediction mechanisms"
+        />
+        <Text size="sm" mt="md">
+          Skip-gram predicts context from target words, while CBOW predicts target words from averaged context.
         </Text>
       </div>
 
@@ -301,6 +399,20 @@ const Embeddings = () => {
 
       <div data-slide>
         <Title order={3} mb="md">
+          Context Window Illustration
+        </Title>
+        <Image
+          src="/assets/data-science-practice/module8/context-window.png"
+          alt="Context Window in Word Embeddings"
+          caption="Illustration of how context windows slide over text in Word2Vec and GloVe"
+        />
+        <Text size="sm" mt="md">
+          The context window determines which words are considered neighbors for learning semantic relationships.
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
           Word2Vec Implementation Example
         </Title>
         <CodeBlock
@@ -327,6 +439,20 @@ print(similar)
       </div>
 
       <div data-slide>
+        <Title order={3} mb="md">
+          Word2Vec Training Process
+        </Title>
+        <Image
+          src="/assets/data-science-practice/module8/word2vec-training.png"
+          alt="Word2Vec Training Process"
+          caption="Visualization of Word2Vec training with sliding context windows"
+        />
+        <Text size="sm" mt="md">
+          Word2Vec trains by sliding a context window over text, learning to predict contextual relationships.
+        </Text>
+      </div>
+
+      <div data-slide>
         <Title order={2} mb="md">
           GloVe (Global Vectors)
         </Title>
@@ -338,6 +464,20 @@ print(similar)
         </Text>
         <Text mt="md">
           Unlike Word2Vec which learns from local context windows in a sliding manner, GloVe aggregates global co-occurrence statistics across the entire corpus first, then learns embeddings to explain these statistics.
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
+          GloVe Co-occurrence Matrix Visualization
+        </Title>
+        <Image
+          src="/assets/data-science-practice/module8/glove-cooccurrence-matrix.png"
+          alt="GloVe Co-occurrence Matrix"
+          caption="Example of word-word co-occurrence matrix construction in GloVe"
+        />
+        <Text size="sm" mt="md">
+          GloVe first constructs a co-occurrence matrix capturing how often words appear together across the corpus.
         </Text>
       </div>
 
@@ -407,6 +547,20 @@ print(similar)
 
       <div data-slide>
         <Title order={3} mb="md">
+          GloVe Probability Ratios
+        </Title>
+        <Image
+          src="/assets/data-science-practice/module8/glove-probability-ratios.png"
+          alt="GloVe Probability Ratios"
+          caption="Visualization of how probability ratios encode semantic relationships in GloVe"
+        />
+        <Text size="sm" mt="md">
+          The ice-steam example showing how probability ratios distinguish related vs unrelated words.
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
           GloVe Implementation Example
         </Title>
         <CodeBlock
@@ -446,6 +600,20 @@ similar = glove_model.most_similar("language", topn=3)`}
         </Text>
         <Text mt="md">
           Key innovation: Instead of learning embeddings for whole words only, FastText learns embeddings for character n-grams, then represents words as sums of their n-gram embeddings.
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
+          FastText Subword Embeddings
+        </Title>
+        <Image
+          src="/assets/data-science-practice/module8/fasttext-subword-embeddings.png"
+          alt="FastText Subword Embeddings"
+          caption="Visualization of how FastText decomposes words into character n-grams"
+        />
+        <Text size="sm" mt="md">
+          FastText represents words as bags of character n-grams, enabling better handling of morphologically rich languages.
         </Text>
       </div>
 
@@ -538,6 +706,20 @@ similar = glove_model.most_similar("language", topn=3)`}
 
       <div data-slide>
         <Title order={3} mb="md">
+          FastText OOV Handling
+        </Title>
+        <Image
+          src="/assets/data-science-practice/module8/fasttext-oov-handling.png"
+          alt="FastText Out-of-Vocabulary Handling"
+          caption="Example of FastText generating embeddings for unseen words using character n-grams"
+        />
+        <Text size="sm" mt="md">
+          FastText can handle out-of-vocabulary words by composing embeddings from learned character n-grams.
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
           FastText Implementation Example
         </Title>
         <CodeBlock
@@ -610,6 +792,20 @@ print(similar)`}
 
       <div data-slide>
         <Title order={3} mb="md">
+          Embedding Methods Comparison Visual
+        </Title>
+        <Image
+          src="/assets/data-science-practice/module8/embedding-methods-comparison.png"
+          alt="Comparison of Word2Vec, GloVe, and FastText"
+          caption="Side-by-side comparison of the three major embedding approaches"
+        />
+        <Text size="sm" mt="md">
+          Each method has distinct strengths: Word2Vec for semantic relationships, GloVe for global statistics, FastText for morphology.
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
           Contextual vs Static Embeddings
         </Title>
         <Text mb="md">
@@ -632,25 +828,16 @@ print(similar)`}
 
       <div data-slide>
         <Title order={3} mb="md">
-          Summary
+          Static vs Contextual Embeddings
         </Title>
-        <Text mb="md">
-          We covered three major approaches to learned word embeddings:
+        <Image
+          src="/assets/data-science-practice/module8/static-vs-contextual.png"
+          alt="Static vs Contextual Embeddings"
+          caption="Comparison showing how static embeddings assign one vector per word vs contextual embeddings adapting to context"
+        />
+        <Text size="sm" mt="md">
+          Static embeddings provide fixed representations, while contextual embeddings adapt based on surrounding words.
         </Text>
-        <List spacing="sm" mb="md">
-          <List.Item><strong>Word2Vec</strong>: Learns embeddings by predicting context (Skip-gram) or words from context (CBOW)</List.Item>
-          <List.Item><strong>GloVe</strong>: Factorizes global co-occurrence matrix to learn embeddings that capture statistical relationships</List.Item>
-          <List.Item><strong>FastText</strong>: Extends Word2Vec with character n-grams for morphological awareness and OOV handling</List.Item>
-        </List>
-        <Text mb="md">
-          Key takeaways:
-        </Text>
-        <List spacing="sm">
-          <List.Item>Embeddings create dense, semantic vector representations</List.Item>
-          <List.Item>Geometric relationships in embedding space correspond to semantic relationships</List.Item>
-          <List.Item>Choice of method depends on data characteristics and task requirements</List.Item>
-          <List.Item>Static embeddings provide single vectors per word; contextual embeddings (transformers) provide context-dependent vectors</List.Item>
-        </List>
       </div>
     </>
   );

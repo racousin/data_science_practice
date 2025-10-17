@@ -26,6 +26,13 @@ export default function Transformer() {
           <List.Item>Scales efficiently to billions of parameters</List.Item>
           <List.Item>Forms the basis for BERT, GPT, T5, and most modern language models</List.Item>
         </List>
+        <Flex justify="center" mt="xl">
+          <Image
+            src="/modules/data-science-practice/module8/transformer-architecture.png"
+            alt="Transformer Architecture Overview"
+            maw={500}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -64,6 +71,13 @@ export default function Transformer() {
           those seen during training. Different frequencies encode different positional information, with lower
           dimensions capturing coarse position and higher dimensions capturing fine-grained position.
         </Text>
+        <Flex justify="center" mt="xl">
+          <Image
+            src="/modules/data-science-practice/module8/positional-encoding-visualization.png"
+            alt="Positional Encoding Visualization"
+            maw={500}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -90,6 +104,13 @@ export default function Transformer() {
         <Text mt="sm">
           The ReLU activation introduces non-linearity. Modern variants use GELU or SwiGLU activations.
         </Text>
+        <Flex justify="center" mt="xl">
+          <Image
+            src="/modules/data-science-practice/module8/feed-forward-network.png"
+            alt="Feed-Forward Network Architecture"
+            maw={450}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -116,6 +137,13 @@ export default function Transformer() {
           Pre-norm is now standard as it provides better gradient flow and enables training of deeper models
           without learning rate warmup.
         </Text>
+        <Flex justify="center" mt="xl">
+          <Image
+            src="/modules/data-science-practice/module8/layer-normalization.png"
+            alt="Layer Normalization Comparison"
+            maw={450}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -145,6 +173,13 @@ export default function Transformer() {
           Combined with layer normalization, residual connections enable training of Transformers with
           hundreds of layers.
         </Text>
+        <Flex justify="center" mt="xl">
+          <Image
+            src="/modules/data-science-practice/module8/residual-connections.png"
+            alt="Residual Connections in Transformers"
+            maw={400}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -204,6 +239,13 @@ Through N layers → Encoder Output: (batch, seq_len, d_model)`}
         <Text mt="md">
           Each position in the output contains contextual information from the entire input sequence.
         </Text>
+        <Flex justify="center" mt="xl">
+          <Image
+            src="/modules/data-science-practice/module8/transformer-encoder-stack.png"
+            alt="Transformer Encoder Stack Architecture"
+            maw={450}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -239,6 +281,13 @@ Through N layers → Encoder Output: (batch, seq_len, d_model)`}
           The mask in step 1 ensures position <InlineMath>i</InlineMath> can only attend to positions
           <InlineMath>j \leq i</InlineMath>.
         </Text>
+        <Flex justify="center" mt="xl">
+          <Image
+            src="/modules/data-science-practice/module8/transformer-decoder-stack.png"
+            alt="Transformer Decoder Stack Architecture"
+            maw={450}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -390,6 +439,13 @@ import torch.nn as nn`}
           This implements pre-norm architecture. Input and output shapes are both
           <InlineMath>(batch, seq\_len, d_{`{model}`})</InlineMath>.
         </Text>
+        <Flex justify="center" mt="xl">
+          <Image
+            src="/modules/data-science-practice/module8/transformer-block-implementation.png"
+            alt="Transformer Block Implementation Details"
+            maw={450}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -460,6 +516,13 @@ import torch.nn as nn`}
           <strong>Regularization:</strong> Dropout rate 0.1 applied to attention weights, feed-forward outputs,
           and embeddings.
         </Text>
+        <Flex justify="center" mt="xl">
+          <Image
+            src="/modules/data-science-practice/module8/learning-rate-schedule.png"
+            alt="Transformer Learning Rate Schedule"
+            maw={500}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -513,6 +576,13 @@ import torch.nn as nn`}
         <Text>
           With decoder and embeddings: <InlineMath>\approx 65</InlineMath> million parameters
         </Text>
+        <Flex justify="center" mt="xl">
+          <Image
+            src="/modules/data-science-practice/module8/parameter-distribution.png"
+            alt="Parameter Distribution Across Transformer Layers"
+            maw={500}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -565,6 +635,13 @@ import torch.nn as nn`}
             For <InlineMath>n = 512</InlineMath>, attention dominates memory usage
           </List.Item>
         </List>
+        <Flex justify="center" mt="xl">
+          <Image
+            src="/modules/data-science-practice/module8/computational-complexity-comparison.png"
+            alt="Computational Complexity Comparison"
+            maw={500}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -589,6 +666,13 @@ import torch.nn as nn`}
         <Text mt="md">
           Each variant optimizes for different use cases while maintaining the core attention mechanism.
         </Text>
+        <Flex justify="center" mt="xl">
+          <Image
+            src="/modules/data-science-practice/module8/transformer-variants.png"
+            alt="Transformer Architecture Variants"
+            maw={550}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -624,6 +708,13 @@ import torch.nn as nn`}
           BERT excels at tasks requiring understanding of full context: sentiment analysis, named entity
           recognition, question answering.
         </Text>
+        <Flex justify="center" mt="xl">
+          <Image
+            src="/modules/data-science-practice/module8/bert-architecture.png"
+            alt="BERT Architecture and Training"
+            maw={500}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -657,6 +748,13 @@ import torch.nn as nn`}
         <Text mt="md">
           GPT models are optimized for generation tasks: text completion, dialogue, creative writing.
         </Text>
+        <Flex justify="center" mt="xl">
+          <Image
+            src="/modules/data-science-practice/module8/gpt-architecture.png"
+            alt="GPT Architecture and Generation"
+            maw={500}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -686,6 +784,13 @@ Q&A: "question: What is AI?" → "Artificial Intelligence"`}
         <Text mt="md">
           T5 models range from T5-Small (60M) to T5-11B (11B parameters).
         </Text>
+        <Flex justify="center" mt="xl">
+          <Image
+            src="/modules/data-science-practice/module8/t5-architecture.png"
+            alt="T5 Text-to-Text Architecture"
+            maw={500}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -748,6 +853,13 @@ Q&A: "question: What is AI?" → "Artificial Intelligence"`}
           Modern trends favor decoder-only architectures (GPT-style) for their versatility and scaling properties,
           but encoder-only and encoder-decoder models remain important for specific applications.
         </Text>
+        <Flex justify="center" mt="xl">
+          <Image
+            src="/modules/data-science-practice/module8/transformer-variants-comparison.png"
+            alt="BERT vs GPT vs T5 Comparison"
+            maw={600}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -780,42 +892,13 @@ Q&A: "question: What is AI?" → "Artificial Intelligence"`}
             with minimal fine-tuning
           </List.Item>
         </List>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Summary</Title>
-        <Text mt="md">
-          The Transformer architecture revolutionized NLP through:
-        </Text>
-        <List mt="md" spacing="sm">
-          <List.Item>
-            Self-attention mechanism enabling parallel processing and direct modeling of long-range dependencies
-          </List.Item>
-          <List.Item>
-            Modular design combining attention, feed-forward networks, layer normalization, and residual connections
-          </List.Item>
-          <List.Item>
-            Three architectural variants (encoder-only, decoder-only, encoder-decoder) optimized for different tasks
-          </List.Item>
-          <List.Item>
-            Computational complexity <InlineMath>O(n^2 \cdot d)</InlineMath> for attention enables efficient training
-            for sequences up to thousands of tokens
-          </List.Item>
-          <List.Item>
-            Scalability to billions of parameters, forming the foundation for modern large language models
-          </List.Item>
-        </List>
-        <Text mt="xl" fs="italic">
-          <strong>References:</strong>
-        </Text>
-        <List mt="sm" spacing="xs" size="sm">
-          <List.Item>Vaswani et al. (2017): "Attention Is All You Need" - https://arxiv.org/abs/1706.03762</List.Item>
-          <List.Item>Devlin et al. (2019): "BERT: Pre-training of Deep Bidirectional Transformers" - https://arxiv.org/abs/1810.04805</List.Item>
-          <List.Item>Radford et al. (2018): "Improving Language Understanding by Generative Pre-Training" (GPT-1)</List.Item>
-          <List.Item>Radford et al. (2019): "Language Models are Unsupervised Multitask Learners" (GPT-2)</List.Item>
-          <List.Item>Brown et al. (2020): "Language Models are Few-Shot Learners" (GPT-3) - https://arxiv.org/abs/2005.14165</List.Item>
-          <List.Item>Raffel et al. (2020): "Exploring the Limits of Transfer Learning with T5" - https://arxiv.org/abs/1910.10683</List.Item>
-        </List>
+        <Flex justify="center" mt="xl">
+          <Image
+            src="/modules/data-science-practice/module8/transformer-vs-rnn.png"
+            alt="Transformer vs RNN Comparison"
+            maw={550}
+          />
+        </Flex>
       </div>
     </div>
   );

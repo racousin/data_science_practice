@@ -97,6 +97,19 @@ const RecurrentNetworks = () => {
         <Text mt="lg">
           <strong>Total parameters:</strong> <InlineMath>{`d_h(d_x + d_h + 1) + d_y(d_h + 1)`}</InlineMath>
         </Text>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/rnn-architecture.png"
+            alt="Standard RNN cell architecture showing input, hidden state, and output connections"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Standard RNN cell architecture with recurrent connections
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -201,6 +214,19 @@ print(f"Total parameters: {total_params:,}")
         <Text mt="sm">
           When <InlineMath>{`||W_{hh}|| < 1`}</InlineMath>: Gradients vanish (shrink exponentially)
         </Text>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/bptt-gradient-flow.png"
+            alt="Backpropagation through time showing gradient flow and vanishing gradient problem"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Gradient flow in BPTT showing the vanishing gradient problem
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -239,6 +265,19 @@ print(f"Total parameters: {total_params:,}")
           <strong>Key insight:</strong> The cell state <InlineMath>{`c^{(t)}`}</InlineMath> creates a "highway" for gradient flow,
           as <InlineMath>{`\\frac{\\partial c^{(t)}}{\\partial c^{(t-1)}} = f^{(t)}`}</InlineMath>
         </Text>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/lstm-gates-diagram.png"
+            alt="LSTM gates showing forget gate, input gate, and output gate operations"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            LSTM gate operations and information flow
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -384,6 +423,19 @@ print(f"Total parameters: {total_params:,}")
         <Text mt="sm">
           <strong>Update Gate</strong> <InlineMath>{`z^{(t)}`}</InlineMath>: Controls how much to update with new candidate
         </Text>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/gru-architecture.png"
+            alt="GRU architecture showing reset gate and update gate mechanisms"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            GRU architecture with simplified gating mechanism
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -437,6 +489,19 @@ print(f"Total parameters: {total_params:,}")
           <strong>Loss function:</strong>
         </Text>
         <BlockMath>{`L = \\frac{1}{T}\\sum_{t=1}^{T}L^{(t)} = \\frac{1}{T}\\sum_{t=1}^{T} \\text{CrossEntropy}(y^{(t)}, \\hat{y}^{(t)})`}</BlockMath>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/bptt-unfolded.png"
+            alt="RNN unfolded through time showing backpropagation through time steps"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            RNN unfolded in time for backpropagation through time
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -461,6 +526,19 @@ print(f"Total parameters: {total_params:,}")
         <Text mt="lg">
           <strong>Trade-off:</strong> Reduced memory and computation, but gradients don't flow as far back
         </Text>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/truncated-bptt.png"
+            alt="Truncated backpropagation through time showing limited gradient flow"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Truncated BPTT limiting gradient computation to k time steps
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -543,6 +621,19 @@ torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
 # Or clip by value
 torch.nn.utils.clip_grad_value_(model.parameters(), clip_value=0.5)`}
         />
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/gradient-clipping.png"
+            alt="Gradient clipping visualization showing how gradients are scaled down"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Gradient clipping rescaling gradients to prevent exploding values
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -582,6 +673,19 @@ torch.nn.utils.clip_grad_value_(model.parameters(), clip_value=0.5)`}
         <Text mt="lg">
           <strong>Typical hidden dimension:</strong> 128-512 for standard tasks, 1024-2048 for large models
         </Text>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/rnn-lstm-gru-comparison.png"
+            alt="Side-by-side comparison of RNN, LSTM, and GRU computational requirements"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Comparison of parameter counts and computational complexity
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -611,6 +715,19 @@ torch.nn.utils.clip_grad_value_(model.parameters(), clip_value=0.5)`}
         <Text mt="sm">
           <strong>Use case:</strong> Tasks where future context is available (e.g., text classification, NER)
         </Text>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/bidirectional-rnn.png"
+            alt="Bidirectional RNN processing sequence in both forward and backward directions"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Bidirectional RNN architecture with forward and backward processing
+          </Text>
+        </Flex>
       </div>
 
       <div data-slide>
@@ -680,28 +797,19 @@ print(f"Combined final state: {final_state.shape}")`}
           These limitations motivated the development of attention mechanisms and Transformer architectures,
           which we'll explore in the next sections.
         </Text>
-      </div>
 
-      <div data-slide>
-        <Title order={2}>Summary</Title>
-
-        <List spacing="sm" mt="md">
-          <List.Item>
-            RNNs process sequences by maintaining hidden states, with shared parameters across time steps
-          </List.Item>
-          <List.Item>
-            LSTM and GRU architectures use gating mechanisms to enable learning of long-term dependencies
-          </List.Item>
-          <List.Item>
-            Training uses BPTT with gradient clipping to prevent exploding gradients
-          </List.Item>
-          <List.Item>
-            RNNs have <InlineMath>{`O(Td_h(d_x + d_h))`}</InlineMath> complexity, cannot parallelize across time
-          </List.Item>
-          <List.Item>
-            Bidirectional RNNs capture context from both directions at cost of 2× parameters
-          </List.Item>
-        </List>
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/rnn-limitations.png"
+            alt="Visualization of RNN limitations including sequential computation and long-range dependencies"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Key limitations of RNN architectures
+          </Text>
+        </Flex>
       </div>
     </>
   );

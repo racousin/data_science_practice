@@ -30,6 +30,12 @@ const RAG = () => {
           RAG systems follow a multi-stage pipeline that combines retrieval and generation components. The architecture integrates
           a retrieval system with a generative language model to produce more informed outputs.
         </Text>
+        <Space h="md" />
+        <Image
+          src="/api/placeholder/800/450"
+          alt="RAG Pipeline Architecture"
+        />
+        <Text size="sm" c="dimmed" mt="xs">Complete RAG pipeline showing document indexing and query processing flow</Text>
       </div>
 
       <div data-slide>
@@ -196,6 +202,11 @@ result = qa_chain.run("What are the key components of a RAG system?")`}
           <List.Item><Text fw={500}>Scalability</Text>: Ability to handle millions or billions of vectors</List.Item>
           <List.Item><Text fw={500}>CRUD Operations</Text>: Support for adding, updating, and deleting vectors</List.Item>
         </List>
+        <Image
+          src="/api/placeholder/800/450"
+          alt="Vector Database Structure"
+        />
+        <Text size="sm" c="dimmed" mt="xs">Internal structure of a vector database showing embeddings, metadata, and indexing layers</Text>
       </div>
 
       <div data-slide>
@@ -277,6 +288,12 @@ result = qa_chain.run("What are the key components of a RAG system?")`}
         <BlockMath>{`A \\cdot B = \\sum_{i=1}^{n} A_i B_i`}</BlockMath>
         <Space h="md" />
         <Text size="sm">Effective for normalized vectors and computationally efficient.</Text>
+        <Space h="lg" />
+        <Image
+          src="/api/placeholder/800/400"
+          alt="Similarity Metrics Comparison"
+        />
+        <Text size="sm" c="dimmed" mt="xs">Visual comparison of cosine similarity, Euclidean distance, and dot product in vector space</Text>
       </div>
 
       <div data-slide>
@@ -368,6 +385,12 @@ results = db_weaviate.similarity_search_with_score(
           Chunking involves splitting large documents into smaller, semantically meaningful units that can be efficiently
           embedded and retrieved. The choice of chunking strategy significantly impacts retrieval quality.
         </Text>
+        <Space h="md" />
+        <Image
+          src="/api/placeholder/800/400"
+          alt="Document Chunking Strategies"
+        />
+        <Text size="sm" c="dimmed" mt="xs">Different chunking approaches: fixed-size, sentence-based, paragraph-based, and semantic chunking</Text>
       </div>
 
       <div data-slide>
@@ -422,6 +445,12 @@ results = db_weaviate.similarity_search_with_score(
             </List>
           </div>
         </Flex>
+        <Space h="md" />
+        <Image
+          src="/api/placeholder/800/350"
+          alt="Chunk Overlap Visualization"
+        />
+        <Text size="sm" c="dimmed" mt="xs">Illustration of chunk overlap showing how adjacent chunks share content to maintain context</Text>
       </div>
 
       <div data-slide>
@@ -469,6 +498,12 @@ results = db_weaviate.similarity_search_with_score(
             </Table.Tr>
           </Table.Tbody>
         </Table>
+        <Space h="md" />
+        <Image
+          src="/api/placeholder/800/400"
+          alt="Chunking Methods Comparison"
+        />
+        <Text size="sm" c="dimmed" mt="xs">Comparison of different chunking methods applied to the same document</Text>
       </div>
 
       <div data-slide>
@@ -624,6 +659,12 @@ for i, chunk in enumerate(recursive_chunks):
     elif not content.strip().endswith((".", "!", "?")):
         problem_chunks.append((i, "No sentence ending"))`}
         />
+        <Space h="md" />
+        <Image
+          src="/api/placeholder/800/400"
+          alt="Chunk Quality Analysis"
+        />
+        <Text size="sm" c="dimmed" mt="xs">Distribution of chunk sizes and quality metrics across a document corpus</Text>
       </div>
 
       <div data-slide>
@@ -634,6 +675,12 @@ for i, chunk in enumerate(recursive_chunks):
           Similarity search is the core retrieval operation in RAG systems. It involves finding the most relevant documents
           from a vector database given a query embedding.
         </Text>
+        <Space h="md" />
+        <Image
+          src="/api/placeholder/800/450"
+          alt="Retrieval Ranking Process"
+        />
+        <Text size="sm" c="dimmed" mt="xs">Step-by-step retrieval and ranking process from query to final document selection</Text>
       </div>
 
       <div data-slide>
@@ -645,6 +692,12 @@ for i, chunk in enumerate(recursive_chunks):
           prohibitive. Approximate Nearest Neighbor (ANN) algorithms provide efficient alternatives that trade a small amount
           of accuracy for significant performance gains.
         </Text>
+        <Space h="md" />
+        <Image
+          src="/api/placeholder/800/400"
+          alt="ANN Search Algorithms"
+        />
+        <Text size="sm" c="dimmed" mt="xs">Comparison of ANN algorithms: HNSW graph structure, LSH buckets, and IVF clusters</Text>
       </div>
 
       <div data-slide>
@@ -724,6 +777,12 @@ for i, chunk in enumerate(recursive_chunks):
         <Text mb="md">
           Hybrid search combines multiple retrieval approaches to improve overall retrieval quality.
         </Text>
+        <Space h="md" />
+        <Image
+          src="/api/placeholder/800/400"
+          alt="Hybrid Search Architecture"
+        />
+        <Text size="sm" c="dimmed" mt="xs">Hybrid search combining vector similarity search with keyword-based retrieval</Text>
       </div>
 
       <div data-slide>
@@ -767,6 +826,12 @@ for i, chunk in enumerate(recursive_chunks):
             <Text size="sm">Uses LLM to directly evaluate and score document relevance</Text>
           </List.Item>
         </List>
+        <Space h="md" />
+        <Image
+          src="/api/placeholder/800/350"
+          alt="Re-ranking Process"
+        />
+        <Text size="sm" c="dimmed" mt="xs">Two-stage retrieval with initial candidate selection and cross-encoder re-ranking</Text>
       </div>
 
       <div data-slide>
@@ -878,6 +943,12 @@ compression_retriever = ContextualCompressionRetriever(
 
 compressed_docs = compression_retriever.get_relevant_documents("What is transfer learning?")`}
         />
+        <Space h="md" />
+        <Image
+          src="/api/placeholder/800/350"
+          alt="Contextual Compression"
+        />
+        <Text size="sm" c="dimmed" mt="xs">Contextual compression extracting relevant information from retrieved documents</Text>
       </div>
 
       <div data-slide>
@@ -946,6 +1017,12 @@ compressed_docs = compression_retriever.get_relevant_documents("What is transfer
           The design of prompts for RAG systems is crucial for effectively leveraging the retrieved context and
           generating accurate responses.
         </Text>
+        <Space h="md" />
+        <Image
+          src="/api/placeholder/800/400"
+          alt="Prompt Engineering for RAG"
+        />
+        <Text size="sm" c="dimmed" mt="xs">Structure of an effective RAG prompt with context integration and instructions</Text>
       </div>
 
       <div data-slide>
@@ -1259,6 +1336,12 @@ RETRIEVER_K = 5`}
           Evaluating RAG systems is essential for measuring performance, identifying bottlenecks, and ensuring
           the system meets quality requirements. This involves assessing both retrieval and generation components.
         </Text>
+        <Space h="md" />
+        <Image
+          src="/api/placeholder/800/400"
+          alt="RAG Evaluation Framework"
+        />
+        <Text size="sm" c="dimmed" mt="xs">Comprehensive evaluation framework showing retrieval and generation metrics</Text>
       </div>
 
       <div data-slide>
@@ -1287,6 +1370,12 @@ RETRIEVER_K = 5`}
             <Text size="sm">Mean of average precision across queries</Text>
           </List.Item>
         </List>
+        <Space h="md" />
+        <Image
+          src="/api/placeholder/800/350"
+          alt="Retrieval Metrics Visualization"
+        />
+        <Text size="sm" c="dimmed" mt="xs">Visual comparison of precision, recall, and ranking metrics across different retrieval methods</Text>
       </div>
 
       <div data-slide>
@@ -1567,6 +1656,12 @@ dataset = load_dataset("nq_open", split="validation[:100]")`}
 
     return {"retrieval_issues": retrieval_issues}`}
         />
+        <Space h="md" />
+        <Image
+          src="/api/placeholder/800/400"
+          alt="Failure Case Analysis"
+        />
+        <Text size="sm" c="dimmed" mt="xs">Common failure patterns in RAG systems: retrieval failures, context mismatches, and hallucinations</Text>
       </div>
 
       <div data-slide>
@@ -1583,6 +1678,11 @@ dataset = load_dataset("nq_open", split="validation[:100]")`}
         <Title order={3} mb="sm" id="retrieval-focused">
           Retrieval-Focused Prompt Techniques
         </Title>
+        <Image
+          src="/api/placeholder/800/400"
+          alt="Query Transformation Techniques"
+        />
+        <Text size="sm" c="dimmed" mt="xs">Various query transformation methods: HyDE, expansion, decomposition, and self-query</Text>
       </div>
 
       <div data-slide>
@@ -1633,6 +1733,12 @@ dataset = load_dataset("nq_open", split="validation[:100]")`}
             <Text size="sm">Generates parts of the response, pauses to retrieve more context when needed</Text>
           </List.Item>
         </List>
+        <Space h="md" />
+        <Image
+          src="/api/placeholder/800/400"
+          alt="Multi-Step Retrieval Process"
+        />
+        <Text size="sm" c="dimmed" mt="xs">Iterative retrieval process showing multiple rounds of query refinement and document selection</Text>
       </div>
 
       <div data-slide>
@@ -1689,6 +1795,12 @@ dataset = load_dataset("nq_open", split="validation[:100]")`}
             <Text size="sm">Request confidence levels for different parts of the response</Text>
           </List.Item>
         </List>
+        <Space h="md" />
+        <Image
+          src="/api/placeholder/800/350"
+          alt="Response Generation Constraints"
+        />
+        <Text size="sm" c="dimmed" mt="xs">Different response constraint techniques for improving accuracy and verifiability</Text>
       </div>
 
       <div data-slide>
@@ -1975,45 +2087,6 @@ After all necessary searches, provide your final answer."""
         </List>
       </div>
 
-      <div data-slide>
-        <Title order={2} mb="sm">
-          Key Takeaways
-        </Title>
-        <Flex gap="xl" direction={{ base: 'column', md: 'row' }}>
-          <div style={{ flex: 1 }}>
-            <List>
-              <List.Item>
-                <Text>RAG systems combine the power of retrieval and generation to produce more accurate and grounded responses</Text>
-              </List.Item>
-              <List.Item>
-                <Text>Effective document processing, including chunking and embedding, is crucial for retrieval quality</Text>
-              </List.Item>
-              <List.Item>
-                <Text>Vector databases enable efficient similarity search for finding relevant information</Text>
-              </List.Item>
-              <List.Item>
-                <Text>Advanced retrieval techniques like hybrid search and re-ranking improve result quality</Text>
-              </List.Item>
-            </List>
-          </div>
-          <div style={{ flex: 1 }}>
-            <List>
-              <List.Item>
-                <Text>Prompt engineering is essential for effective context integration and response generation</Text>
-              </List.Item>
-              <List.Item>
-                <Text>Comprehensive evaluation frameworks help identify and address system weaknesses</Text>
-              </List.Item>
-              <List.Item>
-                <Text>Advanced techniques like query transformation and multi-step retrieval can significantly enhance RAG performance</Text>
-              </List.Item>
-              <List.Item>
-                <Text>RAG systems provide a practical approach to grounding LLM outputs in verified information</Text>
-              </List.Item>
-            </List>
-          </div>
-        </Flex>
-      </div>
     </Container>
   );
 };
