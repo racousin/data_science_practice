@@ -277,6 +277,17 @@ const Introduction = () => {
 
       <div data-slide>
         <Title order={2}>NLP Task Categories</Title>
+                <Text mt="lg">
+          Text sequences can be represented as:
+        </Text>
+
+        <BlockMath>
+          {`\\mathcal{S} = (w_1, w_2, \\ldots, w_n) \\quad \\text{where } w_i \\in \\mathcal{V}`}
+        </BlockMath>
+
+        <Text mt="md">
+          Where <InlineMath math="\mathcal{S}" /> is a sequence and <InlineMath math="\mathcal{V}" /> is the vocabulary.
+        </Text>
 
         <Title order={3} mt="md">Text to Value Tasks</Title>
 
@@ -337,7 +348,7 @@ const Introduction = () => {
 
         <Flex direction="column" align="center" mt="xl" mb="md">
           <Image
-            src="/assets/data-science-practice/module8/generative-tasks.png"
+            src="/assets/data-science-practice/module8/dentistygpt.png"
             alt="Examples of conditional text generation and language modeling"
             style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
             fluid
@@ -349,30 +360,43 @@ const Introduction = () => {
         </Flex>
       </div>
 
-      <div data-slide>
-        <Title order={2}>Multimodal NLP Tasks</Title>
+<div data-slide>
+  <Title order={2}>Multimodal NLP Tasks</Title>
 
-        <Text mt="md"><strong>Vision-Language Tasks</strong></Text>
-        <BlockMath>{`f: (\\mathbb{R}^{H \\times W \\times C}, \\mathcal{S}) \\rightarrow \\mathcal{Y}`}</BlockMath>
-        <Text size="sm">Combines image and text processing (image captioning, visual question answering, text-to-image generation)</Text>
+  <Text mt="md"><strong>Vision-Language Tasks</strong></Text>
+  
+  <Text size="sm" mt="xs"><em>Optical Character Recognition (OCR):</em></Text>
+  <BlockMath>{`f: \\mathbb{R}^{H \\times W \\times C} \\rightarrow \\mathcal{S}`}</BlockMath>
+  <Text size="sm">Extract text from images or documents</Text>
 
-        <Text mt="lg"><strong>Speech-Text Processing</strong></Text>
-        <BlockMath>{`f: (\\mathcal{A}, \\mathcal{S}) \\rightarrow \\mathcal{Y}`}</BlockMath>
-        <Text size="sm">Processes both audio and text (speech recognition, text-to-speech, voice assistants)</Text>
+  <Text size="sm" mt="sm"><em>Visual Question Answering:</em></Text>
+  <BlockMath>{`f: (\\mathbb{R}^{H \\times W \\times C}, \\mathcal{S}_{\\text{question}}) \\rightarrow \\mathcal{S}_{\\text{answer}}`}</BlockMath>
+  <Text size="sm">Answer questions about image content</Text>
 
-        <Flex direction="column" align="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/multimodal-nlp-tasks.png"
-            alt="Examples of multimodal NLP tasks combining vision, language, and audio"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            Multimodal integration: vision-language and speech-text processing
-          </Text>
-        </Flex>
-      </div>
+  <Text size="sm" mt="sm"><em>Text-to-Image Generation:</em></Text>
+  <BlockMath>{`f: \\mathcal{S} \\rightarrow \\mathbb{R}^{H \\times W \\times C}`}</BlockMath>
+  <Text size="sm">Generate image from text description</Text>
+
+  <Text mt="lg"><strong>Speech-Text Processing</strong></Text>
+  
+  <Text size="sm" mt="xs"><em>Speech Recognition (ASR):</em></Text>
+  <BlockMath>{`f: \\mathcal{A} \\rightarrow \\mathcal{S}`}</BlockMath>
+  <Text size="sm">Transcribe audio to text</Text>
+
+  <Text size="sm" mt="sm"><em>Text-to-Speech (TTS):</em></Text>
+  <BlockMath>{`f: \\mathcal{S} \\rightarrow \\mathcal{A}`}</BlockMath>
+  <Text size="sm">Synthesize speech from text</Text>
+
+  <Flex direction="column" align="center" mt="xl" mb="md">
+    <Image
+      src="/assets/data-science-practice/module8/multimodal.jpg"
+      alt="Examples of multimodal NLP tasks combining vision, language, and audio"
+      style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+      fluid
+      mb="sm"
+    />
+  </Flex>
+</div>
     </>
   );
 };
@@ -381,14 +405,3 @@ export default Introduction;
 
 
 
-        // <Text mt="lg">
-        //   Mathematically, text sequences can be represented as:
-        // </Text>
-
-        // <BlockMath>
-        //   {`\\mathcal{S} = (w_1, w_2, \\ldots, w_n) \\quad \\text{where } w_i \\in \\mathcal{V}`}
-        // </BlockMath>
-
-        // <Text mt="md">
-        //   Where <InlineMath math="\mathcal{S}" /> is a sequence and <InlineMath math="\mathcal{V}" /> is the vocabulary.
-        // </Text>

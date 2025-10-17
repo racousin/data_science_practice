@@ -83,18 +83,11 @@ const SlideView = ({ children, enabled = false }) => {
   }, [enabled, children, location.pathname]); // Add location.pathname to re-detect when navigating
 
   const handleKeyPress = useCallback((e) => {
-    // Start presentation with 'S' key
-    if (!slideMode && (e.key === 's' || e.key === 'S') && slides.length > 0) {
-      e.preventDefault();
-      enterFullscreen();
-      return;
-    }
-    
     // Exit with Escape
     if (slideMode && e.key === 'Escape') {
       exitFullscreen();
     }
-  }, [slideMode, slides.length]);
+  }, [slideMode]);
 
   const enterFullscreen = async () => {
     setSlideMode(true);
@@ -274,7 +267,7 @@ const SlideView = ({ children, enabled = false }) => {
   return (
     <div className="relative">
       {slides.length > 0 && (
-        <Tooltip label="Start presentation (S)">
+        <Tooltip label="Start presentation">
           <ActionIcon
             onClick={enterFullscreen}
             className="fixed top-4 right-4 z-40"

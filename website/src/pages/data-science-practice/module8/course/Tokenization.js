@@ -2,6 +2,7 @@ import React from "react";
 import { Text, Title, List, Flex, Image } from '@mantine/core';
 import { InlineMath, BlockMath } from 'react-katex';
 import CodeBlock from "components/CodeBlock";
+import InteractiveTokenizer from "components/InteractiveTokenizer";
 
 const Tokenization = () => {
   return (
@@ -20,42 +21,6 @@ const Tokenization = () => {
         </Text>
       </div>
 
-      <div data-slide>
-        <Title order={2}>Challenges in Text Representation</Title>
-
-        <List spacing="sm" mt="md">
-          <List.Item>
-            <strong>High dimensionality:</strong> Human languages contain tens or hundreds of thousands of words,
-            making direct one-hot encoding impractical
-          </List.Item>
-          <List.Item>
-            <strong>Variable length:</strong> Unlike fixed-dimensional data like images, text inputs vary greatly in length
-          </List.Item>
-          <List.Item>
-            <strong>Context dependency:</strong> The meaning of words changes based on surrounding context
-          </List.Item>
-          <List.Item>
-            <strong>Morphological variation:</strong> Words appear in different forms (plurals, tenses, etc.)
-            while maintaining related meanings
-          </List.Item>
-          <List.Item>
-            <strong>Out-of-vocabulary words:</strong> New or rare words not seen during training pose representation challenges
-          </List.Item>
-        </List>
-
-        <Flex direction="column" align="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/text-representation-challenges.png"
-            alt="Visualization of text representation challenges including OOV words and morphological variation"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            Key challenges in representing text: variable length, context dependency, and vocabulary issues
-          </Text>
-        </Flex>
-      </div>
 
       <div data-slide>
         <Title order={2}>Formal Components of Tokenization</Title>
@@ -197,6 +162,26 @@ new_text = "Natural language understanding is amazing!"
 # "understanding" and "amazing" are not in vocabulary, so they become <UNK>
 new_encoded = [2, 3, 1, 5, 1, 7]  # Using <UNK> (index 1) for OOV words`}
         />
+      </div>
+
+      <div data-slide>
+        <Title order={2}>Interactive Tokenization Demo</Title>
+
+        <Text mt="md">
+          Experiment with GPT tokenization by entering text below. Each colored badge represents a single token.
+          Hover over tokens to see their unique token IDs.
+        </Text>
+
+        <InteractiveTokenizer />
+
+        <Text mt="lg" size="sm">
+          Notice how the tokenizer handles:
+        </Text>
+        <List spacing="xs" mt="sm" size="sm">
+          <List.Item>Spaces and punctuation as separate or combined tokens</List.Item>
+          <List.Item>Common words as single tokens</List.Item>
+          <List.Item>Uncommon or made-up words split into subword units</List.Item>
+        </List>
       </div>
 
       <div data-slide>
