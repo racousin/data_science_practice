@@ -21,7 +21,7 @@ const RecurrentNetworks = () => {
 
         <Flex direction="column" align="center" mt="xl" mb="md">
           <Image
-            src="/assets/data-science-practice/module8/rnn-concept.png"
+            src="/assets/data-science-practice/module8/rnn.png"
             alt="RNN concept: sequential parameter sharing across time steps"
             style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
             fluid
@@ -56,20 +56,21 @@ const RecurrentNetworks = () => {
           <List.Item>Can handle variable-length sequences</List.Item>
         </List>
 
+
+      </div>
+<div data-slide>
         <Flex direction="column" align="center" mt="xl" mb="md">
           <Image
-            src="/assets/data-science-practice/module8/rnn-unfolded.png"
-            alt="RNN unfolded through time showing sequential processing"
+            src="/assets/data-science-practice/module8/rnns.png"
             style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
             fluid
             mb="sm"
           />
           <Text size="sm">
-            RNN unfolded through time with shared parameters
+            RNNs units
           </Text>
         </Flex>
-      </div>
-
+</div>
       <div data-slide>
         <Title order={2}>Standard RNN</Title>
 
@@ -160,18 +161,6 @@ print(h_n.shape)     # (1, 32, 128)`}
           <strong>Use case:</strong> Simple tasks with short sequences where long-term memory is not critical.
         </Text>
 
-        <Flex direction="column" align="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/rnn-gradient-problem.png"
-            alt="Vanishing gradient problem in standard RNN"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            Gradient vanishing through long sequences
-          </Text>
-        </Flex>
       </div>
 
       <div data-slide>
@@ -269,18 +258,6 @@ print(c_n.shape)     # (1, 32, 128) - cell state`}
           </List.Item>
         </List>
 
-        <Flex direction="column" align="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/lstm-gates.png"
-            alt="LSTM gates and cell state flow"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            LSTM gates controlling information flow
-          </Text>
-        </Flex>
       </div>
 
       <div data-slide>
@@ -394,18 +371,6 @@ print(h_n.shape)     # (1, 32, 128) - only hidden state (no cell state)`}
           </List.Item>
         </List>
 
-        <Flex direction="column" align="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/gru-gates.png"
-            alt="GRU gates and hidden state flow"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            GRU simplified gating mechanism
-          </Text>
-        </Flex>
       </div>
 
       <div data-slide>
@@ -476,7 +441,7 @@ print(h_n.shape)     # (1, 32, 128) - only hidden state (no cell state)`}
 
         <Flex direction="column" align="center" mt="xl" mb="md">
           <Image
-            src="/assets/data-science-practice/module8/rnn-comparison.png"
+            src="/assets/data-science-practice/module8/rnns-diff.png"
             alt="Comparison of RNN, GRU, and LSTM architectures"
             style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
             fluid
@@ -558,28 +523,6 @@ print(output.shape)  # (32, 20, 256) - hidden_size * 2`}
         </Text>
       </div>
 
-      <div data-slide>
-        <Title order={2}>Training Tips</Title>
-
-        <Title order={3} mt="md">Gradient Clipping</Title>
-        <Text mt="sm">Essential to prevent exploding gradients:</Text>
-
-        <CodeBlock
-          language="python"
-          code={`# During training loop
-loss.backward()
-torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
-optimizer.step()`}
-        />
-
-        <Title order={3} mt="lg">Other Best Practices</Title>
-        <List spacing="xs" mt="sm">
-          <List.Item>Use dropout between layers for regularization</List.Item>
-          <List.Item>Start with GRU, use LSTM if needed</List.Item>
-          <List.Item>Consider bidirectional for tasks with full sequence access</List.Item>
-          <List.Item>Use layer normalization for better convergence</List.Item>
-        </List>
-      </div>
 
       <div data-slide>
         <Title order={2}>Limitations of RNNs</Title>
@@ -604,18 +547,7 @@ optimizer.step()`}
           <strong>Transformers</strong>, which we'll explore next.
         </Text>
 
-        <Flex direction="column" align="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/rnn-vs-transformer.png"
-            alt="Comparison of RNN sequential processing vs Transformer parallel processing"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
-          />
-          <Text size="sm">
-            RNN limitations motivating attention mechanisms
-          </Text>
-        </Flex>
+
       </div>
     </>
   );
