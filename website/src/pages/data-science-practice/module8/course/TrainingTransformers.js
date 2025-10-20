@@ -19,6 +19,68 @@ export default function TrainingTransformers() {
       </div>
 
       <div data-slide>
+        <Title order={2}>Language Modeling Objectives</Title>
+        <Text mt="md">
+          Transformer models are trained using different language modeling objectives depending
+          on their architecture. The two primary training objectives are Causal Language Modeling
+          and Masked Language Modeling.
+        </Text>
+        <Text mt="md">
+          These objectives define how the model learns to predict tokens and determine the
+          attention patterns used during training and inference.
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={2}>Causal Language Modeling (CLM)</Title>
+        <Text mt="md">
+          Causal Language Modeling predicts the next token given only previous tokens.
+          This objective is used by decoder-only models like GPT.
+        </Text>
+
+        <Text mt="md">The CLM loss function:</Text>
+        <BlockMath>{'L_{\\text{CLM}} = -\\sum_{t=1}^{T} \\log P(w_t \\mid w_1, \\ldots, w_{t-1}; \\theta)'}</BlockMath>
+
+        <Text mt="md">Key characteristics:</Text>
+        <List spacing="sm" mt="sm">
+          <List.Item>Uses causal (unidirectional) attention mask</List.Item>
+          <List.Item>Each position can only attend to previous positions</List.Item>
+          <List.Item>Enables autoregressive text generation</List.Item>
+          <List.Item>Natural for text completion and generation tasks</List.Item>
+        </List>
+
+        <Text mt="md">
+          The model learns to predict each token based solely on its preceding context,
+          making it suitable for sequential generation tasks.
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={2}>Masked Language Modeling (MLM)</Title>
+        <Text mt="md">
+          Masked Language Modeling predicts masked tokens given surrounding bidirectional context.
+          This objective is used by encoder-only models like BERT.
+        </Text>
+
+        <Text mt="md">The MLM loss function:</Text>
+        <BlockMath>{'L_{\\text{MLM}} = -\\sum_{i \\in M} \\log P(w_i \\mid w_{\\setminus M}; \\theta)'}</BlockMath>
+
+        <Text mt="md">
+          Where <InlineMath>{'M'}</InlineMath> represents the set of masked positions and{' '}
+          <InlineMath>{'w_{\\setminus M}'}</InlineMath> represents all tokens except the masked ones.
+        </Text>
+
+        <Text mt="md">Key characteristics:</Text>
+        <List spacing="sm" mt="sm">
+          <List.Item>Uses bidirectional attention</List.Item>
+          <List.Item>Randomly masks approximately 15% of tokens during training</List.Item>
+          <List.Item>Model predicts masked tokens using full context</List.Item>
+          <List.Item>Better for understanding and representation tasks</List.Item>
+        </List>
+      </div>
+
+
+      <div data-slide>
         <Title order={2}>Tokenizer Libraries</Title>
         <Text mt="md">
           Modern transformer libraries provide pre-built tokenizers that handle vocabulary

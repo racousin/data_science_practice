@@ -18,6 +18,15 @@ const MetricsAndLoss = () => {
           Loss functions guide model training through gradient descent, while metrics evaluate performance
           on validation and test data.
         </Text>
+
+      </div>
+
+      <div data-slide>
+        <Title order={1}>Loss Functions</Title>
+        <Text mt="md">
+          Loss functions quantify the difference between predicted and actual outputs, providing gradients
+          for optimization during training.
+        </Text>
       </div>
 
       <div data-slide>
@@ -92,6 +101,39 @@ print(f"Loss: {loss.item():.4f}")
 
 # With properly trained model, loss should be much lower (e.g., 2-4)`}
         />
+      </div>
+
+      <div data-slide>
+        <Title order={2}>Masked Language Modeling Loss</Title>
+
+        <Text mt="md">
+          Used in models like BERT, where some tokens are masked and must be predicted.
+        </Text>
+
+        <BlockMath math="L_{MLM} = -\frac{1}{|M|}\sum_{t \in M}\sum_{k=1}^{K} y_k^{(t)} \log(\hat{y}_k^{(t)})" />
+
+        <Text mt="lg">
+          Where:
+        </Text>
+        <List spacing="xs" mt="sm">
+          <List.Item><InlineMath math="M" />: Set of masked token positions</List.Item>
+          <List.Item><InlineMath math="|M|" />: Number of masked tokens (typically 15% of sequence)</List.Item>
+        </List>
+
+        <Text mt="lg">
+          <strong>Input shape:</strong> Masked sequence <InlineMath math="\in \mathbb{R}^{T \times d}" />
+        </Text>
+        <Text mt="sm">
+          <strong>Target shape:</strong> Original token IDs <InlineMath math="\in \mathbb{Z}^{|M|}" /> (only for masked positions)
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={1}>Evaluation Metrics</Title>
+        <Text mt="md">
+          Evaluation metrics assess model quality without being directly optimized during training.
+          Unlike loss functions, they often align better with human judgment.
+        </Text>
       </div>
 
       <div data-slide>
@@ -277,31 +319,6 @@ print(f"ROUGE-L: {scores['rougeL'].fmeasure:.4f}")
 # ROUGE-2: 0.8000 (bigram overlap)
 # ROUGE-L: 0.9091 (longest common subsequence)`}
         />
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Token-Level Loss: Masked Language Modeling</Title>
-
-        <Text mt="md">
-          Used in models like BERT, where some tokens are masked and must be predicted.
-        </Text>
-
-        <BlockMath math="L_{MLM} = -\frac{1}{|M|}\sum_{t \in M}\sum_{k=1}^{K} y_k^{(t)} \log(\hat{y}_k^{(t)})" />
-
-        <Text mt="lg">
-          Where:
-        </Text>
-        <List spacing="xs" mt="sm">
-          <List.Item><InlineMath math="M" />: Set of masked token positions</List.Item>
-          <List.Item><InlineMath math="|M|" />: Number of masked tokens (typically 15% of sequence)</List.Item>
-        </List>
-
-        <Text mt="lg">
-          <strong>Input shape:</strong> Masked sequence <InlineMath math="\in \mathbb{R}^{T \times d}" />
-        </Text>
-        <Text mt="sm">
-          <strong>Target shape:</strong> Original token IDs <InlineMath math="\in \mathbb{Z}^{|M|}" /> (only for masked positions)
-        </Text>
       </div>
 
     </>

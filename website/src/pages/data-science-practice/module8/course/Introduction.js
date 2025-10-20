@@ -342,9 +342,18 @@ const Introduction = () => {
       <div data-slide>
         <Title order={2}>Generative Tasks</Title>
 
-        <Text mt="lg"><strong>Language Modeling</strong></Text>
+        <Text mt="md"><strong>Language Modeling</strong></Text>
+        <Text size="sm" mt="xs">Models probability distribution over sequences through self-supervised learning</Text>
+
+        <Text mt="lg" size="sm"><em>Causal Language Modeling (CLM):</em></Text>
         <BlockMath>{`P(w_t | w_1, w_2, \\ldots, w_{t-1})`}</BlockMath>
-        <Text size="sm">Models probability distribution over sequences by predicting next token</Text>
+        <Text size="sm">Predicts next token given previous tokens (autoregressive, left-to-right)</Text>
+        <Text size="sm">Used in GPT models for text generation</Text>
+
+        <Text mt="md" size="sm"><em>Masked Language Modeling (MLM):</em></Text>
+        <BlockMath>{`P(w_i | w_1, \\ldots, w_{i-1}, w_{i+1}, \\ldots, w_n)`}</BlockMath>
+        <Text size="sm">Predicts masked tokens using bidirectional context</Text>
+        <Text size="sm">Used in BERT models for text understanding</Text>
 
         <Flex direction="column" align="center" mt="xl" mb="md">
           <Image

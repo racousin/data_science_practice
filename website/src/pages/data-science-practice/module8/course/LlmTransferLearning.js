@@ -1,11 +1,27 @@
 import React from "react";
-import { Text, Title, List, Table, Flex, Image, Alert } from '@mantine/core';
+import { Text, Title, List, Table, Flex, Image } from '@mantine/core';
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
 import CodeBlock from "components/CodeBlock";
-import { IconAlertCircle } from '@tabler/icons-react';
+import DataInteractionPanel from 'components/DataInteractionPanel';
 
 const LlmTransferLearning = () => {
+  // Notebook URLs for LoRA fine-tuning demonstration
+  const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module8/course/module8_course_lora_finetuning.ipynb";
+  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module8/course/module8_course_lora_finetuning.html";
+  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/data-science-practice/module8/course/module8_course_lora_finetuning.ipynb";
+
+  const metadata = {
+    description: "Complete LoRA fine-tuning demonstration: load a pretrained GPT-2 model, test it, then fine-tune it efficiently on TinyStories using LoRA.",
+    source: "TinyStories Dataset",
+    target: "Children's story generation",
+    listData: [
+      { name: "Pretrained Model", description: "GPT-2 (124M parameters) from HuggingFace" },
+      { name: "LoRA Config", description: "Rank r=8, only ~0.3% parameters trained" },
+      { name: "Comparison", description: "Before vs. after fine-tuning analysis" }
+    ],
+  };
+
   return (
     <>
       <div data-slide>
@@ -20,6 +36,115 @@ const LlmTransferLearning = () => {
           This approach leverages massive pre-trained models trained on billions of tokens, allowing practitioners
           to achieve state-of-the-art performance without requiring extensive computational resources or large
           domain-specific datasets.
+        </Text>
+        <Flex>
+                <Image
+                  src="/assets/data-science-practice/module8/flop.jpeg"
+                  alt="CPU vs GPU Architecture"
+                  style={{ maxWidth: 'min(800px, 90vw)', height: 'auto' }}
+                  fluid
+                />
+                            <Text component="p" ta="center" mt="xs" size="sm" c="dimmed">
+                        Source: https://epoch.ai/blog/tracking-large-scale-ai-models</Text>
+                
+              </Flex>
+
+        <Text mt="lg" fw={500}>
+          Training LLaMA 3.1 405B: <InlineMath math="3.8 \times 10^{25}" /> FLOPs
+        </Text>
+
+        <Text mt="sm">
+          On a Personal Computer (200 GFLOPS)
+        </Text>
+
+        <Text mt="xs">
+          Time = Total FLOPs / FLOPS = <InlineMath math="1.9 \times 10^{14}" /> seconds = 6.0 million years
+        </Text>
+
+        <Table striped mt="lg">
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>Parameters</Table.Th>
+              <Table.Th>Number GPU</Table.Th>
+              <Table.Th>Training Time</Table.Th>
+              <Table.Th>Estimated Cost</Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
+            <Table.Tr>
+              <Table.Td>1B</Table.Td>
+              <Table.Td>~10-50 GPUs</Table.Td>
+              <Table.Td>Days to week</Table.Td>
+              <Table.Td>$10K - $100K</Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td>10B</Table.Td>
+              <Table.Td>~100-500 GPUs</Table.Td>
+              <Table.Td>Weeks to Month</Table.Td>
+              <Table.Td>$100K - $1M</Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td>100B+</Table.Td>
+              <Table.Td>1,000+ GPUs</Table.Td>
+              <Table.Td>Months</Table.Td>
+              <Table.Td>$1M - $100M+</Table.Td>
+            </Table.Tr>
+          </Table.Tbody>
+        </Table>
+
+        <Text mt="md">
+          Training large foundation models requires substantial infrastructure and capital, making it accessible
+          primarily to major technology companies and well-funded research labs such as Meta (Llama), OpenAI (GPT),
+          Google (Gemini), Anthropic (Claude), and Mistral AI.
+        </Text>
+
+        <Table striped mt="lg">
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th></Table.Th>
+              <Table.Th>Training Set (Words)</Table.Th>
+              <Table.Th>Training Set (Tokens)</Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
+            <Table.Tr>
+              <Table.Td fw={500}>Recent LLMs</Table.Td>
+              <Table.Td></Table.Td>
+              <Table.Td></Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td pl="xl">Llama 3</Table.Td>
+              <Table.Td>11 trillion</Table.Td>
+              <Table.Td>15T</Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td pl="xl">GPT-4</Table.Td>
+              <Table.Td>5 trillion</Table.Td>
+              <Table.Td>6.5T</Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td fw={500}>Humans</Table.Td>
+              <Table.Td></Table.Td>
+              <Table.Td></Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td pl="xl">Human, age 5</Table.Td>
+              <Table.Td>30 million</Table.Td>
+              <Table.Td></Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td pl="xl">Human, age 20</Table.Td>
+              <Table.Td>150 million</Table.Td>
+              <Table.Td></Table.Td>
+            </Table.Tr>
+          </Table.Tbody>
+        </Table>
+
+        <Text mt="md">
+          Despite consuming orders of magnitude more data (15 trillion tokens vs 150 million words), current LLMs
+          remain remarkably inefficient compared to human learning. A 20-year-old human achieves sophisticated language
+          understanding and reasoning with approximately 10<sup>11</sup> (100 billion) times less training data than models like Llama 3,
+          highlighting fundamental differences in learning efficiency and generalization capabilities.
         </Text>
       </div>
 
@@ -88,21 +213,6 @@ const LlmTransferLearning = () => {
           {`\\mathcal{L}_{\\text{MLM}} = -\\sum_{i \\in \\mathcal{M}} \\log P(w_i | w_{\\setminus \\mathcal{M}}; \\theta)`}
         </BlockMath>
 
-        <Title order={3} mt="lg">Span Corruption</Title>
-        <Text>
-          Predict masked spans of text (used by T5):
-        </Text>
-        <BlockMath>
-          {`\\mathcal{L}_{\\text{span}} = -\\sum_{s \\in \\mathcal{S}} \\log P(s | \\text{context}; \\theta)`}
-        </BlockMath>
-
-        <Flex justify="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/pretraining-objectives.png"
-            alt="Comparison of different pre-training objectives: CLM, MLM, and Span Corruption"
-            style={{ maxWidth: "100%", height: "auto" }}
-          />
-        </Flex>
       </div>
 
       <div data-slide>
@@ -135,14 +245,6 @@ const LlmTransferLearning = () => {
           <List.Item>World knowledge and factual information</List.Item>
           <List.Item>Commonsense reasoning patterns</List.Item>
         </List>
-
-        <Flex justify="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/hierarchical-representations.png"
-            alt="Hierarchical feature learning in transformer models across layers"
-            style={{ maxWidth: "100%", height: "auto" }}
-          />
-        </Flex>
       </div>
 
       <div data-slide>
@@ -154,10 +256,10 @@ const LlmTransferLearning = () => {
 
         <List spacing="sm" mt="md">
           <List.Item>
-            <strong>Model Hub:</strong> Repository of over 500,000 pre-trained models
+            <strong>Model Hub:</strong> Repository of over 2000,000 pre-trained models
           </List.Item>
           <List.Item>
-            <strong>Datasets:</strong> Collection of over 100,000 datasets for various tasks
+            <strong>Datasets:</strong> Collection of over 500,000 datasets for various tasks
           </List.Item>
           <List.Item>
             <strong>Transformers Library:</strong> Unified API for working with transformer models
@@ -224,44 +326,63 @@ const LlmTransferLearning = () => {
         <Title order={2}>Loading Pre-trained Models</Title>
 
         <Text mt="md">
-          The AutoModel API automatically detects and loads the appropriate model architecture:
+          Hugging Face provides two types of model loading APIs:
+        </Text>
+
+        <Title order={3} mt="lg">AutoModel: The "Body" Only</Title>
+        <Text>
+          Loads just the transformer encoder/decoder without any task-specific head.
+          Returns raw contextualized embeddings.
         </Text>
 
         <CodeBlock
           language="python"
-          code={`from transformers import AutoModel, AutoTokenizer
+          code={`from transformers import AutoModel
 
-# Load model and tokenizer
-model_name = "bert-base-uncased"
-model = AutoModel.from_pretrained(model_name)
-tokenizer = AutoTokenizer.from_pretrained(model_name)`}
+# Loads the transformer body only
+model = AutoModel.from_pretrained("bert-base-uncased")`}
         />
 
-        <Text mt="md">
-          For task-specific models with appropriate heads:
+        <Text mt="md" size="sm">
+          Use this when you want to build custom task heads or extract embeddings.
+        </Text>
+
+        <Title order={3} mt="lg">AutoModelForXXX: The "Body" + "Brain"</Title>
+        <Text>
+          Loads the transformer with a specialized head pre-configured for specific tasks.
+          Ready to use for the target task.
         </Text>
 
         <CodeBlock
           language="python"
           code={`from transformers import AutoModelForSequenceClassification
 
-# Load with classification head
+# Loads transformer + classification head
 model = AutoModelForSequenceClassification.from_pretrained(
-    "bert-base-uncased",
-    num_labels=3  # For 3-class classification
+    "distilbert-base-uncased-finetuned-sst-2-english"
 )`}
         />
 
-        <Text mt="md">
-          Common task-specific model classes:
+        <Text mt="md" size="sm">
+          Use this for common NLP tasks with pre-configured architectures.
         </Text>
 
+
+        <Title order={3} mt="lg">Common Task-Specific Model Classes</Title>
+
         <List spacing="xs" mt="xs" size="sm">
-          <List.Item>AutoModelForCausalLM (GPT-style generation)</List.Item>
-          <List.Item>AutoModelForSeq2SeqLM (T5-style seq2seq)</List.Item>
-          <List.Item>AutoModelForTokenClassification (NER, POS tagging)</List.Item>
-          <List.Item>AutoModelForQuestionAnswering (extractive QA)</List.Item>
+          <List.Item>AutoModelForCausalLM - Text generation (GPT-style)</List.Item>
+          <List.Item>AutoModelForSeq2SeqLM - Translation, summarization (T5-style)</List.Item>
+          <List.Item>AutoModelForTokenClassification - Named entity recognition</List.Item>
+          <List.Item>AutoModelForQuestionAnswering - Extractive QA</List.Item>
         </List>
+
+        <Flex justify="center" mt="lg" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/hf.png"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -876,62 +997,6 @@ model.print_trainable_parameters()`}
         </Text>
       </div>
 
-      <div data-slide>
-        <Title order={2}>QLoRA: Quantized LoRA</Title>
-
-        <Text mt="md">
-          QLoRA (Dettmers et al., 2023) combines 4-bit quantization with LoRA to enable fine-tuning
-          of very large models on consumer hardware.
-        </Text>
-
-        <Text mt="md">
-          Key innovations:
-        </Text>
-
-        <List spacing="sm" mt="md">
-          <List.Item>
-            <strong>4-bit NormalFloat quantization:</strong> Quantizes pre-trained weights to 4-bit using
-            information-theoretically optimal quantization scheme
-          </List.Item>
-          <List.Item>
-            <strong>Double quantization:</strong> Quantizes the quantization constants to save additional memory
-          </List.Item>
-          <List.Item>
-            <strong>Paged optimizers:</strong> Uses unified memory to handle memory spikes during training
-          </List.Item>
-        </List>
-
-        <CodeBlock
-          language="python"
-          code={`from transformers import BitsAndBytesConfig
-import torch
-
-bnb_config = BitsAndBytesConfig(
-    load_in_4bit=True,
-    bnb_4bit_quant_type="nf4",
-    bnb_4bit_compute_dtype=torch.bfloat16,
-    bnb_4bit_use_double_quant=True
-)
-
-model = AutoModelForCausalLM.from_pretrained(
-    "meta-llama/Llama-2-7b-hf",
-    quantization_config=bnb_config,
-    device_map="auto"
-)`}
-        />
-
-        <Text mt="md" size="sm">
-          QLoRA enables fine-tuning of 65B parameter models on a single 48GB GPU.
-        </Text>
-
-        <Flex justify="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/qlora-quantization.png"
-            alt="QLoRA quantization scheme and memory optimization"
-            style={{ maxWidth: "100%", height: "auto" }}
-          />
-        </Flex>
-      </div>
 
       <div data-slide>
         <Title order={2}>Other PEFT Methods</Title>
@@ -1318,6 +1383,39 @@ optimizer.step()`}
             </Text>
           </List.Item>
         </List>
+      </div>
+
+      <div data-slide>
+        <Title order={2}>Hands-On: LoRA and PEFT Methods Demo</Title>
+
+        <Text mt="md">
+          This interactive notebook demonstrates the complete PEFT workflow, comparing LoRA, Prefix Tuning, and IA3 on GPT-2.
+        </Text>
+
+        <Text mt="md">
+          In this hands-on demonstration, you will:
+        </Text>
+
+        <List spacing="sm" mt="md">
+          <List.Item>Load GPT-2 (124M parameters) and test its pretrained capabilities</List.Item>
+          <List.Item>Configure and compare three PEFT methods: LoRA, Prefix Tuning, and IA3</List.Item>
+          <List.Item>Analyze parameter efficiency across methods (0.01% to 0.5% trainable)</List.Item>
+          <List.Item>Fine-tune GPT-2 on TinyStories using LoRA with only ~300K trainable parameters</List.Item>
+          <List.Item>Compare story generation before and after fine-tuning</List.Item>
+          <List.Item>Explore storage efficiency and adapter weight sharing</List.Item>
+        </List>
+
+        <Text mt="lg">
+          This demonstration showcases how PEFT enables efficient adaptation of large pretrained models to specific
+          domains with minimal computational resources, making state-of-the-art models accessible for fine-tuning.
+        </Text>
+
+        <DataInteractionPanel
+          notebookUrl={notebookUrl}
+          notebookHtmlUrl={notebookHtmlUrl}
+          notebookColabUrl={notebookColabUrl}
+          metadata={metadata}
+        />
       </div>
     </>
   );
