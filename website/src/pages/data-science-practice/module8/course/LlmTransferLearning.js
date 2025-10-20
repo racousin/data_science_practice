@@ -454,6 +454,77 @@ text = tokenizer.decode(ids, skip_special_tokens=True)`}
       </div>
 
       <div data-slide>
+        <Title order={2}>Hugging Face Pipelines</Title>
+
+        <Text mt="md">
+          Pipelines provide the simplest way to use pre-trained models for inference. They handle
+          tokenization, model execution, and output post-processing automatically.
+        </Text>
+
+        <Text mt="md">
+          Basic pipeline usage:
+        </Text>
+
+        <CodeBlock
+          language="python"
+          code={`from transformers import pipeline
+
+# Create a pipeline for a specific task
+generator = pipeline("text-generation", model="gpt2")`}
+        />
+
+        <Text mt="md">
+          Generate text with control over hyperparameters:
+        </Text>
+
+        <CodeBlock
+          language="python"
+          code={`result = generator(
+    "The future of artificial intelligence",  # Input prompt
+    max_length=50,              # Maximum tokens to generate
+    temperature=0.8,            # Controls randomness (higher = more random)
+    top_p=0.9,                  # Nucleus sampling threshold
+    do_sample=True,             # Use sampling instead of greedy decoding
+    num_return_sequences=1      # Number of sequences to generate
+)`}
+        />
+
+        <Text mt="md" size="sm">
+          Pipelines support all generation hyperparameters (temperature, top_p, top_k, etc.)
+          while simplifying tokenization and output handling.
+        </Text>
+
+        <Title order={3} mt="lg">Available Pipeline Tasks</Title>
+
+        <List spacing="xs" mt="xs" size="sm">
+          <List.Item><strong>text-generation:</strong> Generate text continuation (GPT-2, GPT-J)</List.Item>
+          <List.Item><strong>text-classification:</strong> Classify text into categories</List.Item>
+          <List.Item><strong>sentiment-analysis:</strong> Determine sentiment (positive/negative)</List.Item>
+          <List.Item><strong>question-answering:</strong> Answer questions given context</List.Item>
+          <List.Item><strong>summarization:</strong> Generate summaries of long text</List.Item>
+          <List.Item><strong>translation:</strong> Translate between languages</List.Item>
+          <List.Item><strong>fill-mask:</strong> Predict masked tokens (BERT-style)</List.Item>
+          <List.Item><strong>feature-extraction:</strong> Get embeddings for text</List.Item>
+        </List>
+
+        <Text mt="lg">
+          Example with sentiment analysis:
+        </Text>
+
+        <CodeBlock
+          language="python"
+          code={`classifier = pipeline("sentiment-analysis")
+result = classifier("I love this product!")
+# Output: [{'label': 'POSITIVE', 'score': 0.9998}]`}
+        />
+
+        <Text mt="md" size="sm">
+          Pipelines automatically select default models for each task and handle all preprocessing,
+          making them ideal for quick prototyping and applications where simplicity is prioritized.
+        </Text>
+      </div>
+
+      <div data-slide>
         <Title order={2}>Model Inference Example</Title>
 
         <Text mt="md">
@@ -477,17 +548,17 @@ model = AutoModelForCausalLM.from_pretrained(model_name)`}
         <CodeBlock
           language="python"
           code={`prompt = "The future of artificial intelligence"
-inputs = tokenizer(prompt, return_tensors="pt")
+inputs = tokenizer(prompt, return_tensors="pt")  # "pt" = PyTorch tensors
 
 outputs = model.generate(
-    inputs["input_ids"],
-    max_length=50,
-    temperature=0.8,
-    do_sample=True,
-    top_p=0.9
+    inputs["input_ids"],    # Tokenized input IDs
+    max_length=50,          # Maximum tokens to generate
+    temperature=0.8,        # Controls randomness (higher = more random)
+    do_sample=True,         # Use sampling instead of greedy decoding
+    top_p=0.9               # Nucleus sampling threshold
 )
 
-generated_text = tokenizer.decode(outputs[0])`}
+generated_text = tokenizer.decode(outputs[0])  # Decode token IDs to text`}
         />
 
         <Text mt="md" size="sm">
@@ -495,13 +566,6 @@ generated_text = tokenizer.decode(outputs[0])`}
           max_length (maximum tokens), and do_sample (whether to use sampling vs greedy decoding).
         </Text>
 
-        <Flex justify="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/text-generation-sampling.png"
-            alt="Text generation strategies: greedy, sampling, and nucleus sampling"
-            style={{ maxWidth: "100%", height: "auto" }}
-          />
-        </Flex>
       </div>
 
       <div data-slide>
@@ -538,7 +602,7 @@ generated_text = tokenizer.decode(outputs[0])`}
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/assets/data-science-practice/module8/zero-shot-learning.png"
+            src="/assets/data-science-practice/module8/zero-shot-vs-transfer.png"
             alt="Zero-shot learning framework and application examples"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -636,7 +700,7 @@ Sentiment:"""`}
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/assets/data-science-practice/module8/few-shot-learning.png"
+            src="/assets/data-science-practice/module8/prompteng.png"
             alt="Few-shot learning and in-context learning mechanism"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -673,13 +737,7 @@ Sentiment:"""`}
           <List.Item>Requires storing full model copy for each task</List.Item>
         </List>
 
-        <Flex justify="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/fine-tuning-process.png"
-            alt="Traditional fine-tuning process and parameter updates"
-            style={{ maxWidth: "100%", height: "auto" }}
-          />
-        </Flex>
+
       </div>
 
       <div data-slide>
@@ -721,79 +779,8 @@ Sentiment:"""`}
           <List.Item>Task head: largest learning rate (e.g., 5e-5)</List.Item>
         </List>
 
-        <Flex justify="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/layer-freezing-strategies.png"
-            alt="Layer freezing and gradual unfreezing strategies"
-            style={{ maxWidth: "100%", height: "auto" }}
-          />
-        </Flex>
       </div>
 
-      <div data-slide>
-        <Title order={2}>Fine-Tuning Implementation</Title>
-
-        <Text mt="md">
-          Using the Hugging Face Trainer API:
-        </Text>
-
-        <CodeBlock
-          language="python"
-          code={`from transformers import (
-    AutoModelForSequenceClassification,
-    TrainingArguments,
-    Trainer
-)
-from datasets import load_dataset
-
-# Load dataset
-dataset = load_dataset("imdb")`}
-        />
-
-        <Text mt="md">
-          Tokenize data:
-        </Text>
-
-        <CodeBlock
-          language="python"
-          code={`tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
-
-def tokenize_function(examples):
-    return tokenizer(examples["text"], padding="max_length",
-                     truncation=True, max_length=512)
-
-tokenized_datasets = dataset.map(tokenize_function, batched=True)`}
-        />
-
-        <Text mt="md">
-          Configure training:
-        </Text>
-
-        <CodeBlock
-          language="python"
-          code={`training_args = TrainingArguments(
-    output_dir="./results",
-    learning_rate=2e-5,
-    per_device_train_batch_size=16,
-    num_train_epochs=3,
-    weight_decay=0.01,
-    evaluation_strategy="epoch"
-)
-
-model = AutoModelForSequenceClassification.from_pretrained(
-    "bert-base-uncased", num_labels=2
-)
-
-trainer = Trainer(
-    model=model,
-    args=training_args,
-    train_dataset=tokenized_datasets["train"],
-    eval_dataset=tokenized_datasets["test"]
-)
-
-trainer.train()`}
-        />
-      </div>
 
       <div data-slide>
         <Title order={2}>Parameter Efficient Fine-Tuning (PEFT)</Title>
@@ -830,7 +817,7 @@ trainer.train()`}
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/assets/data-science-practice/module8/peft-comparison.png"
+            src="/assets/data-science-practice/module8/finetune2.jpeg"
             alt="Parameter efficient fine-tuning methods comparison"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -879,7 +866,7 @@ trainer.train()`}
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/assets/data-science-practice/module8/lora-architecture-diagram.png"
+            src="/assets/data-science-practice/module8/loracompute.png"
             alt="LoRA architecture showing low-rank decomposition matrices"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -928,36 +915,6 @@ trainer.train()`}
           Where <InlineMath math="\alpha" /> is a hyperparameter (typically set to 16 or 32).
         </Text>
 
-        <Flex justify="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/lora-forward-pass.png"
-            alt="LoRA forward pass computation flow"
-            style={{ maxWidth: "100%", height: "auto" }}
-          />
-        </Flex>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>LoRA Parameters and Complexity</Title>
-
-        <Text mt="md">
-          Parameter reduction calculation:
-        </Text>
-
-        <Title order={3} mt="md">Original Parameters</Title>
-        <BlockMath>
-          {`\#\\text{params}_{\\text{full}} = d \\times k`}
-        </BlockMath>
-
-        <Title order={3} mt="md">LoRA Parameters</Title>
-        <BlockMath>
-          {`\#\\text{params}_{\\text{LoRA}} = r \\times (d + k)`}
-        </BlockMath>
-
-        <Title order={3} mt="md">Reduction Ratio</Title>
-        <BlockMath>
-          {`\\frac{\#\\text{params}_{\\text{LoRA}}}{\#\\text{params}_{\\text{full}}} = \\frac{r(d + k)}{dk}`}
-        </BlockMath>
 
         <Text mt="lg">
           Example: For a weight matrix of shape 4096 × 4096 with rank r = 8:
@@ -969,473 +926,14 @@ trainer.train()`}
           <List.Item>Reduction: 0.39% of original parameters</List.Item>
           <List.Item>Memory savings: 256× reduction</List.Item>
         </List>
-
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/assets/data-science-practice/module8/lora-parameter-efficiency.png"
-            alt="LoRA parameter reduction and memory savings visualization"
+            src="/assets/data-science-practice/module8/loraFlow.gif"
+            alt="LoRA architecture showing low-rank decomposition matrices"
             style={{ maxWidth: "100%", height: "auto" }}
           />
         </Flex>
       </div>
-
-      <div data-slide>
-        <Title order={2}>LoRA Implementation</Title>
-
-        <Text mt="md">
-          Using the PEFT library from Hugging Face:
-        </Text>
-
-        <CodeBlock
-          language="python"
-          code={`from transformers import AutoModelForCausalLM, AutoTokenizer
-from peft import get_peft_model, LoraConfig, TaskType
-
-model_name = "gpt2"
-model = AutoModelForCausalLM.from_pretrained(model_name)
-tokenizer = AutoTokenizer.from_pretrained(model_name)`}
-        />
-
-        <Text mt="md">
-          Configure LoRA:
-        </Text>
-
-        <CodeBlock
-          language="python"
-          code={`lora_config = LoraConfig(
-    r=8,                          # Rank
-    lora_alpha=32,                # Scaling factor
-    target_modules=["c_attn"],    # Which modules to apply LoRA
-    lora_dropout=0.1,
-    bias="none",
-    task_type=TaskType.CAUSAL_LM
-)
-
-model = get_peft_model(model, lora_config)
-model.print_trainable_parameters()`}
-        />
-
-        <Text mt="md" size="sm">
-          Output: "trainable params: 294,912 || all params: 124,439,808 || trainable%: 0.237"
-        </Text>
-
-        <Text mt="lg">
-          Training proceeds normally with the Trainer API, but only LoRA parameters are updated.
-        </Text>
-      </div>
-
-
-      <div data-slide>
-        <Title order={2}>Other PEFT Methods</Title>
-
-        <Title order={3} mt="md">Prefix Tuning</Title>
-        <Text>
-          Prepends trainable prefix vectors to keys and values at each layer:
-        </Text>
-        <BlockMath>
-          {`[P_K; K], [P_V; V] \\quad \\text{where } P_K, P_V \\in \\mathbb{R}^{l \\times d}`}
-        </BlockMath>
-        <Text size="sm">
-          Only prefix parameters are trained; l is the prefix length (typically 10-100 tokens).
-        </Text>
-
-        <Title order={3} mt="lg">Adapters</Title>
-        <Text>
-          Inserts small bottleneck layers between transformer blocks:
-        </Text>
-        <BlockMath>
-          {`h' = h + f(hW_{\\text{down}})W_{\\text{up}}`}
-        </BlockMath>
-        <Text size="sm">
-          Where <InlineMath math="W_{\text{down}} \in \mathbb{R}^{d \times r}" /> and
-          <InlineMath math="W_{\text{up}} \in \mathbb{R}^{r \times d}" /> with <InlineMath math="r \ll d" />.
-        </Text>
-
-        <Title order={3} mt="lg">Prompt Tuning</Title>
-        <Text>
-          Adds trainable soft prompts to input embeddings:
-        </Text>
-        <BlockMath>
-          {`[P; E(x)] \\quad \\text{where } P \\in \\mathbb{R}^{l \\times d}`}
-        </BlockMath>
-        <Text size="sm">
-          Only the prompt embedding matrix P is trained; extremely parameter-efficient (as few as 20 tokens).
-        </Text>
-
-        <Flex justify="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/peft-methods-comparison.png"
-            alt="Comparison of Prefix Tuning, Adapters, and Prompt Tuning architectures"
-            style={{ maxWidth: "100%", height: "auto" }}
-          />
-        </Flex>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Knowledge Distillation</Title>
-
-        <Text mt="md">
-          Knowledge distillation transfers knowledge from a large teacher model to a smaller student model,
-          creating efficient models that retain much of the teacher's performance.
-        </Text>
-
-        <Text mt="md">
-          Framework:
-        </Text>
-
-        <List spacing="xs" mt="xs">
-          <List.Item>
-            <strong>Teacher model:</strong> Large, high-performance model <InlineMath math="f_T(\theta_T)" />
-          </List.Item>
-          <List.Item>
-            <strong>Student model:</strong> Smaller, efficient model <InlineMath math="f_S(\theta_S)" />
-          </List.Item>
-          <List.Item>
-            <strong>Goal:</strong> Train student to mimic teacher's behavior
-          </List.Item>
-        </List>
-
-        <Text mt="lg">
-          Distillation works by training the student on soft targets (probability distributions) from
-          the teacher rather than hard labels, providing richer learning signals.
-        </Text>
-
-        <Text mt="md" size="sm" fs="italic">
-          Reference: Hinton et al., "Distilling the Knowledge in a Neural Network" (2015) - https://arxiv.org/abs/1503.02531
-        </Text>
-
-        <Flex justify="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/knowledge-distillation-diagram.png"
-            alt="Knowledge distillation from teacher to student model"
-            style={{ maxWidth: "100%", height: "auto" }}
-          />
-        </Flex>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Distillation Loss</Title>
-
-        <Text mt="md">
-          The student is trained using a combination of two losses:
-        </Text>
-
-        <Title order={3} mt="md">Cross-Entropy Loss</Title>
-        <Text>
-          Standard task loss with ground truth labels:
-        </Text>
-        <BlockMath>
-          {`\\mathcal{L}_{\\text{CE}} = -\\sum_{i} y_i \\log P_S(y_i | x)`}
-        </BlockMath>
-
-        <Title order={3} mt="lg">Knowledge Distillation Loss</Title>
-        <Text>
-          KL divergence between teacher and student output distributions:
-        </Text>
-        <BlockMath>
-          {`\\mathcal{L}_{\\text{KD}} = \\text{KL}(P_T^{\\tau} || P_S^{\\tau})`}
-        </BlockMath>
-
-        <Text mt="md">
-          Where temperature-scaled probabilities are:
-        </Text>
-        <BlockMath>
-          {`P_i^{\\tau} = \\frac{\\exp(z_i / \\tau)}{\\sum_j \\exp(z_j / \\tau)}`}
-        </BlockMath>
-
-        <Title order={3} mt="lg">Combined Loss</Title>
-        <BlockMath>
-          {`\\mathcal{L} = \\alpha \\mathcal{L}_{\\text{CE}} + (1-\\alpha) \\tau^2 \\mathcal{L}_{\\text{KD}}`}
-        </BlockMath>
-
-        <Text mt="md" size="sm">
-          Temperature <InlineMath math="\tau > 1" /> softens probability distributions, and
-          <InlineMath math="\alpha" /> balances the two objectives (typically 0.1-0.3).
-        </Text>
-
-        <Flex justify="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/distillation-loss-components.png"
-            alt="Components of distillation loss and temperature scaling"
-            style={{ maxWidth: "100%", height: "auto" }}
-          />
-        </Flex>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Distillation Implementation</Title>
-
-        <Text mt="md">
-          Basic distillation training loop:
-        </Text>
-
-        <CodeBlock
-          language="python"
-          code={`import torch
-import torch.nn.functional as F
-
-def distillation_loss(student_logits, teacher_logits, labels,
-                      temperature=2.0, alpha=0.1):
-    # Soft targets from teacher
-    soft_targets = F.softmax(teacher_logits / temperature, dim=-1)
-    soft_prob = F.log_softmax(student_logits / temperature, dim=-1)
-
-    # KL divergence loss
-    kd_loss = F.kl_div(soft_prob, soft_targets, reduction='batchmean')
-    kd_loss = kd_loss * (temperature ** 2)
-
-    # Standard cross-entropy loss
-    ce_loss = F.cross_entropy(student_logits, labels)
-
-    # Combined loss
-    return alpha * ce_loss + (1 - alpha) * kd_loss`}
-        />
-
-        <Text mt="md">
-          Training step:
-        </Text>
-
-        <CodeBlock
-          language="python"
-          code={`# Get teacher predictions (no gradient)
-with torch.no_grad():
-    teacher_logits = teacher_model(inputs)
-
-# Get student predictions
-student_logits = student_model(inputs)
-
-# Compute distillation loss
-loss = distillation_loss(
-    student_logits, teacher_logits, labels,
-    temperature=2.0, alpha=0.1
-)
-
-loss.backward()
-optimizer.step()`}
-        />
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Model Compression Comparison</Title>
-
-        <Text mt="md">
-          Different compression techniques serve different purposes:
-        </Text>
-
-        <Title order={3} mt="md">Pruning</Title>
-        <Text>
-          Removes unnecessary weights or neurons based on importance metrics. Reduces parameters
-          and computation but requires careful selection of what to prune.
-        </Text>
-
-        <Title order={3} mt="lg">Quantization</Title>
-        <Text>
-          Reduces numerical precision (e.g., FP32 to INT8 or INT4). Significantly reduces memory
-          and speeds up inference with minimal accuracy loss.
-        </Text>
-
-        <Title order={3} mt="lg">Knowledge Distillation</Title>
-        <Text>
-          Creates a smaller architecture trained to mimic a larger model. Provides the most
-          flexibility in architecture design.
-        </Text>
-
-        <Title order={3} mt="lg">PEFT (LoRA, etc.)</Title>
-        <Text>
-          Keeps base model frozen and adds small trainable modules. Optimizes training efficiency
-          rather than inference efficiency.
-        </Text>
-
-        <Flex justify="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/compression-techniques.png"
-            alt="Overview of model compression techniques and their tradeoffs"
-            style={{ maxWidth: "100%", height: "auto" }}
-          />
-        </Flex>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Computational Efficiency Comparison</Title>
-
-        <Table striped mt="md">
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>Method</Table.Th>
-              <Table.Th>Training Memory</Table.Th>
-              <Table.Th>Inference Speed</Table.Th>
-              <Table.Th>Model Size</Table.Th>
-              <Table.Th>Performance</Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>
-            <Table.Tr>
-              <Table.Td>Full Fine-tuning</Table.Td>
-              <Table.Td>Very High</Table.Td>
-              <Table.Td>Baseline</Table.Td>
-              <Table.Td>Full Size</Table.Td>
-              <Table.Td>Best</Table.Td>
-            </Table.Tr>
-            <Table.Tr>
-              <Table.Td>LoRA</Table.Td>
-              <Table.Td>Low (0.1-1% params)</Table.Td>
-              <Table.Td>Baseline</Table.Td>
-              <Table.Td>Full Size + Adapters</Table.Td>
-              <Table.Td>Very Good</Table.Td>
-            </Table.Tr>
-            <Table.Tr>
-              <Table.Td>QLoRA</Table.Td>
-              <Table.Td>Very Low (4-bit)</Table.Td>
-              <Table.Td>Slower (quantized)</Table.Td>
-              <Table.Td>25% of Full Size</Table.Td>
-              <Table.Td>Very Good</Table.Td>
-            </Table.Tr>
-            <Table.Tr>
-              <Table.Td>Distillation</Table.Td>
-              <Table.Td>Medium</Table.Td>
-              <Table.Td>Much Faster</Table.Td>
-              <Table.Td>30-50% of Full</Table.Td>
-              <Table.Td>Good</Table.Td>
-            </Table.Tr>
-            <Table.Tr>
-              <Table.Td>Quantization Only</Table.Td>
-              <Table.Td>N/A (post-training)</Table.Td>
-              <Table.Td>2-4× Faster</Table.Td>
-              <Table.Td>25-50% of Full</Table.Td>
-              <Table.Td>Good to Very Good</Table.Td>
-            </Table.Tr>
-            <Table.Tr>
-              <Table.Td>Pruning</Table.Td>
-              <Table.Td>Medium</Table.Td>
-              <Table.Td>Faster (sparse)</Table.Td>
-              <Table.Td>50-90% of Full</Table.Td>
-              <Table.Td>Good</Table.Td>
-            </Table.Tr>
-          </Table.Tbody>
-        </Table>
-
-        <Text mt="md" size="sm">
-          Note: Metrics are approximate and depend on specific implementation and model architecture.
-        </Text>
-
-        <Flex justify="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/efficiency-comparison-chart.png"
-            alt="Visual comparison of computational efficiency metrics across methods"
-            style={{ maxWidth: "100%", height: "auto" }}
-          />
-        </Flex>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Best Practices for Fine-Tuning</Title>
-
-        <Title order={3} mt="md">Data Preparation</Title>
-        <List spacing="xs" mt="xs">
-          <List.Item>Ensure data quality and relevance to target task</List.Item>
-          <List.Item>Balance dataset classes to avoid bias</List.Item>
-          <List.Item>Use appropriate train/validation/test splits (typically 80/10/10)</List.Item>
-          <List.Item>Apply same preprocessing as used in pre-training</List.Item>
-        </List>
-
-        <Title order={3} mt="lg">Hyperparameter Selection</Title>
-        <List spacing="xs" mt="xs">
-          <List.Item>Start with learning rate 1e-5 to 5e-5 for full fine-tuning</List.Item>
-          <List.Item>Use learning rate warmup (typically 3-10% of total steps)</List.Item>
-          <List.Item>Apply weight decay (0.01) for regularization</List.Item>
-          <List.Item>Use gradient clipping (max_grad_norm=1.0) to prevent instability</List.Item>
-        </List>
-
-        <Title order={3} mt="lg">Monitoring and Evaluation</Title>
-        <List spacing="xs" mt="xs">
-          <List.Item>Track both training and validation metrics</List.Item>
-          <List.Item>Use early stopping based on validation performance</List.Item>
-          <List.Item>Save checkpoints regularly during training</List.Item>
-          <List.Item>Evaluate on held-out test set only once at the end</List.Item>
-        </List>
-
-        <Flex justify="center" mt="xl" mb="md">
-          <Image
-            src="/assets/data-science-practice/module8/fine-tuning-best-practices.png"
-            alt="Best practices workflow for fine-tuning LLMs"
-            style={{ maxWidth: "100%", height: "auto" }}
-          />
-        </Flex>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>References</Title>
-
-        <List spacing="md" mt="lg">
-          <List.Item>
-            <Text size="sm">
-              Hu et al., "LoRA: Low-Rank Adaptation of Large Language Models" (2021)
-              <br />
-              https://arxiv.org/abs/2106.09685
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text size="sm">
-              Dettmers et al., "QLoRA: Efficient Finetuning of Quantized LLMs" (2023)
-              <br />
-              https://arxiv.org/abs/2305.14314
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text size="sm">
-              Hinton et al., "Distilling the Knowledge in a Neural Network" (2015)
-              <br />
-              https://arxiv.org/abs/1503.02531
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text size="sm">
-              Raffel et al., "Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer (T5)" (2020)
-              <br />
-              https://arxiv.org/abs/1910.10683
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text size="sm">
-              Devlin et al., "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding" (2019)
-              <br />
-              https://arxiv.org/abs/1810.04805
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text size="sm">
-              Brown et al., "Language Models are Few-Shot Learners" (2020)
-              <br />
-              https://arxiv.org/abs/2005.14165
-            </Text>
-          </List.Item>
-        </List>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Hands-On: LoRA and PEFT Methods Demo</Title>
-
-        <Text mt="md">
-          This interactive notebook demonstrates the complete PEFT workflow, comparing LoRA, Prefix Tuning, and IA3 on GPT-2.
-        </Text>
-
-        <Text mt="md">
-          In this hands-on demonstration, you will:
-        </Text>
-
-        <List spacing="sm" mt="md">
-          <List.Item>Load GPT-2 (124M parameters) and test its pretrained capabilities</List.Item>
-          <List.Item>Configure and compare three PEFT methods: LoRA, Prefix Tuning, and IA3</List.Item>
-          <List.Item>Analyze parameter efficiency across methods (0.01% to 0.5% trainable)</List.Item>
-          <List.Item>Fine-tune GPT-2 on TinyStories using LoRA with only ~300K trainable parameters</List.Item>
-          <List.Item>Compare story generation before and after fine-tuning</List.Item>
-          <List.Item>Explore storage efficiency and adapter weight sharing</List.Item>
-        </List>
-
-        <Text mt="lg">
-          This demonstration showcases how PEFT enables efficient adaptation of large pretrained models to specific
-          domains with minimal computational resources, making state-of-the-art models accessible for fine-tuning.
-        </Text>
 
         <DataInteractionPanel
           notebookUrl={notebookUrl}
@@ -1443,7 +941,7 @@ optimizer.step()`}
           notebookColabUrl={notebookColabUrl}
           metadata={metadata}
         />
-      </div>
+
     </>
   );
 };
