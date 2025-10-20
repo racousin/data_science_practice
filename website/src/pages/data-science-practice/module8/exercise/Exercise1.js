@@ -16,9 +16,6 @@ const Exercise1 = () => {
           <div className="flex items-center gap-3">
             <Brain size={32} className="text-blue-600" />
             <Title order={1}>Exercise 1: Building a Small GPT-like Transformer</Title>
-            <Badge color="yellow" size="lg" leftSection={<IconStar size={14} />}>
-              Marked Exercise
-            </Badge>
           </div>
 
           <Text size="md" mb="md">
@@ -78,10 +75,6 @@ const Exercise1 = () => {
               </List>
             </div>
 
-            <Alert icon={<IconAlertCircle />} color="yellow" mt="md">
-              This is a marked exercise. Make sure your implementation is well-documented and includes all required components.
-              Pay special attention to the attention mechanism implementation and text generation quality.
-            </Alert>
           </Stack>
 
           <DataInteractionPanel
