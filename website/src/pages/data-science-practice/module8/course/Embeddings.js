@@ -41,14 +41,7 @@ const Embeddings = () => {
         <Text mb="md">
           Learned embeddings create dense vector representations by training on large text corpora, capturing semantic and syntactic relationships between words. Unlike one-hot encodings or simple count-based methods, these models learn to position words in a continuous vector space where semantic relationships are preserved as geometric properties.
         </Text>
-        <Text>
-          The three major approaches to learned embeddings are:
-        </Text>
-        <List spacing="sm" mt="sm">
-          <List.Item><strong>Word2Vec</strong>: Predicts context from words or words from context</List.Item>
-          <List.Item><strong>GloVe</strong>: Factorizes global co-occurrence statistics</List.Item>
-          <List.Item><strong>FastText</strong>: Extends Word2Vec with character n-grams</List.Item>
-        </List>
+
       </div>
 
       <div data-slide>
@@ -106,6 +99,9 @@ const Embeddings = () => {
         <Text mb="md">
           Semantic similarity between words <InlineMath math="w_i" /> and <InlineMath math="w_j" /> is measured using cosine similarity:
         </Text>
+                        <Image
+          src="/assets/data-science-practice/module8/cosine.webp"
+        />
         <BlockMath math="\text{similarity}(w_i, w_j) = \frac{\vec{e}_i \cdot \vec{e}_j}{||\vec{e}_i|| \cdot ||\vec{e}_i||}" />
         <Text mt="md">
           Semantic relationships emerge as directions in the embedding space:
@@ -480,9 +476,9 @@ embeddings = normalize(mean_pooling(outputs, inputs['attention_mask']), p=2, dim
 similarities = torch.mm(embeddings, embeddings.transpose(0, 1))`}
           language="python"
         />
-        <Text mt="md">
-          The similarity matrix shows that sentences 1 and 2 (about cats) are more similar to each other than to sentence 3 (about Python).
-        </Text>
+                        <Image
+          src="/assets/data-science-practice/module8/Heatmap-cosine.png"
+        />
       </div>
 
       <div data-slide>
@@ -507,6 +503,103 @@ embeddings = model.encode(sentences)`}
         />
         <Text mt="md">
           These models are fine-tuned on sentence pairs to produce embeddings optimized for semantic similarity tasks.
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={2} mb="md">
+          Training Sentence Embedding Models
+        </Title>
+        <Text mb="md">
+          Sentence embedding models achieve high quality through supervised training on labeled sentence pairs. The training process optimizes embeddings to reflect semantic similarity.
+        </Text>
+        <Text mb="md">
+          Training data consists of sentence pairs with similarity scores:
+        </Text>
+        <CodeBlock
+          code={`training_data = [
+    ("The dog is running", "A canine is jogging", 0.85),
+    ("I love pizza", "The sky is blue", 0.10),
+    ("Machine learning is powerful", "AI is transformative", 0.75)
+]`}
+          language="python"
+        />
+        <Text mt="md">
+          Each tuple contains two sentences and their semantic similarity score ranging from 0 (completely unrelated) to 1 (semantically identical).
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
+          Training Loop: Learning Semantic Similarity
+        </Title>
+        <Text mb="md">
+          The model learns by minimizing the difference between predicted and actual similarity:
+        </Text>
+        <CodeBlock
+          code={`for sentence1, sentence2, similarity_score in training_data:
+    # Get embeddings using mean pooling
+    emb1 = model.encode(sentence1)  # (384,)
+    emb2 = model.encode(sentence2)  # (384,)`}
+          language="python"
+        />
+        <Text mt="md" mb="sm">
+          Compute similarity and update model parameters:
+        </Text>
+        <CodeBlock
+          code={`    # Compute cosine similarity
+    predicted_similarity = cosine_similarity(emb1, emb2)
+
+    # Loss: difference between predicted and actual
+    loss = (predicted_similarity - similarity_score) ** 2
+
+    # Update model to make embeddings more accurate
+    loss.backward()`}
+          language="python"
+        />
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
+          Why This Training Produces Quality Embeddings
+        </Title>
+        <Text mb="md">
+          The training objective forces the model to learn meaningful semantic representations:
+        </Text>
+        <List spacing="sm" mb="md">
+          <List.Item>Similar sentences are pushed closer in embedding space</List.Item>
+          <List.Item>Dissimilar sentences are pushed further apart</List.Item>
+          <List.Item>The model learns to ignore surface-level differences (synonyms, paraphrases)</List.Item>
+          <List.Item>Semantic meaning becomes encoded in geometric proximity</List.Item>
+        </List>
+        <Text mb="md">
+          After thousands of training examples, the model develops a robust understanding of semantic similarity that generalizes to new sentences.
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
+          Mean Pooling as Default for Sentence Embeddings
+        </Title>
+        <Text mb="md">
+          When using <InlineMath math="\text{model.encode()}" /> in sentence transformers, mean pooling is applied by default to convert token-level embeddings into a single sentence vector.
+        </Text>
+        <Text mb="md">
+          The process inside <InlineMath math="\text{encode()}" />:
+        </Text>
+        <CodeBlock
+          code={`# Tokenize sentence
+tokens = tokenizer(sentence, return_tensors="pt")
+
+# Get token-level embeddings
+outputs = model(**tokens)  # Shape: (1, num_tokens, 384)
+
+# Apply mean pooling (default)
+sentence_embedding = mean_pooling(outputs, tokens['attention_mask'])  # Shape: (1, 384)`}
+          language="python"
+        />
+        <Text mt="md">
+          Mean pooling averages all token representations while accounting for padding, producing a fixed-size vector that captures the entire sentence meaning.
         </Text>
       </div>
 
