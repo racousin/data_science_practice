@@ -48,11 +48,13 @@ const Embeddings = () => {
         <Title order={3} mb="md">
           Word Embeddings Visualization
         </Title>
-        <Image
-          src="/assets/data-science-practice/module8/embed.png"
-          alt="Word Embeddings Visualization"
-          caption="Visualization of word embeddings in reduced dimensional space"
-        />
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/embed.png"
+            alt="Word Embeddings Visualization"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
         <Text size="sm" mt="md">
           Word embeddings map discrete words to continuous vector spaces where semantic relationships are preserved geometrically.
         </Text>
@@ -99,9 +101,13 @@ const Embeddings = () => {
         <Text mb="md">
           Semantic similarity between words <InlineMath math="w_i" /> and <InlineMath math="w_j" /> is measured using cosine similarity:
         </Text>
-                        <Image
-          src="/assets/data-science-practice/module8/cosine.webp"
-        />
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/cosine.webp"
+            alt="Cosine Similarity"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
         <BlockMath math="\text{similarity}(w_i, w_j) = \frac{\vec{e}_i \cdot \vec{e}_j}{||\vec{e}_i|| \cdot ||\vec{e}_i||}" />
         <Text mt="md">
           Semantic relationships emerge as directions in the embedding space:
@@ -134,11 +140,13 @@ const Embeddings = () => {
         <Title order={3} mb="md">
           Vector Arithmetic Visualization
         </Title>
-        <Image
-          src="/assets/data-science-practice/module8/vector-arithmetic.png"
-          alt="Vector Arithmetic in Embeddings"
-          caption="Visualization of vector arithmetic performing analogy tasks (king - man + woman = queen)"
-        />
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/vector-arithmetic.png"
+            alt="Vector Arithmetic in Embeddings"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
         <Text size="sm" mt="md">
           Vector arithmetic operations in embedding space can capture semantic relationships like gender, tense, and more.
         </Text>
@@ -148,11 +156,13 @@ const Embeddings = () => {
         <Title order={3} mb="md">
           Embedding Space Visualization
         </Title>
-        <Image
-          src="/assets/data-science-practice/module8/semantic-clustering.png"
-          alt="Word Embedding Space Visualization"
-          caption="2D projection of word embeddings showing semantic clustering"
-        />
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/semantic-clustering.png"
+            alt="Word Embedding Space Visualization"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
         <Text size="sm" mt="md">
           In this visualization, semantically related words cluster together, and meaningful relationships emerge as geometric patterns in the space.
         </Text>
@@ -181,11 +191,13 @@ const Embeddings = () => {
         <Title order={3} mb="md">
           Word2Vec Architectures
         </Title>
-        <Image
-          src="/assets/data-science-practice/module8/word2vec.png"
-          alt="Word2Vec Architectures"
-          caption="Comparison of CBOW and Skip-gram architectures"
-        />
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/word2vec.png"
+            alt="Word2Vec Architectures"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
         <Text size="sm" mt="md">
           Skip-gram predicts context from target words, while CBOW predicts target words from averaged context.
         </Text>
@@ -258,11 +270,13 @@ const Embeddings = () => {
         <Text>
           Key advantage: The vector for "bank" in "river bank" will differ from "bank" in "deposit money", capturing the semantic distinction.
         </Text>
-                      <Image
-                src="/assets/data-science-practice/module8/contextual_embed.png"
-                alt="Contextual Embeddings"
-                caption="Comparison of Contextual and Static Embeddings"
-              />
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/contextual_embed.png"
+            alt="Contextual Embeddings"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
 
@@ -318,9 +332,13 @@ token_embedding = outputs.last_hidden_state[:, token_idx, :]  # Shape: (1, 768)`
         <Text>
           This approach is particularly effective for classification tasks, as BERT is often fine-tuned with a classification head on top of the <InlineMath math="\text{[CLS]}" /> token.
         </Text>
-                <Image
-          src="/assets/data-science-practice/module8/cls.png"
-        />
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/cls.png"
+            alt="CLS Token Pooling"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
@@ -476,9 +494,13 @@ embeddings = normalize(mean_pooling(outputs, inputs['attention_mask']), p=2, dim
 similarities = torch.mm(embeddings, embeddings.transpose(0, 1))`}
           language="python"
         />
-                        <Image
-          src="/assets/data-science-practice/module8/Heatmap-cosine.png"
-        />
+        <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/Heatmap-cosine.png"
+            alt="Cosine Similarity Heatmap"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>

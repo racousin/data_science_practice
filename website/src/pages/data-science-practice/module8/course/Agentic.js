@@ -1,979 +1,390 @@
 import React from 'react';
-import { Text, Title, List, Table, Flex, Image } from '@mantine/core';
-import { InlineMath, BlockMath } from 'react-katex';
+import { Title, Text, List, Flex, Image } from '@mantine/core';
 import CodeBlock from 'components/CodeBlock';
+import DataInteractionPanel from 'components/DataInteractionPanel';
 
 export default function Agentic() {
+  // Notebook URLs for Career Coach Agent demonstration
+  const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module8/course/module8_course_career_coach_agent.ipynb";
+  const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module8/course/module8_course_career_coach_agent.html";
+  const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/data-science-practice/module8/course/module8_course_career_coach_agent.ipynb";
+
+  const metadata = {
+    description: "Complete Career Coach Agent: Build a multi-tool agentic system using LangGraph that analyzes CVs, researches markets, finds learning resources, searches jobs, generates cover letters, and provides negotiation guidance.",
+    source: "LangGraph + OpenAI GPT-4",
+    target: "Career coaching and job search optimization",
+    listData: [
+      { name: "Tools", description: "6 specialized tools (CV analysis, market research, job search, etc.)" },
+      { name: "Architecture", description: "LangGraph state machine with conditional routing" },
+      { name: "Demo", description: "Complete career analysis workflow with action tracking" }
+    ],
+  };
+
   return (
     <div>
       <div data-slide>
-        <Title order={1}>Agentic AI Systems</Title>
-        <Text size="xl" mt="md">
-          Building autonomous AI agents that perceive, reason, and act
-        </Text>
-        <Text mt="lg">
-          This module explores the architecture and implementation of AI agents that can autonomously
-          make decisions, use tools, maintain memory, and execute complex multi-step tasks.
-        </Text>
-      </div>
+        <Title order={1} mb="lg">Agentic AI Systems</Title>
 
-      <div data-slide>
-        <Title order={2}>What are AI Agents?</Title>
-        <Text mt="md">
-          An AI agent is an autonomous system that perceives its environment, reasons about it,
-          and takes actions to achieve specific goals. Unlike simple query-response systems,
-          agents maintain state, plan sequences of actions, and adapt based on feedback.
+        <Text size="lg" mb="md">
+          Traditional agents are processes written by experts to solve specific tasks by perceiving their environment, making decisions, and taking actions.
         </Text>
-        <Text mt="md">
-          Key characteristics of AI agents:
+
+        <Text size="md" mb="md">
+          The classical agent architecture follows a simple loop:
         </Text>
-        <List mt="sm" spacing="sm">
-          <List.Item><strong>Autonomy</strong>: Operate without constant human intervention</List.Item>
-          <List.Item><strong>Reactivity</strong>: Perceive and respond to environmental changes</List.Item>
-          <List.Item><strong>Pro-activeness</strong>: Take initiative to achieve goals</List.Item>
-          <List.Item><strong>Social ability</strong>: Interact with other agents or humans</List.Item>
+
+        <List spacing="sm" mb="lg" type="ordered">
+          <List.Item>
+            <Text weight={500}>Input:</Text> Perceive the current state of the environment
+          </List.Item>
+          <List.Item>
+            <Text weight={500}>Decide:</Text> Use predefined rules or algorithms to choose an action
+          </List.Item>
+          <List.Item>
+            <Text weight={500}>Act:</Text> Execute the chosen action and observe the result
+          </List.Item>
         </List>
-        <Text mt="md">
-          Modern LLM-based agents combine language understanding with tool use and reasoning
-          to accomplish complex tasks across multiple steps.
-        </Text>
-        <Flex justify="center" mt="lg">
-          <Image
-            src="/api/placeholder/800/500"
-            alt="AI agent components showing autonomy, reactivity, pro-activeness, and social ability"
-            style={{ maxWidth: '100%' }}
-          />
-        </Flex>
-        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
-          Core characteristics of AI agents: autonomous operation, environmental perception,
-          goal-oriented behavior, and interaction capabilities.
-        </Text>
-      </div>
 
-      <div data-slide>
-        <Title order={2}>Agent Architecture Components</Title>
-        <Text mt="md">
-          An AI agent consists of three fundamental components that form a perception-action cycle:
+        <Text size="md" mb="md">
+          Examples of traditional agents:
         </Text>
-        <Table mt="md" withTableBorder withColumnBorders>
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>Component</Table.Th>
-              <Table.Th>Function</Table.Th>
-              <Table.Th>Examples</Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>
-            <Table.Tr>
-              <Table.Td><strong>Perception</strong></Table.Td>
-              <Table.Td>Gather information from environment</Table.Td>
-              <Table.Td>API calls, database queries, sensor data</Table.Td>
-            </Table.Tr>
-            <Table.Tr>
-              <Table.Td><strong>Reasoning</strong></Table.Td>
-              <Table.Td>Process information and make decisions</Table.Td>
-              <Table.Td>LLM inference, planning, tool selection</Table.Td>
-            </Table.Tr>
-            <Table.Tr>
-              <Table.Td><strong>Action</strong></Table.Td>
-              <Table.Td>Execute decisions in environment</Table.Td>
-              <Table.Td>Tool execution, API writes, file operations</Table.Td>
-            </Table.Tr>
-          </Table.Tbody>
-        </Table>
-        <Text mt="md">
-          The agent loops through these components: perceiving the current state, reasoning about
-          the best action, executing that action, and perceiving the results.
-        </Text>
-      </div>
 
-      <div data-slide>
-        <Title order={2}>Types of AI Agents</Title>
-        <Text mt="md">
-          AI agents can be classified by their decision-making approach:
-        </Text>
-        <Title order={4} mt="lg">Reactive Agents</Title>
-        <Text mt="sm">
-          Respond directly to current perceptions without internal state. Fast but limited.
-        </Text>
-        <CodeBlock
-          language="python"
-          code={`def reactive_agent(perception):
-    return action_mapping[perception]  # Direct mapping`}
-        />
-        <Title order={4} mt="lg">Deliberative Agents</Title>
-        <Text mt="sm">
-          Maintain internal world model, plan ahead, and reason about consequences.
-        </Text>
-        <CodeBlock
-          language="python"
-          code={`def deliberative_agent(perception, world_model):
-    world_model.update(perception)
-    plan = planner.create_plan(world_model, goal)
-    return plan.next_action()`}
-        />
-        <Title order={4} mt="lg">Hybrid Agents</Title>
-        <Text mt="sm">
-          Combine reactive responses for urgent situations with deliberative planning for complex goals.
-          Most modern LLM agents are hybrid, reacting to immediate context while maintaining longer-term plans.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Agent Framework: ReAct</Title>
-        <Text mt="md">
-          ReAct (Reasoning + Acting) is a paradigm where agents interleave reasoning traces
-          with action execution. Instead of just predicting actions, the agent explicitly
-          generates reasoning steps.
-        </Text>
-        <Text mt="md">
-          The ReAct pattern:
-        </Text>
-        <List mt="sm" spacing="sm">
-          <List.Item><strong>Thought</strong>: Agent reasons about current state and next step</List.Item>
-          <List.Item><strong>Action</strong>: Agent calls a tool or takes an action</List.Item>
-          <List.Item><strong>Observation</strong>: Agent receives feedback from action</List.Item>
-          <List.Item>Loop continues until goal is achieved</List.Item>
+        <List spacing="xs" mb="md">
+          <List.Item>Thermostat: Senses temperature, decides if heating/cooling needed, activates HVAC</List.Item>
+          <List.Item>Chess engine: Analyzes board position, evaluates moves, selects optimal move</List.Item>
+          <List.Item>Trading bot: Monitors market data, applies trading strategy, executes trades</List.Item>
         </List>
-        <Text mt="md">
-          This interleaving allows agents to adjust their reasoning based on actual outcomes,
-          making them more robust to errors and unexpected situations.
-        </Text>
-        <Flex justify="center" mt="lg">
-          <Image
-            src="/api/placeholder/800/500"
-            alt="ReAct framework diagram showing the cycle of Thought, Action, and Observation"
-            style={{ maxWidth: '100%' }}
-          />
-        </Flex>
-        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
-          ReAct framework: Interleaving reasoning traces (Thought) with action execution (Action)
-          and environmental feedback (Observation) for robust decision-making.
+
+        <Text size="md" c="dimmed">
+          These agents work well for static and well-defined problems where the rules and environment are known in advance. However, they struggle with ambiguity, natural language, and novel situations.
         </Text>
       </div>
 
       <div data-slide>
-        <Title order={2}>ReAct Mathematical Formulation</Title>
-        <Text mt="md">
-          The agent's decision at timestep <InlineMath>t</InlineMath> is formalized as:
+        <Title order={2} mb="md">Limitations of Traditional Agents</Title>
+
+        <Text size="md" mb="md">
+          Traditional agents require explicit programming for every scenario. This becomes impractical for complex, open-ended tasks.
         </Text>
-        <BlockMath>{`a_t = \\pi(s_t, m_t, h_t)`}</BlockMath>
-        <Text mt="sm">
-          where:
-        </Text>
-        <List spacing="xs" mt="sm">
-          <List.Item><InlineMath>a_t</InlineMath>: action at time t</List.Item>
-          <List.Item><InlineMath>\pi</InlineMath>: agent policy (typically an LLM)</List.Item>
-          <List.Item><InlineMath>s_t</InlineMath>: current state/observation</List.Item>
-          <List.Item><InlineMath>m_t</InlineMath>: memory/context</List.Item>
-          <List.Item><InlineMath>h_t</InlineMath>: history of thoughts and actions</List.Item>
+
+        <List spacing="md" mb="xl">
+          <List.Item>
+            <Text weight={500} mb="xs">Static decision logic</Text>
+            <Text size="sm">Rules must be predefined by experts for every possible situation</Text>
+          </List.Item>
+
+          <List.Item>
+            <Text weight={500} mb="xs">No natural language understanding</Text>
+            <Text size="sm">Cannot interpret ambiguous or context-dependent instructions</Text>
+          </List.Item>
+
+          <List.Item>
+            <Text weight={500} mb="xs">Limited adaptability</Text>
+            <Text size="sm">Fail when encountering situations outside their programmed scenarios</Text>
+          </List.Item>
         </List>
-        <Text mt="md">
-          The ReAct trajectory is a sequence:
-        </Text>
-        <BlockMath>{`\\tau = (t_1, a_1, o_1, t_2, a_2, o_2, ..., t_n, a_n, o_n)`}</BlockMath>
-        <Text mt="sm">
-          where <InlineMath>t_i</InlineMath> are thoughts (reasoning traces), <InlineMath>a_i</InlineMath> are
-          actions, and <InlineMath>o_i</InlineMath> are observations from the environment.
+
+        <CodeBlock
+          language="python"
+          code={`# Traditional agent: rigid decision tree
+def trading_agent(price, moving_avg):
+    if price > moving_avg * 1.05:
+        return "SELL"
+    elif price < moving_avg * 0.95:
+        return "BUY"
+    else:
+        return "HOLD"`}
+        />
+
+        <Text size="sm" mt="md" c="dimmed">
+          Every decision rule must be explicitly coded. Adding new conditions requires modifying the code.
         </Text>
       </div>
 
       <div data-slide>
-        <Title order={2}>ReAct Process Example</Title>
-        <Text mt="md">
-          Here's how ReAct works for a question answering task:
-        </Text>
-        <Text mt="md" style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap', background: '#f5f5f5', padding: '12px' }}>
-{`Question: What is the population of the capital of France?
+        <Title order={2} mb="md">Limitations of Standalone LLMs</Title>
 
-Thought 1: I need to first identify the capital of France.
-Action 1: Search[capital of France]
-Observation 1: The capital of France is Paris.
+        <Text size="md" mb="md">
+          While LLMs can understand natural language and generate human-like responses, they also have fundamental limitations when used alone:
+        </Text>
 
-Thought 2: Now I need to find the population of Paris.
-Action 2: Search[population of Paris]
-Observation 2: Paris has approximately 2.2 million inhabitants.
+        <List spacing="md" mb="xl">
+          <List.Item>
+            <Text weight={500} mb="xs">Fixed computational effort</Text>
+            <Text size="sm">LLMs process simple questions ("2+2=?") with the same computational cost as complex problems, without the ability to allocate more reasoning for harder tasks</Text>
+          </List.Item>
 
-Thought 3: I have the answer.
-Action 3: Finish[2.2 million]`}
-        </Text>
-        <Text mt="md">
-          The agent alternates between thinking (reasoning about what to do), acting (using tools),
-          and observing (receiving results), building toward the final answer iteratively.
-        </Text>
-      </div>
+          <List.Item>
+            <Text weight={500} mb="xs">No tool access</Text>
+            <Text size="sm">Cannot execute code, search the internet, or interact with external systems</Text>
+          </List.Item>
 
-      <div data-slide>
-        <Title order={2}>Agent Tools and Actions</Title>
-        <Text mt="md">
-          Tools extend an agent's capabilities beyond text generation. Each tool is a function
-          the agent can invoke to interact with external systems.
-        </Text>
-        <Text mt="md">
-          Common tool categories:
-        </Text>
-        <List mt="sm" spacing="sm">
-          <List.Item><strong>Search</strong>: Web search, database queries, document retrieval</List.Item>
-          <List.Item><strong>Computation</strong>: Calculator, code execution, mathematical operations</List.Item>
-          <List.Item><strong>Data access</strong>: API calls, file reading, database access</List.Item>
-          <List.Item><strong>Data modification</strong>: File writing, API posts, database updates</List.Item>
-          <List.Item><strong>Communication</strong>: Email, messaging, notifications</List.Item>
+          <List.Item>
+            <Text weight={500} mb="xs">Limited memory</Text>
+            <Text size="sm">Context window constraints prevent access to large knowledge bases (though RAG helps address this)</Text>
+          </List.Item>
         </List>
-        <Text mt="md">
-          The agent's policy must learn to select the appropriate tool for each step:
-        </Text>
-        <BlockMath>{`\\text{tool}^* = \\arg\\max_{\\text{tool}} P(\\text{tool} | q, c, h)`}</BlockMath>
-        <Text mt="sm">
-          where <InlineMath>q</InlineMath> is the query, <InlineMath>c</InlineMath> is context,
-          and <InlineMath>h</InlineMath> is history.
-        </Text>
-        <Flex justify="center" mt="lg">
-          <Image
-            src="/api/placeholder/800/500"
-            alt="Agent tools ecosystem showing search, computation, data access, and communication tools"
-            style={{ maxWidth: '100%' }}
-          />
-        </Flex>
-        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
-          Agent tools ecosystem: Various tool categories (search, computation, data access, modification,
-          communication) extend agent capabilities beyond text generation.
-        </Text>
-      </div>
 
-      <div data-slide>
-        <Title order={2}>Tool Definition and Registration</Title>
-        <Text mt="md">
-          Tools are defined with name, description, and parameter schemas. The description
-          is critical as the LLM uses it to decide when to use the tool.
-        </Text>
         <CodeBlock
           language="python"
-          code={`from langchain.tools import Tool
-
-def calculator(expression: str) -> str:
-    return str(eval(expression))`}
+          code={`# LLM alone cannot execute this
+response = llm.generate("What's the weather in Paris?")
+# LLM can only generate text based on training data
+# It cannot actually fetch current weather data`}
         />
-        <Text mt="sm">
-          Register the tool with metadata:
-        </Text>
-        <CodeBlock
-          language="python"
-          code={`calculator_tool = Tool(
-    name="Calculator",
-    func=calculator,
-    description="Useful for mathematical calculations"
-)`}
-        />
-        <Text mt="sm">
-          The agent receives tool descriptions in its prompt and learns to call them appropriately
-          based on the task requirements.
-        </Text>
       </div>
 
       <div data-slide>
-        <Title order={2}>Agent Memory Systems</Title>
-        <Text mt="md">
-          Memory allows agents to maintain context across interactions and learn from experience.
-        </Text>
-        <Title order={4} mt="lg">Short-term Memory</Title>
-        <Text mt="sm">
-          Conversation history within current session. Stored in the prompt context window.
-        </Text>
-        <Title order={4} mt="lg">Long-term Memory</Title>
-        <Text mt="sm">
-          Persistent storage across sessions. Typically uses vector databases for semantic retrieval.
-        </Text>
-        <BlockMath>{`m_t = \\text{retrieve}(\\text{VectorDB}, s_t, k=5)`}</BlockMath>
-        <Title order={4} mt="lg">Episodic Memory</Title>
-        <Text mt="sm">
-          Records of past experiences and their outcomes. Used for learning and adaptation.
-        </Text>
-        <Text mt="md">
-          Memory management is crucial for token efficiency. Agents must balance maintaining
-          sufficient context with staying within model token limits.
-        </Text>
-        <Flex justify="center" mt="lg">
-          <Image
-            src="/api/placeholder/800/500"
-            alt="Agent memory types: short-term, long-term, and episodic memory systems"
-            style={{ maxWidth: '100%' }}
-          />
-        </Flex>
-        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
-          Agent memory architecture: Short-term (conversation history), long-term (vector database),
-          and episodic (past experiences) memory systems for context management.
-        </Text>
-      </div>
+        <Title order={2} mb="md">The Agentic Approach</Title>
 
-      <div data-slide>
-        <Title order={2}>Planning Strategies</Title>
-        <Text mt="md">
-          Agents use various strategies to plan multi-step tasks:
+        <Text size="md" mb="md">
+          Agentic AI combines the flexibility of LLMs with the action-taking capabilities of traditional agents. The key insight: replace the rigid decision component with an LLM.
         </Text>
-        <Title order={4} mt="lg">Chain-of-Thought (CoT)</Title>
-        <Text mt="sm">
-          Generate intermediate reasoning steps sequentially. Simple but effective.
-        </Text>
-        <CodeBlock
-          language="text"
-          code={`Step 1: Identify the problem
-Step 2: Break down into sub-tasks
-Step 3: Solve each sub-task`}
-        />
-        <Title order={4} mt="lg">Tree-of-Thought (ToT)</Title>
-        <Text mt="sm">
-          Explore multiple reasoning paths, evaluate them, and select the best. More robust but costly.
-        </Text>
-        <Title order={4} mt="lg">Plan-and-Execute</Title>
-        <Text mt="sm">
-          First create a complete plan, then execute each step. Useful for complex multi-step tasks.
-        </Text>
-        <CodeBlock
-          language="python"
-          code={`plan = planner.create_plan(task)
-for step in plan:
-    result = executor.execute(step)
-    plan.update(result)`}
-        />
-        <Flex justify="center" mt="lg">
-          <Image
-            src="/api/placeholder/800/500"
-            alt="Agent planning strategies: Chain-of-Thought, Tree-of-Thought, and Plan-and-Execute comparison"
-            style={{ maxWidth: '100%' }}
-          />
-        </Flex>
-        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
-          Planning strategies comparison: Sequential CoT, branching ToT for exploration,
-          and structured Plan-and-Execute for complex multi-step tasks.
-        </Text>
-      </div>
 
-      <div data-slide>
-        <Title order={2}>LangChain Agents Overview</Title>
-        <Text mt="md">
-          LangChain provides a framework for building agents with standardized components:
+        <Text size="md" mb="md">
+          The architecture remains the same Input → Decide → Act loop, but the decision-making is now powered by natural language reasoning:
         </Text>
-        <List mt="md" spacing="sm">
-          <List.Item><strong>Agent</strong>: Core decision-making component using an LLM</List.Item>
-          <List.Item><strong>Tools</strong>: Functions the agent can call</List.Item>
-          <List.Item><strong>Toolkit</strong>: Pre-built collections of related tools</List.Item>
-          <List.Item><strong>AgentExecutor</strong>: Runtime that manages the agent loop</List.Item>
-          <List.Item><strong>Memory</strong>: Conversation history and context management</List.Item>
+
+        <List spacing="sm" mb="lg" type="ordered">
+          <List.Item>
+            <Text weight={500}>Input:</Text> Agent receives a task in natural language
+          </List.Item>
+          <List.Item>
+            <Text weight={500}>Decide (LLM):</Text> LLM reasons about which tool or action to use based on a prompt
+          </List.Item>
+          <List.Item>
+            <Text weight={500}>Act:</Text> Agent executes the chosen tool and observes results
+          </List.Item>
         </List>
-        <Text mt="md">
-          The AgentExecutor handles the ReAct loop: prompting the LLM, parsing tool calls,
-          executing tools, and feeding observations back to the LLM until the task completes.
-        </Text>
-        <Flex justify="center" mt="lg">
+
+        <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/api/placeholder/800/500"
-            alt="LangChain agent architecture showing Agent, Tools, AgentExecutor, and Memory components"
-            style={{ maxWidth: '100%' }}
+            src="/assets/data-science-practice/module8/agentic.jpg"
+            alt="Agentic architecture: traditional agent loop with LLM-powered decision making"
+            style={{ maxWidth: "70%", height: "auto" }}
           />
         </Flex>
-        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
-          LangChain agent architecture: Core agent (LLM decision-maker), tools (function library),
-          AgentExecutor (runtime manager), and memory (context storage) working together.
+
+        <Text size="md" c="dimmed">
+          By prompting the LLM to choose from defined tools and other agents, we create flexible systems that can handle ambiguous instructions and novel situations while still taking concrete actions.
         </Text>
       </div>
 
       <div data-slide>
-        <Title order={2}>Agent Types in LangChain</Title>
-        <Text mt="md">
-          LangChain supports multiple agent architectures:
+        <Title order={2} mb="md">Reflection Agents</Title>
+
+        <Text size="md" mb="md">
+          A reflection agent improves its outputs by critiquing and refining its own work through iterative self-evaluation.
         </Text>
-        <Title order={4} mt="lg">Zero-shot ReAct</Title>
-        <Text mt="sm">
-          Uses tool descriptions to decide which tools to use without examples. Works with any tools.
+
+        <Text size="md" mb="md">
+          The reflection loop:
         </Text>
-        <Title order={4} mt="lg">Conversational Agent</Title>
-        <Text mt="sm">
-          Optimized for multi-turn conversations with memory. Maintains dialogue context.
-        </Text>
+
+        <List spacing="xs" mb="lg" type="ordered">
+          <List.Item>Generate initial response to the task</List.Item>
+          <List.Item>Critique the response (identify weaknesses, errors, improvements)</List.Item>
+          <List.Item>Generate improved version based on critique</List.Item>
+          <List.Item>Repeat until quality threshold is met</List.Item>
+        </List>
+
         <CodeBlock
           language="python"
-          code={`from langchain.memory import ConversationBufferMemory
-memory = ConversationBufferMemory()`}
+          code={`# Reflection pattern
+def reflection_agent(task):
+    response = llm.generate(task)
+    for iteration in range(max_iterations):
+        critique = llm.generate(
+            f"Critique this response: {response}"
+        )
+        if "acceptable" in critique.lower():
+            break
+        response = llm.generate(
+            f"Improve based on: {critique}"
+        )
+    return response`}
         />
-        <Title order={4} mt="lg">OpenAI Functions Agent</Title>
-        <Text mt="sm">
-          Uses OpenAI's function calling API for structured tool invocation. More reliable parsing.
+
+        <Text size="md" mt="md">
+          This pattern is effective for tasks requiring high quality outputs such as code generation, writing, and problem-solving where iteration leads to improvement.
         </Text>
-        <CodeBlock
-          language="python"
-          code={`agent = create_openai_functions_agent(
-    llm, tools, prompt
-)`}
-        />
+                <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/critic.png"
+            alt="Agentic architecture: traditional agent loop with LLM-powered decision making"
+            style={{ maxWidth: "70%", height: "auto" }}
+          />
+        </Flex>
       </div>
 
       <div data-slide>
-        <Title order={2}>Creating a Simple Agent</Title>
-        <Text mt="md">
-          Basic agent setup with LangChain:
-        </Text>
-        <CodeBlock
-          language="python"
-          code={`from langchain.agents import AgentExecutor, create_react_agent
-from langchain_openai import ChatOpenAI
-from langchain.tools import Tool`}
-        />
-        <Text mt="sm">
-          Define the LLM and tools:
-        </Text>
-        <CodeBlock
-          language="python"
-          code={`llm = ChatOpenAI(temperature=0, model="gpt-4")
+        <Title order={2} mb="md">Agent Tools</Title>
 
-tools = [
-    Tool(name="Search", func=search_func,
-         description="Search for information"),
-    Tool(name="Calculator", func=calc_func,
-         description="Perform calculations")
+        <Text size="md" mb="md">
+          Tools extend agents beyond text generation, enabling interaction with external systems. Each tool is a function the agent can invoke based on its reasoning.
+        </Text>
+
+        <Title order={3} size="h4" mb="sm">Common Tool Categories</Title>
+
+        <List spacing="sm" mb="lg">
+          <List.Item>
+            <Text weight={500}>Internet access:</Text> Search engines, web scraping, API calls to external services
+          </List.Item>
+          <List.Item>
+            <Text weight={500}>Code execution:</Text> Python interpreter, shell commands, computational operations
+          </List.Item>
+          <List.Item>
+            <Text weight={500}>Model Context Protocol (MCP):</Text> Standardized way to connect LLMs to data sources and tools
+          </List.Item>
+          <List.Item>
+            <Text weight={500}>Vector databases (RAG):</Text> Semantic search over document collections for knowledge retrieval
+          </List.Item>
+        </List>
+
+        <Text size="md" mb="sm">
+          Tools are defined with a name, description, and function signature. The LLM uses the description to decide when to invoke each tool.
+        </Text>
+
+        <CodeBlock
+          language="python"
+          code={`tools = [
+    {
+        "name": "web_search",
+        "description": "Search the internet for current information",
+        "function": lambda query: search_api(query)
+    },
+    {
+        "name": "python_exec",
+        "description": "Execute Python code for calculations",
+        "function": lambda code: exec_code(code)
+    }
 ]`}
         />
-        <Text mt="sm">
+      </div>
+
+      <div data-slide>
+        <Title order={2} mb="md">Tool Usage Example with LangGraph</Title>
+
+        <Text size="md" mb="md">
+          LangGraph provides a framework for building agents with tool-calling capabilities. Here's a simple example:
+        </Text>
+
+        <CodeBlock
+          language="python"
+          code={`from langgraph.prebuilt import create_react_agent
+from langchain_openai import ChatOpenAI
+from langchain_core.tools import tool
+
+@tool
+def search(query: str) -> str:
+    """Search for information on the internet."""
+    return f"Search results for: {query}"
+
+@tool
+def calculator(expression: str) -> str:
+    """Evaluate mathematical expressions."""
+    return str(eval(expression))`}
+        />
+
+        <Text size="md" mt="md" mb="sm">
           Create and run the agent:
         </Text>
+
         <CodeBlock
           language="python"
-          code={`agent = create_react_agent(llm, tools, prompt)
-executor = AgentExecutor(agent=agent, tools=tools)
-result = executor.invoke({"input": "What is 25 * 17?"})`}
+          code={`llm = ChatOpenAI(model="gpt-4")
+tools = [search, calculator]
+
+agent = create_react_agent(llm, tools)
+
+# Agent decides which tools to use
+response = agent.invoke({
+    "messages": [("user", "What is 25 * 17?")]
+})
+
+# Agent will call calculator("25 * 17") and return 425`}
         />
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Custom Tool Creation</Title>
-        <Text mt="md">
-          Create custom tools with proper type hints and descriptions:
-        </Text>
-        <CodeBlock
-          language="python"
-          code={`from langchain.tools import tool
-
-@tool
-def get_weather(location: str) -> str:
-    """Get current weather for a location.
-
-    Args:
-        location: City name or zip code
-    """
-    # API call to weather service
-    return f"Weather in {location}: Sunny, 72°F"`}
-        />
-        <Text mt="sm">
-          Tools with structured inputs:
-        </Text>
-        <CodeBlock
-          language="python"
-          code={`from pydantic import BaseModel, Field
-
-class WeatherInput(BaseModel):
-    location: str = Field(description="City name")
-    units: str = Field(description="celsius or fahrenheit")
-
-@tool(args_schema=WeatherInput)
-def get_weather_detailed(location: str, units: str) -> str:
-    """Get weather with specific units."""
-    return f"Temp: 22°C" if units == "celsius" else "Temp: 72°F"`}
-        />
-        <Flex justify="center" mt="lg">
+                        <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/api/placeholder/800/500"
-            alt="Custom tool creation workflow showing function definition, schema specification, and registration"
-            style={{ maxWidth: '100%' }}
+            src="/assets/data-science-practice/module8/reflexion.png"
+            alt="Agentic architecture: traditional agent loop with LLM-powered decision making"
+            style={{ maxWidth: "70%", height: "auto" }}
           />
         </Flex>
-        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
-          Custom tool creation process: Define function with type hints, add descriptive docstrings,
-          specify parameter schemas, and register with agent for dynamic invocation.
-        </Text>
       </div>
 
       <div data-slide>
-        <Title order={2}>Agent Execution Loop</Title>
-        <Text mt="md">
-          The agent executor runs a loop until completion or max iterations:
-        </Text>
-        <CodeBlock
-          language="python"
-          code={`while not done and iterations < max_iterations:
-    # 1. LLM decides next action
-    action = agent.plan(state, memory)
+        <Title order={2} mb="md">Advanced Agentic Architectures</Title>
 
-    # 2. Execute tool if action specified
-    if action.tool:
-        observation = tools[action.tool].run(action.input)
+        <Text size="md" mb="md">
+          Beyond simple tool-calling agents, more sophisticated architectures enable complex reasoning and task decomposition:
+        </Text>
 
-    # 3. Update state and memory
-    state.update(observation)
-    memory.add(action, observation)
-
-    # 4. Check if task complete
-    done = action.is_final()`}
-        />
-        <Text mt="md">
-          The executor handles errors, retries, and token management. It also provides callbacks
-          for logging and monitoring agent behavior during execution.
-        </Text>
-        <Flex justify="center" mt="lg">
-          <Image
-            src="/api/placeholder/800/500"
-            alt="Agent execution loop flowchart showing decision, action, observation, and update cycle"
-            style={{ maxWidth: '100%' }}
-          />
-        </Flex>
-        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
-          Agent execution loop: Iterative cycle of LLM decision-making, tool execution,
-          observation processing, state updates, and completion checking.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Multi-Agent Systems</Title>
-        <Text mt="md">
-          Multiple agents can collaborate to solve complex tasks by dividing work and specializing:
-        </Text>
-        <List mt="md" spacing="sm">
-          <List.Item><strong>Hierarchical</strong>: Manager agent delegates to worker agents</List.Item>
-          <List.Item><strong>Collaborative</strong>: Peer agents work together on shared goals</List.Item>
-          <List.Item><strong>Competitive</strong>: Agents propose solutions, best one selected</List.Item>
-          <List.Item><strong>Sequential</strong>: Output of one agent feeds into next</List.Item>
-        </List>
-        <Text mt="md">
-          Multi-agent systems can achieve better performance through specialization:
-        </Text>
-        <CodeBlock
-          language="python"
-          code={`researcher = Agent(role="Researcher", tools=[search, read])
-writer = Agent(role="Writer", tools=[write, edit])
-reviewer = Agent(role="Reviewer", tools=[review])`}
-        />
-        <Text mt="sm">
-          Each agent focuses on its expertise, and a coordinator manages the workflow.
-        </Text>
-        <Flex justify="center" mt="lg">
-          <Image
-            src="/api/placeholder/800/500"
-            alt="Multi-agent system patterns: hierarchical, collaborative, competitive, and sequential"
-            style={{ maxWidth: '100%' }}
-          />
-        </Flex>
-        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
-          Multi-agent collaboration patterns: Hierarchical delegation, peer collaboration,
-          competitive solution generation, and sequential processing workflows.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Agent Communication Protocols</Title>
-        <Text mt="md">
-          Agents communicate through structured message passing:
-        </Text>
-        <CodeBlock
-          language="python"
-          code={`class Message:
-    sender: str
-    receiver: str
-    content: dict
-    message_type: str  # request, response, broadcast`}
-        />
-        <Text mt="sm">
-          Example communication flow:
-        </Text>
-        <CodeBlock
-          language="python"
-          code={`# Manager requests task from worker
-manager.send(Message(
-    sender="manager",
-    receiver="researcher",
-    content={"task": "Find data on topic X"},
-    message_type="request"
-))`}
-        />
-        <Text mt="md">
-          Communication protocols define how agents coordinate, share information, and resolve conflicts.
-          Common patterns include request-response, publish-subscribe, and blackboard systems.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>AutoGPT Architecture</Title>
-        <Text mt="md">
-          AutoGPT is an autonomous agent that breaks down goals into tasks and executes them
-          with minimal human intervention.
-        </Text>
-        <Text mt="md">
-          Key components:
-        </Text>
-        <List mt="sm" spacing="sm">
-          <List.Item><strong>Goal management</strong>: Maintains high-level objectives</List.Item>
-          <List.Item><strong>Task generation</strong>: Breaks goals into actionable tasks</List.Item>
-          <List.Item><strong>Memory system</strong>: Vector database for context</List.Item>
-          <List.Item><strong>Self-criticism</strong>: Evaluates its own outputs</List.Item>
-          <List.Item><strong>Internet access</strong>: Web search and browsing</List.Item>
-        </List>
-        <Text mt="md">
-          AutoGPT loop:
-        </Text>
-        <CodeBlock
-          language="python"
-          code={`while goal_not_achieved:
-    tasks = generate_tasks(goal, context)
-    for task in prioritize_tasks(tasks):
-        result = execute_task(task)
-        memory.store(task, result)
-        self_evaluate(result)`}
-        />
-        <Flex justify="center" mt="lg">
-          <Image
-            src="/api/placeholder/800/500"
-            alt="AutoGPT architecture showing goal management, task generation, memory, and self-criticism"
-            style={{ maxWidth: '100%' }}
-          />
-        </Flex>
-        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
-          AutoGPT architecture: Goal-driven autonomous agent with task generation, vector memory,
-          self-evaluation, and internet access for minimal human intervention.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>BabyAGI Architecture</Title>
-        <Text mt="md">
-          BabyAGI is a simplified autonomous agent focused on task management and execution.
-        </Text>
-        <Text mt="md">
-          Core loop with three components:
-        </Text>
-        <List mt="sm" spacing="sm">
-          <List.Item><strong>Execution agent</strong>: Completes current task using context</List.Item>
-          <List.Item><strong>Task creation agent</strong>: Generates new tasks based on results</List.Item>
-          <List.Item><strong>Prioritization agent</strong>: Reorders task list by importance</List.Item>
-        </List>
-        <CodeBlock
-          language="python"
-          code={`task_list = [initial_task]
-
-while task_list:
-    current_task = task_list.pop(0)
-    result = execution_agent(current_task)
-    new_tasks = task_creation_agent(result)
-    task_list.extend(new_tasks)
-    task_list = prioritization_agent(task_list)`}
-        />
-        <Text mt="md">
-          BabyAGI uses vector embeddings to maintain context and prioritize tasks effectively.
-        </Text>
-        <Flex justify="center" mt="lg">
-          <Image
-            src="/api/placeholder/800/500"
-            alt="BabyAGI architecture with execution, task creation, and prioritization agents"
-            style={{ maxWidth: '100%' }}
-          />
-        </Flex>
-        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
-          BabyAGI loop: Three-component system with execution agent (completes tasks),
-          task creation agent (generates new tasks), and prioritization agent (reorders queue).
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Agent Evaluation Metrics</Title>
-        <Text mt="md">
-          Evaluating agent performance requires multiple dimensions:
-        </Text>
-        <Title order={4} mt="lg">Task Success Rate</Title>
-        <Text mt="sm">
-          Percentage of tasks completed successfully within constraints.
-        </Text>
-        <BlockMath>{`\\text{Success Rate} = \\frac{\\text{Successful Tasks}}{\\text{Total Tasks}}`}</BlockMath>
-        <Title order={4} mt="lg">Efficiency Metrics</Title>
-        <List mt="sm" spacing="xs">
-          <List.Item>Number of steps/actions taken</List.Item>
-          <List.Item>Token usage and API costs</List.Item>
-          <List.Item>Execution time</List.Item>
-        </List>
-        <Title order={4} mt="lg">Quality Metrics</Title>
-        <List mt="sm" spacing="xs">
-          <List.Item>Correctness of final output</List.Item>
-          <List.Item>Appropriateness of tool selection</List.Item>
-          <List.Item>Reasoning coherence</List.Item>
-        </List>
-        <Title order={4} mt="lg">Robustness</Title>
-        <Text mt="sm">
-          Performance under errors, ambiguous instructions, and edge cases.
-        </Text>
-        <Flex justify="center" mt="lg">
-          <Image
-            src="/api/placeholder/800/500"
-            alt="Agent evaluation metrics dashboard showing success rate, efficiency, quality, and robustness"
-            style={{ maxWidth: '100%' }}
-          />
-        </Flex>
-        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
-          Agent evaluation framework: Multi-dimensional assessment including task success rate,
-          efficiency metrics (steps, tokens, time), quality measures, and robustness testing.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Agent Failure Modes and Safety</Title>
-        <Text mt="md">
-          Common failure modes in agent systems:
-        </Text>
-        <List mt="md" spacing="sm">
-          <List.Item><strong>Infinite loops</strong>: Agent repeats same action without progress</List.Item>
-          <List.Item><strong>Hallucinated tools</strong>: Attempts to use non-existent tools</List.Item>
-          <List.Item><strong>Context drift</strong>: Loses track of original goal</List.Item>
-          <List.Item><strong>Tool misuse</strong>: Uses tools incorrectly or unsafely</List.Item>
-          <List.Item><strong>Resource exhaustion</strong>: Exceeds token limits or API quotas</List.Item>
-        </List>
-        <Text mt="md">
-          Safety mechanisms:
-        </Text>
-        <CodeBlock
-          language="python"
-          code={`agent = AgentExecutor(
-    agent=agent,
-    tools=tools,
-    max_iterations=15,        # Prevent infinite loops
-    max_execution_time=300,   # Time limit
-    handle_parsing_errors=True # Graceful error handling
-)`}
-        />
-        <Text mt="sm">
-          Additional safety: human-in-the-loop for critical actions, tool sandboxing, and output validation.
-        </Text>
-        <Flex justify="center" mt="lg">
-          <Image
-            src="/api/placeholder/800/500"
-            alt="Agent safety mechanisms: error handling, resource limits, and validation strategies"
-            style={{ maxWidth: '100%' }}
-          />
-        </Flex>
-        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
-          Agent safety mechanisms: Iteration limits to prevent infinite loops, timeout constraints,
-          error handling, human-in-the-loop approval, and tool sandboxing for secure execution.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Practical Agent Implementation</Title>
-        <Text mt="md">
-          Complete example of a research assistant agent:
-        </Text>
-        <CodeBlock
-          language="python"
-          code={`from langchain.agents import AgentExecutor, create_openai_functions_agent
-from langchain_openai import ChatOpenAI
-from langchain.tools import tool
-from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder`}
-        />
-        <Text mt="sm">
-          Define specialized tools:
-        </Text>
-        <CodeBlock
-          language="python"
-          code={`@tool
-def search_papers(query: str) -> str:
-    """Search academic papers on a topic."""
-    # Call to paper database API
-    return "Found 5 papers on " + query
-
-@tool
-def summarize_paper(paper_id: str) -> str:
-    """Get summary of a specific paper."""
-    # Retrieve and summarize paper
-    return "Paper summary: ..."`}
-        />
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Practical Agent Implementation (continued)</Title>
-        <Text mt="md">
-          Create the agent with custom prompt:
-        </Text>
-        <CodeBlock
-          language="python"
-          code={`prompt = ChatPromptTemplate.from_messages([
-    ("system", "You are a research assistant. Help users find and understand academic papers."),
-    MessagesPlaceholder(variable_name="chat_history", optional=True),
-    ("human", "{input}"),
-    MessagesPlaceholder(variable_name="agent_scratchpad")
-])
-
-llm = ChatOpenAI(model="gpt-4", temperature=0)
-tools = [search_papers, summarize_paper]
-
-agent = create_openai_functions_agent(llm, tools, prompt)
-executor = AgentExecutor(agent=agent, tools=tools, verbose=True)`}
-        />
-        <Text mt="sm">
-          Execute research task:
-        </Text>
-        <CodeBlock
-          language="python"
-          code={`result = executor.invoke({
-    "input": "Find papers on transformers in NLP and summarize the key findings"
-})`}
-        />
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Advanced Agent Patterns</Title>
-        <Text mt="md">
-          Sophisticated agent architectures for complex scenarios:
-        </Text>
-        <Title order={4} mt="lg">Hierarchical Agents</Title>
-        <Text mt="sm">
-          Manager agent decomposes tasks and delegates to specialized worker agents.
-        </Text>
-        <CodeBlock
-          language="python"
-          code={`class ManagerAgent:
-    def execute(self, task):
-        subtasks = self.decompose(task)
-        results = [worker.execute(st) for worker, st in
-                   zip(self.workers, subtasks)]
-        return self.synthesize(results)`}
-        />
-        <Title order={4} mt="lg">Collaborative Agents</Title>
-        <Text mt="sm">
-          Multiple agents work together, sharing a common workspace and communicating peer-to-peer.
-        </Text>
-        <CodeBlock
-          language="python"
-          code={`workspace = SharedWorkspace()
-agents = [ResearchAgent(), WriterAgent(), EditorAgent()]
-for agent in agents:
-    agent.contribute(workspace)
-final_output = workspace.get_result()`}
-        />
-        <Flex justify="center" mt="lg">
-          <Image
-            src="/api/placeholder/800/500"
-            alt="Advanced agent patterns: hierarchical and collaborative agent architectures"
-            style={{ maxWidth: '100%' }}
-          />
-        </Flex>
-        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
-          Advanced agent patterns: Hierarchical decomposition with manager-worker structure
-          and collaborative peer-to-peer workspace sharing for complex task solving.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Agent Orchestration</Title>
-        <Text mt="md">
-          Orchestration manages agent coordination, resource allocation, and workflow:
-        </Text>
-        <CodeBlock
-          language="python"
-          code={`class AgentOrchestrator:
-    def __init__(self, agents, workflow):
-        self.agents = agents
-        self.workflow = workflow
-
-    def execute(self, task):
-        state = {"task": task}
-        for step in self.workflow:
-            agent = self.agents[step.agent_name]
-            result = agent.execute(state)
-            state.update(result)
-        return state["output"]`}
-        />
-        <Text mt="md">
-          Orchestrators can implement complex patterns:
-        </Text>
-        <List mt="sm" spacing="xs">
-          <List.Item>Conditional routing based on intermediate results</List.Item>
-          <List.Item>Parallel execution of independent sub-tasks</List.Item>
-          <List.Item>Error recovery and retry logic</List.Item>
-          <List.Item>Dynamic agent selection based on task requirements</List.Item>
-        </List>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>ReAct Agent Flow Diagram</Title>
-        <Flex justify="center" mt="md">
-          <Image
-            src="/api/placeholder/800/500"
-            alt="ReAct agent decision-making flow showing the cycle of Thought, Action, and Observation"
-            style={{ maxWidth: '100%' }}
-          />
-        </Flex>
-        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
-          The ReAct cycle: Agent generates thoughts (reasoning), executes actions (tool calls),
-          receives observations (results), and repeats until task completion.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Multi-Agent System Architecture</Title>
-        <Flex justify="center" mt="md">
-          <Image
-            src="/api/placeholder/800/500"
-            alt="Multi-agent system showing hierarchical coordination with manager and specialized worker agents"
-            style={{ maxWidth: '100%' }}
-          />
-        </Flex>
-        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
-          Hierarchical multi-agent architecture: Manager agent coordinates specialized worker agents
-          (researcher, analyzer, writer) with shared memory and communication protocols.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>Agent Decision-Making Process</Title>
-        <Flex justify="center" mt="md">
-          <Image
-            src="/api/placeholder/800/500"
-            alt="Agent decision-making process showing perception, reasoning, tool selection, and action execution"
-            style={{ maxWidth: '100%' }}
-          />
-        </Flex>
-        <Text mt="md" size="sm" style={{ textAlign: 'center' }}>
-          Agent decision pipeline: Input processing, memory retrieval, reasoning/planning,
-          tool selection, action execution, and observation feedback loop.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={2}>References</Title>
-        <Text mt="md" weight={500}>Key Papers and Resources:</Text>
-        <List mt="md" spacing="md">
+        <List spacing="sm" mb="lg">
           <List.Item>
-            <strong>ReAct: Synergizing Reasoning and Acting in Language Models</strong>
-            <br />
-            Yao, S., Zhao, J., Yu, D., Du, N., Shafran, I., Narasimhan, K., & Cao, Y. (2022)
-            <br />
-            Introduces the ReAct paradigm for interleaving reasoning and action in LLM agents
+            <Text weight={500}>Planner agents:</Text> Decompose complex tasks into sequential steps before execution
           </List.Item>
           <List.Item>
-            <strong>AutoGPT</strong>
-            <br />
-            Autonomous agent framework: github.com/Significant-Gravitas/AutoGPT
-            <br />
-            Open-source autonomous agent with goal decomposition and self-evaluation
+            <Text weight={500}>Tree-of-Thought (ToT):</Text> Explore multiple reasoning paths simultaneously and select the best approach
           </List.Item>
           <List.Item>
-            <strong>BabyAGI</strong>
-            <br />
-            Task-driven autonomous agent: github.com/yoheinakajima/babyagi
-            <br />
-            Minimalist agent focusing on task creation, prioritization, and execution
-          </List.Item>
-          <List.Item>
-            <strong>LangChain Documentation</strong>
-            <br />
-            python.langchain.com/docs/modules/agents/
-            <br />
-            Comprehensive guide to building agents with LangChain framework
+            <Text weight={500}>Multi-agent systems:</Text> Multiple specialized agents collaborate, each with specific expertise and tools
           </List.Item>
         </List>
+
+                <Flex justify="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/agenticarch.gif"
+            alt="Agentic architecture: traditional agent loop with LLM-powered decision making"
+            style={{ maxWidth: "70%", height: "auto" }}
+          />
+        </Flex>
+
+        <Text size="md" c="dimmed">
+          These architectures build on the fundamental agentic pattern, adding layers of planning, exploration, and collaboration to handle increasingly complex tasks.
+        </Text>
       </div>
+
+      <div data-slide>
+        <Title order={2} mb="md">Maximizing LLM Value</Title>
+
+        <Text size="md" mb="md">
+          The agentic framework represents an accessible approach to unlock the full potential of LLMs by combining their strengths with practical capabilities:
+        </Text>
+
+        <List spacing="md" mb="lg">
+          <List.Item>
+            <Text weight={500} mb="xs">Natural language interface</Text>
+            <Text size="sm">Users can specify complex tasks in plain language rather than code</Text>
+          </List.Item>
+
+          <List.Item>
+            <Text weight={500} mb="xs">Dynamic tool selection</Text>
+            <Text size="sm">LLM intelligently chooses appropriate tools based on task requirements</Text>
+          </List.Item>
+
+          <List.Item>
+            <Text weight={500} mb="xs">Iterative refinement</Text>
+            <Text size="sm">Agents can reflect on results and adjust their approach</Text>
+          </List.Item>
+
+          <List.Item>
+            <Text weight={500} mb="xs">Extensible capabilities</Text>
+            <Text size="sm">Adding new tools or agents extends functionality without rewriting core logic</Text>
+          </List.Item>
+        </List>
+
+        <Text size="md">
+          By structuring LLM interactions as agentic systems with tools, memory, and reflection, we transform static language models into dynamic problem-solving systems capable of handling real-world tasks autonomously.
+        </Text>
+      </div>
+
+      <DataInteractionPanel
+        notebookUrl={notebookUrl}
+        notebookHtmlUrl={notebookHtmlUrl}
+        notebookColabUrl={notebookColabUrl}
+        metadata={metadata}
+      />
 
     </div>
   );
