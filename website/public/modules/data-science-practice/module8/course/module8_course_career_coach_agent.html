@@ -7528,21 +7528,6 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Install required dependencies</span>
-<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-q<span class="w"> </span>langgraph<span class="w"> </span>langchain-openai<span class="w"> </span>langchain-core
-</pre></div>
-</div>
-</div>
-</div>
-</div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -7576,7 +7561,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -7589,12 +7574,11 @@ a.anchor-link {
 <span class="kn">from</span><span class="w"> </span><span class="nn">langgraph.graph.message</span><span class="w"> </span><span class="kn">import</span> <span class="n">add_messages</span>
 
 <span class="c1"># Set your OpenAI API key</span>
-<span class="c1"># os.environ["OPENAI_API_KEY"] = "your-api-key-here"</span>
-
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"OPENAI_API_KEY"</span><span class="p">]</span> <span class="o">=</span>
 <span class="c1"># Define the state schema</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">AgentState</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""State maintained throughout the agent's execution.</span>
-<span class="sd">    </span>
+
 <span class="sd">    messages: Conversation history with automatic message accumulation</span>
 <span class="sd">    """</span>
     <span class="n">messages</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span> <span class="n">add_messages</span><span class="p">]</span>
@@ -7626,23 +7610,23 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="nd">@tool</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">analyze_cv</span><span class="p">(</span><span class="n">cv_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_role</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Analyze a CV to identify weak spots, missing skills, and areas for improvement.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        cv_text: The full text of the candidate's CV</span>
 <span class="sd">        target_role: The role/position the candidate is targeting</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">        Analysis report with identified weaknesses and recommendations</span>
 <span class="sd">    """</span>
     <span class="c1"># Simulated CV analysis (in production, this could use NLP or LLM-based analysis)</span>
     <span class="n">analysis</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""CV Analysis for </span><span class="si">{</span><span class="n">target_role</span><span class="si">}</span><span class="s2">:</span>
-<span class="s2">    </span>
+
 <span class="s2">**Strengths:**</span>
 <span class="s2">- 3 years of Python development experience</span>
 <span class="s2">- Experience with backend development</span>
@@ -7666,11 +7650,11 @@ a.anchor-link {
 <span class="nd">@tool</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">research_market_trends</span><span class="p">(</span><span class="n">role</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Research current job market trends, in-demand skills, and salary ranges for a specific role and location.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        role: The job role to research (e.g., "Python Developer")</span>
 <span class="sd">        location: Geographic location (e.g., "Paris")</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">        Market research report with trends and skill demands</span>
 <span class="sd">    """</span>
@@ -7707,10 +7691,10 @@ a.anchor-link {
 <span class="nd">@tool</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">find_learning_resources</span><span class="p">(</span><span class="n">skills_gap</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Find learning resources (courses, tutorials, certifications) to fill identified skill gaps.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        skills_gap: Description of the skills the candidate needs to acquire</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">        Curated list of learning resources with URLs and time estimates</span>
 <span class="sd">    """</span>
@@ -7752,12 +7736,12 @@ a.anchor-link {
 <span class="nd">@tool</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">search_jobs</span><span class="p">(</span><span class="n">role</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">salary_min</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Search for job opportunities matching the specified criteria.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        role: Job title or role</span>
 <span class="sd">        location: Geographic location</span>
 <span class="sd">        salary_min: Minimum acceptable salary</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">        List of matching job opportunities with details</span>
 <span class="sd">    """</span>
@@ -7810,12 +7794,12 @@ a.anchor-link {
 <span class="nd">@tool</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">generate_cover_letter</span><span class="p">(</span><span class="n">job_description</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cv_summary</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">company_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Generate a tailored cover letter for a specific job application.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        job_description: The job posting text</span>
 <span class="sd">        cv_summary: Summary of the candidate's experience</span>
 <span class="sd">        company_name: Name of the target company</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">        Customized cover letter text</span>
 <span class="sd">    """</span>
@@ -7846,12 +7830,12 @@ a.anchor-link {
 <span class="nd">@tool</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">research_salary_negotiation</span><span class="p">(</span><span class="n">role</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">years_experience</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Research salary bands and negotiation strategies for a specific role.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        role: Job title</span>
 <span class="sd">        location: Geographic location</span>
 <span class="sd">        years_experience: Years of relevant experience</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">        Salary research and negotiation guidance</span>
 <span class="sd">    """</span>
@@ -7942,7 +7926,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Initialize the LLM with tools</span>
@@ -7983,13 +7967,13 @@ a.anchor-link {
 <span class="k">def</span><span class="w"> </span><span class="nf">create_agent_node</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">AgentState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AgentState</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Agent node: LLM decides next action (tool call or final response)."""</span>
     <span class="n">messages</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"messages"</span><span class="p">]</span>
-    
+
     <span class="c1"># Prepend system prompt to conversation</span>
     <span class="n">messages_with_system</span> <span class="o">=</span> <span class="p">[</span><span class="n">HumanMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">system_prompt</span><span class="p">)]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
-    
+
     <span class="c1"># LLM generates response (may include tool calls)</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">llm_with_tools</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">messages_with_system</span><span class="p">)</span>
-    
+
     <span class="k">return</span> <span class="p">{</span><span class="s2">"messages"</span><span class="p">:</span> <span class="p">[</span><span class="n">response</span><span class="p">]}</span>
 
 
@@ -7997,11 +7981,11 @@ a.anchor-link {
 <span class="w">    </span><span class="sd">"""Conditional edge: determine if agent should continue with tools or finish."""</span>
     <span class="n">messages</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"messages"</span><span class="p">]</span>
     <span class="n">last_message</span> <span class="o">=</span> <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    
+
     <span class="c1"># If the last message has tool calls, route to tools node</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">last_message</span><span class="p">,</span> <span class="s1">'tool_calls'</span><span class="p">)</span> <span class="ow">and</span> <span class="n">last_message</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">"tools"</span>
-    
+
     <span class="c1"># Otherwise, finish</span>
     <span class="k">return</span> <span class="s2">"end"</span>
 </pre></div>
@@ -8043,12 +8027,12 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Build the graph</span>
@@ -8083,6 +8067,24 @@ a.anchor-link {
 <span class="nb">print</span><span class="p">(</span><span class="s2">"  2. decision → tools (if tool calls) or END"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"  3. tools → agent (loop)"</span><span class="p">)</span>
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>✓ Career Coach Agent initialized successfully
+
+Graph structure:
+  1. agent → decision
+  2. decision → tools (if tool calls) or END
+  3. tools → agent (loop)
+</pre>
 </div>
 </div>
 </div>
@@ -8187,12 +8189,12 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Example user prompt</span>
@@ -8237,12 +8239,60 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>================================================================================
+CAREER COACH AGENT EXECUTION
+================================================================================
+
+📝 User Request:
+I'm a Python developer with 3 years experience in Paris.
+My target salary is €55k.
+
+Here's my CV:
+
+---
+John Doe
+Python Developer
+Paris, France
+
+EXPERIENCE:
+Software Developer at StartupXYZ (2021-2024)
+- Developed backend services using Python
+- Worked with REST APIs
+- Collaborated with team of 5 developers
+
+Junior Developer at TechCompany (2020-2021)
+- Built web applications
+- Fixed bugs and maintained code
+
+EDUCATION:
+Bachelor in Computer Science - University of Paris (2020)
+
+SKILLS:
+Python, Git, SQL, Linux
+---
+
+Find opportunities and tell me how to improve my chances.
+
+
+================================================================================
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Execute the agent and track actions</span>
@@ -8257,13 +8307,13 @@ a.anchor-link {
         <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"agent"</span><span class="p">:</span>
             <span class="n">step_count</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">last_message</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s2">"messages"</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-            
+
             <span class="c1"># Check if agent is calling tools</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">last_message</span><span class="p">,</span> <span class="s1">'tool_calls'</span><span class="p">)</span> <span class="ow">and</span> <span class="n">last_message</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="si">{</span><span class="s1">'─'</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">80</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Step </span><span class="si">{</span><span class="n">step_count</span><span class="si">}</span><span class="s2">: AGENT DECISION - Calling tools"</span><span class="p">)</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'─'</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">80</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-                
+
                 <span class="k">for</span> <span class="n">tool_call</span> <span class="ow">in</span> <span class="n">last_message</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">:</span>
                     <span class="n">tool_name</span> <span class="o">=</span> <span class="n">tool_call</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span>
                     <span class="n">tool_args</span> <span class="o">=</span> <span class="n">tool_call</span><span class="p">[</span><span class="s1">'args'</span><span class="p">]</span>
@@ -8274,7 +8324,7 @@ a.anchor-link {
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="si">{</span><span class="s1">'─'</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">80</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Step </span><span class="si">{</span><span class="n">step_count</span><span class="si">}</span><span class="s2">: AGENT DECISION - Finishing"</span><span class="p">)</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'─'</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">80</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-                
+
         <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"tools"</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">✓ Tool execution completed"</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">value</span><span class="p">[</span><span class="s2">"messages"</span><span class="p">]:</span>
@@ -8289,12 +8339,58 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+🤖 AGENT ACTIONS:
+
+
+────────────────────────────────────────────────────────────────────────────────
+Step 1: AGENT DECISION - Calling tools
+────────────────────────────────────────────────────────────────────────────────
+
+🔧 Tool: analyze_cv
+   Arguments: {'cv_text': 'John Doe\nPython Developer\nParis, France\n\nEXPERIENCE:\nSoftware Developer at StartupXYZ (2021-2024)\n- Developed backend services using Python\n- Worked with REST APIs\n- Collaborated with team of 5 developers\n\nJunior Developer at TechCompany (2020-2021)\n- Built web applications\n- Fixed bugs and maintained code\n\nEDUCATION:\nBachelor in Computer Science - University of Paris (2020)\n\nSKILLS:\nPython, Git, SQL, Linux', 'target_role': 'Python Developer'}
+
+🔧 Tool: research_market_trends
+   Arguments: {'role': 'Python Developer', 'location': 'Paris'}
+
+🔧 Tool: search_jobs
+   Arguments: {'role': 'Python Developer', 'location': 'Paris', 'salary_min': 55000}
+
+🔧 Tool: research_salary_negotiation
+   Arguments: {'role': 'Python Developer', 'location': 'Paris', 'years_experience': 3}
+
+✓ Tool execution completed
+   → Result length: 660 characters
+   → Result length: 787 characters
+   → Result length: 1560 characters
+   → Result length: 1717 characters
+
+────────────────────────────────────────────────────────────────────────────────
+Step 2: AGENT DECISION - Finishing
+────────────────────────────────────────────────────────────────────────────────
+
+
+================================================================================
+FINAL AGENT RESPONSE
+================================================================================
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Display the final response</span>
@@ -8303,6 +8399,111 @@ a.anchor-link {
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="n">final_message</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+Here's a comprehensive plan to improve your career prospects as a Python Developer in Paris:
+
+### CV Analysis
+**Strengths:**
+- 3 years of Python development experience
+- Experience with backend development
+
+**Weaknesses Identified:**
+1. Missing modern Python frameworks (FastAPI, Django)
+2. No mention of cloud platforms (AWS, Azure, GCP)
+3. Limited testing/CI-CD experience
+4. Absence of containerization skills (Docker, Kubernetes)
+5. No quantifiable achievements or impact metrics
+
+**Recommendations:**
+- Add metrics to demonstrate impact (e.g., "Optimized API reducing response time by 40%")
+- Highlight any cloud or DevOps experience
+- Include collaborative projects or team leadership
+- Mention any open-source contributions
+
+### Market Trends
+- **Demand:** High (15% YoY growth in job postings)
+- **Competition:** Moderate (avg 45 applications per posting)
+- **Average Salary:** €45,000 - €65,000 (mid-level)
+
+**Top In-Demand Skills:**
+1. FastAPI / Django / Flask
+2. Docker &amp; Kubernetes
+3. AWS / Azure / GCP
+4. PostgreSQL / MongoDB
+5. CI/CD pipelines
+6. Unit testing / TDD
+7. Microservices architecture
+
+### Job Opportunities
+1. **Backend Python Developer - TechCorp Paris**
+   - Salary: €50,000 - €58,000
+   - Stack: Python, FastAPI, PostgreSQL, Docker, AWS
+
+2. **Python Developer - FinanceAI**
+   - Salary: €52,000 - €62,000
+   - Stack: Python, Django, Redis, Kubernetes
+
+3. **Software Engineer Python - DataFlow Systems**
+   - Salary: €48,000 - €56,000
+   - Stack: Python, Flask, MongoDB, GCP
+
+4. **Python Backend Engineer - GreenTech Solutions**
+   - Salary: €53,000 - €60,000
+   - Stack: Python, FastAPI, DynamoDB, AWS Lambda
+
+5. **Full Stack Python Developer - MediaPlatform**
+   - Salary: €51,000 - €59,000
+   - Stack: Python, Django, React, PostgreSQL, Docker
+
+### Learning Resources
+1. **FastAPI Complete Course** (Udemy) - 8 hours
+2. **Docker &amp; Kubernetes Mastery** (Coursera) - 4 weeks
+3. **AWS Certified Developer Associate** (A Cloud Guru) - 20 hours
+4. **Test-Driven Development with Python** (Real Python) - 6 hours
+
+**Estimated Timeline:** 6-8 weeks (10 hrs/week) to cover core gaps
+
+### Salary Negotiation
+- **Target Salary:** €55,000 (at market median)
+- **Negotiation Strategy:**
+  - Justify with market data and your experience
+  - Be open to discussing the full compensation package
+  - Consider additional benefits like remote work, professional development budget, and stock options
+
+### Next Steps
+1. **Apply to Top Matches:** Prioritize TechCorp Paris and FinanceAI.
+2. **Upskill:** Focus on learning FastAPI, Docker, and AWS.
+3. **Prepare for Negotiation:** Use the provided strategy to negotiate your salary effectively.
+
+By addressing these areas, you'll enhance your profile and increase your chances of securing a desirable position.
+
+================================================================================
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 </div>
 </div>
