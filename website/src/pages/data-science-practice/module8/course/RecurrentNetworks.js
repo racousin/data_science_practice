@@ -491,7 +491,15 @@ logits = model(x)  # (32, 2)`}
 
       <div data-slide>
         <Title order={2}>Bidirectional RNNs</Title>
-
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/birnn.png"
+            alt="Bidirectional RNN concept: processing sequences in both directions"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+        </Flex>
         <Text mt="md">
           Process sequences in both forward and backward directions to capture full context.
         </Text>
@@ -549,6 +557,135 @@ print(output.shape)  # (32, 20, 256) - hidden_size * 2`}
 
 
       </div>
+
+      <div data-slide>
+        <Title order={2}>Sequence-to-Sequence (Seq2Seq) Models</Title>
+
+        <Text mt="md">
+          Standard RNNs process input sequences to produce output sequences of the <strong>same length</strong>.
+          Many real-world tasks require different input and output lengths:
+        </Text>
+
+        <List spacing="sm" mt="md">
+          <List.Item>Machine translation: English sentence → French sentence (different lengths)</List.Item>
+          <List.Item>Text summarization: Long document → Short summary</List.Item>
+          <List.Item>Question answering: Question → Answer (different structures)</List.Item>
+          <List.Item>Speech recognition: Audio frames → Text words (different temporal scales)</List.Item>
+        </List>
+
+        <Text mt="lg">
+          <strong>Problem:</strong> How do we handle sequences where input length <InlineMath>{'T_x'}</InlineMath> ≠ output length <InlineMath>{'T_y'}</InlineMath>?
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={2}>Seq2Seq Architecture</Title>
+
+        <Text mt="md">
+          The sequence-to-sequence model uses an <strong>encoder-decoder</strong> architecture:
+        </Text>
+
+        <List spacing="sm" mt="lg">
+          <List.Item>
+            <strong>Encoder:</strong> Processes the entire input sequence and compresses it into a fixed-size context vector
+          </List.Item>
+          <List.Item>
+            <strong>Context vector:</strong> Captures the semantic meaning of the input (bottleneck)
+          </List.Item>
+          <List.Item>
+            <strong>Decoder:</strong> Generates the output sequence one token at a time, conditioned on the context
+          </List.Item>
+        </List>
+
+        <Flex direction="column" align="center" mt="xl" mb="md">
+          <Image
+            src="/assets/data-science-practice/module8/seq2seq.png"
+            alt="Sequence-to-sequence encoder-decoder architecture"
+            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
+            fluid
+            mb="sm"
+          />
+          <Text size="sm">
+            Encoder compresses input into context vector, decoder generates output
+          </Text>
+        </Flex>
+      </div>
+
+      <div data-slide>
+        <Title order={2}>Encoder-Decoder Process</Title>
+
+        <Title order={3} mt="md">Encoding Phase</Title>
+        <Text mt="sm">
+          Process input sequence <InlineMath>{'x^{(1)}, x^{(2)}, ..., x^{(T_x)}'}</InlineMath>:
+        </Text>
+        <BlockMath>{'h^{(t)} = \\text{LSTM}(x^{(t)}, h^{(t-1)})'}</BlockMath>
+        <Text mt="sm">
+          Final hidden state <InlineMath>{'h^{(T_x)}'}</InlineMath> becomes the context vector.
+        </Text>
+
+        <Title order={3} mt="lg">Decoding Phase</Title>
+        <Text mt="sm">
+          Generate output sequence <InlineMath>{'y^{(1)}, y^{(2)}, ..., y^{(T_y)}'}</InlineMath>:
+        </Text>
+        <BlockMath>{'s^{(t)} = \\text{LSTM}(y^{(t-1)}, s^{(t-1)})'}</BlockMath>
+        <Text mt="sm">
+          Initial decoder state <InlineMath>{'s^{(0)} = h^{(T_x)}'}</InlineMath> (context from encoder).
+        </Text>
+
+        <Text mt="lg">
+          This allows <InlineMath>{'T_y'}</InlineMath> to be different from <InlineMath>{'T_x'}</InlineMath>.
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={2}>PyTorch Seq2Seq Implementation</Title>
+
+        <CodeBlock
+          language="python"
+          code={`class Seq2Seq(nn.Module):
+    def __init__(self, input_dim, hidden_dim, output_dim):
+        super().__init__()
+        self.encoder = nn.LSTM(input_dim, hidden_dim, batch_first=True)
+        self.decoder = nn.LSTM(output_dim, hidden_dim, batch_first=True)
+        self.fc = nn.Linear(hidden_dim, output_dim)`}
+        />
+
+        <CodeBlock
+          language="python"
+          code={`    def forward(self, src, tgt):
+        # Encode: src is (batch, src_len, input_dim)
+        _, (h_n, c_n) = self.encoder(src)
+
+        # Decode: tgt is (batch, tgt_len, output_dim)
+        decoder_out, _ = self.decoder(tgt, (h_n, c_n))
+
+        # Generate predictions: (batch, tgt_len, output_dim)
+        return self.fc(decoder_out)`}
+        />
+      </div>
+
+      <div data-slide>
+        <Title order={2}>The Bottleneck Problem</Title>
+
+        <Text mt="md">
+          The context vector must compress <strong>all information</strong> from the input sequence
+          into a fixed-size vector, regardless of input length.
+        </Text>
+
+        <Title order={3} mt="lg">Challenges</Title>
+        <List spacing="sm" mt="sm">
+          <List.Item>Long sequences lose information during compression</List.Item>
+          <List.Item>Fixed vector size limits representational capacity</List.Item>
+          <List.Item>Early input tokens may be forgotten by the end</List.Item>
+          <List.Item>Performance degrades with longer sequences</List.Item>
+        </List>
+
+        <Text mt="lg">
+          <strong>Solution:</strong> This bottleneck motivated the development of <strong>transformer architectures</strong>,
+          which allow the decoder to access all encoder states rather than just the final one.
+        </Text>
+      </div>
+
     </>
   );
 };

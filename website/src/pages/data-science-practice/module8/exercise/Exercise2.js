@@ -1,6 +1,7 @@
 import React from 'react';
-import { Container, Text, Title, Stack, List } from '@mantine/core';
-import { Zap } from 'lucide-react';
+import { Container, Text, Title, Stack, List, Badge } from '@mantine/core';
+import { Calculator } from 'lucide-react';
+import { IconStar } from '@tabler/icons-react';
 import DataInteractionPanel from 'components/DataInteractionPanel';
 
 const Exercise2 = () => {
@@ -12,77 +13,123 @@ const Exercise2 = () => {
     <>
       <Container fluid>
         <Stack spacing="xl" className="p-6">
-          <div className="flex items-center gap-3"> 
-            <Zap size={24} />
-            <Title order={1} className="text-2xl font-bold">Exercise 2: Zero-Shot Learning with Transformers</Title>
+          <div className="flex items-center gap-3">
+            <Calculator size={32} className="text-blue-600" />
+            <Title order={1}>Exercise 2: Mathematical Problem Solving with LLMs</Title>
+            <Badge color="yellow" size="lg" leftSection={<IconStar size={14} />}>
+              Marked Exercise
+            </Badge>
           </div>
 
+          <Text size="md" mb="md">
+            Apply LLMs to solve mathematical reasoning tasks. Test different pre-trained models with various prompting
+            strategies and optionally fine-tune with LoRA to improve performance on a diverse set of math problems.
+          </Text>
+
           <Stack spacing="lg">
-            {/* Part 1 */}
             <div>
-              <Title order={2} className="text-xl font-semibold mb-4">Part 1: Introduction to Transformers Library and Hugging Face</Title>
-              <Text className="text-gray-700 mb-4">
-                Learn to use pre-trained transformer models through the Hugging Face ecosystem:
-              </Text>
-              <List spacing="sm" className="ml-6">
-                <List.Item>Navigating the Hugging Face Model Hub</List.Item>
-                <List.Item>Loading pre-trained models with Transformers</List.Item>
-                <List.Item>Understanding model architecture and tokenization</List.Item>
-                <List.Item>Managing model weights and computational resources</List.Item>
+              <Title order={2} mb="md">Objectives</Title>
+              <List spacing="sm">
+                <List.Item>Evaluate LLMs on mathematical reasoning tasks</List.Item>
+                <List.Item>Design and test effective prompt engineering strategies</List.Item>
+                <List.Item>Implement chain-of-thought and few-shot prompting</List.Item>
+                <List.Item>Extract numerical answers from text outputs</List.Item>
+                <List.Item>Optionally implement LoRA fine-tuning</List.Item>
+                <List.Item>Achieve 70% accuracy with 2 decimal precision tolerance</List.Item>
               </List>
             </div>
 
-            {/* Part 2 */}
             <div>
-              <Title order={2} className="text-xl font-semibold mb-4">Part 2: Zero-Shot Learning</Title>
-              <Text className="text-gray-700 mb-4">
-                Explore various zero-shot capabilities of transformer models:
+              <Title order={2} mb="md">Dataset</Title>
+              <Text size="md" mb="sm">
+                Custom Math Problem Dataset (1000 problems)
               </Text>
-              
-              <Title order={3} className="text-lg font-medium mb-2 ml-3">Zero-Shot Classification</Title>
-              <List spacing="sm" className="ml-6 mb-3">
-                <List.Item>Classifying text without task-specific training</List.Item>
-                <List.Item>Customizing label sets for different domains</List.Item>
+              <List spacing="sm">
+                <List.Item><strong>Training Set:</strong> 900 problems with solutions</List.Item>
+                <List.Item><strong>Test Set:</strong> 100 problems for evaluation</List.Item>
+                <List.Item><strong>Categories:</strong> Arithmetic, Algebra, Geometry, Percentages, Fractions, Word Problems</List.Item>
+                <List.Item><strong>Solution Format:</strong> Numeric values (integers or decimals with 2 decimal precision)</List.Item>
               </List>
-              
-              <Title order={3} className="text-lg font-medium mb-2 ml-3">Zero-Shot Question Answering</Title>
-              <List spacing="sm" className="ml-6 mb-3">
-                <List.Item>Extracting answers from context without fine-tuning</List.Item>
-                <List.Item>Evaluating answer relevance and accuracy</List.Item>
+            </div>
+
+            <div>
+              <Title order={2} mb="md">Approach Options</Title>
+
+              <Title order={3} mb="sm">Option A: Prompt Engineering (Recommended)</Title>
+              <List spacing="sm" mb="md">
+                <List.Item>Simple prompts: Direct problem statement</List.Item>
+                <List.Item>Instruction-based: Add explicit solving instructions</List.Item>
+                <List.Item>Chain-of-thought: Guide step-by-step reasoning</List.Item>
+                <List.Item>Few-shot learning: Include training examples</List.Item>
+                <List.Item>Compare effectiveness across strategies</List.Item>
               </List>
-              
-              <Title order={3} className="text-lg font-medium mb-2 ml-3">Zero-Shot Sentiment Analysis</Title>
-              <List spacing="sm" className="ml-6 mb-3">
-                <List.Item>Detecting sentiment in various text types</List.Item>
-                <List.Item>Analyzing sentiment intensity and nuance</List.Item>
+
+              <Title order={3} mb="sm">Option B: Fine-Tuning with LoRA (Advanced)</Title>
+              <List spacing="sm">
+                <List.Item>Parameter-efficient fine-tuning approach</List.Item>
+                <List.Item>Adapt pre-trained models to math domain</List.Item>
+                <List.Item>Configure LoRA hyperparameters (rank, alpha, dropout)</List.Item>
+                <List.Item>Train and evaluate on math problems</List.Item>
+                <List.Item>Compare with prompting approaches</List.Item>
               </List>
-              
-              <Title order={3} className="text-lg font-medium mb-2 ml-3">Zero-Shot Translation</Title>
-              <List spacing="sm" className="ml-6 mb-3">
-                <List.Item>Cross-lingual capabilities of multilingual models</List.Item>
-                <List.Item>Handling low-resource languages</List.Item>
+            </div>
+
+            <div>
+              <Title order={2} mb="md">Key Concepts</Title>
+              <List spacing="sm">
+                <List.Item>Mathematical reasoning in LLMs</List.Item>
+                <List.Item>Prompt engineering techniques</List.Item>
+                <List.Item>Zero-shot vs. few-shot learning</List.Item>
+                <List.Item>Chain-of-thought prompting</List.Item>
+                <List.Item>Regular expressions for number extraction</List.Item>
+                <List.Item>Model evaluation with tolerance metrics</List.Item>
+                <List.Item>LoRA and parameter-efficient fine-tuning</List.Item>
               </List>
-              
-              <Title order={3} className="text-lg font-medium mb-2 ml-3">Zero-Shot Text Summarization</Title>
-              <List spacing="sm" className="ml-6 mb-3">
-                <List.Item>Generating abstractive summaries without training</List.Item>
-                <List.Item>Controlling summary length and focus</List.Item>
+            </div>
+
+            <div>
+              <Title order={2} mb="md">Evaluation Metric</Title>
+              <Text size="md" mb="sm">
+                <strong>Accuracy with 2 Decimal Precision Tolerance</strong>
+              </Text>
+              <List spacing="sm">
+                <List.Item>Predictions are rounded to 2 decimal places</List.Item>
+                <List.Item>Compared against ground truth solutions</List.Item>
+                <List.Item>Target: 70% accuracy on test set (100 problems)</List.Item>
+                <List.Item>Non-numeric predictions count as incorrect</List.Item>
               </List>
-              
-              <Title order={3} className="text-lg font-medium mb-2 ml-3">Zero-Shot Mathematical Reasoning</Title>
-              <List spacing="sm" className="ml-6">
-                <List.Item>Using specialized models for mathematical tasks</List.Item>
-                <List.Item>Evaluating reasoning capabilities and limitations</List.Item>
+            </div>
+
+            <div>
+              <Title order={2} mb="md">Deliverables</Title>
+              <List spacing="sm">
+                <List.Item>Completed Jupyter notebook with implementation</List.Item>
+                <List.Item>submission.csv with predictions (id, solution columns)</List.Item>
+                <List.Item>Comparison of different prompting strategies</List.Item>
+                <List.Item>Analysis of model performance by problem category</List.Item>
+                <List.Item>Error analysis and improvement strategies</List.Item>
+                <List.Item>Written answers to reflection questions</List.Item>
+              </List>
+            </div>
+
+            <div>
+              <Title order={2} mb="md">Suggested Models</Title>
+              <List spacing="sm">
+                <List.Item><strong>GPT-2:</strong> Fast baseline, limited math reasoning</List.Item>
+                <List.Item><strong>TinyLlama-1.1B:</strong> Good balance of speed and capability</List.Item>
+                <List.Item><strong>Phi-2:</strong> Better reasoning, requires more memory</List.Item>
+                <List.Item>Compare multiple models to understand trade-offs</List.Item>
               </List>
             </div>
           </Stack>
+
+          <DataInteractionPanel
+            notebookUrl={notebookUrl}
+            notebookHtmlUrl={notebookHtmlUrl}
+            notebookColabUrl={notebookColabUrl}
+            className="mt-6"
+          />
         </Stack>
-        <DataInteractionPanel
-          notebookUrl={notebookUrl}
-          notebookHtmlUrl={notebookHtmlUrl}
-          notebookColabUrl={notebookColabUrl}
-          className="mt-6"
-        />
       </Container>
     </>
   );

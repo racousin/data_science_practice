@@ -7511,585 +7511,35 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=56bb4ed8-d314-47e6-8692-4a4930e2c62b">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Tokenization-Warmup">Tokenization Warmup<a class="anchor-link" href="#Tokenization-Warmup">¶</a></h1>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=6943f4b8-ddce-46a0-8035-925da4f57257">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">nltk</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">nltk.tokenize</span><span class="w"> </span><span class="kn">import</span> <span class="n">word_tokenize</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">BertTokenizer</span><span class="p">,</span> <span class="n">GPT2Tokenizer</span>
-
-<span class="c1"># Download necessary NLTK data</span>
-<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">'punkt'</span><span class="p">)</span>
-</pre></div>
+<h1 id="Exercise-0:-Understanding-Corpus,-Tokens,-and-BPE-Implementation">Exercise 0: Understanding Corpus, Tokens, and BPE Implementation<a class="anchor-link" href="#Exercise-0:-Understanding-Corpus,-Tokens,-and-BPE-Implementation">¶</a></h1><p>In this exercise, you'll build a Byte-Pair Encoding (BPE) tokenizer from scratch and understand the fundamental concepts of tokenization in NLP.</p>
+<p><strong>Learning Objectives:</strong></p>
+<ul>
+<li>Understand text corpora and tokenization fundamentals</li>
+<li>Implement BPE algorithm from scratch</li>
+<li>Train and analyze custom tokenizers</li>
+<li>Compare different tokenization strategies</li>
+</ul>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>[nltk_data] Downloading package punkt to /home/raphael/nltk_data...
-[nltk_data]   Package punkt is already up-to-date!
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[1]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>True</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=185b9796-7461-4772-b456-bf3318b18bd6">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Part-1:-Custom-Tokenizer-from-Corpus">Part 1: Custom Tokenizer from Corpus<a class="anchor-link" href="#Part-1:-Custom-Tokenizer-from-Corpus">¶</a></h1>
+<h2 id="Part-1:-Setting-Up-and-Loading-the-TinyStories-Dataset">Part 1: Setting Up and Loading the TinyStories Dataset<a class="anchor-link" href="#Part-1:-Setting-Up-and-Loading-the-TinyStories-Dataset">¶</a></h2>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=d4f2e7e1-b756-46db-bcf6-2690fa5ee042">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 1.1 Define a simple corpus</span>
-<span class="n">corpus</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">"Natural language processing (NLP) is a field of AI."</span><span class="p">,</span>
-    <span class="s2">"Tokenization is the process of breaking text into tokens."</span><span class="p">,</span>
-    <span class="s2">"Tokens can be words, subwords, or characters."</span><span class="p">,</span>
-    <span class="s2">"Modern NLP uses transformer models like BERT and GPT."</span><span class="p">,</span>
-    <span class="s2">"Fine-tuning allows adapting pre-trained models to specific tasks."</span>
-<span class="p">]</span>
-<span class="n">full_text</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Corpus size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span><span class="si">}</span><span class="s2"> sentences, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">full_text</span><span class="p">)</span><span class="si">}</span><span class="s2"> characters"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Corpus size: 5 sentences, 275 characters
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=95ff2193-7d86-4a62-b3ed-30efdb36eb29">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 1.2 Basic Word Tokenizer</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">simple_word_tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Split text on whitespace and remove punctuation"""</span>
-    <span class="c1"># Remove punctuation and lowercase the text</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">'[^\w\s]'</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
-    <span class="c1"># Split on whitespace</span>
-    <span class="n">tokens</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">tokens</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=7c68d7c5-af29-4ba0-9f65-4e186a7e48fb">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 1.3 Simple Regex Tokenizer</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">regex_tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Tokenize text using regular expressions"""</span>
-    <span class="c1"># This regex pattern matches words, numbers, and common punctuation</span>
-    <span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'\w+|[^\w\s]'</span>
-    <span class="n">tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
-    <span class="k">return</span> <span class="n">tokens</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=923c4c20-f289-460d-a633-7fea861385da">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 1.4 Character Tokenizer</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">char_tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Tokenize text into individual characters"""</span>
-    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=97c91cf6-06b7-4835-9e6a-220c57a16d13">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 1.5 Build a vocabulary from our corpus</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">build_vocabulary</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">tokenizer_func</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Build a vocabulary from a corpus using the provided tokenizer function"""</span>
-    <span class="n">all_tokens</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">:</span>
-        <span class="n">tokens</span> <span class="o">=</span> <span class="n">tokenizer_func</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-        <span class="n">all_tokens</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
-    
-    <span class="c1"># Count tokens and create vocabulary</span>
-    <span class="n">token_counts</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">all_tokens</span><span class="p">)</span>
-    <span class="c1"># Add special tokens: unknown token and padding token</span>
-    <span class="n">vocabulary</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">"&lt;PAD&gt;"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>  <span class="c1"># Padding token</span>
-        <span class="s2">"&lt;UNK&gt;"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1"># Unknown token</span>
-    <span class="p">}</span>
-    <span class="c1"># Add the rest of the vocabulary</span>
-    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">token_counts</span><span class="o">.</span><span class="n">most_common</span><span class="p">()):</span>
-        <span class="n">vocabulary</span><span class="p">[</span><span class="n">token</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">2</span>  <span class="c1"># +2 because we already have 2 special tokens</span>
-    
-    <span class="c1"># Create a reverse mapping (id -&gt; token) for decoding</span>
-    <span class="n">id_to_token</span> <span class="o">=</span> <span class="p">{</span><span class="n">idx</span><span class="p">:</span> <span class="n">token</span> <span class="k">for</span> <span class="n">token</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">vocabulary</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
-    
-    <span class="k">return</span> <span class="n">vocabulary</span><span class="p">,</span> <span class="n">id_to_token</span><span class="p">,</span> <span class="n">token_counts</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=e93129ff-4622-4ebd-9e63-0966a68a5b31">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 1.6 Implement a simple subword tokenizer (BPE-like approach)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">train_subword_tokenizer</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">vocab_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">min_frequency</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Implement a very simplified version of Byte-Pair Encoding (BPE)"""</span>
-    <span class="c1"># Start with character-level tokens</span>
-    <span class="n">all_chars</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">:</span>
-        <span class="n">all_chars</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
-    
-    <span class="c1"># Initialize vocabulary with unique characters</span>
-    <span class="n">vocab</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">all_chars</span><span class="p">))</span>
-    
-    <span class="c1"># Initialize each word as a sequence of characters</span>
-    <span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">word</span><span class="p">))</span> <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">corpus</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">sentence</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
-    
-    <span class="c1"># Count character pairs</span>
-    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">vocab_size</span><span class="p">:</span>
-        <span class="c1"># Count pairs</span>
-        <span class="n">pairs</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
-            <span class="n">symbols</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="n">pairs</span><span class="p">[</span><span class="n">symbols</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">symbols</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
-        
-        <span class="c1"># If no more pairs, break</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">pairs</span><span class="p">:</span>
-            <span class="k">break</span>
-            
-        <span class="c1"># Get the most frequent pair</span>
-        <span class="n">best_pair</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">pairs</span><span class="o">.</span><span class="n">get</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">pairs</span><span class="p">[</span><span class="n">best_pair</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">min_frequency</span><span class="p">:</span>
-            <span class="k">break</span>
-            
-        <span class="c1"># Create new token from the pair</span>
-        <span class="n">new_token</span> <span class="o">=</span> <span class="s1">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">best_pair</span><span class="p">)</span>
-        <span class="n">vocab</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_token</span><span class="p">)</span>
-        
-        <span class="c1"># Replace all occurrences of the pair</span>
-        <span class="n">new_words</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
-            <span class="n">new_word</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">' '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">best_pair</span><span class="p">),</span> <span class="n">new_token</span><span class="p">)</span>
-            <span class="n">new_words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_word</span><span class="p">)</span>
-        <span class="n">words</span> <span class="o">=</span> <span class="n">new_words</span>
-    
-    <span class="k">return</span> <span class="n">vocab</span><span class="p">,</span> <span class="n">words</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=699c0efc-082a-4e58-9ef3-eec1493b7cd5">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 1.7 Create Encoder and Decoder functions</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">tokenizer_func</span><span class="p">,</span> <span class="n">vocab</span><span class="p">,</span> <span class="n">add_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    Encode text to token IDs</span>
-<span class="sd">    </span>
-<span class="sd">    Args:</span>
-<span class="sd">        text (str): Text to encode</span>
-<span class="sd">        tokenizer_func (callable): Tokenizer function to use</span>
-<span class="sd">        vocab (dict): Vocabulary mapping (token -&gt; id)</span>
-<span class="sd">        add_special_tokens (bool): Whether to add special tokens</span>
-<span class="sd">        </span>
-<span class="sd">    Returns:</span>
-<span class="sd">        list: List of token IDs</span>
-<span class="sd">    """</span>
-    <span class="n">tokens</span> <span class="o">=</span> <span class="n">tokenizer_func</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-    
-    <span class="c1"># Convert tokens to ids (handling unknown tokens)</span>
-    <span class="n">ids</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
-        <span class="c1"># Use the token id if in vocabulary, else use &lt;UNK&gt; token id</span>
-        <span class="n">token_id</span> <span class="o">=</span> <span class="n">vocab</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">vocab</span><span class="p">[</span><span class="s2">"&lt;UNK&gt;"</span><span class="p">])</span>
-        <span class="n">ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token_id</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">ids</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">decode</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">id_to_token</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    Decode token IDs back to text</span>
-<span class="sd">    </span>
-<span class="sd">    Args:</span>
-<span class="sd">        ids (list): List of token IDs</span>
-<span class="sd">        id_to_token (dict): Reverse vocabulary mapping (id -&gt; token)</span>
-<span class="sd">        </span>
-<span class="sd">    Returns:</span>
-<span class="sd">        str: Decoded text</span>
-<span class="sd">    """</span>
-    <span class="c1"># Convert ids back to tokens</span>
-    <span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">id_to_token</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">id_to_token</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">]</span>  <span class="c1"># Default to &lt;UNK&gt; for unknown ids</span>
-    
-    <span class="c1"># Simple space-joining (this is a simplification and won't work well for all tokenizer types)</span>
-    <span class="c1"># A real decoder would need to be aware of the tokenization scheme</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
-    
-    <span class="c1"># Remove special tokens if present</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"&lt;PAD&gt; "</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" &lt;PAD&gt;"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"&lt;UNK&gt; "</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" &lt;UNK&gt;"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">text</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=60030c2f-861c-4403-a524-ea721111f701">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 1.8 Apply our tokenizers to the corpus and demonstrate encode/decode</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Applying different tokenizers to our corpus and demonstrating encode/decode..."</span><span class="p">)</span>
-
-<span class="c1"># Word tokenizer</span>
-<span class="n">word_vocab</span><span class="p">,</span> <span class="n">word_id_to_token</span><span class="p">,</span> <span class="n">word_counts</span> <span class="o">=</span> <span class="n">build_vocabulary</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">simple_word_tokenizer</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Word vocabulary size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">word_vocab</span><span class="p">)</span><span class="si">}</span><span class="s2"> (including special tokens)"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Example word tokens for first sentence: </span><span class="si">{</span><span class="n">simple_word_tokenizer</span><span class="p">(</span><span class="n">corpus</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Encode/decode example</span>
-<span class="n">example_text</span> <span class="o">=</span> <span class="s2">"NLP is an exciting field."</span>
-<span class="n">word_ids</span> <span class="o">=</span> <span class="n">encode</span><span class="p">(</span><span class="n">example_text</span><span class="p">,</span> <span class="n">simple_word_tokenizer</span><span class="p">,</span> <span class="n">word_vocab</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Encoded word ids: </span><span class="si">{</span><span class="n">word_ids</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="n">decoded_text</span> <span class="o">=</span> <span class="n">decode</span><span class="p">(</span><span class="n">word_ids</span><span class="p">,</span> <span class="n">word_id_to_token</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Decoded text: '</span><span class="si">{</span><span class="n">decoded_text</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
-
-<span class="c1"># Out-of-vocabulary example</span>
-<span class="n">oov_text</span> <span class="o">=</span> <span class="s2">"Supercalifragilisticexpialidocious is a very long word!"</span>
-<span class="n">word_ids_oov</span> <span class="o">=</span> <span class="n">encode</span><span class="p">(</span><span class="n">oov_text</span><span class="p">,</span> <span class="n">simple_word_tokenizer</span><span class="p">,</span> <span class="n">word_vocab</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Encoded word ids with OOV: </span><span class="si">{</span><span class="n">word_ids_oov</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="n">decoded_text_oov</span> <span class="o">=</span> <span class="n">decode</span><span class="p">(</span><span class="n">word_ids_oov</span><span class="p">,</span> <span class="n">word_id_to_token</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Decoded text with OOV: '</span><span class="si">{</span><span class="n">decoded_text_oov</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
-
-<span class="c1"># Regex tokenizer</span>
-<span class="n">regex_vocab</span><span class="p">,</span> <span class="n">regex_id_to_token</span><span class="p">,</span> <span class="n">regex_counts</span> <span class="o">=</span> <span class="n">build_vocabulary</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">regex_tokenizer</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Regex vocabulary size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">regex_vocab</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Example regex tokens for first sentence: </span><span class="si">{</span><span class="n">regex_tokenizer</span><span class="p">(</span><span class="n">corpus</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Character tokenizer</span>
-<span class="n">char_vocab</span><span class="p">,</span> <span class="n">char_id_to_token</span><span class="p">,</span> <span class="n">char_counts</span> <span class="o">=</span> <span class="n">build_vocabulary</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">char_tokenizer</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Character vocabulary size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">char_vocab</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"First 10 character tokens for first sentence: </span><span class="si">{</span><span class="n">char_tokenizer</span><span class="p">(</span><span class="n">corpus</span><span class="p">[</span><span class="mi">0</span><span class="p">])[:</span><span class="mi">10</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Character tokenizer OOV handling - rarely has OOV issues since each character is a token</span>
-<span class="n">example_with_emoji</span> <span class="o">=</span> <span class="s2">"NLP is fun! 😊"</span>
-<span class="n">char_ids</span> <span class="o">=</span> <span class="n">encode</span><span class="p">(</span><span class="n">example_with_emoji</span><span class="p">,</span> <span class="n">char_tokenizer</span><span class="p">,</span> <span class="n">char_vocab</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Character encoding with emoji: </span><span class="si">{</span><span class="n">char_ids</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="n">decoded_emoji</span> <span class="o">=</span> <span class="n">decode</span><span class="p">(</span><span class="n">char_ids</span><span class="p">,</span> <span class="n">char_id_to_token</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Decoded text with emoji: '</span><span class="si">{</span><span class="n">decoded_emoji</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>
-Applying different tokenizers to our corpus and demonstrating encode/decode...
-Word vocabulary size: 39 (including special tokens)
-Example word tokens for first sentence: ['natural', 'language', 'processing', 'nlp', 'is', 'a', 'field', 'of', 'ai']
-Encoded word ids: [2, 3, 1, 1, 11]
-Decoded text: 'nlp is field'
-Encoded word ids with OOV: [1, 3, 10, 1, 1, 1]
-Decoded text with OOV: 'is a'
-
-Regex vocabulary size: 46
-Example regex tokens for first sentence: ['natural', 'language', 'processing', '(', 'nlp', ')', 'is', 'a', 'field', 'of', 'ai', '.']
-
-Character vocabulary size: 42
-First 10 character tokens for first sentence: ['N', 'a', 't', 'u', 'r', 'a', 'l', ' ', 'l', 'a']
-Character encoding with emoji: [21, 26, 22, 2, 9, 4, 2, 18, 16, 7, 1, 2, 1]
-Decoded text with emoji: 'N L P   i s   f u n  '
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e8dad0ee-6161-4be8-b929-8abf1b12b9d4">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Questions:">Questions:<a class="anchor-link" href="#Questions:">¶</a></h3><ol>
-<li><p>Why do different tokenization approaches produce different numbers of tokens?</p>
-<ul>
-<li>Compare the token counts from word, character, and subword tokenizers</li>
-<li>How does the vocabulary size affect the number of tokens produced?</li>
-<li>Which approach results in the longest sequences? The shortest?</li>
-</ul>
-</li>
-<li><p>How does subword tokenization handle out-of-vocabulary words better than word tokenization?</p>
-<ul>
-<li>Test tokenizing 'Supercalifragilisticexpialidocious' with both approaches</li>
-<li>How many <unk> tokens does each approach produce?</unk></li>
-<li>Which approach preserves more information about the original word?</li>
-</ul>
-</li>
-<li><p>What are the trade-offs between character, word, and subword tokenization?</p>
-<ul>
-<li>Consider sequence length, vocabulary size, and information preservation</li>
-<li>Which approach works better for morphologically rich languages?</li>
-<li>How do these approaches handle compound words differently?</li>
-</ul>
-</li>
-<li><p>How does case handling affect tokenization and model performance?</p>
-<ul>
-<li>Compare case-preserving vs case-insensitive tokenization</li>
-<li>When might preserving case be critical? When might it be unnecessary?</li>
-<li>How does case handling affect vocabulary size?</li>
-<li>What's the impact on proper nouns and acronyms?</li>
-</ul>
-</li>
-<li><p>What strategies could you use to handle case in a more efficient way?</p>
-<ul>
-<li>Consider special tokens, preprocessing techniques, or embedding modifications</li>
-<li>How do modern tokenizers like WordPiece and BPE handle case?</li>
-<li>What's the difference between cased and uncased models?</li>
-</ul>
-</li>
-<li><p>How would you handle tokenization of multilingual text?</p>
-<ul>
-<li>What challenges arise when tokenizing languages with different writing systems?</li>
-<li>How do character-based approaches compare to word-based approaches for non-Latin scripts?</li>
-<li>What strategies are used in multilingual models like mBERT?</li>
-<li>How would you handle code-switching (mixing languages within a single text)?</li>
-</ul>
-</li>
-<li><p>How do tokenization choices impact downstream tasks?</p>
-<ul>
-<li>For which tasks might character tokenization be superior?</li>
-<li>When would word tokenization be preferred?</li>
-<li>How does tokenization affect sequence length and thus model efficiency?</li>
-</ul>
-</li>
-</ol>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f77149ef-5cd5-4400-aa31-ee3ccc6726c0">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Part-2:-Pre-trained-Tokenizers">Part 2: Pre-trained Tokenizers<a class="anchor-link" href="#Part-2:-Pre-trained-Tokenizers">¶</a></h1>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=bde92cb2-0a4d-4f57-8772-f4d88b3d5a5d">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 2.1 NLTK Tokenizer</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Using NLTK pre-trained tokenizer..."</span><span class="p">)</span>
-<span class="n">nltk_tokens</span> <span class="o">=</span> <span class="n">word_tokenize</span><span class="p">(</span><span class="n">corpus</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"NLTK tokens: </span><span class="si">{</span><span class="n">nltk_tokens</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># 2.2 Hugging Face Tokenizers</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Using pre-trained tokenizers from Hugging Face..."</span><span class="p">)</span>
-
-<span class="c1"># BERT tokenizer (WordPiece)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Loading BERT tokenizer..."</span><span class="p">)</span>
-<span class="n">bert_tokenizer</span> <span class="o">=</span> <span class="n">BertTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">'bert-base-uncased'</span><span class="p">)</span>
-<span class="n">bert_tokens</span> <span class="o">=</span> <span class="n">bert_tokenizer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">corpus</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">bert_ids</span> <span class="o">=</span> <span class="n">bert_tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">corpus</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"BERT tokens: </span><span class="si">{</span><span class="n">bert_tokens</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"BERT token ids: </span><span class="si">{</span><span class="n">bert_ids</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"BERT decoded: </span><span class="si">{</span><span class="n">bert_tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">bert_ids</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># GPT-2 tokenizer (BPE)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Loading GPT-2 tokenizer..."</span><span class="p">)</span>
-<span class="n">gpt2_tokenizer</span> <span class="o">=</span> <span class="n">GPT2Tokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">'gpt2'</span><span class="p">)</span>
-<span class="n">gpt2_tokens</span> <span class="o">=</span> <span class="n">gpt2_tokenizer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">corpus</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">gpt2_ids</span> <span class="o">=</span> <span class="n">gpt2_tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">corpus</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"GPT-2 tokens: </span><span class="si">{</span><span class="n">gpt2_tokens</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"GPT-2 token ids: </span><span class="si">{</span><span class="n">gpt2_ids</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"GPT-2 decoded: </span><span class="si">{</span><span class="n">gpt2_tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">gpt2_ids</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># 2.3 Compare tokenization approaches on our corpus</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Comparing tokenization approaches on our corpus..."</span><span class="p">)</span>
-<span class="n">sentence</span> <span class="o">=</span> <span class="s2">"Fine-tuning allows adapting pre-trained models to specific tasks."</span>
-
-<span class="n">tokenization_results</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"Simple Word"</span><span class="p">:</span> <span class="n">simple_word_tokenizer</span><span class="p">(</span><span class="n">sentence</span><span class="p">),</span>
-    <span class="s2">"Regex"</span><span class="p">:</span> <span class="n">regex_tokenizer</span><span class="p">(</span><span class="n">sentence</span><span class="p">),</span>
-    <span class="s2">"Character"</span><span class="p">:</span> <span class="n">char_tokenizer</span><span class="p">(</span><span class="n">sentence</span><span class="p">)[:</span><span class="mi">10</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"..."</span><span class="p">],</span>  <span class="c1"># Showing just first 10 chars</span>
-    <span class="s2">"NLTK"</span><span class="p">:</span> <span class="n">word_tokenize</span><span class="p">(</span><span class="n">sentence</span><span class="p">),</span>
-    <span class="s2">"BERT"</span><span class="p">:</span> <span class="n">bert_tokenizer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">sentence</span><span class="p">),</span>
-    <span class="s2">"GPT-2"</span><span class="p">:</span> <span class="n">gpt2_tokenizer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
-<span class="p">}</span>
-
-<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">tokens</span> <span class="ow">in</span> <span class="n">tokenization_results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> Tokenizer: </span><span class="si">{</span><span class="n">tokens</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Token count: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># 2.4 Out-of-vocabulary handling</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Handling out-of-vocabulary words..."</span><span class="p">)</span>
-<span class="n">oov_sentence</span> <span class="o">=</span> <span class="s2">"Supercalifragilisticexpialidocious is a very long word!"</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"BERT tokens for OOV: </span><span class="si">{</span><span class="n">bert_tokenizer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">oov_sentence</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"GPT-2 tokens for OOV: </span><span class="si">{</span><span class="n">gpt2_tokenizer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">oov_sentence</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>
-Using NLTK pre-trained tokenizer...
-NLTK tokens: ['Natural', 'language', 'processing', '(', 'NLP', ')', 'is', 'a', 'field', 'of', 'AI', '.']
-
-Using pre-trained tokenizers from Hugging Face...
-Loading BERT tokenizer...
-BERT tokens: ['natural', 'language', 'processing', '(', 'nl', '##p', ')', 'is', 'a', 'field', 'of', 'ai', '.']
-BERT token ids: [101, 3019, 2653, 6364, 1006, 17953, 2361, 1007, 2003, 1037, 2492, 1997, 9932, 1012, 102]
-BERT decoded: [CLS] natural language processing ( nlp ) is a field of ai. [SEP]
-
-Loading GPT-2 tokenizer...
-GPT-2 tokens: ['Natural', 'Ġlanguage', 'Ġprocessing', 'Ġ(', 'N', 'LP', ')', 'Ġis', 'Ġa', 'Ġfield', 'Ġof', 'ĠAI', '.']
-GPT-2 token ids: [35364, 3303, 7587, 357, 45, 19930, 8, 318, 257, 2214, 286, 9552, 13]
-GPT-2 decoded: Natural language processing (NLP) is a field of AI.
-
-Comparing tokenization approaches on our corpus...
-Simple Word Tokenizer: ['finetuning', 'allows', 'adapting', 'pretrained', 'models', 'to', 'specific', 'tasks']
-Token count: 8
-
-Regex Tokenizer: ['fine', '-', 'tuning', 'allows', 'adapting', 'pre', '-', 'trained', 'models', 'to', 'specific', 'tasks', '.']
-Token count: 13
-
-Character Tokenizer: ['F', 'i', 'n', 'e', '-', 't', 'u', 'n', 'i', 'n', '...']
-Token count: 11
-
-NLTK Tokenizer: ['Fine-tuning', 'allows', 'adapting', 'pre-trained', 'models', 'to', 'specific', 'tasks', '.']
-Token count: 9
-
-BERT Tokenizer: ['fine', '-', 'tuning', 'allows', 'adapting', 'pre', '-', 'trained', 'models', 'to', 'specific', 'tasks', '.']
-Token count: 13
-
-GPT-2 Tokenizer: ['Fine', '-', 'tun', 'ing', 'Ġallows', 'Ġadapting', 'Ġpre', '-', 'trained', 'Ġmodels', 'Ġto', 'Ġspecific', 'Ġtasks', '.']
-Token count: 14
-
-
-Handling out-of-vocabulary words...
-BERT tokens for OOV: ['super', '##cal', '##if', '##rag', '##ilis', '##tic', '##ex', '##pia', '##lid', '##oc', '##ious', 'is', 'a', 'very', 'long', 'word', '!']
-GPT-2 tokens for OOV: ['Super', 'cal', 'if', 'rag', 'il', 'ist', 'ice', 'xp', 'ial', 'id', 'ocious', 'Ġis', 'Ġa', 'Ġvery', 'Ġlong', 'Ġword', '!']
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=ee97adf5-04bd-44be-a4f8-b59dba0b5971">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8097,9 +7547,588 @@ GPT-2 tokens for OOV: ['Super', 'cal', 'if', 'rag', 'il', 'ist', 'ice', 'xp', 'i
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span> 
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Install required packages</span>
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>datasets<span class="w"> </span>transformers<span class="w"> </span>matplotlib<span class="w"> </span>-q
 </pre></div>
 </div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dataset</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span><span class="p">,</span> <span class="n">defaultdict</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="c1"># Load a subset of TinyStories dataset</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Loading TinyStories dataset..."</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">"roneneldan/TinyStories"</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s2">"train[:5000]"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Loaded </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="si">}</span><span class="s2"> stories"</span><span class="p">)</span>
+
+<span class="c1"># Examine the first story</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">First story:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'text'</span><span class="p">][:</span><span class="mi">500</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Part-2:-Understanding-Tokens">Part 2: Understanding Tokens<a class="anchor-link" href="#Part-2:-Understanding-Tokens">¶</a></h2><p>Before implementing BPE, let's understand different tokenization approaches:</p>
+<ul>
+<li><strong>Character-level</strong>: Each character is a token</li>
+<li><strong>Word-level</strong>: Each word is a token</li>
+<li><strong>Subword-level</strong>: Parts of words are tokens (BPE, WordPiece)</li>
+</ul>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sample_text</span> <span class="o">=</span> <span class="s2">"Once upon a time, there was a little girl named Lily."</span>
+
+<span class="c1"># TODO: Implement different tokenization strategies</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">char_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Split text into individual characters"""</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">word_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Split text into words (simple whitespace and punctuation split)"""</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">'\w+|[^\w\s]'</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+
+<span class="c1"># Test your tokenizers</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Original:"</span><span class="p">,</span> <span class="n">sample_text</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Character tokens:"</span><span class="p">,</span> <span class="n">char_tokenize</span><span class="p">(</span><span class="n">sample_text</span><span class="p">)[:</span><span class="mi">20</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total character tokens: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">char_tokenize</span><span class="p">(</span><span class="n">sample_text</span><span class="p">))</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Word tokens:"</span><span class="p">,</span> <span class="n">word_tokenize</span><span class="p">(</span><span class="n">sample_text</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total word tokens: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">word_tokenize</span><span class="p">(</span><span class="n">sample_text</span><span class="p">))</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Part-3:-Implementing-Byte-Pair-Encoding-(BPE)">Part 3: Implementing Byte-Pair Encoding (BPE)<a class="anchor-link" href="#Part-3:-Implementing-Byte-Pair-Encoding-(BPE)">¶</a></h2><p>BPE is a subword tokenization algorithm that:</p>
+<ol>
+<li>Starts with individual characters</li>
+<li>Iteratively merges the most frequent adjacent pairs</li>
+<li>Builds a vocabulary of subword units</li>
+</ol>
+<p>This balances vocabulary size with the ability to represent any word.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">BPETokenizer</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vocab_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">=</span> <span class="n">vocab_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">merges</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># List of (pair, merged_token) tuples in order</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vocab</span> <span class="o">=</span> <span class="p">{}</span>   <span class="c1"># Token to ID mapping</span>
+        
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">words</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Count frequency of adjacent symbol pairs in the corpus.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            words: Dictionary mapping word tuples to their frequencies</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Counter of symbol pairs and their frequencies</span>
+<span class="sd">        """</span>
+        <span class="n">pairs</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+        <span class="c1"># TODO: Implement pair counting</span>
+        <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">words</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">symbols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">pairs</span><span class="p">[(</span><span class="n">symbols</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">symbols</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])]</span> <span class="o">+=</span> <span class="n">freq</span>
+        <span class="k">return</span> <span class="n">pairs</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">merge_vocab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pair</span><span class="p">,</span> <span class="n">words</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Merge the most frequent pair in the vocabulary.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            pair: Tuple of two symbols to merge (a, b)</span>
+<span class="sd">            words: Dictionary mapping word tuples to their frequencies</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Updated words dictionary with merged pairs</span>
+<span class="sd">        """</span>
+        <span class="n">new_words</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># TODO: Implement vocabulary merging</span>
+        <span class="n">bigram</span> <span class="o">=</span> <span class="s1">' '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span>
+        <span class="n">replacement</span> <span class="o">=</span> <span class="s1">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">words</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">w_str</span> <span class="o">=</span> <span class="s1">' '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+            <span class="n">w_str</span> <span class="o">=</span> <span class="n">w_str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">bigram</span><span class="p">,</span> <span class="n">replacement</span><span class="p">)</span>
+            <span class="n">new_word</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">w_str</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+            <span class="n">new_words</span><span class="p">[</span><span class="n">new_word</span><span class="p">]</span> <span class="o">=</span> <span class="n">freq</span>
+        <span class="k">return</span> <span class="n">new_words</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texts</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Train the BPE tokenizer on a corpus of texts.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            texts: List of text strings to train on</span>
+<span class="sd">            verbose: Whether to print progress</span>
+<span class="sd">        """</span>
+        <span class="c1"># Step 1: Prepare initial vocabulary (characters)</span>
+        <span class="c1"># Create word frequency dictionary with end-of-word marker</span>
+        <span class="n">word_freqs</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+            <span class="n">words</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">word_freqs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+        
+        <span class="c1"># Convert words to character sequences with end marker</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">word_freqs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># Split into characters and add end-of-word marker</span>
+            <span class="n">word_tuple</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="s1">'&lt;/w&gt;'</span><span class="p">])</span>
+            <span class="n">words</span><span class="p">[</span><span class="n">word_tuple</span><span class="p">]</span> <span class="o">=</span> <span class="n">freq</span>
+        
+        <span class="c1"># Step 2: Build initial character vocabulary</span>
+        <span class="n">base_vocab</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">base_vocab</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+        
+        <span class="c1"># Assign IDs to base vocabulary</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vocab</span> <span class="o">=</span> <span class="p">{</span><span class="n">token</span><span class="p">:</span> <span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">token</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">base_vocab</span><span class="p">))}</span>
+        
+        <span class="c1"># Step 3: Iteratively merge most frequent pairs</span>
+        <span class="n">num_merges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocab</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Starting with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocab</span><span class="p">)</span><span class="si">}</span><span class="s2"> base tokens"</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Will perform </span><span class="si">{</span><span class="n">num_merges</span><span class="si">}</span><span class="s2"> merges"</span><span class="p">)</span>
+        
+        <span class="c1"># TODO: Implement the BPE training loop</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_merges</span><span class="p">):</span>
+            <span class="n">pairs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_stats</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">pairs</span><span class="p">:</span>
+                <span class="k">break</span>
+                
+            <span class="n">best_pair</span> <span class="o">=</span> <span class="n">pairs</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">words</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merge_vocab</span><span class="p">(</span><span class="n">best_pair</span><span class="p">,</span> <span class="n">words</span><span class="p">)</span>
+            
+            <span class="c1"># Add merged token to vocabulary</span>
+            <span class="n">merged_token</span> <span class="o">=</span> <span class="s1">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">best_pair</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">merges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">best_pair</span><span class="p">,</span> <span class="n">merged_token</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vocab</span><span class="p">[</span><span class="n">merged_token</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocab</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Merge </span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">num_merges</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">best_pair</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">merged_token</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Training complete. Final vocabulary size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocab</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Encode text into token IDs.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            text: String to encode</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            List of token IDs</span>
+<span class="sd">        """</span>
+        <span class="c1"># TODO: Implement encoding</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+            <span class="c1"># Start with characters + end marker</span>
+            <span class="n">word_tokens</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="s1">'&lt;/w&gt;'</span><span class="p">]</span>
+            
+            <span class="c1"># Apply merges in order</span>
+            <span class="k">for</span> <span class="n">pair</span><span class="p">,</span> <span class="n">merged</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">merges</span><span class="p">:</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">word_tokens</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">word_tokens</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">word_tokens</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="n">pair</span><span class="p">:</span>
+                        <span class="n">word_tokens</span> <span class="o">=</span> <span class="n">word_tokens</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">merged</span><span class="p">]</span> <span class="o">+</span> <span class="n">word_tokens</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            
+            <span class="c1"># Convert tokens to IDs</span>
+            <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">word_tokens</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">token</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vocab</span><span class="p">:</span>
+                    <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocab</span><span class="p">[</span><span class="n">token</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Handle unknown tokens (shouldn't happen if properly trained)</span>
+                    <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'&lt;unk&gt;'</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        
+        <span class="k">return</span> <span class="n">tokens</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token_ids</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Decode token IDs back into text.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            token_ids: List of token IDs</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Decoded text string</span>
+<span class="sd">        """</span>
+        <span class="c1"># TODO: Implement decoding</span>
+        <span class="c1"># Create reverse vocab</span>
+        <span class="n">id_to_token</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        
+        <span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">id_to_token</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tid</span><span class="p">,</span> <span class="s1">'&lt;unk&gt;'</span><span class="p">)</span> <span class="k">for</span> <span class="n">tid</span> <span class="ow">in</span> <span class="n">token_ids</span><span class="p">]</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s1">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'&lt;/w&gt;'</span><span class="p">,</span> <span class="s1">' '</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">text</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_vocab_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Return vocabulary statistics"""</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">'vocab_size'</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocab</span><span class="p">),</span>
+            <span class="s1">'num_merges'</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">merges</span><span class="p">),</span>
+            <span class="s1">'sample_tokens'</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">keys</span><span class="p">())[:</span><span class="mi">20</span><span class="p">]</span>
+        <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Part-4:-Training-Your-BPE-Tokenizer">Part 4: Training Your BPE Tokenizer<a class="anchor-link" href="#Part-4:-Training-Your-BPE-Tokenizer">¶</a></h2><p>Train tokenizers with different vocabulary sizes to see the impact.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Extract texts from dataset</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">'text'</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">]</span>
+
+<span class="c1"># TODO: Train your tokenizer with different vocabulary sizes</span>
+<span class="n">vocab_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">]</span>
+<span class="n">tokenizers</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">vocab_size</span> <span class="ow">in</span> <span class="n">vocab_sizes</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="si">{</span><span class="s1">'='</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">50</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Training tokenizer with vocab_size=</span><span class="si">{</span><span class="n">vocab_size</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'='</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+    
+    <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">BPETokenizer</span><span class="p">(</span><span class="n">vocab_size</span><span class="o">=</span><span class="n">vocab_size</span><span class="p">)</span>
+    <span class="n">tokenizer</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">tokenizers</span><span class="p">[</span><span class="n">vocab_size</span><span class="p">]</span> <span class="o">=</span> <span class="n">tokenizer</span>
+    
+    <span class="c1"># Show some statistics</span>
+    <span class="n">info</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">get_vocab_info</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Vocabulary info:"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  - Size: </span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="s1">'vocab_size'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  - Merges: </span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="s1">'num_merges'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  - Sample tokens: </span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="s1">'sample_tokens'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Part-5:-Analyzing-Your-Tokenizer">Part 5: Analyzing Your Tokenizer<a class="anchor-link" href="#Part-5:-Analyzing-Your-Tokenizer">¶</a></h2><p>Compare how different vocabulary sizes affect tokenization.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Analyze tokenization on sample texts</span>
+<span class="n">test_sentences</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"Once upon a time, there was a little girl named Lily."</span><span class="p">,</span>
+    <span class="s2">"She loved to play outside in the sunshine."</span><span class="p">,</span>
+    <span class="s2">"One day, she found a beautiful butterfly."</span>
+<span class="p">]</span>
+
+<span class="c1"># Compare tokenization results</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Tokenization Comparison</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">test_sentences</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Sentence: </span><span class="si">{</span><span class="n">sentence</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Character count: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Word count: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">sentence</span><span class="o">.</span><span class="n">split</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+    
+    <span class="k">for</span> <span class="n">vocab_size</span> <span class="ow">in</span> <span class="n">vocab_sizes</span><span class="p">:</span>
+        <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">tokenizers</span><span class="p">[</span><span class="n">vocab_size</span><span class="p">]</span>
+        <span class="n">token_ids</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+        <span class="n">decoded</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">token_ids</span><span class="p">)</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Vocab </span><span class="si">{</span><span class="n">vocab_size</span><span class="si">}</span><span class="s2">:"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    - Tokens: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">token_ids</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    - Token IDs: </span><span class="si">{</span><span class="n">token_ids</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span><span class="si">}{</span><span class="s1">'...'</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">token_ids</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">''</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    - Decoded: </span><span class="si">{</span><span class="n">decoded</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Part-6:-Vocabulary-Analysis">Part 6: Vocabulary Analysis<a class="anchor-link" href="#Part-6:-Vocabulary-Analysis">¶</a></h2><p>Visualize and analyze the learned vocabularies.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># TODO: Create visualizations</span>
+
+<span class="c1"># 1. Average tokens per sentence for different vocab sizes</span>
+<span class="n">avg_tokens</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">vocab_size</span> <span class="ow">in</span> <span class="n">vocab_sizes</span><span class="p">:</span>
+    <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">tokenizers</span><span class="p">[</span><span class="n">vocab_size</span><span class="p">]</span>
+    <span class="n">total_tokens</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">[:</span><span class="mi">100</span><span class="p">]:</span>  <span class="c1"># Sample 100 texts</span>
+        <span class="n">total_tokens</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+    
+    <span class="n">avg_tokens</span><span class="p">[</span><span class="n">vocab_size</span><span class="p">]</span> <span class="o">=</span> <span class="n">total_tokens</span> <span class="o">/</span> <span class="mi">100</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">vs</span><span class="p">)</span> <span class="k">for</span> <span class="n">vs</span> <span class="ow">in</span> <span class="n">vocab_sizes</span><span class="p">],</span> <span class="p">[</span><span class="n">avg_tokens</span><span class="p">[</span><span class="n">vs</span><span class="p">]</span> <span class="k">for</span> <span class="n">vs</span> <span class="ow">in</span> <span class="n">vocab_sizes</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Vocabulary Size'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Average Tokens per Story'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Tokenization Efficiency vs Vocabulary Size'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">'y'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Average tokens per story:"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">vocab_size</span> <span class="ow">in</span> <span class="n">vocab_sizes</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Vocab </span><span class="si">{</span><span class="n">vocab_size</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">avg_tokens</span><span class="p">[</span><span class="n">vocab_size</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> tokens"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 2. Show most common merged tokens</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Most Recent Merges (Last 20):"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">tokenizers</span><span class="p">[</span><span class="mi">2000</span><span class="p">]</span>  <span class="c1"># Use largest vocab</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">pair</span><span class="p">,</span> <span class="n">merged</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">merges</span><span class="p">[</span><span class="o">-</span><span class="mi">20</span><span class="p">:],</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">2d</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">10s</span><span class="si">}</span><span class="s2"> + </span><span class="si">{</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">10s</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">merged</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Part-7:-Comparison-with-HuggingFace-Tokenizers">Part 7: Comparison with HuggingFace Tokenizers<a class="anchor-link" href="#Part-7:-Comparison-with-HuggingFace-Tokenizers">¶</a></h2><p>Compare your BPE implementation with professional tokenizers.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">GPT2Tokenizer</span>
+
+<span class="c1"># Load pre-trained GPT-2 tokenizer</span>
+<span class="n">gpt2_tokenizer</span> <span class="o">=</span> <span class="n">GPT2Tokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">'gpt2'</span><span class="p">)</span>
+
+<span class="c1"># TODO: Compare your BPE tokenizer with GPT-2's tokenizer</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Comparison with GPT-2 Tokenizer"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">test_sentences</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Sentence: </span><span class="si">{</span><span class="n">sentence</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="c1"># GPT-2 tokenization</span>
+    <span class="n">gpt2_tokens</span> <span class="o">=</span> <span class="n">gpt2_tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">gpt2_decoded</span> <span class="o">=</span> <span class="n">gpt2_tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">gpt2_tokens</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">GPT-2 (vocab size ~50k):"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  - Tokens: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">gpt2_tokens</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  - Token IDs: </span><span class="si">{</span><span class="n">gpt2_tokens</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  - Decoded: </span><span class="si">{</span><span class="n">gpt2_decoded</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="c1"># Your tokenizer</span>
+    <span class="n">my_tokenizer</span> <span class="o">=</span> <span class="n">tokenizers</span><span class="p">[</span><span class="mi">2000</span><span class="p">]</span>
+    <span class="n">my_tokens</span> <span class="o">=</span> <span class="n">my_tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">my_decoded</span> <span class="o">=</span> <span class="n">my_tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">my_tokens</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Your BPE (vocab size 2000):"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  - Tokens: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">my_tokens</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  - Token IDs: </span><span class="si">{</span><span class="n">my_tokens</span><span class="p">[:</span><span class="mi">20</span><span class="p">]</span><span class="si">}{</span><span class="s1">'...'</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">my_tokens</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">''</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  - Decoded: </span><span class="si">{</span><span class="n">my_decoded</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Token efficiency: GPT-2 uses </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">gpt2_tokens</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">my_tokens</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">x fewer tokens"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Part-8:-Save-Your-Best-Tokenizer">Part 8: Save Your Best Tokenizer<a class="anchor-link" href="#Part-8:-Save-Your-Best-Tokenizer">¶</a></h2><p>Save your trained tokenizer for use in Exercise 1.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+
+<span class="c1"># Save the tokenizer with vocab size 2000</span>
+<span class="n">best_tokenizer</span> <span class="o">=</span> <span class="n">tokenizers</span><span class="p">[</span><span class="mi">2000</span><span class="p">]</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'bpe_tokenizer.pkl'</span><span class="p">,</span> <span class="s1">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">best_tokenizer</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Tokenizer saved to 'bpe_tokenizer.pkl'"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Vocabulary size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">best_tokenizer</span><span class="o">.</span><span class="n">vocab</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Questions">Questions<a class="anchor-link" href="#Questions">¶</a></h2><p>Answer the following questions based on your experiments:</p>
+<ol>
+<li><p><strong>How does vocabulary size affect the number of tokens needed to encode text?</strong></p>
+<ul>
+<li>YOUR ANSWER HERE</li>
+</ul>
+</li>
+<li><p><strong>What are the trade-offs between small and large vocabulary sizes?</strong></p>
+<ul>
+<li>YOUR ANSWER HERE</li>
+</ul>
+</li>
+<li><p><strong>How does your BPE tokenizer handle out-of-vocabulary words?</strong></p>
+<ul>
+<li>YOUR ANSWER HERE</li>
+</ul>
+</li>
+<li><p><strong>What patterns do you notice in the most frequently merged token pairs?</strong></p>
+<ul>
+<li>YOUR ANSWER HERE</li>
+</ul>
+</li>
+<li><p><strong>How does your tokenizer compare to GPT-2's tokenizer in terms of:</strong></p>
+<ul>
+<li>Token efficiency (tokens per word): YOUR ANSWER HERE</li>
+<li>Handling of rare words: YOUR ANSWER HERE</li>
+<li>Vocabulary composition: YOUR ANSWER HERE</li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 </div>
 </div>
 </div>

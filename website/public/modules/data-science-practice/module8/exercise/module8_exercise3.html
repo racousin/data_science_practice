@@ -7511,788 +7511,80 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9683f137-f7f5-4f1f-b0cf-b716c4bd0d71">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Fine-Tuning-LLMs-with-LoRA-(Low-Rank-Adaptation)">Fine-Tuning LLMs with LoRA (Low-Rank Adaptation)<a class="anchor-link" href="#Fine-Tuning-LLMs-with-LoRA-(Low-Rank-Adaptation)">¶</a></h1>
+<h1 id="Exercise-3:-Mathematical-Problem-Solving-%E2%AD%90">Exercise 3: Mathematical Problem Solving ⭐<a class="anchor-link" href="#Exercise-3:-Mathematical-Problem-Solving-%E2%AD%90">¶</a></h1><p><strong>This is a marked exercise (graded)</strong></p>
+<p>Apply LLMs to mathematical reasoning tasks. Test different pre-trained models with various prompting strategies and optionally fine-tune with LoRA to improve performance.</p>
+<p><strong>Learning Objectives:</strong></p>
+<ul>
+<li>Evaluate LLMs on mathematical reasoning</li>
+<li>Design effective prompts for numerical tasks</li>
+<li>Implement and compare different prompting strategies</li>
+<li>Optionally: Fine-tune models using LoRA</li>
+<li>Measure performance using MSE metric</li>
+</ul>
+<p><strong>Deliverables:</strong></p>
+<ul>
+<li>Completed notebook with your approach</li>
+<li><code>submission.csv</code> with predictions on test set</li>
+<li>Score will be MSE (lower is better, +inf if non-numerical values)</li>
+</ul>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=ef4688c5-2763-4d58-baed-2ad99f94100b">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Part-1:-Setup-and-Load-Data">Part 1: Setup and Load Data<a class="anchor-link" href="#Part-1:-Setup-and-Load-Data">¶</a></h2>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>transformers<span class="w"> </span>torch<span class="w"> </span>peft<span class="w"> </span>datasets<span class="w"> </span>pandas<span class="w"> </span>scikit-learn<span class="w"> </span>matplotlib<span class="w"> </span>-q
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoModelForCausalLM</span><span class="p">,</span> <span class="n">pipeline</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">mean_squared_error</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">classification_report</span><span class="p">,</span> <span class="n">confusion_matrix</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dataset</span><span class="p">,</span> <span class="n">Dataset</span> <span class="k">as</span> <span class="n">HFDataset</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">peft</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">get_peft_model</span><span class="p">,</span>
-    <span class="n">LoraConfig</span><span class="p">,</span>
-    <span class="n">TaskType</span><span class="p">,</span>
-    <span class="n">PeftModel</span><span class="p">,</span>
-    <span class="n">PeftConfig</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">AutoModelForSequenceClassification</span><span class="p">,</span>
-    <span class="n">AutoModelForCausalLM</span><span class="p">,</span>
-    <span class="n">AutoTokenizer</span><span class="p">,</span>
-    <span class="n">TrainingArguments</span><span class="p">,</span>
-    <span class="n">Trainer</span><span class="p">,</span>
-    <span class="n">BitsAndBytesConfig</span>
-<span class="p">)</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">evaluate</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm.auto</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 
-<span class="c1"># Suppress warnings for cleaner output</span>
-<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">)</span>
-
-<span class="c1"># Set random seeds for reproducibility</span>
-<span class="n">seed</span> <span class="o">=</span> <span class="mi">42</span>
-<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
-    <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">manual_seed_all</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-
-<span class="c1"># Check if GPU is available</span>
-<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"cuda"</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">"cpu"</span><span class="p">)</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">'cuda'</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">'cpu'</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Using device: </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Using device: cpu
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4e98f3da-16be-4103-9f9f-eeb54375d1cf">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Part-1:-Introduction-to-LoRA-(Low-Rank-Adaptation)">Part 1: Introduction to LoRA (Low-Rank Adaptation)<a class="anchor-link" href="#Part-1:-Introduction-to-LoRA-(Low-Rank-Adaptation)">¶</a></h1>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c90427c7-0b35-4f88-8f96-2cd406f12b7c">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="1.-Introduction-to-LoRA">1. Introduction to LoRA<a class="anchor-link" href="#1.-Introduction-to-LoRA">¶</a></h1><p>LoRA (Low-Rank Adaptation) is a technique for efficiently fine-tuning large language models (LLMs)
-by freezing the pre-trained model weights and injecting trainable low-rank matrices into each layer
-of the Transformer architecture, drastically reducing the number of trainable parameters for fine-tuning.</p>
-<p>Key advantages of LoRA:</p>
-<ul>
-<li>Memory efficiency: Only updates a small number of parameters, reducing GPU memory requirements</li>
-<li>Storage efficiency: Only need to store small adapter weights instead of full model copies</li>
-<li>Computational efficiency: Faster training and inference compared to full fine-tuning</li>
-<li>Adaptability: Multiple LoRA adapters can be trained for different tasks on the same base model</li>
-</ul>
-<p>How LoRA works:</p>
-<ol>
-<li>Freezes the pre-trained weights of the LLM</li>
-<li>For specific weight matrices (typically query and value matrices in attention layers):<ul>
-<li>Approximates weight updates using low-rank decomposition: ΔW = A × B</li>
-<li>where A is a matrix of shape (d × r) and B is a matrix of shape (r × k)</li>
-<li>r is the rank, typically much smaller than d and k</li>
-</ul>
-</li>
-<li>During inference: equivalent to W + ΔW, but more efficient</li>
-</ol>
-<p>LoRA can be applied to various model architectures and tasks, including:</p>
-<ul>
-<li>Text classification</li>
-<li>Question answering</li>
-<li>Text generation</li>
-<li>Summarization</li>
-<li>Translation</li>
-</ul>
-<h1 id="2.-Why-Use-LoRA-for-Fine-Tuning">2. Why Use LoRA for Fine-Tuning<a class="anchor-link" href="#2.-Why-Use-LoRA-for-Fine-Tuning">¶</a></h1><p>Traditional fine-tuning of LLMs has several challenges:</p>
-<ol>
-<li>Memory requirements: Full fine-tuning of large models (billions of parameters) requires
-significant GPU memory</li>
-<li>Computational cost: Training all parameters is expensive and time-consuming</li>
-<li>Catastrophic forgetting: Full fine-tuning can cause the model to forget general capabilities</li>
-<li>Storage overhead: Each fine-tuned model copy requires gigabytes of storage</li>
-</ol>
-<p>LoRA addresses these issues by:</p>
-<ul>
-<li>Reducing trainable parameters by 99%+ in many cases</li>
-<li>Requiring a fraction of the GPU memory</li>
-<li>Preserving most of the base model's capabilities</li>
-<li>Enabling small, swappable adapters (typically a few MB) instead of full model copies</li>
-</ul>
-<p>In this notebook, we'll demonstrate how to use LoRA to fine-tune a smaller model on a text
-classification task, but the same principles apply to larger models up to 1.5B parameters.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=6679b49e-a78a-4141-86d2-d22b73a2f6f4">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Part-2:-Setting-Up-LoRA-Fine-Tuning-Environment">Part 2: Setting Up LoRA Fine-Tuning Environment<a class="anchor-link" href="#Part-2:-Setting-Up-LoRA-Fine-Tuning-Environment">¶</a></h1>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=66b48031-6ef9-4856-9bac-36f82b2df1c1">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># We'll use a smaller model for demonstration</span>
-<span class="n">BASE_MODEL</span> <span class="o">=</span> <span class="s2">"distilbert-base-uncased"</span>  <span class="c1"># ~66M parameters</span>
-<span class="c1"># Other options within 1.5B parameters:</span>
-<span class="c1"># - "roberta-base" (~125M parameters)</span>
-<span class="c1"># - "EleutherAI/pythia-410m" (~410M parameters)</span>
-<span class="c1"># - "facebook/opt-350m" (~350M parameters)</span>
-<span class="c1"># - "google/flan-t5-base" (~250M parameters)</span>
-
-<span class="c1"># PEFT (Parameter-Efficient Fine-Tuning) configuration for LoRA</span>
-<span class="n">lora_config</span> <span class="o">=</span> <span class="n">LoraConfig</span><span class="p">(</span>
-    <span class="n">r</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>                <span class="c1"># Rank of the low-rank matrices (typically 4-32)</span>
-    <span class="n">lora_alpha</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>      <span class="c1"># Alpha parameter for LoRA scaling</span>
-    <span class="n">target_modules</span><span class="o">=</span><span class="p">[</span><span class="s2">"q_lin"</span><span class="p">,</span> <span class="s2">"v_lin"</span><span class="p">],</span>  <span class="c1"># For DistilBERT, we target query and value matrices</span>
-    <span class="n">lora_dropout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>   <span class="c1"># Dropout probability for LoRA layers</span>
-    <span class="n">bias</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>        <span class="c1"># Whether to train bias parameters</span>
-    <span class="n">task_type</span><span class="o">=</span><span class="n">TaskType</span><span class="o">.</span><span class="n">SEQ_CLS</span>  <span class="c1"># Task type (sequence classification in this case)</span>
-<span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Base model: </span><span class="si">{</span><span class="n">BASE_MODEL</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"LoRA configuration: </span><span class="si">{</span><span class="n">lora_config</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Base model: distilbert-base-uncased
-LoRA configuration: LoraConfig(task_type=&lt;TaskType.SEQ_CLS: 'SEQ_CLS'&gt;, peft_type=&lt;PeftType.LORA: 'LORA'&gt;, auto_mapping=None, base_model_name_or_path=None, revision=None, inference_mode=False, r=8, target_modules={'v_lin', 'q_lin'}, exclude_modules=None, lora_alpha=16, lora_dropout=0.1, fan_in_fan_out=False, bias='none', use_rslora=False, modules_to_save=None, init_lora_weights=True, layers_to_transform=None, layers_pattern=None, rank_pattern={}, alpha_pattern={}, megatron_config=None, megatron_core='megatron.core', loftq_config={}, eva_config=None, use_dora=False, layer_replication=None, runtime_config=LoraRuntimeConfig(ephemeral_gpu_offload=False), lora_bias=False)
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=fc42268d-db1e-4bc5-82f7-19acf42bd033">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Part-3:-Preparing-a-Dataset-for-LoRA-Fine-Tuning">Part 3: Preparing a Dataset for LoRA Fine-Tuning<a class="anchor-link" href="#Part-3:-Preparing-a-Dataset-for-LoRA-Fine-Tuning">¶</a></h1>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=1822c492-a588-4391-9e7a-8b3e155d5869">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2"># 4. Preparing a Dataset for Fine-Tuning"</span><span class="p">)</span>
-
-<span class="c1"># For this example, we'll use the SST-2 dataset (Stanford Sentiment Treebank)</span>
-<span class="c1"># It's a binary sentiment classification dataset (positive/negative movie reviews)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Loading SST-2 dataset..."</span><span class="p">)</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">"sst2"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Dataset loaded: </span><span class="si">{</span><span class="n">dataset</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Examine the dataset</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Dataset structure:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Train set: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">'train'</span><span class="p">])</span><span class="si">}</span><span class="s2"> examples"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Validation set: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">'validation'</span><span class="p">])</span><span class="si">}</span><span class="s2"> examples"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Test set: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">'test'</span><span class="p">])</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="s1">'test'</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">dataset</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'Not available'</span><span class="si">}</span><span class="s2"> examples"</span><span class="p">)</span>
-
-<span class="c1"># Show a few examples - with debug info to understand the structure</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Sample examples:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"First example type:"</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s2">"train"</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"First example content:"</span><span class="p">,</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">"train"</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-
-<span class="c1"># Now iterate with better error handling</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
-    <span class="n">example</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">"train"</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Example </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">:"</span><span class="p">)</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Text: </span><span class="si">{</span><span class="n">example</span><span class="p">[</span><span class="s1">'sentence'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Label: </span><span class="si">{</span><span class="n">example</span><span class="p">[</span><span class="s1">'label'</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="s1">'Positive'</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">example</span><span class="p">[</span><span class="s1">'label'</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'Negative'</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Error accessing example: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Example type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">example</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Example content: </span><span class="si">{</span><span class="n">example</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Tokenize the dataset</span>
-<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">BASE_MODEL</span><span class="p">)</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">tokenize_function</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Tokenize examples with padding and truncation."""</span>
-    <span class="k">return</span> <span class="n">tokenizer</span><span class="p">(</span>
-        <span class="n">examples</span><span class="p">[</span><span class="s2">"sentence"</span><span class="p">],</span>
-        <span class="n">padding</span><span class="o">=</span><span class="s2">"max_length"</span><span class="p">,</span>
-        <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">max_length</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
-        <span class="n">return_tensors</span><span class="o">=</span><span class="s2">"pt"</span>
-    <span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Tokenizing the dataset..."</span><span class="p">)</span>
-<span class="n">tokenized_datasets</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
-    <span class="n">tokenize_function</span><span class="p">,</span>
-    <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">remove_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"sentence"</span><span class="p">,</span> <span class="s2">"idx"</span><span class="p">]</span>
-<span class="p">)</span>
-
-<span class="c1"># Convert to PyTorch format</span>
-<span class="n">tokenized_datasets</span><span class="o">.</span><span class="n">set_format</span><span class="p">(</span><span class="s2">"torch"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Tokenized train set: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tokenized_datasets</span><span class="p">[</span><span class="s1">'train'</span><span class="p">])</span><span class="si">}</span><span class="s2"> examples"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Tokenized validation set: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tokenized_datasets</span><span class="p">[</span><span class="s1">'validation'</span><span class="p">])</span><span class="si">}</span><span class="s2"> examples"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>
-# 4. Preparing a Dataset for Fine-Tuning
-Loading SST-2 dataset...
-Dataset loaded: DatasetDict({
-    train: Dataset({
-        features: ['idx', 'sentence', 'label'],
-        num_rows: 67349
-    })
-    validation: Dataset({
-        features: ['idx', 'sentence', 'label'],
-        num_rows: 872
-    })
-    test: Dataset({
-        features: ['idx', 'sentence', 'label'],
-        num_rows: 1821
-    })
-})
-
-Dataset structure:
-Train set: 67349 examples
-Validation set: 872 examples
-Test set: 1821 examples
-
-Sample examples:
-First example type: &lt;class 'dict'&gt;
-First example content: {'idx': 0, 'sentence': 'hide new secretions from the parental units ', 'label': 0}
-Example 1:
-  Text: hide new secretions from the parental units 
-  Label: 0 (Negative)
-Example 2:
-  Text: contains no wit , only labored gags 
-  Label: 0 (Negative)
-Example 3:
-  Text: that loves its characters and communicates something rather beautiful about human nature 
-  Label: 1 (Positive)
-Example 4:
-  Text: remains utterly satisfied to remain the same throughout 
-  Label: 0 (Negative)
-Example 5:
-  Text: on the worst revenge-of-the-nerds clichés the filmmakers could dredge up 
-  Label: 0 (Negative)
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>tokenizer_config.json:   0%|          | 0.00/48.0 [00:00&lt;?, ?B/s]</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>vocab.txt:   0%|          | 0.00/232k [00:00&lt;?, ?B/s]</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>tokenizer.json:   0%|          | 0.00/466k [00:00&lt;?, ?B/s]</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>
-Tokenizing the dataset...
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Map:   0%|          | 0/67349 [00:00&lt;?, ? examples/s]</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Map:   0%|          | 0/872 [00:00&lt;?, ? examples/s]</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Map:   0%|          | 0/1821 [00:00&lt;?, ? examples/s]</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Tokenized train set: 67349 examples
-Tokenized validation set: 872 examples
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=17c7c5b2-9379-4376-86f6-eb8f1d0ea2ea">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Part-4:-Setting-Up-the-Model-with-LoRA">Part 4: Setting Up the Model with LoRA<a class="anchor-link" href="#Part-4:-Setting-Up-the-Model-with-LoRA">¶</a></h1>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=1580753c-db32-4f36-9e1f-1d5c1e2fcf06">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># ====================================</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2"># 5. Setting Up the Model with LoRA"</span><span class="p">)</span>
-
-<span class="c1"># Load the base model</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Loading base model: </span><span class="si">{</span><span class="n">BASE_MODEL</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForSequenceClassification</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
-    <span class="n">BASE_MODEL</span><span class="p">,</span> 
-    <span class="n">num_labels</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>  <span class="c1"># Binary classification</span>
-    <span class="n">return_dict</span><span class="o">=</span><span class="kc">True</span>
-<span class="p">)</span>
-
-<span class="c1"># Count original parameters</span>
-<span class="n">original_params</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Original model parameters: </span><span class="si">{</span><span class="n">original_params</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Apply LoRA configuration to the model</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Applying LoRA to the model..."</span><span class="p">)</span>
-<span class="n">peft_model</span> <span class="o">=</span> <span class="n">get_peft_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">lora_config</span><span class="p">)</span>
-
-<span class="c1"># Count trainable parameters</span>
-<span class="n">trainable_params</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">peft_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">requires_grad</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Trainable parameters after applying LoRA: </span><span class="si">{</span><span class="n">trainable_params</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Parameter reduction factor: </span><span class="si">{</span><span class="n">original_params</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">trainable_params</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">x"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Percentage of parameters trained: </span><span class="si">{</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">trainable_params</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">original_params</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
-
-<span class="c1"># Print the model architecture with LoRA adapters</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Model structure with LoRA adapters:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">peft_model</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>Some weights of DistilBertForSequenceClassification were not initialized from the model checkpoint at distilbert-base-uncased and are newly initialized: ['classifier.bias', 'classifier.weight', 'pre_classifier.bias', 'pre_classifier.weight']
-You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>
-# 5. Setting Up the Model with LoRA
-Loading base model: distilbert-base-uncased
-Original model parameters: 66,955,010
-Applying LoRA to the model...
-Trainable parameters after applying LoRA: 739,586
-Parameter reduction factor: 90.53x
-Percentage of parameters trained: 1.10%
-
-Model structure with LoRA adapters:
-PeftModelForSequenceClassification(
-  (base_model): LoraModel(
-    (model): DistilBertForSequenceClassification(
-      (distilbert): DistilBertModel(
-        (embeddings): Embeddings(
-          (word_embeddings): Embedding(30522, 768, padding_idx=0)
-          (position_embeddings): Embedding(512, 768)
-          (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
-          (dropout): Dropout(p=0.1, inplace=False)
-        )
-        (transformer): Transformer(
-          (layer): ModuleList(
-            (0-5): 6 x TransformerBlock(
-              (attention): DistilBertSdpaAttention(
-                (dropout): Dropout(p=0.1, inplace=False)
-                (q_lin): lora.Linear(
-                  (base_layer): Linear(in_features=768, out_features=768, bias=True)
-                  (lora_dropout): ModuleDict(
-                    (default): Dropout(p=0.1, inplace=False)
-                  )
-                  (lora_A): ModuleDict(
-                    (default): Linear(in_features=768, out_features=8, bias=False)
-                  )
-                  (lora_B): ModuleDict(
-                    (default): Linear(in_features=8, out_features=768, bias=False)
-                  )
-                  (lora_embedding_A): ParameterDict()
-                  (lora_embedding_B): ParameterDict()
-                  (lora_magnitude_vector): ModuleDict()
-                )
-                (k_lin): Linear(in_features=768, out_features=768, bias=True)
-                (v_lin): lora.Linear(
-                  (base_layer): Linear(in_features=768, out_features=768, bias=True)
-                  (lora_dropout): ModuleDict(
-                    (default): Dropout(p=0.1, inplace=False)
-                  )
-                  (lora_A): ModuleDict(
-                    (default): Linear(in_features=768, out_features=8, bias=False)
-                  )
-                  (lora_B): ModuleDict(
-                    (default): Linear(in_features=8, out_features=768, bias=False)
-                  )
-                  (lora_embedding_A): ParameterDict()
-                  (lora_embedding_B): ParameterDict()
-                  (lora_magnitude_vector): ModuleDict()
-                )
-                (out_lin): Linear(in_features=768, out_features=768, bias=True)
-              )
-              (sa_layer_norm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
-              (ffn): FFN(
-                (dropout): Dropout(p=0.1, inplace=False)
-                (lin1): Linear(in_features=768, out_features=3072, bias=True)
-                (lin2): Linear(in_features=3072, out_features=768, bias=True)
-                (activation): GELUActivation()
-              )
-              (output_layer_norm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
-            )
-          )
-        )
-      )
-      (pre_classifier): ModulesToSaveWrapper(
-        (original_module): Linear(in_features=768, out_features=768, bias=True)
-        (modules_to_save): ModuleDict(
-          (default): Linear(in_features=768, out_features=768, bias=True)
-        )
-      )
-      (classifier): ModulesToSaveWrapper(
-        (original_module): Linear(in_features=768, out_features=2, bias=True)
-        (modules_to_save): ModuleDict(
-          (default): Linear(in_features=768, out_features=2, bias=True)
-        )
-      )
-      (dropout): Dropout(p=0.2, inplace=False)
-    )
-  )
-)
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=cdc46ac9-12b1-4e05-869c-a94da18efde7">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Part-5:-Training-with-LoRA">Part 5: Training with LoRA<a class="anchor-link" href="#Part-5:-Training-with-LoRA">¶</a></h1>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=7e0e2ec6-87a7-4bcf-9ac8-e9d13f539abc">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2"># 6. Training the Model with LoRA"</span><span class="p">)</span>
-
-<span class="c1"># Define evaluation metric</span>
-<span class="n">accuracy</span> <span class="o">=</span> <span class="n">evaluate</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"accuracy"</span><span class="p">)</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">compute_metrics</span><span class="p">(</span><span class="n">eval_pred</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Compute accuracy metrics from predictions and labels."""</span>
-    <span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">eval_pred</span>
-    <span class="n">predictions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">accuracy</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">predictions</span><span class="o">=</span><span class="n">predictions</span><span class="p">,</span> <span class="n">references</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
-
-<span class="c1"># Set up training arguments</span>
-<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">16</span>
-<span class="n">num_epochs</span> <span class="o">=</span> <span class="mi">3</span>
-
-<span class="n">training_args</span> <span class="o">=</span> <span class="n">TrainingArguments</span><span class="p">(</span>
-    <span class="n">output_dir</span><span class="o">=</span><span class="s2">"./results"</span><span class="p">,</span>
-    <span class="n">num_train_epochs</span><span class="o">=</span><span class="n">num_epochs</span><span class="p">,</span>
-    <span class="n">per_device_train_batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
-    <span class="n">per_device_eval_batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
-    <span class="n">warmup_steps</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
-    <span class="n">weight_decay</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-    <span class="n">logging_dir</span><span class="o">=</span><span class="s2">"./logs"</span><span class="p">,</span>
-    <span class="n">logging_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-    <span class="n">evaluation_strategy</span><span class="o">=</span><span class="s2">"epoch"</span><span class="p">,</span>
-    <span class="n">save_strategy</span><span class="o">=</span><span class="s2">"epoch"</span><span class="p">,</span>
-    <span class="n">load_best_model_at_end</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">push_to_hub</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="c1"># Create Trainer</span>
-<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
-    <span class="n">model</span><span class="o">=</span><span class="n">peft_model</span><span class="p">,</span>
-    <span class="n">args</span><span class="o">=</span><span class="n">training_args</span><span class="p">,</span>
-    <span class="n">train_dataset</span><span class="o">=</span><span class="n">tokenized_datasets</span><span class="p">[</span><span class="s2">"train"</span><span class="p">],</span>
-    <span class="n">eval_dataset</span><span class="o">=</span><span class="n">tokenized_datasets</span><span class="p">[</span><span class="s2">"validation"</span><span class="p">],</span>
-    <span class="n">compute_metrics</span><span class="o">=</span><span class="n">compute_metrics</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="c1"># Train the model</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Starting LoRA fine-tuning..."</span><span class="p">)</span>
-<span class="n">train_result</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
-
-<span class="c1"># Print training metrics</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Training metrics:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total training time: </span><span class="si">{</span><span class="n">train_result</span><span class="o">.</span><span class="n">metrics</span><span class="p">[</span><span class="s1">'train_runtime'</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Training loss: </span><span class="si">{</span><span class="n">train_result</span><span class="o">.</span><span class="n">metrics</span><span class="p">[</span><span class="s1">'train_loss'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Training samples per second: </span><span class="si">{</span><span class="n">train_result</span><span class="o">.</span><span class="n">metrics</span><span class="p">[</span><span class="s1">'train_samples_per_second'</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Evaluate the model</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Evaluating fine-tuned model..."</span><span class="p">)</span>
-<span class="n">eval_results</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Validation accuracy: </span><span class="si">{</span><span class="n">eval_results</span><span class="p">[</span><span class="s1">'eval_accuracy'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>
-# 6. Training the Model with LoRA
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Downloading builder script:   0%|          | 0.00/4.20k [00:00&lt;?, ?B/s]</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>No label_names provided for model class `PeftModelForSequenceClassification`. Since `PeftModel` hides base models input arguments, if label_names is not given, label_names can't be set automatically within `Trainer`. Note that empty label_names list will be used instead.
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Starting LoRA fine-tuning...
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<div>
-<progress max="12630" style="width:300px; height:20px; vertical-align: middle;" value="9"></progress>
-      [    9/12630 00:14 &lt; 7:24:04, 0.47 it/s, Epoch 0.00/3]
-    </div>
-<table border="1" class="dataframe">
-<thead>
-<tr style="text-align: left;">
-<th>Epoch</th>
-<th>Training Loss</th>
-<th>Validation Loss</th>
-</tr>
-</thead>
-<tbody>
-</tbody>
-</table><p>
-</p></div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">KeyboardInterrupt</span>                         Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[10], line 42</span>
-<span class="ansi-green-intense-fg ansi-bold">     40</span> <span style="color: rgb(95,135,135)"># Train the model</span>
-<span class="ansi-green-intense-fg ansi-bold">     41</span> <span style="color: rgb(0,135,0)">print</span>(<span style="color: rgb(175,0,0)">"</span><span style="color: rgb(175,0,0)">Starting LoRA fine-tuning...</span><span style="color: rgb(175,0,0)">"</span>)
-<span class="ansi-green-fg">---&gt; 42</span> train_result <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">trainer</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">train</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     44</span> <span style="color: rgb(95,135,135)"># Print training metrics</span>
-<span class="ansi-green-intense-fg ansi-bold">     45</span> <span style="color: rgb(0,135,0)">print</span>(<span style="color: rgb(175,0,0)">"</span><span class="ansi-bold" style="color: rgb(175,95,0)">\n</span><span style="color: rgb(175,0,0)">Training metrics:</span><span style="color: rgb(175,0,0)">"</span>)
-
-File <span class="ansi-green-fg">~/.cache/pypoetry/virtualenvs/data-science-practice-izly4xBC-py3.12/lib/python3.12/site-packages/transformers/trainer.py:2241</span>, in <span class="ansi-cyan-fg">Trainer.train</span><span class="ansi-blue-fg">(self, resume_from_checkpoint, trial, ignore_keys_for_eval, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2239</span>         hf_hub_utils<span style="color: rgb(98,98,98)">.</span>enable_progress_bars()
-<span class="ansi-green-intense-fg ansi-bold">   2240</span> <span class="ansi-bold" style="color: rgb(0,135,0)">else</span>:
-<span class="ansi-green-fg">-&gt; 2241</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span class="ansi-yellow-bg">inner_training_loop</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-intense-fg ansi-bold">   2242</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">   2243</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">resume_from_checkpoint</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">resume_from_checkpoint</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">   2244</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">trial</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">trial</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">   2245</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">ignore_keys_for_eval</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">ignore_keys_for_eval</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">   2246</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-fg">~/.cache/pypoetry/virtualenvs/data-science-practice-izly4xBC-py3.12/lib/python3.12/site-packages/transformers/trainer.py:2548</span>, in <span class="ansi-cyan-fg">Trainer._inner_training_loop</span><span class="ansi-blue-fg">(self, batch_size, args, resume_from_checkpoint, trial, ignore_keys_for_eval)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2541</span> context <span style="color: rgb(98,98,98)">=</span> (
-<span class="ansi-green-intense-fg ansi-bold">   2542</span>     functools<span style="color: rgb(98,98,98)">.</span>partial(<span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>accelerator<span style="color: rgb(98,98,98)">.</span>no_sync, model<span style="color: rgb(98,98,98)">=</span>model)
-<span class="ansi-green-intense-fg ansi-bold">   2543</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> i <span style="color: rgb(98,98,98)">!=</span> <span style="color: rgb(0,135,0)">len</span>(batch_samples) <span style="color: rgb(98,98,98)">-</span> <span style="color: rgb(98,98,98)">1</span>
-<span class="ansi-green-intense-fg ansi-bold">   2544</span>     <span class="ansi-bold" style="color: rgb(175,0,255)">and</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>accelerator<span style="color: rgb(98,98,98)">.</span>distributed_type <span style="color: rgb(98,98,98)">!=</span> DistributedType<span style="color: rgb(98,98,98)">.</span>DEEPSPEED
-<span class="ansi-green-intense-fg ansi-bold">   2545</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">else</span> contextlib<span style="color: rgb(98,98,98)">.</span>nullcontext
-<span class="ansi-green-intense-fg ansi-bold">   2546</span> )
-<span class="ansi-green-intense-fg ansi-bold">   2547</span> <span class="ansi-bold" style="color: rgb(0,135,0)">with</span> context():
-<span class="ansi-green-fg">-&gt; 2548</span>     tr_loss_step <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">training_step</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">model</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">inputs</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">num_items_in_batch</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2550</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> (
-<span class="ansi-green-intense-fg ansi-bold">   2551</span>     args<span style="color: rgb(98,98,98)">.</span>logging_nan_inf_filter
-<span class="ansi-green-intense-fg ansi-bold">   2552</span>     <span class="ansi-bold" style="color: rgb(175,0,255)">and</span> <span class="ansi-bold" style="color: rgb(175,0,255)">not</span> is_torch_xla_available()
-<span class="ansi-green-intense-fg ansi-bold">   2553</span>     <span class="ansi-bold" style="color: rgb(175,0,255)">and</span> (torch<span style="color: rgb(98,98,98)">.</span>isnan(tr_loss_step) <span class="ansi-bold" style="color: rgb(175,0,255)">or</span> torch<span style="color: rgb(98,98,98)">.</span>isinf(tr_loss_step))
-<span class="ansi-green-intense-fg ansi-bold">   2554</span> ):
-<span class="ansi-green-intense-fg ansi-bold">   2555</span>     <span style="color: rgb(95,135,135)"># if loss is nan or inf simply add the average of previous logged losses</span>
-<span class="ansi-green-intense-fg ansi-bold">   2556</span>     tr_loss <span style="color: rgb(98,98,98)">=</span> tr_loss <span style="color: rgb(98,98,98)">+</span> tr_loss <span style="color: rgb(98,98,98)">/</span> (<span style="color: rgb(98,98,98)">1</span> <span style="color: rgb(98,98,98)">+</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>state<span style="color: rgb(98,98,98)">.</span>global_step <span style="color: rgb(98,98,98)">-</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>_globalstep_last_logged)
-
-File <span class="ansi-green-fg">~/.cache/pypoetry/virtualenvs/data-science-practice-izly4xBC-py3.12/lib/python3.12/site-packages/transformers/trainer.py:3740</span>, in <span class="ansi-cyan-fg">Trainer.training_step</span><span class="ansi-blue-fg">(***failed resolving arguments***)</span>
-<span class="ansi-green-intense-fg ansi-bold">   3737</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>accelerator<span style="color: rgb(98,98,98)">.</span>distributed_type <span style="color: rgb(98,98,98)">==</span> DistributedType<span style="color: rgb(98,98,98)">.</span>DEEPSPEED:
-<span class="ansi-green-intense-fg ansi-bold">   3738</span>     kwargs[<span style="color: rgb(175,0,0)">"</span><span style="color: rgb(175,0,0)">scale_wrt_gas</span><span style="color: rgb(175,0,0)">"</span>] <span style="color: rgb(98,98,98)">=</span> <span class="ansi-bold" style="color: rgb(0,135,0)">False</span>
-<span class="ansi-green-fg">-&gt; 3740</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">accelerator</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">backward</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">loss</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   3742</span> <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> loss<span style="color: rgb(98,98,98)">.</span>detach()
-
-File <span class="ansi-green-fg">~/.cache/pypoetry/virtualenvs/data-science-practice-izly4xBC-py3.12/lib/python3.12/site-packages/accelerate/accelerator.py:2359</span>, in <span class="ansi-cyan-fg">Accelerator.backward</span><span class="ansi-blue-fg">(self, loss, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2357</span>     <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>lomo_backward(loss, learning_rate)
-<span class="ansi-green-intense-fg ansi-bold">   2358</span> <span class="ansi-bold" style="color: rgb(0,135,0)">else</span>:
-<span class="ansi-green-fg">-&gt; 2359</span>     <span class="ansi-yellow-bg">loss</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">backward</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-fg">~/.cache/pypoetry/virtualenvs/data-science-practice-izly4xBC-py3.12/lib/python3.12/site-packages/torch/_tensor.py:581</span>, in <span class="ansi-cyan-fg">Tensor.backward</span><span class="ansi-blue-fg">(self, gradient, retain_graph, create_graph, inputs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    571</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> has_torch_function_unary(<span style="color: rgb(0,135,0)">self</span>):
-<span class="ansi-green-intense-fg ansi-bold">    572</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> handle_torch_function(
-<span class="ansi-green-intense-fg ansi-bold">    573</span>         Tensor<span style="color: rgb(98,98,98)">.</span>backward,
-<span class="ansi-green-intense-fg ansi-bold">    574</span>         (<span style="color: rgb(0,135,0)">self</span>,),
-<span class="ansi-green-fg">   (...)</span>
-<span class="ansi-green-intense-fg ansi-bold">    579</span>         inputs<span style="color: rgb(98,98,98)">=</span>inputs,
-<span class="ansi-green-intense-fg ansi-bold">    580</span>     )
-<span class="ansi-green-fg">--&gt; 581</span> <span class="ansi-yellow-bg">torch</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">autograd</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">backward</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-intense-fg ansi-bold">    582</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">gradient</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">retain_graph</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">create_graph</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">inputs</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">inputs</span>
-<span class="ansi-green-intense-fg ansi-bold">    583</span> <span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-fg">~/.cache/pypoetry/virtualenvs/data-science-practice-izly4xBC-py3.12/lib/python3.12/site-packages/torch/autograd/__init__.py:347</span>, in <span class="ansi-cyan-fg">backward</span><span class="ansi-blue-fg">(tensors, grad_tensors, retain_graph, create_graph, grad_variables, inputs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    342</span>     retain_graph <span style="color: rgb(98,98,98)">=</span> create_graph
-<span class="ansi-green-intense-fg ansi-bold">    344</span> <span style="color: rgb(95,135,135)"># The reason we repeat the same comment below is that</span>
-<span class="ansi-green-intense-fg ansi-bold">    345</span> <span style="color: rgb(95,135,135)"># some Python versions print out the first line of a multi-line function</span>
-<span class="ansi-green-intense-fg ansi-bold">    346</span> <span style="color: rgb(95,135,135)"># calls in the traceback and some print out the last line</span>
-<span class="ansi-green-fg">--&gt; 347</span> <span class="ansi-yellow-bg">_engine_run_backward</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-intense-fg ansi-bold">    348</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">tensors</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    349</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">grad_tensors_</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    350</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">retain_graph</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    351</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">create_graph</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    352</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">inputs</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    353</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">allow_unreachable</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg ansi-bold" style="color: rgb(0,135,0)">True</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    354</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">accumulate_grad</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg ansi-bold" style="color: rgb(0,135,0)">True</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    355</span> <span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-fg">~/.cache/pypoetry/virtualenvs/data-science-practice-izly4xBC-py3.12/lib/python3.12/site-packages/torch/autograd/graph.py:825</span>, in <span class="ansi-cyan-fg">_engine_run_backward</span><span class="ansi-blue-fg">(t_outputs, *args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    823</span>     unregister_hooks <span style="color: rgb(98,98,98)">=</span> _register_logging_hooks_on_whole_graph(t_outputs)
-<span class="ansi-green-intense-fg ansi-bold">    824</span> <span class="ansi-bold" style="color: rgb(0,135,0)">try</span>:
-<span class="ansi-green-fg">--&gt; 825</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span class="ansi-yellow-bg">Variable</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">_execution_engine</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">run_backward</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">  </span><span class="ansi-yellow-bg" style="color: rgb(95,135,135)"># Calls into the C++ engine to run the backward pass</span>
-<span class="ansi-green-intense-fg ansi-bold">    826</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">t_outputs</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">kwargs</span>
-<span class="ansi-green-intense-fg ansi-bold">    827</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">)</span>  <span style="color: rgb(95,135,135)"># Calls into the C++ engine to run the backward pass</span>
-<span class="ansi-green-intense-fg ansi-bold">    828</span> <span class="ansi-bold" style="color: rgb(0,135,0)">finally</span>:
-<span class="ansi-green-intense-fg ansi-bold">    829</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> attach_logging_hooks:
-
-<span class="ansi-red-fg">KeyboardInterrupt</span>: </pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e0051ebd-6145-4138-95a3-1c786d594e2d">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Part-6:-Analyzing-Results">Part 6: Analyzing Results<a class="anchor-link" href="#Part-6:-Analyzing-Results">¶</a></h1>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=4cacf7a4-add2-43b4-831b-6fdcc91fc374">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8300,54 +7592,64 @@ File <span class="ansi-green-fg">~/.cache/pypoetry/virtualenvs/data-science-prac
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2"># 7. Analyzing Results"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Load the math dataset</span>
+<span class="c1"># The dataset will be provided with:</span>
+<span class="c1"># - train.csv: problem, solution (numerical value)</span>
+<span class="c1"># - test.csv: problem (no solution)</span>
 
-<span class="c1"># Function to get predictions</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_predictions</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Get predictions from model for the given dataset."""</span>
-    <span class="n">dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-    <span class="n">all_preds</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">all_labels</span> <span class="o">=</span> <span class="p">[]</span>
-    
-    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-        <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">"Predicting"</span><span class="p">):</span>
-            <span class="n">input_ids</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">"input_ids"</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-            <span class="n">attention_mask</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">"attention_mask"</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-            <span class="n">labels</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">"label"</span><span class="p">]</span>
-            
-            <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">input_ids</span><span class="o">=</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">attention_mask</span><span class="o">=</span><span class="n">attention_mask</span><span class="p">)</span>
-            <span class="n">predictions</span> <span class="o">=</span> <span class="n">outputs</span><span class="o">.</span><span class="n">logits</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
-            
-            <span class="n">all_preds</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
-            <span class="n">all_labels</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
-    
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">all_preds</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">all_labels</span><span class="p">)</span>
+<span class="c1"># For now, we'll create a sample dataset</span>
+<span class="c1"># You should replace this with the actual dataset when provided</span>
 
-<span class="c1"># Get predictions</span>
-<span class="n">val_preds</span><span class="p">,</span> <span class="n">val_labels</span> <span class="o">=</span> <span class="n">get_predictions</span><span class="p">(</span><span class="n">peft_model</span><span class="p">,</span> <span class="n">tokenized_datasets</span><span class="p">[</span><span class="s2">"validation"</span><span class="p">])</span>
+<span class="n">train_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">'problem'</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">"What is 15 + 27?"</span><span class="p">,</span>
+        <span class="s2">"Calculate 8 * 9"</span><span class="p">,</span>
+        <span class="s2">"What is 100 - 35?"</span><span class="p">,</span>
+        <span class="s2">"Divide 144 by 12"</span><span class="p">,</span>
+        <span class="s2">"What is 25 + 30 + 15?"</span><span class="p">,</span>
+        <span class="s2">"Calculate 7 * 8 - 10"</span><span class="p">,</span>
+        <span class="s2">"What is (20 + 10) * 2?"</span><span class="p">,</span>
+        <span class="s2">"Find the result of 50 / 5 + 3"</span><span class="p">,</span>
+        <span class="s2">"What is 3^3?"</span><span class="p">,</span>
+        <span class="s2">"Calculate 100 - 25 * 2"</span>
+    <span class="p">],</span>
+    <span class="s1">'solution'</span><span class="p">:</span> <span class="p">[</span><span class="mi">42</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">46</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
+<span class="p">})</span>
 
-<span class="c1"># Calculate classification report</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Classification Report:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">val_labels</span><span class="p">,</span> <span class="n">val_preds</span><span class="p">,</span> <span class="n">target_names</span><span class="o">=</span><span class="p">[</span><span class="s2">"Negative"</span><span class="p">,</span> <span class="s2">"Positive"</span><span class="p">]))</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">'problem'</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">"What is 23 + 19?"</span><span class="p">,</span>
+        <span class="s2">"Calculate 6 * 7"</span><span class="p">,</span>
+        <span class="s2">"What is 90 - 45?"</span><span class="p">,</span>
+        <span class="s2">"Divide 81 by 9"</span><span class="p">,</span>
+        <span class="s2">"What is 12 + 18 + 24?"</span>
+    <span class="p">]</span>
+<span class="p">})</span>
 
-<span class="c1"># Plot confusion matrix</span>
-<span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">val_labels</span><span class="p">,</span> <span class="n">val_preds</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">"d"</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"Blues"</span><span class="p">,</span> 
-            <span class="n">xticklabels</span><span class="o">=</span><span class="p">[</span><span class="s2">"Negative"</span><span class="p">,</span> <span class="s2">"Positive"</span><span class="p">],</span>
-            <span class="n">yticklabels</span><span class="o">=</span><span class="p">[</span><span class="s2">"Negative"</span><span class="p">,</span> <span class="s2">"Positive"</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Predicted"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"True"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"Confusion Matrix"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">"confusion_matrix.png"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1"># Ground truth for evaluation (not given to students)</span>
+<span class="n">test_ground_truth</span> <span class="o">=</span> <span class="p">[</span><span class="mi">42</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">54</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Train set size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Test set size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Sample training data:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">train_data</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=14a9f0f0-8620-48f0-9c1f-68c442bbe730">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Part-2:-Baseline---Dummy-Model">Part 2: Baseline - Dummy Model<a class="anchor-link" href="#Part-2:-Baseline---Dummy-Model">¶</a></h2><p>First, create a baseline to understand what "bad" performance looks like.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8355,44 +7657,37 @@ File <span class="ansi-green-fg">~/.cache/pypoetry/virtualenvs/data-science-prac
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Part 7: Saving and Loading LoRA Adapters</span>
-<span class="c1"># ======================================</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Implement dummy baseline</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">dummy_model_predict</span><span class="p">(</span><span class="n">problems</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Always predict the mean of training set."""</span>
+    <span class="n">mean_solution</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">'solution'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">mean_solution</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">problems</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2"># 8. Saving and Loading LoRA Adapters"</span><span class="p">)</span>
+<span class="c1"># Evaluate dummy model</span>
+<span class="n">dummy_predictions</span> <span class="o">=</span> <span class="n">dummy_model_predict</span><span class="p">(</span><span class="n">test_data</span><span class="p">[</span><span class="s1">'problem'</span><span class="p">])</span>
+<span class="n">dummy_mse</span> <span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">test_ground_truth</span><span class="p">,</span> <span class="n">dummy_predictions</span><span class="p">)</span>
 
-<span class="c1"># Save the LoRA adapter</span>
-<span class="n">adapter_path</span> <span class="o">=</span> <span class="s2">"./lora_sst2_adapter"</span>
-<span class="n">peft_model</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="n">adapter_path</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Saved LoRA adapter to: </span><span class="si">{</span><span class="n">adapter_path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Check the size of the saved adapter</span>
-<span class="n">adapter_size</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">adapter_path</span><span class="p">,</span> <span class="n">f</span><span class="p">))</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">adapter_path</span><span class="p">))</span>
-<span class="n">adapter_size_mb</span> <span class="o">=</span> <span class="n">adapter_size</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"LoRA adapter size: </span><span class="si">{</span><span class="n">adapter_size_mb</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB"</span><span class="p">)</span>
-
-<span class="c1"># Compare to full model size (estimated)</span>
-<span class="n">model_size_mb</span> <span class="o">=</span> <span class="n">original_params</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)</span>  <span class="c1"># Assuming 4 bytes per parameter</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Estimated full model size: </span><span class="si">{</span><span class="n">model_size_mb</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Size reduction: </span><span class="si">{</span><span class="n">model_size_mb</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">adapter_size_mb</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">x"</span><span class="p">)</span>
-
-<span class="c1"># Load the adapter to a new model</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Loading the LoRA adapter to a new model instance..."</span><span class="p">)</span>
-
-<span class="c1"># Load a new base model</span>
-<span class="n">new_model</span> <span class="o">=</span> <span class="n">AutoModelForSequenceClassification</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
-    <span class="n">BASE_MODEL</span><span class="p">,</span> 
-    <span class="n">num_labels</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="c1"># Load the LoRA adapter</span>
-<span class="n">loaded_model</span> <span class="o">=</span> <span class="n">PeftModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">new_model</span><span class="p">,</span> <span class="n">adapter_path</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"LoRA adapter loaded successfully!"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Dummy Model (predicts mean):"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Predicted value: </span><span class="si">{</span><span class="n">dummy_predictions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  MSE: </span><span class="si">{</span><span class="n">dummy_mse</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">This demonstrates bad performance. Your model should do much better!"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=57823354-7082-4e06-9dc7-aec3c6cb669a">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Part-3:-Utility-Functions">Part 3: Utility Functions<a class="anchor-link" href="#Part-3:-Utility-Functions">¶</a></h2><p>Helper functions to extract numerical answers from model outputs.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8400,44 +7695,422 @@ File <span class="ansi-green-fg">~/.cache/pypoetry/virtualenvs/data-science-prac
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Part 8: Inference with LoRA-Fine-Tuned Model</span>
-<span class="c1"># ==========================================</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2"># 9. Inference with LoRA-Fine-Tuned Model"</span><span class="p">)</span>
-
-<span class="c1"># Function for inference</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">predict_sentiment</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Predict sentiment for the given text."""</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-    <span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">"pt"</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">inputs</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">extract_number</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Extract the first number from text. Return None if no number found."""</span>
+    <span class="c1"># TODO: Implement number extraction</span>
+    <span class="c1"># Look for patterns like: "The answer is 42", "42", "= 42", etc.</span>
     
-    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-        <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
-        <span class="n">prediction</span> <span class="o">=</span> <span class="n">outputs</span><span class="o">.</span><span class="n">logits</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">probs</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">outputs</span><span class="o">.</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># Try to find number patterns</span>
+    <span class="n">patterns</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="sa">r</span><span class="s1">'(?:answer is|equals|=)\s*(-?\d+\.?\d*)'</span><span class="p">,</span>  <span class="c1"># "answer is 42" or "= 42"</span>
+        <span class="sa">r</span><span class="s1">'(-?\d+\.?\d*)\s*$'</span><span class="p">,</span>  <span class="c1"># Number at the end</span>
+        <span class="sa">r</span><span class="s1">'(-?\d+\.?\d*)'</span><span class="p">,</span>  <span class="c1"># Any number</span>
+    <span class="p">]</span>
     
-    <span class="n">sentiment</span> <span class="o">=</span> <span class="s2">"Positive"</span> <span class="k">if</span> <span class="n">prediction</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">"Negative"</span>
-    <span class="n">confidence</span> <span class="o">=</span> <span class="n">probs</span><span class="p">[</span><span class="n">prediction</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">patterns</span><span class="p">:</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">continue</span>
     
-    <span class="k">return</span> <span class="n">sentiment</span><span class="p">,</span> <span class="n">confidence</span>
+    <span class="k">return</span> <span class="kc">None</span>
 
-<span class="c1"># Test new sentences</span>
-<span class="n">test_sentences</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">"This movie was absolutely fantastic and I enjoyed every moment."</span><span class="p">,</span>
-    <span class="s2">"The restaurant was terrible and the service was even worse."</span><span class="p">,</span>
-    <span class="s2">"I'm not sure how I feel about this product yet."</span><span class="p">,</span>
-    <span class="s2">"While it had some good moments, overall I was disappointed."</span><span class="p">,</span>
-    <span class="s2">"The book started slow but the ending was mind-blowing!"</span>
+<span class="c1"># Test extraction</span>
+<span class="n">test_strings</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"The answer is 42"</span><span class="p">,</span>
+    <span class="s2">"42"</span><span class="p">,</span>
+    <span class="s2">"15 + 27 = 42"</span><span class="p">,</span>
+    <span class="s2">"Calculating... the result is 42!"</span><span class="p">,</span>
+    <span class="s2">"No number here"</span>
 <span class="p">]</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Predicting sentiment for test sentences:"</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">test_sentences</span><span class="p">:</span>
-    <span class="n">sentiment</span><span class="p">,</span> <span class="n">confidence</span> <span class="o">=</span> <span class="n">predict_sentiment</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">loaded_model</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Text: </span><span class="si">{</span><span class="n">sentence</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Predicted sentiment: </span><span class="si">{</span><span class="n">sentiment</span><span class="si">}</span><span class="s2"> (confidence: </span><span class="si">{</span><span class="n">confidence</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Number extraction tests:"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">test_strings</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">extract_number</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  '</span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2">' -&gt; </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Part-4:-Approach-A---Prompt-Engineering">Part 4: Approach A - Prompt Engineering<a class="anchor-link" href="#Part-4:-Approach-A---Prompt-Engineering">¶</a></h2><p>Test different prompting strategies with various pre-trained models.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Load a pre-trained model</span>
+<span class="c1"># Suggested models: gpt2, microsoft/phi-2, TinyLlama/TinyLlama-1.1B-Chat-v1.0</span>
+
+<span class="n">model_name</span> <span class="o">=</span> <span class="s2">"gpt2"</span>  <span class="c1"># Start with GPT-2</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+<span class="c1"># Set padding token</span>
+<span class="k">if</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Loaded model: </span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_answer</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">prompt_template</span><span class="o">=</span><span class="s2">"simple"</span><span class="p">,</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Generate answer using different prompt templates.</span>
+<span class="sd">    </span>
+<span class="sd">    Templates:</span>
+<span class="sd">    - simple: Just the problem</span>
+<span class="sd">    - instruction: Add instruction to solve</span>
+<span class="sd">    - cot: Chain-of-thought prompting</span>
+<span class="sd">    - few_shot: Include examples</span>
+<span class="sd">    """</span>
+    <span class="c1"># TODO: Implement different prompt templates</span>
+    
+    <span class="k">if</span> <span class="n">prompt_template</span> <span class="o">==</span> <span class="s2">"simple"</span><span class="p">:</span>
+        <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">problem</span><span class="si">}</span><span class="se">\n</span><span class="s2">Answer:"</span>
+    
+    <span class="k">elif</span> <span class="n">prompt_template</span> <span class="o">==</span> <span class="s2">"instruction"</span><span class="p">:</span>
+        <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Solve this math problem and provide only the numerical answer.</span><span class="se">\n\n</span><span class="si">{</span><span class="n">problem</span><span class="si">}</span><span class="se">\n</span><span class="s2">Answer:"</span>
+    
+    <span class="k">elif</span> <span class="n">prompt_template</span> <span class="o">==</span> <span class="s2">"cot"</span><span class="p">:</span>
+        <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Solve this math problem step by step.</span><span class="se">\n\n</span><span class="si">{</span><span class="n">problem</span><span class="si">}</span><span class="se">\n</span><span class="s2">Let's think step by step:</span><span class="se">\n</span><span class="s2">"</span>
+    
+    <span class="k">elif</span> <span class="n">prompt_template</span> <span class="o">==</span> <span class="s2">"few_shot"</span><span class="p">:</span>
+        <span class="c1"># Include examples from training data</span>
+        <span class="n">examples</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
+            <span class="sa">f</span><span class="s2">"Problem: </span><span class="si">{</span><span class="n">train_data</span><span class="p">[</span><span class="s1">'problem'</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">Answer: </span><span class="si">{</span><span class="n">train_data</span><span class="p">[</span><span class="s1">'solution'</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_data</span><span class="p">)))</span>
+        <span class="p">])</span>
+        <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">examples</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">Problem: </span><span class="si">{</span><span class="n">problem</span><span class="si">}</span><span class="se">\n</span><span class="s2">Answer:"</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">prompt</span> <span class="o">=</span> <span class="n">problem</span>
+    
+    <span class="c1"># Generate</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">"pt"</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
+            <span class="o">**</span><span class="n">inputs</span><span class="p">,</span>
+            <span class="n">max_new_tokens</span><span class="o">=</span><span class="n">max_new_tokens</span><span class="p">,</span>
+            <span class="n">temperature</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>  <span class="c1"># Low temperature for more deterministic output</span>
+            <span class="n">do_sample</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">pad_token_id</span><span class="o">=</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token_id</span>
+        <span class="p">)</span>
+    
+    <span class="n">response</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="c1"># Remove the prompt from response</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">):]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">response</span>
+
+<span class="c1"># Test different prompts</span>
+<span class="n">test_problem</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">'problem'</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Testing problem: </span><span class="si">{</span><span class="n">test_problem</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Correct answer: </span><span class="si">{</span><span class="n">train_data</span><span class="p">[</span><span class="s1">'solution'</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"simple"</span><span class="p">,</span> <span class="s2">"instruction"</span><span class="p">,</span> <span class="s2">"cot"</span><span class="p">,</span> <span class="s2">"few_shot"</span><span class="p">]:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">generate_answer</span><span class="p">(</span><span class="n">test_problem</span><span class="p">,</span> <span class="n">template</span><span class="p">)</span>
+    <span class="n">extracted</span> <span class="o">=</span> <span class="n">extract_number</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">template</span><span class="si">}</span><span class="s2">:"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Response: </span><span class="si">{</span><span class="n">response</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Extracted: </span><span class="si">{</span><span class="n">extracted</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Part-5:-Evaluate-on-Test-Set">Part 5: Evaluate on Test Set<a class="anchor-link" href="#Part-5:-Evaluate-on-Test-Set">¶</a></h2><p>Apply your best prompting strategy to the test set.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Choose your best prompt template and generate predictions</span>
+<span class="n">best_template</span> <span class="o">=</span> <span class="s2">"few_shot"</span>  <span class="c1"># Change this based on your experiments</span>
+
+<span class="n">predictions</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">responses</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">problem</span> <span class="ow">in</span> <span class="n">test_data</span><span class="p">[</span><span class="s1">'problem'</span><span class="p">]:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">generate_answer</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">prompt_template</span><span class="o">=</span><span class="n">best_template</span><span class="p">)</span>
+    <span class="n">prediction</span> <span class="o">=</span> <span class="n">extract_number</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+    
+    <span class="c1"># If no number extracted, use 0 (will result in high MSE)</span>
+    <span class="k">if</span> <span class="n">prediction</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">prediction</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="n">predictions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span>
+    <span class="n">responses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Problem: </span><span class="si">{</span><span class="n">problem</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Response: </span><span class="si">{</span><span class="n">response</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Prediction: </span><span class="si">{</span><span class="n">prediction</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Calculate MSE</span>
+<span class="n">mse</span> <span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">test_ground_truth</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">MSE on test set: </span><span class="si">{</span><span class="n">mse</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Improvement over dummy: </span><span class="si">{</span><span class="p">(</span><span class="n">dummy_mse</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">mse</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">dummy_mse</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Part-6:-(Optional)-Fine-Tuning-with-LoRA">Part 6: (Optional) Fine-Tuning with LoRA<a class="anchor-link" href="#Part-6:-(Optional)-Fine-Tuning-with-LoRA">¶</a></h2><p>If prompting doesn't work well enough, fine-tune the model using LoRA.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Implement LoRA fine-tuning (OPTIONAL)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">peft</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoraConfig</span><span class="p">,</span> <span class="n">get_peft_model</span><span class="p">,</span> <span class="n">TaskType</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MathDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problems</span><span class="p">,</span> <span class="n">solutions</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">128</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">problems</span> <span class="o">=</span> <span class="n">problems</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solutions</span> <span class="o">=</span> <span class="n">solutions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">tokenizer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_length</span> <span class="o">=</span> <span class="n">max_length</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">problems</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="c1"># Format: "Problem: ... Answer: ..."</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Problem: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">problems</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">Answer: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">solutions</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+        
+        <span class="n">encoding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">(</span>
+            <span class="n">text</span><span class="p">,</span>
+            <span class="n">max_length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_length</span><span class="p">,</span>
+            <span class="n">padding</span><span class="o">=</span><span class="s1">'max_length'</span><span class="p">,</span>
+            <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">return_tensors</span><span class="o">=</span><span class="s1">'pt'</span>
+        <span class="p">)</span>
+        
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">'input_ids'</span><span class="p">:</span> <span class="n">encoding</span><span class="p">[</span><span class="s1">'input_ids'</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+            <span class="s1">'attention_mask'</span><span class="p">:</span> <span class="n">encoding</span><span class="p">[</span><span class="s1">'attention_mask'</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+            <span class="s1">'labels'</span><span class="p">:</span> <span class="n">encoding</span><span class="p">[</span><span class="s1">'input_ids'</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="p">}</span>
+
+<span class="c1"># Configure LoRA</span>
+<span class="n">lora_config</span> <span class="o">=</span> <span class="n">LoraConfig</span><span class="p">(</span>
+    <span class="n">r</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>  <span class="c1"># Rank</span>
+    <span class="n">lora_alpha</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+    <span class="n">target_modules</span><span class="o">=</span><span class="p">[</span><span class="s2">"c_attn"</span><span class="p">],</span>  <span class="c1"># For GPT-2</span>
+    <span class="n">lora_dropout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">bias</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+    <span class="n">task_type</span><span class="o">=</span><span class="n">TaskType</span><span class="o">.</span><span class="n">CAUSAL_LM</span>
+<span class="p">)</span>
+
+<span class="c1"># Create PEFT model</span>
+<span class="c1"># model = get_peft_model(model, lora_config)</span>
+<span class="c1"># model.print_trainable_parameters()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"LoRA fine-tuning setup complete (commented out for now)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Uncomment and implement if you want to fine-tune"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Part-7:-Try-Different-Models">Part 7: Try Different Models<a class="anchor-link" href="#Part-7:-Try-Different-Models">¶</a></h2><p>Compare performance across different pre-trained models.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Compare different models</span>
+<span class="c1"># Suggested models to try:</span>
+<span class="c1"># - gpt2</span>
+<span class="c1"># - gpt2-medium</span>
+<span class="c1"># - microsoft/phi-2 (if you have enough memory)</span>
+<span class="c1"># - TinyLlama/TinyLlama-1.1B-Chat-v1.0</span>
+
+<span class="n">models_to_try</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"gpt2"</span><span class="p">,</span>
+    <span class="c1"># Add more models here</span>
+<span class="p">]</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">model_name</span> <span class="ow">in</span> <span class="n">models_to_try</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Testing </span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+    <span class="c1"># Load model, generate predictions, calculate MSE</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">pass</span>
+
+<span class="c1"># Plot comparison</span>
+<span class="c1"># YOUR CODE HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Part-8:-Create-Submission-File">Part 8: Create Submission File<a class="anchor-link" href="#Part-8:-Create-Submission-File">¶</a></h2><p>Generate predictions for the test set and save to submission.csv</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Generate final predictions and create submission file</span>
+<span class="n">submission</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">'problem'</span><span class="p">:</span> <span class="n">test_data</span><span class="p">[</span><span class="s1">'problem'</span><span class="p">],</span>
+    <span class="s1">'prediction'</span><span class="p">:</span> <span class="n">predictions</span>
+<span class="p">})</span>
+
+<span class="c1"># Save to CSV</span>
+<span class="n">submission</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">'submission.csv'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Submission file created: submission.csv"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Submission preview:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">submission</span><span class="p">)</span>
+
+<span class="c1"># Verify all predictions are numerical</span>
+<span class="n">non_numeric</span> <span class="o">=</span> <span class="n">submission</span><span class="p">[</span><span class="s1">'prediction'</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">non_numeric</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">⚠️  WARNING: </span><span class="si">{</span><span class="n">non_numeric</span><span class="si">}</span><span class="s2"> predictions are not numerical!"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"These will result in +inf score. Please fix them."</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">✓ All predictions are numerical"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Questions">Questions<a class="anchor-link" href="#Questions">¶</a></h2><p>Answer the following questions:</p>
+<ol>
+<li><p><strong>Which prompting strategy worked best and why?</strong></p>
+<ul>
+<li>YOUR ANSWER HERE</li>
+</ul>
+</li>
+<li><p><strong>How do different models compare in mathematical reasoning?</strong></p>
+<ul>
+<li>YOUR ANSWER HERE</li>
+</ul>
+</li>
+<li><p><strong>What are the main challenges in extracting numerical answers from LLM outputs?</strong></p>
+<ul>
+<li>YOUR ANSWER HERE</li>
+</ul>
+</li>
+<li><p><strong>How could you improve the model's performance further?</strong></p>
+<ul>
+<li>YOUR ANSWER HERE</li>
+</ul>
+</li>
+<li><p><strong>If you used LoRA fine-tuning, what were the trade-offs compared to prompting?</strong></p>
+<ul>
+<li>YOUR ANSWER HERE (or N/A if you didn't use LoRA)</li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Deliverables-Checklist">Deliverables Checklist<a class="anchor-link" href="#Deliverables-Checklist">¶</a></h2><ul>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>Implemented at least 3 different prompting strategies</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>Tested at least 2 different pre-trained models</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>Calculated MSE on test set</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>Created <code>submission.csv</code> with all numerical predictions</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>Answered all questions</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>(Optional) Implemented LoRA fine-tuning</li>
+</ul>
 </div>
 </div>
 </div>

@@ -1,6 +1,7 @@
 import React from 'react';
-import { Container, Text, Title, Stack, List } from '@mantine/core';
-import { GitMerge } from 'lucide-react';
+import { Container, Text, Title, Stack, List, Alert, Badge } from '@mantine/core';
+import { Calculator } from 'lucide-react';
+import { IconAlertCircle, IconStar } from '@tabler/icons-react';
 import DataInteractionPanel from 'components/DataInteractionPanel';
 
 const Exercise3 = () => {
@@ -12,76 +13,100 @@ const Exercise3 = () => {
     <>
       <Container fluid>
         <Stack spacing="xl" className="p-6">
-          <div className="flex items-center gap-3"> 
-            <GitMerge size={24} />
-            <Title order={1} className="text-2xl font-bold">Exercise 3: Fine-Tuning LLMs with LoRA</Title>
+          <div className="flex items-center gap-3">
+            <Calculator size={32} className="text-blue-600" />
+            <Title order={1}>Exercise 3: Mathematical Problem Solving</Title>
+            <Badge color="yellow" size="lg" leftSection={<IconStar size={14} />}>
+              Marked Exercise
+            </Badge>
           </div>
 
+          <Text size="md" mb="md">
+            Apply LLMs to mathematical reasoning tasks. Choose your approach: prompting engineering or LoRA fine-tuning.
+            You will evaluate model performance on mathematical problems and compare different strategies.
+          </Text>
+
           <Stack spacing="lg">
-            {/* Part 1 */}
             <div>
-              <Title order={2} className="text-xl font-semibold mb-4">Part 1: Introduction to LoRA (Low-Rank Adaptation)</Title>
-              <Text className="text-gray-700 mb-4">
-                Understand the core concepts behind efficient fine-tuning with LoRA:
-              </Text>
-              <List spacing="sm" className="ml-6">
-                <List.Item>Principles of parameter-efficient fine-tuning</List.Item>
-                <List.Item>How LoRA reduces trainable parameters</List.Item>
-                <List.Item>Advantages over full fine-tuning methods</List.Item>
-                <List.Item>Rank dimensionality and its effect on model adaptation</List.Item>
+              <Title order={2} mb="md">Objectives</Title>
+              <List spacing="sm">
+                <List.Item>Apply LLMs to mathematical reasoning tasks</List.Item>
+                <List.Item>Compare prompting strategies vs. fine-tuning approaches</List.Item>
+                <List.Item>Implement LoRA fine-tuning for specialized tasks (optional)</List.Item>
+                <List.Item>Evaluate model performance on mathematical problems</List.Item>
+                <List.Item>Analyze trade-offs between different approaches</List.Item>
               </List>
             </div>
 
-            {/* Part 2 */}
             <div>
-              <Title order={2} className="text-xl font-semibold mb-4">Part 2: Setting Up LoRA Fine-Tuning Environment</Title>
-              <Text className="text-gray-700 mb-4">
-                Prepare your environment for efficient fine-tuning:
+              <Title order={2} mb="md">Dataset</Title>
+              <Text size="md" mb="sm">
+                <strong>Custom Math Dataset</strong>
               </Text>
-              <List spacing="sm" className="ml-6">
-                <List.Item>Installing PEFT (Parameter-Efficient Fine-Tuning) library</List.Item>
-                <List.Item>Setting up Hugging Face Transformers integration</List.Item>
-                <List.Item>Configuring hardware acceleration (GPU/TPU)</List.Item>
-                <List.Item>Managing memory constraints for large models</List.Item>
+              <List spacing="sm">
+                <List.Item>Simple mathematical exercises (arithmetic, algebra, word problems)</List.Item>
+                <List.Item>Generated problems with ground truth answers</List.Item>
+                <List.Item>Structured format for evaluation</List.Item>
               </List>
             </div>
 
-            {/* Part 3 */}
             <div>
-              <Title order={2} className="text-xl font-semibold mb-4">Part 3: Preparing a Dataset for LoRA Fine-Tuning</Title>
-              <Text className="text-gray-700 mb-4">
-                Use the SST-2 dataset (Stanford Sentiment Treebank) for binary sentiment classification:
-              </Text>
-              <List spacing="sm" className="ml-6">
-                <List.Item>Loading and exploring the SST-2 dataset structure</List.Item>
-                <List.Item>Preprocessing text for sentiment classification</List.Item>
-                <List.Item>Tokenization strategies for fine-tuning</List.Item>
-                <List.Item>Creating train/validation splits for evaluation</List.Item>
+              <Title order={2} mb="md">Choose Your Approach</Title>
+
+              <Title order={3} mb="sm">Approach A: Prompting Engineering</Title>
+              <List spacing="sm" mb="md">
+                <List.Item>Design effective prompts for math problem solving</List.Item>
+                <List.Item>Chain-of-thought prompting techniques</List.Item>
+                <List.Item>Few-shot learning examples</List.Item>
+                <List.Item>Prompt optimization strategies</List.Item>
+              </List>
+
+              <Title order={3} mb="sm">Approach B: Fine-Tuning with LoRA</Title>
+              <List spacing="sm">
+                <List.Item>Parameter-efficient fine-tuning with LoRA</List.Item>
+                <List.Item>Dataset preparation for math problems</List.Item>
+                <List.Item>Training loop implementation</List.Item>
+                <List.Item>Hyperparameter optimization (rank, alpha, dropout)</List.Item>
+                <List.Item>Model evaluation and comparison</List.Item>
               </List>
             </div>
 
-            {/* Part 4 (Part 5 in your outline, but keeping sequential for consistency) */}
             <div>
-              <Title order={2} className="text-xl font-semibold mb-4">Part 4: Training with LoRA</Title>
-              <Text className="text-gray-700 mb-4">
-                Implement and execute the LoRA fine-tuning process:
-              </Text>
-              <List spacing="sm" className="ml-6">
-                <List.Item>Configuring LoRA hyperparameters (rank, alpha, dropout)</List.Item>
-                <List.Item>Setting up the training loop and optimization</List.Item>
-                <List.Item>Monitoring training progress and preventing overfitting</List.Item>
-                <List.Item>Evaluating model performance on sentiment classification</List.Item>
-                <List.Item>Merging and exporting LoRA weights for deployment</List.Item>
+              <Title order={2} mb="md">Key Topics</Title>
+              <List spacing="sm">
+                <List.Item>Mathematical reasoning in LLMs</List.Item>
+                <List.Item>Prompting techniques (zero-shot, few-shot, chain-of-thought)</List.Item>
+                <List.Item>LoRA architecture and implementation</List.Item>
+                <List.Item>PEFT (Parameter-Efficient Fine-Tuning) library</List.Item>
+                <List.Item>Evaluation metrics for mathematical tasks</List.Item>
+                <List.Item>Trade-offs: prompting vs. fine-tuning</List.Item>
               </List>
             </div>
+
+            <div>
+              <Title order={2} mb="md">Deliverables</Title>
+              <List spacing="sm">
+                <List.Item>Mathematical problem-solving system (prompting OR fine-tuning)</List.Item>
+                <List.Item>Performance evaluation on test set</List.Item>
+                <List.Item>Comparative analysis of chosen approach</List.Item>
+                <List.Item>Error analysis and improvement strategies</List.Item>
+                <List.Item>Report justifying approach selection</List.Item>
+              </List>
+            </div>
+
+            <Alert icon={<IconAlertCircle />} color="yellow" mt="md">
+              This is a marked exercise. Choose ONE approach (prompting or fine-tuning) and implement it thoroughly.
+              Your choice should be justified based on resource constraints, task requirements, and expected performance.
+            </Alert>
           </Stack>
+
+          <DataInteractionPanel
+            notebookUrl={notebookUrl}
+            notebookHtmlUrl={notebookHtmlUrl}
+            notebookColabUrl={notebookColabUrl}
+            className="mt-6"
+          />
         </Stack>
-        <DataInteractionPanel
-          notebookUrl={notebookUrl}
-          notebookHtmlUrl={notebookHtmlUrl}
-          notebookColabUrl={notebookColabUrl}
-          className="mt-6"
-        />
       </Container>
     </>
   );

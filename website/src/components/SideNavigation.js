@@ -117,6 +117,7 @@ export const courseContentData = {
     { to: '/recurrent-networks', label: 'Recurrent Networks' },
     { to: '/attention-layer', label: 'Attention Layer' },
     { to: '/transformer', label: 'Transformer' },
+    { to: '/training-transformers', label: 'Training Transformers' },
     { to: '/llm-transfer-learning', label: 'LLM and Transfer Learning' },
     { to: '/embeddings', label: 'Embeddings' },
     { to: '/rag', label: 'RAG' },

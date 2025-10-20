@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>module8_exercise1</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>module8_exercise4</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7517,22 +7517,15 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Exercise-1:-Training-a-GPT-style-Transformer">Exercise 1: Training a GPT-style Transformer<a class="anchor-link" href="#Exercise-1:-Training-a-GPT-style-Transformer">¶</a></h1><p>In this exercise, you'll use the Hugging Face Transformers library to configure, train a GPT-style language model on the TinyStories dataset.</p>
+<h1 id="Exercise-4:-Agentic-Systems-with-LangGraph">Exercise 4: Agentic Systems with LangGraph<a class="anchor-link" href="#Exercise-4:-Agentic-Systems-with-LangGraph">¶</a></h1><p>Build intelligent agent systems that can reason, use tools, and execute multi-step workflows using LangGraph.</p>
 <p><strong>Learning Objectives:</strong></p>
 <ul>
-<li>Understand GPT model configuration parameters</li>
-<li>Use the Transformers library for language modeling</li>
-<li>Configure model architecture (attention heads, layers, embedding size)</li>
-<li>Train a language model for next-token prediction</li>
-<li>Generate text using different decoding strategies</li>
-<li>Evaluate model performance with perplexity</li>
-</ul>
-<p><strong>Key Concepts:</strong></p>
-<ul>
-<li>Model configuration vs model weights</li>
-<li>Attention heads and their relationship to model dimension</li>
-<li>Training arguments and hyperparameters</li>
-<li>Decoding strategies (greedy, sampling, beam search)</li>
+<li>Understand agentic AI architectures</li>
+<li>Build graph-based agent workflows with LangGraph</li>
+<li>Implement tool use and function calling</li>
+<li>Create reasoning and planning loops</li>
+<li>Manage state across agent execution</li>
+<li>Build practical multi-step agents</li>
 </ul>
 </div>
 </div>
@@ -7544,7 +7537,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Part-1:-Setup-and-Load-Data">Part 1: Setup and Load Data<a class="anchor-link" href="#Part-1:-Setup-and-Load-Data">¶</a></h2>
+<h2 id="Part-1:-Setup-and-Introduction">Part 1: Setup and Introduction<a class="anchor-link" href="#Part-1:-Setup-and-Introduction">¶</a></h2>
 </div>
 </div>
 </div>
@@ -7556,8 +7549,7 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Install required packages</span>
-<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>torch<span class="w"> </span>datasets<span class="w"> </span>transformers<span class="w"> </span>matplotlib<span class="w"> </span>tqdm<span class="w"> </span>accelerate<span class="w"> </span>-q
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>langgraph<span class="w"> </span>langchain<span class="w"> </span>langchain-community<span class="w"> </span>transformers<span class="w"> </span>torch<span class="w"> </span>python-dotenv<span class="w"> </span>-q
 </pre></div>
 </div>
 </div>
@@ -7572,49 +7564,14 @@ a.anchor-link {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dataset</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">AutoTokenizer</span><span class="p">,</span>
-    <span class="n">GPT2Config</span><span class="p">,</span>
-    <span class="n">GPT2LMHeadModel</span><span class="p">,</span>
-    <span class="n">DataCollatorForLanguageModeling</span><span class="p">,</span>
-    <span class="n">Trainer</span><span class="p">,</span>
-    <span class="n">TrainingArguments</span>
-<span class="p">)</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypedDict</span><span class="p">,</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langgraph.graph</span><span class="w"> </span><span class="kn">import</span> <span class="n">StateGraph</span><span class="p">,</span> <span class="n">END</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.messages</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseMessage</span><span class="p">,</span> <span class="n">HumanMessage</span><span class="p">,</span> <span class="n">AIMessage</span><span class="p">,</span> <span class="n">SystemMessage</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">tool</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">operator</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
-<span class="c1"># Set device</span>
-<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">'cuda'</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">'cpu'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Using device: </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Load TinyStories dataset</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Loading TinyStories dataset..."</span><span class="p">)</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">"roneneldan/TinyStories"</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s2">"train[:10000]"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Loaded </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="si">}</span><span class="s2"> stories"</span><span class="p">)</span>
-
-<span class="c1"># Use GPT-2 tokenizer (or you can load your custom BPE tokenizer from Exercise 0)</span>
-<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">'gpt2'</span><span class="p">)</span>
-<span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Tokenizer vocabulary size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sample tokens: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">get_vocab</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">())[:</span><span class="mi">10</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Setup complete!"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7627,49 +7584,66 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Part-2:-Understanding-Model-Configuration">Part 2: Understanding Model Configuration<a class="anchor-link" href="#Part-2:-Understanding-Model-Configuration">¶</a></h2><p>Before creating a model, you need to understand the key configuration parameters:</p>
-<p><strong>Critical Parameters:</strong></p>
+<h2 id="Part-2:-Understanding-Agentic-Systems">Part 2: Understanding Agentic Systems<a class="anchor-link" href="#Part-2:-Understanding-Agentic-Systems">¶</a></h2><p>Agentic AI systems can:</p>
 <ul>
-<li><code>vocab_size</code>: Size of the tokenizer vocabulary</li>
-<li><code>n_positions</code>: Maximum sequence length the model can handle</li>
-<li><code>n_embd</code>: Embedding dimension (hidden size)</li>
-<li><code>n_layer</code>: Number of transformer blocks</li>
-<li><code>n_head</code>: Number of attention heads</li>
-<li><code>n_inner</code>: Dimension of feed-forward inner layer (typically 4 × n_embd)</li>
+<li><strong>Reason</strong>: Think through problems step-by-step</li>
+<li><strong>Act</strong>: Use tools to interact with the environment</li>
+<li><strong>Observe</strong>: Process results and adapt</li>
+<li><strong>Plan</strong>: Break down complex tasks into subtasks</li>
 </ul>
-<p><strong>Important Constraint:</strong> <code>n_embd</code> must be divisible by <code>n_head</code></p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Question-1:-Understanding-Attention-Heads">Question 1: Understanding Attention Heads<a class="anchor-link" href="#Question-1:-Understanding-Attention-Heads">¶</a></h3><p><strong>Before continuing, answer these questions:</strong></p>
+<p>Key components:</p>
 <ol>
-<li><p><strong>If <code>n_embd = 256</code> and <code>n_head = 8</code>, what is the dimension of each attention head?</strong></p>
-<ul>
-<li>YOUR ANSWER HERE:</li>
-<li>Formula: head_dim = n_embd / n_head</li>
-</ul>
-</li>
-<li><p><strong>Why must <code>n_embd</code> be divisible by <code>n_head</code>?</strong></p>
-<ul>
-<li>YOUR ANSWER HERE:</li>
-</ul>
-</li>
-<li><p><strong>What happens if you increase the number of heads while keeping <code>n_embd</code> constant?</strong></p>
-<ul>
-<li>YOUR ANSWER HERE:</li>
-</ul>
-</li>
+<li><strong>LLM Brain</strong>: Makes decisions</li>
+<li><strong>Tools</strong>: Actions the agent can take</li>
+<li><strong>Memory/State</strong>: Tracks conversation and context</li>
+<li><strong>Control Flow</strong>: Determines next actions</li>
 </ol>
 </div>
 </div>
 </div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Simple example: Agent that decides whether to use a calculator</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">simple_agent_example</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    A basic agent that:</span>
+<span class="sd">    1. Receives a query</span>
+<span class="sd">    2. Decides if it needs a tool</span>
+<span class="sd">    3. Uses tool if needed</span>
+<span class="sd">    4. Returns final answer</span>
+<span class="sd">    """</span>
+    
+    <span class="n">query</span> <span class="o">=</span> <span class="s2">"What is 15 * 27?"</span>
+    
+    <span class="c1"># Step 1: Reasoning</span>
+    <span class="n">needs_calculator</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Agent decides this requires calculation</span>
+    
+    <span class="k">if</span> <span class="n">needs_calculator</span><span class="p">:</span>
+        <span class="c1"># Step 2: Tool use</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="mi">15</span> <span class="o">*</span> <span class="mi">27</span>
+        
+        <span class="c1"># Step 3: Formulate response</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Using calculator: 15 * 27 = </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">"</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="s2">"I can answer that directly without tools."</span>
+    
+    <span class="k">return</span> <span class="n">answer</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Simple Agent Example:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">simple_agent_example</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Now let's build this properly with LangGraph!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -7677,7 +7651,13 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Part-3:-Configure-Your-GPT-Model">Part 3: Configure Your GPT Model<a class="anchor-link" href="#Part-3:-Configure-Your-GPT-Model">¶</a></h2><p>Now configure your model architecture. You'll need to fill in the parameters.</p>
+<h2 id="Part-3:-LangGraph-Fundamentals">Part 3: LangGraph Fundamentals<a class="anchor-link" href="#Part-3:-LangGraph-Fundamentals">¶</a></h2><p>LangGraph represents agent workflows as graphs:</p>
+<ul>
+<li><strong>Nodes</strong>: Processing steps (LLM calls, tool use, logic)</li>
+<li><strong>Edges</strong>: Transitions between nodes</li>
+<li><strong>State</strong>: Shared data structure passed between nodes</li>
+<li><strong>Conditional Edges</strong>: Dynamic routing based on state</li>
+</ul>
 </div>
 </div>
 </div>
@@ -7689,36 +7669,101 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Configure your GPT model</span>
-<span class="c1"># Fill in the parameters below based on your understanding</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Define State: What information flows through the graph</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AgentState</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""State that gets passed between nodes."""</span>
+    <span class="n">messages</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span> <span class="n">operator</span><span class="o">.</span><span class="n">add</span><span class="p">]</span>
+    <span class="n">next_action</span><span class="p">:</span> <span class="nb">str</span>
 
-<span class="n">config</span> <span class="o">=</span> <span class="n">GPT2Config</span><span class="p">(</span>
-    <span class="n">vocab_size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">),</span>              <span class="c1"># Fixed: must match tokenizer</span>
-    <span class="n">n_positions</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>                         <span class="c1"># Maximum sequence length</span>
+<span class="c1"># TODO: Create a simple 3-node graph</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">input_node</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">AgentState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AgentState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Process initial input."""</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"📥 Input Node: Processing user query"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="n">state</span><span class="p">,</span> <span class="s2">"next_action"</span><span class="p">:</span> <span class="s2">"think"</span><span class="p">}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">thinking_node</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">AgentState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AgentState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Agent reasoning step."""</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"🤔 Thinking Node: Analyzing the problem"</span><span class="p">)</span>
+    <span class="n">messages</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"messages"</span><span class="p">]</span>
+    <span class="n">last_message</span> <span class="o">=</span> <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">content</span> <span class="k">if</span> <span class="n">messages</span> <span class="k">else</span> <span class="s2">""</span>
     
-    <span class="c1"># TODO: Fill in these parameters</span>
-    <span class="n">n_embd</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>        <span class="c1"># Embedding dimension (try: 256, 384, 512)</span>
-    <span class="n">n_layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>       <span class="c1"># Number of transformer blocks (try: 4, 6, 8)</span>
-    <span class="n">n_head</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>        <span class="c1"># Number of attention heads (try: 4, 8, 16)</span>
-                        <span class="c1"># REMEMBER: n_embd must be divisible by n_head!</span>
-    
-    <span class="n">n_inner</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>       <span class="c1"># Feed-forward dimension (typically 4 × n_embd)</span>
-    
-    <span class="c1"># Additional parameters (already set)</span>
-    <span class="n">resid_pdrop</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>    <span class="c1"># Residual dropout</span>
-    <span class="n">embd_pdrop</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>     <span class="c1"># Embedding dropout  </span>
-    <span class="n">attn_pdrop</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>     <span class="c1"># Attention dropout</span>
-    <span class="n">activation_function</span><span class="o">=</span><span class="s2">"gelu_new"</span>
+    <span class="c1"># Simple logic: check if query contains math</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">op</span> <span class="ow">in</span> <span class="n">last_message</span> <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"+"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">,</span> <span class="s2">"*"</span><span class="p">,</span> <span class="s2">"/"</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="n">state</span><span class="p">,</span> <span class="s2">"next_action"</span><span class="p">:</span> <span class="s2">"calculate"</span><span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="n">state</span><span class="p">,</span> <span class="s2">"next_action"</span><span class="p">:</span> <span class="s2">"respond"</span><span class="p">}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_node</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">AgentState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AgentState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Perform calculation."""</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"🔢 Calculate Node: Using calculator tool"</span><span class="p">)</span>
+    <span class="c1"># In real agent, this would call a tool</span>
+    <span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="n">state</span><span class="p">,</span> <span class="s2">"next_action"</span><span class="p">:</span> <span class="s2">"respond"</span><span class="p">}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">respond_node</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">AgentState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AgentState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Generate final response."""</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"💬 Respond Node: Generating final answer"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="n">state</span><span class="p">,</span> <span class="s2">"next_action"</span><span class="p">:</span> <span class="s2">"end"</span><span class="p">}</span>
+
+<span class="c1"># Build the graph</span>
+<span class="n">workflow</span> <span class="o">=</span> <span class="n">StateGraph</span><span class="p">(</span><span class="n">AgentState</span><span class="p">)</span>
+
+<span class="c1"># Add nodes</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"input"</span><span class="p">,</span> <span class="n">input_node</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"think"</span><span class="p">,</span> <span class="n">thinking_node</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"calculate"</span><span class="p">,</span> <span class="n">calculate_node</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"respond"</span><span class="p">,</span> <span class="n">respond_node</span><span class="p">)</span>
+
+<span class="c1"># Add edges</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">set_entry_point</span><span class="p">(</span><span class="s2">"input"</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"input"</span><span class="p">,</span> <span class="s2">"think"</span><span class="p">)</span>
+
+<span class="c1"># Conditional routing from thinking node</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_conditional_edges</span><span class="p">(</span>
+    <span class="s2">"think"</span><span class="p">,</span>
+    <span class="k">lambda</span> <span class="n">state</span><span class="p">:</span> <span class="n">state</span><span class="p">[</span><span class="s2">"next_action"</span><span class="p">],</span>
+    <span class="p">{</span>
+        <span class="s2">"calculate"</span><span class="p">:</span> <span class="s2">"calculate"</span><span class="p">,</span>
+        <span class="s2">"respond"</span><span class="p">:</span> <span class="s2">"respond"</span>
+    <span class="p">}</span>
 <span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Model Configuration:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Vocabulary size: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">vocab_size</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Embedding dimension: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">n_embd</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Number of layers: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">n_layer</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Number of heads: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">n_head</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Head dimension: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">n_embd</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">config</span><span class="o">.</span><span class="n">n_head</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">config</span><span class="o">.</span><span class="n">n_head</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'N/A'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Feed-forward dimension: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">n_inner</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Max sequence length: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">n_positions</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"calculate"</span><span class="p">,</span> <span class="s2">"respond"</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"respond"</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+
+<span class="c1"># Compile the graph</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">workflow</span><span class="o">.</span><span class="n">compile</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Graph built successfully!"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Graph structure:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"input → think → [calculate OR respond] → respond → END"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test the graph</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Test 1: Math query"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
+    <span class="s2">"messages"</span><span class="p">:</span> <span class="p">[</span><span class="n">HumanMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s2">"What is 15 + 27?"</span><span class="p">)],</span>
+    <span class="s2">"next_action"</span><span class="p">:</span> <span class="s2">"start"</span>
+<span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n\n</span><span class="s2">Test 2: Non-math query"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
+    <span class="s2">"messages"</span><span class="p">:</span> <span class="p">[</span><span class="n">HumanMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s2">"What is the capital of France?"</span><span class="p">)],</span>
+    <span class="s2">"next_action"</span><span class="p">:</span> <span class="s2">"start"</span>
+<span class="p">})</span>
 </pre></div>
 </div>
 </div>
@@ -7731,35 +7776,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Question-2:-Model-Size-Trade-offs">Question 2: Model Size Trade-offs<a class="anchor-link" href="#Question-2:-Model-Size-Trade-offs">¶</a></h3><p><strong>Answer these questions about your configuration:</strong></p>
-<ol>
-<li><p><strong>What is the relationship between <code>n_embd</code>, <code>n_layer</code>, <code>n_head</code> and model capacity?</strong></p>
-<ul>
-<li>YOUR ANSWER HERE:</li>
-</ul>
-</li>
-<li><p><strong>Why is <code>n_inner</code> typically set to 4 × <code>n_embd</code>?</strong></p>
-<ul>
-<li>YOUR ANSWER HERE:</li>
-</ul>
-</li>
-<li><p><strong>What are the trade-offs between a small model (e.g., n_embd=128, n_layer=4) vs a large model (e.g., n_embd=512, n_layer=12)?</strong></p>
-<ul>
-<li>YOUR ANSWER HERE:</li>
-</ul>
-</li>
-</ol>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Part-4:-Create-the-Model">Part 4: Create the Model<a class="anchor-link" href="#Part-4:-Create-the-Model">¶</a></h2><p>Now instantiate the model with your configuration.</p>
+<h2 id="Part-4:-Implementing-Tools">Part 4: Implementing Tools<a class="anchor-link" href="#Part-4:-Implementing-Tools">¶</a></h2><p>Tools give agents the ability to interact with the world.</p>
 </div>
 </div>
 </div>
@@ -7771,22 +7788,87 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create model from config</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">GPT2LMHeadModel</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Define custom tools using @tool decorator</span>
 
-<span class="c1"># Count parameters</span>
-<span class="n">total_params</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
-<span class="n">trainable_params</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">requires_grad</span><span class="p">)</span>
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculator</span><span class="p">(</span><span class="n">expression</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Evaluates a mathematical expression safely.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        expression: A mathematical expression like '2 + 2' or '15 * 27'</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        The result of the calculation as a string</span>
+<span class="sd">    """</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Safe evaluation</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">expression</span><span class="p">,</span> <span class="p">{</span><span class="s2">"__builtins__"</span><span class="p">:</span> <span class="p">{}},</span> <span class="p">{})</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"Result: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">"</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"Error: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Model created successfully!"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total parameters: </span><span class="si">{</span><span class="n">total_params</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Trainable parameters: </span><span class="si">{</span><span class="n">trainable_params</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Model size: ~</span><span class="si">{</span><span class="n">total_params</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1024</span><span class="o">**</span><span class="mi">2</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB (fp32)"</span><span class="p">)</span>
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">search_knowledge_base</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Searches a knowledge base for information.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        query: The search query</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Relevant information from the knowledge base</span>
+<span class="sd">    """</span>
+    <span class="c1"># Simulated knowledge base</span>
+    <span class="n">knowledge</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"python"</span><span class="p">:</span> <span class="s2">"Python is a high-level programming language."</span><span class="p">,</span>
+        <span class="s2">"transformers"</span><span class="p">:</span> <span class="s2">"Transformers are neural network architectures based on self-attention."</span><span class="p">,</span>
+        <span class="s2">"langgraph"</span><span class="p">:</span> <span class="s2">"LangGraph is a framework for building agent workflows."</span>
+    <span class="p">}</span>
+    
+    <span class="n">query_lower</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">knowledge</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">query_lower</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span>
+    
+    <span class="k">return</span> <span class="s2">"No information found in knowledge base."</span>
 
-<span class="c1"># Show model architecture</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Model architecture:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_current_time</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Gets the current time.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Current time as a string</span>
+<span class="sd">    """</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S"</span><span class="p">)</span>
+
+<span class="c1"># List of available tools</span>
+<span class="n">tools</span> <span class="o">=</span> <span class="p">[</span><span class="n">calculator</span><span class="p">,</span> <span class="n">search_knowledge_base</span><span class="p">,</span> <span class="n">get_current_time</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Available tools:"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">tool_obj</span> <span class="ow">in</span> <span class="n">tools</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  - </span><span class="si">{</span><span class="n">tool_obj</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">tool_obj</span><span class="o">.</span><span class="n">description</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test the tools</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Testing calculator:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">calculator</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">"expression"</span><span class="p">:</span> <span class="s2">"15 * 27"</span><span class="p">}))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Testing knowledge base:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">search_knowledge_base</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">"query"</span><span class="p">:</span> <span class="s2">"What are transformers?"</span><span class="p">}))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Testing time:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">get_current_time</span><span class="o">.</span><span class="n">invoke</span><span class="p">({}))</span>
 </pre></div>
 </div>
 </div>
@@ -7799,7 +7881,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Part-5:-Data-Preparation">Part 5: Data Preparation<a class="anchor-link" href="#Part-5:-Data-Preparation">¶</a></h2><p>Prepare the dataset for causal language modeling (predicting next tokens).</p>
+<h2 id="Part-5:-Building-a-Tool-Using-Agent">Part 5: Building a Tool-Using Agent<a class="anchor-link" href="#Part-5:-Building-a-Tool-Using-Agent">¶</a></h2><p>Create an agent that can decide which tool to use based on the query.</p>
 </div>
 </div>
 </div>
@@ -7811,33 +7893,115 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Tokenize the entire dataset</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">tokenize_function</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Tokenize text examples."""</span>
-    <span class="k">return</span> <span class="n">tokenizer</span><span class="p">(</span>
-        <span class="n">examples</span><span class="p">[</span><span class="s1">'text'</span><span class="p">],</span>
-        <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">max_length</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
-        <span class="n">padding</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">return_attention_mask</span><span class="o">=</span><span class="kc">False</span>
-    <span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Enhanced state with tool calls</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ToolAgentState</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+    <span class="n">messages</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span> <span class="n">operator</span><span class="o">.</span><span class="n">add</span><span class="p">]</span>
+    <span class="n">tool_to_use</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">tool_input</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">tool_output</span><span class="p">:</span> <span class="nb">str</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Tokenizing dataset..."</span><span class="p">)</span>
-<span class="n">tokenized_dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
-    <span class="n">tokenize_function</span><span class="p">,</span>
-    <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">remove_columns</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">column_names</span><span class="p">,</span>
-    <span class="n">desc</span><span class="o">=</span><span class="s2">"Tokenizing"</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">analyze_query_node</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">ToolAgentState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ToolAgentState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Determine what tool (if any) is needed."""</span>
+    <span class="n">messages</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"messages"</span><span class="p">]</span>
+    <span class="n">last_message</span> <span class="o">=</span> <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">content</span> <span class="k">if</span> <span class="n">messages</span> <span class="k">else</span> <span class="s2">""</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"🔍 Analyzing query: </span><span class="si">{</span><span class="n">last_message</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="c1"># Simple rule-based tool selection</span>
+    <span class="n">tool_to_use</span> <span class="o">=</span> <span class="s2">"none"</span>
+    <span class="n">tool_input</span> <span class="o">=</span> <span class="s2">""</span>
+    
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">op</span> <span class="ow">in</span> <span class="n">last_message</span> <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"+"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">,</span> <span class="s2">"*"</span><span class="p">,</span> <span class="s2">"/"</span><span class="p">,</span> <span class="s2">"calculate"</span><span class="p">]):</span>
+        <span class="n">tool_to_use</span> <span class="o">=</span> <span class="s2">"calculator"</span>
+        <span class="c1"># Extract expression (simple approach)</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">'[\d\s+\-*/().]+'</span><span class="p">,</span> <span class="n">last_message</span><span class="p">)</span>
+        <span class="n">tool_input</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">match</span> <span class="k">else</span> <span class="n">last_message</span>
+    
+    <span class="k">elif</span> <span class="s2">"time"</span> <span class="ow">in</span> <span class="n">last_message</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="n">tool_to_use</span> <span class="o">=</span> <span class="s2">"get_current_time"</span>
+        <span class="n">tool_input</span> <span class="o">=</span> <span class="s2">""</span>
+    
+    <span class="k">elif</span> <span class="nb">any</span><span class="p">(</span><span class="n">word</span> <span class="ow">in</span> <span class="n">last_message</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"what is"</span><span class="p">,</span> <span class="s2">"what are"</span><span class="p">,</span> <span class="s2">"tell me about"</span><span class="p">]):</span>
+        <span class="n">tool_to_use</span> <span class="o">=</span> <span class="s2">"search_knowledge_base"</span>
+        <span class="n">tool_input</span> <span class="o">=</span> <span class="n">last_message</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  → Selected tool: </span><span class="si">{</span><span class="n">tool_to_use</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="o">**</span><span class="n">state</span><span class="p">,</span>
+        <span class="s2">"tool_to_use"</span><span class="p">:</span> <span class="n">tool_to_use</span><span class="p">,</span>
+        <span class="s2">"tool_input"</span><span class="p">:</span> <span class="n">tool_input</span><span class="p">,</span>
+        <span class="s2">"tool_output"</span><span class="p">:</span> <span class="s2">""</span>
+    <span class="p">}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">execute_tool_node</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">ToolAgentState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ToolAgentState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Execute the selected tool."""</span>
+    <span class="n">tool_name</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"tool_to_use"</span><span class="p">]</span>
+    <span class="n">tool_input</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"tool_input"</span><span class="p">]</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"🔧 Executing tool: </span><span class="si">{</span><span class="n">tool_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="c1"># Find and execute the tool</span>
+    <span class="n">tool_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tools</span><span class="p">}</span>
+    
+    <span class="k">if</span> <span class="n">tool_name</span> <span class="ow">in</span> <span class="n">tool_map</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">tool_name</span> <span class="o">==</span> <span class="s2">"calculator"</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">tool_map</span><span class="p">[</span><span class="n">tool_name</span><span class="p">]</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">"expression"</span><span class="p">:</span> <span class="n">tool_input</span><span class="p">})</span>
+        <span class="k">elif</span> <span class="n">tool_name</span> <span class="o">==</span> <span class="s2">"search_knowledge_base"</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">tool_map</span><span class="p">[</span><span class="n">tool_name</span><span class="p">]</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">"query"</span><span class="p">:</span> <span class="n">tool_input</span><span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">tool_map</span><span class="p">[</span><span class="n">tool_name</span><span class="p">]</span><span class="o">.</span><span class="n">invoke</span><span class="p">({})</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="s2">"No tool needed."</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  → Tool output: </span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="n">state</span><span class="p">,</span> <span class="s2">"tool_output"</span><span class="p">:</span> <span class="n">output</span><span class="p">}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_response_node</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">ToolAgentState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ToolAgentState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Generate final response using tool output."""</span>
+    <span class="n">tool_output</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tool_output"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+    <span class="n">original_query</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"messages"</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">content</span>
+    
+    <span class="c1"># Create response</span>
+    <span class="k">if</span> <span class="n">tool_output</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Based on the query '</span><span class="si">{</span><span class="n">original_query</span><span class="si">}</span><span class="s2">', </span><span class="si">{</span><span class="n">tool_output</span><span class="si">}</span><span class="s2">"</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"I don't have specific information about: </span><span class="si">{</span><span class="n">original_query</span><span class="si">}</span><span class="s2">"</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"💬 Response: </span><span class="si">{</span><span class="n">response</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="o">**</span><span class="n">state</span><span class="p">,</span>
+        <span class="s2">"messages"</span><span class="p">:</span> <span class="n">state</span><span class="p">[</span><span class="s2">"messages"</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">AIMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">response</span><span class="p">)]</span>
+    <span class="p">}</span>
+
+<span class="c1"># Build tool-using agent graph</span>
+<span class="n">tool_workflow</span> <span class="o">=</span> <span class="n">StateGraph</span><span class="p">(</span><span class="n">ToolAgentState</span><span class="p">)</span>
+
+<span class="n">tool_workflow</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"analyze"</span><span class="p">,</span> <span class="n">analyze_query_node</span><span class="p">)</span>
+<span class="n">tool_workflow</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"execute_tool"</span><span class="p">,</span> <span class="n">execute_tool_node</span><span class="p">)</span>
+<span class="n">tool_workflow</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"respond"</span><span class="p">,</span> <span class="n">generate_response_node</span><span class="p">)</span>
+
+<span class="n">tool_workflow</span><span class="o">.</span><span class="n">set_entry_point</span><span class="p">(</span><span class="s2">"analyze"</span><span class="p">)</span>
+
+<span class="c1"># Conditional: use tool or skip to response</span>
+<span class="n">tool_workflow</span><span class="o">.</span><span class="n">add_conditional_edges</span><span class="p">(</span>
+    <span class="s2">"analyze"</span><span class="p">,</span>
+    <span class="k">lambda</span> <span class="n">state</span><span class="p">:</span> <span class="s2">"use_tool"</span> <span class="k">if</span> <span class="n">state</span><span class="p">[</span><span class="s2">"tool_to_use"</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"none"</span> <span class="k">else</span> <span class="s2">"skip_tool"</span><span class="p">,</span>
+    <span class="p">{</span>
+        <span class="s2">"use_tool"</span><span class="p">:</span> <span class="s2">"execute_tool"</span><span class="p">,</span>
+        <span class="s2">"skip_tool"</span><span class="p">:</span> <span class="s2">"respond"</span>
+    <span class="p">}</span>
 <span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Tokenized </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tokenized_dataset</span><span class="p">)</span><span class="si">}</span><span class="s2"> examples"</span><span class="p">)</span>
+<span class="n">tool_workflow</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"execute_tool"</span><span class="p">,</span> <span class="s2">"respond"</span><span class="p">)</span>
+<span class="n">tool_workflow</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"respond"</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
 
-<span class="c1"># Show example</span>
-<span class="n">example</span> <span class="o">=</span> <span class="n">tokenized_dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Example tokenized sequence:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Length: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">example</span><span class="p">[</span><span class="s1">'input_ids'</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  First 20 tokens: </span><span class="si">{</span><span class="n">example</span><span class="p">[</span><span class="s1">'input_ids'</span><span class="p">][:</span><span class="mi">20</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Decoded: </span><span class="si">{</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">example</span><span class="p">[</span><span class="s1">'input_ids'</span><span class="p">][:</span><span class="mi">50</span><span class="p">])</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+<span class="n">tool_agent</span> <span class="o">=</span> <span class="n">tool_workflow</span><span class="o">.</span><span class="n">compile</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">✅ Tool-using agent built!"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7851,335 +8015,26 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create data collator for language modeling</span>
-<span class="c1"># This automatically creates labels by shifting input_ids</span>
-<span class="n">data_collator</span> <span class="o">=</span> <span class="n">DataCollatorForLanguageModeling</span><span class="p">(</span>
-    <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
-    <span class="n">mlm</span><span class="o">=</span><span class="kc">False</span>  <span class="c1"># False = Causal LM (GPT), True = Masked LM (BERT)</span>
-<span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Data collator created for causal language modeling"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Question-3:-Causal-vs-Masked-Language-Modeling">Question 3: Causal vs Masked Language Modeling<a class="anchor-link" href="#Question-3:-Causal-vs-Masked-Language-Modeling">¶</a></h3><p><strong>Answer these questions:</strong></p>
-<ol>
-<li><p><strong>What is the difference between causal LM (GPT) and masked LM (BERT)?</strong></p>
-<ul>
-<li>YOUR ANSWER HERE:</li>
-</ul>
-</li>
-<li><p><strong>Why do we set <code>mlm=False</code> for GPT-style models?</strong></p>
-<ul>
-<li>YOUR ANSWER HERE:</li>
-</ul>
-</li>
-<li><p><strong>How does the DataCollator create labels for next-token prediction?</strong></p>
-<ul>
-<li>Hint: Compare input_ids and labels</li>
-<li>YOUR ANSWER HERE:</li>
-</ul>
-</li>
-</ol>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Part-6:-Configure-Training">Part 6: Configure Training<a class="anchor-link" href="#Part-6:-Configure-Training">¶</a></h2><p>Set up training hyperparameters.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Configure training arguments</span>
-<span class="c1"># Fill in key hyperparameters</span>
-
-<span class="n">training_args</span> <span class="o">=</span> <span class="n">TrainingArguments</span><span class="p">(</span>
-    <span class="n">output_dir</span><span class="o">=</span><span class="s2">"./gpt_tinystories"</span><span class="p">,</span>
-    
-    <span class="c1"># TODO: Fill in these training hyperparameters</span>
-    <span class="n">num_train_epochs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>           <span class="c1"># Number of epochs (try: 3, 5)</span>
-    <span class="n">per_device_train_batch_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="c1"># Batch size (try: 8, 16, 32)</span>
-    <span class="n">learning_rate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>               <span class="c1"># Learning rate (try: 5e-4, 3e-4, 1e-4)</span>
-    
-    <span class="c1"># Optimization settings</span>
-    <span class="n">warmup_steps</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
-    <span class="n">weight_decay</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-    
-    <span class="c1"># Logging and saving</span>
-    <span class="n">logging_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-    <span class="n">save_steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
-    <span class="n">save_total_limit</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-    
-    <span class="c1"># Evaluation</span>
-    <span class="n">eval_strategy</span><span class="o">=</span><span class="s2">"no"</span><span class="p">,</span>
-    
-    <span class="c1"># Misc</span>
-    <span class="n">report_to</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
-    <span class="n">remove_unused_columns</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Training configuration:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Epochs: </span><span class="si">{</span><span class="n">training_args</span><span class="o">.</span><span class="n">num_train_epochs</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Batch size: </span><span class="si">{</span><span class="n">training_args</span><span class="o">.</span><span class="n">per_device_train_batch_size</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Learning rate: </span><span class="si">{</span><span class="n">training_args</span><span class="o">.</span><span class="n">learning_rate</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Warmup steps: </span><span class="si">{</span><span class="n">training_args</span><span class="o">.</span><span class="n">warmup_steps</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Question-4:-Training-Hyperparameters">Question 4: Training Hyperparameters<a class="anchor-link" href="#Question-4:-Training-Hyperparameters">¶</a></h3><p><strong>Answer these questions:</strong></p>
-<ol>
-<li><p><strong>What is the relationship between batch size and training speed/memory usage?</strong></p>
-<ul>
-<li>YOUR ANSWER HERE:</li>
-</ul>
-</li>
-<li><p><strong>What is the purpose of warmup steps in learning rate scheduling?</strong></p>
-<ul>
-<li>YOUR ANSWER HERE:</li>
-</ul>
-</li>
-</ol>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Part-7:-Train-the-Model">Part 7: Train the Model<a class="anchor-link" href="#Part-7:-Train-the-Model">¶</a></h2><p>Use the Hugging Face Trainer to train your model.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create Trainer</span>
-<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
-    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
-    <span class="n">args</span><span class="o">=</span><span class="n">training_args</span><span class="p">,</span>
-    <span class="n">train_dataset</span><span class="o">=</span><span class="n">tokenized_dataset</span><span class="p">,</span>
-    <span class="n">data_collator</span><span class="o">=</span><span class="n">data_collator</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Trainer created successfully!"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Starting training..."</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Train the model</span>
-<span class="n">train_result</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Training completed!"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Training time: </span><span class="si">{</span><span class="n">train_result</span><span class="o">.</span><span class="n">metrics</span><span class="p">[</span><span class="s1">'train_runtime'</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Final loss: </span><span class="si">{</span><span class="n">train_result</span><span class="o">.</span><span class="n">metrics</span><span class="p">[</span><span class="s1">'train_loss'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Samples per second: </span><span class="si">{</span><span class="n">train_result</span><span class="o">.</span><span class="n">metrics</span><span class="p">[</span><span class="s1">'train_samples_per_second'</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Plot training loss</span>
-<span class="n">log_history</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">log_history</span>
-<span class="n">losses</span> <span class="o">=</span> <span class="p">[</span><span class="n">log</span><span class="p">[</span><span class="s1">'loss'</span><span class="p">]</span> <span class="k">for</span> <span class="n">log</span> <span class="ow">in</span> <span class="n">log_history</span> <span class="k">if</span> <span class="s1">'loss'</span> <span class="ow">in</span> <span class="n">log</span><span class="p">]</span>
-<span class="n">steps</span> <span class="o">=</span> <span class="p">[</span><span class="n">log</span><span class="p">[</span><span class="s1">'step'</span><span class="p">]</span> <span class="k">for</span> <span class="n">log</span> <span class="ow">in</span> <span class="n">log_history</span> <span class="k">if</span> <span class="s1">'loss'</span> <span class="ow">in</span> <span class="n">log</span><span class="p">]</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">steps</span><span class="p">,</span> <span class="n">losses</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Training Steps'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Loss'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Training Loss Over Time'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Loss decreased from </span><span class="si">{</span><span class="n">losses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">losses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Part-8:-Text-Generation-with-Different-Strategies">Part 8: Text Generation with Different Strategies<a class="anchor-link" href="#Part-8:-Text-Generation-with-Different-Strategies">¶</a></h2><p>Now use your trained model to generate text using different decoding strategies.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Strategy-1:-Greedy-Decoding">Strategy 1: Greedy Decoding<a class="anchor-link" href="#Strategy-1:-Greedy-Decoding">¶</a></h3><p>Always select the most likely next token.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_text</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s2">"greedy"</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Generate text with different decoding strategies."""</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-    
-    <span class="c1"># Encode prompt</span>
-    <span class="n">input_ids</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s1">'pt'</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-    
-    <span class="c1"># Generate based on strategy</span>
-    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">strategy</span> <span class="o">==</span> <span class="s2">"greedy"</span><span class="p">:</span>
-            <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
-                <span class="n">input_ids</span><span class="p">,</span>
-                <span class="n">max_length</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span>
-                <span class="n">pad_token_id</span><span class="o">=</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token_id</span><span class="p">,</span>
-                <span class="n">do_sample</span><span class="o">=</span><span class="kc">False</span>  <span class="c1"># Greedy decoding</span>
-            <span class="p">)</span>
-        <span class="k">elif</span> <span class="n">strategy</span> <span class="o">==</span> <span class="s2">"sampling"</span><span class="p">:</span>
-            <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
-                <span class="n">input_ids</span><span class="p">,</span>
-                <span class="n">max_length</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span>
-                <span class="n">pad_token_id</span><span class="o">=</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token_id</span><span class="p">,</span>
-                <span class="n">do_sample</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                <span class="n">temperature</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'temperature'</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
-                <span class="n">top_k</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'top_k'</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span>
-                <span class="n">top_p</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'top_p'</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">)</span>
-            <span class="p">)</span>
-        <span class="k">elif</span> <span class="n">strategy</span> <span class="o">==</span> <span class="s2">"beam_search"</span><span class="p">:</span>
-            <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
-                <span class="n">input_ids</span><span class="p">,</span>
-                <span class="n">max_length</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span>
-                <span class="n">pad_token_id</span><span class="o">=</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token_id</span><span class="p">,</span>
-                <span class="n">num_beams</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'num_beams'</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
-                <span class="n">early_stopping</span><span class="o">=</span><span class="kc">True</span>
-            <span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="c1"># Test greedy decoding</span>
-<span class="n">prompts</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">"Once upon a time"</span><span class="p">,</span>
-    <span class="s2">"There was a little girl"</span><span class="p">,</span>
-    <span class="s2">"In a magical forest"</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test the tool-using agent</span>
+<span class="n">test_queries</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"What is 123 * 456?"</span><span class="p">,</span>
+    <span class="s2">"What time is it?"</span><span class="p">,</span>
+    <span class="s2">"Tell me about transformers"</span><span class="p">,</span>
+    <span class="s2">"Hello, how are you?"</span>
 <span class="p">]</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Greedy Decoding (deterministic)"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">prompt</span> <span class="ow">in</span> <span class="n">prompts</span><span class="p">:</span>
-    <span class="n">generated</span> <span class="o">=</span> <span class="n">generate_text</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s2">"greedy"</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Prompt: </span><span class="si">{</span><span class="n">prompt</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Generated: </span><span class="si">{</span><span class="n">generated</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Strategy-2:-Sampling-with-Temperature">Strategy 2: Sampling with Temperature<a class="anchor-link" href="#Strategy-2:-Sampling-with-Temperature">¶</a></h3><p>Sample from the probability distribution over next tokens.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Experiment with different temperatures</span>
-<span class="n">temperatures</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">]</span>  <span class="c1"># Add more if you want</span>
-
-<span class="n">prompt</span> <span class="o">=</span> <span class="s2">"Once upon a time"</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Sampling with Different Temperatures"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Prompt: </span><span class="si">{</span><span class="n">prompt</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="k">for</span> <span class="n">temp</span> <span class="ow">in</span> <span class="n">temperatures</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Temperature = </span><span class="si">{</span><span class="n">temp</span><span class="si">}</span><span class="s2">:"</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>  <span class="c1"># Generate 2 samples per temperature</span>
-        <span class="n">generated</span> <span class="o">=</span> <span class="n">generate_text</span><span class="p">(</span>
-            <span class="n">prompt</span><span class="p">,</span>
-            <span class="n">strategy</span><span class="o">=</span><span class="s2">"sampling"</span><span class="p">,</span>
-            <span class="n">max_length</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span>
-            <span class="n">temperature</span><span class="o">=</span><span class="n">temp</span><span class="p">,</span>
-            <span class="n">top_k</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
-            <span class="n">top_p</span><span class="o">=</span><span class="mf">0.95</span>
-        <span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Sample </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">generated</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">query</span> <span class="ow">in</span> <span class="n">test_queries</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Query: </span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+    
+    <span class="n">result</span> <span class="o">=</span> <span class="n">tool_agent</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
+        <span class="s2">"messages"</span><span class="p">:</span> <span class="p">[</span><span class="n">HumanMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">query</span><span class="p">)],</span>
+        <span class="s2">"tool_to_use"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s2">"tool_input"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s2">"tool_output"</span><span class="p">:</span> <span class="s2">""</span>
+    <span class="p">})</span>
+    
     <span class="nb">print</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -8193,7 +8048,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Strategy-3:-Beam-Search">Strategy 3: Beam Search<a class="anchor-link" href="#Strategy-3:-Beam-Search">¶</a></h3><p>Keep track of multiple candidate sequences.</p>
+<h2 id="Part-6:-Multi-Step-Reasoning-Agent">Part 6: Multi-Step Reasoning Agent<a class="anchor-link" href="#Part-6:-Multi-Step-Reasoning-Agent">¶</a></h2><p>Build an agent that can break down complex tasks into multiple steps.</p>
 </div>
 </div>
 </div>
@@ -8205,20 +8060,139 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test beam search</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Beam Search (num_beams=5)"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a multi-step planning agent</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">PlanningAgentState</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+    <span class="n">messages</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span> <span class="n">operator</span><span class="o">.</span><span class="n">add</span><span class="p">]</span>
+    <span class="n">plan</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">current_step</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">step_results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">final_answer</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">create_plan_node</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">PlanningAgentState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PlanningAgentState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Break down the query into steps."""</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"messages"</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">content</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"📋 Creating plan for: </span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="c1"># Simple planning logic</span>
+    <span class="n">plan</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">if</span> <span class="s2">"calculate"</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">and</span> <span class="s2">"then"</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="c1"># Multi-step calculation</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"then"</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">part</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">parts</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">plan</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Step </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">part</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Single step</span>
+        <span class="n">plan</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"Step 1: </span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Plan:"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">plan</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    - </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="o">**</span><span class="n">state</span><span class="p">,</span>
+        <span class="s2">"plan"</span><span class="p">:</span> <span class="n">plan</span><span class="p">,</span>
+        <span class="s2">"current_step"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">"step_results"</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">"final_answer"</span><span class="p">:</span> <span class="s2">""</span>
+    <span class="p">}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">execute_step_node</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">PlanningAgentState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PlanningAgentState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Execute current step of the plan."""</span>
+    <span class="n">current_step</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"current_step"</span><span class="p">]</span>
+    <span class="n">plan</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"plan"</span><span class="p">]</span>
+    
+    <span class="k">if</span> <span class="n">current_step</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">plan</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">state</span>
+    
+    <span class="n">step</span> <span class="o">=</span> <span class="n">plan</span><span class="p">[</span><span class="n">current_step</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">⚙️  Executing: </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="c1"># Execute the step (simplified)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Completed: </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2">"</span>
+    
+    <span class="n">step_results</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"step_results"</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">result</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="o">**</span><span class="n">state</span><span class="p">,</span>
+        <span class="s2">"current_step"</span><span class="p">:</span> <span class="n">current_step</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">"step_results"</span><span class="p">:</span> <span class="n">step_results</span>
+    <span class="p">}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">check_completion_node</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">PlanningAgentState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Check if all steps are complete."""</span>
+    <span class="k">if</span> <span class="n">state</span><span class="p">[</span><span class="s2">"current_step"</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">"plan"</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="s2">"finalize"</span>
+    <span class="k">return</span> <span class="s2">"continue"</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">finalize_node</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">PlanningAgentState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PlanningAgentState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Combine results into final answer."""</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">✨ Finalizing answer..."</span><span class="p">)</span>
+    
+    <span class="n">final_answer</span> <span class="o">=</span> <span class="s2">"Completed all steps:</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">"step_results"</span><span class="p">])</span>
+    
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="o">**</span><span class="n">state</span><span class="p">,</span>
+        <span class="s2">"final_answer"</span><span class="p">:</span> <span class="n">final_answer</span><span class="p">,</span>
+        <span class="s2">"messages"</span><span class="p">:</span> <span class="n">state</span><span class="p">[</span><span class="s2">"messages"</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">AIMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">final_answer</span><span class="p">)]</span>
+    <span class="p">}</span>
+
+<span class="c1"># Build planning agent</span>
+<span class="n">planning_workflow</span> <span class="o">=</span> <span class="n">StateGraph</span><span class="p">(</span><span class="n">PlanningAgentState</span><span class="p">)</span>
+
+<span class="n">planning_workflow</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"plan"</span><span class="p">,</span> <span class="n">create_plan_node</span><span class="p">)</span>
+<span class="n">planning_workflow</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"execute"</span><span class="p">,</span> <span class="n">execute_step_node</span><span class="p">)</span>
+<span class="n">planning_workflow</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"finalize"</span><span class="p">,</span> <span class="n">finalize_node</span><span class="p">)</span>
+
+<span class="n">planning_workflow</span><span class="o">.</span><span class="n">set_entry_point</span><span class="p">(</span><span class="s2">"plan"</span><span class="p">)</span>
+<span class="n">planning_workflow</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"plan"</span><span class="p">,</span> <span class="s2">"execute"</span><span class="p">)</span>
+
+<span class="n">planning_workflow</span><span class="o">.</span><span class="n">add_conditional_edges</span><span class="p">(</span>
+    <span class="s2">"execute"</span><span class="p">,</span>
+    <span class="n">check_completion_node</span><span class="p">,</span>
+    <span class="p">{</span>
+        <span class="s2">"continue"</span><span class="p">:</span> <span class="s2">"execute"</span><span class="p">,</span>
+        <span class="s2">"finalize"</span><span class="p">:</span> <span class="s2">"finalize"</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">planning_workflow</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"finalize"</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+
+<span class="n">planning_agent</span> <span class="o">=</span> <span class="n">planning_workflow</span><span class="o">.</span><span class="n">compile</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Planning agent built!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test planning agent</span>
+<span class="n">query</span> <span class="o">=</span> <span class="s2">"Calculate 10 + 5 then multiply the result by 3"</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Complex Query: </span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
 
-<span class="k">for</span> <span class="n">prompt</span> <span class="ow">in</span> <span class="n">prompts</span><span class="p">:</span>
-    <span class="n">generated</span> <span class="o">=</span> <span class="n">generate_text</span><span class="p">(</span>
-        <span class="n">prompt</span><span class="p">,</span>
-        <span class="n">strategy</span><span class="o">=</span><span class="s2">"beam_search"</span><span class="p">,</span>
-        <span class="n">max_length</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span>
-        <span class="n">num_beams</span><span class="o">=</span><span class="mi">5</span>
-    <span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Prompt: </span><span class="si">{</span><span class="n">prompt</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Generated: </span><span class="si">{</span><span class="n">generated</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">planning_agent</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
+    <span class="s2">"messages"</span><span class="p">:</span> <span class="p">[</span><span class="n">HumanMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">query</span><span class="p">)],</span>
+    <span class="s2">"plan"</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">"current_step"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">"step_results"</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">"final_answer"</span><span class="p">:</span> <span class="s2">""</span>
+<span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Final Answer:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">"final_answer"</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -8231,27 +8205,205 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Question-5:-Generation-Strategies">Question 5: Generation Strategies<a class="anchor-link" href="#Question-5:-Generation-Strategies">¶</a></h3><p><strong>Based on your experiments, answer these questions:</strong></p>
+<h2 id="Part-7:-Memory-and-State-Management">Part 7: Memory and State Management<a class="anchor-link" href="#Part-7:-Memory-and-State-Management">¶</a></h2><p>Build an agent that maintains conversation history and context.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Create a conversational agent with memory</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ConversationState</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+    <span class="n">messages</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span> <span class="n">operator</span><span class="o">.</span><span class="n">add</span><span class="p">]</span>
+    <span class="n">user_info</span><span class="p">:</span> <span class="nb">dict</span>  <span class="c1"># Store facts about the user</span>
+    <span class="n">conversation_count</span><span class="p">:</span> <span class="nb">int</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">process_message_node</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">ConversationState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConversationState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Process user message and extract information."""</span>
+    <span class="n">messages</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"messages"</span><span class="p">]</span>
+    <span class="n">last_message</span> <span class="o">=</span> <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">content</span>
+    <span class="n">user_info</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"user_info"</span><span class="p">,</span> <span class="p">{})</span>
+    
+    <span class="c1"># Extract user information</span>
+    <span class="k">if</span> <span class="s2">"my name is"</span> <span class="ow">in</span> <span class="n">last_message</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">last_message</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"my name is"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">user_info</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+    
+    <span class="k">if</span> <span class="s2">"i like"</span> <span class="ow">in</span> <span class="n">last_message</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="n">interest</span> <span class="o">=</span> <span class="n">last_message</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"i like"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s2">"interests"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">user_info</span><span class="p">:</span>
+            <span class="n">user_info</span><span class="p">[</span><span class="s2">"interests"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">user_info</span><span class="p">[</span><span class="s2">"interests"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">interest</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="n">state</span><span class="p">,</span> <span class="s2">"user_info"</span><span class="p">:</span> <span class="n">user_info</span><span class="p">}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_contextual_response_node</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">ConversationState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConversationState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Generate response using conversation context."""</span>
+    <span class="n">messages</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"messages"</span><span class="p">]</span>
+    <span class="n">user_info</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"user_info"</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"conversation_count"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    
+    <span class="n">last_message</span> <span class="o">=</span> <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">content</span>
+    
+    <span class="c1"># Personalized response</span>
+    <span class="k">if</span> <span class="n">user_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">):</span>
+        <span class="n">greeting</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Hello </span><span class="si">{</span><span class="n">user_info</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span><span class="si">}</span><span class="s2">! "</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">greeting</span> <span class="o">=</span> <span class="s2">"Hello! "</span>
+    
+    <span class="k">if</span> <span class="s2">"interests"</span> <span class="ow">in</span> <span class="n">user_info</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">greeting</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">"I remember you like </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">user_info</span><span class="p">[</span><span class="s1">'interests'</span><span class="p">])</span><span class="si">}</span><span class="s2">. "</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">greeting</span>
+    
+    <span class="n">response</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"This is message #</span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2"> in our conversation."</span>
+    
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="o">**</span><span class="n">state</span><span class="p">,</span>
+        <span class="s2">"messages"</span><span class="p">:</span> <span class="n">messages</span> <span class="o">+</span> <span class="p">[</span><span class="n">AIMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">response</span><span class="p">)],</span>
+        <span class="s2">"conversation_count"</span><span class="p">:</span> <span class="n">count</span>
+    <span class="p">}</span>
+
+<span class="c1"># Build conversational agent</span>
+<span class="n">conv_workflow</span> <span class="o">=</span> <span class="n">StateGraph</span><span class="p">(</span><span class="n">ConversationState</span><span class="p">)</span>
+<span class="n">conv_workflow</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"process"</span><span class="p">,</span> <span class="n">process_message_node</span><span class="p">)</span>
+<span class="n">conv_workflow</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"respond"</span><span class="p">,</span> <span class="n">generate_contextual_response_node</span><span class="p">)</span>
+
+<span class="n">conv_workflow</span><span class="o">.</span><span class="n">set_entry_point</span><span class="p">(</span><span class="s2">"process"</span><span class="p">)</span>
+<span class="n">conv_workflow</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"process"</span><span class="p">,</span> <span class="s2">"respond"</span><span class="p">)</span>
+<span class="n">conv_workflow</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"respond"</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+
+<span class="n">conv_agent</span> <span class="o">=</span> <span class="n">conv_workflow</span><span class="o">.</span><span class="n">compile</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Conversational agent with memory built!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test conversational agent with memory</span>
+<span class="n">conversation_messages</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"Hi there!"</span><span class="p">,</span>
+    <span class="s2">"My name is Alice"</span><span class="p">,</span>
+    <span class="s2">"I like programming"</span><span class="p">,</span>
+    <span class="s2">"I also like machine learning"</span><span class="p">,</span>
+    <span class="s2">"What do you remember about me?"</span>
+<span class="p">]</span>
+
+<span class="c1"># Maintain state across multiple turns</span>
+<span class="n">state</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"messages"</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">"user_info"</span><span class="p">:</span> <span class="p">{},</span>
+    <span class="s2">"conversation_count"</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">}</span>
+
+<span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">conversation_messages</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"User: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="c1"># Add user message</span>
+    <span class="n">state</span><span class="p">[</span><span class="s2">"messages"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">"messages"</span><span class="p">])</span> <span class="o">+</span> <span class="p">[</span><span class="n">HumanMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">msg</span><span class="p">)]</span>
+    
+    <span class="c1"># Run agent</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">conv_agent</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+    
+    <span class="c1"># Update state for next turn</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">result</span>
+    
+    <span class="c1"># Print response</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Agent: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'messages'</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">content</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Stored info: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'user_info'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Part-8:-Challenge---Build-Your-Own-Agent">Part 8: Challenge - Build Your Own Agent<a class="anchor-link" href="#Part-8:-Challenge---Build-Your-Own-Agent">¶</a></h2><p>Design and implement your own agentic system!</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Design your own agent</span>
+<span class="c1"># Ideas:</span>
+<span class="c1"># 1. Research assistant that searches and summarizes</span>
+<span class="c1"># 2. Task planner that breaks down projects</span>
+<span class="c1"># 3. Code helper that debugs and suggests fixes</span>
+<span class="c1"># 4. Customer service bot with escalation logic</span>
+
+<span class="c1"># YOUR CODE HERE</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Build your custom agent here!"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Suggested features:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  - Multiple tools"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  - Conditional routing"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  - State management"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  - Error handling"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  - Conversation memory"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Questions">Questions<a class="anchor-link" href="#Questions">¶</a></h2><p>Answer the following questions:</p>
 <ol>
-<li><p><strong>What is the difference between greedy decoding and sampling?</strong></p>
+<li><p><strong>What are the key differences between a simple LLM call and an agentic system?</strong></p>
 <ul>
-<li>YOUR ANSWER HERE:</li>
+<li>YOUR ANSWER HERE</li>
 </ul>
 </li>
-<li><p><strong>How does temperature affect the diversity and quality of generated text?</strong></p>
+<li><p><strong>How does LangGraph's state management help build complex agents?</strong></p>
 <ul>
-<li>Low temperature (e.g., 0.5): YOUR ANSWER HERE</li>
-<li>High temperature (e.g., 1.2): YOUR ANSWER HERE</li>
+<li>YOUR ANSWER HERE</li>
 </ul>
 </li>
-<li><p><strong>What is beam search and how does it differ from greedy decoding?</strong></p>
+<li><p><strong>What are the advantages and disadvantages of using tools in agents?</strong></p>
 <ul>
-<li>YOUR ANSWER HERE:</li>
+<li>YOUR ANSWER HERE</li>
 </ul>
 </li>
-<li><p><strong>What are <code>top_k</code> and <code>top_p</code> sampling? When would you use them?</strong></p>
+<li><p><strong>How would you handle errors and failures in an agent system?</strong></p>
 <ul>
-<li>YOUR ANSWER HERE:</li>
+<li>YOUR ANSWER HERE</li>
+</ul>
+</li>
+<li><p><strong>What are some real-world applications where agentic systems would be valuable?</strong></p>
+<ul>
+<li>YOUR ANSWER HERE</li>
 </ul>
 </li>
 </ol>
@@ -8265,158 +8417,16 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Part-9:-Model-Evaluation-with-Perplexity">Part 9: Model Evaluation with Perplexity<a class="anchor-link" href="#Part-9:-Model-Evaluation-with-Perplexity">¶</a></h2><p>Compute perplexity to evaluate model performance.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_perplexity</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">max_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Compute perplexity on a dataset."""</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-    
-    <span class="c1"># Create dataloader</span>
-    <span class="n">dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
-        <span class="n">dataset</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">max_samples</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)))),</span>
-        <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
-        <span class="n">collate_fn</span><span class="o">=</span><span class="n">data_collator</span>
-    <span class="p">)</span>
-    
-    <span class="n">total_loss</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">total_tokens</span> <span class="o">=</span> <span class="mi">0</span>
-    
-    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-        <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">"Computing perplexity"</span><span class="p">):</span>
-            <span class="c1"># Move to device</span>
-            <span class="n">input_ids</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s1">'input_ids'</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-            <span class="n">labels</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s1">'labels'</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-            
-            <span class="c1"># Forward pass</span>
-            <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
-            <span class="n">loss</span> <span class="o">=</span> <span class="n">outputs</span><span class="o">.</span><span class="n">loss</span>
-            
-            <span class="c1"># Count tokens (exclude padding)</span>
-            <span class="n">num_tokens</span> <span class="o">=</span> <span class="p">(</span><span class="n">labels</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-            
-            <span class="n">total_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">*</span> <span class="n">num_tokens</span>
-            <span class="n">total_tokens</span> <span class="o">+=</span> <span class="n">num_tokens</span>
-    
-    <span class="c1"># Compute perplexity</span>
-    <span class="n">avg_loss</span> <span class="o">=</span> <span class="n">total_loss</span> <span class="o">/</span> <span class="n">total_tokens</span>
-    <span class="n">perplexity</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">avg_loss</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">perplexity</span><span class="p">,</span> <span class="n">avg_loss</span>
-
-<span class="c1"># Compute perplexity</span>
-<span class="n">perplexity</span><span class="p">,</span> <span class="n">avg_loss</span> <span class="o">=</span> <span class="n">compute_perplexity</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tokenized_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Model Evaluation:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Average Loss: </span><span class="si">{</span><span class="n">avg_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Perplexity: </span><span class="si">{</span><span class="n">perplexity</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Question-6:-Understanding-Perplexity">Question 6: Understanding Perplexity<a class="anchor-link" href="#Question-6:-Understanding-Perplexity">¶</a></h3><p><strong>Answer these questions:</strong></p>
-<ol>
-<li><p><strong>What is perplexity and what does it measure?</strong></p>
-<ul>
-<li>YOUR ANSWER HERE:</li>
+<h2 id="Deliverables-Checklist">Deliverables Checklist<a class="anchor-link" href="#Deliverables-Checklist">¶</a></h2><ul>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>Understood basic agent architecture</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>Built simple LangGraph workflows</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>Implemented custom tools</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>Created tool-using agent</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>Built multi-step reasoning agent</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>Implemented conversational memory</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>(Optional) Designed custom agent</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>Answered all questions</li>
 </ul>
-</li>
-<li><p><strong>What does a lower perplexity indicate?</strong></p>
-<ul>
-<li>YOUR ANSWER HERE:</li>
-</ul>
-</li>
-<li><p><strong>How is perplexity calculated from cross-entropy loss?</strong></p>
-<ul>
-<li>Formula: YOUR ANSWER HERE</li>
-<li>Interpretation: YOUR ANSWER HERE</li>
-</ul>
-</li>
-</ol>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Part-10:-Save-Your-Model">Part 10: Save Your Model<a class="anchor-link" href="#Part-10:-Save-Your-Model">¶</a></h2><p>Save the trained model for later use.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Save model and tokenizer</span>
-<span class="n">save_path</span> <span class="o">=</span> <span class="s2">"./my_gpt_model"</span>
-
-<span class="n">model</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
-<span class="n">tokenizer</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Model saved to '</span><span class="si">{</span><span class="n">save_path</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">You can load it later with:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  model = GPT2LMHeadModel.from_pretrained('</span><span class="si">{</span><span class="n">save_path</span><span class="si">}</span><span class="s2">')"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  tokenizer = AutoTokenizer.from_pretrained('</span><span class="si">{</span><span class="n">save_path</span><span class="si">}</span><span class="s2">')"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test loading the model</span>
-<span class="n">loaded_model</span> <span class="o">=</span> <span class="n">GPT2LMHeadModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
-<span class="n">loaded_tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Model loaded successfully!"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Parameters: </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">loaded_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-</div>
 </div>
 </div>
 </div>

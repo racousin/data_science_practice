@@ -58,7 +58,7 @@ const LlmTransferLearning = () => {
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/modules/data-science-practice/module8/transfer-learning-paradigm.png"
+            src="/assets/data-science-practice/module8/transfer-learning-paradigm.png"
             alt="Transfer learning paradigm showing pre-training and fine-tuning stages"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -98,7 +98,7 @@ const LlmTransferLearning = () => {
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/modules/data-science-practice/module8/pretraining-objectives.png"
+            src="/assets/data-science-practice/module8/pretraining-objectives.png"
             alt="Comparison of different pre-training objectives: CLM, MLM, and Span Corruption"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -138,7 +138,7 @@ const LlmTransferLearning = () => {
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/modules/data-science-practice/module8/hierarchical-representations.png"
+            src="/assets/data-science-practice/module8/hierarchical-representations.png"
             alt="Hierarchical feature learning in transformer models across layers"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -180,7 +180,7 @@ const LlmTransferLearning = () => {
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/modules/data-science-practice/module8/huggingface-ecosystem.png"
+            src="/assets/data-science-practice/module8/huggingface-ecosystem.png"
             alt="Hugging Face ecosystem components and their relationships"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -349,7 +349,7 @@ generated_text = tokenizer.decode(outputs[0])`}
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/modules/data-science-practice/module8/text-generation-sampling.png"
+            src="/assets/data-science-practice/module8/text-generation-sampling.png"
             alt="Text generation strategies: greedy, sampling, and nucleus sampling"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -390,7 +390,7 @@ generated_text = tokenizer.decode(outputs[0])`}
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/modules/data-science-practice/module8/zero-shot-learning.png"
+            src="/assets/data-science-practice/module8/zero-shot-learning.png"
             alt="Zero-shot learning framework and application examples"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -488,7 +488,7 @@ Sentiment:"""`}
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/modules/data-science-practice/module8/few-shot-learning.png"
+            src="/assets/data-science-practice/module8/few-shot-learning.png"
             alt="Few-shot learning and in-context learning mechanism"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -527,7 +527,7 @@ Sentiment:"""`}
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/modules/data-science-practice/module8/fine-tuning-process.png"
+            src="/assets/data-science-practice/module8/fine-tuning-process.png"
             alt="Traditional fine-tuning process and parameter updates"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -575,7 +575,7 @@ Sentiment:"""`}
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/modules/data-science-practice/module8/layer-freezing-strategies.png"
+            src="/assets/data-science-practice/module8/layer-freezing-strategies.png"
             alt="Layer freezing and gradual unfreezing strategies"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -682,7 +682,7 @@ trainer.train()`}
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/modules/data-science-practice/module8/peft-comparison.png"
+            src="/assets/data-science-practice/module8/peft-comparison.png"
             alt="Parameter efficient fine-tuning methods comparison"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -731,7 +731,7 @@ trainer.train()`}
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/modules/data-science-practice/module8/lora-architecture-diagram.png"
+            src="/assets/data-science-practice/module8/lora-architecture-diagram.png"
             alt="LoRA architecture showing low-rank decomposition matrices"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -782,7 +782,7 @@ trainer.train()`}
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/modules/data-science-practice/module8/lora-forward-pass.png"
+            src="/assets/data-science-practice/module8/lora-forward-pass.png"
             alt="LoRA forward pass computation flow"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -824,7 +824,7 @@ trainer.train()`}
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/modules/data-science-practice/module8/lora-parameter-efficiency.png"
+            src="/assets/data-science-practice/module8/lora-parameter-efficiency.png"
             alt="LoRA parameter reduction and memory savings visualization"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -926,7 +926,7 @@ model = AutoModelForCausalLM.from_pretrained(
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/modules/data-science-practice/module8/qlora-quantization.png"
+            src="/assets/data-science-practice/module8/qlora-quantization.png"
             alt="QLoRA quantization scheme and memory optimization"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -972,7 +972,7 @@ model = AutoModelForCausalLM.from_pretrained(
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/modules/data-science-practice/module8/peft-methods-comparison.png"
+            src="/assets/data-science-practice/module8/peft-methods-comparison.png"
             alt="Comparison of Prefix Tuning, Adapters, and Prompt Tuning architectures"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -1014,7 +1014,7 @@ model = AutoModelForCausalLM.from_pretrained(
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/modules/data-science-practice/module8/knowledge-distillation-diagram.png"
+            src="/assets/data-science-practice/module8/knowledge-distillation-diagram.png"
             alt="Knowledge distillation from teacher to student model"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -1063,7 +1063,7 @@ model = AutoModelForCausalLM.from_pretrained(
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/modules/data-science-practice/module8/distillation-loss-components.png"
+            src="/assets/data-science-practice/module8/distillation-loss-components.png"
             alt="Components of distillation loss and temperature scaling"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -1156,7 +1156,7 @@ optimizer.step()`}
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/modules/data-science-practice/module8/compression-techniques.png"
+            src="/assets/data-science-practice/module8/compression-techniques.png"
             alt="Overview of model compression techniques and their tradeoffs"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -1228,7 +1228,7 @@ optimizer.step()`}
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/modules/data-science-practice/module8/efficiency-comparison-chart.png"
+            src="/assets/data-science-practice/module8/efficiency-comparison-chart.png"
             alt="Visual comparison of computational efficiency metrics across methods"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -1264,7 +1264,7 @@ optimizer.step()`}
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/modules/data-science-practice/module8/fine-tuning-best-practices.png"
+            src="/assets/data-science-practice/module8/fine-tuning-best-practices.png"
             alt="Best practices workflow for fine-tuning LLMs"
             style={{ maxWidth: "100%", height: "auto" }}
           />
