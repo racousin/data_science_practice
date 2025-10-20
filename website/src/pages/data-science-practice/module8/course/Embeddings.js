@@ -26,46 +26,17 @@ const Embeddings = () => {
           Key characteristics of embeddings:
         </Text>
         <List spacing="sm">
-          <List.Item>Dense representations (100-300 dimensions instead of vocabulary size)</List.Item>
+          <List.Item>Dense representations (d dimensions instead of vocabulary size)</List.Item>
           <List.Item>Learned from data rather than manually designed</List.Item>
           <List.Item>Semantic similarity correlates with vector distance</List.Item>
           <List.Item>Support arithmetic operations that capture analogies</List.Item>
         </List>
       </div>
 
-      <div data-slide>
-        <Title order={3} mb="md">
-          From One-Hot to Dense Embeddings
-        </Title>
-        <Text mb="md">
-          Consider a vocabulary of 10,000 words:
-        </Text>
-        <List spacing="sm" mb="md">
-          <List.Item><strong>One-Hot Encoding</strong>: 10,000-dimensional vector with a single 1 and 9,999 zeros. No notion of similarity between words.</List.Item>
-          <List.Item><strong>Dense Embedding</strong>: 300-dimensional vector with real values. Similar words have similar vectors.</List.Item>
-        </List>
-        <Text>
-          This dimensionality reduction from 10,000 to 300 makes embeddings computationally efficient while capturing much richer semantic information.
-        </Text>
-      </div>
 
       <div data-slide>
         <Title order={3} mb="md">
-          Dimensionality Reduction Visualization
-        </Title>
-        <Image
-          src="/assets/data-science-practice/module8/dimensionality-reduction.png"
-          alt="One-Hot vs Dense Embeddings"
-          caption="Visualization comparing sparse one-hot encoding to dense embeddings"
-        />
-        <Text size="sm" mt="md">
-          Dense embeddings dramatically reduce dimensionality while capturing semantic relationships.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          Learned Embeddings Introduction
+          WordLearned Embeddings
         </Title>
         <Text mb="md">
           Learned embeddings create dense vector representations by training on large text corpora, capturing semantic and syntactic relationships between words. Unlike one-hot encodings or simple count-based methods, these models learn to position words in a continuous vector space where semantic relationships are preserved as geometric properties.
@@ -85,7 +56,7 @@ const Embeddings = () => {
           Word Embeddings Visualization
         </Title>
         <Image
-          src="/assets/data-science-practice/module8/word-embeddings-visualization.png"
+          src="/assets/data-science-practice/module8/embed.png"
           alt="Word Embeddings Visualization"
           caption="Visualization of word embeddings in reduced dimensional space"
         />
@@ -148,20 +119,6 @@ const Embeddings = () => {
 
       <div data-slide>
         <Title order={3} mb="md">
-          Semantic Clustering
-        </Title>
-        <Image
-          src="/assets/data-science-practice/module8/semantic-clustering.png"
-          alt="Semantic Clustering in Embeddings"
-          caption="Visualization of semantic clustering in embedding space"
-        />
-        <Text size="sm" mt="md">
-          Similar words cluster together in the embedding space, with distances reflecting semantic relatedness.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
           Analogical Reasoning
         </Title>
         <Text mb="md">
@@ -196,7 +153,7 @@ const Embeddings = () => {
           Embedding Space Visualization
         </Title>
         <Image
-          src="/assets/data-science-practice/module8/word_embeddings.png"
+          src="/assets/data-science-practice/module8/semantic-clustering.png"
           alt="Word Embedding Space Visualization"
           caption="2D projection of word embeddings showing semantic clustering"
         />
@@ -229,226 +186,12 @@ const Embeddings = () => {
           Word2Vec Architectures
         </Title>
         <Image
-          src="/assets/data-science-practice/module8/word2vec-architectures.png"
+          src="/assets/data-science-practice/module8/word2vec.png"
           alt="Word2Vec Architectures"
           caption="Comparison of CBOW and Skip-gram architectures"
         />
         <Text size="sm" mt="md">
-          Both architectures use shallow neural networks but differ in their prediction objectives.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          Skip-gram Architecture
-        </Title>
-        <Text mb="md">
-          <strong>Input</strong>:
-        </Text>
-        <List spacing="sm" mb="md">
-          <List.Item>One-hot encoded target word vector <InlineMath math="\mathbf{x} \in \{0,1\}^{|V|}" /></List.Item>
-          <List.Item>Context window size <InlineMath math="c" /> (typically 5-10)</List.Item>
-        </List>
-
-        <Text mb="md">
-          <strong>Parameters</strong>:
-        </Text>
-        <List spacing="sm" mb="md">
-          <List.Item>Input embedding matrix <InlineMath math="\mathbf{W} \in \mathbb{R}^{|V| \times d}" /> (target word embeddings)</List.Item>
-          <List.Item>Output embedding matrix <InlineMath math="\mathbf{W'} \in \mathbb{R}^{d \times |V|}" /> (context word embeddings)</List.Item>
-          <List.Item>Dimensionality <InlineMath math="d" /> of the embedding space (typically 100-300)</List.Item>
-        </List>
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          Skip-gram Forward Pass
-        </Title>
-        <Text mb="md">
-          The forward pass consists of two steps:
-        </Text>
-        <Text mb="md">
-          1. Embedding lookup: Extract the embedding for the target word
-        </Text>
-        <BlockMath math="\mathbf{h} = \mathbf{W}^T\mathbf{x}" />
-        <Text mb="md">
-          2. For each position in the context window, compute probability distribution over vocabulary:
-        </Text>
-        <BlockMath math="\mathbf{y} = \text{softmax}(\mathbf{W'h})" />
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          Skip-gram Training Objective
-        </Title>
-        <Text mb="md">
-          The Skip-gram model maximizes the log probability of context words given a target word:
-        </Text>
-        <BlockMath math="\mathcal{L} = \sum_{t=1}^{T} \sum_{-c \leq j \leq c, j \neq 0} \log P(w_{t+j}|w_t)" />
-        <Text mb="md">
-          Where:
-        </Text>
-        <List spacing="sm" mb="md">
-          <List.Item><InlineMath math="T" /> is the total number of words in the corpus</List.Item>
-          <List.Item><InlineMath math="c" /> is the context window size</List.Item>
-          <List.Item><InlineMath math="P(w_{t+j}|w_t)" /> is modeled using the softmax function</List.Item>
-        </List>
-        <BlockMath math="P(w_j|w_i) = \frac{\exp(\mathbf{v}_{w_i}^T \mathbf{v}'_{w_j})}{\sum_{w \in V} \exp(\mathbf{v}_{w_i}^T \mathbf{v}'_w)}" />
-        <Text>
-          Where <InlineMath math="\mathbf{v}_{w_i}" /> is the input embedding of word <InlineMath math="w_i" /> and <InlineMath math="\mathbf{v}'_{w_j}" /> is the output embedding of word <InlineMath math="w_j" />.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          Negative Sampling Illustration
-        </Title>
-        <Image
-          src="/assets/data-science-practice/module8/negative-sampling.png"
-          alt="Negative Sampling in Word2Vec"
-          caption="Visualization of negative sampling: distinguishing true context words from random samples"
-        />
-        <Text size="sm" mt="md">
-          Negative sampling approximates the softmax by training to distinguish true context words from random negatives.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          Skip-gram Optimizations
-        </Title>
-        <Text mb="md">
-          Computing the full softmax is computationally expensive for large vocabularies. Two main optimization techniques:
-        </Text>
-        <Text mb="md">
-          <strong>1. Negative Sampling</strong>: Train to distinguish correct context words from randomly sampled "negative" words:
-        </Text>
-        <BlockMath math="\log \sigma(\mathbf{v}_{w_i}^T \mathbf{v}'_{w_j}) + \sum_{k=1}^{K} \mathbb{E}_{w_k \sim P_n(w)} [\log \sigma(-\mathbf{v}_{w_i}^T \mathbf{v}'_{w_k})]" />
-        <Text mb="md">
-          Where <InlineMath math="K" /> is the number of negative samples (typically 5-20) and <InlineMath math="P_n(w) \propto f(w)^{3/4}" /> where <InlineMath math="f(w)" /> is word frequency.
-        </Text>
-        <Text mt="md">
-          <strong>2. Hierarchical Softmax</strong>: Uses a binary tree structure to reduce complexity from <InlineMath math="O(|V|)" /> to <InlineMath math="O(\log |V|)" />.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          Skip-gram vs CBOW
-        </Title>
-        <Image
-          src="/assets/data-science-practice/module8/skipgram-vs-cbow.png"
-          alt="Skip-gram vs CBOW Comparison"
-          caption="Detailed comparison of Skip-gram and CBOW prediction mechanisms"
-        />
-        <Text size="sm" mt="md">
           Skip-gram predicts context from target words, while CBOW predicts target words from averaged context.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          CBOW Architecture
-        </Title>
-        <Text mb="md">
-          <strong>Input</strong>:
-        </Text>
-        <Text mb="md">
-          Context words represented as one-hot vectors <InlineMath math="\mathbf{x}_1, \mathbf{x}_2, ..., \mathbf{x}_{2c} \in \{0,1\}^{|V|}" />
-        </Text>
-
-        <Text mb="md">
-          <strong>Parameters</strong>:
-        </Text>
-        <Text mb="md">
-          Same embedding matrices as Skip-gram: <InlineMath math="\mathbf{W} \in \mathbb{R}^{|V| \times d}" /> and <InlineMath math="\mathbf{W'} \in \mathbb{R}^{d \times |V|}" />
-        </Text>
-
-        <Text mb="md">
-          <strong>Forward Pass</strong>:
-        </Text>
-        <Text mb="md">
-          1. Average context word embeddings:
-        </Text>
-        <BlockMath math="\mathbf{h} = \frac{1}{2c}\sum_{i=1}^{2c} \mathbf{W}^T\mathbf{x}_i" />
-        <Text mb="md">
-          2. Predict target word:
-        </Text>
-        <BlockMath math="\mathbf{y} = \text{softmax}(\mathbf{W'h})" />
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          CBOW Training Objective
-        </Title>
-        <Text mb="md">
-          The CBOW model maximizes the log probability of the target word given the context:
-        </Text>
-        <BlockMath math="\mathcal{L} = \sum_{t=1}^{T} \log P(w_t|w_{t-c}, ..., w_{t-1}, w_{t+1}, ..., w_{t+c})" />
-        <Text mt="md" mb="md">
-          <strong>Output Representation</strong>:
-        </Text>
-        <Text mb="md">
-          After training, the input matrix <InlineMath math="\mathbf{W}" /> is typically used as the final word embedding matrix. Each row <InlineMath math="\mathbf{W}_i" /> represents the embedding of word <InlineMath math="i" /> in the vocabulary.
-        </Text>
-        <Text>
-          Word similarity is computed using cosine similarity:
-        </Text>
-        <BlockMath math="\text{similarity}(w_i, w_j) = \frac{\mathbf{v}_{w_i} \cdot \mathbf{v}_{w_j}}{||\mathbf{v}_{w_i}|| \cdot ||\mathbf{v}_{w_j}||}" />
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          Context Window Illustration
-        </Title>
-        <Image
-          src="/assets/data-science-practice/module8/context-window.png"
-          alt="Context Window in Word Embeddings"
-          caption="Illustration of how context windows slide over text in Word2Vec and GloVe"
-        />
-        <Text size="sm" mt="md">
-          The context window determines which words are considered neighbors for learning semantic relationships.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          Word2Vec Implementation Example
-        </Title>
-        <CodeBlock
-          language="python"
-          code={`import gensim.downloader as api`}
-        />
-        <CodeBlock
-          language="python"
-          code={`# Load pre-trained Word2Vec embeddings
-word2vec_model = api.load("word2vec-google-news-300")`}
-        />
-        <CodeBlock
-          language="python"
-          code={`# Get vector for a word
-vector = word2vec_model["language"]  # 300-dimensional`}
-        />
-        <CodeBlock
-          language="python"
-          code={`# Find similar words
-similar = word2vec_model.most_similar("language", topn=3)
-print(similar)
-# [('languages', 0.72), ('linguistic', 0.70), ...]`}
-        />
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          Word2Vec Training Process
-        </Title>
-        <Image
-          src="/assets/data-science-practice/module8/word2vec-training.png"
-          alt="Word2Vec Training Process"
-          caption="Visualization of Word2Vec training with sliding context windows"
-        />
-        <Text size="sm" mt="md">
-          Word2Vec trains by sliding a context window over text, learning to predict contextual relationships.
         </Text>
       </div>
 
@@ -467,126 +210,6 @@ print(similar)
         </Text>
       </div>
 
-      <div data-slide>
-        <Title order={3} mb="md">
-          GloVe Co-occurrence Matrix Visualization
-        </Title>
-        <Image
-          src="/assets/data-science-practice/module8/glove-cooccurrence-matrix.png"
-          alt="GloVe Co-occurrence Matrix"
-          caption="Example of word-word co-occurrence matrix construction in GloVe"
-        />
-        <Text size="sm" mt="md">
-          GloVe first constructs a co-occurrence matrix capturing how often words appear together across the corpus.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          GloVe Co-occurrence Matrix
-        </Title>
-        <Text mb="md">
-          <strong>Preprocessing</strong>:
-        </Text>
-        <List spacing="sm" mb="md">
-          <List.Item>Build a co-occurrence matrix <InlineMath math="X" /> where <InlineMath math="X_{ij}" /> represents how often word <InlineMath math="i" /> appears in the context of word <InlineMath math="j" /></List.Item>
-          <List.Item>Define a context window size (typically 5-10 words)</List.Item>
-          <List.Item>Optionally apply distance weighting: words closer to the target contribute more</List.Item>
-        </List>
-
-        <Text mb="md">
-          <strong>Parameters</strong>:
-        </Text>
-        <List spacing="sm">
-          <List.Item>Word vectors <InlineMath math="\mathbf{w}_i \in \mathbb{R}^d" /> for each word <InlineMath math="i" /></List.Item>
-          <List.Item>Context vectors <InlineMath math="\tilde{\mathbf{w}}_j \in \mathbb{R}^d" /> for each word <InlineMath math="j" /></List.Item>
-          <List.Item>Word biases <InlineMath math="b_i" /> and context biases <InlineMath math="\tilde{b}_j" /></List.Item>
-          <List.Item>Dimensionality <InlineMath math="d" /> (typically 100-300)</List.Item>
-        </List>
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          GloVe Training Objective
-        </Title>
-        <Text mb="md">
-          GloVe minimizes the following weighted least squares cost function:
-        </Text>
-        <BlockMath math="J = \sum_{i,j=1}^{|V|} f(X_{ij})(\mathbf{w}_i^T\tilde{\mathbf{w}}_j + b_i + \tilde{b}_j - \log X_{ij})^2" />
-        <Text mb="md">
-          The weighting function <InlineMath math="f" /> prevents rare co-occurrences from being overweighted:
-        </Text>
-        <BlockMath math="f(x) = \begin{cases}
-          (x/x_{\max})^{\alpha} & \text{if } x < x_{\max} \\
-          1 & \text{otherwise}
-          \end{cases}" />
-        <Text>
-          Typically, <InlineMath math="\alpha = 0.75" /> and <InlineMath math="x_{\max} = 100" />.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          GloVe Key Insight
-        </Title>
-        <Text mb="md">
-          The core insight of GloVe is that ratios of co-occurrence probabilities can encode meaning.
-        </Text>
-        <Text mb="md">
-          For example, in a corpus about ice and steam, the ratio <InlineMath math="P_{ik}/P_{jk}" /> will be:
-        </Text>
-        <List spacing="sm" mt="sm">
-          <List.Item>Large if word <InlineMath math="k" /> is related to ice (<InlineMath math="i" />) but not steam (<InlineMath math="j" />)</List.Item>
-          <List.Item>Small if word <InlineMath math="k" /> is related to steam but not ice</List.Item>
-          <List.Item>Close to 1 if word <InlineMath math="k" /> is related to both or neither</List.Item>
-        </List>
-        <Text mt="md">
-          GloVe encodes these ratios as vector differences, making the embedding space capture semantic relationships naturally.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          GloVe Probability Ratios
-        </Title>
-        <Image
-          src="/assets/data-science-practice/module8/glove-probability-ratios.png"
-          alt="GloVe Probability Ratios"
-          caption="Visualization of how probability ratios encode semantic relationships in GloVe"
-        />
-        <Text size="sm" mt="md">
-          The ice-steam example showing how probability ratios distinguish related vs unrelated words.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          GloVe Implementation Example
-        </Title>
-        <CodeBlock
-          language="python"
-          code={`from gensim.scripts.glove2word2vec import glove2word2vec
-from gensim.models import KeyedVectors`}
-        />
-        <CodeBlock
-          language="python"
-          code={`# Convert GloVe format to Word2Vec format
-glove_input = "glove.6B.100d.txt"
-word2vec_output = "glove.6B.100d.word2vec.txt"
-glove2word2vec(glove_input, word2vec_output)`}
-        />
-        <CodeBlock
-          language="python"
-          code={`# Load the converted embeddings
-glove_model = KeyedVectors.load_word2vec_format(word2vec_output)`}
-        />
-        <CodeBlock
-          language="python"
-          code={`# Get vector and find similar words
-vector = glove_model["language"]  # 100-dimensional
-similar = glove_model.most_similar("language", topn=3)`}
-        />
-      </div>
 
       <div data-slide>
         <Title order={2} mb="md">
@@ -603,213 +226,13 @@ similar = glove_model.most_similar("language", topn=3)`}
         </Text>
       </div>
 
-      <div data-slide>
-        <Title order={3} mb="md">
-          FastText Subword Embeddings
-        </Title>
-        <Image
-          src="/assets/data-science-practice/module8/fasttext-subword-embeddings.png"
-          alt="FastText Subword Embeddings"
-          caption="Visualization of how FastText decomposes words into character n-grams"
-        />
-        <Text size="sm" mt="md">
-          FastText represents words as bags of character n-grams, enabling better handling of morphologically rich languages.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          FastText N-gram Representation
-        </Title>
-        <Text mb="md">
-          Each word is represented as a bag of character n-grams plus the word itself.
-        </Text>
-        <Text mb="md">
-          For example, with n-grams of length 3-6, the word "where" becomes:
-        </Text>
-        <List spacing="sm" mt="sm">
-          <List.Item>The word itself: "where"</List.Item>
-          <List.Item>Character 3-grams: "&lt;wh", "whe", "her", "ere", "re&gt;"</List.Item>
-          <List.Item>Character 4-grams: "&lt;whe", "wher", "here", "ere&gt;"</List.Item>
-          <List.Item>Character 5-grams: "&lt;wher", "where", "here&gt;"</List.Item>
-          <List.Item>Character 6-grams: "&lt;where", "where&gt;"</List.Item>
-        </List>
-        <Text mt="md" size="sm">
-          Where "&lt;" and "&gt;" represent word boundary markers.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          FastText Architecture
-        </Title>
-        <Text mb="md">
-          <strong>Parameters</strong>:
-        </Text>
-        <List spacing="sm" mb="md">
-          <List.Item>Embedding matrix <InlineMath math="\mathbf{Z} \in \mathbb{R}^{N \times d}" /> for all n-grams in the corpus</List.Item>
-          <List.Item><InlineMath math="N" /> is the total number of unique n-grams plus words</List.Item>
-          <List.Item><InlineMath math="d" /> is the embedding dimension (typically 100-300)</List.Item>
-        </List>
-
-        <Text mb="md">
-          <strong>Word Representation</strong>:
-        </Text>
-        <Text mb="md">
-          A word <InlineMath math="w" /> is represented as the sum of its n-gram embeddings:
-        </Text>
-        <BlockMath math="\mathbf{v}_w = \sum_{g \in G_w} \mathbf{z}_g" />
-        <Text>
-          Where <InlineMath math="G_w" /> is the set of n-grams in <InlineMath math="w" /> (including the word itself) and <InlineMath math="\mathbf{z}_g" /> is the vector for n-gram <InlineMath math="g" />.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          FastText Training Objective
-        </Title>
-        <Text mb="md">
-          FastText can use either CBOW or Skip-gram architecture from Word2Vec, with the same loss functions but with word representations as sums of n-gram vectors.
-        </Text>
-        <Text mb="md">
-          For Skip-gram:
-        </Text>
-        <BlockMath math="\mathcal{L} = \sum_{t=1}^{T} \sum_{-c \leq j \leq c, j \neq 0} \log P(w_{t+j}|w_t)" />
-        <Text mb="md">
-          Where:
-        </Text>
-        <BlockMath math="P(w_j|w_i) = \frac{\exp(\mathbf{v}_{w_i}^T \mathbf{v}'_{w_j})}{\sum_{w \in V} \exp(\mathbf{v}_{w_i}^T \mathbf{v}'_w)}" />
-        <Text>
-          But now <InlineMath math="\mathbf{v}_{w_i} = \sum_{g \in G_{w_i}} \mathbf{z}_g" /> is the sum of n-gram vectors.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          FastText Advantages
-        </Title>
-        <List spacing="md">
-          <List.Item>
-            <strong>Handling Out-of-Vocabulary Words</strong>: Even for unseen words, FastText can generate embeddings by summing the embeddings of their character n-grams.
-          </List.Item>
-          <List.Item>
-            <strong>Morphological Awareness</strong>: Words with similar morphological structures (e.g., "play", "plays", "playing") will share many n-grams and thus have similar embeddings.
-          </List.Item>
-          <List.Item>
-            <strong>Rare Word Representation</strong>: Rare words benefit from sharing subcomponents with more common words.
-          </List.Item>
-        </List>
-        <Text mt="md">
-          Like Word2Vec, FastText uses negative sampling to efficiently approximate the softmax during training.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          FastText OOV Handling
-        </Title>
-        <Image
-          src="/assets/data-science-practice/module8/fasttext-oov-handling.png"
-          alt="FastText Out-of-Vocabulary Handling"
-          caption="Example of FastText generating embeddings for unseen words using character n-grams"
-        />
-        <Text size="sm" mt="md">
-          FastText can handle out-of-vocabulary words by composing embeddings from learned character n-grams.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          FastText Implementation Example
-        </Title>
-        <CodeBlock
-          language="python"
-          code={`from gensim.models import FastText`}
-        />
-        <CodeBlock
-          language="python"
-          code={`# Train a FastText model
-sentences = [["natural", "language", "processing"],
-             ["deep", "learning", "models"]]
-model = FastText(sentences, vector_size=100, window=5)`}
-        />
-        <CodeBlock
-          language="python"
-          code={`# Vector for word in training data
-vector = model.wv["language"]  # 100-dimensional`}
-        />
-        <CodeBlock
-          language="python"
-          code={`# Even for unseen words, FastText generates embeddings
-unseen_vector = model.wv["multilingualism"]
-similar = model.wv.most_similar("multilingualism", topn=3)
-print(similar)`}
-        />
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          Embedding Methods Comparison
-        </Title>
-        <Table striped highlightOnHover mt="md">
-          <thead>
-            <tr>
-              <th>Method</th>
-              <th>Approach</th>
-              <th>OOV Handling</th>
-              <th>Complexity</th>
-              <th>Best Use Case</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Word2Vec</strong></td>
-              <td>Local context prediction</td>
-              <td>No</td>
-              <td>O(n) with neg. sampling</td>
-              <td>Large corpora, semantic tasks</td>
-            </tr>
-            <tr>
-              <td><strong>GloVe</strong></td>
-              <td>Global co-occurrence</td>
-              <td>No</td>
-              <td>Depends on matrix size</td>
-              <td>Analogy tasks, global statistics</td>
-            </tr>
-            <tr>
-              <td><strong>FastText</strong></td>
-              <td>Subword n-grams</td>
-              <td>Yes</td>
-              <td>O(n) with neg. sampling</td>
-              <td>Morphologically rich languages, rare words</td>
-            </tr>
-          </tbody>
-        </Table>
-        <Text size="sm" mt="md">
-          All three methods produce static embeddings: each word has a single fixed vector regardless of context.
-        </Text>
-      </div>
-
-      <div data-slide>
-        <Title order={3} mb="md">
-          Embedding Methods Comparison Visual
-        </Title>
-        <Image
-          src="/assets/data-science-practice/module8/embedding-methods-comparison.png"
-          alt="Comparison of Word2Vec, GloVe, and FastText"
-          caption="Side-by-side comparison of the three major embedding approaches"
-        />
-        <Text size="sm" mt="md">
-          Each method has distinct strengths: Word2Vec for semantic relationships, GloVe for global statistics, FastText for morphology.
-        </Text>
-      </div>
 
       <div data-slide>
         <Title order={3} mb="md">
           Contextual vs Static Embeddings
         </Title>
         <Text mb="md">
-          The embedding methods we've covered (Word2Vec, GloVe, FastText) produce <strong>static embeddings</strong>: each word has a single fixed vector regardless of context.
+          The embedding methods (Word2Vec, GloVe, FastText) produce <strong>static embeddings</strong>: each word has a single fixed vector regardless of context.
         </Text>
         <Text mb="md">
           For example, "bank" has the same embedding in both:
@@ -819,7 +242,7 @@ print(similar)`}
           <List.Item>"I sat on the river bank" (land alongside water)</List.Item>
         </List>
         <Text mb="md">
-          <strong>Contextual embeddings</strong> (from transformer models like BERT) generate different vectors for the same word based on its context. These will be covered in the transformer architectures section.
+          <strong>Contextual embeddings</strong> (from transformer models like BERT) generate different vectors for the same word based on its context.
         </Text>
         <Text>
           Static embeddings remain valuable for their efficiency and effectiveness in many NLP tasks, particularly when context disambiguation is not critical.
@@ -827,18 +250,267 @@ print(similar)`}
       </div>
 
       <div data-slide>
-        <Title order={3} mb="md">
-          Static vs Contextual Embeddings
+        <Title order={2} mb="md">
+          Contextual Embeddings
         </Title>
-        <Image
-          src="/assets/data-science-practice/module8/static-vs-contextual.png"
-          alt="Static vs Contextual Embeddings"
-          caption="Comparison showing how static embeddings assign one vector per word vs contextual embeddings adapting to context"
+        <Text mb="md">
+          Contextual embeddings are generated by transformer-based models that process entire sequences to produce context-aware representations. Unlike static embeddings, the same word receives different vectors depending on surrounding words.
+        </Text>
+        <Text mb="md">
+          For a sequence <InlineMath math="[w_1, w_2, ..., w_n]" />, a transformer model produces hidden states <InlineMath math="[\mathbf{h}_1, \mathbf{h}_2, ..., \mathbf{h}_n]" /> where each <InlineMath math="\mathbf{h}_i" /> encodes word <InlineMath math="w_i" /> in its context.
+        </Text>
+        <Text>
+          Key advantage: The vector for "bank" in "river bank" will differ from "bank" in "deposit money", capturing the semantic distinction.
+        </Text>
+                      <Image
+                src="/assets/data-science-practice/module8/contextual_embed.png"
+                alt="Contextual Embeddings"
+                caption="Comparison of Contextual and Static Embeddings"
+              />
+      </div>
+
+
+      <div data-slide>
+        <Title order={3} mb="md">
+          Word-Level Contextual Embeddings
+        </Title>
+        <Text mb="md">
+          To extract the contextual embedding for a specific word at position <InlineMath math="i" /> in the sequence:
+        </Text>
+        <BlockMath math="\mathbf{h}_i = \text{outputs.last\_hidden\_state}[:, i, :]" />
+        <Text mb="md">
+          This gives you a context-aware representation of that word. For example:
+        </Text>
+        <CodeBlock
+          code={`token_idx = 2  # Word is at index 2
+token_embedding = outputs.last_hidden_state[:, token_idx, :]  # Shape: (1, 768)`}
+          language="python"
         />
-        <Text size="sm" mt="md">
-          Static embeddings provide fixed representations, while contextual embeddings adapt based on surrounding words.
+        <Text mt="md">
+          The embedding at position 2 represents that word in the context of the entire sentence, unlike static embeddings which are context-independent.
         </Text>
       </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
+          Sequence-Level Contextual Embeddings
+        </Title>
+        <Text mb="md">
+          For many tasks, we need a single vector representing an entire sequence rather than individual words. This requires pooling strategies.
+        </Text>
+        <Text>
+          Three main strategies exist for converting token-level hidden states into sentence or sequence embeddings:
+        </Text>
+        <List spacing="sm" mt="md">
+          <List.Item><strong>CLS Token Pooling</strong>: Use a special token's representation (BERT)</List.Item>
+          <List.Item><strong>Last Token Pooling</strong>: Use the final token's representation (GPT)</List.Item>
+          <List.Item><strong>Mean Pooling</strong>: Average all token representations</List.Item>
+        </List>
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
+          BERT: CLS Token Pooling
+        </Title>
+        <Text mb="md">
+          BERT (Bidirectional Encoder Representations from Transformers) uses a special <InlineMath math="\text{[CLS]}" /> token prepended to every sequence. The final hidden state of this token serves as the sequence representation.
+        </Text>
+        <BlockMath math="\mathbf{h}_{\text{sequence}} = \mathbf{h}_{\text{[CLS]}}" />
+        <Text mb="md">
+          The <InlineMath math="\text{[CLS]}" /> token's representation aggregates information from all tokens in the sequence through self-attention mechanisms.
+        </Text>
+        <Text>
+          This approach is particularly effective for classification tasks, as BERT is often fine-tuned with a classification head on top of the <InlineMath math="\text{[CLS]}" /> token.
+        </Text>
+                <Image
+          src="/assets/data-science-practice/module8/cls.png"
+        />
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
+          GPT: Last Token Pooling
+        </Title>
+        <Text mb="md">
+          GPT (Generative Pre-trained Transformer) uses causal (unidirectional) attention. The last token's hidden state accumulates information from all previous tokens in the sequence.
+        </Text>
+        <BlockMath math="\mathbf{h}_{\text{sequence}} = \mathbf{h}_n" />
+        <Text mb="md">
+          where <InlineMath math="n" /> is the sequence length. This final hidden state represents the entire sequence context.
+        </Text>
+        <Text>
+          Since GPT processes text left-to-right, the last token has attended to all preceding tokens, making it a natural choice for sequence representation.
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
+          Mean Pooling
+        </Title>
+        <Text mb="md">
+          Mean pooling averages the hidden states of all tokens in the sequence to create a single representation vector.
+        </Text>
+        <BlockMath math="\mathbf{h}_{\text{sequence}} = \frac{1}{n} \sum_{i=1}^{n} \mathbf{h}_i" />
+        <Text mb="md">
+          This approach treats all tokens equally and is model-agnostic, working with any transformer architecture.
+        </Text>
+        <Text>
+          Mean pooling often performs well for semantic similarity tasks and is commonly used with sentence embedding models like Sentence-BERT.
+        </Text>
+      </div>
+
+
+      <div data-slide>
+        <Title order={3} mb="md">
+          Implementation with Hugging Face
+        </Title>
+        <Text mb="md">
+          Import the necessary components from the transformers library:
+        </Text>
+        <CodeBlock
+          code={`from transformers import AutoTokenizer, AutoModel
+import torch`}
+          language="python"
+        />
+        <Text mt="md" mb="sm">
+          Load a pre-trained BERT model and its tokenizer:
+        </Text>
+        <CodeBlock
+          code={`model_name = "bert-base-uncased"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModel.from_pretrained(model_name)`}
+          language="python"
+        />
+        <Text mt="md">
+          The tokenizer converts text to token IDs, while the model produces contextual embeddings.
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
+          Getting CLS Token Embeddings
+        </Title>
+        <Text mb="md">
+          Tokenize input text and pass it through the model:
+        </Text>
+        <CodeBlock
+          code={`text = "Natural language processing is fascinating"
+inputs = tokenizer(text, return_tensors="pt")`}
+          language="python"
+        />
+        <Text mt="md" mb="sm">
+          Extract the CLS token embedding from model outputs:
+        </Text>
+        <CodeBlock
+          code={`outputs = model(**inputs)
+cls_embedding = outputs.last_hidden_state[:, 0, :]`}
+          language="python"
+        />
+        <Text mt="md">
+          The CLS token is always at position 0, so <InlineMath math="\text{[:, 0, :]}" /> extracts its embedding across all batches and dimensions.
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
+          Implementing Mean Pooling
+        </Title>
+        <Text mb="md">
+          Define a function to compute mean pooling with attention mask:
+        </Text>
+        <CodeBlock
+          code={`def mean_pooling(model_output, attention_mask):
+    token_embeddings = model_output.last_hidden_state
+    input_mask_expanded = attention_mask.unsqueeze(-1).expand(token_embeddings.size()).float()
+    return torch.sum(token_embeddings * input_mask_expanded, 1) / torch.clamp(input_mask_expanded.sum(1), min=1e-9)`}
+          language="python"
+        />
+        <Text mt="md">
+          This function weights each token by its attention mask value (1 for real tokens, 0 for padding) and computes the average.
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
+          Applying Mean Pooling
+        </Title>
+        <Text mb="md">
+          Use the mean pooling function with model outputs:
+        </Text>
+        <CodeBlock
+          code={`outputs = model(**inputs)
+mean_embedding = mean_pooling(outputs, inputs['attention_mask'])`}
+          language="python"
+        />
+        <Text mt="md" mb="sm">
+          Normalize the embeddings for cosine similarity:
+        </Text>
+        <CodeBlock
+          code={`from torch.nn.functional import normalize
+normalized_embedding = normalize(mean_embedding, p=2, dim=1)`}
+          language="python"
+        />
+        <Text mt="md">
+          Normalization ensures embeddings have unit length, making cosine similarity equivalent to dot product.
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
+          Comparing Sentences with Embeddings
+        </Title>
+        <Text mb="md">
+          Compute embeddings for multiple sentences:
+        </Text>
+        <CodeBlock
+          code={`sentences = [
+    "The cat sits on the mat",
+    "A feline rests on the rug",
+    "Python is a programming language"
+]
+inputs = tokenizer(sentences, padding=True, return_tensors="pt")`}
+          language="python"
+        />
+        <Text mt="md" mb="sm">
+          Calculate pairwise cosine similarities:
+        </Text>
+        <CodeBlock
+          code={`outputs = model(**inputs)
+embeddings = normalize(mean_pooling(outputs, inputs['attention_mask']), p=2, dim=1)
+similarities = torch.mm(embeddings, embeddings.transpose(0, 1))`}
+          language="python"
+        />
+        <Text mt="md">
+          The similarity matrix shows that sentences 1 and 2 (about cats) are more similar to each other than to sentence 3 (about Python).
+        </Text>
+      </div>
+
+      <div data-slide>
+        <Title order={3} mb="md">
+          Sentence Transformers Library
+        </Title>
+        <Text mb="md">
+          For production use, the sentence-transformers library provides optimized models specifically trained for semantic similarity:
+        </Text>
+        <CodeBlock
+          code={`from sentence_transformers import SentenceTransformer
+model = SentenceTransformer('all-MiniLM-L6-v2')`}
+          language="python"
+        />
+        <Text mt="md" mb="sm">
+          Generate embeddings with a single method call:
+        </Text>
+        <CodeBlock
+          code={`sentences = ["This is a sentence", "This is another one"]
+embeddings = model.encode(sentences)`}
+          language="python"
+        />
+        <Text mt="md">
+          These models are fine-tuned on sentence pairs to produce embeddings optimized for semantic similarity tasks.
+        </Text>
+      </div>
+
+
     </>
   );
 };
