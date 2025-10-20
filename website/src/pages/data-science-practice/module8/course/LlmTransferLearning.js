@@ -183,8 +183,7 @@ const LlmTransferLearning = () => {
 
         <Flex justify="center" mt="xl" mb="md">
           <Image
-            src="/assets/data-science-practice/module8/transfer-learning-paradigm.png"
-            alt="Transfer learning paradigm showing pre-training and fine-tuning stages"
+            src="/assets/data-science-practice/module8/transferlearning.png"
             style={{ maxWidth: "100%", height: "auto" }}
           />
         </Flex>
@@ -401,6 +400,34 @@ tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
 text = "Transfer learning accelerates NLP development."
 inputs = tokenizer(text, return_tensors="pt")`}
         />
+
+        <Text mt="md">
+          AutoTokenizer automatically loads the correct tokenizer for your model, eliminating the need
+          to know which specific tokenizer implementation to use.
+        </Text>
+
+        <Text mt="md">
+          Without AutoTokenizer, you would need to know the specific tokenizer for each model:
+        </Text>
+
+        <CodeBlock
+          language="python"
+          code={`from transformers import BertTokenizer, GPT2Tokenizer, T5Tokenizer
+
+# BERT uses WordPiece
+bert_tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
+
+# GPT-2 uses Byte-Pair Encoding (BPE)
+gpt2_tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
+
+# T5 uses SentencePiece
+t5_tokenizer = T5Tokenizer.from_pretrained("t5-base")`}
+        />
+
+        <Text mt="md" size="sm">
+          Different models use different tokenization strategies. AutoTokenizer handles these differences
+          automatically based on the model configuration.
+        </Text>
 
         <Text mt="md">
           The tokenizer returns a dictionary with:
