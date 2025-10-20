@@ -172,9 +172,10 @@ export const exerciseContentData = {
   ],
   'module8': [
     { to: '/exercise0', label: 'Exercise 0' },
-    { to: '/exercise1', label: <span>Exercise 1<span style={{color: 'red', fontWeight: 'bold'}}>*</span></span> },
-    { to: '/exercise2', label: 'Exercise 2' },
-    { to: '/exercise3', label: 'Exercise 3' }
+    { to: '/exercise1', label: 'Exercise 1' },
+    { to: '/exercise2', label: <span>Exercise 2<span style={{color: 'red', fontWeight: 'bold'}}>*</span></span> },
+    { to: '/exercise3', label: 'Exercise 3' },
+    { to: '/exercise4', label: 'Exercise 4' }
   ],
   'module9': [
     { to: '/exercise0', label: 'Exercise 0' },

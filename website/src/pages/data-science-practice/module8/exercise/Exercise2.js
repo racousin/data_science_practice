@@ -5,9 +5,21 @@ import { IconStar } from '@tabler/icons-react';
 import DataInteractionPanel from 'components/DataInteractionPanel';
 
 const Exercise2 = () => {
+  const trainDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module8/exercise/train.csv";
+  const testDataUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module8/exercise/test.csv";
   const notebookUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module8/exercise/module8_exercise2.ipynb";
   const notebookHtmlUrl = process.env.PUBLIC_URL + "/modules/data-science-practice/module8/exercise/module8_exercise2.html";
   const notebookColabUrl = process.env.PUBLIC_URL + "website/public/modules/data-science-practice/module8/exercise/module8_exercise2.ipynb";
+
+  const metadata = {
+    description: "A mathematical problem-solving dataset containing diverse math problems across different categories with numerical solutions.",
+    source: "Custom Math Problem Dataset",
+    target: "Numerical solutions (accuracy with 2 decimal precision tolerance)",
+    listData: [
+      { name: "train.csv", description: "900 math problems with solutions (id, problem, solution, category columns)" },
+      { name: "test.csv", description: "100 test problems without solutions (id, problem, category columns)", isTarget: true }
+    ],
+  };
 
   return (
     <>
@@ -43,6 +55,9 @@ const Exercise2 = () => {
               <Title order={2} mb="md">Dataset</Title>
               <Text size="md" mb="sm">
                 Custom Math Problem Dataset (1000 problems)
+              </Text>
+              <Text size="sm" c="dimmed" mb="sm">
+                Generated using scripts/generate_math_dataset.py
               </Text>
               <List spacing="sm">
                 <List.Item><strong>Training Set:</strong> 900 problems with solutions</List.Item>
@@ -124,9 +139,12 @@ const Exercise2 = () => {
           </Stack>
 
           <DataInteractionPanel
+            trainDataUrl={trainDataUrl}
+            testDataUrl={testDataUrl}
             notebookUrl={notebookUrl}
             notebookHtmlUrl={notebookHtmlUrl}
             notebookColabUrl={notebookColabUrl}
+            metadata={metadata}
             className="mt-6"
           />
         </Stack>
