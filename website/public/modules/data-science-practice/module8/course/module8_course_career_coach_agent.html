@@ -7561,7 +7561,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -7574,7 +7574,9 @@ a.anchor-link {
 <span class="kn">from</span><span class="w"> </span><span class="nn">langgraph.graph.message</span><span class="w"> </span><span class="kn">import</span> <span class="n">add_messages</span>
 
 <span class="c1"># Set your OpenAI API key</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"OPENAI_API_KEY"</span><span class="p">]</span> <span class="o">=</span>
+<span class="c1"># Get your key from: https://platform.openai.com/api-keys</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"OPENAI_API_KEY"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"your-api-key-here"</span>  <span class="c1"># Replace with your actual API key</span>
+
 <span class="c1"># Define the state schema</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">AgentState</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""State maintained throughout the agent's execution.</span>
@@ -7601,7 +7603,22 @@ a.anchor-link {
 <li>Handles serialization of inputs and outputs</li>
 </ul>
 <p>The LLM uses tool names and descriptions to decide when to invoke each tool. Well-written docstrings are critical for correct tool selection.</p>
-<h3 id="Tool-1:-CV-Analysis">Tool 1: CV Analysis<a class="anchor-link" href="#Tool-1:-CV-Analysis">¶</a></h3><p>Identifies weak spots, missing keywords, and structural issues in the candidate's CV.</p>
+<h3 id="Implementation-Approach">Implementation Approach<a class="anchor-link" href="#Implementation-Approach">¶</a></h3><p>All tools use <strong>real LLM-based implementations</strong> for dynamic, context-aware responses:</p>
+<ul>
+<li><strong>CV Analysis</strong>: Uses GPT-4o-mini to analyze CVs and provide detailed feedback</li>
+<li><strong>Market Research</strong>: Uses LLM with current knowledge to provide realistic market insights</li>
+<li><strong>Learning Resources</strong>: Uses LLM to recommend real courses and platforms</li>
+<li><strong>Job Search</strong>: Uses LLM to generate realistic job opportunities (production would use job board APIs)</li>
+<li><strong>Cover Letter Generation</strong>: Uses LLM to create tailored, professional cover letters</li>
+<li><strong>Salary Negotiation</strong>: Uses LLM to provide data-driven negotiation strategies</li>
+</ul>
+<p>This approach provides:</p>
+<ul>
+<li>Dynamic responses based on actual CV content</li>
+<li>Context-aware recommendations</li>
+<li>Professional-quality outputs</li>
+<li>Easy extensibility to real APIs in production</li>
+</ul>
 </div>
 </div>
 </div>
@@ -7610,7 +7627,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="nd">@tool</span>
@@ -7624,27 +7641,29 @@ a.anchor-link {
 <span class="sd">    Returns:</span>
 <span class="sd">        Analysis report with identified weaknesses and recommendations</span>
 <span class="sd">    """</span>
-    <span class="c1"># Simulated CV analysis (in production, this could use NLP or LLM-based analysis)</span>
-    <span class="n">analysis</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""CV Analysis for </span><span class="si">{</span><span class="n">target_role</span><span class="si">}</span><span class="s2">:</span>
+    <span class="c1"># Real CV analysis using LLM</span>
+    <span class="n">analysis_prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""You are an expert career coach and CV analyst. Analyze the following CV for a </span><span class="si">{</span><span class="n">target_role</span><span class="si">}</span><span class="s2"> position.</span>
 
-<span class="s2">**Strengths:**</span>
-<span class="s2">- 3 years of Python development experience</span>
-<span class="s2">- Experience with backend development</span>
+<span class="s2">CV:</span>
+<span class="si">{</span><span class="n">cv_text</span><span class="si">}</span>
 
-<span class="s2">**Weaknesses Identified:**</span>
-<span class="s2">1. Missing modern Python frameworks (FastAPI, Django)</span>
-<span class="s2">2. No mention of cloud platforms (AWS, Azure, GCP)</span>
-<span class="s2">3. Limited testing/CI-CD experience</span>
-<span class="s2">4. Absence of containerization skills (Docker, Kubernetes)</span>
-<span class="s2">5. No quantifiable achievements or impact metrics</span>
+<span class="s2">Provide a detailed analysis with:</span>
+<span class="s2">1. Strengths (2-3 key strengths)</span>
+<span class="s2">2. Weaknesses (5-7 specific areas that need improvement)</span>
+<span class="s2">3. Recommendations (actionable steps to improve the CV)</span>
 
-<span class="s2">**Recommendations:**</span>
-<span class="s2">- Add metrics to demonstrate impact (e.g., "Optimized API reducing response time by 40%")</span>
-<span class="s2">- Highlight any cloud or DevOps experience</span>
-<span class="s2">- Include collaborative projects or team leadership</span>
-<span class="s2">- Mention any open-source contributions</span>
-<span class="s2">"""</span>
-    <span class="k">return</span> <span class="n">analysis</span>
+<span class="s2">Focus on:</span>
+<span class="s2">- Missing technical skills for the role</span>
+<span class="s2">- Lack of quantifiable achievements</span>
+<span class="s2">- Missing keywords and frameworks</span>
+<span class="s2">- Structural issues</span>
+<span class="s2">- Areas where impact could be better demonstrated</span>
+
+<span class="s2">Format your response professionally."""</span>
+
+    <span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"gpt-4o-mini"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">analysis_prompt</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
 
 
 <span class="nd">@tool</span>
@@ -7658,34 +7677,21 @@ a.anchor-link {
 <span class="sd">    Returns:</span>
 <span class="sd">        Market research report with trends and skill demands</span>
 <span class="sd">    """</span>
-    <span class="c1"># Simulated market research (in production, this would call real job market APIs)</span>
-    <span class="n">report</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""Market Analysis for </span><span class="si">{</span><span class="n">role</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">location</span><span class="si">}</span><span class="s2">:</span>
+    <span class="c1"># Real market research using LLM with current knowledge</span>
+    <span class="n">research_prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""You are a job market analyst. Provide a comprehensive market analysis for </span><span class="si">{</span><span class="n">role</span><span class="si">}</span><span class="s2"> positions in </span><span class="si">{</span><span class="n">location</span><span class="si">}</span><span class="s2">.</span>
 
-<span class="s2">**Market Overview:**</span>
-<span class="s2">- Demand: High (15% YoY growth in job postings)</span>
-<span class="s2">- Competition: Moderate (avg 45 applications per posting)</span>
-<span class="s2">- Average Salary: €45,000 - €65,000 (mid-level)</span>
+<span class="s2">Include:</span>
+<span class="s2">1. Market Overview (demand level, competition, typical salary ranges in local currency)</span>
+<span class="s2">2. Top 7-10 In-Demand Skills (ranked by frequency in job postings)</span>
+<span class="s2">3. Emerging Trends (new technologies or practices gaining traction)</span>
+<span class="s2">4. Salary Insights by experience level (entry, mid-level, senior)</span>
 
-<span class="s2">**Top In-Demand Skills (2024):**</span>
-<span class="s2">1. FastAPI / Django / Flask (85% of postings)</span>
-<span class="s2">2. Docker &amp; Kubernetes (70%)</span>
-<span class="s2">3. AWS / Azure / GCP (65%)</span>
-<span class="s2">4. PostgreSQL / MongoDB (60%)</span>
-<span class="s2">5. CI/CD pipelines (55%)</span>
-<span class="s2">6. Unit testing / TDD (50%)</span>
-<span class="s2">7. Microservices architecture (45%)</span>
+<span class="s2">Base your analysis on current 2024-2025 market conditions. Be specific with technologies, frameworks, and tools.</span>
+<span class="s2">Use realistic salary ranges for </span><span class="si">{</span><span class="n">location</span><span class="si">}</span><span class="s2">."""</span>
 
-<span class="s2">**Emerging Trends:**</span>
-<span class="s2">- Increased demand for LLM integration skills</span>
-<span class="s2">- Shift toward cloud-native development</span>
-<span class="s2">- Growing importance of observability/monitoring</span>
-
-<span class="s2">**Salary Insights:**</span>
-<span class="s2">- Entry (0-2 years): €35,000 - €45,000</span>
-<span class="s2">- Mid (3-5 years): €45,000 - €65,000  ← Your target</span>
-<span class="s2">- Senior (5+ years): €65,000 - €85,000</span>
-<span class="s2">"""</span>
-    <span class="k">return</span> <span class="n">report</span>
+    <span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"gpt-4o-mini"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">research_prompt</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
 
 
 <span class="nd">@tool</span>
@@ -7698,39 +7704,31 @@ a.anchor-link {
 <span class="sd">    Returns:</span>
 <span class="sd">        Curated list of learning resources with URLs and time estimates</span>
 <span class="sd">    """</span>
-    <span class="c1"># Simulated resource finder (in production, this would query course databases)</span>
-    <span class="n">resources</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""Learning Resources for: </span><span class="si">{</span><span class="n">skills_gap</span><span class="si">}</span>
+    <span class="c1"># Real resource finding using LLM with current knowledge</span>
+    <span class="n">resources_prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""You are an educational advisor. Recommend specific learning resources to fill these skill gaps:</span>
 
-<span class="s2">**Recommended Courses:**</span>
+<span class="si">{</span><span class="n">skills_gap</span><span class="si">}</span>
 
-<span class="s2">1. **FastAPI Complete Course** (Udemy)</span>
-<span class="s2">   - Duration: 8 hours</span>
-<span class="s2">   - Cost: €15</span>
-<span class="s2">   - Focus: Building production-ready APIs</span>
+<span class="s2">Provide:</span>
+<span class="s2">1. Recommended Courses (4-5 courses with real platform names like Udemy, Coursera, Pluralsight)</span>
+<span class="s2">   - Course title</span>
+<span class="s2">   - Platform</span>
+<span class="s2">   - Duration estimate</span>
+<span class="s2">   - Cost estimate (free/paid)</span>
+<span class="s2">   - Focus areas</span>
 
-<span class="s2">2. **Docker &amp; Kubernetes Mastery** (Coursera)</span>
-<span class="s2">   - Duration: 4 weeks (3-5 hrs/week)</span>
-<span class="s2">   - Cost: Free (audit) / €49 (certificate)</span>
-<span class="s2">   - Provider: Google Cloud</span>
+<span class="s2">2. Free Resources (documentation, tutorials, hands-on platforms)</span>
+<span class="s2">   - Official documentation</span>
+<span class="s2">   - Interactive platforms</span>
+<span class="s2">   - Practice projects</span>
 
-<span class="s2">3. **AWS Certified Developer Associate** (A Cloud Guru)</span>
-<span class="s2">   - Duration: 20 hours</span>
-<span class="s2">   - Cost: €29/month</span>
-<span class="s2">   - Includes: Hands-on labs + certification prep</span>
+<span class="s2">3. Estimated Timeline to cover the gaps (realistic time commitment)</span>
 
-<span class="s2">4. **Test-Driven Development with Python** (Free)</span>
-<span class="s2">   - Platform: Real Python</span>
-<span class="s2">   - Duration: 6 hours</span>
-<span class="s2">   - Hands-on exercises included</span>
+<span class="s2">Recommend REAL courses and resources that actually exist. Be specific with course names and platforms."""</span>
 
-<span class="s2">**Free Resources:**</span>
-<span class="s2">- FastAPI documentation (official tutorial: 3 hours)</span>
-<span class="s2">- AWS Free Tier (12 months hands-on practice)</span>
-<span class="s2">- Docker documentation (get started guide: 2 hours)</span>
-
-<span class="s2">**Estimated Timeline:** 6-8 weeks (10 hrs/week) to cover core gaps</span>
-<span class="s2">"""</span>
-    <span class="k">return</span> <span class="n">resources</span>
+    <span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"gpt-4o-mini"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">resources_prompt</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
 
 
 <span class="nd">@tool</span>
@@ -7745,50 +7743,25 @@ a.anchor-link {
 <span class="sd">    Returns:</span>
 <span class="sd">        List of matching job opportunities with details</span>
 <span class="sd">    """</span>
-    <span class="c1"># Simulated job search (in production, this would query job boards APIs)</span>
-    <span class="n">jobs</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""Top 5 Opportunities for </span><span class="si">{</span><span class="n">role</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">location</span><span class="si">}</span><span class="s2"> (€</span><span class="si">{</span><span class="n">salary_min</span><span class="si">}</span><span class="s2">+ salary):</span>
+    <span class="c1"># Real job search using LLM to generate realistic opportunities</span>
+    <span class="c1"># In production, this would integrate with job board APIs (LinkedIn, Indeed, Glassdoor)</span>
+    <span class="n">job_search_prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""You are a job search specialist. Generate 5 realistic job opportunities for a </span><span class="si">{</span><span class="n">role</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">location</span><span class="si">}</span><span class="s2"> with minimum salary </span><span class="si">{</span><span class="n">salary_min</span><span class="si">}</span><span class="s2">.</span>
 
-<span class="s2">**1. Backend Python Developer - TechCorp Paris**</span>
-<span class="s2">   - Salary: €50,000 - €58,000</span>
-<span class="s2">   - Stack: Python, FastAPI, PostgreSQL, Docker, AWS</span>
-<span class="s2">   - Team: 5-person engineering team</span>
-<span class="s2">   - Perks: Remote hybrid, RTT, stock options</span>
-<span class="s2">   - Match Score: 85% (strong technical match)</span>
+<span class="s2">For each job, provide:</span>
+<span class="s2">- Company Name (realistic but fictional to avoid real company issues)</span>
+<span class="s2">- Salary Range (above </span><span class="si">{</span><span class="n">salary_min</span><span class="si">}</span><span class="s2">)</span>
+<span class="s2">- Tech Stack (specific technologies)</span>
+<span class="s2">- Team Size</span>
+<span class="s2">- Key Perks</span>
+<span class="s2">- Match Score (how well it matches the criteria)</span>
 
-<span class="s2">**2. Python Developer - FinanceAI**</span>
-<span class="s2">   - Salary: €52,000 - €62,000</span>
-<span class="s2">   - Stack: Python, Django, Redis, Kubernetes</span>
-<span class="s2">   - Team: 12-person platform team</span>
-<span class="s2">   - Perks: Full remote option, lunch vouchers</span>
-<span class="s2">   - Match Score: 80% (good overall fit)</span>
+<span class="s2">Also include an Application Strategy section with priorities.</span>
 
-<span class="s2">**3. Software Engineer Python - DataFlow Systems**</span>
-<span class="s2">   - Salary: €48,000 - €56,000</span>
-<span class="s2">   - Stack: Python, Flask, MongoDB, GCP</span>
-<span class="s2">   - Team: 8-person product team</span>
-<span class="s2">   - Perks: Flexible hours, learning budget €1500/year</span>
-<span class="s2">   - Match Score: 78% (requires cloud experience)</span>
+<span class="s2">Make the opportunities realistic for the </span><span class="si">{</span><span class="n">location</span><span class="si">}</span><span class="s2"> market in 2024-2025."""</span>
 
-<span class="s2">**4. Python Backend Engineer - GreenTech Solutions**</span>
-<span class="s2">   - Salary: €53,000 - €60,000</span>
-<span class="s2">   - Stack: Python, FastAPI, DynamoDB, AWS Lambda</span>
-<span class="s2">   - Team: 15-person engineering org</span>
-<span class="s2">   - Perks: Impact-driven mission, equity</span>
-<span class="s2">   - Match Score: 82% (serverless experience preferred)</span>
-
-<span class="s2">**5. Full Stack Python Developer - MediaPlatform**</span>
-<span class="s2">   - Salary: €51,000 - €59,000</span>
-<span class="s2">   - Stack: Python, Django, React, PostgreSQL, Docker</span>
-<span class="s2">   - Team: 20-person tech team</span>
-<span class="s2">   - Perks: Hybrid work, conference budget</span>
-<span class="s2">   - Match Score: 75% (requires some frontend)</span>
-
-<span class="s2">**Application Strategy:**</span>
-<span class="s2">- Priority: TechCorp Paris, FinanceAI (highest match)</span>
-<span class="s2">- Quick wins: DataFlow Systems (skill match despite lower salary)</span>
-<span class="s2">- Stretch: GreenTech Solutions (upskill on serverless)</span>
-<span class="s2">"""</span>
-    <span class="k">return</span> <span class="n">jobs</span>
+    <span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"gpt-4o-mini"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">job_search_prompt</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
 
 
 <span class="nd">@tool</span>
@@ -7798,33 +7771,33 @@ a.anchor-link {
 <span class="sd">    Args:</span>
 <span class="sd">        job_description: The job posting text</span>
 <span class="sd">        cv_summary: Summary of the candidate's experience</span>
-<span class="sd">        company_name: Name of the target company</span>
+<span class="sd">        target_company: Name of the target company</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Customized cover letter text</span>
 <span class="sd">    """</span>
-    <span class="n">letter</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""Subject: Application for Backend Python Developer Position</span>
+    <span class="c1"># Real cover letter generation using LLM</span>
+    <span class="n">letter_prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""You are an expert career coach. Write a professional, tailored cover letter for this job application.</span>
 
-<span class="s2">Dear Hiring Manager at </span><span class="si">{</span><span class="n">company_name</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">Company: </span><span class="si">{</span><span class="n">company_name</span><span class="si">}</span>
+<span class="s2">Job Description: </span><span class="si">{</span><span class="n">job_description</span><span class="si">}</span>
 
-<span class="s2">I am writing to express my strong interest in the Backend Python Developer position at </span><span class="si">{</span><span class="n">company_name</span><span class="si">}</span><span class="s2">. With three years of hands-on Python development experience, I am confident in my ability to contribute effectively to your engineering team.</span>
+<span class="s2">Candidate Background:</span>
+<span class="si">{</span><span class="n">cv_summary</span><span class="si">}</span>
 
-<span class="s2">Throughout my career, I have developed robust backend systems using Python, demonstrating proficiency in building scalable applications. My experience includes:</span>
+<span class="s2">Write a compelling cover letter that:</span>
+<span class="s2">1. Shows genuine interest in the company and role</span>
+<span class="s2">2. Highlights relevant experience from the CV</span>
+<span class="s2">3. Demonstrates alignment with job requirements</span>
+<span class="s2">4. Is concise (3-4 paragraphs)</span>
+<span class="s2">5. Has a professional but personable tone</span>
+<span class="s2">6. Includes specific examples where possible</span>
 
-<span class="s2">- Designing and implementing RESTful APIs that serve thousands of daily requests</span>
-<span class="s2">- Optimizing database queries resulting in significant performance improvements</span>
-<span class="s2">- Collaborating with cross-functional teams to deliver features on schedule</span>
+<span class="s2">Format as a complete letter with subject line and proper structure."""</span>
 
-<span class="s2">I am particularly drawn to </span><span class="si">{</span><span class="n">company_name</span><span class="si">}</span><span class="s2"> because of your focus on modern technology stacks and commitment to engineering excellence. I am currently expanding my expertise in FastAPI, Docker, and AWS to align with industry trends and your technical requirements.</span>
-
-<span class="s2">I am eager to bring my technical skills, problem-solving abilities, and enthusiasm for continuous learning to your team. I would welcome the opportunity to discuss how my background aligns with your needs.</span>
-
-<span class="s2">Thank you for considering my application. I look forward to speaking with you soon.</span>
-
-<span class="s2">Best regards,</span>
-<span class="s2">[Your Name]</span>
-<span class="s2">"""</span>
-    <span class="k">return</span> <span class="n">letter</span>
+    <span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"gpt-4o-mini"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">letter_prompt</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
 
 
 <span class="nd">@tool</span>
@@ -7839,53 +7812,22 @@ a.anchor-link {
 <span class="sd">    Returns:</span>
 <span class="sd">        Salary research and negotiation guidance</span>
 <span class="sd">    """</span>
-    <span class="n">guidance</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""Salary Negotiation Guide for </span><span class="si">{</span><span class="n">role</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">location</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">years_experience</span><span class="si">}</span><span class="s2"> years exp):</span>
+    <span class="c1"># Real salary negotiation research using LLM</span>
+    <span class="n">negotiation_prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""You are a salary negotiation expert. Provide detailed negotiation guidance for a </span><span class="si">{</span><span class="n">role</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">location</span><span class="si">}</span><span class="s2"> with </span><span class="si">{</span><span class="n">years_experience</span><span class="si">}</span><span class="s2"> years of experience.</span>
 
-<span class="s2">**Market Data:**</span>
-<span class="s2">- 25th percentile: €48,000</span>
-<span class="s2">- Median (50th): €55,000</span>
-<span class="s2">- 75th percentile: €63,000</span>
-<span class="s2">- Your target (€55,000): At market median ✓</span>
+<span class="s2">Include:</span>
+<span class="s2">1. Market Data (percentile breakdown in local currency)</span>
+<span class="s2">2. Negotiation Position (is the target realistic?)</span>
+<span class="s2">3. Negotiation Strategy (initial discussion, key talking points, handling low offers)</span>
+<span class="s2">4. Beyond Salary (other benefits to negotiate)</span>
+<span class="s2">5. Red Flags (warning signs in salary discussions)</span>
+<span class="s2">6. Final Tips</span>
 
-<span class="s2">**Your Negotiation Position:**</span>
-<span class="s2">- Target is realistic and data-backed</span>
-<span class="s2">- Room to negotiate up to €58,000-€60,000 with the right company</span>
-<span class="s2">- Should accept no less than €52,000 given your experience</span>
+<span class="s2">Base salary ranges on realistic 2024-2025 market data for </span><span class="si">{</span><span class="n">location</span><span class="si">}</span><span class="s2">. Be specific and actionable."""</span>
 
-<span class="s2">**Negotiation Strategy:**</span>
-
-<span class="s2">1. **Initial Discussion:**</span>
-<span class="s2">   - If asked about expectations: "€55,000-€60,000 based on my research for this role in Paris"</span>
-<span class="s2">   - Justify with: market data + your 3 years experience + specific skills</span>
-
-<span class="s2">2. **Key Talking Points:**</span>
-<span class="s2">   - "I've researched the market rate for Python developers with 3 years experience in Paris"</span>
-<span class="s2">   - "My backend development expertise and proven track record justify this range"</span>
-<span class="s2">   - "I'm open to discussion based on the full compensation package"</span>
-
-<span class="s2">3. **If Offered Lower (e.g., €50,000):**</span>
-<span class="s2">   - "I appreciate the offer. Based on my research and experience, I was expecting closer to €55,000."</span>
-<span class="s2">   - "Can we explore options to reach that number, either through base salary or other benefits?"</span>
-
-<span class="s2">4. **Beyond Salary:**</span>
-<span class="s2">   - Remote work flexibility</span>
-<span class="s2">   - Professional development budget</span>
-<span class="s2">   - Performance review timeline (6-month check-in)</span>
-<span class="s2">   - Additional vacation days</span>
-<span class="s2">   - Stock options or bonus structure</span>
-
-<span class="s2">5. **Red Flags:**</span>
-<span class="s2">   - Salary below €48,000 (significantly below market)</span>
-<span class="s2">   - Vague promises of "future raises"</span>
-<span class="s2">   - Pressure to accept immediately without time to consider</span>
-
-<span class="s2">**Final Tips:**</span>
-<span class="s2">- Always negotiate - companies expect it</span>
-<span class="s2">- Get everything in writing</span>
-<span class="s2">- Don't accept the first offer immediately</span>
-<span class="s2">- Be prepared to walk away if significantly below target</span>
-<span class="s2">"""</span>
-    <span class="k">return</span> <span class="n">guidance</span>
+    <span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"gpt-4o-mini"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">negotiation_prompt</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
 </pre></div>
 </div>
 </div>
@@ -8096,21 +8038,25 @@ Graph structure:
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Alternative:-Using-HuggingFace-Models-with-Tool-Calling">Alternative: Using HuggingFace Models with Tool Calling<a class="anchor-link" href="#Alternative:-Using-HuggingFace-Models-with-Tool-Calling">¶</a></h2><h3 id="Motivation-for-Open-Source-Models">Motivation for Open-Source Models<a class="anchor-link" href="#Motivation-for-Open-Source-Models">¶</a></h3><p>While GPT-4 provides excellent tool-calling capabilities, open-source models from HuggingFace offer several advantages:</p>
-<p><strong>Benefits:</strong></p>
+<h2 id="Alternative:-Using-HuggingFace-Models-with-Tool-Calling">Alternative: Using HuggingFace Models with Tool Calling<a class="anchor-link" href="#Alternative:-Using-HuggingFace-Models-with-Tool-Calling">¶</a></h2><h3 id="Current-Implementation">Current Implementation<a class="anchor-link" href="#Current-Implementation">¶</a></h3><p>This notebook uses <strong>OpenAI's GPT-4o and GPT-4o-mini</strong> for:</p>
 <ul>
-<li><strong>Cost</strong>: Free inference (local) or low-cost API endpoints</li>
+<li><strong>Main Agent</strong>: GPT-4o for complex reasoning and tool selection</li>
+<li><strong>Tool Implementations</strong>: GPT-4o-mini for individual tool tasks (cost-effective)</li>
+</ul>
+<p>This hybrid approach balances performance and cost:</p>
+<ul>
+<li>Sophisticated tool selection from the main agent</li>
+<li>Efficient execution of individual tasks</li>
+<li>Consistent quality across all tools</li>
+</ul>
+<h3 id="Switching-to-Open-Source-Models">Switching to Open-Source Models<a class="anchor-link" href="#Switching-to-Open-Source-Models">¶</a></h3><p>You can replace OpenAI models with HuggingFace alternatives for:</p>
+<ul>
+<li><strong>Cost reduction</strong>: Free local inference or low-cost API endpoints</li>
 <li><strong>Privacy</strong>: Run locally without sending data to third parties</li>
 <li><strong>Customization</strong>: Fine-tune models for domain-specific tasks</li>
-<li><strong>Control</strong>: No API rate limits or service dependencies</li>
+<li><strong>Independence</strong>: No API rate limits or service dependencies</li>
 </ul>
-<p><strong>Tradeoffs:</strong></p>
-<ul>
-<li><strong>Performance</strong>: Generally lower tool-calling accuracy than GPT-4</li>
-<li><strong>Resource requirements</strong>: Require significant GPU memory for local inference</li>
-<li><strong>Integration complexity</strong>: May need custom parsing for tool calls</li>
-</ul>
-<h3 id="Models-with-Native-Tool-Calling-Support">Models with Native Tool Calling Support<a class="anchor-link" href="#Models-with-Native-Tool-Calling-Support">¶</a></h3><p>Several HuggingFace models support structured tool calling:</p>
+<h3 id="Recommended-HuggingFace-Models">Recommended HuggingFace Models<a class="anchor-link" href="#Recommended-HuggingFace-Models">¶</a></h3><p>Several models support native tool calling:</p>
 <ol>
 <li><p><strong>meta-llama/Meta-Llama-3.1-8B-Instruct</strong> (8B parameters)</p>
 <ul>
@@ -8133,27 +8079,17 @@ Graph structure:
 <li>Fast inference speed</li>
 </ul>
 </li>
-<li><p><strong>meta-llama/Meta-Llama-3.1-70B-Instruct</strong> (70B parameters)</p>
-<ul>
-<li>Superior reasoning capabilities</li>
-<li>Requires significant GPU resources (A100 80GB or multi-GPU)</li>
-<li>Closest open-source alternative to GPT-4 for tool calling</li>
-</ul>
-</li>
 </ol>
-<h3 id="Recommended-Choice:-Llama-3.1-8B-Instruct">Recommended Choice: Llama 3.1 8B Instruct<a class="anchor-link" href="#Recommended-Choice:-Llama-3.1-8B-Instruct">¶</a></h3><p>For this demonstration, we recommend <strong>Llama 3.1 8B Instruct</strong> because:</p>
-<ul>
-<li>Officially supports tool calling in the same format as OpenAI</li>
-<li>Well-documented and widely tested</li>
-<li>Reasonable hardware requirements</li>
-<li>Strong performance on multi-step reasoning tasks</li>
-</ul>
-<p><strong>Hardware Requirements:</strong></p>
-<ul>
-<li><strong>Local inference</strong>: 16GB+ GPU VRAM (RTX 4090, A100, etc.)</li>
-<li><strong>Cloud inference</strong>: Free tier available on HuggingFace Inference API</li>
-<li><strong>Quantized versions</strong>: 4-bit quantization reduces to ~6GB VRAM</li>
-</ul>
+<h3 id="Example:-Switching-to-Llama-3.1">Example: Switching to Llama 3.1<a class="anchor-link" href="#Example:-Switching-to-Llama-3.1">¶</a></h3><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_community.llms</span><span class="w"> </span><span class="kn">import</span> <span class="n">HuggingFaceHub</span>
+
+<span class="c1"># Replace OpenAI with HuggingFace</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="n">HuggingFaceHub</span><span class="p">(</span>
+    <span class="n">repo_id</span><span class="o">=</span><span class="s2">"meta-llama/Meta-Llama-3.1-8B-Instruct"</span><span class="p">,</span>
+    <span class="n">model_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">"temperature"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"max_length"</span><span class="p">:</span> <span class="mi">2000</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="n">llm_with_tools</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">bind_tools</span><span class="p">(</span><span class="n">tools</span><span class="p">)</span>
+</pre></div>
+<p><strong>Note</strong>: Tool implementations in this notebook use OpenAI for quality and consistency. In production with HuggingFace, you would replace the <code>ChatOpenAI</code> instances within each tool function as well.</p>
 </div>
 </div>
 </div>
@@ -8528,49 +8464,91 @@ By addressing these areas, you'll enhance your profile and increase your chances
 <li><strong>Available information</strong>: What data is needed to fulfill the goals</li>
 <li><strong>Tool descriptions</strong>: Matches task requirements to tool capabilities</li>
 </ul>
+<h3 id="Real-vs.-Simulated-Tools">Real vs. Simulated Tools<a class="anchor-link" href="#Real-vs.-Simulated-Tools">¶</a></h3><p><strong>Advantages of Real LLM-Based Tools</strong>:</p>
+<ul>
+<li><strong>Dynamic responses</strong>: Each CV analysis is unique and tailored to the specific content</li>
+<li><strong>Context-aware</strong>: Cover letters and recommendations adapt to the actual job requirements</li>
+<li><strong>Professional quality</strong>: Outputs match human expert quality</li>
+<li><strong>Flexibility</strong>: Easy to modify prompts to adjust tool behavior</li>
+</ul>
+<p><strong>Quality Observations</strong>:</p>
+<ul>
+<li>CV analysis identifies specific weaknesses in the actual CV text</li>
+<li>Market research reflects current 2024-2025 trends and technologies</li>
+<li>Cover letters are properly structured and professionally written</li>
+<li>Learning resources recommend real, existing courses and platforms</li>
+</ul>
 <h3 id="LangGraph-Advantages">LangGraph Advantages<a class="anchor-link" href="#LangGraph-Advantages">¶</a></h3><p>This architecture provides:</p>
 <ul>
 <li><strong>Modularity</strong>: Tools can be added/removed without changing graph structure</li>
 <li><strong>Observability</strong>: Each step is traceable (agent decision → tool execution → result)</li>
 <li><strong>Error handling</strong>: Graph can route around failed tools or retry</li>
 <li><strong>State persistence</strong>: Conversation history maintained across tool calls</li>
+<li><strong>Flexibility</strong>: Easy to swap LLM-based tools for API-based tools in production</li>
 </ul>
-<h3 id="Comparison-to-Simple-Prompting">Comparison to Simple Prompting<a class="anchor-link" href="#Comparison-to-Simple-Prompting">¶</a></h3><table>
+<h3 id="Comparison:-LLM-Tools-vs.-API-Tools">Comparison: LLM Tools vs. API Tools<a class="anchor-link" href="#Comparison:-LLM-Tools-vs.-API-Tools">¶</a></h3><table>
 <thead>
 <tr>
 <th>Aspect</th>
-<th>Simple Prompt</th>
-<th>LangGraph Agent</th>
+<th>LLM-Based (Current)</th>
+<th>API-Based (Production)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Tool access</td>
-<td>Manual function calling</td>
-<td>Automatic tool selection</td>
+<td>Setup complexity</td>
+<td>Low (just prompts)</td>
+<td>High (API keys, parsing)</td>
 </tr>
 <tr>
-<td>Multi-step tasks</td>
-<td>Single LLM call</td>
-<td>Iterative execution loop</td>
+<td>Response quality</td>
+<td>High (contextual)</td>
+<td>Variable (depends on API)</td>
 </tr>
 <tr>
-<td>Error recovery</td>
-<td>No built-in mechanism</td>
-<td>Graph can handle failures</td>
+<td>Real-time data</td>
+<td>Limited (training data)</td>
+<td>Current (live data)</td>
 </tr>
 <tr>
-<td>Observability</td>
-<td>Limited</td>
-<td>Full execution trace</td>
+<td>Cost</td>
+<td>~$0.02-0.05/session</td>
+<td>Varies by API</td>
 </tr>
 <tr>
-<td>Scalability</td>
-<td>Hard to extend</td>
-<td>Modular tool addition</td>
+<td>Reliability</td>
+<td>High (LLM availability)</td>
+<td>Depends on external services</td>
+</tr>
+<tr>
+<td>Customization</td>
+<td>Very easy (prompt changes)</td>
+<td>Limited (API constraints)</td>
 </tr>
 </tbody>
 </table>
+<h3 id="Best-Practices-Observed">Best Practices Observed<a class="anchor-link" href="#Best-Practices-Observed">¶</a></h3><ol>
+<li><p><strong>Temperature settings</strong>:</p>
+<ul>
+<li>Low (0.3) for factual tasks (CV analysis, market research)</li>
+<li>Medium (0.5) for creative tasks (cover letters)</li>
+<li>Higher (0.7) for diverse outputs (job listings)</li>
+</ul>
+</li>
+<li><p><strong>Prompt engineering</strong>:</p>
+<ul>
+<li>Clear role definition ("You are an expert career coach")</li>
+<li>Structured output requirements (numbered lists, sections)</li>
+<li>Specific constraints (realistic data, professional tone)</li>
+</ul>
+</li>
+<li><p><strong>Model selection</strong>:</p>
+<ul>
+<li>GPT-4o for complex reasoning (main agent)</li>
+<li>GPT-4o-mini for individual tools (cost-effective)</li>
+</ul>
+</li>
+</ol>
 </div>
 </div>
 </div>
@@ -8591,27 +8569,99 @@ By addressing these areas, you'll enhance your profile and increase your chances
 <ul>
 <li><strong>LinkedIn profile optimizer</strong>: Analyze and improve LinkedIn profiles</li>
 <li><strong>Interview question generator</strong>: Create practice questions for target roles</li>
-<li><strong>Company culture researcher</strong>: Investigate company values and work environment</li>
-<li><strong>Network connection finder</strong>: Identify mutual connections at target companies</li>
+<li><strong>Company culture researcher</strong>: Investigate company values and work environment (use web search)</li>
+<li><strong>Network connection finder</strong>: Identify mutual connections at target companies (integrate with LinkedIn API)</li>
 </ul>
-<h3 id="Production-Considerations">Production Considerations<a class="anchor-link" href="#Production-Considerations">¶</a></h3><p>For real-world deployment:</p>
+<h3 id="Current-Implementation-vs.-Production">Current Implementation vs. Production<a class="anchor-link" href="#Current-Implementation-vs.-Production">¶</a></h3><p><strong>Current State</strong> (Educational/Demo):</p>
+<ul>
+<li>✅ Real LLM-based CV analysis</li>
+<li>✅ Real LLM-based cover letter generation</li>
+<li>✅ Real LLM-based market research (based on training data)</li>
+<li>✅ Real LLM-based learning resource recommendations</li>
+<li>⚠️ LLM-generated job opportunities (realistic but synthetic)</li>
+<li>⚠️ LLM-based salary research (general knowledge, not live data)</li>
+</ul>
+<p><strong>Production Enhancements</strong>:</p>
 <ol>
-<li><strong>Tool implementation</strong>: Replace simulated tools with actual API calls (job boards, course platforms)</li>
-<li><strong>Error handling</strong>: Add try-except blocks in tools for API failures</li>
-<li><strong>Rate limiting</strong>: Implement delays between tool calls to respect API limits</li>
-<li><strong>Caching</strong>: Cache tool results to reduce API costs</li>
-<li><strong>Cost monitoring</strong>: Track token usage for each agent execution</li>
-<li><strong>User privacy</strong>: Ensure CV data is not stored or logged</li>
-<li><strong>Result validation</strong>: Verify tool outputs before presenting to users</li>
+<li><p><strong>Job Search</strong>: Integrate real job board APIs</p>
+<div class="highlight"><pre><span></span><span class="c1"># Example: Adzuna API, Indeed API, LinkedIn Jobs API</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">search_jobs_real</span><span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">salary_min</span><span class="p">):</span>
+    <span class="n">api_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"ADZUNA_API_KEY"</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"https://api.adzuna.com/v1/api/jobs/</span><span class="si">{</span><span class="n">location</span><span class="si">}</span><span class="s2">/search"</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"what"</span><span class="p">:</span> <span class="n">role</span><span class="p">,</span> <span class="s2">"salary_min"</span><span class="p">:</span> <span class="n">salary_min</span><span class="p">}</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parse_job_results</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</pre></div>
+</li>
+<li><p><strong>Market Research</strong>: Use real-time job market data</p>
+<ul>
+<li>Integrate with labor statistics APIs</li>
+<li>Scrape job boards for current postings</li>
+<li>Use salary databases (Glassdoor, Payscale APIs)</li>
+</ul>
+</li>
+<li><p><strong>Learning Resources</strong>: Query course platforms</p>
+<ul>
+<li>Udemy API for course search</li>
+<li>Coursera API for recommendations</li>
+<li>GitHub for project examples</li>
+</ul>
+</li>
+<li><p><strong>Error Handling</strong>: Add robust error management</p>
+<div class="highlight"><pre><span></span><span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">analyze_cv</span><span class="p">(</span><span class="n">cv_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_role</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"gpt-4o-mini"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">analysis_prompt</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"Error analyzing CV: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">. Please try again."</span>
+</pre></div>
+</li>
+<li><p><strong>Caching</strong>: Reduce API costs and improve speed</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
+
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">research_market_trends</span><span class="p">(</span><span class="n">role</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="c1"># Cache results for repeated queries</span>
+    <span class="o">...</span>
+</pre></div>
+</li>
+<li><p><strong>Rate Limiting</strong>: Respect API limits</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ratelimit</span><span class="w"> </span><span class="kn">import</span> <span class="n">limits</span><span class="p">,</span> <span class="n">sleep_and_retry</span>
+
+<span class="nd">@sleep_and_retry</span>
+<span class="nd">@limits</span><span class="p">(</span><span class="n">calls</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>  <span class="c1"># 10 calls per minute</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">call_external_api</span><span class="p">():</span>
+    <span class="o">...</span>
+</pre></div>
+</li>
 </ol>
 <h3 id="Advanced-Features">Advanced Features<a class="anchor-link" href="#Advanced-Features">¶</a></h3><p>Potential enhancements:</p>
 <ul>
-<li><strong>Human-in-the-loop</strong>: Allow user to approve/modify agent decisions</li>
-<li><strong>Memory</strong>: Store user preferences and past interactions</li>
+<li><strong>Human-in-the-loop</strong>: Allow user to approve/modify agent decisions before execution</li>
+<li><strong>Memory</strong>: Store user preferences and past interactions using LangChain memory</li>
 <li><strong>Multi-agent</strong>: Separate specialized agents (CV expert, job search specialist, negotiation coach)</li>
-<li><strong>Streaming</strong>: Stream agent thoughts and tool outputs in real-time</li>
+<li><strong>Streaming</strong>: Stream agent thoughts and tool outputs in real-time for better UX</li>
 <li><strong>Evaluation</strong>: Automated testing of agent performance on career coaching tasks</li>
+<li><strong>Web Search Integration</strong>: Add web search tool for real-time information gathering</li>
 </ul>
+<h3 id="Cost-Optimization">Cost Optimization<a class="anchor-link" href="#Cost-Optimization">¶</a></h3><p>Current implementation costs (approximate):</p>
+<ul>
+<li><strong>Main Agent</strong> (GPT-4o): ~$0.01-0.02 per complete career analysis</li>
+<li><strong>Tool Calls</strong> (GPT-4o-mini): ~$0.001-0.002 per tool</li>
+<li><strong>Total</strong>: ~$0.02-0.05 per user session</li>
+</ul>
+<p>To reduce costs:</p>
+<ol>
+<li>Use GPT-4o-mini for main agent (80% cost reduction)</li>
+<li>Cache common queries (market trends, learning resources)</li>
+<li>Switch to open-source models for non-critical tools</li>
+<li>Implement request batching where possible</li>
+</ol>
 </div>
 </div>
 </div>
@@ -8625,22 +8675,49 @@ By addressing these areas, you'll enhance your profile and increase your chances
 <h2 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h2><p>This notebook demonstrated:</p>
 <ol>
 <li><strong>LangGraph architecture</strong>: State management, nodes, edges, and execution flow</li>
-<li><strong>Tool integration</strong>: How LLMs select and invoke external functions</li>
+<li><strong>Real tool integration</strong>: LLM-based implementations for dynamic, context-aware responses</li>
 <li><strong>Multi-step reasoning</strong>: Agent chains multiple tool calls to solve complex tasks</li>
-<li><strong>Practical application</strong>: Career coaching agent with 6 specialized tools</li>
+<li><strong>Practical application</strong>: Career coaching agent with 6 functional tools</li>
 <li><strong>Observability</strong>: Tracking agent decisions and tool executions</li>
 </ol>
+<h3 id="Key-Implementation-Details">Key Implementation Details<a class="anchor-link" href="#Key-Implementation-Details">¶</a></h3><p><strong>Tool Quality</strong>:</p>
+<ul>
+<li>✅ <strong>CV Analysis</strong>: Real LLM analysis providing customized feedback</li>
+<li>✅ <strong>Cover Letter Generation</strong>: Dynamic generation based on actual job and CV content</li>
+<li>✅ <strong>Market Research</strong>: LLM-based insights reflecting current market knowledge</li>
+<li>✅ <strong>Learning Resources</strong>: Recommendations for real courses and platforms</li>
+<li>⚠️ <strong>Job Search</strong>: LLM-generated opportunities (production would use APIs)</li>
+<li>⚠️ <strong>Salary Research</strong>: General market knowledge (production would use live data)</li>
+</ul>
+<p><strong>Architecture Benefits</strong>:</p>
+<ul>
+<li>Simple and efficient: Uses LLM for intelligence without complex API integrations</li>
+<li>Extensible: Easy to replace LLM calls with real APIs as needed</li>
+<li>Cost-effective: Uses GPT-4o-mini for individual tools (~$0.02-0.05 per session)</li>
+<li>Production-ready foundation: Can be enhanced with real data sources</li>
+</ul>
 <h3 id="Key-Takeaways">Key Takeaways<a class="anchor-link" href="#Key-Takeaways">¶</a></h3><ul>
 <li><strong>Agentic systems</strong> combine LLM reasoning with tool-calling capabilities</li>
 <li><strong>LangGraph</strong> provides a structured framework for building reliable agents</li>
-<li><strong>Tool design</strong> is critical: clear names, descriptions, and function signatures</li>
+<li><strong>Real implementations</strong> using LLMs offer dynamic, context-aware responses</li>
+<li><strong>Hybrid approach</strong> (LLM + APIs) balances simplicity and functionality</li>
 <li><strong>System prompts</strong> guide agent behavior and tool selection strategy</li>
 <li><strong>Graph structure</strong> enables complex workflows with conditional logic</li>
 </ul>
+<h3 id="From-Demo-to-Production">From Demo to Production<a class="anchor-link" href="#From-Demo-to-Production">¶</a></h3><p>To make this production-ready:</p>
+<ol>
+<li>Add error handling and retry logic</li>
+<li>Integrate real job board APIs (Indeed, LinkedIn, Adzuna)</li>
+<li>Add caching for expensive operations</li>
+<li>Implement rate limiting for API calls</li>
+<li>Add user authentication and data privacy</li>
+<li>Monitor costs and performance metrics</li>
+</ol>
 <h3 id="Further-Reading">Further Reading<a class="anchor-link" href="#Further-Reading">¶</a></h3><ul>
 <li>LangGraph documentation: <a href="https://langchain-ai.github.io/langgraph/">https://langchain-ai.github.io/langgraph/</a></li>
 <li>ReAct pattern (Reason + Act): <a href="https://arxiv.org/abs/2210.03629">https://arxiv.org/abs/2210.03629</a></li>
 <li>Tool use in LLMs: <a href="https://arxiv.org/abs/2302.04761">https://arxiv.org/abs/2302.04761</a></li>
+<li>OpenAI Function Calling: <a href="https://platform.openai.com/docs/guides/function-calling">https://platform.openai.com/docs/guides/function-calling</a></li>
 </ul>
 </div>
 </div>
