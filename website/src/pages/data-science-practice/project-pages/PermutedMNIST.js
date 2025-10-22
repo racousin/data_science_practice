@@ -1,11 +1,24 @@
 import React from 'react';
-import { Container, Title, Text, List, Alert, Anchor, Paper, Group, Stack } from '@mantine/core';
-import { IconBrain, IconInfoCircle, IconClock, IconCpu, IconDatabase, IconTrophy } from '@tabler/icons-react';
+import { Container, Title, Text, List, Alert, Anchor, Paper, Group, Stack, Button } from '@mantine/core';
+import { IconBrain, IconInfoCircle, IconClock, IconCpu, IconDatabase, IconTrophy, IconChartBar } from '@tabler/icons-react';
 import CodeBlock from 'components/CodeBlock';
 
 const PermutedMNIST = () => {
   return (
     <Container size="lg" py="xl">
+      <Group position="apart" align="center" mb="md">
+        <div style={{ flex: 1 }} />
+        <Button
+          component="a"
+          href="/courses/data-science-practice/students/data_science_practice_2025"
+          leftIcon={<IconChartBar size={18} />}
+          variant="light"
+          color="blue"
+        >
+          View Your Project Evaluation
+        </Button>
+      </Group>
+
       <Title order={1} mb="lg">
         <IconBrain size={32} style={{ marginRight: '10px', verticalAlign: 'middle' }} />
         Permuted MNIST Challenge

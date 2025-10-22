@@ -13,6 +13,7 @@ import ProjectPage2025 from '../pages/data-science-practice/project-pages/Projec
 import RepositoriesList from '../pages/data-science-practice/RepositoriesList';
 import StudentsList from '../pages/data-science-practice/StudentsList';
 import Student from '../pages/data-science-practice/Student';
+import StudentProject from '../pages/data-science-practice/StudentProject';
 
 // Course overview page
 import CourseOverview from './DataSciencePracticeOverview';
@@ -43,6 +44,7 @@ const DataSciencePractice = () => {
       <Route path="results" element={<RepositoriesList />} />
       <Route path="students/:repoName" element={<StudentsList />} />
       <Route path="student/:repositoryId/:studentId" element={<Student />} />
+      <Route path="student-project/:repositoryId/:studentId" element={<StudentProject />} />
 
       <Route path="*" element={<Navigate to="/courses/data-science-practice" replace />} />
     </Routes>

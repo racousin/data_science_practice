@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Table, Container, Alert, TextInput, Button, Progress, Box, Title, Group, Tooltip, Text, ActionIcon } from '@mantine/core';
-import { IconRefresh, IconChevronUp, IconChevronDown, IconArrowLeft, IconSearch  } from "@tabler/icons-react";
+import { IconRefresh, IconChevronUp, IconChevronDown, IconArrowLeft, IconSearch, IconFileText, IconBriefcase  } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 
 const BackButton = () => {
@@ -206,14 +206,26 @@ const StudentsList = () => {
                 />
               </Table.Td>
               <Table.Td>
-                <Button
-                  component={Link}
-                  to={`/courses/data-science-practice/student/${repoName}/${student.githubUsername}`}
-                  variant="light"
-                  size="sm"
-                >
-                  View Details
-                </Button>
+                <Group gap="xs">
+                  <Button
+                    component={Link}
+                    to={`/courses/data-science-practice/student/${repoName}/${student.githubUsername}`}
+                    variant="light"
+                    size="sm"
+                    leftSection={<IconFileText size={14} />}
+                  >
+                    Exercise Details
+                  </Button>
+                  <Button
+                    component={Link}
+                    to={`/courses/data-science-practice/student-project/${repoName}/${student.githubUsername}`}
+                    variant="light"
+                    size="sm"
+                    leftSection={<IconBriefcase size={14} />}
+                  >
+                    Project Details
+                  </Button>
+                </Group>
               </Table.Td>
             </Table.Tr>
           ))}
