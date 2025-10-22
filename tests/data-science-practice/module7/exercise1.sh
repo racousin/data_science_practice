@@ -33,19 +33,25 @@ set +e
 MAP_THRESHOLD=0.70
 COMPARE_OUTPUT=$(python tests/utils/compute_map.py $RESULTS_PATH $PREDICTIONS_PATH $MAP_THRESHOLD 2>&1)
 COMPARE_EXIT_CODE=$?
-SCORE=$(echo "$COMPARE_OUTPUT" | grep -oP '(?<=mAP50: )[\d.]+' | head -1)
+# Extract score using sed (compatible with macOS)
+SCORE=$(echo "$COMPARE_OUTPUT" | sed -n 's/.*mAP50: \([0-9.]*\).*/\1/p' | head -1)
 set -e
 
 # Deactivate the virtual environment
 deactivate
 
+# Escape newlines and quotes in logs for JSON
+ESCAPED_LOGS=$(echo "$COMPARE_OUTPUT" | python -c "import sys, json; print(json.dumps(sys.stdin.read())[1:-1])")
+
 # Prepare the output in JSON format based on the test results
 if [ "$COMPARE_EXIT_CODE" -eq 0 ]; then
-    echo "{\"is_passed_test\": true, \"score\": \"$SCORE\", \"logs\": \"${COMPARE_OUTPUT}\", \"updated_time_utc\": \"$CURRENT_UTC_TIME\"}" > $RESULT_FILE
+    echo "{\"is_passed_test\": true, \"score\": \"$SCORE\", \"logs\": \"${ESCAPED_LOGS}\", \"updated_time_utc\": \"$CURRENT_UTC_TIME\"}" > $RESULT_FILE
 else
     # Extract only the score if present, else default to "0"
-    SCORE=$(echo "$COMPARE_OUTPUT" | grep -oP '(?<=mAP50: )[0-9]+(\.[0-9]+)?' | head -1 || echo "0")
-    echo "{\"is_passed_test\": false, \"score\": \"$SCORE\", \"logs\": \"${COMPARE_OUTPUT}\", \"updated_time_utc\": \"$CURRENT_UTC_TIME\"}" > $RESULT_FILE
+    if [ -z "$SCORE" ]; then
+        SCORE="0"
+    fi
+    echo "{\"is_passed_test\": false, \"score\": \"$SCORE\", \"logs\": \"${ESCAPED_LOGS}\", \"updated_time_utc\": \"$CURRENT_UTC_TIME\"}" > $RESULT_FILE
 fi
 
 # Clean up the virtual environment directory
