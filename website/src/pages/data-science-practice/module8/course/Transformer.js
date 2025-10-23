@@ -76,15 +76,44 @@ export default function Transformer() {
           Each token <InlineMath>{`t_i`}</InlineMath> is mapped to embedding vector <InlineMath>{`E[t_i] \\in \\mathbb{R}^{d}`}</InlineMath>.
           These embeddings are learned during training to capture semantic relationships between tokens.
         </Text>
-                <Flex justify="center" mt="xl">
+        <Flex justify="center" mt="xl">
           <Image
             src="/assets/data-science-practice/module8/embedding.png"
-            alt="Residual Connections in Transformers"
-            maw={400}
+            alt="Embedding Process in Transformers"
+            maw={600}
           />
         </Flex>
       </div>
+<div data-slide>
+<Title order={2}>Un-Embedding: Weight Tying</Title>
+When we want to output in same vocabulary space, a common approach to map the model's output vectors back to token probabilities.
+<Text mt="sm">
+  Project back to vocabulary space using transposed embedding matrix:
+</Text>
+<BlockMath>
+  {`\\text{logits} = \\text{output} \\cdot E^T \\in \\mathbb{R}^{V}`}
+</BlockMath>
+<Text mt="sm">
+  Apply softmax to obtain probability distribution over vocabulary:
+</Text>
+<BlockMath>
+  {`P(\\text{token}_i) = \\frac{\\exp(\\text{logits}_i)}{\\sum_{j=1}^{V} \\exp(\\text{logits}_j)}`}
+</BlockMath>
 
+<Text mt="lg">
+  <strong>Weight tying:</strong> Using <InlineMath>{`E^T`}</InlineMath> instead of a separate un-embedding matrix
+  reduces parameters by <InlineMath>{`V \\times d`}</InlineMath> and improves generalization by ensuring embeddings
+  and predictions share the same semantic space.
+</Text>
+
+<Flex justify="center" mt="xl">
+  <Image
+    src="/assets/data-science-practice/module8/weight-tying.png"
+    alt="Weight Tying in Transformers"
+    maw={800}
+  />
+</Flex>
+</div>
       <div data-slide>
         <Title order={2}>Embedding Implementation</Title>
         <Text mt="md">
@@ -117,6 +146,43 @@ export default function Transformer() {
           encodings have similar magnitudes when combined. For vocabulary size <InlineMath>{`V = 30000`}</InlineMath> and
           <InlineMath>{`d = 512`}</InlineMath>, the embedding layer contains <InlineMath>{`30000 \\times 512 = 15.36`}</InlineMath> million
           parameters.
+        </Text>
+
+        <Title order={3} mt="xl">Un-Embedding Implementation</Title>
+        <Text mt="md">
+          Using weight tying to project back to vocabulary space:
+        </Text>
+        <CodeBlock
+          language="python"
+          code={`class TransformerWithUnembedding(nn.Module):
+    def __init__(self, vocab_size, d_model):
+        super().__init__()
+        self.embedding = nn.Embedding(vocab_size, d_model)`}
+        />
+        <CodeBlock
+          language="python"
+          code={`        # Transformer layers (simplified)
+        self.transformer = nn.TransformerEncoder(...)
+        # No separate un-embedding matrix - use weight tying`}
+        />
+        <CodeBlock
+          language="python"
+          code={`    def forward(self, x):
+        # x: (batch, seq_len) - token indices
+        emb = self.embedding(x)  # (batch, seq_len, d_model)
+        output = self.transformer(emb)  # (batch, seq_len, d_model)`}
+        />
+        <CodeBlock
+          language="python"
+          code={`        # Un-embedding: multiply by transposed embedding weights
+        logits = output @ self.embedding.weight.T  # (batch, seq_len, vocab_size)
+        return logits`}
+        />
+        <Text mt="md">
+          The un-embedding operation <InlineMath>{`\\text{output} \\cdot E^T`}</InlineMath> produces logits
+          <InlineMath>{`\\in \\mathbb{R}^{V}`}</InlineMath> for each position.
+          Apply <InlineMath>{`\\text{softmax}(\\text{logits})`}</InlineMath> during inference to obtain token probabilities.
+          During training, logits are passed directly to cross-entropy loss.
         </Text>
       </div>
 
@@ -163,13 +229,11 @@ export default function Transformer() {
           those seen during training. Different frequencies encode different positional information, with lower
           dimensions capturing coarse position and higher dimensions capturing fine-grained position.
         </Text>
-        <Flex direction="column" align="center" mt="xl" mb="md">
+        <Flex justify="center" mt="xl">
           <Image
             src="/assets/data-science-practice/module8/position.png"
             alt="Positional encoding visualization in attention mechanism"
-            style={{ maxWidth: 'min(700px, 70vw)', height: 'auto' }}
-            fluid
-            mb="sm"
+            maw={700}
           />
         </Flex>
       </div>

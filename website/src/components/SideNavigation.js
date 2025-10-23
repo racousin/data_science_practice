@@ -26,6 +26,15 @@ import {
   IconCode
 } from '@tabler/icons-react';
 
+// Project pages links
+export const projectContentData = {
+  'data-science-practice': [
+    { to: '/2025', label: 'Project 2025' },
+    { to: '/permuted-mnist', label: 'Option A: Permuted MNIST' },
+    { to: '/bipedal-walker', label: 'Option B: Bipedal Walker' }
+  ]
+};
+
 // Course content links for modules with hierarchical structure including sublinks
 export const courseContentData = {
   'module1': [
@@ -281,6 +290,14 @@ export const getExerciseContentLinks = (moduleId, courseId) => {
   return [];
 };
 
+// Function to get project links
+export const getProjectContentLinks = (courseId) => {
+  if (projectContentData[courseId]) {
+    return projectContentData[courseId];
+  }
+  return [];
+};
+
 // Course structure data with icons for modules
 export const coursesData = {
   'python-deep-learning': {
@@ -308,6 +325,27 @@ export const coursesData = {
       { id: 'project', name: 'Project' }
     ]
   }
+};
+
+// Project content section
+const ProjectContentSection = ({ projectContentLinks, currentCourseId, currentPath, onClose }) => {
+  return (
+    <Box pl="md" mt="xs">
+      {projectContentLinks.map((link, index) => (
+        <NavLink
+          key={index}
+          label={link.label}
+          component={Link}
+          to={`/courses/${currentCourseId}/project${link.to}`}
+          active={currentPath.includes(`/courses/${currentCourseId}/project${link.to}`)}
+          pl="xs"
+          size="sm"
+          styles={{ label: { fontSize: '0.85rem' } }}
+          onClick={onClose}
+        />
+      ))}
+    </Box>
+  );
 };
 
 // Course content section with hierarchical sublinks
@@ -476,7 +514,8 @@ const SideNavigation = ({ onClose }) => {
             const isCurrentModule = currentModuleId === module.id;
             const courseContentLinks = getCourseContentLinks(module.id, currentCourseId);
             const exerciseContentLinks = getExerciseContentLinks(module.id, currentCourseId);
-            
+            const projectContentLinks = module.id === 'project' ? getProjectContentLinks(currentCourseId) : [];
+
             return (
               <Accordion.Item key={module.id} value={module.id}>
                 <Accordion.Control>{module.name}</Accordion.Control>
@@ -492,10 +531,10 @@ const SideNavigation = ({ onClose }) => {
                         icon={<IconBook size={16} />}
                         onClick={onClose}
                       />
-                      
+
                       {/* Course Content Links - show when in current module */}
                       {isCurrentModule && courseContentLinks.length > 0 && (
-                        <CourseContentSection 
+                        <CourseContentSection
                           courseContentLinks={courseContentLinks}
                           currentCourseId={currentCourseId}
                           moduleId={module.id}
@@ -503,7 +542,7 @@ const SideNavigation = ({ onClose }) => {
                           onClose={onClose}
                         />
                       )}
-                      
+
                       <NavLink
                         label="Exercise Overview"
                         component={Link}
@@ -513,10 +552,10 @@ const SideNavigation = ({ onClose }) => {
                         icon={<IconClipboardList size={16} />}
                         onClick={onClose}
                       />
-                      
+
                       {/* Exercise Content Links - show when in current module */}
                       {isCurrentModule && exerciseContentLinks.length > 0 && (
-                        <ExerciseContentSection 
+                        <ExerciseContentSection
                           exerciseContentLinks={exerciseContentLinks}
                           currentCourseId={currentCourseId}
                           moduleId={module.id}
@@ -525,9 +564,31 @@ const SideNavigation = ({ onClose }) => {
                         />
                       )}
                     </>
+                  ) : module.id === 'project' ? (
+                    <>
+                      <NavLink
+                        label="Project Overview"
+                        component={Link}
+                        to={`/courses/${currentCourseId}/${module.id}`}
+                        active={path === `/courses/${currentCourseId}/${module.id}` && !path.includes('/project/2')}
+                        pl="xs"
+                        icon={<IconBook size={16} />}
+                        onClick={onClose}
+                      />
+
+                      {/* Project Content Links - always show for project module */}
+                      {projectContentLinks.length > 0 && (
+                        <ProjectContentSection
+                          projectContentLinks={projectContentLinks}
+                          currentCourseId={currentCourseId}
+                          currentPath={path}
+                          onClose={onClose}
+                        />
+                      )}
+                    </>
                   ) : (
                     <NavLink
-                      label={module.id === 'project' ? "Go to Project" : "Getting Started"}
+                      label="Getting Started"
                       component={Link}
                       to={`/courses/${currentCourseId}/${module.id}`}
                       active={path.includes(`/courses/${currentCourseId}/${module.id}`)}

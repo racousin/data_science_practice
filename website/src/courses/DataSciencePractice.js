@@ -10,6 +10,8 @@ import PrerequistAndMethodologie from '../pages/data-science-practice/module0/Pr
 import ProjectPages from '../pages/data-science-practice/ProjectPages';
 import ProjectPage2024 from '../pages/data-science-practice/project-pages/ProjectPage2024';
 import ProjectPage2025 from '../pages/data-science-practice/project-pages/ProjectPage2025';
+import PermutedMNIST from '../pages/data-science-practice/project-pages/PermutedMNIST';
+import BipedalWalker from '../pages/data-science-practice/project-pages/BipedalWalker';
 import RepositoriesList from '../pages/data-science-practice/RepositoriesList';
 import StudentsList from '../pages/data-science-practice/StudentsList';
 import Student from '../pages/data-science-practice/Student';
@@ -41,6 +43,8 @@ const DataSciencePractice = () => {
       <Route path="project" element={<ProjectPages />} />
       <Route path="project/2024" element={<ProjectPage2024 />} />
       <Route path="project/2025" element={<ProjectPage2025 />} />
+      <Route path="project/permuted-mnist" element={<PermutedMNIST />} />
+      <Route path="project/bipedal-walker" element={<BipedalWalker />} />
       <Route path="results" element={<RepositoriesList />} />
       <Route path="students/:repoName" element={<StudentsList />} />
       <Route path="student/:repositoryId/:studentId" element={<Student />} />

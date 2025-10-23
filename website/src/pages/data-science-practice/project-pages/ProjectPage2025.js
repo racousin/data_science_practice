@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Title, Text, List, Button, Group, Badge } from '@mantine/core';
 import { Link } from 'react-router-dom';
-import { IconBrain, IconRobot } from '@tabler/icons-react';
+import { IconBrain, IconRobot, IconChartBar } from '@tabler/icons-react';
 
 const ProjectPage2025 = () => {
   return (
@@ -24,7 +24,7 @@ const ProjectPage2025 = () => {
       <Group spacing="lg" mb="xl">
         <Button
           component={Link}
-          to="/data-science-practice/project-pages/permuted-mnist"
+          to="/courses/data-science-practice/project/permuted-mnist"
           leftIcon={<IconBrain size={16} />}
           variant="light"
           size="lg"
@@ -33,7 +33,7 @@ const ProjectPage2025 = () => {
         </Button>
         <Button
           component={Link}
-          to="/data-science-practice/project-pages/bipedal-walker"
+          to="/courses/data-science-practice/project/bipedal-walker"
           leftIcon={<IconRobot size={16} />}
           variant="light"
           size="lg"

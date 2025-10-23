@@ -1,19 +1,36 @@
 import React from 'react';
 import { Container, Title, Text, List, Alert, Anchor, Paper, Group, Stack, Button } from '@mantine/core';
-import { IconRobot, IconInfoCircle, IconTrophy, IconClock, IconCpu, IconDatabase, IconChartBar } from '@tabler/icons-react';
+import { IconRobot, IconInfoCircle, IconTrophy, IconClock, IconCpu, IconDatabase, IconChartBar, IconArrowLeft, IconBrain } from '@tabler/icons-react';
+import { Link } from 'react-router-dom';
 import CodeBlock from 'components/CodeBlock';
 
 const BipedalWalker = () => {
   return (
     <Container size="lg" py="xl">
-      <Group position="apart" align="center" mb="md">
-        <div style={{ flex: 1 }} />
+      <Group spacing="md" mb="xl">
+        <Button
+          component={Link}
+          to="/courses/data-science-practice/project/2025"
+          leftIcon={<IconArrowLeft size={16} />}
+          variant="subtle"
+        >
+          Back to Project 2025
+        </Button>
+        <Button
+          component={Link}
+          to="/courses/data-science-practice/project/permuted-mnist"
+          leftIcon={<IconBrain size={16} />}
+          variant="light"
+        >
+          Option A: Permuted MNIST
+        </Button>
         <Button
           component="a"
           href="/courses/data-science-practice/students/data_science_practice_2025"
-          leftIcon={<IconChartBar size={18} />}
+          leftIcon={<IconChartBar size={16} />}
           variant="light"
           color="blue"
+          ml="auto"
         >
           View Your Project Evaluation
         </Button>

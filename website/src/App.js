@@ -22,10 +22,6 @@ import PythonDeepLearning from "./courses/PythonDeepLearning";
 import ScrapableData from "./pages/data-science-practice/module4/ScrapableData";
 import ApiDoc from "./pages/data-science-practice/module4/ApiDoc";
 
-// Project pages
-import PermutedMNIST from "./pages/data-science-practice/project-pages/PermutedMNIST";
-import BipedalWalker from "./pages/data-science-practice/project-pages/BipedalWalker";
-
 // Initialize Google Analytics
 import ReactGA from "react-ga4";
 ReactGA.initialize("G-0VW1PJ0H17");
@@ -114,8 +110,6 @@ function App() {
             <Route path="/projects" element={<Projects />} />
             <Route path="/module4/scrapable-data" element={<ScrapableData />} />
             <Route path="/module4/api-doc" element={<ApiDoc />} />
-            <Route path="/data-science-practice/project-pages/permuted-mnist" element={<PermutedMNIST />} />
-            <Route path="/data-science-practice/project-pages/bipedal-walker" element={<BipedalWalker />} />
           </Route>
           
           {/* Routes with sidebar */}
