@@ -1,28 +1,48 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Table, Container, Alert, TextInput, Button, Progress, Box, Title, Group, Tooltip, Text, ActionIcon } from '@mantine/core';
-import { IconRefresh, IconChevronUp, IconChevronDown, IconArrowLeft, IconSearch, IconFileText, IconBriefcase, IconChartBar } from "@tabler/icons-react";
+import { Table, Container, Alert, TextInput, Button, Progress, Box, Title, Group, Tooltip, Text, ActionIcon, Stack, Badge, Anchor } from '@mantine/core';
+import { IconRefresh, IconChevronUp, IconChevronDown, IconArrowLeft, IconSearch, IconFileText, IconBriefcase, IconChartBar, IconUser } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 
 const BackButton = () => {
   const navigate = useNavigate();
-  return <Button onClick={() => navigate(-1)}>Back</Button>;
+  return (
+    <Button
+      onClick={() => navigate(-1)}
+      variant="default"
+      leftSection={<IconArrowLeft size={16} />}
+    >
+      Back
+    </Button>
+  );
 };
 
 const ProgressBar = ({ progressPercent, errorPercent }) => {
   return (
-    <Tooltip
-      label={`Progress: ${progressPercent.toFixed(1)}%, Errors: ${errorPercent.toFixed(1)}%`}
-      position="top"
-      withArrow
-    >
-      <Box>
-        <Progress.Root size="xl">
-          <Progress.Section value={progressPercent} color="green" />
+    <Box>
+      <Tooltip
+        label={`Progress: ${progressPercent.toFixed(1)}%, Errors: ${errorPercent.toFixed(1)}%`}
+        position="top"
+        withArrow
+      >
+        <Progress.Root size="lg" radius="md">
+          <Progress.Section value={progressPercent} color="teal">
+            <Progress.Label>{progressPercent > 10 ? `${progressPercent.toFixed(0)}%` : ''}</Progress.Label>
+          </Progress.Section>
           <Progress.Section value={errorPercent} color="gray" />
         </Progress.Root>
-      </Box>
-    </Tooltip>
+      </Tooltip>
+      <Group gap="xs" mt={4}>
+        <Badge size="xs" variant="light" color="teal">
+          {progressPercent.toFixed(0)}% Complete
+        </Badge>
+        {errorPercent > 0 && (
+          <Badge size="xs" variant="light" color="gray">
+            {errorPercent.toFixed(0)}% Errors
+          </Badge>
+        )}
+      </Group>
+    </Box>
   );
 };
 
@@ -131,106 +151,181 @@ const StudentsList = () => {
 
   return (
     <Container size="xl" py="xl">
-      <Group justify="space-between" mb="lg">
-        <Group>
-          <BackButton />
-        </Group>
-        <Button
-          leftSection={<IconRefresh size={14} />}
-          onClick={fetchStudents}
-          variant="light"
+      <Stack gap="xl">
+        {/* Header Section */}
+        <Box>
+          <Group justify="space-between" mb="xl">
+            <BackButton />
+            <Button
+              leftSection={<IconRefresh size={16} />}
+              onClick={fetchStudents}
+              variant="default"
+            >
+              Refresh
+            </Button>
+          </Group>
+
+          <Group align="center" gap="sm" mb="xs">
+            <IconUser size={32} stroke={1.5} />
+            <Title order={1} size="h1">
+              {repoName}
+            </Title>
+          </Group>
+
+          {/* Search Bar */}
+          <TextInput
+            leftSection={<IconSearch size={16} />}
+            placeholder="Search by name or username..."
+            size="md"
+            value={filter}
+            onChange={(event) => setFilter(event.currentTarget.value)}
+            styles={(theme) => ({
+              input: {
+                borderRadius: theme.radius.md,
+              },
+            })}
+          />
+        </Box>
+
+        {/* Error Alert */}
+        {error && (
+          <Alert color="red" title="Error" variant="light">
+            {error}
+          </Alert>
+        )}
+
+        {/* Students Table */}
+        <Box
+          style={(theme) => ({
+            border: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]}`,
+            borderRadius: theme.radius.md,
+            overflow: 'hidden',
+          })}
         >
-          Refresh Data
-        </Button>
-      </Group>
-      <Title order={1}>{repoName}</Title>
-      {error && <Alert color="red" mb="md">{error}</Alert>}
-      
-      <TextInput
-        leftSection={<IconSearch size={14} />}
-        placeholder="Filter by name..."
-        mb="md"
-        value={filter}
-        onChange={(event) => setFilter(event.currentTarget.value)}
-      />
-      
-      <Table striped highlightOnHover>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>
-              <Group gap="xs" style={{cursor: 'pointer'}} onClick={() => requestSort('fullName')}>
-                <Text>Name</Text>
-                {getSortIcon('fullName')}
-              </Group>
-            </Table.Th>
-            <Table.Th>
-              <Group gap="xs" style={{cursor: 'pointer'}} onClick={() => requestSort('githubUsername')}>
-                <Text>Username</Text>
-                {getSortIcon('githubUsername')}
-              </Group>
-            </Table.Th>
-            <Table.Th>
-              <Group gap="xs" style={{cursor: 'pointer'}} onClick={() => requestSort('nbReview')}>
-                <Text>Reviews</Text>
-                {getSortIcon('nbReview')}
-              </Group>
-            </Table.Th>
-            <Table.Th>
-              <Group gap="xs" style={{cursor: 'pointer'}} onClick={() => requestSort('progress_percentage')}>
-                <Text>Progress/Errors</Text>
-                {getSortIcon('progress_percentage')}
-              </Group>
-            </Table.Th>
-            <Table.Th>Details</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
-          {filteredStudents.map((student, index) => (
-            <Table.Tr key={index}>
-              <Table.Td>{student.fullName}</Table.Td>
-              <Table.Td>
-                <a
-                  href={`https://github.com/${student.githubUsername}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: '#0969da', textDecoration: 'none' }}
-                >
-                  {student.githubUsername}
-                </a>
-              </Table.Td>
-              <Table.Td>{student.nbReview}</Table.Td>
-              <Table.Td style={{ width: '30%' }}>
-                <ProgressBar
-                  progressPercent={student.progress_percentage}
-                  errorPercent={student.error_percentage}
-                />
-              </Table.Td>
-              <Table.Td>
-                <Group gap="xs">
-                  <Button
-                    component={Link}
-                    to={`/courses/data-science-practice/student/${repoName}/${student.githubUsername}`}
-                    variant="light"
-                    size="sm"
-                    leftSection={<IconFileText size={14} />}
+          <Table
+            highlightOnHover
+            verticalSpacing="md"
+            styles={(theme) => ({
+              thead: {
+                backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+              },
+              th: {
+                fontWeight: 600,
+                fontSize: theme.fontSizes.sm,
+                color: theme.colorScheme === 'dark' ? theme.colors.gray[5] : theme.colors.gray[7],
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+              },
+            })}
+          >
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>
+                  <Group
+                    gap="xs"
+                    style={{ cursor: 'pointer', userSelect: 'none' }}
+                    onClick={() => requestSort('fullName')}
                   >
-                    Exercise Details
-                  </Button>
-                  <Button
-                    component={Link}
-                    to={`/courses/data-science-practice/student-project/${repoName}/${student.githubUsername}`}
-                    variant="light"
-                    size="sm"
-                    leftSection={<IconBriefcase size={14} />}
+                    <Text size="sm">Name</Text>
+                    {getSortIcon('fullName')}
+                  </Group>
+                </Table.Th>
+                <Table.Th>
+                  <Group
+                    gap="xs"
+                    style={{ cursor: 'pointer', userSelect: 'none' }}
+                    onClick={() => requestSort('githubUsername')}
                   >
-                    Project Details
-                  </Button>
-                </Group>
-              </Table.Td>
-            </Table.Tr>
-          ))}
-        </Table.Tbody>
-      </Table>
+                    <Text size="sm">GitHub</Text>
+                    {getSortIcon('githubUsername')}
+                  </Group>
+                </Table.Th>
+                <Table.Th>
+                  <Group
+                    gap="xs"
+                    style={{ cursor: 'pointer', userSelect: 'none' }}
+                    onClick={() => requestSort('nbReview')}
+                  >
+                    <Text size="sm">Reviews</Text>
+                    {getSortIcon('nbReview')}
+                  </Group>
+                </Table.Th>
+                <Table.Th>
+                  <Group
+                    gap="xs"
+                    style={{ cursor: 'pointer', userSelect: 'none' }}
+                    onClick={() => requestSort('progress_percentage')}
+                  >
+                    <Text size="sm">Progress</Text>
+                    {getSortIcon('progress_percentage')}
+                  </Group>
+                </Table.Th>
+                <Table.Th>
+                  <Text size="sm">Details</Text>
+                </Table.Th>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>
+              {filteredStudents.map((student, index) => (
+                <Table.Tr key={index}>
+                  <Table.Td>
+                    <Text fw={500}>{student.fullName}</Text>
+                  </Table.Td>
+                  <Table.Td>
+                    <Anchor
+                      href={`https://github.com/${student.githubUsername}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      size="sm"
+                      fw={500}
+                    >
+                      {student.githubUsername}
+                    </Anchor>
+                  </Table.Td>
+                  <Table.Td>
+                    <Badge variant="light" size="md">
+                      {student.nbReview}
+                    </Badge>
+                  </Table.Td>
+                  <Table.Td style={{ width: '25%' }}>
+                    <ProgressBar
+                      progressPercent={student.progress_percentage}
+                      errorPercent={student.error_percentage}
+                    />
+                  </Table.Td>
+                  <Table.Td>
+                    <Group gap="xs">
+                      <Button
+                        component={Link}
+                        to={`/courses/data-science-practice/student/${repoName}/${student.githubUsername}`}
+                        variant="default"
+                        size="xs"
+                        leftSection={<IconFileText size={14} />}
+                      >
+                        Exercises
+                      </Button>
+                      <Button
+                        component={Link}
+                        to={`/courses/data-science-practice/student-project/${repoName}/${student.githubUsername}`}
+                        variant="default"
+                        size="xs"
+                        leftSection={<IconBriefcase size={14} />}
+                      >
+                        Project
+                      </Button>
+                    </Group>
+                  </Table.Td>
+                </Table.Tr>
+              ))}
+            </Table.Tbody>
+          </Table>
+        </Box>
+
+        {/* Results Counter */}
+        <Text size="sm" c="dimmed" ta="center">
+          Showing {filteredStudents.length} of {students.length} students
+        </Text>
+      </Stack>
     </Container>
   );
 };

@@ -298,15 +298,35 @@ print(f"Success Rate: {np.mean(np.array(rewards) > 250):.1%}")`}
 
       <Title order={3} mb="sm" mt="lg">Competition Submission</Title>
       <Text mb="md">
-        Submit your agent to ML Arena:
+        Submit your agent to ML-Arena for evaluation:
       </Text>
-      <List spacing="sm" mb="md">
+      <List spacing="sm" mb="md" type="ordered">
         <List.Item>
-          Visit <Anchor href="https://ml-arena.com/viewcompetition/10" target="_blank">the competition page</Anchor>
+          <strong>Competition Page:</strong> Visit{' '}
+          <Anchor href="https://ml-arena.com/viewcompetition/10" target="_blank">
+            ML-Arena Bipedal Walker Competition
+          </Anchor>
         </List.Item>
-        <List.Item>Upload your agent code and trained model weights</List.Item>
-        <List.Item>Include a requirements.txt with dependencies</List.Item>
-        <List.Item>Your agent will be evaluated on multiple random seeds</List.Item>
+        <List.Item>
+          <strong>Create Account:</strong> Sign up or connect with your GitHub account
+        </List.Item>
+        <List.Item>
+          <strong>Submit Agent:</strong> Click "Submit Agent" at the top:
+          <List withPadding mt="xs">
+            <List.Item>Upload your <code>agent.py</code> file with the required class interface</List.Item>
+            <List.Item>Add trained model weights and any additional Python files</List.Item>
+            <List.Item>Include a <code>requirements.txt</code> with all dependencies</List.Item>
+            <List.Item>Select the appropriate kernel (sklearn, pytorch, tensorflow, etc.)</List.Item>
+          </List>
+        </List.Item>
+        <List.Item>
+          <strong>Evaluation Process:</strong>
+          <List withPadding mt="xs">
+            <List.Item>Your agent will be evaluated on multiple episodes with different random seeds</List.Item>
+            <List.Item>Performance is measured by average reward across episodes</List.Item>
+            <List.Item>View your score and rank on the leaderboard</List.Item>
+          </List>
+        </List.Item>
       </List>
 
       <Title order={2} mb="md">Expected Performance</Title>
@@ -397,19 +417,34 @@ print(f"Success Rate: {np.mean(np.array(rewards) > 250):.1%}")`}
       <Title order={2} mb="md" mt="xl">Additional Resources</Title>
       <List spacing="sm">
         <List.Item>
-          <Anchor href="https://gymnasium.farama.org/environments/box2d/bipedal_walker/" target="_blank">
-            Gymnasium Documentation
-          </Anchor> - Official environment documentation and details
-        </List.Item>
-        <List.Item>
+          <strong>Competition:</strong>{' '}
           <Anchor href="https://ml-arena.com/viewcompetition/10" target="_blank">
-            Competition Page
+            ML-Arena Bipedal Walker Competition
           </Anchor> - Submit and track your progress
         </List.Item>
         <List.Item>
+          <strong>Environment Documentation:</strong>{' '}
+          <Anchor href="https://gymnasium.farama.org/environments/box2d/bipedal_walker/" target="_blank">
+            Gymnasium BipedalWalker-v3
+          </Anchor> - Official environment documentation, observation/action spaces, and details
+        </List.Item>
+        <List.Item>
+          <strong>Gymnasium API:</strong>{' '}
+          <Anchor href="https://gymnasium.farama.org/" target="_blank">
+            Gymnasium Library
+          </Anchor> - Complete RL environment framework
+        </List.Item>
+        <List.Item>
+          <strong>Course Materials:</strong>{' '}
           <Anchor href="https://www.raphaelcousin.com/courses/data-science-practice/module9/course/model-free-methods" target="_blank">
             Module 9: Model-Free Methods
-          </Anchor> - Reinforcement learning course materials
+          </Anchor> - Reinforcement learning theory and algorithms
+        </List.Item>
+        <List.Item>
+          <strong>Stable-Baselines3:</strong>{' '}
+          <Anchor href="https://stable-baselines3.readthedocs.io/" target="_blank">
+            SB3 Documentation
+          </Anchor> - RL algorithm implementations (PPO, SAC, TD3)
         </List.Item>
       </List>
     </Container>

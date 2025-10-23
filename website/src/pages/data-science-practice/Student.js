@@ -1,30 +1,52 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { Container, Title, Accordion, Badge, Text, Group, Button, Stack, Paper, Code, Alert } from '@mantine/core';
-import { IconRefresh, IconAlertTriangle } from "@tabler/icons-react";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { Container, Title, Accordion, Badge, Text, Group, Button, Stack, Code, Alert, Box, Paper, Divider } from '@mantine/core';
+import { IconRefresh, IconCircleCheckFilled, IconCircleXFilled, IconCircleDashed, IconArrowLeft, IconFileText } from "@tabler/icons-react";
 import OverallProgress from "components/OverallProgress";
 
 const BackButton = () => {
   const navigate = useNavigate();
-  return <Button onClick={() => navigate(-1)}>Back</Button>;
+  return (
+    <Button
+      onClick={() => navigate(-1)}
+      variant="default"
+      leftSection={<IconArrowLeft size={16} />}
+    >
+      Back
+    </Button>
+  );
 };
 
 const StatusIndicator = ({ progressPercent, hasUpdates }) => {
-  let color, label;
+  let color, label, icon;
 
   if (progressPercent === 100) {
     color = "teal";
     label = "Passed";
+    icon = <IconCircleCheckFilled size={14} />;
   } else if (hasUpdates) {
     color = "red";
     label = "Failed";
+    icon = <IconCircleXFilled size={14} />;
   } else {
     color = "gray";
     label = "Not Published";
+    icon = <IconCircleDashed size={14} />;
   }
 
   return (
-    <Badge color={color} variant="light" size="lg">
+    <Badge
+      color={color}
+      variant="light"
+      size="lg"
+      leftSection={icon}
+      styles={(theme) => ({
+        root: {
+          paddingLeft: theme.spacing.xs,
+          fontWeight: 500,
+        },
+      })}
+    >
       {label}
     </Badge>
   );
@@ -107,65 +129,131 @@ const Student = () => {
   };
 
   return (
-    <Container size="lg">
-      <Group justify="space-between" mb="md">
-        <BackButton />
-        <Button
-          leftSection={<IconRefresh size={14} />}
-          onClick={fetchData}
-          loading={loading}
-          variant="light"
-        >
-          Refresh Data
-        </Button>
-      </Group>
-      <Title order={1} mb="md">Results for {studentName || studentId}</Title>
-      <OverallProgress progress={overallProgress.progress} errors={overallProgress.errors} />
-      {error && <Alert color="red" mb="md" title="Error">{error}</Alert>}
-      <Accordion variant="contained">
-        {Object.entries(modulesResults).map(([moduleName, exercises]) => {
-          const totalExercises = Object.values(exercises).length;
-          const passedExercises = Object.values(exercises).filter((ex) => ex.is_passed_test).length;
-          const progressPercent = totalExercises > 0 ? (passedExercises / totalExercises) * 100 : 0;
-          const hasUpdates = Object.values(exercises).some(ex => ex.updated_time_utc);
+    <Container size="lg" py="xl">
+      <Stack gap="xl">
+        {/* Header Section */}
+        <Box>
+          <Group justify="space-between" mb="xl">
+            <BackButton />
+            <Group gap="sm">
+              <Button
+                component={Link}
+                to={`/courses/data-science-practice/student-project/${repositoryId}/${studentId}`}
+                leftSection={<IconFileText size={16} />}
+                variant="default"
+              >
+                View Project
+              </Button>
+              <Button
+                leftSection={<IconRefresh size={16} />}
+                onClick={fetchData}
+                loading={loading}
+                variant="default"
+              >
+                Refresh
+              </Button>
+            </Group>
+          </Group>
 
-          return (
-            <Accordion.Item key={moduleName} value={moduleName}>
-              <Accordion.Control>
-                <Group justify="space-between">
-                  <Text fw={500}>{moduleName.toUpperCase()} - Progress: {passedExercises}/{totalExercises}</Text>
-                  <StatusIndicator progressPercent={progressPercent} hasUpdates={hasUpdates} />
-                </Group>
-              </Accordion.Control>
-              <Accordion.Panel>
-                <Stack gap="md">
-                  {Object.entries(exercises).map(([exerciseName, exerciseDetails], index) => (
-                    <Paper key={index} p="md" withBorder shadow="sm">
-                      <Group justify="space-between" mb="xs">
-                        <Text fw={500}>{exerciseName}</Text>
-                        <Badge color={exerciseDetails.is_passed_test ? "teal" : "red"} variant="light" size="lg">
-                          {exerciseDetails.is_passed_test ? "Passed" : "Failed"}
-                        </Badge>
-                      </Group>
-                      <Text size="sm" mb="xs">Score: {exerciseDetails.score}</Text>
-                      {/* {!exerciseDetails.is_passed_test && exerciseDetails.updated_time_utc && (
-                        <Alert icon={<IconAlertTriangle size="1rem" />} title="Issue Detected" color="yellow" mb="xs">
-                          This exercise failed but has been updated. It may require attention.
-                        </Alert>
-                      )} */}
-                      <Text size="sm" mb="xs">Logs:</Text>
-                      <Code block mb="xs" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{exerciseDetails.logs || "No logs available"}</Code>
-                      <Text size="sm" c="dimmed">
-                        Updated: {exerciseDetails.updated_time_utc ? formatDate(exerciseDetails.updated_time_utc) : "Not updated"}
+          <Title order={1} mb="xs" size="h1">
+            {studentName || studentId}
+          </Title>
+          <Text size="md" c="dimmed" mb="xl">
+            Student Progress Overview
+          </Text>
+
+          <OverallProgress progress={overallProgress.progress} errors={overallProgress.errors} />
+        </Box>
+
+        {/* Error Alert */}
+        {error && (
+          <Alert color="red" title="Error" variant="light">
+            {error}
+          </Alert>
+        )}
+
+        {/* Modules Accordion */}
+        <Accordion
+          variant="separated"
+          radius="md"
+          styles={(theme) => ({
+            item: {
+              border: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]}`,
+              backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
+              '&[data-active]': {
+                backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[0],
+              },
+            },
+            control: {
+              padding: `${theme.spacing.md} ${theme.spacing.lg}`,
+              '&:hover': {
+                backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[0],
+              },
+            },
+          })}
+        >
+          {Object.entries(modulesResults).map(([moduleName, exercises]) => {
+            const exerciseDetails = Object.values(exercises)[0];
+            const progressPercent = exerciseDetails?.is_passed_test ? 100 : 0;
+            const hasUpdates = exerciseDetails?.updated_time_utc;
+
+            return (
+              <Accordion.Item key={moduleName} value={moduleName}>
+                <Accordion.Control>
+                  <Box style={{ flex: 1 }}>
+                    <Group justify="space-between" wrap="nowrap" mb="xs">
+                      <Text fw={600} size="md" tt="uppercase" c="dark">
+                        {moduleName}
                       </Text>
-                    </Paper>
-                  ))}
-                </Stack>
-              </Accordion.Panel>
-            </Accordion.Item>
-          );
-        })}
-      </Accordion>
+                      <StatusIndicator
+                        progressPercent={progressPercent}
+                        hasUpdates={hasUpdates}
+                      />
+                    </Group>
+                    <Group gap="md" mt="xs">
+                      <Group gap={4}>
+                        <Text size="xs" c="dimmed">Score:</Text>
+                        <Text size="xs" fw={600}>{exerciseDetails?.score || "N/A"}</Text>
+                      </Group>
+                      <Group gap={4}>
+                        <Text size="xs" c="dimmed">Updated:</Text>
+                        <Text size="xs" fw={500}>
+                          {exerciseDetails?.updated_time_utc
+                            ? formatDate(exerciseDetails.updated_time_utc)
+                            : "Not updated"}
+                        </Text>
+                      </Group>
+                    </Group>
+                  </Box>
+                </Accordion.Control>
+                <Accordion.Panel>
+                  <Box>
+                    <Text size="sm" fw={500} mb="xs" c="dimmed">
+                      Execution Logs
+                    </Text>
+                    <Code
+                      block
+                      styles={(theme) => ({
+                        root: {
+                          borderRadius: theme.radius.sm,
+                          fontSize: theme.fontSizes.xs,
+                          padding: theme.spacing.md,
+                          backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
+                          border: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]}`,
+                          color: theme.colorScheme === 'dark' ? theme.colors.gray[3] : 'inherit',
+                        },
+                      })}
+                      style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
+                    >
+                      {exerciseDetails?.logs || "No logs available"}
+                    </Code>
+                  </Box>
+                </Accordion.Panel>
+              </Accordion.Item>
+            );
+          })}
+        </Accordion>
+      </Stack>
     </Container>
   );
 };

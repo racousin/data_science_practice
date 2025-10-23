@@ -284,15 +284,34 @@ print(f"Status: {'PASS' if total_time < 600 else 'FAIL'}") `}
 
       <Title order={3} mb="sm" mt="lg">Competition Submission</Title>
       <Text mb="md">
-        When ready, submit your agent to ML Arena:
+        Submit your agent to ML-Arena for evaluation:
       </Text>
-      <List spacing="sm" mb="md">
+      <List spacing="sm" mb="md" type="ordered">
         <List.Item>
-          Visit <Anchor href="https://ml-arena.com/viewcompetition/8" target="_blank">the competition page</Anchor>
+          <strong>Competition Page:</strong> Visit{' '}
+          <Anchor href="https://ml-arena.com/viewcompetition/8" target="_blank">
+            ML-Arena Permuted MNIST Competition
+          </Anchor>
         </List.Item>
-        <List.Item>Upload your agent.py file and any required py files (weights,...)</List.Item>
-        <List.Item>Your agent will be evaluated on 10 random permutations initially</List.Item>
-        <List.Item>Top performers face additional evaluations for final ranking</List.Item>
+        <List.Item>
+          <strong>Create Account:</strong> Sign up or connect with your GitHub account
+        </List.Item>
+        <List.Item>
+          <strong>Submit Agent:</strong> Click "Submit Agent" at the top:
+          <List withPadding mt="xs">
+            <List.Item>Upload your <code>agent.py</code> file with the required class interface</List.Item>
+            <List.Item>Add any additional Python files (model weights, utilities, etc.)</List.Item>
+            <List.Item>Select the appropriate kernel (sklearn, pytorch, tensorflow, etc.)</List.Item>
+          </List>
+        </List.Item>
+        <List.Item>
+          <strong>Evaluation Process:</strong>
+          <List withPadding mt="xs">
+            <List.Item>Initial evaluation on 10 random permutations</List.Item>
+            <List.Item>Top performers undergo additional evaluations for final ranking</List.Item>
+            <List.Item>View your score and rank on the leaderboard</List.Item>
+          </List>
+        </List.Item>
       </List>
 
       <Title order={2} mb="md">Building a Reproducible Project</Title>
@@ -366,23 +385,33 @@ print(f"Status: {'PASS' if total_time < 600 else 'FAIL'}") `}
       <Title order={2} mb="md" mt="xl">Additional Resources</Title>
       <List spacing="sm">
         <List.Item>
-          <Anchor href="https://github.com/ml-arena/permuted_mnist/" target="_blank">
-            Official GitHub Repository
-          </Anchor> - Environment code and examples
-        </List.Item>
-        <List.Item>
+          <strong>Competition:</strong>{' '}
           <Anchor href="https://ml-arena.com/viewcompetition/8" target="_blank">
-            Competition Page
+            ML-Arena Permuted MNIST Competition
           </Anchor> - Submit and track your progress
         </List.Item>
         <List.Item>
-          <Anchor href="https://www.raphaelcousin.com/courses/data-science-practice/module6/course" target="_blank">
-            Module 6: Advanced ML Techniques
-          </Anchor> - Course materials
+          <strong>Environment Package:</strong>{' '}
+          <Anchor href="https://github.com/ml-arena/permuted_mnist" target="_blank">
+            Official GitHub Repository
+          </Anchor> - Complete environment code, starter files, and examples
         </List.Item>
         <List.Item>
+          <strong>Environment Source:</strong>{' '}
+          <Anchor href="https://github.com/ml-arena/permuted_mnist/blob/main/permuted_mnist/env/permuted_mnist.py" target="_blank">
+            permuted_mnist.py
+          </Anchor> - View the environment implementation
+        </List.Item>
+        <List.Item>
+          <strong>Course Materials:</strong>{' '}
+          <Anchor href="https://www.raphaelcousin.com/courses/data-science-practice/module6/course" target="_blank">
+            Module 6: Advanced ML Techniques
+          </Anchor>
+        </List.Item>
+        <List.Item>
+          <strong>Deep Learning Guide:</strong>{' '}
           <Anchor href="https://www.raphaelcousin.com/courses/python-deep-learning/module3/course/essential-layers" target="_blank">
-            Deep Learning Layers Guide
+            Essential Layers
           </Anchor> - Neural network components
         </List.Item>
       </List>
