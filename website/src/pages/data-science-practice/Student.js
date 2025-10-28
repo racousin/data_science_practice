@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { Container, Title, Accordion, Badge, Text, Group, Button, Stack, Code, Alert, Box, Paper, Divider } from '@mantine/core';
+import { Container, Title, Accordion, Badge, Text, Group, Button, Stack, Code, Alert, Box, Paper, Divider, Checkbox } from '@mantine/core';
 import { IconRefresh, IconCircleCheckFilled, IconCircleXFilled, IconCircleDashed, IconArrowLeft, IconFileText } from "@tabler/icons-react";
 import OverallProgress from "components/OverallProgress";
 
@@ -59,6 +59,8 @@ const Student = () => {
   const [loading, setLoading] = useState(false);
   const [overallProgress, setOverallProgress] = useState({ progress: 0, errors: 0 });
   const [studentName, setStudentName] = useState("");
+  const [activeReviewer, setActiveReviewer] = useState(false);
+  const [suspectCheating, setSuspectCheating] = useState(false);
 
   const fetchData = () => {
     const cacheBuster = `?t=${new Date().getTime()}`;
@@ -99,6 +101,8 @@ const Student = () => {
             errors: parseFloat(studentOverall.error_percentage || 0) * 100
           });
           setStudentName(`${studentOverall.firstname} ${studentOverall.lastname}`);
+          setActiveReviewer(studentOverall.active_reviewer || false);
+          setSuspectCheating(studentOverall.suspect_cheating || false);
         }
         setModulesResults(detailsData);
         setError("");
@@ -133,7 +137,7 @@ const Student = () => {
       <Stack gap="xl">
         {/* Header Section */}
         <Box>
-          <Group justify="space-between" mb="xl">
+          <Group justify="space-between" mb="xl" wrap="wrap" gap="sm">
             <BackButton />
             <Group gap="sm">
               <Button
@@ -141,6 +145,7 @@ const Student = () => {
                 to={`/courses/data-science-practice/student-project/${repositoryId}/${studentId}`}
                 leftSection={<IconFileText size={16} />}
                 variant="default"
+                size="sm"
               >
                 View Project
               </Button>
@@ -149,6 +154,7 @@ const Student = () => {
                 onClick={fetchData}
                 loading={loading}
                 variant="default"
+                size="sm"
               >
                 Refresh
               </Button>
@@ -158,9 +164,32 @@ const Student = () => {
           <Title order={1} mb="xs" size="h1">
             {studentName || studentId}
           </Title>
-          <Text size="md" c="dimmed" mb="xl">
+          <Text size="md" c="dimmed" mb="md">
             Student Progress Overview
           </Text>
+
+          {/* Evaluation Checkboxes */}
+          <Alert variant="light" color="blue" mb="md">
+            <Text size="sm" fw={500} mb="xs">
+              data_science_practice_2025: Contrôle Continu
+            </Text>
+            <Text size="xs" c="dimmed" mb="md">
+              The possibility to push to the repository will be frozen on November 11th.
+              Active reviewer and suspect cheating status will be evaluated on this date.
+            </Text>
+            <Group gap="xl">
+              <Checkbox
+                label="Active Reviewer"
+                checked={activeReviewer}
+                readOnly
+              />
+              <Checkbox
+                label="Suspect Cheating"
+                checked={suspectCheating}
+                readOnly
+              />
+            </Group>
+          </Alert>
 
           <OverallProgress progress={overallProgress.progress} errors={overallProgress.errors} />
         </Box>
@@ -201,7 +230,7 @@ const Student = () => {
               <Accordion.Item key={moduleName} value={moduleName}>
                 <Accordion.Control>
                   <Box style={{ flex: 1 }}>
-                    <Group justify="space-between" wrap="nowrap" mb="xs">
+                    <Group justify="space-between" wrap="wrap" mb="xs">
                       <Text fw={600} size="md" tt="uppercase" c="dark">
                         {moduleName}
                       </Text>
@@ -210,7 +239,23 @@ const Student = () => {
                         hasUpdates={hasUpdates}
                       />
                     </Group>
-                    <Group gap="md" mt="xs">
+                    <Stack gap={4} mt="xs" visibleFrom="sm">
+                      <Group gap="md">
+                        <Group gap={4}>
+                          <Text size="xs" c="dimmed">Score:</Text>
+                          <Text size="xs" fw={600}>{exerciseDetails?.score || "N/A"}</Text>
+                        </Group>
+                        <Group gap={4}>
+                          <Text size="xs" c="dimmed">Updated:</Text>
+                          <Text size="xs" fw={500}>
+                            {exerciseDetails?.updated_time_utc
+                              ? formatDate(exerciseDetails.updated_time_utc)
+                              : "Not updated"}
+                          </Text>
+                        </Group>
+                      </Group>
+                    </Stack>
+                    <Stack gap={4} mt="xs" hiddenFrom="sm">
                       <Group gap={4}>
                         <Text size="xs" c="dimmed">Score:</Text>
                         <Text size="xs" fw={600}>{exerciseDetails?.score || "N/A"}</Text>
@@ -223,7 +268,7 @@ const Student = () => {
                             : "Not updated"}
                         </Text>
                       </Group>
-                    </Group>
+                    </Stack>
                   </Box>
                 </Accordion.Control>
                 <Accordion.Panel>

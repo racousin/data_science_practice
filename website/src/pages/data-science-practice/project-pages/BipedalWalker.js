@@ -7,11 +7,11 @@ import CodeBlock from 'components/CodeBlock';
 const BipedalWalker = () => {
   return (
     <Container size="lg" py="xl">
-      <Group spacing="md" mb="xl">
+      <Group gap="md" mb="xl">
         <Button
           component={Link}
           to="/courses/data-science-practice/project/2025"
-          leftIcon={<IconArrowLeft size={16} />}
+          leftSection={<IconArrowLeft size={16} />}
           variant="subtle"
         >
           Back to Project 2025
@@ -19,17 +19,16 @@ const BipedalWalker = () => {
         <Button
           component={Link}
           to="/courses/data-science-practice/project/permuted-mnist"
-          leftIcon={<IconBrain size={16} />}
-          variant="light"
+          leftSection={<IconBrain size={16} />}
+          variant="default"
         >
           Option A: Permuted MNIST
         </Button>
         <Button
           component="a"
           href="/courses/data-science-practice/students/data_science_practice_2025"
-          leftIcon={<IconChartBar size={16} />}
-          variant="light"
-          color="blue"
+          leftSection={<IconChartBar size={16} />}
+          variant="default"
           ml="auto"
         >
           View Your Project Evaluation
@@ -59,23 +58,23 @@ const BipedalWalker = () => {
       </Alert>
 
       <Paper p="md" withBorder mb="xl">
-        <Group spacing="xl">
-          <Stack spacing="xs">
-            <Group spacing="xs">
+        <Group gap="xl">
+          <Stack gap="xs">
+            <Group gap="xs">
               <IconClock size={20} />
               <Text weight={500}>Training Time</Text>
             </Group>
             <Text size="sm">Flexible (days to weeks)</Text>
           </Stack>
-          <Stack spacing="xs">
-            <Group spacing="xs">
+          <Stack gap="xs">
+            <Group gap="xs">
               <IconDatabase size={20} />
               <Text weight={500}>Environment</Text>
             </Group>
             <Text size="sm">OpenAI Gym / Gymnasium</Text>
           </Stack>
-          <Stack spacing="xs">
-            <Group spacing="xs">
+          <Stack gap="xs">
+            <Group gap="xs">
               <IconCpu size={20} />
               <Text weight={500}>Compute</Text>
             </Group>

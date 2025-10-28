@@ -7,11 +7,11 @@ import CodeBlock from 'components/CodeBlock';
 const PermutedMNIST = () => {
   return (
     <Container size="lg" py="xl">
-      <Group spacing="md" mb="xl">
+      <Group gap="md" mb="xl">
         <Button
           component={Link}
           to="/courses/data-science-practice/project/2025"
-          leftIcon={<IconArrowLeft size={16} />}
+          leftSection={<IconArrowLeft size={16} />}
           variant="subtle"
         >
           Back to Project 2025
@@ -19,17 +19,16 @@ const PermutedMNIST = () => {
         <Button
           component={Link}
           to="/courses/data-science-practice/project/bipedal-walker"
-          leftIcon={<IconRobot size={16} />}
-          variant="light"
+          leftSection={<IconRobot size={16} />}
+          variant="default"
         >
           Option B: Bipedal Walker
         </Button>
         <Button
           component="a"
           href="/courses/data-science-practice/students/data_science_practice_2025"
-          leftIcon={<IconChartBar size={16} />}
-          variant="light"
-          color="blue"
+          leftSection={<IconChartBar size={16} />}
+          variant="default"
           ml="auto"
         >
           View Your Project Evaluation
@@ -59,23 +58,23 @@ const PermutedMNIST = () => {
       </Alert>
 
       <Paper p="md" withBorder mb="xl">
-        <Group spacing="xl">
-          <Stack spacing="xs">
-            <Group spacing="xs">
+        <Group gap="xl">
+          <Stack gap="xs">
+            <Group gap="xs">
               <IconClock size={20} />
               <Text weight={500}>Time Limit</Text>
             </Group>
             <Text size="sm">1 minute per task</Text>
           </Stack>
-          <Stack spacing="xs">
-            <Group spacing="xs">
+          <Stack gap="xs">
+            <Group gap="xs">
               <IconDatabase size={20} />
               <Text weight={500}>Memory Limit</Text>
             </Group>
             <Text size="sm">4 GB RAM</Text>
           </Stack>
-          <Stack spacing="xs">
-            <Group spacing="xs">
+          <Stack gap="xs">
+            <Group gap="xs">
               <IconCpu size={20} />
               <Text weight={500}>CPU Limit</Text>
             </Group>

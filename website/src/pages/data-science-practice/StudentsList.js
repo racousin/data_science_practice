@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Table, Container, Alert, TextInput, Button, Progress, Box, Title, Group, Tooltip, Text, ActionIcon, Stack, Badge, Anchor } from '@mantine/core';
+import { Table, Container, Alert, TextInput, Button, Progress, Box, Title, Group, Tooltip, Text, ActionIcon, Stack, Badge, Anchor, Card, Divider } from '@mantine/core';
 import { IconRefresh, IconChevronUp, IconChevronDown, IconArrowLeft, IconSearch, IconFileText, IconBriefcase, IconChartBar, IconUser } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 
@@ -194,8 +194,9 @@ const StudentsList = () => {
           </Alert>
         )}
 
-        {/* Students Table */}
+        {/* Desktop Table - Hidden on mobile */}
         <Box
+          visibleFrom="md"
           style={(theme) => ({
             border: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]}`,
             borderRadius: theme.radius.md,
@@ -320,6 +321,64 @@ const StudentsList = () => {
             </Table.Tbody>
           </Table>
         </Box>
+
+        {/* Mobile Cards - Hidden on desktop */}
+        <Stack gap="md" hiddenFrom="md">
+          {filteredStudents.map((student, index) => (
+            <Card key={index} shadow="sm" padding="md" radius="md" withBorder>
+              <Stack gap="sm">
+                <Group justify="space-between" align="flex-start">
+                  <Box style={{ flex: 1 }}>
+                    <Text fw={600} size="md">{student.fullName}</Text>
+                    <Anchor
+                      href={`https://github.com/${student.githubUsername}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      size="sm"
+                      c="dimmed"
+                    >
+                      @{student.githubUsername}
+                    </Anchor>
+                  </Box>
+                  <Badge variant="light" size="lg">
+                    {student.nbReview} reviews
+                  </Badge>
+                </Group>
+
+                <Divider />
+
+                <Box>
+                  <Text size="xs" c="dimmed" mb={4}>Progress</Text>
+                  <ProgressBar
+                    progressPercent={student.progress_percentage}
+                    errorPercent={student.error_percentage}
+                  />
+                </Box>
+
+                <Group gap="xs" grow>
+                  <Button
+                    component={Link}
+                    to={`/courses/data-science-practice/student/${repoName}/${student.githubUsername}`}
+                    variant="default"
+                    size="sm"
+                    leftSection={<IconFileText size={16} />}
+                  >
+                    Exercises
+                  </Button>
+                  <Button
+                    component={Link}
+                    to={`/courses/data-science-practice/student-project/${repoName}/${student.githubUsername}`}
+                    variant="default"
+                    size="sm"
+                    leftSection={<IconBriefcase size={16} />}
+                  >
+                    Project
+                  </Button>
+                </Group>
+              </Stack>
+            </Card>
+          ))}
+        </Stack>
 
         {/* Results Counter */}
         <Text size="sm" c="dimmed" ta="center">

@@ -2,17 +2,17 @@ import React from 'react';
 import { Container, Title, Text, List, Button, Group, Badge, Anchor } from '@mantine/core';
 import { Link } from 'react-router-dom';
 import { IconBrain, IconRobot, IconChartBar } from '@tabler/icons-react';
+import ProjectEvaluation from '../ProjectEvaluation';
 
 const ProjectPage2025 = () => {
   return (
     <Container size="lg" py="xl">
-      <Group spacing="md" mb="xl" position="right">
+      <Group gap="md" mb="xl" justify="flex-end">
         <Button
           component="a"
           href="/courses/data-science-practice/students/data_science_practice_2025"
-          leftIcon={<IconChartBar size={16} />}
-          variant="light"
-          color="blue"
+          leftSection={<IconChartBar size={16} />}
+          variant="default"
         >
           View Your Project Evaluation
         </Button>
@@ -33,11 +33,11 @@ const ProjectPage2025 = () => {
       <Title order={2} mb="md">2. Project Options</Title>
       <Text mb="md">Choose between two machine learning challenges:</Text>
 
-      <Group spacing="lg" mb="xl">
+      <Group gap="lg" mb="xl">
         <Button
           component={Link}
           to="/courses/data-science-practice/project/permuted-mnist"
-          leftIcon={<IconBrain size={16} />}
+          leftSection={<IconBrain size={16} />}
           variant="light"
           size="lg"
         >
@@ -46,7 +46,7 @@ const ProjectPage2025 = () => {
         <Button
           component={Link}
           to="/courses/data-science-practice/project/bipedal-walker"
-          leftIcon={<IconRobot size={16} />}
+          leftSection={<IconRobot size={16} />}
           variant="light"
           size="lg"
         >
@@ -140,7 +140,7 @@ const ProjectPage2025 = () => {
         </List.Item>
       </List>
 
-      <Title order={4} mb="sm">B. Resume Notebook (resume.ipynb)</Title>
+      <Title order={4} mb="sm">B. Report Notebook (report.ipynb)</Title>
       <Text mb="md">
         A concise Jupyter notebook (maximum 10 pages) containing:
       </Text>
@@ -171,23 +171,21 @@ const ProjectPage2025 = () => {
       <Text mb="md">
         Enhance your project with advanced features:
       </Text>
-      <List spacing="sm" mb="md">
+      <List spacing="sm" mb="xl">
         <List.Item>
           <strong>Research Paper Implementation:</strong> Implement algorithms from recent research papers
         </List.Item>
         <List.Item>
           <strong>GitHub Actions CI/CD:</strong> Automated testing and validation pipeline
         </List.Item>
-        <List.Item>
-          <strong>Docker Deployment:</strong> Containerized environment for reproducibility
-        </List.Item>
-        <List.Item>
-          <strong>Advanced Visualization:</strong> Interactive dashboards for results analysis
-        </List.Item>
-        <List.Item>
-          <strong>Documentation Website:</strong> Sphinx or similar documentation hosting
-        </List.Item>
       </List>
+
+      <Title order={2} mb="md">5. Detailed Evaluation Rubric</Title>
+      <Text mb="md">
+        Below is the complete evaluation rubric with point breakdowns for each criterion:
+      </Text>
+
+      <ProjectEvaluation />
     </Container>
   );
 };
