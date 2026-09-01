@@ -1,0 +1,5 @@
+# Generated decks, PDFs, and the math render cache
+build/
+
+# Raw JSX->Markdown extraction: input to hand-editing, never a deliverable
+_harvest/

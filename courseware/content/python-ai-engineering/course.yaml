@@ -1,0 +1,237 @@
+# Python AI Engineering — 12h (4 × 3h)
+#
+# Single source of truth for this module. Drives two outputs:
+#   * PPTX decks      -> tools/build_slides.py    (one deck per module below)
+#   * ML-Arena course -> tools/publish_mlarena.py (course / module / lesson rows)
+#
+# Ordering is this file's job: lesson `file` paths are explicit, so the
+# directory layout stays flat and slug-named (round-trips with the SDK's
+# export_course_to_dir).
+
+course:
+  name: "Python AI Engineering"
+  code: "PAIE-12"
+  slug: python-ai-engineering
+  visibility: unlisted
+  instructor_name: "Raphael Cousin"
+  # PLACEHOLDER — the module is front-loaded into a single week; set the real
+  # dates before the first publish.
+  start_date: "2026-09-07"
+  end_date: "2026-09-11"
+  description: |
+    A 12-hour mise à niveau in four 3-hour sessions, taken before
+    *Machine Learning en pratique*. It assumes you already write Python and
+    builds the engineering floor the rest of the year stands on: version
+    control, reproducible environments, an agentic coding workflow, the
+    vocabulary of applied machine learning, and PyTorch.
+
+    Every session is half lecture, half lab. You finish the module with a
+    packaged, tested, version-controlled Python project that trains a neural
+    network — and a submission on ML-Arena.
+
+modules:
+  # ---------------------------------------------------------------- session 1
+  - title: "Session 1 — Git & Python Packaging"
+    slug: s1-git-and-packaging
+    icon: git-branch
+    visibility: unlisted
+    summary: >
+      Version control and reproducible Python projects. From `git init` to a
+      pip-installable, tested package with a pull-request workflow.
+    lessons:
+      - title: "Why Version Control"
+        slug: why-version-control
+        file: s1-git-and-packaging/why-version-control.md
+        estimated_minutes: 10
+        is_published: true
+      - title: "Git Essentials"
+        slug: git-essentials
+        file: s1-git-and-packaging/git-essentials.md
+        estimated_minutes: 45
+        is_published: true
+      - title: "Branching & Collaboration"
+        slug: branching-and-collaboration
+        file: s1-git-and-packaging/branching-and-collaboration.md
+        estimated_minutes: 50
+        is_published: true
+      - title: "Python Environments"
+        slug: python-environments
+        file: s1-git-and-packaging/python-environments.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Packaging & Tests"
+        slug: packaging-and-tests
+        file: s1-git-and-packaging/packaging-and-tests.md
+        estimated_minutes: 35
+        is_published: true
+      - title: "Lab 1 — Ship a Package"
+        slug: lab-1
+        kind: exercise
+        file: s1-git-and-packaging/lab-1.md
+        estimated_minutes: 60
+        is_published: true
+
+  # ---------------------------------------------------------------- session 2
+  - title: "Session 2 — Agentic Coding"
+    slug: s2-agentic-coding
+    icon: robot
+    visibility: unlisted
+    summary: >
+      Working with a coding agent as an engineer, not a spectator. Setup, the
+      core loop, context engineering, guardrails, and the failure modes you are
+      accountable for.
+    lessons:
+      - title: "What Actually Changed"
+        slug: what-actually-changed
+        file: s2-agentic-coding/what-actually-changed.md
+        estimated_minutes: 20
+        is_published: true
+      - title: "Setup"
+        slug: setup
+        file: s2-agentic-coding/setup.md
+        estimated_minutes: 20
+        is_published: true
+      - title: "The Core Loop"
+        slug: the-core-loop
+        file: s2-agentic-coding/the-core-loop.md
+        estimated_minutes: 35
+        is_published: true
+      - title: "Context Engineering"
+        slug: context-engineering
+        file: s2-agentic-coding/context-engineering.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Guardrails & Review"
+        slug: guardrails-and-review
+        file: s2-agentic-coding/guardrails-and-review.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Lab 2 — Agent-Driven Feature"
+        slug: lab-2
+        kind: exercise
+        file: s2-agentic-coding/lab-2.md
+        estimated_minutes: 45
+        is_published: true
+
+  # ---------------------------------------------------------------- session 3
+  - title: "Session 3 — Data Science in a Nutshell"
+    slug: s3-data-science-nutshell
+    icon: chart-line
+    visibility: unlisted
+    summary: >
+      The vocabulary and the pipeline: problem framing, models and objectives,
+      the metric you optimise, and the validation that stops you fooling
+      yourself.
+    lessons:
+      - title: "The ML Pipeline"
+        slug: the-ml-pipeline
+        file: s3-data-science-nutshell/the-ml-pipeline.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Models & Objectives"
+        slug: models-and-objectives
+        file: s3-data-science-nutshell/models-and-objectives.md
+        estimated_minutes: 35
+        is_published: true
+      - title: "Evaluation Metrics"
+        slug: evaluation-metrics
+        file: s3-data-science-nutshell/evaluation-metrics.md
+        estimated_minutes: 40
+        is_published: true
+      - title: "Validation & Overfitting"
+        slug: validation-and-overfitting
+        file: s3-data-science-nutshell/validation-and-overfitting.md
+        estimated_minutes: 35
+        is_published: true
+      - title: "Lab 3 — Baseline on a Real Dataset"
+        slug: lab-3
+        kind: exercise
+        file: s3-data-science-nutshell/lab-3.md
+        estimated_minutes: 45
+        is_published: true
+
+  # ---------------------------------------------------------------- session 4
+  - title: "Session 4 — PyTorch in a Nutshell"
+    slug: s4-pytorch-nutshell
+    icon: flame
+    visibility: unlisted
+    summary: >
+      Tensors, autograd, modules, optimizers — and one MLP trained end to end.
+      Enough PyTorch to read and write the code the rest of the year uses.
+    lessons:
+      - title: "Why Tensors"
+        slug: why-tensors
+        file: s4-pytorch-nutshell/why-tensors.md
+        estimated_minutes: 25
+        is_published: true
+      - title: "Tensor Mechanics"
+        slug: tensor-mechanics
+        file: s4-pytorch-nutshell/tensor-mechanics.md
+        estimated_minutes: 35
+        is_published: true
+      - title: "Autograd"
+        slug: autograd
+        file: s4-pytorch-nutshell/autograd.md
+        estimated_minutes: 35
+        is_published: true
+      - title: "Modules & Optimizers"
+        slug: modules-and-optimizers
+        file: s4-pytorch-nutshell/modules-and-optimizers.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Training Loop End to End"
+        slug: training-loop-end-to-end
+        file: s4-pytorch-nutshell/training-loop-end-to-end.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Lab 4 — Train and Submit"
+        slug: lab-4
+        kind: exercise
+        file: s4-pytorch-nutshell/lab-4.md
+        estimated_minutes: 45
+        is_published: true
+    # The warm-up competition (CURRICULUM_PLAN.md §7) attaches here once it
+    # exists on ML-Arena. Uncomment and set the id:
+    # competitions:
+    #   - competition_id: 0
+    #     label: "Warm-up — file_v1 submission"
+
+  # ---------------------------------------------------------------- reference
+  - title: "Reference"
+    slug: paie-reference
+    icon: book
+    visibility: unlisted
+    summary: >
+      Material demoted out of class time. Self-study, linked from the sessions,
+      never lectured.
+    lessons:
+      - title: "GitHub Desktop"
+        slug: github-desktop
+        file: reference/github-desktop.md
+        estimated_minutes: 10
+        is_published: true
+      - title: "GitHub Actions"
+        slug: github-actions
+        file: reference/github-actions.md
+        estimated_minutes: 15
+        is_published: true
+      - title: "IDE, Syntax & Linting"
+        slug: ide-syntax-linting
+        file: reference/ide-syntax-linting.md
+        estimated_minutes: 15
+        is_published: true
+      - title: "Git Cheatsheet"
+        slug: git-cheatsheet
+        file: reference/git-cheatsheet.md
+        estimated_minutes: 5
+        is_published: true
+      - title: "Autograd — the Mathematics"
+        slug: autograd-mathematics
+        file: reference/autograd-mathematics.md
+        estimated_minutes: 25
+        is_published: true
+      - title: "A Short History of Deep Learning"
+        slug: deep-learning-history
+        file: reference/deep-learning-history.md
+        estimated_minutes: 15
+        is_published: true
