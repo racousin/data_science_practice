@@ -144,12 +144,15 @@ def meta(spec: dict, allowed: set) -> dict:
 
 
 class Syncer:
-    def __init__(self, client, base: str, state: dict, dry_run: bool, publish: bool):
+    def __init__(self, client, base: str, state: dict, dry_run: bool, publish: bool,
+                 skip_media: bool = False):
         self.c = client
         self.base = base
         self.state = state
         self.dry_run = dry_run
         self.publish = publish
+        self.skip_media = skip_media
+        self.skipped_media: list[str] = []
         self.actions: list[str] = []
 
     def log(self, verb: str, what: str) -> None:
@@ -246,6 +249,7 @@ class Syncer:
                     slug=slug, body_md=body, gated=bool(spec.get("gated", False)),
                 )
                 lesson_id = lesson["id"]
+                self.state["lessons"][key] = lesson_id
             else:
                 self.log("update", f"lesson {key} ({len(body)} chars)")
                 if self.dry_run:
@@ -295,6 +299,14 @@ class Syncer:
                 replacements[rel] = rel
                 self.log("upload", f"media {rel}")
                 continue
+            if self.skip_media:
+                # Leave the relative path in the body untouched: it renders as a
+                # broken image for now, but a re-run once the server-side upload
+                # works will find it and rewrite it. Rewriting to a placeholder
+                # would make the reference unrecoverable.
+                self.skipped_media.append(rel)
+                self.log("skip", f"media {rel}")
+                continue
             result = self.c.upload_lesson_media(lesson_id, path)
             replacements[rel] = result["url"]
 
@@ -332,6 +344,10 @@ def main() -> int:
                     help="force is_published=True on every lesson")
     ap.add_argument("--module", action="append",
                     help="sync only this module slug (repeatable)")
+    ap.add_argument("--skip-media", action="store_true",
+                    help="publish lesson text without uploading images. The "
+                         "relative paths stay in the body, so a later run "
+                         "uploads and rewrites them.")
     args = ap.parse_args()
 
     if not args.api_key and not args.dry_run:
@@ -366,7 +382,8 @@ def main() -> int:
         client = mlarena.connect(api_key=args.api_key, base_url=args.base_url)
 
     print(f"ML-Arena sync -> {args.base_url}")
-    syncer = Syncer(client, base, state, args.dry_run, args.publish)
+    syncer = Syncer(client, base, state, args.dry_run, args.publish,
+                    skip_media=args.skip_media)
 
     def checkpoint() -> None:
         """Persist the id map so a failure part-way never orphans what was
@@ -414,6 +431,13 @@ def main() -> int:
         checkpoint()
         print(f"\nstate written to {os.path.join(base, STATE_FILENAME)} — commit it.")
         print(f"course: {args.base_url}/courses/{course_spec.get('slug')}")
+        if syncer.skipped_media:
+            unique = sorted(set(syncer.skipped_media))
+            print(f"\n{len(unique)} image(s) NOT uploaded (--skip-media):")
+            for rel in unique:
+                print(f"  {rel}")
+            print("Their markdown references are unchanged, so re-running "
+                  "without --skip-media will upload and rewrite them.")
     else:
         print(f"\n{len(syncer.actions)} action(s) planned. Re-run without --dry-run to apply.")
     return 0

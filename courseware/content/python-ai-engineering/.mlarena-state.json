@@ -1,7 +1,43 @@
 {
   "https://ml-arena.com": {
     "course_id": 14,
-    "lessons": {},
-    "modules": {}
+    "lessons": {
+      "paie-reference/autograd-mathematics": 55,
+      "paie-reference/deep-learning-history": 56,
+      "paie-reference/git-cheatsheet": 54,
+      "paie-reference/github-actions": 52,
+      "paie-reference/github-desktop": 51,
+      "paie-reference/ide-syntax-linting": 53,
+      "s1-git-and-packaging/branching-and-collaboration": 30,
+      "s1-git-and-packaging/git-essentials": 29,
+      "s1-git-and-packaging/lab-1": 33,
+      "s1-git-and-packaging/packaging-and-tests": 32,
+      "s1-git-and-packaging/python-environments": 31,
+      "s1-git-and-packaging/why-version-control": 28,
+      "s2-agentic-coding/context-engineering": 37,
+      "s2-agentic-coding/guardrails-and-review": 38,
+      "s2-agentic-coding/lab-2": 39,
+      "s2-agentic-coding/setup": 35,
+      "s2-agentic-coding/the-core-loop": 36,
+      "s2-agentic-coding/what-actually-changed": 34,
+      "s3-data-science-nutshell/evaluation-metrics": 42,
+      "s3-data-science-nutshell/lab-3": 44,
+      "s3-data-science-nutshell/models-and-objectives": 41,
+      "s3-data-science-nutshell/the-ml-pipeline": 40,
+      "s3-data-science-nutshell/validation-and-overfitting": 43,
+      "s4-pytorch-nutshell/autograd": 47,
+      "s4-pytorch-nutshell/lab-4": 50,
+      "s4-pytorch-nutshell/modules-and-optimizers": 48,
+      "s4-pytorch-nutshell/tensor-mechanics": 46,
+      "s4-pytorch-nutshell/training-loop-end-to-end": 49,
+      "s4-pytorch-nutshell/why-tensors": 45
+    },
+    "modules": {
+      "paie-reference": 18,
+      "s1-git-and-packaging": 14,
+      "s2-agentic-coding": 15,
+      "s3-data-science-nutshell": 16,
+      "s4-pytorch-nutshell": 17
+    }
   }
 }

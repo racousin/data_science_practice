@@ -9,7 +9,7 @@
 # export_course_to_dir).
 
 course:
-  name: "Python AI Engineering"
+  name: "MS2A - AI Engineering"
   code: "PAIE-12"
   slug: python-ai-engineering
   visibility: unlisted
