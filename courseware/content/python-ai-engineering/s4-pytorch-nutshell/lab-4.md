@@ -83,8 +83,11 @@ told you.
 
 ## Part D — Submit to ML-Arena (10 min)
 
-The warm-up competition takes a single `submission.csv` of predictions on the
-held-out test set.
+**PAIE S4 — MNIST Warm-up** (competition `182`) takes a single
+`submission.csv` of predictions on 5,000 held-out digits. Download `X_test.csv`
+from the competition's data tab; the columns `p0 … p783` are the image
+flattened row-major as `uint8` 0-255, i.e. what `datasets.MNIST` gives you
+before `ToTensor()`.
 
 ```bash
 uv pip install mlarena
@@ -94,8 +97,8 @@ uv pip install mlarena
 import mlarena
 
 client = mlarena.connect(api_key="mlk_user_...")   # from your Profile page
-client.submit(competition_id=<id>, path="submission.csv")
-print(client.leaderboard(<id>).head())
+client.submit(competition_id=182, files=["submission.csv"])
+print(client.leaderboard(182).head())
 ```
 
 Getting on the board matters; your position does not. This is the dry run for
@@ -149,5 +152,5 @@ A repository that:
 - trains a neural network with an honest validation protocol
 - produces a submission the platform accepts
 
-That is the engineering floor for *Machine Learning en pratique*, and half of
+That is the engineering floor for *MS2A - Machine Learning Practice*, and half of
 the project grade is this repository staying that way for ten more weeks.

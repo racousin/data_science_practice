@@ -7,20 +7,29 @@ COURSE      ?= python-ai-engineering
 CONTENT     := content/$(COURSE)
 OUT         := build
 BASE_URL    ?= https://ml-arena.com
+# NO_MEDIA=1 publishes lesson text only (see publish_mlarena.py --skip-media).
+NO_MEDIA    ?=
 SDK_PATH    ?= ../../../mlarena-sdk
 
 PY_SLIDES   := uv run --quiet --with python-pptx --with pyyaml --with matplotlib python
 PY_PUBLISH  := uv run --quiet --with pyyaml --with requests python
 
-.PHONY: help slides pdf publish publish-dry harvest clean
+.PHONY: help slides pdf publish publish-dry harvest clean \
+        competitions competitions-status competitions-publish competitions-attach
 
 help:
 	@echo "make slides       — build one PPTX per session into $(OUT)/slides"
 	@echo "make pdf          — slides, then convert to PDF (needs LibreOffice)"
 	@echo "make publish-dry  — show what would change on $(BASE_URL)"
 	@echo "make publish      — sync content to ML-Arena (needs MLARENA_API_KEY)"
+	@echo "                    add NO_MEDIA=1 to publish text without images"
 	@echo "make harvest      — re-extract Markdown from the React site into _harvest/"
 	@echo "make clean        — remove $(OUT)/"
+	@echo
+	@echo "make competitions          — build/benchmark/start the session competitions"
+	@echo "make competitions-status   — show what is live"
+	@echo "make competitions-publish  — flip them public"
+	@echo "make competitions-attach   — link them to their modules (TEACHER key)"
 	@echo
 	@echo "Variables: COURSE=$(COURSE)  BASE_URL=$(BASE_URL)"
 
@@ -58,7 +67,36 @@ publish:
 		echo "Mint a teacher-scope key (mlk_teacher_...) on your ML-Arena Profile page."; \
 		exit 1; }
 	$(PY_PUBLISH) tools/publish_mlarena.py $(CONTENT) \
-		--base-url $(BASE_URL) --sdk-path $(SDK_PATH)
+		--base-url $(BASE_URL) --sdk-path $(SDK_PATH) $(if $(NO_MEDIA),--skip-media)
+
+# --------------------------------------------------------------------------- #
+# Competitions
+#
+# One per taught session; see competitions/README.md. `build` refuses to start a
+# competition whose reference solution does not score its declared benchmark, so
+# a green run is evidence the scoring works end to end.
+# --------------------------------------------------------------------------- #
+
+PY_COMPS := uv run --quiet --with requests python
+COMP_ARGS := --base-url $(BASE_URL) --course $(COURSE)
+
+competitions:
+	@test -n "$$MLARENA_API_KEY" || { \
+		echo "MLARENA_API_KEY is not set (needs a mlk_creator_... key)."; exit 1; }
+	MLARENA_SDK_PATH=$(SDK_PATH) $(PY_COMPS) tools/build_competitions.py build $(COMP_ARGS) $(if $(ONLY),--only $(ONLY))
+
+competitions-status:
+	MLARENA_SDK_PATH=$(SDK_PATH) $(PY_COMPS) tools/build_competitions.py status $(COMP_ARGS)
+
+competitions-publish:
+	MLARENA_SDK_PATH=$(SDK_PATH) $(PY_COMPS) tools/build_competitions.py publish $(COMP_ARGS)
+
+# attach_competition is an /api/teacher/* route and API-key auth requires the
+# scope to match exactly — a creator key is rejected here.
+competitions-attach:
+	@test -n "$$MLARENA_TEACHER_API_KEY" || { \
+		echo "MLARENA_TEACHER_API_KEY is not set (needs a mlk_teacher_... key)."; exit 1; }
+	MLARENA_SDK_PATH=$(SDK_PATH) $(PY_COMPS) tools/build_competitions.py attach $(COMP_ARGS)
 
 # --------------------------------------------------------------------------- #
 # Migration aid

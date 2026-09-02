@@ -222,6 +222,6 @@ seconds instead of twenty minutes.
 
 ## Where this goes next
 
-This loop is the skeleton of everything in *ML en pratique*: the CNN in Session
+This loop is the skeleton of everything in *MS2A - Machine Learning Practice*: the CNN in Session
 5, the transformer fine-tune in Session 8, the policy-gradient update in Session
 10. The data and the model change; `zero_grad / backward / step` does not.

@@ -1,23 +1,27 @@
 # Courseware
 
-Markdown source of truth for the taught modules, plus the two build paths that
-consume it.
+Markdown source of truth for the taught modules, the competitions they link to,
+and the build paths that consume both.
 
 ```text
-                     content/<course>/            ← you edit this
-                    course.yaml + *.md
-                            │
-              ┌─────────────┴─────────────┐
-              ▼                           ▼
-      tools/build_slides.py       tools/publish_mlarena.py
-              │                           │
-        build/slides/*.pptx        ML-Arena course
+     content/<course>/            competitions/<pkg>/   ← you edit these
+    course.yaml + *.md            config.py + env.py
+            │                             │
+   ┌────────┴────────┐                    │
+   ▼                 ▼                    ▼
+build_slides.py  publish_mlarena.py  build_competitions.py
+   │                 │                    │
+build/slides     ML-Arena course ◄──attach── ML-Arena competitions
+   *.pptx        (modules+lessons)         (one per session)
 ```
 
-One source, two outputs. Nothing is authored twice.
+One source per artefact, nothing authored twice. `course.yaml` names the
+competition ids its modules link to, so the attachment is declared in the same
+manifest as everything else.
 
-**Status:** `python-ai-engineering` (12h) is complete. The 30h module
-(*ML en pratique*) is not started — see `../CURRICULUM_PLAN.md`.
+**Status:** both modules are written — `python-ai-engineering` (12h) and
+`ms2a-machine-learning-practice` (30h). See `../CURRICULUM_PLAN.md` for the restructure that
+produced them.
 
 ---
 
@@ -27,20 +31,35 @@ One source, two outputs. Nothing is authored twice.
 courseware/
 ├── Makefile
 ├── content/
-│   └── python-ai-engineering/
-│       ├── course.yaml               # the manifest — structure, order, metadata
-│       ├── assets/                   # images referenced by the lessons
-│       ├── s1-git-and-packaging/     # one directory per module (= per session)
-│       │   └── *.md                  # one file per lesson
-│       ├── s2-agentic-coding/
-│       ├── s3-data-science-nutshell/
-│       ├── s4-pytorch-nutshell/
-│       ├── reference/                # demoted, self-study material
-│       └── .mlarena-state.json       # id map — committed, see "Publishing"
+│   ├── python-ai-engineering/        # 12h — 4 sessions
+│   │   ├── course.yaml               # the manifest — structure, order, metadata
+│   │   ├── assets/                   # images referenced by the lessons
+│   │   ├── s1-git-and-packaging/     # one directory per module (= per session)
+│   │   │   └── *.md                  # one file per lesson
+│   │   ├── s2-agentic-coding/
+│   │   ├── s3-data-science-nutshell/
+│   │   ├── s4-pytorch-nutshell/
+│   │   ├── reference/                # demoted, self-study material
+│   │   └── .mlarena-state.json       # id map — committed, see "Publishing"
+│   └── ms2a-machine-learning-practice/               # 30h — 10 sessions
+│       ├── course.yaml
+│       ├── assets/{collect,tabular,nn,cv,nlp,rl}/
+│       ├── s1-data-collection/ … s10-reinforcement-learning-2/
+│       ├── project/                  # the ML-Arena project brief (50% of the grade)
+│       ├── reference/
+│       └── .mlarena-state.json
+├── competitions/                     # one competition per taught session
+│   ├── s1-textstats/                 # flex_v1 — Lab 1's three functions
+│   ├── s2-readability/               # flex_v1 — Lab 2's Flesch score
+│   ├── s3-adult-income/              # file_v1 — Lab 3's pipeline
+│   ├── s4-mnist-warmup/              # file_v1 — Lab 4's submission dry run
+│   ├── localtest.py                  # run an env.py the way the worker would
+│   └── .mlarena-state.json           # id lockfile — committed
 ├── tools/
 │   ├── build_slides.py               # Markdown -> PPTX
 │   ├── mathrender.py                 # LaTeX -> Unicode / PNG
 │   ├── publish_mlarena.py            # Markdown -> ML-Arena (idempotent)
+│   ├── build_competitions.py         # competition packages -> ML-Arena
 │   └── harvest_website.py            # one-off: React JSX -> Markdown
 └── build/                            # generated, gitignored
 ```
@@ -168,6 +187,16 @@ Creating the *course* works with any scope and flips your account to teacher —
 so if you have no teacher key yet: create the course once with the user key,
 then mint a teacher key from your ML-Arena Profile page and re-run.
 
+### Publishing text without images
+
+`--skip-media` (or `make publish NO_MEDIA=1`) publishes lesson bodies without
+uploading their images, leaving the repo-relative paths in place. Those lessons
+render with broken image links until you re-run **without** the flag, which
+uploads each file and rewrites the bodies. Nothing is lost — the reference is
+still in the markdown, which is why the flag does not substitute a placeholder.
+
+Use it only when the server's media route is unavailable.
+
 ### Idempotency
 
 The SDK's `author_course_from_dir` is create-only — re-running it duplicates
@@ -182,6 +211,31 @@ The script is a pure client-side composition of the public SDK methods — no ne
 endpoint — per the frontend↔SDK parity rule in `mlarena-sdk/PROCESS.md`.
 
 ---
+
+## Competitions
+
+Each taught session has one competition, built from a package under
+`competitions/` and linked to that session's module. Sessions 1 and 2 grade the
+lab's *code* (`flex_v1` — competitors upload `agent.py`); Sessions 3 and 4 grade
+a *submission file* (`file_v1`). The reference module has none.
+
+```bash
+export MLARENA_API_KEY=mlk_creator_...
+make competitions                 # build, benchmark, verify, start
+make competitions-status
+make competitions-publish         # flip them public when the course is ready
+MLARENA_TEACHER_API_KEY=mlk_teacher_... make competitions-attach
+```
+
+`make competitions` refuses to start a competition whose reference solution does
+not score the benchmark its package declares, so a green run is evidence the
+scoring works — not just that the upload did. See `competitions/README.md` for
+the package layout and the platform behaviours the envs are written around.
+
+Note the two different keys. Competition authoring is `creator` scope; attaching
+a competition to a module is `/api/teacher/*`, and API-key auth requires the
+scope to match **exactly** — a creator key is rejected with
+`Key scope 'creator' cannot access 'teacher' route`.
 
 ## Harvesting from the React site
 
@@ -200,28 +254,60 @@ work of the 2026 restructure lives.
 
 ---
 
-## Adding the second module
+## Two courses, one toolchain
 
-When *ML en pratique* (30h) starts:
+Every target takes `COURSE=`, defaulting to `python-ai-engineering`:
 
 ```bash
-mkdir -p content/ml-en-pratique
-# write course.yaml with 10 modules
-make slides COURSE=ml-en-pratique
-make publish COURSE=ml-en-pratique
+make slides  COURSE=ms2a-machine-learning-practice
+make publish COURSE=ms2a-machine-learning-practice
 ```
 
-The tooling is course-agnostic; only `content/` grows.
+The tooling is course-agnostic; only `content/` grows. Each course carries its
+own `.mlarena-state.json`, so the two publish independently.
 
 ---
 
 ## Known gaps
 
-- **Course dates in `course.yaml` are placeholders** (2026-09-07 → 2026-09-11).
-  Set the real week before the first publish.
-- **The warm-up competition is not attached.** `course.yaml` has the
-  `competitions:` block for session 4 commented out, pending a decision on
-  `CURRICULUM_PLAN.md` §9.2 and a competition id.
+- **`ms2a-machine-learning-practice` is published text-only.** All 12 modules and
+  73 lessons are live on course #15, but its 132 images are **not** uploaded.
+  The cause is server-side, not in this directory:
+
+  `backend/app/services/course_content.py:25` reads
+  `os.environ.get("PATH_COURSES", "/app/storage/courses")`. `PATH_COURSES` is
+  not set in `k8s-manifests_prod/backend-deployment.yaml`, and nothing is
+  mounted at that path — its three siblings (`PATH_COMPETITIONS`, `PATH_USERS`,
+  `PATH_REPOSITORY`) each have both an env var and a PVC. So
+  `os.makedirs()` in `backend/app/views/teacher/lessons.py:198` hits the
+  read-only image filesystem and every upload returns 500.
+
+  Fix: provision a `courses-volume` PV/PVC, mount it at `/app/storage/courses`,
+  set `PATH_COURSES`, and make that line `os.environ["PATH_COURSES"]` so a
+  missing mount fails at boot rather than at upload time. Then:
+
+  ```bash
+  make publish COURSE=ms2a-machine-learning-practice   # no NO_MEDIA
+  ```
+
+  which uploads the 132 files and rewrites every affected body.
+
+- **Course dates in `course.yaml` are placeholders** — 2026-09-07 → 2026-09-11
+  for the 12h module, 2026-09-14 → 2026-11-27 for the 30h one. Set the real
+  term dates before the first publish.
+- **The project competitions are not attached.** `ms2a-machine-learning-practice`'s `project`
+  module describes three tracks (CURRICULUM_PLAN.md §7); the competition ids do
+  not exist yet, so there is no `competitions:` block. Add one per track once
+  they are created.
+- **`python-ai-engineering`'s four competitions are hidden.** Ids 179–182 are
+  live, benchmarked and attached to modules 14–17 (`make competitions-status`),
+  and `course.yaml` declares them. But they are still `is_public=False`, so
+  enrolled students get a 404 on the competition pages. One command closes it,
+  once the real term dates are set:
+
+  ```bash
+  make competitions-publish
+  ```
 - **No lesson `mlarena:` directives are used yet.** If any are added,
   `preview_lesson` should be wired into `publish_mlarena.py` to validate them
   before publishing.

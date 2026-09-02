@@ -24,7 +24,7 @@ x.ndim      # 4
 ```
 
 `(batch, channels, height, width)` — the standard image layout, and the one you
-will meet again in *ML en pratique*.
+will meet again in *MS2A - Machine Learning Practice*.
 
 ---
 

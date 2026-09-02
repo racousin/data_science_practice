@@ -1,0 +1,583 @@
+# MS2A - Machine Learning Practice — 30h (10 × 3h)
+#
+# Single source of truth for this module. Drives two outputs:
+#   * PPTX decks      -> tools/build_slides.py    (one deck per module below)
+#   * ML-Arena course -> tools/publish_mlarena.py (course / module / lesson rows)
+#
+# Structure follows CURRICULUM_PLAN.md §4. Sourced from the retired website
+# courses: DSP m4–m9 + PDL m3–m4.
+
+course:
+  name: "MS2A - Machine Learning Practice"
+  code: "MS2A-MLP"
+  slug: ms2a-machine-learning-practice
+  visibility: unlisted
+  instructor_name: "Raphael Cousin"
+  # PLACEHOLDER — 10 weeks, 2 × 3h per week. Set the real term dates before the
+  # first published run.
+  start_date: "2026-09-14"
+  end_date: "2026-11-27"
+  description: |
+    A 30-hour applied machine learning course in ten 3-hour sessions, taken
+    after *Python AI Engineering*. It walks the full arc of a modern ML system:
+    collecting and preparing data, tabular models, deep networks in PyTorch,
+    computer vision, natural language processing and large language models, and
+    reinforcement learning.
+
+    Every session is half lecture, half lab. Half the grade is a project
+    submitted to ML-Arena; the other half is continuous assessment across the
+    ten labs. You are expected to arrive with the engineering floor from the
+    12-hour module: git, a packaged environment, tests, and a coding agent you
+    know how to supervise.
+
+modules:
+  # ---------------------------------------------------------------- session 1
+  - title: "Session 1 — Data Collection"
+    slug: s1-data-collection
+    icon: database
+    visibility: unlisted
+    summary: >
+      Where data comes from and what it costs to get it: files, databases,
+      APIs, scraping — and the quality checks that belong at the point of
+      collection rather than three weeks later.
+    competitions:
+      - competition_id: 177
+        label: "Global Weather Forecast — a source that never stops: observations arrive daily and the forecast is scored once the weather has happened"
+    lessons:
+      - title: "Data and Its Shapes"
+        slug: data-and-its-shapes
+        file: s1-data-collection/data-and-its-shapes.md
+        estimated_minutes: 20
+        is_published: true
+      - title: "Files and Formats"
+        slug: files-and-formats
+        file: s1-data-collection/files-and-formats.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Databases"
+        slug: databases
+        file: s1-data-collection/databases.md
+        estimated_minutes: 25
+        is_published: true
+      - title: "APIs"
+        slug: apis
+        file: s1-data-collection/apis.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Web Scraping"
+        slug: web-scraping
+        file: s1-data-collection/web-scraping.md
+        estimated_minutes: 25
+        is_published: true
+      - title: "Collection Strategy and Data Quality"
+        slug: collection-strategy-and-quality
+        file: s1-data-collection/collection-strategy-and-quality.md
+        estimated_minutes: 25
+        is_published: true
+      - title: "Lab 1 — Build a Dataset"
+        slug: lab-1
+        kind: exercise
+        file: s1-data-collection/lab-1.md
+        estimated_minutes: 45
+        is_published: true
+
+  # ---------------------------------------------------------------- session 2
+  - title: "Session 2 — Data Preprocessing"
+    slug: s2-data-preprocessing
+    icon: filter
+    visibility: unlisted
+    summary: >
+      Turning a collected table into a matrix a model can learn from: missing
+      values, duplicates, outliers, encodings, scaling, engineered features —
+      each one fitted on train and applied to test, never the reverse.
+    competitions:
+      - competition_id: 176
+        label: "Allergen Chip Challenge — real clinical open data: missing values, mixed types, an encoding contract fitted on train only"
+    lessons:
+      - title: "The Preprocessing Contract"
+        slug: the-preprocessing-contract
+        file: s2-data-preprocessing/the-preprocessing-contract.md
+        estimated_minutes: 20
+        is_published: true
+      - title: "Missing Values"
+        slug: missing-values
+        file: s2-data-preprocessing/missing-values.md
+        estimated_minutes: 35
+        is_published: true
+      - title: "Duplicates, Inconsistencies, Outliers"
+        slug: duplicates-inconsistencies-outliers
+        file: s2-data-preprocessing/duplicates-inconsistencies-outliers.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Categorical Encoding"
+        slug: categorical-encoding
+        file: s2-data-preprocessing/categorical-encoding.md
+        estimated_minutes: 35
+        is_published: true
+      - title: "Scaling and Normalization"
+        slug: scaling-and-normalization
+        file: s2-data-preprocessing/scaling-and-normalization.md
+        estimated_minutes: 25
+        is_published: true
+      - title: "Feature Engineering and Selection"
+        slug: feature-engineering-and-selection
+        file: s2-data-preprocessing/feature-engineering-and-selection.md
+        estimated_minutes: 40
+        is_published: true
+      - title: "Lab 2 — A Leak-Free Pipeline"
+        slug: lab-2
+        kind: exercise
+        file: s2-data-preprocessing/lab-2.md
+        estimated_minutes: 45
+        is_published: true
+
+  # ---------------------------------------------------------------- session 3
+  - title: "Session 3 — Tabular Models"
+    slug: s3-tabular-models
+    icon: table
+    visibility: unlisted
+    summary: >
+      The models that still win on tabular data, the validation that tells you
+      whether they do, and the search that tunes them — gradient boosting,
+      cross-validation schemes, and hyperparameter optimisation.
+    competitions:
+      - competition_id: 172
+        label: "2-Month Survival Prediction — tabular binary classification: gradient boosting judged against a baseline you can defend"
+    lessons:
+      - title: "The Tabular Landscape"
+        slug: the-tabular-landscape
+        file: s3-tabular-models/the-tabular-landscape.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Trees and Ensembles"
+        slug: trees-and-ensembles
+        file: s3-tabular-models/trees-and-ensembles.md
+        estimated_minutes: 40
+        is_published: true
+      - title: "Gradient Boosting in Practice"
+        slug: gradient-boosting-in-practice
+        file: s3-tabular-models/gradient-boosting-in-practice.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Model Selection and Validation"
+        slug: model-selection-and-validation
+        file: s3-tabular-models/model-selection-and-validation.md
+        estimated_minutes: 35
+        is_published: true
+      - title: "Hyperparameter Optimization"
+        slug: hyperparameter-optimization
+        file: s3-tabular-models/hyperparameter-optimization.md
+        estimated_minutes: 35
+        is_published: true
+      - title: "Time Series Models"
+        slug: time-series-models
+        file: s3-tabular-models/time-series-models.md
+        estimated_minutes: 25
+        is_published: true
+      - title: "Lab 3 — Beat the Baseline"
+        slug: lab-3
+        kind: exercise
+        file: s3-tabular-models/lab-3.md
+        estimated_minutes: 45
+        is_published: true
+
+  # ---------------------------------------------------------------- session 4
+  - title: "Session 4 — Advanced Neural Networks with PyTorch"
+    slug: s4-advanced-neural-networks
+    icon: layers
+    visibility: unlisted
+    summary: >
+      From a training loop that runs to a training loop that works: layers,
+      initialisation, normalisation, regularisation, schedules, monitoring, and
+      the profiling that tells you where the time actually goes.
+    competitions:
+      - competition_id: 8
+        label: "1 Minute Permuted MNIST — a deep network under a 60-second budget: initialisation, schedules, throughput, profiling"
+    lessons:
+      - title: "Essential Layers"
+        slug: essential-layers
+        file: s4-advanced-neural-networks/essential-layers.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Making Training Work"
+        slug: making-training-work
+        file: s4-advanced-neural-networks/making-training-work.md
+        estimated_minutes: 40
+        is_published: true
+      - title: "Optimization and Schedules"
+        slug: optimization-and-schedules
+        file: s4-advanced-neural-networks/optimization-and-schedules.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Data Pipelines and the Training Loop"
+        slug: data-pipelines-and-training-loop
+        file: s4-advanced-neural-networks/data-pipelines-and-training-loop.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Monitoring and Debugging"
+        slug: monitoring-and-debugging
+        file: s4-advanced-neural-networks/monitoring-and-debugging.md
+        estimated_minutes: 25
+        is_published: true
+      - title: "Performance and Profiling"
+        slug: performance-and-profiling
+        file: s4-advanced-neural-networks/performance-and-profiling.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Lab 4 — Train Something Deep"
+        slug: lab-4
+        kind: exercise
+        file: s4-advanced-neural-networks/lab-4.md
+        estimated_minutes: 45
+        is_published: true
+
+  # ---------------------------------------------------------------- session 5
+  - title: "Session 5 — Computer Vision 1"
+    slug: s5-computer-vision-1
+    icon: image
+    visibility: unlisted
+    summary: >
+      Images as tensors, convolution as the right inductive bias, and transfer
+      learning — the path from pixels to a classifier that works on a few
+      thousand labelled examples.
+    competitions:
+      - competition_id: 173
+        label: "Blood Cell Classification — eight classes of 28x28 RGB: a CNN from scratch, or a pretrained backbone fine-tuned"
+    lessons:
+      - title: "Images as Tensors"
+        slug: images-as-tensors
+        file: s5-computer-vision-1/images-as-tensors.md
+        estimated_minutes: 25
+        is_published: true
+      - title: "Convolution"
+        slug: convolution
+        file: s5-computer-vision-1/convolution.md
+        estimated_minutes: 40
+        is_published: true
+      - title: "Pooling and CNN Architectures"
+        slug: pooling-and-architectures
+        file: s5-computer-vision-1/pooling-and-architectures.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Training CNNs"
+        slug: training-cnns
+        file: s5-computer-vision-1/training-cnns.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Transfer Learning"
+        slug: transfer-learning
+        file: s5-computer-vision-1/transfer-learning.md
+        estimated_minutes: 35
+        is_published: true
+      - title: "Lab 5 — Classify with a Pretrained Backbone"
+        slug: lab-5
+        kind: exercise
+        file: s5-computer-vision-1/lab-5.md
+        estimated_minutes: 45
+        is_published: true
+
+  # ---------------------------------------------------------------- session 6
+  - title: "Session 6 — Computer Vision 2"
+    slug: s6-computer-vision-2
+    icon: scan
+    visibility: unlisted
+    summary: >
+      Beyond one label per image: detection, segmentation, and the generative
+      family — autoencoders, VAEs, GANs and diffusion.
+    competitions:
+      - competition_id: 47
+        label: "CarRacing-v3 — vision with no label to predict: a convolutional encoder reading raw frames inside a control loop"
+    lessons:
+      - title: "Object Detection"
+        slug: object-detection
+        file: s6-computer-vision-2/object-detection.md
+        estimated_minutes: 40
+        is_published: true
+      - title: "Segmentation"
+        slug: segmentation
+        file: s6-computer-vision-2/segmentation.md
+        estimated_minutes: 35
+        is_published: true
+      - title: "Autoencoders and VAEs"
+        slug: autoencoders-and-vaes
+        file: s6-computer-vision-2/autoencoders-and-vaes.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "GANs"
+        slug: gans
+        file: s6-computer-vision-2/gans.md
+        estimated_minutes: 25
+        is_published: true
+      - title: "Diffusion Models"
+        slug: diffusion-models
+        file: s6-computer-vision-2/diffusion-models.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Lab 6 — Detect or Generate"
+        slug: lab-6
+        kind: exercise
+        file: s6-computer-vision-2/lab-6.md
+        estimated_minutes: 45
+        is_published: true
+
+  # ---------------------------------------------------------------- session 7
+  - title: "Session 7 — NLP 1"
+    slug: s7-nlp-1
+    icon: text
+    visibility: unlisted
+    summary: >
+      Text into vectors and vectors into meaning: tokenization, embeddings,
+      recurrent models, attention, and the transformer block that replaced them.
+    competitions:
+      - competition_id: 174
+        label: "Clinical Note Triage — transcription to clinical specialty: tokenize, embed, fine-tune a text classifier"
+      - competition_id: 178
+        label: "Prédire la source — 30 francophone outlets, a fresh sample of the day's text scored every day"
+    lessons:
+      - title: "Text as Data and Tokenization"
+        slug: text-as-data-and-tokenization
+        file: s7-nlp-1/text-as-data-and-tokenization.md
+        estimated_minutes: 35
+        is_published: true
+      - title: "Embeddings"
+        slug: embeddings
+        file: s7-nlp-1/embeddings.md
+        estimated_minutes: 35
+        is_published: true
+      - title: "Recurrent Models and Their Limits"
+        slug: recurrent-models
+        file: s7-nlp-1/recurrent-models.md
+        estimated_minutes: 25
+        is_published: true
+      - title: "Attention"
+        slug: attention
+        file: s7-nlp-1/attention.md
+        estimated_minutes: 40
+        is_published: true
+      - title: "The Transformer"
+        slug: the-transformer
+        file: s7-nlp-1/the-transformer.md
+        estimated_minutes: 40
+        is_published: true
+      - title: "Lab 7 — Fine-Tune a Text Classifier"
+        slug: lab-7
+        kind: exercise
+        file: s7-nlp-1/lab-7.md
+        estimated_minutes: 45
+        is_published: true
+
+  # ---------------------------------------------------------------- session 8
+  - title: "Session 8 — NLP 2"
+    slug: s8-nlp-2
+    icon: message-square
+    visibility: unlisted
+    summary: >
+      Large language models as engineering objects: how they are trained,
+      how they generate, how you adapt them cheaply, how you ground them in your
+      own data, and how you evaluate any of it.
+    competitions:
+      - competition_id: 165
+        label: "GSM8k — grade-school math word problems on a private test set: prompting, decoding, and evaluating generation"
+    lessons:
+      - title: "Training and Scaling LLMs"
+        slug: training-and-scaling-llms
+        file: s8-nlp-2/training-and-scaling-llms.md
+        estimated_minutes: 35
+        is_published: true
+      - title: "Generation and Decoding"
+        slug: generation-and-decoding
+        file: s8-nlp-2/generation-and-decoding.md
+        estimated_minutes: 25
+        is_published: true
+      - title: "Instruction Tuning and PEFT"
+        slug: instruction-tuning-and-peft
+        file: s8-nlp-2/instruction-tuning-and-peft.md
+        estimated_minutes: 35
+        is_published: true
+      - title: "Evaluating Generation"
+        slug: evaluating-generation
+        file: s8-nlp-2/evaluating-generation.md
+        estimated_minutes: 25
+        is_published: true
+      - title: "RAG"
+        slug: rag
+        file: s8-nlp-2/rag.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Agents"
+        slug: agents
+        file: s8-nlp-2/agents.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Lab 8 — Build and Judge a RAG Pipeline"
+        slug: lab-8
+        kind: exercise
+        file: s8-nlp-2/lab-8.md
+        estimated_minutes: 45
+        is_published: true
+
+  # ---------------------------------------------------------------- session 9
+  - title: "Session 9 — Reinforcement Learning 1"
+    slug: s9-reinforcement-learning-1
+    icon: target
+    visibility: unlisted
+    summary: >
+      Learning from interaction: the MDP, value functions and the Bellman
+      equations, dynamic programming when you have the model, and Monte-Carlo /
+      temporal-difference control when you do not.
+    competitions:
+      - competition_id: 48
+        label: "CartPole-v1 — discrete actions over a state you can discretize: where Lab 9's tabular agent lands"
+      - competition_id: 49
+        label: "MountainCar-v0 — sparse reward, discrete actions: exploration is the whole problem"
+    lessons:
+      - title: "Learning from Interaction"
+        slug: learning-from-interaction
+        file: s9-reinforcement-learning-1/learning-from-interaction.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Markov Decision Processes"
+        slug: markov-decision-processes
+        file: s9-reinforcement-learning-1/markov-decision-processes.md
+        estimated_minutes: 40
+        is_published: true
+      - title: "Dynamic Programming"
+        slug: dynamic-programming
+        file: s9-reinforcement-learning-1/dynamic-programming.md
+        estimated_minutes: 35
+        is_published: true
+      - title: "Model-Free Prediction and Control"
+        slug: model-free-prediction-and-control
+        file: s9-reinforcement-learning-1/model-free-prediction-and-control.md
+        estimated_minutes: 45
+        is_published: true
+      - title: "Gymnasium"
+        slug: gymnasium
+        file: s9-reinforcement-learning-1/gymnasium.md
+        estimated_minutes: 25
+        is_published: true
+      - title: "Lab 9 — Tabular Agent on Frozen Lake"
+        slug: lab-9
+        kind: exercise
+        file: s9-reinforcement-learning-1/lab-9.md
+        estimated_minutes: 45
+        is_published: true
+
+  # --------------------------------------------------------------- session 10
+  - title: "Session 10 — Reinforcement Learning 2"
+    slug: s10-reinforcement-learning-2
+    icon: cpu
+    visibility: unlisted
+    summary: >
+      Deep RL: function approximation and DQN, policy gradients, actor-critic
+      and PPO, the practical machinery that makes runs reproducible, and
+      multi-agent environments on ML-Arena.
+    competitions:
+      - competition_id: 43
+        label: "LunarLander-v3 — the standard DQN / PPO target: function approximation over a continuous state"
+      - competition_id: 65
+        label: "PettingZoo · Connect-Four — two players ranked by ELO against the live population"
+    lessons:
+      - title: "From Tables to Networks"
+        slug: from-tables-to-networks
+        file: s10-reinforcement-learning-2/from-tables-to-networks.md
+        estimated_minutes: 40
+        is_published: true
+      - title: "Policy Gradients"
+        slug: policy-gradients
+        file: s10-reinforcement-learning-2/policy-gradients.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Actor-Critic and PPO"
+        slug: actor-critic-and-ppo
+        file: s10-reinforcement-learning-2/actor-critic-and-ppo.md
+        estimated_minutes: 35
+        is_published: true
+      - title: "Making Deep RL Work"
+        slug: making-deep-rl-work
+        file: s10-reinforcement-learning-2/making-deep-rl-work.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Multi-Agent RL"
+        slug: multi-agent-rl
+        file: s10-reinforcement-learning-2/multi-agent-rl.md
+        estimated_minutes: 35
+        is_published: true
+      - title: "Lab 10 — Ship an Agent to ML-Arena"
+        slug: lab-10
+        kind: exercise
+        file: s10-reinforcement-learning-2/lab-10.md
+        estimated_minutes: 45
+        is_published: true
+
+  # ----------------------------------------------------------------- project
+  - title: "Project"
+    slug: mlp-project
+    icon: trophy
+    visibility: unlisted
+    summary: >
+      Half the grade. One ML-Arena competition track of your choosing, plus the
+      repository that produced the submission.
+    competitions:
+      - competition_id: 172
+        label: "Prediction track — 2-Month Survival Prediction: a predictions file scored on labels you never see"
+      - competition_id: 169
+        label: "Agent track — SuperTuxKart Grand Prix: four agents per race, code that acts, ranked by ELO"
+      - competition_id: 171
+        label: "Generative track — The Round: a pitch read by 16 AI VCs, scored by the money they commit"
+    lessons:
+      - title: "The Brief"
+        slug: project-brief
+        file: project/project-brief.md
+        estimated_minutes: 20
+        is_published: true
+      - title: "Tracks"
+        slug: project-tracks
+        file: project/project-tracks.md
+        estimated_minutes: 25
+        is_published: true
+      - title: "Deliverables and Grading"
+        slug: project-grading
+        file: project/project-grading.md
+        estimated_minutes: 20
+        is_published: true
+
+  # --------------------------------------------------------------- reference
+  - title: "Reference"
+    slug: mlp-reference
+    icon: book
+    visibility: unlisted
+    summary: >
+      Material demoted out of class time. Self-study, linked from the sessions,
+      never lectured.
+    competitions:
+      - competition_id: 168
+        label: "AquaControl — self-study playground: MultiBinary valve control on a drinking-water network"
+      - competition_id: 170
+        label: "Bitcoin Intraday Trading — self-study playground: a stateful environment whose position carries across runs"
+    lessons:
+      - title: "Multi-GPU Scaling"
+        slug: multi-gpu-scaling
+        file: reference/multi-gpu-scaling.md
+        estimated_minutes: 25
+        is_published: true
+      - title: "CNN Backpropagation — the Mathematics"
+        slug: cnn-backpropagation
+        file: reference/cnn-backpropagation.md
+        estimated_minutes: 25
+        is_published: true
+      - title: "3D CNNs"
+        slug: three-d-cnns
+        file: reference/three-d-cnns.md
+        estimated_minutes: 20
+        is_published: true
+      - title: "Image Enhancement"
+        slug: image-enhancement
+        file: reference/image-enhancement.md
+        estimated_minutes: 15
+        is_published: true
+      - title: "AutoML and Custom Objectives"
+        slug: automl-and-custom-objectives
+        file: reference/automl-and-custom-objectives.md
+        estimated_minutes: 20
+        is_published: true

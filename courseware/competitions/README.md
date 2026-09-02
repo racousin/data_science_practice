@@ -1,0 +1,146 @@
+# Competitions
+
+One competition per taught session of `python-ai-engineering`, and the packages
+that build them. Sibling of `../content/` : that directory owns modules and
+lessons, this one owns the competitions those modules link to.
+
+```text
+competitions/
+├── s1-textstats/        flex_v1   Lab 1's three functions, on hidden texts
+├── s2-readability/      flex_v1   Lab 2's Flesch score, against a pinned spec
+├── s3-adult-income/     file_v1   Lab 3's pipeline, on a held-out Adult split
+├── s4-mnist-warmup/     file_v1   Lab 4's MLP — the submission-path dry run
+├── localtest.py         run an env.py locally, the way the worker would
+└── .mlarena-state.json  the id lockfile — committed, see "Publishing"
+```
+
+The reference module (`paie-reference`) has no competition: it is self-study
+material, never lectured, with nothing to score.
+
+## A package
+
+| file | required for | what it is |
+|---|---|---|
+| `config.py` | all | the manifest — name, kind, target module, metrics, expected benchmark score |
+| `env.py` | all | the scorer. Runs in the env container |
+| `overview.md` | all | the competition page competitors read |
+| `agent.py` | flex_v1 | the reference solution, run as the creator-side benchmark |
+| `agent_template.py` | flex_v1 | the starter handed to competitors |
+| `prepare_data.py` | file_v1 | builds `data/` — deterministic, re-runnable |
+| `data/` | file_v1 | public dataset files, the private ground truth, the benchmark submission. **Generated, gitignored** |
+
+`config.py` declares `benchmark_expected_score`. That number is the contract:
+the build refuses to start a competition whose reference solution does not
+score exactly it. A competition that has drifted away from what it claims to
+grade fails the build instead of quietly mis-ranking a class.
+
+## Two kernels, two shapes
+
+**flex_v1** (Sessions 1 & 2) — competitors upload `agent.py`, which runs in its
+own container. `env.py` calls creator-named methods through
+`agents[i].call("word_count", text)`. Used where the thing being graded *is*
+the code from the lab.
+
+One property of the platform drives both env designs: **the first failed call
+latches the agent channel**, and every later call short-circuits without
+reaching the agent (`workers/flex_v1/executor/agent_channel.py:154`). So both
+envs score with `catch_errors=True`, award partial credit for everything that
+passed before the crash, and put the failing case and method into
+`info_message`. It also means neither competition can test a *required*
+exception — `longest_word("")` raising `ValueError` would be recorded as a
+crash — so those stay in the labs' own pytest suites, and every input sent is
+well-formed. Both overviews say so.
+
+**file_v1** (Sessions 3 & 4) — competitors upload one `submission.csv`; no
+competitor code runs. `env.py` reads it and scores against a private
+`y_test.csv` that is uploaded to the env folder and never published. Both
+scorers are **pure standard library**: the env image ships a full ML stack, but
+a scorer needing only `csv` and arithmetic has one less way to break. Both
+reject a malformed submission with a message naming the line, rather than
+imputing anything.
+
+## Testing before publishing
+
+```bash
+python competitions/localtest.py s1-textstats            # reference agent
+python competitions/localtest.py s1-textstats --agent agent_broken.py
+python competitions/localtest.py s3-adult-income
+```
+
+`localtest.py` stages `env.py` plus its private files into a scratch directory
+exactly as the platform lays out the env folder — which is what catches "env.py
+reads `y_test.csv` from next to itself, but the file was never in
+`private_files`". For flex packages it reproduces the error latch, so env code
+that assumes it can keep calling after a crash fails locally. It also checks
+`metrics_detail` against the declared schema (the executor enforces
+equal-mapping at run time) and the benchmark score against `config.py`.
+
+Local green is necessary, not sufficient. The real test is the benchmark, below.
+
+## Publishing
+
+```bash
+export MLARENA_API_KEY=mlk_creator_...
+python tools/build_competitions.py build            # all four
+python tools/build_competitions.py build --only s3-adult-income
+python tools/build_competitions.py status
+```
+
+`build` creates or updates, uploads env + private files + datasets + the agent
+template, then **runs the benchmark and refuses to continue unless the
+reference solution scores exactly `benchmark_expected_score`**. That benchmark
+is a real run of the real pipeline — JobPod, executor, and for flex_v1 an agent
+container — so a green build is evidence the competition works, not just that
+the upload succeeded.
+
+Competitions are created **hidden** (`is_public=False`) and started. Flip them
+public when the course is ready:
+
+```bash
+python tools/build_competitions.py publish
+```
+
+Until then only the owner, creator assistants and admins can open them;
+everyone else gets a 404, including enrolled students.
+
+### Attaching to the course modules
+
+```bash
+export MLARENA_TEACHER_API_KEY=mlk_teacher_...
+python tools/build_competitions.py attach
+```
+
+This is the one step a creator key cannot do — `attach_competition` is an
+`/api/teacher/*` route and API-key auth requires the scope to match exactly:
+
+```json
+{"error": "Key scope 'creator' cannot access 'teacher' route"}
+```
+
+Module ids come from the course lockfile
+(`content/python-ai-engineering/.mlarena-state.json`), so publish the course
+first. The same attachment is also declared in `course.yaml`, so
+`make publish` performs it too — `attach` exists for when you want the
+competitions linked without republishing lesson bodies.
+
+### Idempotency
+
+Server ids live in `.mlarena-state.json`, keyed by base URL. **Commit it.** A
+competition that is already `is_started` is left alone, because the platform
+locks settings, datasets and the agent template after start — changing scoring
+means stopping the competition, which invalidates every score already on the
+board.
+
+## Settings worth knowing
+
+`evaluation_deployment_nb_constraint_run` / `..._nb_initial_score_run` are set
+to `1 + 1` rather than the server default of `2 + 10`. All four scorers are
+deterministic — the same submission always gets the same number — so ten
+repeats would be ten identical pods. **1 is the floor**, not 0: the settings
+schema is `ge=1` (`backend/app/views/creator_competition/_schemas.py`).
+
+New competitions default to `is_stop_after_deployment=True`, so an agent is
+scored on deployment and then stops; there is no ongoing matchmaking. That is
+what makes a single-submission-per-student competition work — the periodic
+matchmaker drops groups smaller than the engine's `number_of_agents`, and never
+sees these.

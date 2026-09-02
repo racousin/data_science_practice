@@ -42,6 +42,26 @@ SYMBOLS = {
     r"\mathbb{R}": "ℝ", r"\mathbb{N}": "ℕ", r"\mathbb{Z}": "ℤ",
     r"\arg\min": "argmin", r"\arg\max": "argmax",
     r"\quad": "  ", r"\qquad": "    ", r"\,": " ", r"\;": " ", r"\!": "",
+    # Sizing wrappers carry no glyph of their own.
+    r"\left": "", r"\right": "", r"\big": "", r"\Big": "",
+    # Delimiters and set/logic operators.
+    r"\mid": "|", r"\vert": "|", r"\Vert": "‖", r"\langle": "⟨",
+    r"\rangle": "⟩", r"\lfloor": "⌊", r"\rfloor": "⌋", r"\lceil": "⌈",
+    r"\rceil": "⌉", r"\cup": "∪", r"\cap": "∩", r"\subseteq": "⊆",
+    r"\supset": "⊃", r"\emptyset": "∅", r"\setminus": "\\",
+    r"\propto": "∝", r"\equiv": "≡", r"\sim": "~", r"\simeq": "≃",
+    r"\perp": "⊥", r"\top": "⊤", r"\bot": "⊥", r"\otimes": "⊗",
+    r"\oplus": "⊕", r"\ast": "*", r"\star": "*", r"\colon": ":",
+    r"\leftrightarrow": "↔", r"\Leftrightarrow": "⇔", r"\iff": "⇔",
+    r"\implies": "⇒", r"\uparrow": "↑", r"\downarrow": "↓",
+    r"\mathbb{E}": "\U0001D53C", r"\mathbb{P}": "\U0001D50B",
+    # Named operators. LaTeX sets these upright; the transliteration is the
+    # bare word, which is what a reader expects on a slide.
+    r"\log": "log", r"\ln": "ln", r"\exp": "exp", r"\max": "max",
+    r"\min": "min", r"\sup": "sup", r"\inf": "inf", r"\lim": "lim",
+    r"\sin": "sin", r"\cos": "cos", r"\tan": "tan", r"\det": "det",
+    r"\dim": "dim", r"\deg": "deg", r"\gcd": "gcd", r"\Pr": "Pr",
+    r"\softmax": "softmax",
 }
 
 SUPERSCRIPT = str.maketrans(
@@ -50,6 +70,19 @@ SUPERSCRIPT = str.maketrans(
 )
 SUBSCRIPT = str.maketrans("0123456789+-=()aehijklmnoprstuvx",
                           "₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎ₐₑₕᵢⱼₖₗₘₙₒₚᵣₛₜᵤᵥₓ")
+
+ESCAPABLE = frozenset("{}%$&_#")
+
+# Commands that only select a typeface: drop the wrapper, keep the content.
+# Ordered longest-first so \mathbf does not shadow \mathbb.
+FONT_WRAPPERS = (r"\operatorname", r"\boldsymbol", r"\mathcal", r"\mathrm",
+                 r"\mathbf", r"\mathit", r"\mathbb", r"\text")
+BRACED_SYMBOLS = tuple(k for k in SYMBOLS if "{" in k)
+
+
+class UnknownMacro(ValueError):
+    """An inline span used a macro the transliterator does not know."""
+
 
 COMBINING_HAT = "\u0302"
 COMBINING_BAR = "\u0304"
@@ -110,9 +143,15 @@ def latex_to_unicode(expr: str) -> str:
             inner, i = _brace_group(s, i + 4)
             out.append(latex_to_unicode(inner) + combining)
             continue
-        if s.startswith(r"\text", i) or s.startswith(r"\mathrm", i):
-            inner, i = _brace_group(s, i + (7 if s.startswith(r"\mathrm", i) else 5))
-            out.append(inner)
+        # A specific entry like \mathbb{R} wins over the \mathbb wrapper.
+        braced = any(s.startswith(k, i) for k in BRACED_SYMBOLS)
+        wrapper = None if braced else next(
+            (w for w in FONT_WRAPPERS if s.startswith(w, i)), None)
+        if wrapper is not None:
+            inner, i = _brace_group(s, i + len(wrapper))
+            # \text keeps its content verbatim; the others only change typeface,
+            # so their content is still math.
+            out.append(inner if wrapper == r"\text" else latex_to_unicode(inner))
             continue
         if s.startswith(r"\sqrt", i):
             inner, i = _brace_group(s, i + 5)
@@ -134,8 +173,21 @@ def latex_to_unicode(expr: str) -> str:
                     i += len(name)
                     break
             else:
-                out.append(s[i])
-                i += 1
+                # Fail fast: an unknown command used to be emitted verbatim,
+                # which put a literal "\\mid" on a slide without failing the
+                # build. A silently broken slide is worse than a broken build.
+                if s[i + 1:i + 2] in ESCAPABLE:
+                    out.append(s[i + 1])
+                    i += 2
+                    continue
+                name = re.match(r"\\[a-zA-Z]+", s[i:])
+                raise UnknownMacro(
+                    f"unsupported inline macro '{name.group(0) if name else chr(92)}' "
+                    f"in ${expr}$\n"
+                    f"  inline math is transliterated to Unicode — add it to "
+                    f"mathrender.SYMBOLS, use a display block ($$...$$), or "
+                    f"write it in plain words."
+                )
             continue
         if s[i] in "{}":
             i += 1

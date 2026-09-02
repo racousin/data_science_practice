@@ -1,0 +1,30 @@
+{
+  "https://ml-arena.com": {
+    "competitions": {
+      "s1-textstats": {
+        "id": 179,
+        "label": "textstats correctness",
+        "module_slug": "s1-git-and-packaging",
+        "name": "PAIE S1 \u2014 textstats"
+      },
+      "s2-readability": {
+        "id": 180,
+        "label": "Flesch reading-ease",
+        "module_slug": "s2-agentic-coding",
+        "name": "PAIE S2 \u2014 Flesch reading-ease"
+      },
+      "s3-adult-income": {
+        "id": 181,
+        "label": "Adult Census Income",
+        "module_slug": "s3-data-science-nutshell",
+        "name": "PAIE S3 \u2014 Adult Census Income"
+      },
+      "s4-mnist-warmup": {
+        "id": 182,
+        "label": "MNIST Warm-up",
+        "module_slug": "s4-pytorch-nutshell",
+        "name": "PAIE S4 \u2014 MNIST Warm-up"
+      }
+    }
+  }
+}

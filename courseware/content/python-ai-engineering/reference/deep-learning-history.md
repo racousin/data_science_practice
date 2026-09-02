@@ -107,7 +107,7 @@ the next era is built on.
 | 2023– | Multimodal models; long-context; tool-using and agentic systems |
 
 The dominant pattern is now: pretrain a large model on a lot of unlabelled data,
-then adapt it. You will do the adapting half in *ML en pratique*.
+then adapt it. You will do the adapting half in *MS2A - Machine Learning Practice*.
 
 ---
 

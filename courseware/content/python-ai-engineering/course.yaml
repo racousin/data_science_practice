@@ -20,7 +20,7 @@ course:
   end_date: "2026-09-11"
   description: |
     A 12-hour mise à niveau in four 3-hour sessions, taken before
-    *Machine Learning en pratique*. It assumes you already write Python and
+    *MS2A - Machine Learning Practice*. It assumes you already write Python and
     builds the engineering floor the rest of the year stands on: version
     control, reproducible environments, an agentic coding workflow, the
     vocabulary of applied machine learning, and PyTorch.
@@ -70,6 +70,9 @@ modules:
         file: s1-git-and-packaging/lab-1.md
         estimated_minutes: 60
         is_published: true
+    competitions:
+      - competition_id: 179
+        label: "textstats correctness"
 
   # ---------------------------------------------------------------- session 2
   - title: "Session 2 — Agentic Coding"
@@ -112,6 +115,9 @@ modules:
         file: s2-agentic-coding/lab-2.md
         estimated_minutes: 45
         is_published: true
+    competitions:
+      - competition_id: 180
+        label: "Flesch reading-ease"
 
   # ---------------------------------------------------------------- session 3
   - title: "Session 3 — Data Science in a Nutshell"
@@ -149,6 +155,9 @@ modules:
         file: s3-data-science-nutshell/lab-3.md
         estimated_minutes: 45
         is_published: true
+    competitions:
+      - competition_id: 181
+        label: "Adult Census Income"
 
   # ---------------------------------------------------------------- session 4
   - title: "Session 4 — PyTorch in a Nutshell"
@@ -190,11 +199,9 @@ modules:
         file: s4-pytorch-nutshell/lab-4.md
         estimated_minutes: 45
         is_published: true
-    # The warm-up competition (CURRICULUM_PLAN.md §7) attaches here once it
-    # exists on ML-Arena. Uncomment and set the id:
-    # competitions:
-    #   - competition_id: 0
-    #     label: "Warm-up — file_v1 submission"
+    competitions:
+      - competition_id: 182
+        label: "MNIST Warm-up"
 
   # ---------------------------------------------------------------- reference
   - title: "Reference"

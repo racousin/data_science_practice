@@ -30,7 +30,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import yaml
-from mathrender import MathRenderer, latex_to_unicode
+from mathrender import MathRenderer, UnknownMacro, latex_to_unicode
 from pptx import Presentation
 from pptx.dml.color import RGBColor
 from pptx.enum.shapes import MSO_SHAPE
@@ -605,13 +605,21 @@ def build_module(base: str, course: dict, module: dict, out_dir: str,
         if not slides:
             continue
         deck.section(lesson["title"], lesson.get("kind", "lesson"))
-        for raw in slides:
+        for n, raw in enumerate(slides, 1):
             notes_match = NOTES_RE.search(raw)
             notes = notes_match.group(1).strip() if notes_match else ""
             title, blocks = parse_blocks(NOTES_RE.sub("", raw))
             if not title and not blocks:
                 continue
-            deck.content(title, blocks, notes, lesson["title"])
+            try:
+                deck.content(title, blocks, notes, lesson["title"])
+            except UnknownMacro as exc:
+                # Locate the offending span for the author rather than dumping
+                # a traceback from inside the transliterator.
+                raise SystemExit(
+                    f"{lesson.get('file', lesson['title'])}: slide {n} "
+                    f"({title or 'untitled'}): {exc}"
+                ) from None
 
     out_path = os.path.join(out_dir, f"{module.get('slug') or _slug(module['title'])}.pptx")
     deck.save(out_path)

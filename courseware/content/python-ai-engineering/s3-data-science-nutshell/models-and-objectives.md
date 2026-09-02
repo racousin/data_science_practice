@@ -1,6 +1,6 @@
 # Models & Objectives
 
-The shared vocabulary. Everything in *ML en pratique* — tabular, vision, NLP,
+The shared vocabulary. Everything in *MS2A - Machine Learning Practice* — tabular, vision, NLP,
 reinforcement learning — is a variation on what is on these slides.
 
 <!-- notes: 35 minutes. Move quickly; this is a levelling lesson, and half the

@@ -4,6 +4,8 @@ build/
 # Raw JSX->Markdown extraction: input to hand-editing, never a deliverable
 _harvest/
 
-# The repo root ignores *.json; this one is a lockfile, not an artifact —
-# without it a re-publish duplicates every module and lesson.
+# The repo root ignores *.json; these are lockfiles, not artifacts — without
+# them a re-publish duplicates every module and lesson, and a re-build creates
+# a second copy of every competition.
 !content/*/.mlarena-state.json
+!competitions/.mlarena-state.json

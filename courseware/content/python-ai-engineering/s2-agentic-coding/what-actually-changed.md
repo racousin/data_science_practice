@@ -1,7 +1,7 @@
 # What Actually Changed
 
 This session is placed second, not last, on purpose: you will use these tools in
-Sessions 3 and 4 and across all 30 hours of *Machine Learning en pratique*. A
+Sessions 3 and 4 and across all 30 hours of *MS2A - Machine Learning Practice*. A
 tool taught in the final hour is a demo. Taught now, it is leverage.
 
 <!-- notes: 20 minutes. Resist the urge to evangelise. The room contains both

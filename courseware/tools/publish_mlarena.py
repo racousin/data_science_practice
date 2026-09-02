@@ -402,6 +402,16 @@ def main() -> int:
             syncer.log("upload", f"cover {cover}")
             client.set_course_cover(course_id, os.path.join(base, cover))
 
+        # Which modules the course already carries. link_module rejects a
+        # duplicate link with an error, so a second run would die on the first
+        # module without this — breaking the idempotency this script exists to
+        # provide. Checking beforehand is preferable to catching the error,
+        # which would also swallow genuine link failures.
+        already_linked: set[int] = set()
+        if not args.dry_run:
+            already_linked = {m["module_id"]
+                              for m in client.list_course_modules(course_id)}
+
         ordered_modules: list[int] = []
         for position, spec in enumerate(modules):
             module_slug = spec.get("slug") or slugify(spec["title"])
@@ -414,7 +424,9 @@ def main() -> int:
             checkpoint()
 
             if not args.dry_run:
-                client.link_module(course_id, module_id, position=position)
+                if module_id not in already_linked:
+                    syncer.log("link", f"module {module_slug} -> course #{course_id}")
+                    client.link_module(course_id, module_id, position=position)
                 ordered_modules.append(module_id)
 
         if len(ordered_modules) > 1:
