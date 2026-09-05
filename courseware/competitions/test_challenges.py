@@ -19,6 +19,8 @@ What is covered, and why each one exists:
   the declared baseline — the real contract, since that notebook is what a
   student runs;
 * each **guided notebook contains no code**, which is the point of it;
+* the pandas/seaborn pre-flight notebook runs with **no credentials at all** --
+  it is what a student opens before they have an account;
 * all four notebooks are in sync with the builder that generates them.
 
 Notebook execution needs a real key (the notebook downloads its own data):
@@ -283,6 +285,29 @@ def test_worked_notebook_has_no_leftover_placeholder_key(notebook):
     assert "mlk_user_..." in src, "the placeholder students replace is gone"
     assert "mlk_user_4" not in src and "mlk_creator" not in src and "mlk_teacher" not in src, \
         "a real API key leaked into the committed notebook"
+
+
+def test_preflight_notebook_needs_no_credentials():
+    """The pandas/seaborn pre-flight is the one notebook a student runs before
+    they have an ML-Arena account. It must not reference the SDK or a key."""
+    nb = json.loads((NOTEBOOKS / "aie-s0-pandas-seaborn.ipynb").read_text())
+    src = "".join("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code")
+    for forbidden in ("mlarena", "API_KEY", "mlk_", "download_dataset", "client."):
+        assert forbidden not in src, (
+            f"pre-flight notebook references {forbidden!r}; it must run "
+            f"standalone on seaborn's bundled data")
+
+
+def test_preflight_notebook_runs_standalone(tmp_path):
+    """Executed with no key and no network beyond seaborn's bundled dataset."""
+    nbformat = pytest.importorskip("nbformat")
+    nbclient = pytest.importorskip("nbclient")
+    nb = nbformat.read(str(NOTEBOOKS / "aie-s0-pandas-seaborn.ipynb"), as_version=4)
+    nbclient.NotebookClient(nb, timeout=1200, kernel_name="python3",
+                            resources={"metadata": {"path": str(tmp_path)}}).execute()
+    assert (tmp_path / "submission.csv").is_file(), (
+        "the pre-flight notebook should end by writing a submission.csv, since "
+        "that is the artefact every later challenge asks for")
 
 
 @pytest.mark.parametrize("pkg,notebook,expect_key,tol", [

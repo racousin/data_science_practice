@@ -132,6 +132,17 @@ modules:
         estimated_minutes: 5
         is_published: true
         in_deck: false
+      # The course reads a CSV, reshapes it and plots it from session 2 onward
+      # and taught neither library anywhere; the 30h module that does teach them
+      # runs afterwards. Scope is the intersection of "what this course actually
+      # calls" and nothing else, derived from the lessons + the four challenge
+      # notebooks. Companion Colab notebook: aie-s0-pandas-seaborn.ipynb.
+      - title: "Reference — pandas & seaborn"
+        slug: pandas-and-seaborn
+        file: s1-git-and-packaging/pandas-and-seaborn.md
+        estimated_minutes: 30
+        is_published: true
+        in_deck: false
       # Authoring brief for the shell / notebook / Colab half of this module —
       # the material the title now promises and the lessons do not yet carry.
       # Not teaching material: out of the student view and out of the deck.
