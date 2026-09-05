@@ -95,10 +95,10 @@ language model you have used.
 Classical AI is a human writing rules. It works, and it is still the right
 answer when the rules are short and knowable.
 
-**Rules are knowable.** Validating an IBAN: take the 34 characters, move the
-first four to the end, map letters to digits, check the number is $\equiv 1
-\pmod{97}$. Four lines, exact, no data required, no training run. Writing a model
-for this would be strictly worse.
+**Rules are knowable.** Validating an IBAN: move the first four characters to
+the end, map each letter to two digits, read the result as an integer and check
+it is $\equiv 1 \pmod{97}$. Four lines, exact, no data required and no training
+run. Writing a model for this would be strictly worse.
 
 **Rules are not knowable.** Deciding whether a $28 \times 28$ grid of grey levels
 is a handwritten 7. You know a 7 when you see one and you cannot say why: any
