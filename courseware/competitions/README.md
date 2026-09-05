@@ -13,6 +13,8 @@ competitions/
 ├── s3-adult-income/     file_v1   Lab 3's pipeline, on a held-out Adult split
 ├── s3-diabetes-progression/ file_v1  Session 3 regression — the overfitting demo
 ├── s3-credit-risk/      file_v1   Session 3 classification — the same, guided
+├── s4-california-housing/ file_v1 Session 4 regression — the MLP, worked
+├── s4-forest-cover/     file_v1   Session 4 classification — the same, guided
 ├── s4-mnist-warmup/     file_v1   Lab 4's MLP — the submission-path dry run
 ├── localtest.py         run an env.py locally, the way the worker would
 ├── test_challenges.py   pytest — scorers, splits, and the notebooks
@@ -43,6 +45,35 @@ the regime where a flexible model can memorise. On the diabetes split, ranking
 six models by 5-fold CV on the training set alone reproduces their test ranking
 **exactly**; ranking them by training score gets it almost backwards. That is
 the session's whole argument, and it is reproducible rather than asserted.
+
+Session 4 carries two more, and they make the opposite argument to Session 3's.
+There, extra capacity was a trap; here the data is genuinely non-linear and the
+capacity pays. Both are measured on the shipped splits, with the MLP trained the
+way the notebooks train it (60 epochs of Adam, best-validation checkpoint
+restored):
+
+| | linear baseline | MLP | unstandardised MLP |
+|---|---|---|---|
+| `s4-california-housing` (R²) | 0.576 | **0.776** | 0.541 |
+| `s4-forest-cover` (accuracy) | 0.696 | **0.814** | 0.737 |
+
+The third column is the one worth keeping. On California housing the *identical*
+network, minus one `StandardScaler`, scores below the straight line it was
+supposed to replace — and nothing warns you, because the loss still goes down
+and the run still completes.
+
+### The Session 4 benchmarks are the linear model, not the notebook
+
+Sessions 2 and 3 pin `benchmark_expected_score` to what the worked notebook
+produces. Session 4 cannot: a torch training run is bit-reproducible on one
+machine and not across machines, so a float pinned to 1e-6 would be a claim the
+test suite eventually falsifies on somebody else's BLAS.
+
+So both Session 4 packages declare the **linear** model as the benchmark — the
+bar rather than the answer — and add `notebook_expected_min_score`, a floor with
+real headroom (0.72 declared against 0.776 measured, stable to ±0.003 across
+seeds). `test_challenges.py` asserts the notebook clears the floor *and* beats
+the benchmark, which is the actual claim of the session.
 
 ### Ranking direction
 
@@ -90,7 +121,7 @@ exception — `longest_word("")` raising `ValueError` would be recorded as a
 crash — so those stay in the labs' own pytest suites, and every input sent is
 well-formed. Both overviews say so.
 
-**file_v1** (Sessions 3 & 4) — competitors upload one `submission.csv`; no
+**file_v1** (Sessions 2, 3 & 4) — competitors upload one `submission.csv`; no
 competitor code runs. `env.py` reads it and scores against a private
 `y_test.csv` that is uploaded to the env folder and never published. Both
 scorers are **pure standard library**: the env image ships a full ML stack, but
@@ -104,19 +135,25 @@ imputing anything.
 python competitions/localtest.py s1-textstats            # reference agent
 python competitions/localtest.py s1-textstats --agent agent_broken.py
 python competitions/localtest.py s3-adult-income
+python competitions/localtest.py s4-california-housing
 ```
 
-For the Session 2 pair there is also a pytest suite, which additionally
-**executes the worked notebook** and asserts the submission it writes scores the
-declared baseline — the contract that matters, since that notebook is what a
-student runs:
+For the six file_v1 packages of Sessions 2–4 there is also a pytest suite, which
+additionally **executes the worked notebooks** and scores the submissions they
+write — the contract that matters, since those notebooks are what a student
+runs. It also executes the three credential-free notebooks (the pandas/seaborn
+pre-flight and the two Session 4 warm-ups), which need no key at all:
 
 ```bash
 export MLARENA_USER_API_KEY=mlk_user_...     # the notebook downloads its own data
 uv run --with pytest --with pandas --with seaborn --with scikit-learn \
-       --with nbclient --with nbformat --with ipykernel --with mlarena-sdk \
+       --with torch --with nbclient --with nbformat --with ipykernel \
+       --with mlarena-sdk \
        pytest competitions/test_challenges.py -v
 ```
+
+`torch` is needed from Session 4 on; without it those notebook tests skip and
+everything else still runs.
 
 Without the key the two notebook-execution tests skip and the rest still run.
 The submit cell is neutralised during the run, so a test never puts a row on a

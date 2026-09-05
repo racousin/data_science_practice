@@ -53,6 +53,8 @@
       "s4-pytorch-nutshell/modules-and-optimizers": 48,
       "s4-pytorch-nutshell/tensor-mechanics": 46,
       "s4-pytorch-nutshell/training-loop-end-to-end": 49,
+      "s4-pytorch-nutshell/warmup-1-optimization": 171,
+      "s4-pytorch-nutshell/warmup-2-cpu-gpu": 172,
       "s4-pytorch-nutshell/why-tensors": 45
     },
     "modules": {

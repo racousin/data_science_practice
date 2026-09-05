@@ -370,6 +370,24 @@ modules:
         file: s4-pytorch-nutshell/training-loop-end-to-end.md
         estimated_minutes: 30
         is_published: true
+      # Two runnable Colab warm-ups, placed after the theory and before the
+      # lab: the lectures describe the loop, these two make the student run it.
+      # Readapted from the SCAI-4EU "AI in Medicine" workshop
+      # (Hands-On-Session-warmup/), with its git+https install replaced by
+      # inlined helpers and its BERT benchmark replaced by the MLP this session
+      # actually ships. Neither needs an ML-Arena account.
+      - title: "Warm-up 1 — Optimization & Training"
+        slug: warmup-1-optimization
+        kind: exercise
+        file: s4-pytorch-nutshell/warmup-1-optimization.md
+        estimated_minutes: 45
+        is_published: true
+      - title: "Warm-up 2 — CPU vs GPU"
+        slug: warmup-2-cpu-gpu
+        kind: exercise
+        file: s4-pytorch-nutshell/warmup-2-cpu-gpu.md
+        estimated_minutes: 20
+        is_published: true
       - title: "Lab 4 — Train and Submit"
         slug: lab-4
         kind: exercise
@@ -390,6 +408,17 @@ modules:
         estimated_minutes: 15
         is_published: true
         in_deck: false
+    # Three challenges. The two new ones carry the session's argument -- that
+    # Session 2's linear model has a ceiling and a small MLP clears it -- on a
+    # continuous target and on a class label. 187 is worked end to end by its
+    # notebook, building PyTorch from a bare tensor up to a training loop; 188
+    # is the same machinery with no code, which is where the student finds out
+    # whether they can write it. 182 stays as Lab 4's submission dry run.
+    # Notebooks: tools/build_notebooks.py.
     competitions:
+      - competition_id: 187
+        label: "California Housing"
+      - competition_id: 188
+        label: "Forest Cover Type"
       - competition_id: 182
         label: "MNIST Warm-up"

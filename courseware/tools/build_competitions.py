@@ -54,7 +54,7 @@ DEFAULT_SDK = COURSEWARE.parent.parent.parent / "mlarena-sdk"
 # Build order = course order.
 PACKAGES = ["s1-textstats", "s2-readability", "s2-bike-demand", "s2-bank-marketing",
             "s3-adult-income", "s3-diabetes-progression", "s3-credit-risk",
-            "s4-mnist-warmup"]
+            "s4-mnist-warmup", "s4-california-housing", "s4-forest-cover"]
 
 
 # --------------------------------------------------------------------------- #

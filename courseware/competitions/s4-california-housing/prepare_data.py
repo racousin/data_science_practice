@@ -19,7 +19,7 @@ Reference numbers on this split, measured (see the overview's table):
 
     predict the training mean               test R2  0.000
     LinearRegression                        test R2  0.576   <- the benchmark
-    MLP 8-64-64-1, standardised, Adam 60ep  test R2  0.785
+    MLP 8-64-64-1, standardised, Adam 60ep  test R2  0.776
 
 That is a bigger jump than anything in Sessions 2 or 3, and it is the reason
 this dataset was chosen: the relationship between the features and the price is
@@ -27,7 +27,7 @@ genuinely non-linear (geography alone is two coordinates that only matter
 jointly), so capacity buys something real here rather than memorising.
 
 Note the target: median house value in units of $100,000, **capped at 5.0**.
-992 of the 20,640 districts sit exactly on that cap, which is visible as a
+965 of the 20,640 districts sit exactly on that cap, which is visible as a
 spike in the histogram and is worth pointing at rather than hiding.
 
 Deterministic: one random 80/20 split at SEED. The benchmark is fitted on the
@@ -68,10 +68,12 @@ def _assert_mapping(X, y):
     checks = [
         ("median_income in tens of k$", 0.4 < X["median_income"].min() and X["median_income"].max() <= 15.1),
         ("house_age in years", 1 <= X["house_age"].min() and X["house_age"].max() <= 52),
-        ("avg_bedrooms < avg_rooms", (X["avg_bedrooms"] < X["avg_rooms"]).all()),
+        # Equal in 3 of the 20,640 districts — single-room dwellings, not a
+        # rename error. Anything above 1 bedroom per room would be.
+        ("avg_bedrooms <= avg_rooms", (X["avg_bedrooms"] <= X["avg_rooms"]).all()),
         ("latitude is California", 32 < X["latitude"].min() and X["latitude"].max() < 42.5),
         ("longitude is California", -125 < X["longitude"].min() and X["longitude"].max() < -114),
-        ("target capped at 5", abs(y.max() - 5.0) < 1e-9),
+        ("target capped at 5.00001", abs(y.max() - 5.00001) < 1e-9),
         ("no missing values", not X.isna().any().any()),
     ]
     bad = [n for n, ok in checks if not ok]
@@ -90,7 +92,7 @@ def main():
     _assert_mapping(X, y)
     print(f"  {len(X)} districts, {X.shape[1]} features, "
           f"target {y.min():.2f}-{y.max():.2f} mean {y.mean():.3f} "
-          f"({int((y >= 5.0).sum())} at the cap)")
+          f"({int((y == y.max()).sum())} at the cap)")
 
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=TEST_SIZE, random_state=SEED

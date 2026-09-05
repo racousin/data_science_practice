@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
-"""Tests for the Session 2 and 3 challenge packages and their notebooks.
+"""Tests for the Session 2, 3 and 4 challenge packages and their notebooks.
 
-    uv run --with pytest --with pandas --with nbclient --with ipykernel \
+    uv run --with pytest --with pandas --with scikit-learn --with seaborn \
+        --with torch --with nbformat --with nbclient --with ipykernel \
         pytest courseware/competitions/test_challenges.py -v
+
+`torch` is needed from Session 4 on; without it the Session 4 notebook tests
+skip and everything else still runs.
 
 What is covered, and why each one exists:
 
@@ -16,12 +20,16 @@ What is covered, and why each one exists:
 * R2 = 0 really is the predict-the-mean model and always-0 really is F1 = 0 —
   the two claims the overviews lead with;
 * each **worked notebook runs end to end** and the submission it writes scores
-  the declared baseline — the real contract, since that notebook is what a
-  student runs;
+  what it should — the real contract, since that notebook is what a student
+  runs. Sessions 2 and 3 pin it to the declared benchmark exactly; Session 4
+  cannot, because its notebooks train a torch model and a float pinned to 1e-6
+  would not survive a different BLAS, so those assert
+  `notebook_expected_min_score` instead;
 * each **guided notebook contains no code**, which is the point of it;
-* the pandas/seaborn pre-flight notebook runs with **no credentials at all** --
-  it is what a student opens before they have an account;
-* all four notebooks are in sync with the builder that generates them.
+* the pandas/seaborn pre-flight notebook and the two Session 4 warm-ups run
+  with **no credentials at all** -- they are what a student opens before they
+  have an account;
+* every notebook is in sync with the builder that generates them.
 
 Notebook execution needs a real key (the notebook downloads its own data):
 
@@ -50,8 +58,18 @@ REPO = HERE.parent.parent
 NOTEBOOKS = REPO / "website" / "public" / "modules" / "python-ai-engineering" / "challenges"
 
 PACKAGES = ["s2-bike-demand", "s2-bank-marketing",
-            "s3-diabetes-progression", "s3-credit-risk"]
-REGRESSION = {"s2-bike-demand", "s3-diabetes-progression"}
+            "s3-diabetes-progression", "s3-credit-risk",
+            "s4-california-housing", "s4-forest-cover"]
+REGRESSION = {"s2-bike-demand", "s3-diabetes-progression", "s4-california-housing"}
+# Multi-class, so the binary-classifier assertions (F1 = 0 for always-0, a
+# `prediction` of 0/1) do not apply to it.
+MULTICLASS = {"s4-forest-cover"}
+
+# Notebooks a student can open before they have an ML-Arena account. They must
+# not mention the SDK or a key.
+CREDENTIAL_FREE = ["aie-s0-pandas-seaborn.ipynb",
+                   "aie-s4-optimization-warmup.ipynb",
+                   "aie-s4-cpu-gpu-benchmark.ipynb"]
 
 
 # --------------------------------------------------------------------------- #
@@ -177,7 +195,13 @@ def test_rejects_malformed_submissions(pkg, tmp_path):
         "an empty id": [f",{val}"] + [f"{i},{val}" for i in ids[1:]],
         "a header only": [],
     }
-    if cfg["metric"] == "f1":                       # classifier: classes only
+    if pkg in MULTICLASS:                           # 7 classes, coded 1-7
+        cases["a probability"] = [f"{ids[0]},0.73"] + [f"{i},{val}" for i in ids[1:]]
+        cases["an out-of-range class"] = [f"{ids[0]},9"] + [f"{i},{val}" for i in ids[1:]]
+        # The whole column shifted down by one — the silent failure the
+        # 1-based coding invites. It must be caught at upload, not scored.
+        cases["a 0-based label"] = [f"{ids[0]},0"] + [f"{i},{val}" for i in ids[1:]]
+    elif cfg["metric"] == "f1":                     # binary: classes only
         cases["a probability"] = [f"{ids[0]},0.73"] + [f"{i},{val}" for i in ids[1:]]
         cases["an out-of-range class"] = [f"{ids[0]},2"] + [f"{i},{val}" for i in ids[1:]]
     else:                                           # regressor: finite floats
@@ -266,7 +290,8 @@ def test_notebook_code_cells_compile():
 
 
 @pytest.mark.parametrize("notebook", ["aie-s2-bank-marketing.ipynb",
-                                     "aie-s3-credit-risk.ipynb"])
+                                     "aie-s3-credit-risk.ipynb",
+                                     "aie-s4-forest-cover.ipynb"])
 def test_guide_notebook_has_no_code(notebook):
     """The guided notebooks guide in English and ship empty cells on purpose."""
     nb = json.loads((NOTEBOOKS / notebook).read_text())
@@ -278,7 +303,8 @@ def test_guide_notebook_has_no_code(notebook):
 
 
 @pytest.mark.parametrize("notebook", ["aie-s2-bike-demand.ipynb",
-                                     "aie-s3-diabetes-progression.ipynb"])
+                                     "aie-s3-diabetes-progression.ipynb",
+                                     "aie-s4-california-housing.ipynb"])
 def test_worked_notebook_has_no_leftover_placeholder_key(notebook):
     nb = json.loads((NOTEBOOKS / notebook).read_text())
     src = "".join("".join(c["source"]) for c in nb["cells"])
@@ -287,15 +313,42 @@ def test_worked_notebook_has_no_leftover_placeholder_key(notebook):
         "a real API key leaked into the committed notebook"
 
 
-def test_preflight_notebook_needs_no_credentials():
-    """The pandas/seaborn pre-flight is the one notebook a student runs before
-    they have an ML-Arena account. It must not reference the SDK or a key."""
-    nb = json.loads((NOTEBOOKS / "aie-s0-pandas-seaborn.ipynb").read_text())
+@pytest.mark.parametrize("notebook", CREDENTIAL_FREE)
+def test_credential_free_notebooks_need_no_credentials(notebook):
+    """The pre-flight and the two Session 4 warm-ups are what a student runs
+    before they have an ML-Arena account. None may reference the SDK or a key."""
+    nb = json.loads((NOTEBOOKS / notebook).read_text())
     src = "".join("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code")
     for forbidden in ("mlarena", "API_KEY", "mlk_", "download_dataset", "client."):
         assert forbidden not in src, (
-            f"pre-flight notebook references {forbidden!r}; it must run "
-            f"standalone on seaborn's bundled data")
+            f"{notebook} references {forbidden!r}; it must run standalone")
+
+
+def test_warmup_notebooks_do_not_install_from_git():
+    """The Session 4 warm-ups are readapted from a workshop whose notebooks
+    open with `pip install git+https://github.com/...`. That dependency is the
+    thing the readaptation removed — the helpers are inlined instead — and it
+    must not creep back."""
+    for notebook in ("aie-s4-optimization-warmup.ipynb",
+                     "aie-s4-cpu-gpu-benchmark.ipynb"):
+        nb = json.loads((NOTEBOOKS / notebook).read_text())
+        src = "".join("".join(c["source"]) for c in nb["cells"])
+        assert "git+http" not in src, f"{notebook} installs from a git URL"
+        assert "aiforscience" not in src, (
+            f"{notebook} imports the workshop package; inline the helper instead")
+
+
+@pytest.mark.parametrize("notebook", ["aie-s4-optimization-warmup.ipynb",
+                                      "aie-s4-cpu-gpu-benchmark.ipynb"])
+def test_warmup_notebooks_run(notebook, tmp_path):
+    """Executed with no key and no network. The CPU/GPU one must also survive
+    having no GPU, which is the case on every machine that runs this suite."""
+    pytest.importorskip("torch")
+    nbformat = pytest.importorskip("nbformat")
+    nbclient = pytest.importorskip("nbclient")
+    nb = nbformat.read(str(NOTEBOOKS / notebook), as_version=4)
+    nbclient.NotebookClient(nb, timeout=1800, kernel_name="python3",
+                            resources={"metadata": {"path": str(tmp_path)}}).execute()
 
 
 def test_preflight_notebook_runs_standalone(tmp_path):
@@ -313,15 +366,24 @@ def test_preflight_notebook_runs_standalone(tmp_path):
 @pytest.mark.parametrize("pkg,notebook,expect_key,tol", [
     ("s2-bike-demand", "aie-s2-bike-demand.ipynb", "r2", 1e-6),
     ("s3-diabetes-progression", "aie-s3-diabetes-progression.ipynb", "r2", 1e-6),
+    ("s4-california-housing", "aie-s4-california-housing.ipynb", "r2", 1e-6),
 ])
 def test_worked_notebook_runs_and_scores_the_baseline(pkg, notebook, expect_key, tol,
                                                       user_key, tmp_path):
     """Execute the student-facing notebook for real — download, EDA, fit,
     predict, write submission.csv — then score that file with the package's own
     env.py. This is the test that the quoted baseline is what the notebook
-    actually produces."""
+    actually produces.
+
+    Sessions 2 and 3 assert equality with the declared benchmark, because their
+    notebooks fit deterministic sklearn models. Session 4's trains a network, so
+    it asserts `notebook_expected_min_score` — a floor with real headroom
+    (measured 0.776 against a floor of 0.72) rather than a float that would
+    break on a machine with a different BLAS."""
     nbformat = pytest.importorskip("nbformat")
     nbclient = pytest.importorskip("nbclient")
+    if pkg.startswith("s4-"):
+        pytest.importorskip("torch")
 
     nb = nbformat.read(str(NOTEBOOKS / notebook), as_version=4)
     submit_for_real = os.environ.get("MLARENA_SUBMIT_FOR_REAL") == "1"
@@ -348,6 +410,18 @@ def test_worked_notebook_runs_and_scores_the_baseline(pkg, notebook, expect_key,
     cfg = load_config(pkg)
     result = score(pkg, produced)
     assert not result.get("is_agent_code_error"), result.get("agent_code_error_message")
-    assert abs(result["score"] - cfg["benchmark_expected_score"]) <= tol, (
-        f"notebook scored {result['score']}, the challenge advertises "
-        f"{cfg['benchmark_expected_score']}")
+
+    floor = cfg.get("notebook_expected_min_score")
+    if floor is not None:
+        assert result["score"] >= floor, (
+            f"notebook scored {result['score']}, below the floor {floor} the "
+            f"package declares. The MLP is not learning — check the scaler.")
+        assert result["score"] > cfg["benchmark_expected_score"], (
+            f"notebook scored {result['score']}, which does not beat the "
+            f"challenge's own linear benchmark "
+            f"({cfg['benchmark_expected_score']}). That is the entire claim of "
+            f"the session.")
+    else:
+        assert abs(result["score"] - cfg["benchmark_expected_score"]) <= tol, (
+            f"notebook scored {result['score']}, the challenge advertises "
+            f"{cfg['benchmark_expected_score']}")

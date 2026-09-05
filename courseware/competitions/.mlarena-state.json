@@ -43,6 +43,18 @@
         "module_slug": "s3-models-and-tuning",
         "name": "AIE S3 \u2014 Diabetes Progression"
       },
+      "s4-california-housing": {
+        "id": 187,
+        "label": "California Housing",
+        "module_slug": "s4-pytorch-nutshell",
+        "name": "AIE S4 \u2014 California Housing"
+      },
+      "s4-forest-cover": {
+        "id": 188,
+        "label": "Forest Cover Type",
+        "module_slug": "s4-pytorch-nutshell",
+        "name": "AIE S4 \u2014 Forest Cover Type"
+      },
       "s4-mnist-warmup": {
         "id": 182,
         "label": "MNIST Warm-up",

@@ -46,10 +46,16 @@ courseware/
 │       ├── project/                  # the ML-Arena project brief (50% of the grade)
 │       ├── reference/
 │       └── .mlarena-state.json
-├── competitions/                     # one competition per taught session
+├── competitions/                     # one or more per taught session
 │   ├── s1-textstats/                 # flex_v1 — Lab 1's three functions
 │   ├── s2-readability/               # flex_v1 — Lab 2's Flesch score
+│   ├── s2-bike-demand/               # file_v1 — regression, worked
+│   ├── s2-bank-marketing/            # file_v1 — classification, guided
 │   ├── s3-adult-income/              # file_v1 — Lab 3's pipeline
+│   ├── s3-diabetes-progression/      # file_v1 — the overfitting demo, worked
+│   ├── s3-credit-risk/               # file_v1 — the same, guided
+│   ├── s4-california-housing/        # file_v1 — the PyTorch MLP, worked
+│   ├── s4-forest-cover/              # file_v1 — the same, guided
 │   ├── s4-mnist-warmup/              # file_v1 — Lab 4's submission dry run
 │   ├── localtest.py                  # run an env.py the way the worker would
 │   └── .mlarena-state.json           # id lockfile — committed
@@ -248,14 +254,29 @@ endpoint — per the frontend↔SDK parity rule in `mlarena-sdk/PROCESS.md`.
 ## Competitions
 
 Each taught session has at least one competition, built from a package under
-`competitions/` and linked to that session's module. Sessions 2 and 3 have two
-apiece — one per model family they teach — plus the notebooks that go with them
-(`tools/build_notebooks.py`, output under
+`competitions/` and linked to that session's module. Sessions 2, 3 and 4 have
+two apiece — one per model family or target type they teach — plus the notebooks
+that go with them (`tools/build_notebooks.py`, output under
 `website/public/modules/python-ai-engineering/challenges/`, which is the path
-the Colab links resolve against on GitHub). Sessions 1 and 2 grade the
-lab's *code* (`flex_v1` — competitors upload `agent.py`); Sessions 3 and 4 grade
-a *submission file* (`file_v1`). The `Reference — …` self-study lessons have
-none.
+the Colab links resolve against on GitHub). Session 1 grades the lab's *code*
+(`flex_v1` — competitors upload `agent.py`); Sessions 2, 3 and 4 grade a
+*submission file* (`file_v1`). The `Reference — …` self-study lessons have none.
+
+Within each pair the first challenge ships a **worked** notebook that runs top
+to bottom and the second ships a **guided** one — the same protocol in English
+with empty cells. `test_challenges.py` enforces both properties: the worked
+notebooks are executed and their submissions scored, and the guided ones are
+asserted to contain no code.
+
+`build_notebooks.py` also emits three notebooks that are not challenges and need
+no ML-Arena account — the pandas/seaborn pre-flight for Session 1 and the two
+Session 4 warm-ups. They are reached from their lessons rather than from a
+competition page.
+
+Challenge ids come from `competitions/.mlarena-state.json` rather than being
+typed into the generator, so a notebook written before its competition exists
+picks up the real id on the next regeneration; the sync test then fails if
+nobody re-ran the script.
 
 ```bash
 export MLARENA_API_KEY=mlk_creator_...
