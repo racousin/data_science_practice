@@ -148,40 +148,160 @@ modules:
       - competition_id: 180
         label: "Flesch reading-ease"
 
-  # ---------------------------------------------------------------- session 3
-  - title: "Session 3 — Data Science in a Nutshell"
-    slug: s3-data-science-nutshell
+  # ---------------------------------------------------------------- session 2
+  #
+  # Built 2026-09-05 from the taught deck "module 2 - data / ml objective /
+  # model training / visualization / basic preprocessing / sklearn" (73 slides,
+  # pptxs/). Takes the slot left by "Session 3 - Data Science in a Nutshell"
+  # (server module #16).
+  #
+  # Restructured 2026-09-05 (second pass) along the chain the session actually
+  # teaches: data -> model -> loss -> training -> the two regressions ->
+  # preparation. `the-ml-pipeline` was cut (its one durable message, rules
+  # written vs rules learned, closes the landscape lesson); its (n, p) material
+  # and all of `supervised-learning-setup` are folded into `the-data`;
+  # `models-and-objectives` split into `models` + `losses`; `gradient-descent`
+  # became `training`. Retired slugs still live server-side and are deleted at
+  # publish time. "Check yourself" sections were dropped course-wide.
+  #
+  # Module slugs are immutable server-side, so this is a new module and #16 has
+  # to be deleted at publish time, BEFORE reorder_modules.
+  - title: "Session 2 — Machine Learning Foundations"
+    slug: s2-ml-foundations
     icon: chart-line
     visibility: unlisted
     summary: >
-      The vocabulary and the pipeline: problem framing, models and objectives,
-      the metric you optimise, and the validation that stops you fooling
-      yourself.
+      What machine learning is, stated precisely: the data, the model, the loss,
+      and the training that connects them — then linear and logistic regression
+      end to end in scikit-learn, and the data preparation they both assume.
     lessons:
-      - title: "The ML Pipeline"
-        slug: the-ml-pipeline
-        file: s3-data-science-nutshell/the-ml-pipeline.md
-        estimated_minutes: 30
+      - title: "The AI / ML / DL Landscape"
+        slug: ai-ml-dl-landscape
+        file: s2-ml-foundations/ai-ml-dl-landscape.md
+        estimated_minutes: 20
         is_published: true
-      - title: "Models & Objectives"
-        slug: models-and-objectives
-        file: s3-data-science-nutshell/models-and-objectives.md
+      - title: "The Data"
+        slug: the-data
+        file: s2-ml-foundations/the-data.md
         estimated_minutes: 35
         is_published: true
+      - title: "Models"
+        slug: models
+        file: s2-ml-foundations/models.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Losses"
+        slug: losses
+        file: s2-ml-foundations/losses.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Training"
+        slug: training
+        file: s2-ml-foundations/training.md
+        estimated_minutes: 40
+        is_published: true
+      - title: "Linear Regression"
+        slug: linear-regression
+        file: s2-ml-foundations/linear-regression.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Logistic Regression"
+        slug: logistic-regression
+        file: s2-ml-foundations/logistic-regression.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Data Preparation"
+        slug: data-preparation
+        file: s2-ml-foundations/data-preparation.md
+        estimated_minutes: 40
+        is_published: true
+    # No competition and no lab: the deck is lecture-only, and Lab 3 went with
+    # competition 181 to session 3. See COURSE_STATE.md for the open decision.
+
+  # ---------------------------------------------------------------- session 3
+  #
+  # Built 2026-09-05 from the taught deck "module 3 - evaluation overfitting /
+  # baselines / splits / non linearity / models and strategy (knn, ...) /
+  # hyperparameters" (92 slides, pptxs/). `evaluation-metrics`,
+  # `validation-and-overfitting` and `lab-3` moved here from #16 with the deck
+  # merged in; competition 181 follows lab-3.
+  #
+  # Deck slides 75-92 are in French; the bodies are English, to match the rest
+  # of the course. They are the conceptual half of the MLP — session 4 is the
+  # PyTorch half, and the two are meant to be read in that order.
+  - title: "Session 3 — Models, Ensembles & Tuning"
+    slug: s3-models-and-tuning
+    icon: sitemap
+    visibility: unlisted
+    summary: >
+      Beyond the straight line: regularisation, KNN, trees, SVM, bagging and
+      boosting, hyperparameter search — and the multi-layer perceptron that
+      session 4 implements in PyTorch.
+    lessons:
       - title: "Evaluation Metrics"
         slug: evaluation-metrics
-        file: s3-data-science-nutshell/evaluation-metrics.md
+        file: s3-models-and-tuning/evaluation-metrics.md
         estimated_minutes: 40
         is_published: true
       - title: "Validation & Overfitting"
         slug: validation-and-overfitting
-        file: s3-data-science-nutshell/validation-and-overfitting.md
-        estimated_minutes: 35
+        file: s3-models-and-tuning/validation-and-overfitting.md
+        estimated_minutes: 40
+        is_published: true
+      - title: "Non-Linearity"
+        slug: non-linearity
+        file: s3-models-and-tuning/non-linearity.md
+        estimated_minutes: 20
+        is_published: true
+      - title: "Regularization"
+        slug: regularization
+        file: s3-models-and-tuning/regularization.md
+        estimated_minutes: 25
+        is_published: true
+      - title: "K-Nearest Neighbours"
+        slug: k-nearest-neighbours
+        file: s3-models-and-tuning/k-nearest-neighbours.md
+        estimated_minutes: 20
+        is_published: true
+      - title: "Decision Trees"
+        slug: decision-trees
+        file: s3-models-and-tuning/decision-trees.md
+        estimated_minutes: 25
+        is_published: true
+      - title: "Support Vector Machines"
+        slug: support-vector-machines
+        file: s3-models-and-tuning/support-vector-machines.md
+        estimated_minutes: 20
+        is_published: true
+      - title: "Ensembles: Bagging"
+        slug: ensembles-bagging
+        file: s3-models-and-tuning/ensembles-bagging.md
+        estimated_minutes: 20
+        is_published: true
+      - title: "Ensembles: Boosting"
+        slug: ensembles-boosting
+        file: s3-models-and-tuning/ensembles-boosting.md
+        estimated_minutes: 20
+        is_published: true
+      - title: "Hyperparameter Optimization"
+        slug: hyperparameter-optimization
+        file: s3-models-and-tuning/hyperparameter-optimization.md
+        estimated_minutes: 15
+        is_published: true
+      - title: "Multi-Layer Perceptrons"
+        slug: neural-networks
+        file: s3-models-and-tuning/neural-networks.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Training Neural Networks"
+        slug: training-neural-networks
+        file: s3-models-and-tuning/training-neural-networks.md
+        estimated_minutes: 20
         is_published: true
       - title: "Lab 3 — Baseline on a Real Dataset"
         slug: lab-3
         kind: exercise
-        file: s3-data-science-nutshell/lab-3.md
+        file: s3-models-and-tuning/lab-3.md
         estimated_minutes: 45
         is_published: true
     competitions:

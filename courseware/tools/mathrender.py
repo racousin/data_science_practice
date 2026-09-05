@@ -46,6 +46,8 @@ SYMBOLS = {
     r"\left": "", r"\right": "", r"\big": "", r"\Big": "",
     # Delimiters and set/logic operators.
     r"\mid": "|", r"\vert": "|", r"\Vert": "‖", r"\langle": "⟨",
+    # Norm delimiters: \|w\| is the common spelling of \Vert w \Vert.
+    r"\|": "‖",
     r"\rangle": "⟩", r"\lfloor": "⌊", r"\rfloor": "⌋", r"\lceil": "⌈",
     r"\rceil": "⌉", r"\cup": "∪", r"\cap": "∩", r"\subseteq": "⊆",
     r"\supset": "⊃", r"\emptyset": "∅", r"\setminus": "\\",
@@ -62,6 +64,10 @@ SYMBOLS = {
     r"\sin": "sin", r"\cos": "cos", r"\tan": "tan", r"\det": "det",
     r"\dim": "dim", r"\deg": "deg", r"\gcd": "gcd", r"\Pr": "Pr",
     r"\softmax": "softmax",
+    # Script/blackboard letters that show up in loss and hypothesis-space
+    # notation: l(Y, f(X)), f in F, the indicator on a mis-classification.
+    r"\ell": "\u2113", r"\mathcal{L}": "\U0001D4DB", r"\mathcal{F}": "\U0001D4D5",
+    r"\mathcal{B}": "\U0001D4D1", r"\mathbb{1}": "\U0001D7D9",
 }
 
 SUPERSCRIPT = str.maketrans(

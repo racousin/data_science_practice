@@ -240,38 +240,3 @@ what `optimizer.step()` does — next lesson replaces these three lines with one
 2. `.backward()` on a **scalar** walks the graph in reverse.
 3. Gradients land on **leaves** and **accumulate** — reset every step.
 4. `no_grad()` for inference, `detach()` for logging.
-
----
-
-## Check yourself
-
-1. Run this. You should get exactly the output shown.
-
-   ```python
-   import torch
-   x = torch.tensor([1.0, 2.0, 3.0], requires_grad=True)
-   y = x ** 2
-   y.sum().backward()
-   print(x.grad)        # -> tensor([2., 4., 6.])
-   ```
-
-2. In that snippet, why can you not call `y.backward()` directly?
-
-   **Answer.** `backward()` needs a **scalar**. "The gradient of a vector" is a
-   Jacobian, not a vector, so PyTorch raises `RuntimeError: grad can be
-   implicitly created only for scalar outputs`. It is the same reason your loss
-   is always reduced to one number.
-
-3. In that same snippet `x.grad` is populated but `y.grad` is `None`. Why, and
-   what would you add to keep it?
-
-   **Answer.** Gradients land on **leaves** only — tensors you created. `y` came
-   from an operation, so its gradient is computed, used and discarded. Call
-   `y.retain_grad()` before the backward pass to keep it.
-
-4. A model trains for a while and then the loss explodes for no visible reason.
-   Which of the three lines is missing, and why is that the worst kind of bug?
-
-   **Answer.** `optimizer.zero_grad()`. `.backward()` **adds** to `.grad`, so
-   batch 2's gradient still contains batch 1's. Nothing crashes — the model just
-   trains badly, which is why the three lines are always written together.

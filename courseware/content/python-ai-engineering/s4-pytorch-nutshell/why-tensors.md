@@ -149,34 +149,3 @@ Self-study; it is not lectured.
 
 If you find yourself writing `for i in range(len(tensor))`, stop — there is a
 vectorised way, and the next lesson is about finding it.
-
----
-
-## Check yourself
-
-1. This lesson defines a tensor by three properties. Name them, and say which of
-   them is what makes one compiled kernel possible.
-
-   **Answer.** A contiguous block of memory, of a single dtype, with a shape. All
-   three together: because the type and the layout are known ahead of time, the
-   operation is dispatched once to compiled code — BLAS on CPU, cuBLAS on GPU —
-   instead of a million times through the Python interpreter.
-
-2. `.to()` is a copy, not an in-place move. Run this — it makes the point without
-   a GPU.
-
-   ```python
-   import torch
-   a = torch.randn(3)
-   b = a.to(torch.float64)
-   print(a.dtype, b.dtype, b is a)   # -> torch.float32 torch.float64 False
-   ```
-
-3. Your script dies with `RuntimeError: Expected all tensors to be on the same
-   device`. What does this lesson tell you to do, and what does it tell you not
-   to do?
-
-   **Answer.** Move explicitly — `b = b.to("cpu")`, or `a = a.to("cuda")` — rather
-   than guess. Choose the device once at the top of the script and pass it
-   everywhere; hard-coding `"cuda"` is how a script fails on half the room's
-   laptops.

@@ -159,37 +159,3 @@ Confirm all four:
 
 The fourth one is not a joke. Students who have never interrupted an agent let
 bad runs finish.
-
----
-
-## Check yourself
-
-1. You start `claude` from your home directory instead of from inside the
-   repository. What does that cost you?
-
-   **Answer.** The working directory defines what the agent can see, so it
-   cannot read your project's files. `cd` into the repository first.
-
-2. Run this in the repository you just used for *First contact*. You should get
-   exactly the output shown.
-
-   ```bash
-   git branch --show-current   # -> agent-sandbox
-   ```
-
-   **Answer.** If it prints `main`, the second prompt above edited your graded
-   Session 1 work in place, with nothing to `git switch` back to. Branch first,
-   every time.
-
-3. You have no Claude access and no network. Which column of the comparison
-   table still works, and what do you give up?
-
-   **Answer.** Aider + Ollama: free and network-not-required. You give up
-   repo-wide navigation (weak), and each step is lower quality, so you
-   supervise much more closely.
-
-4. Which command switches model, and which key stops a run that has gone the
-   wrong way?
-
-   **Answer.** `/model` switches between Opus 5, Sonnet 5 and Haiku 4.5.
-   `Esc` interrupts — the lesson's "one to internalise today".

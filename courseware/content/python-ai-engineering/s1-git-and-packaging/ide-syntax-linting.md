@@ -125,33 +125,3 @@ pre-commit install
 
 Now `git commit` runs the hooks and refuses a commit that fails. Fail fast,
 applied to your own workflow.
-
----
-
-## Check yourself
-
-1. Run this. `ruff check` exits 1 when it finds something and 0 when it does not,
-   which is exactly why CI can gate on it.
-
-   ```bash
-   printf 'import os\n' > /tmp/unused.py
-   uv run --with ruff ruff check --select F401 /tmp/unused.py > /dev/null; echo $?
-   # -> 1
-   printf 'import os\nprint(os.getcwd())\n' > /tmp/used.py
-   uv run --with ruff ruff check --select F401 /tmp/used.py > /dev/null; echo $?
-   # -> 0
-   ```
-
-2. Of the rule sets this page selects, which two catch actual defects rather than
-   style, and what is an example of each?
-
-   **Answer.** `F` (pyflakes) and `B` (bugbear): `F401` is an unused import,
-   `B006` a mutable default argument. `E`, `I` and `UP` are pycodestyle, import
-   sorting and syntax modernisation — worth automating, not worth discussing.
-
-3. "The import works in the terminal but not in the editor." What is nearly
-   always the cause?
-
-   **Answer.** The editor's interpreter is pointed at the system Python instead of
-   the project's `.venv`. It is the first of the three things this page says to
-   configure once.
