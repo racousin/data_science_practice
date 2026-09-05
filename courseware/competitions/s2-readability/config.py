@@ -3,7 +3,10 @@
 CONFIG = {
     "name": "PAIE S2 — Flesch reading-ease",
     "kernel_version": "flex_v1",
-    "module_slug": "s2-agentic-coding",
+    # Agentic Coding was folded into session 1 (commit 29b430e / 299718e); Lab 2,
+# which submits here, now lives in s1-git-and-packaging. course.yaml already
+# declares this attachment under that module.
+    "module_slug": "s1-git-and-packaging",
     "label": "Flesch reading-ease",
     "metric": "pass_rate",
     "benchmark_file": "agent.py",

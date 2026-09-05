@@ -52,7 +52,8 @@ STATE_FILE = PACKAGES_DIR / ".mlarena-state.json"
 DEFAULT_SDK = COURSEWARE.parent.parent.parent / "mlarena-sdk"
 
 # Build order = course order.
-PACKAGES = ["s1-textstats", "s2-readability", "s3-adult-income", "s4-mnist-warmup"]
+PACKAGES = ["s1-textstats", "s2-readability", "s2-bike-demand", "s2-bank-marketing",
+            "s3-adult-income", "s4-mnist-warmup"]
 
 
 # --------------------------------------------------------------------------- #

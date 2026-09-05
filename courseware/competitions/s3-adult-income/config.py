@@ -3,7 +3,9 @@
 CONFIG = {
     "name": "PAIE S3 — Adult Census Income",
     "kernel_version": "file_v1",
-    "module_slug": "s3-data-science-nutshell",
+    # "Data Science in a Nutshell" (#16) was split; Lab 3, which submits here,
+# now lives in s3-models-and-tuning. course.yaml declares it there.
+    "module_slug": "s3-models-and-tuning",
     "label": "Adult Census Income",
     "metric": "f1",
     "metric2": "accuracy",

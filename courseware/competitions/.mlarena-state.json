@@ -7,16 +7,28 @@
         "module_slug": "s1-git-and-packaging",
         "name": "PAIE S1 \u2014 textstats"
       },
+      "s2-bank-marketing": {
+        "id": 184,
+        "label": "Bank Term Deposit",
+        "module_slug": "s2-ml-foundations",
+        "name": "AIE S2 \u2014 Bank Term Deposit"
+      },
+      "s2-bike-demand": {
+        "id": 183,
+        "label": "Bike Sharing Demand",
+        "module_slug": "s2-ml-foundations",
+        "name": "AIE S2 \u2014 Bike Sharing Demand"
+      },
       "s2-readability": {
         "id": 180,
         "label": "Flesch reading-ease",
-        "module_slug": "s2-agentic-coding",
+        "module_slug": "s1-git-and-packaging",
         "name": "PAIE S2 \u2014 Flesch reading-ease"
       },
       "s3-adult-income": {
         "id": 181,
         "label": "Adult Census Income",
-        "module_slug": "s3-data-science-nutshell",
+        "module_slug": "s3-models-and-tuning",
         "name": "PAIE S3 \u2014 Adult Census Income"
       },
       "s4-mnist-warmup": {
