@@ -31,13 +31,14 @@ course:
 
 modules:
   # ---------------------------------------------------------------- session 1
-  - title: "Session 1 — Git & Python Packaging"
+  - title: "Session 1 — Git & Python Packaging - Shell, Notebooks & Colab"
     slug: s1-git-and-packaging
     icon: git-branch
     visibility: unlisted
     summary: >
-      Version control and reproducible Python projects. From `git init` to a
-      pip-installable, tested package with a pull-request workflow.
+      The engineering floor: version control, reproducible Python projects, an
+      agentic coding workflow, and the three environments the rest of the course
+      runs in — terminal, notebook kernel, hosted Colab runtime.
     lessons:
       - title: "Why Version Control"
         slug: why-version-control
@@ -104,36 +105,48 @@ modules:
         file: s1-git-and-packaging/lab-2.md
         estimated_minutes: 45
         is_published: true
+      # -- moved here from the former "Reference" module, which was removed.
+      # Self-study, never lectured: the title carries that signal now that the
+      # module no longer does, and `in_deck: false` keeps them out of the deck.
+      - title: "Reference — GitHub Desktop"
+        slug: github-desktop
+        file: s1-git-and-packaging/github-desktop.md
+        estimated_minutes: 10
+        is_published: true
+        in_deck: false
+      - title: "Reference — GitHub Actions"
+        slug: github-actions
+        file: s1-git-and-packaging/github-actions.md
+        estimated_minutes: 15
+        is_published: true
+        in_deck: false
+      - title: "Reference — IDE, Syntax & Linting"
+        slug: ide-syntax-linting
+        file: s1-git-and-packaging/ide-syntax-linting.md
+        estimated_minutes: 15
+        is_published: true
+        in_deck: false
+      - title: "Reference — Git Cheatsheet"
+        slug: git-cheatsheet
+        file: s1-git-and-packaging/git-cheatsheet.md
+        estimated_minutes: 5
+        is_published: true
+        in_deck: false
+      # Authoring brief for the shell / notebook / Colab half of this module —
+      # the material the title now promises and the lessons do not yet carry.
+      # Not teaching material: out of the student view and out of the deck.
+      - title: "Session Plan — Shell, Notebooks & Colab"
+        slug: session-plan
+        file: s1-git-and-packaging/session-plan.md
+        estimated_minutes: 10
+        is_published: false
+        in_deck: false
     competitions:
       - competition_id: 179
         label: "textstats correctness"
       # Follows Lab 2, which is the lesson that submits to it.
       - competition_id: 180
         label: "Flesch reading-ease"
-
-  # ---------------------------------------------------------------- session 2
-  #
-  # Was "Session 2 — Agentic Coding" (server module #15, slug
-  # s2-agentic-coding). Its six lessons moved to the end of session 1 and this
-  # slot is being rebuilt around the shell / notebook / Colab material. Module
-  # slugs are immutable server-side, so a new identity means a new module: #15
-  # and its six now-duplicated lessons have to be retired at publish time.
-  - title: "Session 2 — Shell, Notebooks & Colab"
-    slug: s2-shell-notebooks-colab
-    icon: terminal
-    visibility: unlisted
-    summary: >
-      The three environments the rest of the course runs in: a terminal, a local
-      notebook kernel, and a hosted Colab runtime with a GPU.
-    lessons:
-      - title: "Session Plan — Shell, Notebooks & Colab"
-        slug: session-plan
-        file: s2-shell-notebooks-colab/session-plan.md
-        estimated_minutes: 10
-        # Authoring brief, not teaching material — kept out of the student view.
-        is_published: false
-    # No competition. #180 went to session 1 with Lab 2; this session's own is
-    # specified in session-plan.md and not yet built.
 
   # ---------------------------------------------------------------- session 3
   - title: "Session 3 — Data Science in a Nutshell"
@@ -215,46 +228,20 @@ modules:
         file: s4-pytorch-nutshell/lab-4.md
         estimated_minutes: 45
         is_published: true
+      # -- moved here from the former "Reference" module, which was removed.
+      # Both are linked from the session's own lessons (autograd, why-tensors).
+      - title: "Reference — Autograd, the Mathematics"
+        slug: autograd-mathematics
+        file: s4-pytorch-nutshell/autograd-mathematics.md
+        estimated_minutes: 25
+        is_published: true
+        in_deck: false
+      - title: "Reference — A Short History of Deep Learning"
+        slug: deep-learning-history
+        file: s4-pytorch-nutshell/deep-learning-history.md
+        estimated_minutes: 15
+        is_published: true
+        in_deck: false
     competitions:
       - competition_id: 182
         label: "MNIST Warm-up"
-
-  # ---------------------------------------------------------------- reference
-  - title: "Reference"
-    slug: paie-reference
-    icon: book
-    visibility: unlisted
-    summary: >
-      Material demoted out of class time. Self-study, linked from the sessions,
-      never lectured.
-    lessons:
-      - title: "GitHub Desktop"
-        slug: github-desktop
-        file: reference/github-desktop.md
-        estimated_minutes: 10
-        is_published: true
-      - title: "GitHub Actions"
-        slug: github-actions
-        file: reference/github-actions.md
-        estimated_minutes: 15
-        is_published: true
-      - title: "IDE, Syntax & Linting"
-        slug: ide-syntax-linting
-        file: reference/ide-syntax-linting.md
-        estimated_minutes: 15
-        is_published: true
-      - title: "Git Cheatsheet"
-        slug: git-cheatsheet
-        file: reference/git-cheatsheet.md
-        estimated_minutes: 5
-        is_published: true
-      - title: "Autograd — the Mathematics"
-        slug: autograd-mathematics
-        file: reference/autograd-mathematics.md
-        estimated_minutes: 25
-        is_published: true
-      - title: "A Short History of Deep Learning"
-        slug: deep-learning-history
-        file: reference/deep-learning-history.md
-        estimated_minutes: 15
-        is_published: true

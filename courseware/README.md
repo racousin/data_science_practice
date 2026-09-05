@@ -31,16 +31,14 @@ produced them.
 courseware/
 ├── Makefile
 ├── content/
-│   ├── python-ai-engineering/        # 12h — 4 sessions
+│   ├── python-ai-engineering/        # 12h — 3 modules (see "Session numbering")
 │   │   ├── course.yaml               # the manifest — structure, order, metadata
 │   │   ├── assets/                   # images referenced by the lessons
 │   │   ├── s1-git-and-packaging/     # one directory per module (= per session)
 │   │   │   └── *.md                  # one file per lesson
-│   │   ├── s2-shell-notebooks-colab/
 │   │   ├── s3-data-science-nutshell/
-│   │   ├── s4-pytorch-nutshell/
-│   │   ├── reference/                # demoted, self-study material
-│   │   └── .mlarena-state.json       # id map — committed, see "Publishing"
+│   │   ├── s4-pytorch-nutshell/      # self-study lessons live in the session
+│   │   └── .mlarena-state.json       #   they belong to, marked `in_deck: false`
 │   └── ms2a-machine-learning-practice/               # 30h — 10 sessions
 │       ├── course.yaml
 │       ├── assets/{collect,tabular,nn,cv,nlp,rl}/
@@ -149,11 +147,27 @@ uv run --with cairosvg python -c \
 
 ---
 
+## Session numbering
+
+`python-ai-engineering` holds **three** modules — `s1-git-and-packaging`,
+`s3-data-science-nutshell`, `s4-pytorch-nutshell` — titled *Session 1*, *Session 3*
+and *Session 4*. There is no Session 2. Agentic Coding was folded into Session 1, and
+so was the Shell/Notebooks/Colab module that briefly took the empty slot; Session 1's
+title now names all three scopes.
+
+The gap is deliberate but not free: `course.yaml`'s description still promises "four
+3-hour sessions", and the labs, the deck eyebrows and the competition names
+(`PAIE S2 — Flesch reading-ease`) all carry the old numbers. Renumbering means
+rewriting those references, and module *slugs* cannot move at all — they are immutable
+server-side. Decide it together with the Session 1 split (`COURSE_STATE.md` §1b, §5.3).
+
+---
+
 ## Building slides
 
 ```bash
 make slides                              # all sessions
-make slides-one MODULE=s2-shell-notebooks-colab # one
+make slides-one MODULE=s1-git-and-packaging # one
 make pdf                                 # slides + PDF (needs LibreOffice)
 ```
 
@@ -163,6 +177,10 @@ with a cover, a divider per lesson, and speaker notes.
 Body text is auto-fitted: the builder estimates the content height and steps
 down a font ladder until the slide fits. A slide that comes out small is a
 slide with too much on it — split it with a `---`.
+
+A lesson marked `in_deck: false` in `course.yaml` is skipped by the deck builder
+and published as usual — that is how the `Reference — …` self-study lessons sit
+inside a session on the web without being lectured from its deck.
 
 ---
 
@@ -217,7 +235,8 @@ endpoint — per the frontend↔SDK parity rule in `mlarena-sdk/PROCESS.md`.
 Each taught session has one competition, built from a package under
 `competitions/` and linked to that session's module. Sessions 1 and 2 grade the
 lab's *code* (`flex_v1` — competitors upload `agent.py`); Sessions 3 and 4 grade
-a *submission file* (`file_v1`). The reference module has none.
+a *submission file* (`file_v1`). The `Reference — …` self-study lessons have
+none.
 
 ```bash
 export MLARENA_API_KEY=mlk_creator_...

@@ -2,7 +2,9 @@
 """Build PPTX decks from the Markdown courseware.
 
 One deck per module (= one 3h session). Reads ``course.yaml``, walks the
-modules in manifest order, and renders every lesson body into slides.
+modules in manifest order, and renders every lesson body into slides. A lesson
+with ``in_deck: false`` is skipped — self-study reference material that lives in
+the module for the web course but is never lectured from it.
 
 Slide model
 -----------
@@ -600,6 +602,8 @@ def build_module(base: str, course: dict, module: dict, out_dir: str,
                f"{eyebrow} · {course.get('instructor_name', '')}".strip(" ·"))
 
     for lesson in module.get("lessons", []):
+        if not lesson.get("in_deck", True):
+            continue
         body = read_lesson_body(base, lesson)
         slides = split_slides(body)
         if not slides:

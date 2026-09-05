@@ -2,7 +2,7 @@
 
 PyTorch computes derivatives for you. This lesson is what it actually does,
 enough that you can debug it — not the mathematics, which is in
-[Reference → Autograd, the Mathematics](/courses/python-ai-engineering/paie-reference/course/autograd-mathematics).
+[Reference → Autograd, the Mathematics](/courses/python-ai-engineering/s4-pytorch-nutshell/course/autograd-mathematics).
 
 <!-- notes: 35 minutes. The gradient-accumulation slide is the one that fixes
 real bugs. Do not skip zero_grad. -->

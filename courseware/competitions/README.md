@@ -14,8 +14,8 @@ competitions/
 └── .mlarena-state.json  the id lockfile — committed, see "Publishing"
 ```
 
-The reference module (`paie-reference`) has no competition: it is self-study
-material, never lectured, with nothing to score.
+The `Reference — …` lessons at the end of sessions 1 and 4 have no competition:
+self-study material, never lectured, with nothing to score.
 
 ## A package
 

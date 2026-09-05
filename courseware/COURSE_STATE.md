@@ -23,7 +23,7 @@ Companion documents:
 | Name | MS2A - AI Engineering | MS2A - Machine Learning Practice |
 | Slug | `python-ai-engineering` | `ms2a-machine-learning-practice` |
 | Volume | 12h — 4 × 3h, one week | 30h — 10 × 3h, ten weeks |
-| Modules / lessons | 5 / 30 | 12 / 74 |
+| Modules / lessons | 3 / 30 | 12 / 74 |
 | Competitions attached | 4 (179-182) | 17 |
 | Dates | **2026-09-07 → 2026-09-11** | **2026-09-14 → 2026-11-27** |
 | Join code | `GR1WFC63` | `N1DX2QA4` |
@@ -44,9 +44,10 @@ all.
 
 Session 2 was **Agentic Coding**. Its six lessons now sit at the end of
 `s1-git-and-packaging`, and competition **#180** went with them — Lab 2 is the lesson
-that submits to it. The freed slot is **Session 2 — Shell, Notebooks & Colab**
-(`s2-shell-notebooks-colab`, module #31), holding one *unpublished* `session-plan`
-lesson: the authoring brief for that build, not teaching material.
+that submits to it. The freed slot briefly became **Session 2 — Shell, Notebooks &
+Colab** (`s2-shell-notebooks-colab`, module #31), holding one *unpublished*
+`session-plan` lesson — the authoring brief for that build, not teaching material.
+That module has since been folded in as well; see the end of this section.
 
 Module slugs are immutable (`update_module` accepts title/summary/icon/visibility only),
 so a new identity meant a new module. Server module **#15** and its lessons **34-39**
@@ -56,12 +57,52 @@ manual; a restructure of this shape always needs it, or the live course shows th
 lessons twice. It also has to happen *before* `reorder_modules`, which rejects an id
 list that is not exactly the course's linked set — that is what failed the publish run.
 
-Verified live: 5 modules / 30 lessons in the order above, 12 lessons in session 1,
-no relative image paths left in any of the 30 bodies, all 12 image refs 200.
+Verified live at that point: 5 modules / 30 lessons in the order above, 12 lessons in
+session 1, no relative image paths left in any of the 30 bodies, all 12 image refs 200.
 
-Session 1 now authors **~5h against a 3h slot** (a 173-slide deck) — the sharpest form
-of open decision §5.3. Its bodies are unchanged and still read "this session is placed
-second" and "your Session 1 repository"; rewriting waits on the split.
+**The `Reference` module was then removed too, same day.** Its six lessons were
+self-study material parked outside the sessions, reachable only through three inbound
+links, and they now live in the session they belong to: `github-desktop`,
+`github-actions`, `ide-syntax-linting`, `git-cheatsheet` at the end of
+`s1-git-and-packaging` (lessons **138-141**), `autograd-mathematics` and
+`deep-learning-history` at the end of `s4-pytorch-nutshell` (**142-143**). Module **#18**
+and its lessons **51-56** are gone — unlinked from the course first, then
+`delete_module(18)`; unlinking before the publish is what lets `reorder_modules` see the
+exact four-module set, and it keeps the deletion reversible until the new lessons are
+verified live.
+
+Three things had to move with them. The titles carry a `Reference — ` prefix, because the
+module was what told a student the material is never lectured and it no longer exists.
+The three cross-links (`git-essentials`, `autograd`, `why-tensors`) were repointed from
+`paie-reference` to the new module slugs. And `build_slides.py` learned `in_deck: false`,
+without which the four reference lessons would have been rendered into the session 1 deck
+they were demoted out of — the s1 and s4 decks are byte-for-byte the same 173 and 94
+slides as before the move.
+
+Verified live: 4 modules / 30 lessons, all six lessons serving at their new paths, the
+`paie-reference/*` paths 404, and all three cross-links resolving.
+
+**Session 2 was then folded in too, and deleted.** Session 1 is retitled **"Session 1 —
+Git & Python Packaging - Shell, Notebooks & Colab"**, which is now the whole engineering
+floor in one module: git, packaging, agentic coding, the four reference lessons, and the
+shell/notebook/Colab scope it has yet to carry content for. `session-plan` moved with the
+title — last lesson of module #14, `is_published: false`, `in_deck: false` — so the brief
+for that material sits in the module that owes it. Module **#31** and lesson **137** are
+gone (`delete_module(31, force=True)`, run before the publish so `reorder_modules` saw
+the exact three-module set).
+
+Verified live: **3 modules / 30 lessons**, 17 in session 1, no relative image paths in
+any body, all 12 image refs 200.
+
+**There is now no Session 2** — the course is Sessions 1, 3, 4. The course description
+still promises "four 3-hour sessions", and the labs, deck eyebrows and competition
+names (`PAIE S2 — Flesch reading-ease`) all carry the old numbers. Module slugs cannot
+be renumbered at all. Settle the numbering with the Session 1 split (§5.3):
+that module now authors **~5h of lecture plus two labs against a 3h slot**, a 173-slide
+deck, and splitting it is what would supply a real Session 2.
+
+Session 1's bodies are unchanged throughout all of this. They still read "this session is
+placed second" and "your Session 1 repository"; rewriting waits on the split.
 
 ---
 
