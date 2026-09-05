@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Tests for the Session 2 challenge packages and their notebooks.
+"""Tests for the Session 2 and 3 challenge packages and their notebooks.
 
     uv run --with pytest --with pandas --with nbclient --with ipykernel \
         pytest courseware/competitions/test_challenges.py -v
@@ -13,17 +13,19 @@ What is covered, and why each one exists:
   rather than silently imputing;
 * the train/test split is disjoint and the private labels cover the test ids
   exactly;
-* the **worked notebook runs end to end** and the submission it writes scores
-  the declared baseline — which is the real contract, since that notebook is
-  what a student runs;
-* the **guided notebook contains no code**, which is the point of it;
-* both notebooks are in sync with the builder that generates them.
+* R2 = 0 really is the predict-the-mean model and always-0 really is F1 = 0 —
+  the two claims the overviews lead with;
+* each **worked notebook runs end to end** and the submission it writes scores
+  the declared baseline — the real contract, since that notebook is what a
+  student runs;
+* each **guided notebook contains no code**, which is the point of it;
+* all four notebooks are in sync with the builder that generates them.
 
 Notebook execution needs a real key (the notebook downloads its own data):
 
     export MLARENA_USER_API_KEY=mlk_user_...
 
-Without it the two notebook-execution tests skip; everything else still runs.
+Without it the notebook-execution tests skip; everything else still runs.
 The submit cell is neutralised during the test — a test run must not put rows on
 a live leaderboard. `--submit-for-real` opts into it.
 """
@@ -45,7 +47,9 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 NOTEBOOKS = REPO / "website" / "public" / "modules" / "python-ai-engineering" / "challenges"
 
-PACKAGES = ["s2-bike-demand", "s2-bank-marketing"]
+PACKAGES = ["s2-bike-demand", "s2-bank-marketing",
+            "s3-diabetes-progression", "s3-credit-risk"]
+REGRESSION = {"s2-bike-demand", "s3-diabetes-progression"}
 
 
 # --------------------------------------------------------------------------- #
@@ -199,26 +203,28 @@ def test_regressor_accepts_negative_predictions(tmp_path):
     assert result["metrics_detail"]["n_negative"] > 0
 
 
-def test_r2_zero_is_the_mean_model(tmp_path):
+@pytest.mark.parametrize("pkg", sorted(REGRESSION))
+def test_r2_zero_is_the_mean_model(pkg, tmp_path):
     """The overview tells students R2 = 0 is exactly predict-the-training-mean.
     That claim should be true of the scorer, not just of the textbook."""
     import pandas as pd
-    d = HERE / "s2-bike-demand" / "data"
+    d = HERE / pkg / "data"
     yte = pd.read_csv(d / "y_test.csv")
     mean_of_test = yte["prediction"].mean()
     path = write_csv(tmp_path / "sub.csv",
                      [f"{i},{mean_of_test}" for i in yte["id"]])
-    result = score("s2-bike-demand", path)
+    result = score(pkg, path)
     assert abs(result["score"]) < 1e-9, "constant-mean predictor is not R2 = 0"
 
 
-def test_always_zero_is_f1_zero(tmp_path):
-    """Likewise for the classifier's headline claim."""
+@pytest.mark.parametrize("pkg", ["s2-bank-marketing", "s3-credit-risk"])
+def test_always_zero_is_f1_zero(pkg, tmp_path):
+    """Likewise for the classifiers' headline claim."""
     import pandas as pd
-    d = HERE / "s2-bank-marketing" / "data"
+    d = HERE / pkg / "data"
     yte = pd.read_csv(d / "y_test.csv")
     path = write_csv(tmp_path / "sub.csv", [f"{i},0" for i in yte["id"]])
-    result = score("s2-bank-marketing", path)
+    result = score(pkg, path)
     assert result["metrics_detail"]["f1"] == 0.0
     assert abs(result["metrics_detail"]["accuracy"] - (1 - yte["prediction"].mean())) < 1e-6
 
@@ -236,9 +242,32 @@ def test_notebooks_match_their_builder(tmp_path):
     assert before == after, "notebooks are out of sync with build_notebooks.py"
 
 
-def test_guide_notebook_has_no_code():
-    """The bank notebook guides in English and ships empty cells on purpose."""
-    nb = json.loads((NOTEBOOKS / "aie-s2-bank-marketing.ipynb").read_text())
+def test_notebook_code_cells_compile():
+    """Catches generator bugs that only surface when a cell is executed --
+    an escaped newline landing inside an f-string, say. Execution catches these
+    too, but only with an API key; this runs everywhere."""
+    for path in sorted(NOTEBOOKS.glob("*.ipynb")):
+        nb = json.loads(path.read_text())
+        for i, cell in enumerate(nb["cells"]):
+            if cell["cell_type"] != "code":
+                continue
+            src = "".join(cell["source"])
+            if not src.strip():
+                continue
+            # `!pip ...` is IPython syntax, not Python.
+            src = "\n".join(("#" + ln if ln.lstrip().startswith("!") else ln)
+                             for ln in src.splitlines())
+            try:
+                compile(src, f"{path.name}:cell{i}", "exec")
+            except SyntaxError as exc:
+                raise AssertionError(f"{path.name} cell {i} does not compile: {exc}")
+
+
+@pytest.mark.parametrize("notebook", ["aie-s2-bank-marketing.ipynb",
+                                     "aie-s3-credit-risk.ipynb"])
+def test_guide_notebook_has_no_code(notebook):
+    """The guided notebooks guide in English and ship empty cells on purpose."""
+    nb = json.loads((NOTEBOOKS / notebook).read_text())
     code_cells = [c for c in nb["cells"] if c["cell_type"] == "code"]
     assert code_cells, "guide notebook has no cells for the student to fill"
     for i, cell in enumerate(code_cells):
@@ -246,8 +275,10 @@ def test_guide_notebook_has_no_code():
         assert body == "", f"guide notebook code cell {i} is not empty: {body[:60]!r}"
 
 
-def test_worked_notebook_has_no_leftover_placeholder_key():
-    nb = json.loads((NOTEBOOKS / "aie-s2-bike-demand.ipynb").read_text())
+@pytest.mark.parametrize("notebook", ["aie-s2-bike-demand.ipynb",
+                                     "aie-s3-diabetes-progression.ipynb"])
+def test_worked_notebook_has_no_leftover_placeholder_key(notebook):
+    nb = json.loads((NOTEBOOKS / notebook).read_text())
     src = "".join("".join(c["source"]) for c in nb["cells"])
     assert "mlk_user_..." in src, "the placeholder students replace is gone"
     assert "mlk_user_4" not in src and "mlk_creator" not in src and "mlk_teacher" not in src, \
@@ -256,6 +287,7 @@ def test_worked_notebook_has_no_leftover_placeholder_key():
 
 @pytest.mark.parametrize("pkg,notebook,expect_key,tol", [
     ("s2-bike-demand", "aie-s2-bike-demand.ipynb", "r2", 1e-6),
+    ("s3-diabetes-progression", "aie-s3-diabetes-progression.ipynb", "r2", 1e-6),
 ])
 def test_worked_notebook_runs_and_scores_the_baseline(pkg, notebook, expect_key, tol,
                                                       user_key, tmp_path):

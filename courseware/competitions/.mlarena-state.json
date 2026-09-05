@@ -31,6 +31,18 @@
         "module_slug": "s3-models-and-tuning",
         "name": "PAIE S3 \u2014 Adult Census Income"
       },
+      "s3-credit-risk": {
+        "id": 186,
+        "label": "Credit Risk",
+        "module_slug": "s3-models-and-tuning",
+        "name": "AIE S3 \u2014 Credit Risk"
+      },
+      "s3-diabetes-progression": {
+        "id": 185,
+        "label": "Diabetes Progression",
+        "module_slug": "s3-models-and-tuning",
+        "name": "AIE S3 \u2014 Diabetes Progression"
+      },
       "s4-mnist-warmup": {
         "id": 182,
         "label": "MNIST Warm-up",

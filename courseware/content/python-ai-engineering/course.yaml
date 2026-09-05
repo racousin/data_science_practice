@@ -312,7 +312,16 @@ modules:
         file: s3-models-and-tuning/lab-3.md
         estimated_minutes: 45
         is_published: true
+    # Three challenges. 185 is the session's centrepiece: the same split scored
+    # by a linear model and a 500-tree forest, where the forest fits to R2 0.92
+    # and loses held out -- the demonstration that a training score is not a
+    # score. 186 repeats it, guided, on a classification target. 181 stays as
+    # Lab 3's end-to-end pipeline. Notebooks: tools/build_notebooks.py.
     competitions:
+      - competition_id: 185
+        label: "Diabetes Progression"
+      - competition_id: 186
+        label: "Credit Risk"
       - competition_id: 181
         label: "Adult Census Income"
 

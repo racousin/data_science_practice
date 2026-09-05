@@ -247,8 +247,12 @@ endpoint — per the frontend↔SDK parity rule in `mlarena-sdk/PROCESS.md`.
 
 ## Competitions
 
-Each taught session has one competition, built from a package under
-`competitions/` and linked to that session's module. Sessions 1 and 2 grade the
+Each taught session has at least one competition, built from a package under
+`competitions/` and linked to that session's module. Sessions 2 and 3 have two
+apiece — one per model family they teach — plus the notebooks that go with them
+(`tools/build_notebooks.py`, output under
+`website/public/modules/python-ai-engineering/challenges/`, which is the path
+the Colab links resolve against on GitHub). Sessions 1 and 2 grade the
 lab's *code* (`flex_v1` — competitors upload `agent.py`); Sessions 3 and 4 grade
 a *submission file* (`file_v1`). The `Reference — …` self-study lessons have
 none.
