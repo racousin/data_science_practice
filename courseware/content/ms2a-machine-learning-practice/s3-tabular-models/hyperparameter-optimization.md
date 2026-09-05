@@ -187,3 +187,32 @@ Three consequences you must live with:
   nested CV.
 
 > The search picks the hyperparameters. It does not get to report the result.
+
+---
+
+## Check yourself
+
+1. With a budget of $n$ evaluations over $d$ hyperparameters, how many distinct
+   values of each parameter does a grid test, and how many does random search?
+
+   **Answer.** The grid tests $n^{1/d}$ values per parameter; random search
+   tests $n$ distinct values of every parameter. Past three parameters that
+   difference is decisive at equal budget.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   lo, hi = 1e-3, 1e2
+   print(round((hi - 1.0) / (hi - lo) * 100, 1))   # -> 99.0
+   ```
+
+   Sampling `reg_lambda` uniformly from that range puts 99% of the draws above
+   1 and never explores the small end. That is why the space is `log=True`.
+
+3. Two hundred trials, best score 0.842, fold standard deviation 0.011. What
+   number goes in the report?
+
+   **Answer.** Not 0.842. The maximum of two hundred noisy estimates is biased
+   upward and the bias grows with the budget, so report the held-out test score
+   computed once after the search is closed — and treat every trial within
+   0.011 of the best as a tie, taking the simpler configuration.

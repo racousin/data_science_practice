@@ -67,10 +67,10 @@ split.
 from sklearn.model_selection import train_test_split
 
 X_train, X_temp, y_train, y_temp = train_test_split(
-    X, y, test_size=0.3, random_state=42
+    X, y, test_size=0.3, random_state=42, stratify=y
 )
 X_val, X_test, y_val, y_test = train_test_split(
-    X_temp, y_temp, test_size=0.5, random_state=42
+    X_temp, y_temp, test_size=0.5, random_state=42, stratify=y_temp
 )
 ```
 
@@ -79,6 +79,11 @@ X_val, X_test, y_val, y_test = train_test_split(
 | Train | 70% | fitting parameters |
 | Validation | 15% | choosing hyperparameters, early stopping |
 | Test | 15% | one final, honest estimate |
+
+`stratify=` is not optional on a classification target. Without it, the 15% test
+slice of a 24%-positive dataset lands anywhere between 13% and 34% positive
+depending on the seed, and your test score then moves with the draw rather than
+with the model. Lab 3 fails an unstratified split for exactly this reason.
 
 ---
 
@@ -251,3 +256,46 @@ Choose on validation. Touch test once.
 
 If a validation score surprises you on the upside, assume a leak until you have
 found the reason it is real.
+
+---
+
+## Check yourself
+
+1. Name each of these from the "diagnosing from two numbers" block, and say what
+   you would do next: (a) train 0.02 / val 0.41, (b) train 0.36 / val 0.39,
+   (c) train 0.41 / val 0.12.
+
+   **Answer.** (a) overfitting — simplify, regularise, or get more data.
+   (b) underfitting — more capacity or better features. (c) should never happen:
+   it is a bug or a leak, and the split is where to look.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import numpy as np
+   from sklearn.model_selection import train_test_split
+   y = np.array([1]*240 + [0]*760)                      # 24% positive, like Lab 3
+   _, plain = train_test_split(y, test_size=0.15, random_state=0)
+   _, strat = train_test_split(y, test_size=0.15, random_state=0, stratify=y)
+   print(round(plain.mean(), 3))    # -> 0.18
+   print(round(strat.mean(), 3))    # -> 0.24
+   ```
+
+   **Answer.** The unstratified test set is 18% positive instead of 24% — a
+   quarter of the positives are missing, and every metric computed on it is
+   measuring the draw. `stratify=y` returns 0.24 for every seed.
+
+3. Your validation F1 jumps from 0.66 to 0.94 after you add one feature. What is
+   the lesson's instruction?
+
+   **Answer.** Assume a leak until you have found the reason it is real. The
+   signature of leakage is exactly this: a validation score much better than you
+   expected. Apply the test — *would I have this value at the moment I need the
+   prediction?*
+
+4. You have 4,000 chest X-rays from 900 patients, several images per patient. Why
+   is `StratifiedKFold` still the wrong choice, and what replaces it?
+
+   **Answer.** Leak 3, duplicates across the split: two images of the same
+   patient in different folds let the model recall rather than generalise. Split
+   by **group** — `GroupKFold` with the patient id passed as `groups=`.

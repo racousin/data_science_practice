@@ -208,3 +208,46 @@ in a student project are `num_workers=0`, a per-sample JPEG decode that should
 have been a cached tensor, or a `.item()` inside the loop forcing a device
 synchronisation every step.
 
+
+---
+
+## Check yourself
+
+1. You move a working single-GPU run to 8 GPUs with DDP, change nothing else,
+   and it converges *worse* than the single-device baseline. Nothing crashed.
+   What is the cause, and what is the correction the lesson gives?
+
+   **Answer.** The gradient is now averaged over 8× more samples, so it is
+   about $\sqrt{8}$ times less noisy and the old learning rate under-steps.
+   Apply the linear scaling rule, $\eta_{new} = \eta_{base} \times N$, with a
+   few epochs of warmup.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import torch
+   x = torch.arange(4.).reshape(4, 1)
+   w = torch.zeros(1, 1, requires_grad=True)
+
+   ((x @ w) - 1).pow(2).mean().backward()          # one batch of 4
+   full = w.grad.clone(); w.grad = None
+
+   for i in range(4):                              # 4 micro-batches, no division
+       ((x[i:i+1] @ w) - 1).pow(2).mean().backward()
+
+   print(w.grad.item() / full.item())              # -> 4.0
+   ```
+
+   **Answer.** Without `loss / accum_steps` you hand the optimiser a sum where
+   it expects a mean, so the effective learning rate is `accum_steps` times too
+   large. Here that factor is exactly 4.
+
+3. Your DataLoader has a `DistributedSampler` and you never call
+   `sampler.set_epoch(epoch)`. What silently stops working, and what is the
+   second trap the same sampler sets on the validation set?
+
+   **Answer.** The permutation is seeded with `seed + epoch`, so a fixed epoch
+   replays the identical order every epoch on every rank — shuffling does
+   nothing, with no warning. On validation the sampler pads the dataset so all
+   ranks get equal batch counts, and those duplicates are counted twice;
+   evaluate on rank 0 only.

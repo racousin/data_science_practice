@@ -173,3 +173,32 @@ tells you whether the boosting model earned its complexity.
 Every leak in this session is the same failure: a score computed with information
 the deployed model will not have. Here that information is the future, and it
 gets in through a missing `shift`.
+
+---
+
+## Check yourself
+
+1. What breaks if you drop the `shift(1)` from
+   `g.shift(1).rolling(7).mean()`?
+
+   **Answer.** The window then includes the current row, so the feature
+   contains the target. The model scores superbly and predicts nothing — the
+   most common leak in time-series feature engineering.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import pandas as pd
+   s = pd.Series([1, 2, 3, 4, 5])
+   print(s.rolling(2).mean().tolist())            # -> [nan, 1.5, 2.5, 3.5, 4.5]
+   print(s.shift(1).rolling(2).mean().tolist())   # -> [nan, nan, 1.5, 2.5, 3.5]
+   ```
+
+   Row 2 of the first line already knows `y_2`. Row 2 of the second does not.
+
+3. Your target is the return over the next seven days. What do you pass as
+   `gap` to `TimeSeriesSplit`, and why that number?
+
+   **Answer.** `gap=7`. The gap is the target's horizon: without it the last
+   seven training rows have targets computed over the validation window, and
+   they leak.

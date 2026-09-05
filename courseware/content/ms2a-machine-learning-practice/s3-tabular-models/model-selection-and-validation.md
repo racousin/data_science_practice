@@ -158,6 +158,7 @@ scaler and enormous for a target encoder.
 > cross-validator, so that it is refitted from scratch on each training fold.
 
 ```python
+from lightgbm import LGBMClassifier
 pipe = Pipeline([("prep", preprocessor), ("model", LGBMClassifier())])
 cross_val_score(pipe, X, y, cv=cv)           # right
 ```
@@ -195,5 +196,43 @@ An ML-Arena competition scores your submission on a held-out split you never see
 - Submitting fifty times and keeping the best is selection on the test set.
   The leaderboard becomes a validation set and stops being an honest estimate.
 
+ML-Arena's leaderboard reports a single mean with no interval — `RewardCi95` is
+`null` on every row of the competitions this course attaches — so a 0.001 gap
+between two rows is not evidence of anything. Treat adjacent ranks as tied and
+keep your own fold standard deviation as the ruler.
+
 Decide locally, submit rarely, and report the number you got the first time you
 were finished.
+
+---
+
+## Check yourself
+
+1. On the same folds, model A scores 0.812 ± 0.004 and model B scores
+   0.818 ± 0.030. Which is better?
+
+   **Answer.** Neither has been shown to be. The 0.006 gap is smaller than one
+   fold standard deviation of B, and B's fold-to-fold variance says it is
+   unstable on this dataset. Prefer the simpler model.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import numpy as np
+   from sklearn.model_selection import StratifiedKFold, KFold
+   y = np.repeat([0, 1], [970, 30])          # 3% positive
+   s = StratifiedKFold(n_splits=5, shuffle=True, random_state=0)
+   k = KFold(n_splits=5, shuffle=True, random_state=0)
+   print([int(y[te].sum()) for _, te in s.split(y, y)])   # -> [6, 6, 6, 6, 6]
+   print([int(y[te].sum()) for _, te in k.split(y)])      # -> [10, 5, 4, 8, 3]
+   ```
+
+   The second line is why plain k-fold has no place in a classification
+   problem: those folds differ more than most models do.
+
+3. You will deploy on patients the model has never seen, and each patient
+   contributes several rows. Which splitter, keyed on what?
+
+   **Answer.** `StratifiedGroupKFold` with `groups=df["patient_id"]`. The unit
+   of generalisation is the patient, not the row; random folds put the same
+   patient on both sides and measure memorisation.

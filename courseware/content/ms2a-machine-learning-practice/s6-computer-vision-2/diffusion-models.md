@@ -43,7 +43,8 @@ with $\bar{\alpha}_t$ the running product of $(1 - \beta_s)$.
 
 ```python
 noise = torch.randn_like(x0)
-xt = alpha_bar[t].sqrt() * x0 + (1 - alpha_bar[t]).sqrt() * noise
+ab = alpha_bar[t].view(-1, 1, 1, 1)      # (B,) -> (B,1,1,1), broadcasts over (B,C,H,W)
+xt = ab.sqrt() * x0 + (1 - ab).sqrt() * noise
 ```
 
 Sample a random `t` per image in the batch, corrupt in one operation, done.
@@ -83,9 +84,15 @@ predicts. That is the entire loss.
 ```python
 t = torch.randint(0, T, (x0.size(0),), device=x0.device)
 noise = torch.randn_like(x0)
-xt = alpha_bar[t].sqrt() * x0 + (1 - alpha_bar[t]).sqrt() * noise
+ab = alpha_bar[t].view(-1, 1, 1, 1)
+xt = ab.sqrt() * x0 + (1 - ab).sqrt() * noise
 loss = F.mse_loss(model(xt, t), noise)
 ```
+
+The `.view(-1, 1, 1, 1)` is not cosmetic. Without it a per-image `t` gives a
+`(B,)` tensor that broadcasts against the *width* axis: it raises on most
+shapes, and silently applies the wrong noise level to every image on the shapes
+where `B` happens to equal `W`.
 
 Compare with the previous lesson: one network, one loss, a curve that goes down
 and means something. The stability is not a detail — it is the reason diffusion
@@ -239,3 +246,38 @@ latent space inside another model.
 
 The honest default for images is a pretrained latent diffusion model plus a
 cheap adapter. Training one from scratch is a research project, not a feature.
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   import torch
+   T, B = 1000, 8
+   alpha_bar = torch.linspace(0.9999, 0.0001, T)
+   t = torch.randint(0, T, (B,))
+   print(alpha_bar[t].shape)                     # -> torch.Size([8])
+   print(alpha_bar[t].view(-1, 1, 1, 1).shape)   # -> torch.Size([8, 1, 1, 1])
+   ```
+
+   **Answer.** A random `t` per image gives one number per image, shape `(B,)`.
+   Multiplied against an `(B, C, H, W)` batch it lines up with the width axis,
+   which is why the corruption step reshapes it first.
+
+2. Sampling your trained DDPM at 1000 steps is too slow, so you swap in
+   DPM-Solver++ at 25. What has to be retrained?
+
+   **Answer.** Nothing. The network learned a denoiser, not a fixed trajectory,
+   so the sampler is a one-line change — sweep it before concluding the model is
+   bad.
+
+3. Classifier-free guidance costs two forward passes per step. Which two, and
+   what happens to the images as you push the guidance scale to 20?
+
+   **Answer.** The conditional and the unconditional prediction of the same
+   network, which learned both because the condition was dropped 10% of the time
+   during training. Push the scale that far and prompt adherence rises while
+   diversity and realism collapse into oversaturated, contrast-blown images;
+   around 7 is the usual default.

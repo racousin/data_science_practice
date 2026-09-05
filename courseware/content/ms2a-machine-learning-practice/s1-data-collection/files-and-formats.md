@@ -195,3 +195,36 @@ afternoon you would otherwise spend explaining a negative revenue figure.
 
 This is the fail-fast principle applied to data: crash at the boundary, not deep
 in a training loop at epoch 40.
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   import io, pandas as pd
+
+   csv = "zipcode,city\n07001,Bobigny\n"
+   print(pd.read_csv(io.StringIO(csv))["zipcode"][0])                       # -> 7001
+   print(pd.read_csv(io.StringIO(csv),
+                     dtype={"zipcode": str})["zipcode"][0])                 # -> 07001
+   ```
+
+   **Answer.** CSV carries no type information, so pandas guessed `int` and ate
+   the leading zero. `dtype=` is the argument that prevents it.
+
+2. You write a dataframe with a `datetime` column to CSV and to Parquet, and read
+   both back. Which one gives you a `datetime` again, and what is the rule the
+   lesson draws from that?
+
+   **Answer.** Parquet — it stores the schema, so a `datetime` written is a
+   `datetime` read; the CSV round-trip returns a string. The rule: CSV to
+   exchange with humans, Parquet for everything your pipeline touches.
+
+3. A CSV exported from Excel raises `UnicodeDecodeError`. Why is
+   `errors="ignore"` the wrong repair?
+
+   **Answer.** It deletes the characters it cannot decode, so the information is
+   lost silently. Find the real encoding instead — a French Windows export is
+   very often `cp1252`/`latin1`, not UTF-8.

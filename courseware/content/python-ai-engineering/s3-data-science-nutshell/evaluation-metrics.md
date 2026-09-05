@@ -271,3 +271,51 @@ Choosing the metric after seeing which one flatters your model is how you fool
 your supervisor, then your users, then yourself. On ML-Arena the metric is fixed
 by the competition — which is exactly the discipline the leaderboard is
 enforcing.
+
+---
+
+## Check yourself
+
+1. Run this. Work out precision, recall, F1 and accuracy on paper from
+   `tp=3, fp=1, fn=2, tn=44` **before** you call the metric functions.
+
+   ```python
+   import numpy as np
+   from sklearn.metrics import (confusion_matrix, precision_score,
+                                recall_score, f1_score, accuracy_score)
+   y_true = np.array([1]*5 + [0]*45)              # 5 positives in 50
+   y_pred = np.array([1, 1, 1, 0, 0] + [1] + [0]*44)
+   print(confusion_matrix(y_true, y_pred).ravel())     # -> [44  1  2  3]  (tn fp fn tp)
+   print(round(precision_score(y_true, y_pred), 3))    # -> 0.75
+   print(round(recall_score(y_true, y_pred), 3))       # -> 0.6
+   print(round(f1_score(y_true, y_pred), 3))           # -> 0.667
+   print(round(accuracy_score(y_true, y_pred), 3))     # -> 0.94
+   ```
+
+   **Answer.** Precision 0.750, recall 0.600, F1 0.667, accuracy 0.940. The gap
+   between 0.940 and 0.667 is the whole lesson: 94% "right" on a 10%-positive
+   problem is measuring the majority class.
+
+2. A screening test for a rare cancer, and a spam filter that deletes mail
+   without asking. Which metric does each one lean on, and why?
+
+   **Answer.** Screening leans on **recall** — missing a positive is expensive.
+   The deleting spam filter leans on **precision** — a false alarm destroys a
+   real message. No threshold maximises both; which side you lean to is a
+   decision about the problem, not about the model.
+
+3. Someone reports "F1 = 0.82" on a five-class problem. What is missing, and why
+   does it matter?
+
+   **Answer.** The averaging. `macro` gives every class equal weight so rare
+   classes can dominate, `weighted` lets frequent classes dominate, and `micro`
+   equals accuracy in the single-label case. Without it, 0.82 is not a number
+   anyone can compare against.
+
+4. Your model has ROC AUC 0.95 and F1 0.31 on a 2%-positive dataset. Is the
+   model good?
+
+   **Answer.** AUC measures **ranking**, not classification, and stays
+   optimistic on heavily imbalanced data — so 0.95 means it ranks positives
+   above negatives well, while the F1 says the threshold you actually deploy is
+   wrong. Move the threshold, and report PR-AUC rather than ROC AUC.

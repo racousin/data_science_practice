@@ -244,3 +244,43 @@ the same content, which is a cost and a quality penalty at once.
 The failure mode is a truncation nobody looked at: a third of the documents cut
 at 128 tokens, an accuracy ceiling with no explanation, and a model that is not
 wrong — it simply never saw the evidence.
+
+---
+
+## Check yourself
+
+1. You load `AutoModel.from_pretrained("bert-base-uncased")` but tokenize with a
+   GPT-2 tokenizer. Both run without error. What have you actually built?
+
+   **Answer.** Ids produced against one vocabulary indexing the rows of another
+   embedding matrix — every token is looked up in the wrong row. Nothing is
+   raised and the output is confident nonsense. Load the tokenizer from the same
+   checkpoint name as the model, always.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   from transformers import AutoTokenizer
+   tok = AutoTokenizer.from_pretrained("distilbert-base-uncased")
+   print(tok.tokenize("Tokenization is unavoidable."))
+   # -> ['token', '##ization', 'is', 'una', '##vo', '##ida', '##ble', '.']
+   print(len(tok("Tokenization is unavoidable.")["input_ids"]))
+   # -> 10
+   ```
+
+3. The second number in that snippet is 10, not 8. Where do the two extra ids
+   come from, and what happens to a model pretrained with them if you remove
+   them?
+
+   **Answer.** `add_special_tokens` defaults to `True`, so `[CLS]` and `[SEP]`
+   are prepended and appended. A model pretrained with `[CLS]` at position 0 and
+   fed a sequence without it returns confident nonsense, silently — leave the
+   default alone.
+
+4. Your documents have a 95th percentile of 400 tokens and you tokenize with
+   `truncation=True, max_length=128`. What do you observe, and what do you not?
+
+   **Answer.** You observe an accuracy ceiling with no explanation. You do not
+   observe the cause: truncation discards the tail without a word and raises
+   nothing. Plot the token-length distribution and choose `max_length` from that
+   figure rather than inheriting a default.

@@ -1,7 +1,8 @@
 # Models & Objectives
 
-The shared vocabulary. Everything in *MS2A - Machine Learning Practice* — tabular, vision, NLP,
-reinforcement learning — is a variation on what is on these slides.
+The shared vocabulary. You will meet all of it again in *MS2A - Machine Learning
+Practice* — tabular, vision, NLP, reinforcement learning; the point of this lesson
+is that none of it is new when you do.
 
 <!-- notes: 35 minutes. Move quickly; this is a levelling lesson, and half the
 room already knows it. The parametric/non-parametric distinction and the loss
@@ -184,3 +185,46 @@ Parameters are learned. **Hyperparameters** are chosen by you, before training.
 
 They are chosen on a **validation** set — never the test set. That is the next
 lesson.
+
+---
+
+## Check yourself
+
+1. A model with the **lower** cross-entropy loss scores the **worse** F1. Is one
+   of the two numbers wrong?
+
+   **Answer.** No. Loss is what the optimiser minimises and must be
+   differentiable; the metric is what you and the leaderboard judge on and can be
+   anything computable. They do not always move together — the usual culprit is
+   the decision threshold, which the loss never sees.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import numpy as np
+   proba = np.array([0.10, 0.35, 0.48, 0.52, 0.80])
+   print((proba > 0.5).astype(int))   # -> [0 0 0 1 1]
+   print((proba > 0.4).astype(int))   # -> [0 0 1 1 1]
+   ```
+
+   **Answer.** The model did not change between the two lines — only the
+   threshold did, and one more example became a positive. `0.5` is a choice, not
+   a law, and you cannot make that choice at all if you kept only
+   `predict`'s labels instead of `predict_proba`'s probabilities.
+
+3. `max_depth` on a decision tree: parameter or hyperparameter, and which set is
+   it chosen on?
+
+   **Answer.** A hyperparameter — you choose it before training, whereas
+   parameters are learned by it. It is chosen on the **validation** set, never on
+   the test set.
+
+4. You have 4,000 rows of tabular data with 12 mixed numeric and categorical
+   columns, and you must be able to explain each prediction to a client. What
+   does the "which to reach for" table say, and what is the empirical claim in
+   the paragraph under it?
+
+   **Answer.** Logistic regression — "tabular, need to explain it". The claim
+   worth remembering from the row above it is that on tabular data gradient
+   boosting still beats deep networks most of the time, and you should assume
+   that until your own validation says otherwise.

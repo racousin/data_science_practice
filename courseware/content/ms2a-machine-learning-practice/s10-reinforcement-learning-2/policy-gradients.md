@@ -212,3 +212,44 @@ and every transition you collected came from a policy that no longer exists.
 
 The next lesson recovers part of the loss: importance sampling lets PPO take
 several gradient steps on the same batch before the data goes stale.
+
+---
+
+## Check yourself
+
+1. Why can you not simply differentiate under the expectation in
+   $J(\theta) = \mathbb{E}_{\tau \sim \pi_\theta}[\sum_t \gamma^t r_t]$?
+
+   **Answer.** $\theta$ appears in the distribution the expectation is taken
+   over, not only in the quantity being averaged. The log-derivative trick
+   converts the gradient of the density into an expectation under that same
+   density, which you can then estimate by sampling.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import torch
+   d = torch.distributions.Categorical(logits=torch.zeros(3))
+   print(round(d.log_prob(torch.tensor(0)).item(), 4))   # -> -1.0986
+   ```
+
+   **Answer.** $\ln(1/3) = -1.0986$: zero logits are a uniform policy. This is
+   what `dist.log_prob(action)` returns before any training, and the REINFORCE
+   loss is `-(log_prob * return).mean()` — the minus sign turns ascent into
+   descent so an ordinary optimiser applies.
+
+3. You shift every reward in your environment up by 1000 and the agent gets
+   worse. Should that be surprising?
+
+   **Answer.** No. In the policy gradient theorem the weight on each action is
+   $G_t$, so with every return positive every action taken is reinforced. The
+   estimator is not invariant to a constant offset — which is exactly what a
+   baseline repairs.
+
+4. Which two variance reductions are free — unbiased, one line each — and what
+   is the cost of forgetting the second?
+
+   **Answer.** Subtracting a state-dependent baseline $b(s_t)$, and using the
+   reward-to-go $G_t = \sum_{k \geq t} \gamma^{k-t} r_k$ instead of the
+   whole-episode return. Skipping reward-to-go is the most common reason a
+   hand-written REINFORCE does not learn.

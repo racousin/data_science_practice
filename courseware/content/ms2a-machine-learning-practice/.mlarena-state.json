@@ -9,6 +9,7 @@
       "mlp-reference/cnn-backpropagation": 126,
       "mlp-reference/image-enhancement": 128,
       "mlp-reference/multi-gpu-scaling": 125,
+      "mlp-reference/reference-playgrounds": 130,
       "mlp-reference/three-d-cnns": 127,
       "s1-data-collection/apis": 60,
       "s1-data-collection/collection-strategy-and-quality": 62,

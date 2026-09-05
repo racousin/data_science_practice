@@ -202,3 +202,43 @@ SGD with momentum, a cosine schedule and a long budget still wins some vision
 benchmarks on half the optimizer memory — reach for it when you have the time to
 tune it, not before. Change one thing at a time, and only after the range test
 has told you where you are.
+
+---
+
+## Check yourself
+
+1. What does `AdamW` change relative to `Adam(weight_decay=...)`, and which
+   does this course use?
+
+   **Answer.** L2 added to the loss interacts with Adam's per-parameter
+   normalisation, so the effective decay ends up scaled by $1/\sqrt{\hat{v}}$
+   and the parameters with the largest gradients are barely regularised. AdamW
+   decouples them and applies the decay straight to the weight. Use AdamW —
+   there is no situation in this course where the other is the right call.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import torch, torch.nn as nn
+   m = nn.Linear(4, 1)
+   opt = torch.optim.AdamW(m.parameters(), lr=1e-3)
+   sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=1e-3, total_steps=100)
+   lrs = []
+   for _ in range(100):
+       opt.step(); sched.step(); lrs.append(opt.param_groups[0]["lr"])
+   print(f"{lrs[0]:.5f} {max(lrs):.5f} {lrs[-1]:.2e}")
+   # -> 0.00004 0.00100 5.07e-07
+   ```
+
+   The whole curve — warm up from a small fraction of `max_lr`, peak, anneal
+   to nearly zero — is spent in 100 **steps**, not 100 epochs. Step that
+   scheduler once per epoch and you would only ever see the warmup.
+
+3. Which schedulers step per batch, which per epoch, and what does getting it
+   wrong look like?
+
+   **Answer.** `OneCycleLR` and warmup schedules step per batch; `StepLR`,
+   `CosineAnnealingLR` and `ReduceLROnPlateau` step per epoch. Getting it wrong
+   does not raise: a per-batch schedule stepped per epoch completes $1/N$ of its
+   curve and the learning rate never comes down. Log
+   `opt.param_groups[0]["lr"]` and the mistake becomes visible.

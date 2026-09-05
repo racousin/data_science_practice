@@ -245,3 +245,34 @@ You will almost never train either from scratch, which makes the real question
 
 Architecture is the least valuable knob on the board for applied work. The next
 two lessons cover the ones that matter.
+
+---
+
+## Check yourself
+
+1. A 224×224 map with 256 channels goes through three 2×2 max-pools at stride 2,
+   then `AdaptiveAvgPool2d(1)`. What is the spatial size after each pool, and
+   what is the final shape?
+
+   **Answer.** 112, then 56, then 28 — the pooling formula with `P = 0` halves
+   it each time — and the head returns `(B, 256, 1, 1)`, whatever the input size
+   was.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import torch, torch.nn as nn
+   x = torch.randn(1, 256, 224, 224)
+   pool, sizes = nn.MaxPool2d(2), []
+   for _ in range(3):
+       x = pool(x)
+       sizes.append(x.shape[-1])
+   print(sizes)                              # -> [112, 56, 28]
+   print(nn.AdaptiveAvgPool2d(1)(x).shape)   # -> torch.Size([1, 256, 1, 1])
+   ```
+
+3. The original ViT lost to a ResNet on ImageNet-1k and overtook it only after
+   pretraining on 300 million images. What did it give up, and who paid for it?
+
+   **Answer.** Convolution's built-in priors: locality and translation
+   equivariance. Remove an inductive bias and the data has to supply it.

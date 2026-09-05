@@ -157,12 +157,20 @@ stopping watches. Keeping them separate is the point — optimise a smooth
 surrogate, stop on the metric you are graded on.
 
 ```python
-def rmspe(y_true, y_pred):
-    e = np.sqrt(np.mean(((y_true - y_pred) / y_true) ** 2))
-    return "rmspe", float(e)
+def rmspe(y_true, y_pred):                       # -> a float, lower is better
+    return float(np.sqrt(np.mean(((y_true - y_pred) / y_true) ** 2)))
 
-model.fit(X_tr, y_tr, eval_set=[(X_va, y_va)], eval_metric=rmspe)
+model = xgb.XGBRegressor(eval_metric=rmspe, early_stopping_rounds=50)
+model.fit(X_tr, y_tr, eval_set=[(X_va, y_va)])
 ```
+
+`eval_metric` and `early_stopping_rounds` moved from `fit()` to the constructor
+in xgboost 2.0; the old form raises `TypeError: XGBModel.fit() got an unexpected
+keyword argument 'eval_metric'` on the 3.2.0 that the platform runtime ships.
+The callable now returns a **plain float**, not the old `(name, value)` tuple —
+return the tuple and training dies with `TypeError: must be real number, not
+tuple` several iterations in. The label in `evals_result()` comes from the
+function's `__name__`, and early stopping watches the *last* metric listed.
 
 Get the direction right: XGBoost's sklearn API minimises, LightGBM wants an
 explicit `is_higher_better`, sklearn's `make_scorer` takes `greater_is_better`.
@@ -179,3 +187,37 @@ selects the worst iteration, and nothing warns you.
 - supply $g$ and $h$; keep $h$ strictly positive and O(1), never `1e-6`
 - verify a new objective on data whose answer you know before trusting it
 - objective and eval metric differ — check the sign convention of each
+
+---
+
+## Check yourself
+
+1. AutoML has run for ten minutes and beaten your hand-built model. Name two
+   things it did **not** do for you, and say which of them is the reason its
+   number might be a lie.
+
+   **Answer.** It did not design your validation split, build your features,
+   choose your metric, or explain itself. The split is the one that makes the
+   number a lie: run random K-fold on time-series or grouped data and it
+   reports an inflated score very efficiently.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   g = [-0.9, -0.9, 0.1]                     # three samples in one leaf, lambda = 0
+   print(-sum(g) / sum([1.0] * 3))           # -> 0.5666666666666667
+   print(-sum(g) / sum([1e-6] * 3))          # -> 566666.6666666666
+   ```
+
+   **Answer.** That is the hessian trap. `h` sits in the denominator of the
+   Newton step, so `hess = 1e-6` multiplies every leaf value by a million: the
+   trees explode and the run yields `nan` or wild predictions. Return a
+   constant `1` for a piecewise-linear loss.
+
+3. On xgboost 3.2.0 — the version the platform runtime ships — where do
+   `eval_metric` and `early_stopping_rounds` go, and what must your custom
+   metric return?
+
+   **Answer.** Both are constructor arguments, not `fit()` arguments; passing
+   `eval_metric` to `fit()` raises `TypeError`. The callable returns a plain
+   float, not a `(name, value)` tuple, and its `__name__` becomes the label.

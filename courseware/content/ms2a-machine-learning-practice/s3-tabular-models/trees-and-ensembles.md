@@ -203,6 +203,7 @@ the rest, and a meta-model trains on those predictions. Simple, fast, wasteful.
 prediction from a model that never saw it. The meta-model trains on those.
 
 ```python
+from lightgbm import LGBMClassifier
 from sklearn.ensemble import StackingClassifier
 stack = StackingClassifier(
     [("gb", LGBMClassifier()), ("rf", RandomForestClassifier())],
@@ -227,3 +228,33 @@ assert that no base model saw the rows it predicted.
 
 Expect one to three percent, after everything else is done. A tuned single
 gradient-boosting model gets you most of the way.
+
+---
+
+## Check yourself
+
+1. Bagging and boosting attack different terms of the error decomposition.
+   Which is which, and what does each imply about the base learner?
+
+   **Answer.** Bagging attacks variance, so its base learner is deliberately
+   overfit — averaging $B$ estimators divides variance by $B$ and leaves bias
+   alone. Boosting attacks bias, so its base learner is deliberately weak: a
+   stump, or a depth-3 tree.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   n = 10000
+   print(round(1 - (1 - 1/n) ** n, 3))       # -> 0.632
+   ```
+
+   Each bootstrap tree sees about 63.2% of the distinct rows, which is also
+   why the other 37% can be reused as an out-of-bag validation estimate.
+
+3. Bootstrapping already gives every tree different rows. Why does a random
+   forest also subsample *features* at each split?
+
+   **Answer.** The variance of the average is
+   $\rho\sigma^2 + \frac{1-\rho}{B}\sigma^2$. More trees only shrink the
+   second term, so the correlation $\rho$ between trees is the floor. Feature
+   subsampling attacks $\rho$ directly.

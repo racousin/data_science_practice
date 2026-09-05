@@ -238,3 +238,43 @@ PPO is the default because it is the least sensitive to getting the details
 wrong. It is what trained OpenAI Five, and it is the algorithm behind RLHF in
 Session 8. When a deep RL run fails, the useful question is almost never "would
 a different algorithm fix this" — it is the subject of the next lesson.
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   import torch
+   adv   = torch.tensor([ 1.0,  1.0, -1.0, -1.0])
+   ratio = torch.tensor([ 1.1,  1.5,  0.9,  0.5])
+   print(torch.min(ratio * adv, ratio.clamp(0.8, 1.2) * adv))
+   # -> tensor([ 1.1000,  1.2000, -0.9000, -0.8000])
+   ```
+
+   **Answer.** Rows 1 and 3 are inside the trust region and pass through
+   untouched. Rows 2 and 4 are clipped, so the objective stops improving and the
+   gradient is zero: the optimiser is paid nothing for pushing the policy
+   further than $\epsilon = 0.2$ from where the data came from.
+
+2. $\gamma$ and $\lambda$ are both between 0 and 1 and both appear in GAE. Which
+   one may you tune freely?
+
+   **Answer.** $\lambda$. It belongs to the estimator — how much you trust the
+   critic. $\gamma$ belongs to the problem definition: changing it changes the
+   task you are solving, so a $\gamma$ sweep is not a hyperparameter sweep.
+
+3. A hand-written policy gradient learns for 200k steps, falls off a cliff and
+   never recovers. Why is lowering the learning rate the wrong instinct?
+
+   **Answer.** The damage is measured in policy space, not parameter space. One
+   over-large step produces worse trajectories, which train a still worse
+   policy, and there is no fixed dataset to recover from. TRPO constrains the KL
+   divergence and PPO clips the probability ratio for exactly this reason.
+
+4. Your PPO run has stalled. What does the lesson say to check before the
+   learning rate?
+
+   **Answer.** The fraction of samples being clipped. Above about 30% the batch
+   is being reused too aggressively — lower the number of epochs per batch.

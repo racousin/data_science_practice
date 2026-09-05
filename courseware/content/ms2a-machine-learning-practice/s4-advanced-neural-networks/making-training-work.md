@@ -233,3 +233,35 @@ assert loss.ndim == 0 and loss.requires_grad
 Every choice in that block is one of the six above, and it trains at almost any
 depth. Start there; change one thing at a time; keep the run that justified the
 change.
+
+---
+
+## Check yourself
+
+1. Why does a sigmoid never belong in a hidden layer?
+
+   **Answer.** Its derivative peaks at 0.25, so ten stacked layers multiply the
+   gradient by at most $0.25^{10}$ and the early layers receive nothing. tanh
+   saturates the same way, more slowly.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import torch.nn as nn
+   blk = nn.Sequential(nn.Linear(256, 256, bias=False),
+                       nn.BatchNorm1d(256), nn.ReLU())
+   print(sum(p.numel() for p in blk.parameters()))   # -> 66048
+   print(f"{0.25 ** 10:.1e}")                        # -> 9.5e-07
+   ```
+
+   66,048 is 256x256 weights plus BatchNorm's 256 $\gamma$ and 256 $\beta$.
+   The `Linear` bias is absent on purpose: BatchNorm subtracts the mean, so it
+   would be redundant.
+
+3. Your gradient norm sits at $10^{-7}$ and falls. What do you reach for — and
+   what would a spike to $10^{3}$ mean instead?
+
+   **Answer.** $10^{-7}$ and falling is vanishing: add residual connections and
+   check the activations. A spike to $10^{3}$ is exploding: clip, and lower the
+   learning rate. If the clip fires on most steps the learning rate is too high
+   and clipping is hiding it.

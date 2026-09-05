@@ -71,19 +71,43 @@ that subset and a final ranking that collapses.
 ## Agent track — what you submit
 
 Code, not an answer. The competition's `env.py` owns the evaluation loop and
-calls your agent over the platform's proxy. The single-agent (`gymnasium`)
-contract:
+calls your agent over the platform's proxy. This term's Agent track is
+**SuperTuxKart Grand Prix (#169)**, four karts in one race, and its contract is
+a zero-argument constructor and a single method:
 
 ```python
 class Agent:
     def __init__(self): ...
-    def setup(self, observation_space, action_space): ...
-    def choose_action(self, observation, reward=0.0,
-                      terminated=False, truncated=False, info=None): ...
+
+    def act(self, obs) -> dict:
+        return {"steer": 0.0, "acceleration": 1.0, "brake": 0,
+                "drift": 0, "nitro": 0, "fire": 0, "rescue": 0}
 ```
 
-Zero-argument constructor, one `setup` call, then one `choose_action` per step.
-Your trained weights ship alongside `agent.py` as a file the agent loads.
+`env.py` calls `act` once per kart per step with a **2-second budget per call**.
+`steer` is −1..1, `acceleration` is 0..1, the other five are 0 or 1, and a
+missing key defaults to coasting — so a partial dict is legal and silently
+mediocre. Your trained weights ship alongside `agent.py` as a file the agent
+loads.
+
+---
+
+## Agent track — the observation
+
+`obs` is a plain dict, every coordinate egocentric to your kart:
+
+| Key | Shape | Meaning |
+|---|---|---|
+| `velocity`, `front`, `center_path` | `[3]` each | motion, heading, vector to the track centre |
+| `center_path_distance`, `distance_down_track` | float | lateral offset, progress along the lap |
+| `max_steer_angle`, `energy` | float | steering limit, nitro reserve |
+| `powerup`, `attachment` | int | what you are holding, what is stuck to you |
+| `paths` | list of `{start, end, width}` | the nearest track segments ahead |
+| `karts` | list of `[3]` | the nearest opponents |
+| `items` | list of `{pos, type}` | the nearest items |
+
+Score is cumulative race reward — distance progress, a position-among-karts
+bonus, and a finish bonus — but see the ELO slide: that number is not your rank.
 
 ---
 
@@ -93,16 +117,30 @@ Sessions **9** (MDPs, value functions, tabular control) and **10** (DQN, policy
 gradients, PPO, multi-agent). Lab 10 already puts an agent on ML-Arena, so the
 mechanics are not new by the time the project opens.
 
-The multi-agent (`pettingzoo`) contract adds one required method:
+Those labs, and the two Reference playgrounds (#168 and #170), use the *other*
+`flex_v1` contract — the gymnasium one, which is `setup` plus `choose_action`
+rather than `act`:
 
 ```python
 class Agent:
-    def reset(self, env_player_name, episode_index):
-        self.player = env_player_name
+    def setup(self, observation_space, action_space):
+        from flexkit.spaces import decode_space
+        self.action_space = decode_space(action_space)   # not a Space yet
+        return True
+
+    def choose_action(self, observation, reward=0.0, terminated=False,
+                      truncated=False, info=None, action_mask=None): ...
 ```
 
-Roles rotate between episodes. An agent that assumes it is always the first
-player is wrong half the time, and nothing in the loop tells it so.
+`setup` receives the spaces **dict-encoded**, not as Gymnasium objects:
+`MultiBinary(6)` arrives as `{'type': 'multi_binary', 'shape': [6]}`. Decode
+before you call `.sample()` or read `.n` / `.shape`, or the first step raises
+`AttributeError: 'dict' object has no attribute 'sample'`.
+
+**Read the competition's own agent template before you write a line.** An agent
+that exposes `choose_action` to a competition whose `env.py` calls `act`
+exposes no method the environment ever calls, and the failure looks like a
+timeout.
 
 ---
 
@@ -134,6 +172,10 @@ not by an absolute score. Two consequences:
 
 Submit early and keep submitting. A single upload the night before the freeze
 has no rating history and gets ranked on a handful of matches.
+
+The board also shows a mean-reward column, and on #169 it contradicts the rank:
+the rank-1 agent shows **946.41** while a rank-3 agent shows **11,210.39**. The
+reward column is information. ELO is the score.
 
 ---
 
@@ -207,11 +249,85 @@ first scored submission is milestone 3.
 
 ---
 
-## The subjects are not the structure
+## This term's three competitions
 
-The three tracks above are fixed. The **specific competitions** for this term —
-the datasets, the environments, the judge, the baselines to beat — are
-announced separately and attached to this module on ML-Arena.
+The three tracks above are fixed. These are the competitions attached to this
+module, and they are not going to change under you:
 
-Nothing in this lesson changes when they are. Choose the track now; the subject
-will not surprise you.
+| Track | Competition | Metric | You upload |
+|---|---|---|---|
+| Prediction | 2-Month Survival Prediction (**#172**) | accuracy | `submission.csv` |
+| Agent | SuperTuxKart Grand Prix (**#169**) | ELO rating | `agent.py` + weights |
+| Generative | The Round (**#171**) | USD raised | `pitch.txt`, exactly one file |
+
+Two things to know about #172 before you pick it. It is the **same competition
+you already submitted to in Lab 3**, so your Lab 3 pipeline carries over and
+the project starts from a working submission. And its board already holds 82
+entries from an earlier cohort, run between 23 June and 6 July 2026 — those
+rows are a reference, not the classmates you are ranked against.
+
+---
+
+## The numbers you are graded against
+
+"Absolute score vs the published baseline" is 15% of the project grade. This is
+the published baseline. Every number was read from the live leaderboards on
+2 September 2026; reproduce any of them with `client.leaderboard(<id>)`.
+
+**Prediction — #172, accuracy, higher is better.** About 59% of the patients are
+`alive`, so always guessing `alive` scores **0.594** — and that is exactly where
+the platform reference `__benchmark__` sits. That is the bar. The median of the
+82-row board is **0.787** and the top entry is **0.811**, so the useful range is
+narrow: 80 of the 82 entries beat the baseline, and the work is in the last two
+points.
+
+**Agent — #169, ELO, higher is better.** There is no absolute bar. Every agent
+starts at **1200** and your rating moves when other people submit. On 2
+September the board holds four agents: `__benchmark__` and `Luigi` at **1200**,
+`baseline-kart-test` and `flexfix-kart-vmcheck` at **1184**. Beating the
+baseline means finishing above `__benchmark__`'s 1200.
+
+**Generative — #171, USD raised, higher is better.** The reference pitch
+`__benchmark__` raises **$27.1M** over 14 runs. That is the bar. The top of the
+board is **$46.15M** (two pitches tied), and two of the nine entries raise
+**$0** — a pitch can score nothing. The ~**$65M** on the page is the total
+capital across the panel, a ceiling, not a target.
+
+---
+
+## Check yourself
+
+1. You write an Agent-track agent with `setup` and `choose_action`, upload it to
+   #169, and every race times out. What is wrong, and where would you have found
+   out in one minute?
+
+   **Answer.** #169's `env.py` calls `act(obs)`, not `choose_action`, so your
+   agent exposes no method the environment ever calls. The competition's own
+   agent template states which of the two contracts it uses; read it before you
+   write the class.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   CONTRACT = {"steer": (-1.0, 1.0), "acceleration": (0.0, 1.0),
+               "brake": (0, 1), "drift": (0, 1), "nitro": (0, 1),
+               "fire": (0, 1), "rescue": (0, 1)}
+   action = {"steer": -1.4, "acceleration": 1.0}
+
+   print(sorted(set(CONTRACT) - set(action)))
+   # -> ['brake', 'drift', 'fire', 'nitro', 'rescue']
+   print([k for k, v in action.items() if not CONTRACT[k][0] <= v <= CONTRACT[k][1]])
+   # -> ['steer']
+   ```
+
+   **Answer.** The five missing keys are legal — they default to coasting — so
+   nothing tells you they are missing. The out-of-range `steer` is the kind of
+   bug this check exists to catch. Assert the contract in your own code, because
+   the platform will not.
+
+3. Your Generative-track pitch raises $24M. Have you beaten the published
+   baseline, and what is the $65M figure on the competition page?
+
+   **Answer.** No. The reference pitch `__benchmark__` raises $27.1M, so $24M
+   is below the bar. The $65M is the total capital across the 16 investors — a
+   ceiling nobody has reached (the board top is $46.15M), not a target.

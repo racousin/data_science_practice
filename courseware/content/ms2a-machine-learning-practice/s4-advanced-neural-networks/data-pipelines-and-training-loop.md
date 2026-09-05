@@ -102,6 +102,10 @@ def seed_everything(seed: int) -> None:
     random.seed(seed); np.random.seed(seed); torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
 
+def seed_worker(worker_id: int) -> None:
+    s = torch.initial_seed() % 2**32
+    np.random.seed(s); random.seed(s)
+
 g = torch.Generator(); g.manual_seed(seed)
 dl = DataLoader(ds, shuffle=True, generator=g, worker_init_fn=seed_worker)
 ```
@@ -209,3 +213,40 @@ anything you did not produce yourself.
 > Every default in this lesson — `num_workers=0`, `drop_last=False`, an unseeded
 > shuffle, a `strict=False` that makes an error go away — is a decision someone
 > made for you. Make them yourself, log them, and own them.
+
+---
+
+## Check yourself
+
+1. Which work belongs in `__init__` and which in `__getitem__`?
+
+   **Answer.** `__getitem__` does per-sample work — read one file, decode one
+   image, apply one transform. Anything per-*dataset* — reading a Parquet,
+   opening a connection, computing normalisation statistics — belongs in
+   `__init__`, and should be held as arrays, tensors or paths so the worker
+   copies stay cheap.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import torch
+   from torch.utils.data import DataLoader, TensorDataset
+   ds = TensorDataset(torch.arange(10))
+
+   def order(seed):
+       g = torch.Generator(); g.manual_seed(seed)
+       return [int(b[0]) for b in
+               DataLoader(ds, batch_size=1, shuffle=True, generator=g)]
+
+   print(order(0) == order(0), order(0) == order(1))   # -> True False
+   ```
+
+   The `generator` is what makes the shuffle reproducible. `worker_init_fn`
+   does the same job one level down, for the workers' NumPy and Python RNGs.
+
+3. You resume from a checkpoint holding only `model.state_dict()`. Name the two
+   things that go wrong.
+
+   **Answer.** Without the optimizer state you discard Adam's moments and get a
+   visible loss spike; without the scheduler state the learning rate restarts at
+   its maximum.

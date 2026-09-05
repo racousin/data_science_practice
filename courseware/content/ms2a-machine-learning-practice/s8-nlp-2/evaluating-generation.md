@@ -148,18 +148,77 @@ you can track over time. Three biases to design around:
 ## A judge you can rerun
 
 ```python
+import json
+from pathlib import Path
+import anthropic
+
+client = anthropic.Anthropic()   # reads ANTHROPIC_API_KEY from the environment
 JUDGE_PROMPT_V2 = Path("prompts/faithfulness_v2.txt").read_text()
 
 def judge(question, context, answer, model="claude-sonnet-4-5-20250929"):
-    out = client.messages.create(model=model, temperature=0, max_tokens=300,
+    out = client.messages.create(model=model, max_tokens=300,
         messages=[{"role": "user", "content": JUDGE_PROMPT_V2.format(
             question=question, context=context, answer=answer)}])
     return json.loads(out.content[0].text)   # raises on malformed output
 ```
 
-Four properties make this reproducible: the prompt is a versioned file, the
-model id is pinned and logged, the temperature is zero, and a malformed response
-raises instead of scoring zero.
+Four properties make a judge reproducible: the prompt is a versioned file, the
+model id is pinned to an exact dated snapshot and logged, sampling is off
+wherever you can control it, and a malformed response raises instead of scoring
+zero. The call above does three of them outright; the third is the one the next
+slide is about.
+
+The key never appears in the code. `anthropic.Anthropic()` with no argument reads
+`ANTHROPIC_API_KEY` from the environment, which is the only form that survives a
+`git log`.
+
+---
+
+## Where the temperature went
+
+Notice what is *not* in that call. The Anthropic Python SDK has removed the
+sampling parameters, so the line every tutorial still shows now fails before it
+reaches the network:
+
+```python
+client.messages.create(model=..., temperature=0, ...)
+# TypeError: Messages.create() got an unexpected keyword argument 'temperature'
+```
+
+Pinning the exact dated model id is what you have left, and it is why the id in
+the snippet above carries a date. This is the same point the decoding lesson
+made from the other side: `temperature=0` never bought reproducibility anyway —
+assert properties, log the model, and do not compare across ids.
+
+---
+
+## A judge with no account
+
+No hosted key? The same four properties hold locally, on CPU, in about a
+gigabyte of weights:
+
+```python
+import json, torch
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+JUDGE_MODEL = "Qwen/Qwen2.5-0.5B-Instruct"   # log this string beside every score
+tok = AutoTokenizer.from_pretrained(JUDGE_MODEL)
+model = AutoModelForCausalLM.from_pretrained(JUDGE_MODEL, dtype=torch.float32)
+
+def judge_local(prompt):
+    enc = tok.apply_chat_template([{"role": "user", "content": prompt}],
+                                  add_generation_prompt=True,
+                                  return_dict=True, return_tensors="pt")
+    out = model.generate(**enc, max_new_tokens=80, do_sample=False)
+    text = tok.decode(out[0, enc["input_ids"].shape[-1]:],
+                      skip_special_tokens=True)
+    return json.loads(text)          # raises on malformed output
+```
+
+`do_sample=False` is greedy decoding from the previous lesson, and it is the
+local equivalent of the temperature a hosted API no longer takes. A 0.5B judge
+agrees with you less often than a frontier one — that is a number you can
+measure, not a reason to skip the instrument.
 
 > A judge prompt written inline in a notebook and edited between runs is not a
 > metric. Yesterday's numbers cannot be compared to today's, and nobody will
@@ -180,3 +239,47 @@ it. Trust a held-out set you built yourself over any leaderboard.
 The project's LLM-judged `file_v1` track is scored exactly this way: a fixed
 rubric, a pinned judge, a held-out prompt set. Build the harness now and you
 evaluate your submission with the instrument that grades it.
+
+---
+
+## Check yourself
+
+1. Reference: *The cat is on the mat.* Candidate: *The mat is on the cat.* What
+   does exact match say, what does unigram BLEU say, and which one is right?
+
+   **Answer.** Exact match scores 0, which happens to be right for the wrong
+   reason. Unigram precision is 1.0 — every word of the candidate is in the
+   reference — and the meaning is inverted. That is the "no semantics" failure:
+   overlap metrics cannot separate a paraphrase from a reversal.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import json
+   try:
+       json.loads('Score: 2 - the answer is supported.')
+   except json.JSONDecodeError as e:
+       print(type(e).__name__, "|", e)
+   # -> JSONDecodeError | Expecting value: line 1 column 1 (char 0)
+   ```
+
+   **Answer.** That raise is the design, not an accident. A judge that swallowed
+   the parse failure and returned 0 would report a broken instrument as a bad
+   answer, and the mean faithfulness would drop for a reason nobody could find.
+
+3. You judge model A against model B pairwise, and A wins 62% of the time. Name
+   the two biases that could produce that number on their own, and the fix for
+   the first.
+
+   **Answer.** Position bias — judges favour whichever option comes first — and
+   verbosity bias, since longer answers score higher at equal quality. Fix the
+   first by running every pair in both orders and counting a disagreement as a
+   tie. (Self-preference is the third: never judge a model with itself.)
+
+4. Your judge scored 1.62 last week and 1.41 today on the same 40 answers, and
+   you edited the rubric in between. Which of the four properties did you break,
+   and what is the cost?
+
+   **Answer.** The versioned prompt. Once the rubric moves, last week's number
+   and today's measure different things and cannot be compared — which is why the
+   prompt lives in a file under version control and Lab 8 pins its sha256.

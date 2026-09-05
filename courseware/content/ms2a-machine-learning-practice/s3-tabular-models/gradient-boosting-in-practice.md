@@ -94,6 +94,33 @@ your outer test set as `eval_set` is leakage with a progress bar.
 
 ---
 
+## Early stopping inside a Pipeline
+
+`eval_set` is handed straight to the final estimator, so it never passes through
+`prep`. Transposing the block above into a `Pipeline` raises before a tree grows:
+
+```python
+boosted.fit(X_a, y_a, model__eval_set=[(X_b, y_b)])
+# ValueError: pandas dtypes must be int, float or bool.
+# Fields with bad pandas dtypes: sex: str, race: str, ...
+```
+
+Fit the preprocessor on the training part, then transform both sides yourself:
+
+```python
+from sklearn.base import clone
+prep = clone(preprocessor).fit(X_a)
+model = lgb.LGBMClassifier(n_estimators=2000, learning_rate=0.05)
+model.fit(prep.transform(X_a), y_a,
+          eval_set=[(prep.transform(X_b), y_b)],
+          callbacks=[lgb.early_stopping(100), lgb.log_evaluation(0)])
+```
+
+`cross_val_score` gives you no hook for this: split each training fold by hand,
+or run `lgb.cv` with the preprocessing applied per fold.
+
+---
+
 ## Native categorical handling
 
 ```python
@@ -185,3 +212,30 @@ then drop the learning rate for the final fit.
 Automated pipeline search is a real tool and a poor teacher — it is in the
 Reference module, not in this session. The two lessons that follow decide whether
 the score you just recorded means anything.
+
+---
+
+## Check yourself
+
+1. Why is `n_estimators` the one parameter you never put in a grid search?
+
+   **Answer.** It trades against `learning_rate` almost exactly — halving the
+   rate doubles the trees needed for the same fit — so fix the rate by budget
+   and let early stopping choose the tree count at each setting.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   from lightgbm import LGBMClassifier
+   print(LGBMClassifier().importance_type)   # -> split
+   ```
+
+   That is the default this lesson warns about: LightGBM ranks features by how
+   often they were split on, not by how much loss they removed.
+
+3. `boosted.fit(X_a, y_a, model__eval_set=[(X_b, y_b)])` raises
+   `ValueError: pandas dtypes must be int, float or bool`. Why?
+
+   **Answer.** `eval_set` is forwarded to the estimator untouched, so it never
+   passes through the `prep` step and LightGBM receives the raw string columns.
+   Fit the preprocessor yourself and transform both sides before the call.

@@ -228,3 +228,37 @@ plateaus early and then degrades.
 
 Start here, change one thing at a time, and write down what each change was
 worth. A run you cannot attribute is a run you wasted.
+
+---
+
+## Check yourself
+
+1. You built one transform pipeline and passed it to both loaders. Validation
+   accuracy sits four points below training from the first epoch and the gap
+   never widens. Which bug is it, and why is it not overfitting?
+
+   **Answer.** The evaluation transform is not deterministic — `train_tf` was
+   reused for validation, so every validation image is randomly cropped and
+   flipped. Overfitting opens a gap gradually; this one is there at epoch 1 and
+   stays flat.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import numpy as np, torch
+   import torchvision.transforms as T
+   from PIL import Image
+   img = Image.fromarray(np.random.RandomState(0).randint(0, 256, (256, 256, 3), dtype=np.uint8))
+   train_tf = T.Compose([T.RandomResizedCrop(224, scale=(0.7, 1.0)), T.ToTensor()])
+   eval_tf = T.Compose([T.Resize(256), T.CenterCrop(224), T.ToTensor()])
+   torch.manual_seed(0)
+   print(torch.equal(train_tf(img), train_tf(img)))   # -> False
+   print(torch.equal(eval_tf(img), eval_tf(img)))     # -> True
+   ```
+
+3. You accumulate gradients over 16 micro-batches of 4 to reach an effective
+   batch of 64. Does that repair BatchNorm, and what do you do instead?
+
+   **Answer.** No. Each BatchNorm forward pass still sees only the 4 examples of
+   its micro-batch, so the statistics are statistics of 4. Below batch 8, swap
+   it for `nn.GroupNorm(32, C)`, which is batch-independent.

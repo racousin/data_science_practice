@@ -133,3 +133,32 @@ git reflog                        # what have I done, including undone things
 
 Four commands, in that order. They resolve most "my repository is broken"
 situations without anyone losing work.
+
+---
+
+## Check yourself
+
+1. Run this in a scratch directory. You should get exactly the output shown.
+
+   ```bash
+   git init -q /tmp/cheatcheck && cd /tmp/cheatcheck
+   git commit -q --allow-empty -m one && git commit -q --allow-empty -m two
+   git rev-list --count HEAD     # -> 2
+   git reset --soft HEAD~1
+   git rev-list --count HEAD     # -> 1
+   git reflog | wc -l            # -> 3   the commit is unreferenced, not gone
+   ```
+
+2. You pushed a wrong commit to a shared branch. `reset` or `revert`, and why?
+
+   **Answer.** `revert`. It adds a new commit that undoes the old one, so it is
+   safe on history other people already have. `reset` rewrites history and is for
+   local, unpushed commits only.
+
+3. Your repository is "broken" and you do not know what you did. Which four
+   commands does this page tell you to run, and in what order?
+
+   **Answer.** `git status` (where am I), `git log --oneline --graph -20` (what
+   happened), `git diff HEAD` (what have I changed), `git reflog` (what have I
+   done, including the things I undid). They resolve most of these situations
+   without anyone losing work.

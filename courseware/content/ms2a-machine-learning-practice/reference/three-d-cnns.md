@@ -142,3 +142,40 @@ itself.
 training with batch normalisation. Batch norm on a batch of one estimates
 statistics from a single volume and the run diverges or, worse, trains and then
 collapses at evaluation. Use group norm or instance norm in 3D pipelines.
+
+---
+
+## Check yourself
+
+1. Moving from a $3\times3$ to a $3\times3\times3$ kernel roughly triples the
+   parameter count. Why is that not the number that decides whether you can
+   train the model?
+
+   **Answer.** Because activations, not parameters, are what run you out of
+   memory: they scale with the *data's* depth, $A = B \cdot C \cdot D \cdot H
+   \cdot W$. One 64-channel feature map of a single $256^3$ CT volume in
+   float32 is 4.3 GB — one tensor, for one patient.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import torch, torch.nn as nn
+   conv = nn.Conv3d(3, 64, kernel_size=(3, 3, 3),
+                    stride=(1, 2, 2), padding=(1, 1, 1))
+   print(tuple(conv(torch.randn(4, 3, 16, 112, 112)).shape))   # -> (4, 64, 16, 56, 56)
+   print(sum(p.numel() for p in nn.Conv2d(64, 64, 3, bias=False).parameters()),
+         sum(p.numel() for p in nn.Conv3d(64, 64, 3, bias=False).parameters()))
+                                                               # -> 36864 110592
+   ```
+
+   **Answer.** The asymmetric stride halves height and width and leaves the 16
+   frames intact — sixteen frames do not survive four halvings. And 110592 /
+   36864 = 3 = $K_t$, exactly the linear scaling the lesson states.
+
+3. Your 3D segmentation run fits only at batch size 1, and it diverges — or
+   trains and then collapses at evaluation. Which layer is responsible and what
+   do you replace it with?
+
+   **Answer.** Batch normalisation: on a batch of one it estimates its
+   statistics from a single volume. Use group norm or instance norm in 3D
+   pipelines.

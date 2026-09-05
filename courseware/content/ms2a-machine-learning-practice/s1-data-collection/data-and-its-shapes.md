@@ -128,3 +128,37 @@ discover that the join you did silently duplicated 12% of your rows.
 | APIs | Someone exposes it. How do I pull it reliably? |
 | Web Scraping | Nobody exposes it. What are my options and my obligations? |
 | Collection Strategy | Batch or stream, and what do I check before I trust it? |
+
+---
+
+## Check yourself
+
+1. Before you write any code against a new dataset, which single question do you
+   answer first, and what depends on the answer?
+
+   **Answer.** *What is one row?* The split, the metric and the leakage risk all
+   follow from the grain, and getting it wrong is not a bug a unit test finds.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import pandas as pd
+
+   df = pd.DataFrame({"customer_id": ["c1", "c1", "c2"],
+                      "month": ["2026-01", "2026-02", "2026-01"],
+                      "spend": [10, 20, 30]})
+   print(len(df), df["customer_id"].nunique())          # -> 3 2
+   print(df.duplicated(subset=["customer_id"]).any())   # -> True
+   ```
+
+   **Answer.** One row here is not one customer, it is one customer-month —
+   three rows, two customers. Anything that treats this table as one row per
+   customer is already wrong.
+
+3. The table you want is published as an HTML page, exposed through a documented
+   JSON API, and also shipped as a monthly CSV export. Which do you take, and why
+   is the scrape last on the list?
+
+   **Answer.** The CSV export. The order of preference is files, databases, APIs,
+   scraping; scraping has no contract, no versioning, breaks silently on a
+   redesign and is legally loaded.

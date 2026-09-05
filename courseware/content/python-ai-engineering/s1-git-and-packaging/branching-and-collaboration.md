@@ -267,3 +267,46 @@ git rebase main             # linearise (unpushed work only)
 ```
 
 Next: making the project inside that repository reproducible.
+
+---
+
+## Check yourself
+
+1. Physically, what is a branch?
+
+   **Answer.** A movable pointer to a commit — 41 bytes on disk. It is not a
+   copy of your files and it does not duplicate history, which is why Git
+   workflows branch liberally where older tools branched sparingly.
+
+2. You merge `feature` into `main` and get no merge commit. What does that tell
+   you about `main`?
+
+   **Answer.** That `main` has not moved since you branched, so Git
+   fast-forwarded: it slid the `main` pointer along to your commits and wrote no
+   new history. If `main` *had* moved you would have got a three-way merge — a
+   new commit `M` with two parents, reconciled against the common ancestor.
+
+3. Run this. You should get exactly the output shown on the last command.
+
+   ```bash
+   rm -rf /tmp/mg-demo && mkdir /tmp/mg-demo && cd /tmp/mg-demo && git init -q -b main
+   printf 'learning_rate = 0.01\n' > model.py && git add model.py && git commit -qm base
+   git switch -qc feature/scaling
+   printf 'learning_rate = 0.001\n' > model.py && git commit -qam feature
+   git switch -q main
+   printf 'learning_rate = 0.05\n' > model.py && git commit -qam "main moves on"
+   git merge feature/scaling
+   # -> Auto-merging model.py
+   #    CONFLICT (content): Merge conflict in model.py
+   #    Automatic merge failed; fix conflicts and then commit the result.
+   ```
+
+   Open `model.py` and you will see the three markers. `git merge --abort` puts
+   you back where you started.
+
+4. When is `git rebase main` the wrong command?
+
+   **Answer.** When the commits you are rebasing have already been pushed.
+   Rebasing rewrites their SHAs, so a collaborator who already pulled them gets
+   a mess on their next `pull`. Rebase unpushed work; `git merge main` is the
+   safe way to catch up on a shared branch.

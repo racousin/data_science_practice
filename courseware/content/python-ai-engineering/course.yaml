@@ -12,7 +12,7 @@ course:
   name: "MS2A - AI Engineering"
   code: "PAIE-12"
   slug: python-ai-engineering
-  visibility: unlisted
+  visibility: public
   instructor_name: "Raphael Cousin"
   # PLACEHOLDER — the module is front-loaded into a single week; set the real
   # dates before the first publish.

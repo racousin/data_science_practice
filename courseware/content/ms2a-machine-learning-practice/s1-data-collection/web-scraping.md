@@ -87,11 +87,18 @@ one is a dataset you have to throw away.
 
 ```python
 def to_float(text):
-    return float(text.strip().replace("€", "").replace(",", "."))
+    cleaned = (text.replace("\u00a0", "")   # non-breaking space, the one you cannot see
+                   .replace(" ", "")
+                   .replace("€", "")
+                   .replace(",", "."))
+    return float(cleaned)                    # to_float("1\u00a0234,50 €") -> 1234.5
 ```
 
 HTML is presentation. `"1 234,50 €"` is a string containing a non-breaking space,
-a comma decimal separator and a currency symbol.
+a comma decimal separator and a currency symbol. The naive cleaner — strip, drop
+the symbol, swap the comma — raises `ValueError` on exactly that string, because
+the space is still sitting in the middle of the number. That is why the test
+comes first.
 
 Write the cleaner as a named function and unit-test it on the ugly cases you have
 actually seen. That is one of the tests from Session 1 of the 12h module doing
@@ -152,3 +159,41 @@ scraper.
 - raw HTML written to disk, fetch and parse separated
 - every selector asserted, crash on failure
 - cleaners are named functions with tests
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   def to_float(text):
+       cleaned = (text.replace("\u00a0", "")
+                      .replace(" ", "")
+                      .replace("\u20ac", "")
+                      .replace(",", "."))
+       return float(cleaned)
+
+   print(to_float("1\u00a0234,50\u00a0\u20ac"))    # -> 1234.5
+   print(to_float("1 234,50 \u20ac"))              # -> 1234.5
+   ```
+
+   **Answer.** Both forms parse. `\u00a0` is the non-breaking space the browser
+   shows as an ordinary one — the reason the naive cleaner raises `ValueError`
+   on a string that looks perfectly clean on screen.
+
+2. `soup.select_one("h1.product-title")` returns `None` after a site redesign.
+   What should your code do, and what happens if it does not?
+
+   **Answer.** Raise, naming the URL. A scraper that does not check writes 50,000
+   empty rows and you discover it in Session 2. A crashed scraper is a scraper
+   you fix; a silent one is a dataset you throw away.
+
+3. The page you want is built in the browser by JavaScript, so `requests` gets
+   you an empty shell. What is the first option to try, and why is it the good
+   outcome?
+
+   **Answer.** Open the network tab and find the underlying API — the page is
+   usually fetching JSON from an endpoint you can call directly. That gives you a
+   contract instead of a selector, and it is 50× faster than driving a headless
+   browser.

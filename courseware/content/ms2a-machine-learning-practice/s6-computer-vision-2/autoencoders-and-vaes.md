@@ -221,3 +221,35 @@ other systems**:
 
 Learn the VAE for the encoder–latent–decoder pattern and the
 reparameterization trick. Both reappear immediately.
+
+---
+
+## Check yourself
+
+1. You change the reconstruction term from `reduction="sum"` divided by the
+   batch to `reduction="mean"`, and your samples turn into the dataset mean. On
+   3×64×64 inputs, by what factor did the KL term's weight change relative to
+   reconstruction?
+
+   **Answer.** 12,288 — that is C·H·W. `reduction="mean"` divides by the number
+   of elements as well as by the batch, so the KL now outweighs reconstruction
+   by four orders of magnitude and the posterior collapses to the prior.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import torch, torch.nn.functional as F
+   x = torch.rand(16, 3, 64, 64)
+   x_hat = torch.rand_like(x)
+   per_batch = F.mse_loss(x_hat, x, reduction="sum") / x.size(0)
+   per_element = F.mse_loss(x_hat, x, reduction="mean")
+   print(round((per_batch / per_element).item()))   # -> 12288
+   ```
+
+3. Why does sampling `z` straight from `N(mu, sigma)` leave `mu` and `logvar`
+   with no gradient, and what exactly does reparameterization change?
+
+   **Answer.** Drawing a sample is not a differentiable function of the
+   parameters, so backpropagation stops at the draw. The trick moves the
+   randomness into `eps`, drawn outside the graph, which makes
+   `z = mu + eps * std` an ordinary differentiable expression in `mu` and `std`.

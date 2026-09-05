@@ -199,3 +199,48 @@ That constraint fixes the order of operations:
 
 The failure mode is jumping to step 4 because it feels like the real work. It is
 the most expensive way to get an answer you could have had from step 2.
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   import math
+   print(round(math.log(50_000), 2))    # -> 10.82
+   print(round(math.exp(2.5), 1))       # -> 12.2
+   ```
+
+   **Answer.** The first is the cross-entropy of an untrained model over a 50k
+   vocabulary — uniform guessing. A loss sitting near 10.8 means nothing is
+   learning, and the data pipeline is the place to look before the model. The
+   second is the perplexity of a trained one at loss 2.5: about twelve equally
+   likely next tokens.
+
+2. Two teams report perplexity 14.2 and 11.8 on "the same held-out corpus" with
+   different tokenizers. Which model is better?
+
+   **Answer.** Unanswerable. Perplexity is comparable only within one tokenizer
+   and one test set — different vocabularies are not counting the same events.
+   This is the most common misuse of the metric.
+
+3. You have compute for roughly $8 \times 10^{21}$ FLOPs. Using $C \approx 6ND$
+   and $D \approx 20N$, roughly what model size is compute-optimal, and what does
+   the rule say about GPT-3?
+
+   **Answer.** $6N(20N) = 120N^2 = 8 \times 10^{21}$ gives $N \approx 8 \times
+   10^{9}$ — about 8B parameters on about 160B tokens. GPT-3 was 175B parameters
+   on 300B tokens, roughly 1.7 tokens per parameter against the 20 the rule
+   wants: badly undertrained, which is why a 70B model on 1.4T tokens beat it at
+   a quarter of the inference cost.
+
+4. A colleague wants to fine-tune all the weights of a 7B model to teach it your
+   company's product catalogue. Which rung of the order of operations is that,
+   and what is the objection?
+
+   **Answer.** Step 4, reached by skipping steps 2 and 3. The order of operations
+   exists because pretraining is off your budget and every rung costs more than
+   the one below it — steering with prompts and retrieved context changes no
+   weights at all. Jumping to step 4 because it feels like the real work is the
+   most expensive way to get an answer you could have had from step 2.

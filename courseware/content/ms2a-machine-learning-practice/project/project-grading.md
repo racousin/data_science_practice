@@ -120,6 +120,11 @@ second.
 Fifty on each axis. The third leaderboard line is free marks for submitting
 early, and every year some teams do not collect it.
 
+The **published baseline** in the second row is a fixed number per track, listed
+in *Tracks*: **accuracy 0.594** on #172, an **ELO above 1200** on #169,
+**$27.1M raised** on #171. It is a threshold, not a curve — everyone who clears
+it collects the 15%.
+
 ---
 
 ## Automatic deductions
@@ -200,3 +205,72 @@ problems.
 
 Those three questions are the leaderboard axis, the reproducibility rule, and
 the defense. Everything in these three lessons follows from them.
+
+---
+
+## Did you validate this project?
+
+Every line is something you can check yourself, today, without asking anyone.
+
+- [ ] `uv sync && uv run pytest` is green on a fresh clone — cloned into a new
+      directory, not the one I worked in
+- [ ] The three `README.md` commands run end to end on that clone and write the
+      artefact I actually submitted
+- [ ] The instructor appears under Settings → Collaborators on the private
+      repository
+- [ ] `DATASET.md` (or my environment description) answers every cell of the
+      *Describing your inputs* row for my track
+- [ ] `tests/` holds at least three tests running on fixtures committed under
+      `tests/fixtures/`, and breaking one line of the pipeline turns the suite red
+- [ ] The report is six pages or fewer and has all five sections, and section 2
+      lists at least one experiment I did **not** keep
+- [ ] `git log --reverse --date=short --format='%ad %s' | head -5` shows
+      commits from at least three different weeks, and the first one predates
+      my first scored submission on the board
+- [ ] `git grep -n "except:"` returns nothing, and `git log -S "mlk_"` finds
+      no commit that ever contained an API key
+- [ ] `git ls-files` lists no data file and no model weights
+- [ ] I have three or more scored submissions and their timestamps span more
+      than one week
+- [ ] My submission is on the leaderboard of my track — 2-Month Survival
+      Prediction (#172), SuperTuxKart Grand Prix (#169) or The Round (#171)
+- [ ] My score beats the published baseline for that track: **accuracy > 0.594**
+      (#172), **ELO > 1200** (#169), or **USD raised > 27,100,000** (#171)
+
+If the last two are not ticked you have not finished the project, however good
+the code is.
+
+---
+
+## Check yourself
+
+1. Two findings on the deductions table are not deductions at all. Name them,
+   and say what they have in common.
+
+   **Answer.** A result that cannot be reproduced from the repository, and an
+   unattributed copy of code or prose. Both set the project grade to zero
+   because each one means the work has stopped being *a result* or stopped
+   being *yours* — there is nothing left to put a percentage on.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   weights = {"rank": 25, "vs_baseline": 15, "3+ submissions": 10,
+              "reproduces": 15, "structure": 10, "tests": 10,
+              "report": 10, "defense": 5}
+   print(sum(weights.values()))                       # -> 100
+   v = list(weights.values())
+   print(sum(v[:3]), sum(v[3:]))                      # -> 50 50
+   ```
+
+   **Answer.** Fifty on the leaderboard axis and fifty on the repository axis.
+   A perfect board position with an unreproducible repository caps you at 50 —
+   and the reproducibility finding on the deductions table takes it to 0.
+
+3. At the defense you are asked to explain a function and you answer "the
+   assistant wrote that". How is that graded, and what is the rule it breaks?
+
+   **Answer.** It is graded exactly as "I do not know what this does". The rule
+   is not *do not use an agent* — you are expected to. The rule is that you are
+   accountable for every line in the repository and must be able to explain any
+   of them under questioning.

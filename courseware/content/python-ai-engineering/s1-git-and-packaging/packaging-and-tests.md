@@ -68,13 +68,22 @@ description = "Session 1 deliverable"
 requires-python = ">=3.11"
 dependencies = ["numpy>=1.26", "pandas>=2.2"]
 
-[project.optional-dependencies]
-dev = ["pytest>=8", "ruff>=0.6"]
+[dependency-groups]
+dev = ["pytest>=8", "pytest-cov>=5", "ruff>=0.6"]
 ```
 
 Note the two names: the **distribution** name (`my-project`, with a hyphen) and
 the **import** name (`my_project`, with an underscore). They differ by
 convention and that is fine.
+
+`[dependency-groups]` (PEP 735) is where development tools go — they are needed
+to *work on* the project, not to *use* it. `uv sync` installs them by default,
+which is what makes `uv sync && uv run pytest` work on a fresh clone. The older
+`[project.optional-dependencies]` spelling is for extras your users opt into,
+and `uv sync` does **not** install those. Put pytest there and the fresh-clone
+check either dies with `error: Failed to spawn: pytest` or — worse — picks up
+some other `pytest` that happens to be on the machine's PATH and cannot import
+your package.
 
 ---
 
@@ -82,7 +91,7 @@ convention and that is fine.
 
 ```bash
 uv pip install -e .
-uv pip install -e ".[dev]"    # with the dev extras
+uv pip install -e . --group dev   # with the dev tools
 ```
 
 `-e` (editable) links the installed package to your source directory. Edit
@@ -91,8 +100,12 @@ uv pip install -e ".[dev]"    # with the dev extras
 Check it worked:
 
 ```bash
-python -c "import my_project; print(my_project.__file__)"
+uv run python -c "import my_project; print(my_project.__file__)"
 ```
+
+It must print a path under your `src/`. Use `uv run`, not a bare `python`: a
+bare `python` is whatever interpreter is on your PATH, which is not the
+project environment you just installed into.
 
 ---
 
@@ -259,3 +272,46 @@ uv run pytest
 ```
 
 Three commands, green output. That is the deliverable.
+
+---
+
+## Check yourself
+
+1. Why does this module put the package under `src/` rather than at the project
+   root?
+
+   **Answer.** Without `src/`, the project root is on `sys.path`, so
+   `import my_project` finds the *source directory* whether or not the package
+   is correctly installed. With `src/`, the only way to import your code is to
+   install it — so the tests exercise the same thing your users get, and a
+   broken `pyproject.toml` fails immediately instead of on someone else's
+   machine.
+
+2. `pytest` is declared under `[dependency-groups]`, not
+   `[project.optional-dependencies]`. What breaks if you move it?
+
+   **Answer.** `uv sync` installs dependency groups by default and never
+   installs extras, so the project environment ends up with no pytest in it.
+   On a clean machine `uv run pytest` then fails with
+   `error: Failed to spawn: pytest`; on a machine that has a pytest somewhere
+   on PATH it runs *that* one, against the wrong interpreter, and your imports
+   fail instead. Either way the three-command deliverable at the end of this
+   lesson is broken.
+
+3. Run this. You should get exactly the output shown.
+
+   ```bash
+   rm -rf /tmp/ct && mkdir /tmp/ct && cd /tmp/ct
+   printf 'import pytest\n\n@pytest.mark.parametrize("a,b,c", [(1,1,2),(2,3,5),(0,0,0)])\ndef test_add(a,b,c):\n    assert a + b == c\n' > test_demo.py
+   uv run --with pytest pytest -q test_demo.py    # -> 3 passed
+   ```
+
+   One test body, three reported tests — that is what `parametrize` buys you.
+
+4. Your suite reports 100% coverage. What have you *not* learned from that
+   number?
+
+   **Answer.** Whether the assertions were meaningful. Coverage records which
+   lines ran, not what was checked, so a suite that calls every function and
+   asserts nothing about the edge cases still reports 100%. Use it to find
+   untested files, not as a target to hit.

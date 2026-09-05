@@ -124,7 +124,7 @@ or pull another one to find out whether it is.
 | Full RL | sampled i.i.d. | **yes** |
 
 A/B testing and ad ranking are contextual bandits, and treating them as full RL
-buys you nothing but variance. Check the middle column before reaching for
+buys you nothing but variance. Check the last column before reaching for
 Q-learning.
 
 ---
@@ -194,3 +194,44 @@ projects die, not algorithm choice.
 
 This session walks left to right and ends at Q-learning: model-free,
 value-based, off-policy.
+
+---
+
+## Check yourself
+
+1. Which row of the three-paradigms table is the one that actually changes the
+   problem, and why?
+
+   **Answer.** "Who generates the data". In supervised learning the training
+   distribution is fixed before you start; in RL the agent generates it, so it
+   moves every time the policy changes and every i.i.d. assumption is gone.
+
+2. Run this. You should get exactly the output shown. Two arms: the first has
+   paid 0.9 over 100 pulls, the second 0.5 over 2.
+
+   ```python
+   import math
+   mu, N, t, c = [0.9, 0.5], [100, 2], 102, 2.0
+   print([round(m + c * math.sqrt(math.log(t) / n), 2) for m, n in zip(mu, N)])
+   # -> [1.33, 3.54]
+   ```
+
+   **Answer.** UCB picks the *worse-looking* arm, 3.54 against 1.33. The bonus
+   $c\sqrt{\ln t / N_a}$ is large exactly where the estimate is built on two
+   samples: an untried arm is attractive because it is uncertain, not because it
+   is good. $\epsilon$-greedy would keep pulling the first arm and only stumble
+   onto the second at rate $\epsilon / k$ — undirected exploration, which is the
+   difference the slide is making.
+
+3. Your team wants RL for ad ranking: a user arrives, you pick an ad, you see
+   the click. Is that full RL?
+
+   **Answer.** No — it is a contextual bandit. The state is sampled i.i.d. and
+   your action does not affect the next state, so the last column of the
+   difficulty table is "no". Treating it as full RL buys nothing but variance.
+
+4. All four conditions for reaching for RL hold except that you can label the
+   correct action for every situation. What should you do?
+
+   **Answer.** Label it and train a classifier. The lesson's rule is explicit:
+   it will be faster, cheaper and easier to debug.

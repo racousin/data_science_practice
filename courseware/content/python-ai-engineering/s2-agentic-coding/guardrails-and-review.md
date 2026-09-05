@@ -30,14 +30,15 @@ away.
 Approving `uv run pytest` forty times a session teaches you to approve without
 reading. That is the actual danger — not any single command, but the reflex.
 
-Allowlist the safe, frequent ones in `.claude/settings.json`:
+Allowlist the safe, frequent ones in `.claude/settings.json` —
+`/permissions` edits the same list from inside the session:
 
 ```json
 {
   "permissions": {
     "allow": [
-      "Bash(uv run pytest:*)",
-      "Bash(uv run ruff check:*)",
+      "Bash(uv run --all-extras pytest:*)",
+      "Bash(uv run --all-extras ruff check:*)",
       "Bash(git status)",
       "Bash(git diff:*)"
     ]
@@ -185,7 +186,7 @@ cannot check more.
 The strongest guardrail is not a permission dialog. It is:
 
 ```bash
-uv run pytest
+uv run --all-extras pytest
 ```
 
 Tests you wrote, or read and agreed with, encode what correct means. They are
@@ -203,3 +204,50 @@ in this lesson is a supplement to that.
 - [ ] No bare `except`, no defaults on required config
 - [ ] No new dependency you did not approve
 - [ ] You can explain every line
+
+---
+
+## Check yourself
+
+1. You want the agent to survey an unfamiliar codebase without touching it, and
+   later you want to let it grind on a throwaway spike. Which permission mode
+   for each, and which one does this lesson tell you never to use on work you
+   care about?
+
+   **Answer.** Plan mode for the survey — it is read-only and cannot edit or run
+   anything. Bypass mode for the spike, and "use bypass mode for nothing you
+   cannot throw away".
+
+2. The agent writes `longest_word` and a test asserting it raises `ValueError`
+   on whitespace. The test passes. Run this and read the output before you
+   believe the test.
+
+   ```python
+   def longest_word(text):
+       return max(text.split(), key=len)     # no guard at all
+
+   try:
+       longest_word("   ")
+   except Exception as e:
+       print(type(e).__name__)               # -> ValueError
+   ```
+
+   **Answer.** The `ValueError` comes from `max()` on an empty sequence, not
+   from any check the agent wrote — so a test that only asserts *that something
+   threw* passes on an implementation with no input handling at all. This is
+   review question 3, "are the tests real?", and smell 4. Assert the message or
+   the behaviour, not merely the exception type.
+
+3. A partner pushes a branch that has an API key in a commit. They delete the
+   key in the next commit. Are you done?
+
+   **Answer.** No. The fix is **rotate**, not delete — the history is public the
+   moment it is pushed.
+
+4. The agent offers you a 500-line diff in one minute. Why does this lesson tell
+   you to ask for smaller changes, and what does the table predict you will
+   actually do with 500 lines?
+
+   **Answer.** Because your review capacity did not change when the agent's
+   output rate did. Above 300 lines the table's honest prediction is "approved
+   on trust" — which is not review.

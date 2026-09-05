@@ -275,3 +275,45 @@ alpha = 0.1
 Report the schedule with every result. "Q-learning got 0.74" is not a claim
 anyone can reproduce; the lab requires the ablation table for exactly this
 reason.
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   import numpy as np
+   Q = np.zeros((4, 2)); Q[1] = [2.0, 5.0]
+   gamma, r = 0.9, 1.0
+   a2 = 0                                   # the exploratory action actually taken
+   print(round(r + gamma * Q[1].max(), 2))  # Q-learning target -> 5.5
+   print(round(r + gamma * Q[1, a2], 2))    # SARSA target      -> 2.8
+   ```
+
+   **Answer.** One symbol differs and the targets are 2.7 apart. Q-learning
+   bootstraps from the best action in $s'$ regardless of what the agent will do;
+   SARSA bootstraps from the action it is actually about to take — including a
+   random exploratory one. That is the whole off-policy / on-policy distinction.
+
+2. On the cliff gridworld, which of the two hugs the edge, and is that a bug?
+
+   **Answer.** Q-learning hugs the edge and falls in sometimes. It is not a bug:
+   Q-learning converges to the optimal *greedy* policy, which is the right
+   answer once exploration is switched off. SARSA takes the detour because it
+   evaluates the $\epsilon$-greedy policy it will actually follow.
+
+3. A first tabular implementation on Frozen Lake ends up with positive value on
+   the holes and an agent that walks into them. What is missing?
+
+   **Answer.** The `* (not terminated)` factor. Without it the target
+   bootstraps through a terminal state that has no successor, and value leaks
+   backwards from a state that does not exist. Note that `truncated` is *not*
+   terminal — bootstrap through a time limit.
+
+4. Constant $\alpha = 0.1$ violates the Robbins-Monro conditions. Why is it
+   still the default?
+
+   **Answer.** A non-vanishing step size tracks a target that keeps moving as
+   the policy improves, and the resulting noise floor is acceptable. The theory
+   says what converges in the limit; it says nothing about 20,000 episodes.

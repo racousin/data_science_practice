@@ -223,3 +223,30 @@ in this session: a transform pipeline in which `ToTensor` was forgotten or
 `Normalize` was applied twice.
 
 The image on the screen is a debugging tool, not a check. Print the numbers.
+
+---
+
+## Check yourself
+
+1. `Image.open("cat.jpg")` reports `img.size == (640, 480)`. What shape does
+   `transforms.ToTensor()(img)` return, and why is that not a contradiction?
+
+   **Answer.** `(3, 480, 640)`. PIL reports size as `(width, height)`; a PyTorch
+   image tensor is `(channels, height, width)`. Both orders are correct — they
+   are different orders.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   from PIL import Image
+   from torchvision import transforms
+   img = Image.new("RGB", (640, 480))        # PIL takes (width, height)
+   print(transforms.ToTensor()(img).shape)   # -> torch.Size([3, 480, 640])
+   ```
+
+3. Your pipeline applies `Normalize` twice by accident. Which of the three
+   boundary assertions catches it, and why do the other two stay silent?
+
+   **Answer.** Only the third, `-3.0 < x.min() < x.max() < 3.0`. A second
+   normalization changes neither the shape nor the dtype — it only moves the
+   values, out to roughly ±10 on ImageNet statistics.

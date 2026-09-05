@@ -156,6 +156,58 @@ than prompting a large decoder.
 
 ---
 
+## Fine-tuning with `Trainer`
+
+The head is one line; the loop is four more objects. A `Dataset` that tokenizes
+without padding, a collator that pads each batch to its own longest sequence, a
+metric function, and the `Trainer` that puts them together.
+
+```python
+class TextDataset(torch.utils.data.Dataset):
+    def __init__(self, texts, labels, max_length=256):
+        self.enc = tok(list(texts), truncation=True, max_length=max_length)
+        self.labels = list(labels)
+    def __len__(self):
+        return len(self.labels)
+    def __getitem__(self, i):
+        item = {k: v[i] for k, v in self.enc.items()}
+        item["labels"] = self.labels[i]
+        return item
+```
+
+Note what is *not* here: `padding`. Padding every document to `max_length` wastes
+compute on sequences that are mostly `[PAD]`; the collator does it per batch.
+
+---
+
+## The other three pieces
+
+```python
+from sklearn.metrics import f1_score
+from transformers import DataCollatorWithPadding, Trainer, TrainingArguments
+
+def compute_metrics(p):
+    return {"macro_f1": f1_score(p.label_ids, p.predictions.argmax(-1),
+                                 average="macro")}
+
+args = TrainingArguments(output_dir="runs", num_train_epochs=1,
+                         per_device_train_batch_size=16, learning_rate=2e-5,
+                         eval_strategy="epoch", seed=0, report_to="none")
+
+trainer = Trainer(model=model, args=args,
+                  train_dataset=train_ds, eval_dataset=val_ds,
+                  data_collator=DataCollatorWithPadding(tok),
+                  compute_metrics=compute_metrics)
+trainer.train()
+```
+
+`Trainer` needs `accelerate`, which arrives with the `[torch]` extra — install
+`"transformers[torch]"`, not bare `transformers`. Without it `TrainingArguments`
+raises an `ImportError` saying the Trainer requires `accelerate>=1.1.0`, before a
+single step runs.
+
+---
+
 ## Decoder-only: GPT
 
 Causal mask, one objective: predict the next token. Every position in the
@@ -258,3 +310,40 @@ The failure mode is a 7B decoder deployed to do binary classification: 60×
 the cost of a fine-tuned DistilBERT, higher latency, and usually lower
 accuracy — because the small model was trained on your labels and the large one
 was not.
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   d, n_blocks, vocab = 768, 12, 30522
+   print(12 * d ** 2)                        # -> 7077888    one block
+   print(n_blocks * 12 * d ** 2)             # -> 84934656   the stack
+   print(vocab * d)                          # -> 23440896   the embeddings
+   print(n_blocks * 12 * d ** 2 + vocab * d) # -> 108375552  ~ BERT-base's 110M
+   ```
+
+2. Nothing in that arithmetic mentions the number of heads or the sequence
+   length. Why not, and what *does* depend on the sequence length?
+
+   **Answer.** Heads split $d$ into $h$ projections of width $d/h$ and are
+   concatenated back, so they add no parameters. Nothing in the parameter count
+   depends on $n$ at all. What depends on $n$ is compute and memory: attention
+   costs $O(n^2 d)$ per block, negligible at $n = 512$ and dominant at
+   $n = 32{,}000$.
+
+3. Encoder-only, decoder-only and encoder-decoder differ in exactly one
+   component. Which one?
+
+   **Answer.** The mask. BERT attends bidirectionally and is pretrained by
+   masked language modelling; GPT uses a causal mask and predicts the next
+   token; T5 does both, encoder bidirectional and decoder causal with
+   cross-attention. Every other component in this lesson is shared.
+
+4. You fine-tune with `Trainer` and the run crashes on `TrainingArguments`
+   before any step. What did you install?
+
+   **Answer.** Bare `transformers`. `Trainer` needs `accelerate`, which comes
+   with the `[torch]` extra — install `"transformers[torch]"`.

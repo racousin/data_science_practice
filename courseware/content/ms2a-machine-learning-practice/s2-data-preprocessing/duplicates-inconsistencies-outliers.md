@@ -207,3 +207,44 @@ on the training rows only — they are fitted parameters like any other.
 Log every row you drop, with the reason, in a counter the pipeline prints. A
 cleaning step that silently removes 4% of the table is the failure mode of this
 lesson, and nothing downstream will ever tell you it happened.
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   import pandas as pd
+
+   d = pd.DataFrame({"station_id":  ["s1", "s1", "s2"],
+                     "date":        ["2026-01-01"] * 3,
+                     "temp_c":      [3.0, 4.5, 9.0],
+                     "ingested_at": ["2026-01-02", "2026-01-03", "2026-01-02"]})
+
+   kept = (d.sort_values("ingested_at")
+             .drop_duplicates(subset=["station_id", "date"], keep="last")
+             .set_index("station_id"))
+   print(kept.loc["s1", "temp_c"])   # -> 4.5
+   print(len(kept))                  # -> 2
+   ```
+
+   **Answer.** 4.5 is the later ingestion. Drop the `sort_values` and `"first"`
+   or `"last"` returns whichever row the ingestion job happened to write first —
+   a coin flip promoted to a business rule.
+
+2. Why must de-duplication happen *before* the train/test split, and what does
+   splitting on the row rather than the entity cost you?
+
+   **Answer.** A row present in both splits is a free correct prediction. Split
+   on the entity — `GroupShuffleSplit` — because two records of the same customer
+   land on either side otherwise. A model scoring 0.97 on a leaky split and 0.78
+   on a grouped one was never a 0.97 model.
+
+3. `pd.to_datetime(s, format="%Y-%m-%d", errors="coerce")` runs clean on a column
+   where 8% of the strings are unparseable. When do you find out, and what does
+   `errors="raise"` do instead?
+
+   **Answer.** With `coerce` you find out in Session 3, when 8% of your rows have
+   a `NaT` timestamp and no traceback points at the cause. `errors="raise"`
+   raises a `ValueError` today, with the offending string in it.

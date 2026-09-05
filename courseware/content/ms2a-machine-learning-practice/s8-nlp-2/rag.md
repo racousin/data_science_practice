@@ -56,8 +56,10 @@ the discipline of this lesson.
 
 ```python
 def chunk(text, size=400, overlap=50):
-    words, out = text.split(), []
-    for i in range(0, len(words), size - overlap):
+    assert overlap < size
+    words = text.split()
+    step, out = size - overlap, []
+    for i in range(0, max(len(words) - overlap, 1), step):
         out.append(" ".join(words[i:i + size]))
     return out
 ```
@@ -66,6 +68,13 @@ The chunk is the unit of retrieval *and* the unit of context; those roles pull
 in opposite directions, which is why no default always works. Split on structure
 before falling back to a word count — a chunk beginning mid-sentence embeds
 badly.
+
+Two details in those five lines are the whole difference between a chunker and a
+bug. `assert overlap < size` stops a negative step silently producing garbage.
+And the loop stops at `len(words) - overlap`, not at `len(words)`: iterating to
+the end emits a final chunk that is wholly contained in its predecessor — a
+duplicate that goes straight into the index and competes with the real chunk for
+the top-k slot.
 
 ---
 
@@ -210,3 +219,56 @@ Faithfulness — every claim supported by a retrieved chunk — is judged, not
 computed: use the LLM-judge protocol from the previous lesson, same pinned
 prompt. RAG does not eliminate hallucination; it makes it **detectable**,
 because for the first time you hold the evidence the answer was meant to use.
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   def chunk(text, size=400, overlap=50):
+       assert overlap < size
+       words = text.split()
+       step, out = size - overlap, []
+       for i in range(0, max(len(words) - overlap, 1), step):
+           out.append(" ".join(words[i:i + size]))
+       return out
+
+   doc = " ".join(str(i) for i in range(360))
+   print([len(c.split()) for c in chunk(doc, 400, 50)])   # -> [360]
+   print([len(c.split()) for c in chunk(doc, 200, 50)])   # -> [200, 200, 60]
+
+   cs = chunk(doc, 200, 50)
+   print(cs[0].split()[-50:] == cs[1].split()[:50])       # -> True
+   rebuilt = cs[0] + "".join(" " + " ".join(c.split()[50:]) for c in cs[1:])
+   print(rebuilt == " ".join(doc.split()))                # -> True
+   ```
+
+   **Answer.** Consecutive chunks share exactly `overlap` words, and dropping the
+   overlap from every chunk after the first rebuilds the document — *up to
+   whitespace*, because `text.split()` has already thrown the paragraph breaks
+   away. That caveat is why the Lab 8 test says "up to whitespace normalisation"
+   and not "exactly".
+
+2. recall@5 on your question set is 0.4. Someone proposes rewriting the answer
+   prompt and switching to a larger generator. What will that buy you?
+
+   **Answer.** Nothing. Sixty per cent of the time the evidence is not in the
+   context at all, so no prompt and no generator can recover it. Fix retrieval
+   first — chunking, hybrid search, reranking — and only then touch generation.
+
+3. A query containing an error code or a product reference returns nothing
+   useful, while paraphrased questions work fine. What is the diagnosis and the
+   standard fix?
+
+   **Answer.** Dense-only retrieval. Embeddings generalise across wording and are
+   poor on exact tokens. Add BM25 and fuse the two rankings — hybrid retrieval is
+   the most reliable single upgrade to a mediocre RAG system.
+
+4. Why must the answer prompt give the model an explicit way to fail?
+
+   **Answer.** Without an allowed escape hatch — `NOT_IN_CONTEXT` — the model
+   answers from its weights when retrieval misses, and you can no longer tell
+   which answers came from your documents. The escape hatch is what makes
+   hallucination detectable.

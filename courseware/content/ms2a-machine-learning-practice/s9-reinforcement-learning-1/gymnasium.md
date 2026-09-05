@@ -200,16 +200,19 @@ your `agent.py`, constructs `Agent()` with no arguments, calls `setup` once, and
 then calls `choose_action` per step.
 
 ```python
-from flexkit.spaces import decode_space
-
 class Agent:
     def setup(self, observation_space, action_space):
+        # flexkit ships inside the platform runtime image, not on PyPI — import
+        # it here so `import agent` (and your own tests) work on your laptop too.
+        from flexkit.spaces import decode_space
         self.action_space = decode_space(action_space)
         return True
 ```
 
 The space arguments arrive as dicts, not as objects — `decode_space` turns them
-back into Gymnasium spaces.
+back into Gymnasium spaces. Keep that import **inside** `setup`: at module level
+it makes `import agent` fail everywhere except the competition pod, and the
+`flexkit` on PyPI is an unrelated stub, so installing it makes things worse.
 
 ---
 
@@ -231,3 +234,49 @@ time and no learning between steps.
 > episodes. An agent that raises inside `setup` is marked broken and scores
 > nothing, so validate what you load and fail loudly in your own tests, not on
 > the leaderboard.
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   import gymnasium as gym
+   env = gym.make("CartPole-v1")
+   env.reset(seed=0)
+   for t in range(500):
+       _, _, terminated, truncated, _ = env.step(0)     # always push left
+       if terminated or truncated:
+           print(t, terminated, truncated)              # -> 10 True False
+           break
+   ```
+
+   **Answer.** The pole fell on step 10: `terminated` is True, `truncated` is
+   False. Had the episode survived to the `TimeLimit` at 500 steps the flags
+   would be the other way round — and your bootstrap must treat the two cases
+   differently.
+
+2. Why does collapsing `terminated` and `truncated` into one `done` flag break
+   an agent?
+
+   **Answer.** The target is `r + gamma * Q[s2].max() * (not terminated)`. If a
+   truncation is treated as a termination, the agent learns that surviving to
+   the time limit is worth zero future reward and stops trying to survive.
+
+3. Your agent hardcodes `Q = np.zeros((16, 4))` and works on 4x4 Frozen Lake.
+   What does the lesson say will happen on the 8x8 map, and what should you
+   write instead?
+
+   **Answer.** It index-errors, or worse silently truncates. Read the sizes off
+   the spaces: `Q = np.zeros((env.observation_space.n, env.action_space.n))`,
+   with an `assert isinstance(env.observation_space, gym.spaces.Discrete)` at
+   construction.
+
+4. You are about to write the `Agent` class for a competition. Where does
+   training happen?
+
+   **Answer.** Offline, before you submit. The platform constructs `Agent()`,
+   calls `setup` once and then `choose_action` per step: inference only, no
+   exploration, no learning between steps. You save the Q-table beside
+   `agent.py` and load it in `setup`.

@@ -237,3 +237,51 @@ The failure mode is silent in both directions. A missing causal mask produces a
 suspiciously good validation loss; a missing padding mask produces a model
 whose output changes when you re-sort the batch. Neither raises. One assertion
 on the mask shape at the boundary catches both.
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   import torch, torch.nn.functional as F
+   torch.manual_seed(0)
+   q = k = v = torch.randn(4, 8)
+   mask = torch.tril(torch.ones(4, 4))
+   scores = (q @ k.T / 8 ** 0.5).masked_fill(mask == 0, float("-inf"))
+   A = F.softmax(scores, dim=-1)
+   print(A.sum(-1))     # -> tensor([1.0000, 1.0000, 1.0000, 1.0000])
+   print(A[0])          # -> tensor([1., 0., 0., 0.])
+   print((A @ v).shape) # -> torch.Size([4, 8])
+   ```
+
+   **Answer.** Every row sums to 1, which is the assertion to keep in your code.
+   Row 0 is one-hot on position 0 because the causal mask leaves it nothing else
+   to attend to, and the output has the same shape as the input, which is what
+   lets these layers stack.
+
+2. Why is the $\sqrt{d_k}$ in the score a fix rather than a tuning constant?
+
+   **Answer.** For unit-variance $q$ and $k$ the dot product has variance $d_k$,
+   so at $d_k = 64$ scores routinely reach $\pm 25$. The softmax of such a vector
+   is one-hot and its Jacobian is approximately zero, so the gradient dies before
+   training starts. Dividing restores unit variance, and the problem it fixes
+   grows with $d_k$ — which is why the same term appears in every
+   implementation.
+
+3. You mask by multiplying the attention weights by 0 *after* the softmax. What
+   is now wrong, and what do you do instead?
+
+   **Answer.** The masked probability mass is not redistributed, so the rows no
+   longer sum to 1 and the remaining weights are all too small. Mask *before* the
+   softmax by setting the masked scores to $-\infty$.
+
+4. You have a padding mask and a causal mask. Which one is a property of the
+   batch, and what does dropping each of them look like?
+
+   **Answer.** Padding is a property of the batch — different per row, derived
+   from `attention_mask`; causal is a property of the task and identical for
+   every example. Dropping the causal mask leaks the label and gives a
+   suspiciously low training loss; dropping the padding mask makes a sequence's
+   output depend on whatever else shared its batch. Neither raises.

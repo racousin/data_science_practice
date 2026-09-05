@@ -233,3 +233,46 @@ The failure mode is an index built with one model and queried with another, or
 queried with a differently normalised vector. Similarities come back in a
 plausible range, the ranking is noise, and no exception is ever raised. Assert
 the embedding dimension and the model name next to the index.
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   import torch
+   from torch import nn
+   emb = nn.Embedding(num_embeddings=30522, embedding_dim=768)
+   ids = torch.tensor([[101, 2054, 2003, 102]])   # (batch, seq_len)
+   print(emb(ids).shape)        # -> torch.Size([1, 4, 768])
+   print(emb.weight.shape)      # -> torch.Size([30522, 768])
+   ```
+
+   **Answer.** No matrix multiply happened. `nn.Embedding` gathered four rows out
+   of a `|V| x d` parameter matrix, and only those four rows will receive a
+   gradient from this batch.
+
+2. `most_similar(positive=["king", "woman"], negative=["man"])` returns `queen`.
+   Name the one property of that query without which the result means nothing.
+
+   **Answer.** The three input words are excluded from the answer set. Without
+   the exclusion the nearest neighbour of `king - man + woman` is usually `king`
+   itself. Report analogy results with the exclusion rule stated.
+
+3. You build a vector index with `all-MiniLM-L6-v2` and query it with
+   `bge-small-en-v1.5`. Both are 384-dimensional, so nothing raises. What do you
+   get, and what stops it happening again?
+
+   **Answer.** Similarity scores in a plausible range and a ranking that is
+   noise — the two models put their vectors in unrelated spaces. Store the
+   embedding model name beside the vectors and assert it, with the dimension, at
+   query time.
+
+4. Why does `bank` have two different vectors inside a transformer and only one
+   under word2vec?
+
+   **Answer.** word2vec learns one vector per word *type*; the two senses are
+   averaged into a point between them. A transformer emits one vector per token
+   *occurrence*, and that hidden state has already attended to the rest of the
+   sentence.

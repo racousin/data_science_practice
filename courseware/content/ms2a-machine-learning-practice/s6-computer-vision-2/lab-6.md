@@ -32,13 +32,22 @@ RESULTS.md
 Weights, datasets and generated images stay out of git. Commit the figures you
 reference in `RESULTS.md`, nothing else.
 
+Branch A needs `segmentation_models_pytorch` (which pulls `timm`) or
+`ultralytics`; install it **before** the session —
+`smp.Unet("resnet18", encoder_weights="imagenet")` downloads its weights on the
+first call and will not work offline.
+
 ---
 
 ## Part A — Choose a branch and get the data (5 min)
 
-**Branch A — Detect or segment.** A small annotated set: Penn-Fudan
-pedestrians, Oxford-IIIT Pet masks, a Roboflow public set, or 100–300 images
-you annotate yourself. 2–5 classes, no more.
+**Branch A — Detect or segment.** A small annotated set you can obtain in one
+line: `OxfordIIITPet(root=..., target_types="segmentation", download=True)` —
+take 2–5 breeds and 100–300 images. Do not annotate your own images here: at the
+5–15 seconds a box costs in the detection lesson, 300 images is an hour, not
+five minutes. If you want your own data, annotate it before the session.
+`torchvision.datasets` ships no Penn-Fudan loader and Roboflow needs an account,
+so neither is a five-minute start.
 
 **Branch B — Generate.** MNIST, Fashion-MNIST, CIFAR-10 or a single-class
 subset. 32×32 or 28×28. Resist anything larger.
@@ -147,6 +156,44 @@ meaningless, `mAP@0.5 on 40 held-out images, seed 0` is a claim.
 
 ---
 
+## Part F — Put it on the board (5 min)
+
+This module's attached competition is **Gymnasium · CarRacing-v3**,
+`competition_id=47`: a 96×96×3 RGB frame in, a 3-vector `(steer, gas, brake)`
+out, scored as the **mean episode return** — higher is better. The environment's
+own reward rule is -0.1 per frame and +1000/N per track tile, so a lap finished
+in 732 frames scores 926.8.
+
+Read the board before you touch it. It carries exactly one row today:
+`__benchmark__`, the random-action template, at **-33.9** mean return over two
+runs, with no confidence interval. That is the only measured reference this
+competition has.
+
+```bash
+uv pip install mlarena-sdk
+```
+
+```python
+import mlarena, pathlib
+
+client = mlarena.connect(api_key="mlk_user_...")      # from your Profile page
+print(client.leaderboard(47))                          # who is on the board, and at what
+pathlib.Path("agent.py").write_text(client.competition(47)["agent_template"])
+client.submit(competition_id=47, files=["agent.py"])
+```
+
+Deploy the template as it stands — `choose_action` returning
+`self.action_space.sample()` — so that the submission path is proven and you
+have your own number beside the reference. Record it in `RESULTS.md`.
+
+**Be honest about what this is.** CarRacing is a control task. Nothing in
+Session 6 teaches a policy, an episode or a reward, and neither branch of this
+lab produces a Gymnasium `agent.py` — the machinery for actually clearing -33.9
+is Sessions 9 and 10. Today the deliverable is a submitted run and a number to
+come back to.
+
+---
+
 ## Pull request
 
 The description states:
@@ -187,3 +234,22 @@ The description states:
 Both branches produce the same transferable thing: a metric you implemented,
 tested, and can defend under questioning. That is what the project asks for.
 Session 7 changes the modality to text; the discipline is identical.
+
+---
+
+## Did you validate this session?
+
+- [ ] `uv sync && uv run pytest` is green on a fresh clone
+- [ ] `RESULTS.md` names the dataset, its size, the split and the metric — written down before the first number was produced (Part A)
+- [ ] The model trained from pretrained weights or a small architecture, and the seed is recorded in `RESULTS.md` (Part B)
+- [ ] The reported metric is computed by my own code in `metrics.py`, not read off a framework's progress bar (Part C)
+- [ ] Branch A: the worst-five figure is committed with one sentence per image. Branch B: the ten-frame interpolation and the sample grid are committed, and `RESULTS.md` says morph or crossfade (Part C)
+- [ ] All three tests of Part D pass, the metric test on an identical and a disjoint pair included
+- [ ] `RESULTS.md` states the number with its split, threshold and seed (Part E)
+- [ ] My run is on the leaderboard of Gymnasium · CarRacing-v3 (#47) — `client.leaderboard(47)` lists my agent name (Part F)
+- [ ] My mean episode return is written in `RESULTS.md` next to the only measured reference on that board, the random-action template at **-33.9**
+
+The last row says *recorded*, not *beaten*, and that is deliberate: this session
+teaches no reinforcement learning, so nothing in it gives you a method for
+clearing -33.9. Sessions 9 and 10 do. Every other row is a fact about your
+repository that you can settle yourself, without asking anyone.

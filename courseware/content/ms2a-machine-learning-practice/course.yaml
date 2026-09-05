@@ -11,7 +11,7 @@ course:
   name: "MS2A - Machine Learning Practice"
   code: "MS2A-MLP"
   slug: ms2a-machine-learning-practice
-  visibility: unlisted
+  visibility: public
   instructor_name: "Raphael Cousin"
   # PLACEHOLDER — 10 weeks, 2 × 3h per week. Set the real term dates before the
   # first published run.
@@ -580,4 +580,9 @@ modules:
         slug: automl-and-custom-objectives
         file: reference/automl-and-custom-objectives.md
         estimated_minutes: 20
+        is_published: true
+      - title: "Reference Playgrounds — AquaControl and Bitcoin Intraday"
+        slug: reference-playgrounds
+        file: reference/reference-playgrounds.md
+        estimated_minutes: 15
         is_published: true

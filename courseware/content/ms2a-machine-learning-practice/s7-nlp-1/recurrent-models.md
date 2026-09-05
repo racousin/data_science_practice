@@ -164,3 +164,44 @@ $O(n^2)$ attention matrix does not fit.
 For text, do not start here. A fine-tuned small transformer beats a
 from-scratch LSTM on almost any classification task you will meet, with less
 code and less tuning.
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   import torch
+   from torch import nn
+   rnn = nn.RNN(input_size=300, hidden_size=128, batch_first=True)
+   out, h_n = rnn(torch.randn(32, 20, 300))
+   print(out.shape, h_n.shape)
+   # -> torch.Size([32, 20, 128]) torch.Size([1, 32, 128])
+   bi = nn.LSTM(300, 128, bidirectional=True, batch_first=True)
+   print(bi(torch.randn(32, 20, 300))[0].shape)
+   # -> torch.Size([32, 20, 256])
+   ```
+
+   **Answer.** `out` is the state at every position — take it for tagging. `h_n`
+   is the last state only — take it for classification. The bidirectional layer
+   returns 256 because the two directions are concatenated per position.
+
+2. Your LSTM's loss becomes `nan` after a few hundred steps on long sequences.
+   Which of the two backpropagation-through-time failures is that, which is the
+   other one, and does the same fix work for both?
+
+   **Answer.** Exploding gradients — the product of Jacobians has typical scale
+   above 1. One line fixes it:
+   `torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)`. The other
+   failure is vanishing gradients, and clipping does nothing for it: that one
+   needs an architecture, which is what the LSTM cell state is.
+
+3. A seq2seq translation model is flat on short sentences and degrades steadily
+   past roughly 30 source tokens. Why does doubling the hidden size not fix it?
+
+   **Answer.** Everything the decoder will ever know about the source is
+   compressed into one fixed-size context vector, so the information destroyed
+   grows with input length. A bigger vector moves the cliff; it does not remove
+   it. The fix is to stop compressing — let the decoder look back at all encoder
+   states, which is attention.

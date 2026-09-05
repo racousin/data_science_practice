@@ -59,3 +59,45 @@ if you crash on the ninth text you keep credit for the first eight and lose the
 rest, and the result message names the case and the method that crashed. A score
 that looks strangely round — `0.13`, `0.27` — usually means a crash early on,
 not a subtly wrong answer. Read the message.
+
+## Baselines
+
+The leaderboard column is **Pass rate** — the fraction of the sixty checks that
+match the reference. It runs from 0% to 100% and **higher is better**.
+
+The starter you are handed scores **0.0%**. Every method in it raises
+`NotImplementedError`, the first raise latches the channel, and the run ends on
+the very first call: `0/60 checks passed before the agent crashed`. That is the
+floor, and it is what an untouched submission looks like.
+
+The reference implementation — the three Lab 1 functions written exactly as the
+specification above says — scores **100.0%, 60 of 60**. That is the bar. Unlike
+a modelling competition it is also the ceiling: the checks are exact comparisons
+against a pinned spec, so a correct implementation takes all of them and there
+is nothing above. The useful ladder is therefore the one *below* the bar — what
+a particular mistake actually costs:
+
+| what the agent does | Pass rate | checks |
+|---|---|---|
+| the starter, untouched — every method raises | 0.0% | 0/60 |
+| `word_count` + `longest_word` right, `char_frequencies` wrong, **and it raises on the ninth text** | 26.7% | 16/60 |
+| one function right, the other two wrong but never raising | 33.3% | 20/60 |
+| `word_count` + `longest_word` right, `char_frequencies` wrong, no crash | 66.7% | 40/60 |
+| all three written, but `char_frequencies` never case-folds | 91.7% | 55/60 |
+| all three written, but `longest_word` gives ties to the *last* token | 91.7% | 55/60 |
+| the reference | 100.0% | 60/60 |
+
+Rows two and four are the same three functions. The only difference is that one
+of them raises partway through, and it costs **40 percentage points** — every
+call after the first exception short-circuits, so a crash is worth far more than
+a wrong answer. Fix crashes before you fix logic.
+
+The two 91.7% rows are the ones to be suspicious of: a single misread rule costs
+five checks out of sixty, which is high enough to look like success. Both are
+one rule wide — five of the twenty texts contain upper-case characters, and five
+contain a tie at the maximal token length — and the per-function columns on the
+leaderboard tell you which of the three to open.
+
+**You have completed Lab 1 when you score 100% (60/60).** That is exactly
+reachable with the three functions the lab asks for: the reference does it, and
+the build refuses to publish this competition unless it still does.

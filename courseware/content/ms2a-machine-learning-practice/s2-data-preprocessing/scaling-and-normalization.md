@@ -176,3 +176,40 @@ fix costs nothing.
 
 > Scale for the model, not for the data. If the model computes no distance and
 > no gradient, the scaler is decoration.
+
+---
+
+## Check yourself
+
+1. Of a random forest, a Ridge regression and a k-NN classifier, which one is
+   unaffected by scaling — and what property decides it?
+
+   **Answer.** The random forest. What decides it is whether the model consults
+   *order* or *magnitude*: a tree splits on order and scaling is a monotone map,
+   so every split it could have made it can still make. Ridge is affected because
+   the penalty applies to the raw coefficients, k-NN because it computes
+   distances. Scaling before a tree costs only time; skipping it before the other
+   two costs the model.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   from sklearn.preprocessing import MinMaxScaler
+
+   mm = MinMaxScaler().fit([[0.0], [10.0]])            # train range 0-10
+   print(mm.transform([[5.0], [10.0], [15.0]]).ravel().tolist())
+   # -> [0.5, 1.0, 1.5]
+   ```
+
+   **Answer.** 1.5 is outside $[0, 1]$ and that is correct, not a bug: both
+   bounds came from the training set, so a larger test value maps above 1.
+   Clipping it would hide the fact that production is outside the range you
+   trained on.
+
+3. Your revenue column contains zeros. What does `np.log(0)` return, and what
+   does `np.log1p(0)` return?
+
+   **Answer.** `np.log(0)` returns `-inf`, which fails silently in some
+   estimators and loudly in others. `np.log1p(0)` returns `0.0`, because it
+   computes $\log(1 + x)$ — which is why it is the transform to reach for on a
+   count or a revenue column.

@@ -202,3 +202,43 @@ and breaks on any other operating system.
 - [ ] `pyproject.toml` declares dependencies with ranges
 - [ ] a lockfile is committed
 - [ ] `uv sync` on a fresh clone reproduces the environment
+
+---
+
+## Check yourself
+
+1. `pyproject.toml` and `uv.lock` both list dependencies. Which question does
+   each answer, and which of the two do you commit?
+
+   **Answer.** `pyproject.toml` holds the ranges you *support* — "what does this
+   project need?". The lockfile holds exact pinned versions — "what exactly did
+   I run?". You commit both: the first is intent, the second is
+   reproducibility.
+
+2. Run this. You should get exactly the output shown.
+
+   ```bash
+   rm -rf /tmp/env-check && mkdir /tmp/env-check && cd /tmp/env-check
+   uv venv -q
+   uv run python -c "import sys, os; print(os.path.basename(sys.prefix))"
+   # -> .venv
+   ```
+
+   That is `uv run` doing its job: the command ran inside the project
+   environment although you never activated anything.
+
+3. Your teammate says "it works on my machine" and sends you a screenshot of
+   green tests. What three commands decide the argument, and what does it mean
+   if they fail?
+
+   **Answer.** `git clone <url> && cd <project>`, then `uv sync`, then
+   `uv run pytest`. If that sequence fails on a clean machine the project is not
+   reproducible, whatever the README claims — usually because something the
+   environment needs was never committed.
+
+4. Why is `.venv/` never committed, and what replaces it in the repository?
+
+   **Answer.** It is disposable — regenerated from the lockfile — and
+   committing it bloats the repository and breaks on any other operating
+   system. What you commit instead is the *declaration*: `pyproject.toml` plus
+   the lockfile.

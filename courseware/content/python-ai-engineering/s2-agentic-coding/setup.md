@@ -13,8 +13,12 @@ stuck get stuck on Node or on auth, not on the concepts. -->
 A terminal agent from Anthropic. Runs where your code is, uses your shell, edits
 your files.
 
+`npm` ships with Node.js. If `node --version` prints nothing you have two
+routes, and the second needs no Node at all:
+
 ```bash
-npm install -g @anthropic-ai/claude-code
+npm install -g @anthropic-ai/claude-code          # needs Node.js 18+
+curl -fsSL https://claude.ai/install.sh | bash    # macOS / Linux, native
 ```
 
 Then, from inside a project directory:
@@ -44,7 +48,16 @@ Pick one. The mental model in this session is identical across all of them.
 
 ## First contact
 
-Try these, in order, in your Session 1 repository:
+In your Session 1 repository, `git status` must be clean first, and:
+
+```bash
+git switch -c agent-sandbox
+```
+
+so that nothing here lands on `main`. *Guardrails & Review* explains why; do it
+now anyway — the second prompt below edits your files.
+
+Then try these, in order, on that branch:
 
 ```text
 > what does this project do?
@@ -65,7 +78,8 @@ runs commands. You are watching the loop.
 |---|---|
 | `/init` | Generate a `CLAUDE.md` describing the project |
 | `/clear` | Wipe the conversation, keep the session |
-| `/config` | Model, theme, and behaviour settings |
+| `/model` | Switch model (Opus 5 / Sonnet 5 / Haiku 4.5) |
+| `/config` | Theme and behaviour settings |
 | `#` prefix | Save the line to memory |
 | `!` prefix | Run a shell command directly in the session |
 | `Esc` | Interrupt — use it early and often |
@@ -80,7 +94,7 @@ seconds costs nothing; letting it finish costs a review.
 
 Claude Code runs on the Claude model family — currently **Opus 5** (the default
 for hard work), **Sonnet 5**, and **Haiku 4.5** for fast, cheap operations.
-`/config` switches between them.
+`/model` switches between them; `/config` holds everything else.
 
 For this course the default is correct. Change it when you have a measured
 reason, not a hunch.
@@ -145,3 +159,37 @@ Confirm all four:
 
 The fourth one is not a joke. Students who have never interrupted an agent let
 bad runs finish.
+
+---
+
+## Check yourself
+
+1. You start `claude` from your home directory instead of from inside the
+   repository. What does that cost you?
+
+   **Answer.** The working directory defines what the agent can see, so it
+   cannot read your project's files. `cd` into the repository first.
+
+2. Run this in the repository you just used for *First contact*. You should get
+   exactly the output shown.
+
+   ```bash
+   git branch --show-current   # -> agent-sandbox
+   ```
+
+   **Answer.** If it prints `main`, the second prompt above edited your graded
+   Session 1 work in place, with nothing to `git switch` back to. Branch first,
+   every time.
+
+3. You have no Claude access and no network. Which column of the comparison
+   table still works, and what do you give up?
+
+   **Answer.** Aider + Ollama: free and network-not-required. You give up
+   repo-wide navigation (weak), and each step is lower quality, so you
+   supervise much more closely.
+
+4. Which command switches model, and which key stops a run that has gone the
+   wrong way?
+
+   **Answer.** `/model` switches between Opus 5, Sonnet 5 and Haiku 4.5.
+   `Esc` interrupts — the lesson's "one to internalise today".

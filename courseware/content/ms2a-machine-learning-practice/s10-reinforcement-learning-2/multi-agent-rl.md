@@ -228,3 +228,42 @@ A 400-point gap means a 10-to-1 expected score. Two consequences for the lab:
 your rating depends on who else submitted, so it moves without you touching
 your agent; and it is only meaningful after enough games — early positions on a
 young leaderboard are mostly noise.
+
+---
+
+## Check yourself
+
+1. What exactly does a second learning agent take away from you?
+
+   **Answer.** Stationary transition dynamics. From one agent's point of view
+   the others are part of the environment, and they are updating their weights —
+   so the guarantee that made the single-agent algorithms converge is gone, not
+   merely weakened.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   print(round(1 / (1 + 10 ** ((1600 - 1200) / 400)), 3))   # -> 0.091
+   ```
+
+   **Answer.** A 400-point ELO gap gives the weaker player an expected score of
+   about 0.09 — the 10-to-1 rule. Two consequences for the lab: your rating
+   moves when other people submit, and an early position on a young leaderboard
+   is mostly noise.
+
+3. You mask illegal moves by resampling until the action is legal. What is wrong
+   with that?
+
+   **Answer.** The gradients still push probability toward the illegal moves,
+   because the log-probability the update uses came from the unmasked
+   distribution. Mask the **logits** (`logits[mask == 0] = -1e8`) before
+   sampling.
+
+4. Your agent wins 60% of 20 games against the pool it trained on. What are two
+   reasons that is not a result?
+
+   **Answer.** The sample is far too small — the lesson's own line is "a 60% win
+   rate over 20 games is not a result" — and beating only your own training pool
+   is the multi-agent form of overfitting. Report win/draw/loss against a
+   **named** pool including opponents you did not train against, both sides of
+   an asymmetric game, and the number of games.

@@ -76,8 +76,10 @@ here. Everything in Session 10 is what you do when the table no longer fits.
 ![A stochastic transition spreads probability over several successors](assets/rl/tikz_picture_5.png)
 
 Deterministic: `RIGHT` moves you right with probability 1, and $P$ is a lookup
-table. Stochastic: `RIGHT` moves you right with probability 0.8 and sideways
-with probability 0.1 each, and $P$ is a distribution.
+table. Stochastic: on slippery Frozen Lake `RIGHT` moves you right with
+probability 1/3 and slides you onto each perpendicular square with probability
+1/3 — the intended direction is only as likely as each accident — and $P$ is a
+distribution.
 
 Frozen Lake is the second kind. That single fact is why a policy which looks
 obviously optimal scores 0.7 rather than 1.0 — and why you must never conclude
@@ -237,3 +239,38 @@ RGB — only that you can name the five components.
 
 > Write the tuple down before you write any code. If $S$ is not Markov, or $R$
 > does not encode what you actually want, no algorithm will save you.
+
+---
+
+## Check yourself
+
+1. The Markov property is a property of what, exactly — the world or your code?
+
+   **Answer.** Of your *encoding* of the world. The state is Markov when it is a
+   sufficient statistic for the future; if velocity is missing from the
+   observation you can restore the property by stacking frames, and the world
+   did not change.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import gymnasium as gym
+   env = gym.make("FrozenLake-v1", is_slippery=True)
+   print([round(p, 3) for p, *_ in env.unwrapped.P[0][2]])   # -> [0.333, 0.333, 0.333]
+   ```
+
+   **Answer.** Three equally likely successors. `RIGHT` is no more likely than
+   either slip, which is the slide above in code.
+
+3. Why does the optimality equation for $V_*$ have no closed-form solution when
+   the Bellman *expectation* equation does?
+
+   **Answer.** The sum over actions became a $\max$. That makes the system
+   non-linear, so it is solved by iteration rather than by linear algebra.
+
+4. You set $\gamma = 0.9$ on a task where the reward arrives 200 steps away and
+   the agent does not learn. What does the lesson say to check first?
+
+   **Answer.** $\gamma$, not the update rule. $\gamma$ sets an effective horizon
+   of about $1/(1-\gamma)$ steps — 10 steps at 0.9 — so the reward is outside the
+   horizon the agent is optimising over.

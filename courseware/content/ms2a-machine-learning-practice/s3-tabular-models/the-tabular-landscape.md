@@ -217,3 +217,39 @@ Averaging many trees, the next lesson, trades it for almost nothing.
 
 The rest of this session assumes gradient boosting and spends its time on what
 decides whether yours is any good: the validation protocol and the search.
+
+---
+
+## Check yourself
+
+1. Name two of the three structural reasons tree ensembles still beat tuned
+   neural networks on medium-sized tables.
+
+   **Answer.** Any two of: columns have no translation invariance and no
+   ordering, so convolution's inductive bias has no analogue; features are
+   heterogeneous in scale, type and meaning — a tree splits each on its own
+   terms while a dense layer mixes them all in the first matmul; real tables
+   are small, and five thousand rows starves a network while being plenty for
+   boosting.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import numpy as np
+   from sklearn.linear_model import LogisticRegression
+   X = np.arange(20).reshape(-1, 1) / 10.0
+   y = (X.ravel() > 1.0).astype(int)
+   small = LogisticRegression(C=0.01).fit(X, y).coef_[0, 0]
+   large = LogisticRegression(C=100).fit(X, y).coef_[0, 0]
+   print(f"{small:.2f} {large:.2f}")        # -> 0.05 11.94
+   ```
+
+   `C` is the *inverse* regularisation strength: the small `C` is the strongly
+   regularised model, and its coefficient is the one that got shrunk.
+
+3. Your first model, a regularised logistic regression, scores 0.99 AUC on a
+   problem everyone told you was hard. What is the reading?
+
+   **Answer.** Leakage, found for free. That early warning is one of the three
+   things fitting the baseline first buys you — the other two being proof the
+   pipeline runs end to end and a floor any later model must clear.

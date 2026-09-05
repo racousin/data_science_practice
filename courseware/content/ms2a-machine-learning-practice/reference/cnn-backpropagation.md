@@ -188,3 +188,41 @@ forever. `gradcheck` costs two lines and catches it immediately.
   accumulation you see in the profiler.
 - Max pooling routes the gradient to the argmax and discards the rest.
 - Every claim above is checkable with `gradcheck` in `float64`.
+
+---
+
+## Check yourself
+
+1. The lesson derives the input gradient as a sum over $\delta_{i-p,\,j-q,\,k}$.
+   Where does the famous "flipped kernel" come from — a convention, or
+   something else?
+
+   **Answer.** Something else. It falls out of the substitution $p' = i - p$
+   when you ask which pre-activations a given input contributed to. The minus
+   signs make the expression a full convolution of $\delta$ with $w$, i.e. a
+   cross-correlation with the kernel rotated 180°.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import torch, torch.nn.functional as F
+   a = torch.tensor([[[[1., 2, 3], [4, 5, 6], [7, 8, 9]]]], requires_grad=True)
+   w = torch.tensor([[[[1., 0], [0, -1]]]], requires_grad=True)
+   z = F.conv2d(a, w)
+   print(z.squeeze().tolist())        # -> [[-4.0, -4.0], [-4.0, -4.0]]
+   z.backward(torch.tensor([[[[1., 2], [3, 4]]]]))
+   print(w.grad.squeeze().tolist())   # -> [[37.0, 47.0], [67.0, 77.0]]
+   print(a.grad.squeeze().tolist())   # -> [[1.0, 2.0, 0.0], [3.0, 3.0, -2.0], [0.0, -3.0, -4.0]]
+   ```
+
+   **Answer.** Both grids come from the two formulas above: 37 is
+   $1(1) + 2(2) + 3(4) + 4(5)$ at offset $(0,0)$, and the centre of `a.grad` is
+   $4(1) + 1(-1) = 3$.
+
+3. You wrote a custom layer's backward pass by hand and `gradcheck` fails.
+   Before you touch the maths, what is the one thing to check about the inputs
+   you passed it — and why?
+
+   **Answer.** That they are `float64`. In `float32` the finite-difference
+   estimate is noise at the tolerance that matters, so `gradcheck` fails on
+   correct code.

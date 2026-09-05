@@ -162,3 +162,39 @@ grader, and by you in six weeks.
 
 Everything after this session assumes you have a dataset you can defend. Building
 one is the lab.
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   import pandas as pd
+
+   orders    = pd.DataFrame({"customer_id": [1, 1, 2], "amount": [10, 20, 30]})
+   customers = pd.DataFrame({"customer_id": [1, 1, 2],       # 1 is duplicated
+                             "segment": ["A", "A", "B"]})
+
+   print(len(orders.merge(customers, on="customer_id", how="left")))   # -> 5
+   orders.merge(customers, on="customer_id", how="left", validate="m:1")
+   # -> pandas.errors.MergeError: Merge keys are not unique in right dataset;
+   #    not a many-to-one merge
+   ```
+
+   **Answer.** Three rows became five and nothing complained. `validate="m:1"`
+   turns that silent duplication into an exception at the line that caused it.
+
+2. You have no stated latency requirement. Batch or streaming, and what does the
+   other one cost you?
+
+   **Answer.** Batch. Streaming buys latency and costs reproducibility: you
+   cannot re-run last Tuesday, so any bug you fix is a bug you cannot repair
+   retroactively.
+
+3. Income is missing because high earners decline to answer. Which of MCAR, MAR
+   and MNAR is that, and why is dropping those rows not a safe default?
+
+   **Answer.** MNAR — the absence depends on the missing value itself. Dropping
+   the rows removes exactly the high earners, so it biases every conclusion you
+   draw; unlike MCAR, where dropping is merely wasteful.

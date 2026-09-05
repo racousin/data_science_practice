@@ -195,3 +195,37 @@ assert x.ndim == 4 and x.shape[1] == self.in_ch, x.shape
 
 Microseconds of runtime, and the error names the actual tensor instead of
 surfacing eight layers later as an unreadable matmul complaint.
+
+---
+
+## Check yourself
+
+1. Which layout does vision use, which do sequences use, and which layer does
+   not care?
+
+   **Answer.** `(B, C, H, W)` for images — channels second — and `(B, T, D)`
+   for sequences, channels last. `Linear` is the exception: it acts on the last
+   dimension only, whatever precedes it.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import torch, torch.nn as nn
+   x = torch.randn(8, 100, 32)          # batch 8, 100 steps, 32 features
+   for bf in (True, False):
+       out, (h, c) = nn.LSTM(32, 64, num_layers=2, batch_first=bf)(x)
+       print(bf, tuple(out.shape), tuple(h.shape))
+   # -> True (8, 100, 64) (2, 8, 64)
+   # -> False (8, 100, 64) (2, 100, 64)
+   ```
+
+   The output shape is identical either way, which is why forgetting
+   `batch_first=True` never raises. Only `h` shows that 100 was read as the
+   batch dimension.
+
+3. After a `permute`, `x.view(x.size(0), -1)` raises. What is the error, and
+   what do you write instead?
+
+   **Answer.** `RuntimeError: view size is not compatible with input tensor's
+   size and stride` — `permute` leaves a non-contiguous tensor. Use
+   `x.flatten(1)`.

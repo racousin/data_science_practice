@@ -160,4 +160,45 @@ outperform teams that spend three weeks on the model. Every year. -->
 | Evaluation | 10% |
 | Deployment & monitoring | 15% |
 
-Budget accordingly, especially in your project.
+Budget accordingly — including in Lab 3, where Parts A and B cost you ten of
+your forty-five minutes before you have trained anything.
+
+---
+
+## Check yourself
+
+1. Which two stages does this lesson say projects actually die at, and which two
+   swallow 90% of a student's time?
+
+   **Answer.** Stage 0 (problem definition) and stage 6 (monitoring) are where
+   projects die; stages 3 (training) and 4 (evaluation) are where the time goes.
+
+2. Of the three framing questions, getting exactly one of them wrong is called
+   *leakage*. Which one, and what does the resulting model look like?
+
+   **Answer.** Question 1, "what is `X`?" — using something that is in the
+   historical table but not genuinely available at prediction time. It produces a
+   model that scores 0.99 and is worthless.
+
+3. Run this. It is Stage 2's rule — *fit on the training set only* — made
+   visible. You should get exactly the output shown.
+
+   ```python
+   import numpy as np
+   from sklearn.preprocessing import StandardScaler
+   train, test = np.array([[1.0], [2.0], [3.0]]), np.array([[100.0]])
+   print(StandardScaler().fit(train).transform(test).round(2))                    # -> [[120.02]]
+   print(StandardScaler().fit(np.vstack([train, test])).transform(test).round(2))  # -> [[1.73]]
+   ```
+
+   **Answer.** The second scaler was fitted on the full dataset, so it has
+   already seen the test point: an extreme value is rescaled to an ordinary
+   1.73 and stops looking extreme. That is the optimistic score you only find
+   out about in production.
+
+4. You have four hours and a dataset you have never seen. What does "baseline
+   and iterate" tell you to build first, and why that rather than the model?
+
+   **Answer.** The simplest end-to-end pipeline that produces a submission, even
+   if the model predicts the mean. A complete bad pipeline tells you where the
+   effort should go, and it means you always have something to submit.

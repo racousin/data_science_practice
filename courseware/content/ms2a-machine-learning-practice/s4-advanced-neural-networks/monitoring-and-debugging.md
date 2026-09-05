@@ -175,3 +175,40 @@ writer.add_text("config", json.dumps(cfg, indent=2))
 
 A result you cannot regenerate is not a result. A result you can regenerate to
 within a documented tolerance is one — say which you have.
+
+---
+
+## Check yourself
+
+1. The loss falls quickly to a floor near chance and stays there. What is the
+   first suspect?
+
+   **Answer.** Inputs and labels misaligned in `__getitem__`. A dataset
+   returning `self.y[i+1]` for `self.X[i]` still trains, still converges, and
+   still produces a plausible score — which is why overfitting one batch is the
+   test that finds it.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import torch, torch.nn as nn
+   torch.manual_seed(0)
+   x, y = torch.randn(32, 16), torch.randint(0, 4, (32,))
+   net = nn.Sequential(nn.Linear(16, 64), nn.ReLU(), nn.Linear(64, 4))
+   opt = torch.optim.AdamW(net.parameters(), lr=1e-2)
+   for _ in range(200):
+       loss = nn.functional.cross_entropy(net(x), y)
+       opt.zero_grad(set_to_none=True); loss.backward(); opt.step()
+   print(loss.item() < 0.01)      # -> True
+   ```
+
+   Twenty seconds of runtime. A `False` here means stop and debug the
+   plumbing — no real run is worth starting.
+
+3. Why is a training-loss curve on its own uninformative, and what does "val
+   flat, train falling" mean?
+
+   **Answer.** Training loss alone cannot separate overfitting from noise from
+   a learning rate that is now too large; the quantity that answers it is the
+   validation loss, so plot both. Val flat while train falls is overfitting:
+   stop earlier, regularise, or get more data.

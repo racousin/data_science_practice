@@ -206,3 +206,45 @@ sign of drift.
 
 > One-hot until it hurts, then target-encode out of fold. Anything that touches
 > the label goes inside the Pipeline, where cross-validation can see it.
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   from sklearn.preprocessing import OrdinalEncoder
+
+   enc = OrdinalEncoder().fit([["low"], ["medium"], ["high"]])
+   print(enc.categories_[0].tolist())                            # -> ['high', 'low', 'medium']
+   print(enc.transform([["low"], ["medium"], ["high"]]).ravel().tolist())
+   # -> [1.0, 2.0, 0.0]
+   ```
+
+   **Answer.** The default order is alphabetical, so the encoder has just told
+   the model that `high < low < medium`. Pass `categories=[["low", "medium",
+   "high"]]` explicitly, every time.
+
+2. Why does `df.groupby("city")["target"].mean()` leak when you map it back onto
+   the same frame, and what does sklearn's `TargetEncoder` do differently?
+
+   **Answer.** Row 7's encoded value was computed from a group that contains row
+   7's own label — for a city seen once, the feature *is* the target.
+   `TargetEncoder(cv=5)` computes each training row's encoding from the *other*
+   folds, so no row contributes to its own feature.
+
+3. Run this. You should get exactly the output shown.
+
+   ```python
+   from sklearn.preprocessing import OneHotEncoder
+
+   oh = OneHotEncoder(handle_unknown="ignore", sparse_output=False)
+   oh.fit([["paris"], ["lyon"]])
+   print(oh.categories_[0].tolist())      # -> ['lyon', 'paris']
+   print(oh.transform([["berlin"]]).tolist())   # -> [[0.0, 0.0]]
+   ```
+
+   **Answer.** The unseen category becomes an all-zero block instead of an
+   exception. Without `handle_unknown="ignore"` the default is to raise —
+   correct for a batch job, an outage for an online service.

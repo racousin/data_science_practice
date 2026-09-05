@@ -185,3 +185,39 @@ to students every year.
 - append raw JSONL, parse in a separate step
 - resumable by design
 - key from the environment
+
+---
+
+## Check yourself
+
+1. Which status codes belong in `status_forcelist`, and which ones must never be
+   retried at all?
+
+   **Answer.** Retry 429 and the 5xx codes with exponential backoff. Never retry
+   401/403 (bad credentials — retrying will not help) or 404 (no such resource);
+   both are just noise on the provider's server.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import json, os
+
+   os.makedirs("raw", exist_ok=True)
+   with open("raw/orders.jsonl", "w") as f:
+       for i in (1, 2, 3):
+           f.write(json.dumps({"id": i, "amount": i * 10}) + "\n")
+
+   done = {json.loads(l)["id"] for l in open("raw/orders.jsonl")}
+   print(sorted(done))                                    # -> [1, 2, 3]
+   print([i for i in (1, 2, 3, 4, 5) if i not in done])    # -> [4, 5]
+   ```
+
+   **Answer.** That is the whole of "resumable": the ids already on disk are
+   skipped, so an interrupted job restarts from record 4 rather than from zero.
+
+3. Why append the untouched JSON to disk before parsing anything into a
+   dataframe?
+
+   **Answer.** A parsing bug then costs a re-run of the parser, not a re-run of
+   six hours of API calls — and you keep the evidence of what the API actually
+   returned on the day you called it.

@@ -188,9 +188,19 @@ num_pipe = Pipeline([
     ("impute", SimpleImputer(strategy="median", add_indicator=True)),
     ("scale", StandardScaler()),
 ])
+cat_pipe = Pipeline([
+    ("impute", SimpleImputer(strategy="constant", fill_value="MISSING")),
+    ("encode", OneHotEncoder(handle_unknown="ignore")),
+])
 pre = ColumnTransformer([("num", num_pipe, NUM_COLS),
-                         ("cat", cat_pipe, CAT_COLS)])
+                         ("cat", cat_pipe, CAT_COLS)], remainder="drop")
 ```
+
+That is the whole object, both branches, and it is the one to copy: `cat_pipe`
+appears again in the encoding lesson and in Lab 2 and it always means these two
+steps. Print `pre.fit_transform(X_tr).shape` the first time you build one — a
+shape you cannot account for column by column is a column that fell into neither
+list.
 
 `df.fillna(df.median())` computed on the full frame is a leak, computed on the
 train frame is code you have to remember to repeat at inference, and computed in
@@ -215,3 +225,61 @@ and applied identically to a million-row batch or to one row arriving over HTTP.
 
 > Impute with the simplest method you can defend, and always keep the indicator.
 > A model that is beaten by a better imputer will tell you so in cross-validation.
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   import numpy as np
+   from sklearn.impute import SimpleImputer
+
+   imp = SimpleImputer(strategy="median", add_indicator=True)
+   print(imp.fit_transform([[1.0], [np.nan], [3.0], [5.0]]).tolist())
+   # -> [[1.0, 0.0], [3.0, 1.0], [3.0, 0.0], [5.0, 0.0]]
+   ```
+
+   **Answer.** One column went in, two came out. The gap was filled with the
+   median of the observed values (3.0), and the second column records *which* row
+   was filled — the fact that the value was absent survives the imputation.
+
+2. Run this. You should get exactly the output shown — it is the complete
+   `ColumnTransformer`, both branches.
+
+   ```python
+   import numpy as np, pandas as pd
+   from sklearn.pipeline import Pipeline
+   from sklearn.compose import ColumnTransformer
+   from sklearn.impute import SimpleImputer
+   from sklearn.preprocessing import StandardScaler, OneHotEncoder
+
+   df = pd.DataFrame({"age":    [25, np.nan, 41, 60],
+                      "income": [30000.0, 42000.0, np.nan, 91000.0],
+                      "city":   ["paris", "lyon", np.nan, "paris"],
+                      "plan":   ["free", "pro", "pro", np.nan]})
+   NUM_COLS, CAT_COLS = ["age", "income"], ["city", "plan"]
+
+   num_pipe = Pipeline([("impute", SimpleImputer(strategy="median", add_indicator=True)),
+                        ("scale", StandardScaler())])
+   cat_pipe = Pipeline([("impute", SimpleImputer(strategy="constant", fill_value="MISSING")),
+                        ("encode", OneHotEncoder(handle_unknown="ignore"))])
+   pre = ColumnTransformer([("num", num_pipe, NUM_COLS),
+                            ("cat", cat_pipe, CAT_COLS)], remainder="drop")
+
+   print(pre.fit_transform(df).shape)          # -> (4, 10)
+   ```
+
+   **Answer.** Ten columns from four: `age`, `income`, their two missingness
+   indicators, and six one-hot columns — three levels each for `city` and `plan`,
+   because `"MISSING"` is a level of its own. If you cannot account for the shape
+   column by column, a column fell into neither list.
+
+3. Your rows are ordered in time and a sensor went silent for an afternoon. Why
+   is `ffill` acceptable and `bfill` never?
+
+   **Answer.** `ffill` carries the last observed value forward, so at time *t*
+   you only use information available at *t*. `bfill` copies the future into the
+   past — that is not an imputation, it is a leak, and it produces a beautiful
+   backtest.

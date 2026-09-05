@@ -15,7 +15,8 @@ skim past and the one that costs them. -->
 Two artefacts, one term:
 
 - an **ML-Arena submission** on one of three tracks, scored on a public
-  leaderboard against your cohort and against a published baseline
+  leaderboard against your cohort and against a published baseline — the three
+  baselines are numbers, and they are in the next lesson
 - the **repository** that produced it — installable, tested, and reproducible
   by someone who has never seen it
 
@@ -105,13 +106,26 @@ The first submission exists to prove the pipeline, not to score. Submit a
 baseline — a constant predictor, a random agent, a one-sentence prompt — and
 confirm it is scored.
 
+```bash
+uv pip install mlarena-sdk        # imports as `mlarena`; `mlarena` on PyPI is a different project
+```
+
 ```python
 import mlarena, os
 
 client = mlarena.connect(api_key=os.environ["MLARENA_API_KEY"])
-client.submit(competition_id=COMP_ID, files=["submission.csv"])
+client.submit(competition_id=COMP_ID, files=[...])
 print(client.status())
 ```
+
+**`files=` is track-specific and the platform validates the filename, not the
+contents.** A wrong name is rejected at upload and never reaches the scorer:
+
+| Track | `competition_id` | `files=` |
+|---|---|---|
+| Prediction | 172 | `["submission.csv"]` |
+| Agent | 169 | `["agent.py"]`, plus your weights file if you have one |
+| Generative | 171 | `["pitch.txt"]` — exactly one file, the name is fixed |
 
 `os.environ[...]`, not `os.getenv(..., "")`. A missing key should crash here,
 loudly, rather than send an unauthenticated request you spend an hour
@@ -199,3 +213,44 @@ it, pick one within a week, and start submitting.
 
 The most common failure of this project is not a bad model. It is a team that
 spent five weeks deciding.
+
+---
+
+## Check yourself
+
+1. The grader clones your repository, follows your `README.md`, and gets 0.78
+   where you submitted 0.81. What does the reproducibility rule cost you, and
+   what would have prevented it?
+
+   **Answer.** Zero on both axes — not a deduction, zero. It is prevented by
+   stating the seed, the pinned versions, the data snapshot, the command, and
+   **the noise band you documented**, so that a result inside that band still
+   counts as the same result.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import os
+   os.environ.pop("MLARENA_API_KEY", None)          # simulate the missing key
+
+   try:
+       key = os.environ["MLARENA_API_KEY"]
+   except KeyError as exc:
+       print("crashed:", exc)                        # -> crashed: 'MLARENA_API_KEY'
+
+   print(repr(os.getenv("MLARENA_API_KEY", "")))     # -> ''
+   ```
+
+   **Answer.** The first form crashes at the boundary, where the cause is
+   obvious. The second hands an empty string downstream and you debug an
+   unauthenticated request for an hour. It is the first line of the lesson's
+   engineering stance: crash at the boundary, no silent defaults for required
+   configuration.
+
+3. You picked the Generative track. What exactly do you pass to `files=`, and
+   what happens if you pass `["submission.csv"]` instead?
+
+   **Answer.** `files=["pitch.txt"]` — exactly one file, and #171 fixes the
+   name. The platform validates the filename, not the contents, so a wrong name
+   is rejected at upload and never reaches the scorer. You do not get a bad
+   score; you get no score.

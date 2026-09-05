@@ -124,3 +124,34 @@ credentials in a public repository's CI.
 
 Free for public repositories. Private repositories get a monthly allowance of
 runner minutes; a test suite of a few seconds will not come close to it.
+
+---
+
+## Check yourself
+
+1. Save the workflow above as `.github/workflows/tests.yml`, then run this. You
+   should get exactly the output shown.
+
+   ```bash
+   uv run --with pyyaml python -c "
+   import yaml
+   wf = yaml.safe_load(open('.github/workflows/tests.yml'))
+   print([s.get('uses') or s.get('run') for s in wf['jobs']['test']['steps']])
+   "
+   # -> ['actions/checkout@v4', 'astral-sh/setup-uv@v3', 'uv python install 3.12', 'uv sync', 'uv run pytest -v']
+   ```
+
+2. A red check on a pull request is visible but not binding. What turns it into a
+   merge gate, and why does this page say that matters?
+
+   **Answer.** Branch protection — *Settings → Branches*, require the check to
+   pass before merging. It is the mechanism that makes "the tests are the
+   contract" real rather than aspirational.
+
+3. Your workflow needs `MLARENA_API_KEY`. Where does it go, and what is the
+   caveat for a public repository?
+
+   **Answer.** Into *Settings → Secrets and variables → Actions*, referenced as
+   `${{ secrets.MLARENA_API_KEY }}` — never written in the YAML. Secrets are
+   masked in logs, but anything a workflow can read a fork's pull request may be
+   able to reach, so keep production credentials out of a public repository's CI.

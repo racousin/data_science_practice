@@ -237,3 +237,52 @@ enthusiastically exploits the places where its model is wrong.
 Rule: keep the planning horizon short relative to how much you trust the model.
 Model-free is the safer default; go model-based when real interaction is
 expensive, slow, or dangerous.
+
+---
+
+## Check yourself
+
+1. Policy iteration and value iteration both converge to $\pi^*$. What is the
+   single structural difference between them?
+
+   **Answer.** The inner loop. Policy iteration evaluates the current policy to
+   convergence before each greedy step; value iteration truncates that
+   evaluation to one sweep and folds the $\max$ into it, so no explicit policy
+   exists until the end.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import gymnasium as gym, numpy as np
+   env = gym.make("FrozenLake-v1", map_name="4x4", is_slippery=True)
+   P, nS, nA, gamma = env.unwrapped.P, 16, 4, 0.99
+   V = np.zeros(nS)
+   while True:
+       V2 = np.array([max(sum(p * (r + gamma * V[s2]) for p, s2, r, _ in P[s][a])
+                          for a in range(nA)) for s in range(nS)])
+       if np.abs(V2 - V).max() < 1e-10:
+           break
+       V = V2
+   print(round(float(V[0]), 3), round(float(V[14]), 3))   # -> 0.542 0.863
+   ```
+
+   **Answer.** $V_*(s_0) = 0.542$ is the *discounted* value of the start square,
+   not a success rate — the eventual $+1$ is multiplied by $\gamma^k$ for however
+   many steps the trip takes. The square beside the goal is worth 0.863 rather
+   than 1.0 for the same reason: only one slip in three carries you onto the goal
+   this step, so on average you wait, and waiting discounts.
+
+3. Why does the lesson insist on a threshold, `np.abs(V_new - V).max() < theta`,
+   rather than a fixed number of sweeps?
+
+   **Answer.** A fixed count silently returns an unconverged $V$, and the bug
+   does not surface as a bad value — it surfaces three steps later as a bad
+   policy, which is far harder to trace.
+
+4. Dynamic programming is unusable on any real problem. Name the two reasons the
+   lesson gives for learning it anyway.
+
+   **Answer.** It is the reference implementation — on a small MDP you can
+   compute $V_*$ exactly and check a learned agent against it — and it is the
+   shape of every model-free algorithm that follows, with the expectation
+   replaced by a sample.

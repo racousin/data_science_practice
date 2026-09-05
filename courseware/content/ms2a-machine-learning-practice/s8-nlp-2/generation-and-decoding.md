@@ -180,3 +180,48 @@ assert json.loads(out)["label"] in {"positive", "negative"}
 A test comparing generated text to a stored literal fails on a Tuesday for
 reasons you cannot reconstruct. Assert the schema, the range, the invariant —
 fail fast applied to a stochastic component.
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   import torch
+   logits = torch.tensor([2.0, 1.0, 0.0])
+   print(torch.softmax(logits, dim=-1))         # -> tensor([0.6652, 0.2447, 0.0900])
+   print(torch.softmax(logits / 0.5, dim=-1))   # -> tensor([0.8668, 0.1173, 0.0159])
+   ```
+
+   **Answer.** Temperature below 1 sharpens toward the mode; above 1 it flattens.
+   Nothing new entered the distribution — temperature only moves mass between
+   tokens the model had already scored, the tail included.
+
+2. Your prompt is 900 tokens and you call `generate(..., max_length=1000)`.
+   Later you shorten the prompt to 200 tokens and the same call suddenly writes
+   paragraphs. What is going on?
+
+   **Answer.** `max_length` counts the prompt, so the first call had a budget of
+   100 new tokens and the second has 800. Use `max_new_tokens`, which counts only
+   the completion — and set a wall-clock timeout as well, because an unbounded
+   loop against a paid API is a billing incident.
+
+3. You set `temperature=0` and pin the model name, and two identical requests
+   still return different text. Give two reasons, and say what your test should
+   assert instead.
+
+   **Answer.** Floating-point reductions on a GPU depend on batch size and kernel
+   choice, and your request shares a batch with other people's; provider-side
+   model versions also change under a stable name. Assert the schema, the range
+   or the invariant — `json.loads(out)["label"] in {"positive", "negative"}` —
+   never an exact string.
+
+4. A small model loops — *the best way to do this is to do this is to do this*.
+   You reach for `repetition_penalty=1.4` and it reads better. Why is that not a
+   fix?
+
+   **Answer.** Both penalties fight a symptom, and `no_repeat_ngram_size` will
+   break correct text — it cannot emit "New York" twice in one document. Needing
+   a penalty above about 1.2 means the model is too small or the prompt too weak;
+   fix that instead.

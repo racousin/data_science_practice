@@ -57,10 +57,14 @@ assert mask.ndim == 2 and mask.dtype == np.uint8
 assert set(np.unique(mask)) <= set(range(K))
 ```
 
-Two traps. Palette PNGs: opening one without `.convert("P")` awareness gives
-RGB triplets instead of class indices. And resizing — a mask must be resized
-with **nearest-neighbour** interpolation, since bilinear averages class 3 and
-class 7 into class 5, inventing labels that were never annotated.
+Two traps. Palette PNGs: `Image.open` already hands you mode `P`, and
+`np.array` on it gives class indices — so the assert above passes as written.
+The bug is the `.convert("RGB")` you copied out of your *image* loader into your
+*mask* loader: it turns class 3 into a colour triplet and the assert fires on
+`ndim`. Masks are never converted. And resizing — a mask must be resized with
+**nearest-neighbour** interpolation, since bilinear averages neighbouring class
+ids: an edge between class 3 and class 7 comes back containing 4 and 6, labels
+that were never annotated.
 
 ```python
 img  = TF.resize(img,  (512, 512))                       # bilinear, fine
@@ -269,3 +273,38 @@ model = smp.Unet("resnet34", encoder_weights="imagenet", classes=K)
 
 A pretrained encoder in a U-Net is the highest-value default here: one
 argument, and typically 5–10 mIoU points on a small dataset.
+
+---
+
+## Check yourself
+
+1. Your model reports 98% pixel accuracy and 0.49 mIoU on data whose foreground
+   is 2% of every image. What did it predict, and which loss do you reach for?
+
+   **Answer.** Background everywhere — which is exactly 98% of the pixels, and
+   the fastest way for per-pixel cross-entropy to fall. The mIoU gives it away:
+   0.98 on the background class, 0.00 on the foreground, averaging to 0.49 over
+   the two while accuracy still reads 98%. Switch to `CE + Dice`:
+   Dice scores overlap in the foreground, which a background-only prediction
+   cannot fake.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import numpy as np
+   from PIL import Image
+   mask = Image.fromarray(np.array([[3, 3, 7, 7]], dtype=np.uint8))
+   print(np.unique(np.array(mask.resize((8, 1), Image.BILINEAR))))   # -> [3 4 6 7]
+   print(np.unique(np.array(mask.resize((8, 1), Image.NEAREST))))    # -> [3 7]
+   ```
+
+   **Answer.** Classes 4 and 6 were never annotated — bilinear resizing of a
+   label map manufactured them at the boundary. Nearest-neighbour cannot invent
+   a class, which is why masks are resized with it and images are not.
+
+3. The deliverable is "how many cells are in this image". Why is semantic
+   segmentation the wrong tool however high its mIoU?
+
+   **Answer.** It labels pixels, not objects: two touching cells become one
+   region and cannot be counted. Counting needs instance segmentation — Mask
+   R-CNN or Mask2Former.

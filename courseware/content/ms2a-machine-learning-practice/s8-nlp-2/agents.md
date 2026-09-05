@@ -188,3 +188,44 @@ trajectories are not a prompt problem; they are an arithmetic problem.
 You already do this with your coding agent: it runs in a repository, its work
 is a diff, and the tests decide. That is the pattern, and it generalises to
 every agent you will build.
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   print(round(0.95 ** 20, 3))   # -> 0.358
+   print(round(0.99 ** 20, 3))   # -> 0.818
+   ```
+
+   **Answer.** At 95% per-step reliability a 20-step task succeeds about 36% of
+   the time; the same task at 99% succeeds 82%. Long autonomous trajectories are
+   an arithmetic problem before they are a prompt problem — which is the argument
+   for decomposition and for shorter loops.
+
+2. Your agent reports "done". Name the failure mode that description is
+   compatible with, and the one thing that rules it out.
+
+   **Answer.** Silent success: the agent claims completion, the side effect never
+   happened, and nothing raised. A claim of success is not evidence — assert the
+   file exists, the test passes, the row was written, in code you wrote.
+
+3. You add a reflection loop: the model critiques its own draft against a rubric
+   and revises. When does that help, and when does it turn into
+   self-congratulation?
+
+   **Answer.** It helps when the critique has external ground truth to lean on —
+   a failing test, a type error, a schema violation. With no judge but the same
+   model that wrote the text, the loop converges on approval. Ground the critic
+   or do not run it.
+
+4. A tool call arrives with `customer_id="'; DROP TABLE"`. Where does that get
+   caught, and why is a vague tool docstring a prompt bug rather than a code bug?
+
+   **Answer.** At the boundary: the model emits text, so every tool call is
+   untrusted input and a Pydantic model raises on anything malformed before your
+   code runs. The docstring and the type hints *are* the schema the model reads
+   when deciding, so a vague description produces a tool called at the wrong
+   time — that is the prompt, not the implementation.

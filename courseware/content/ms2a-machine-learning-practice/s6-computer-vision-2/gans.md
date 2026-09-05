@@ -134,9 +134,14 @@ Feed the condition to both networks — a class label, an embedding, a whole
 image.
 
 ```python
-z_y = torch.cat([z, embed(y)], dim=1)      # generator input
-d_in = torch.cat([x, embed(y).expand_as(x[:, :1])], dim=1)
+z_y = torch.cat([z, embed(y)], dim=1)                   # generator input, (B, dz + E)
+ymap = embed(y)[..., None, None].expand(-1, -1, x.size(2), x.size(3))   # (B, E, H, W)
+d_in = torch.cat([x, ymap], dim=1)                      # (B, 3 + E, H, W)
 ```
+
+The embedding has to be broadcast to a spatial map before it can be
+concatenated with an image: `expand_as(x[:, :1])` cannot turn `(B, E)` into
+`(B, 1, H, W)` and raises.
 
 If only $G$ sees the label, nothing forces it to be used: the generator ignores
 `y` and produces unconditional samples. $D$ must be able to reject a correct
@@ -186,3 +191,33 @@ text-to-image field. GANs remain the right tool when:
 
 Learn the adversarial loss as a component; as a standalone image generator,
 the next lesson has replaced it.
+
+---
+
+## Check yourself
+
+1. `d_loss` falls to nearly zero over a few hundred steps while `g_loss`
+   explodes. Who is winning, and what does this lesson tell you to change?
+
+   **Answer.** The discriminator. It is right often enough that almost no
+   gradient reaches the generator. Lower `lr_D`, add label smoothing or noisy
+   labels — and reach for spectral normalization plus TTUR before anything more
+   elaborate.
+
+2. The generator's loss is `bce(D(G(z)), ones)` and not `bce(D(G(z)), zeros)`
+   negated. Why does everyone use that form?
+
+   **Answer.** Minimising $\log(1 - D(G(z)))$ has a vanishing gradient exactly
+   when the generator is bad, which is when it needs the signal most. Maximising
+   $\log D(G(z))$ — the non-saturating form — keeps the gradient alive early.
+
+3. Run this. You should get exactly the output shown.
+
+   ```python
+   import torch, torch.nn as nn
+   embed = nn.Embedding(10, 32)
+   x = torch.randn(16, 3, 64, 64)
+   y = torch.randint(0, 10, (16,))
+   ymap = embed(y)[..., None, None].expand(-1, -1, x.size(2), x.size(3))
+   print(torch.cat([x, ymap], dim=1).shape)   # -> torch.Size([16, 35, 64, 64])
+   ```

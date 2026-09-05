@@ -240,3 +240,45 @@ convention, and every checkpoint on the Hub speaks it.
 > Read the licence and the model card before you build on a checkpoint. "Open
 > weights" is not "open source", and several popular licences forbid the use you
 > are about to make.
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   d, r = 4096, 8
+   print(2 * d * r)                              # -> 65536
+   print(d ** 2)                                 # -> 16777216
+   print(round(100 * 2 * d * r / d ** 2, 2))     # -> 0.39
+   ```
+
+   **Answer.** For one 4096x4096 projection at rank 8, LoRA trains 65,536
+   parameters instead of 16.7M — 0.39%. The frozen base still has to fit in
+   memory; what collapses is the gradient and optimiser state, which is where
+   full fine-tuning of a 7B model spends its 56 GB of Adam moments.
+
+2. You prompt a base checkpoint with "What is the capital of France?" and it
+   replies with three more questions. Is the model broken, and what do you do?
+
+   **Answer.** No — it is doing exactly what it was trained to do, continuing the
+   pattern, and in the corpus a question is most often followed by another
+   question. Use the `-Instruct` variant, and feed it through
+   `tokenizer.apply_chat_template`, never a hand-written prompt string.
+
+3. You add a LoRA adapter, training runs cleanly for an hour, and the loss barely
+   moves. Name the one line that would have caught it in the first ten seconds.
+
+   **Answer.** `model.print_trainable_parameters()`. A misspelled entry in
+   `target_modules` attaches no adapters at all: training proceeds, nothing
+   raises, and the trainable percentage is the tell. Assert on it rather than
+   reading it.
+
+4. Your model answers fluently but gets your product catalogue wrong. Which rung
+   of the adaptation ladder fixes that, and which one will not?
+
+   **Answer.** Retrieval fixes it — the problem is missing *knowledge*. Fine-
+   tuning will not: it fixes *behaviour* — tone, format, a task the model cannot
+   be talked into — and facts injected as weights land as weak statistical
+   pressure that must be retrained whenever they change.

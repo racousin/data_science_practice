@@ -59,3 +59,27 @@ or hunks to stage part of a file — the graphical equivalent of `git add -p`.
 
 Use it when you fixed a bug and reformatted something on the way: two commits,
 not one.
+
+---
+
+## Check yourself
+
+1. Two operations are named here as genuinely better in the GUI than in the
+   terminal. Which two, and what makes them different from the rest?
+
+   **Answer.** Reviewing a diff before committing — side-by-side, with per-line
+   staging — and resolving conflicts, where a three-pane view beats reading
+   `<<<<<<<` markers. Everything else is the same operations with buttons.
+
+2. What is the terminal equivalent of clicking individual lines in the Changes
+   tab, and when is it the right move?
+
+   **Answer.** `git add -p`. Use it when you fixed a bug and reformatted
+   something on the way: that is two commits, not one.
+
+3. The recommendation is "GUI for review, terminal for everything else", and the
+   stated reason is not purism. What is it?
+
+   **Answer.** The terminal is where your agent works, where CI runs, where a
+   server has no GUI, and where every error message you will search for was
+   written. A workflow you can only perform by clicking does not transfer.

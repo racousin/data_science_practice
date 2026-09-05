@@ -64,6 +64,54 @@ The leaderboard also shows **mean absolute error**, which is the useful number
 while you are debugging: a pass rate of 0 with an error of `0.4` is a rounding
 or tie-breaking detail, while an error of `40` means the syllable rule is wrong.
 
+## Baselines
+
+The ranked column is **Pass rate** — the fraction of the twenty texts answered
+within `1e-6` of the reference. It runs from 0% to 100% and **higher is
+better**.
+
+The starter you are handed scores **0.0%**. Its one method raises
+`NotImplementedError`, and the first raise ends the run:
+`0/20 texts within 1e-06 before the agent crashed`. Note that it also reports a
+mean absolute error of `0.0000` — not because it was accurate, but because no
+answer ever arrived to measure. When the run crashed, read the pass rate.
+
+The reference implementation of the spec above scores **100.0%, 20 of 20**, with
+a mean absolute error of `0.0000`. That is the bar, and because every check is
+an exact-tolerance comparison against a pinned spec it is also the ceiling. The
+ladder that teaches something is the one below it — each rung is the same
+implementation with exactly one pinned rule replaced by the reading a coding
+agent will hand you if you do not pin it:
+
+| implementation | Pass rate | texts | Mean abs error |
+|---|---|---|---|
+| the starter, untouched — the method raises | 0.0% | 0/20 | 0.0000 (no answers) |
+| every rule guessed: vowel *letters* not runs, no `y`, no silent `e`, no stripping, one sentence per `.!?` character | 20.0% | 4/20 | 43.6401 |
+| only the silent-`e` subtraction missing | 45.0% | 9/20 | 15.5054 |
+| only `y` not counted as a vowel | 50.0% | 10/20 | 5.4622 |
+| only the word stripping missing (`"end."` stays `end.`) | 70.0% | 14/20 | 6.1900 |
+| only the sentence rule wrong: one sentence per `.!?` character, so `...` is three | 95.0% | 19/20 | 0.0423 |
+| the reference | 100.0% | 20/20 | 0.0000 |
+
+Two things in that table are worth more than the numbers themselves.
+
+**The all-guessed row still passes four texts** — and two of them are
+`"The cat sat on the mat."` and `"The quick brown fox jumps over the lazy dog."`,
+exactly the two sentences you would reach for to hand-check your work. An
+implementation that deviates from the spec in five separate places sails
+through the test a human would write. That is the argument for pinning the
+specification before you prompt.
+
+**Pass rate and mean absolute error do not rank the same way.** Dropping `y`
+scores 50.0% at an error of `5.4622`; skipping the stripping scores 70.0% at a
+*larger* error of `6.1900`. The error is not a second leaderboard, it is a
+diagnostic of *which* rule broke: `0.0423` is one text and a punctuation-run
+detail, `5`–`15` is a syllable or word rule, `40` is several rules at once.
+
+**You have completed Lab 2 when you score 100% (20/20).** Anything below it
+means your implementation and the specification disagree somewhere, and the
+table above says roughly where to look.
+
 ## What is not graded here
 
 Empty input must raise `ValueError` — Lab 2 Part C, checked by your own tests.

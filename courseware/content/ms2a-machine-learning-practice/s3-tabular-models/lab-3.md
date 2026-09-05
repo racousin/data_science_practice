@@ -4,7 +4,8 @@ Take the pipeline you built in Lab 2, put a tuned gradient-boosting model behind
 it, and prove — with a protocol you can defend — that it beats a linear
 baseline.
 
-**Time:** 45 minutes. **Deliverable:** a merged PR in your project repository.
+**Time:** 45 minutes in the room, plus the five-minute Part F.
+**Deliverable:** a merged PR in your project repository.
 
 <!-- notes: 45 minutes, tight. Insist they write the protocol down in Part A
 before touching a model; the ones who skip it spend Part D discovering their CV
@@ -30,6 +31,14 @@ reports/lab3.md     <- the numbers, written down
 
 The Lab 2 preprocessing is imported, not copied. If it is not yet a
 `ColumnTransformer` inside a `Pipeline`, that is the first commit.
+
+```bash
+uv add lightgbm optuna       # Parts C and D
+uv add shap statsmodels      # used by this session's lessons, not by the lab
+```
+
+None of the four are in the 12h module's environment. Commit the lockfile
+change in the first commit of this branch.
 
 ---
 
@@ -85,6 +94,12 @@ Score it on the same folds, then add early stopping with the eval set taken
 **from inside the training fold** — never the outer validation fold, never the
 test set.
 
+`boosted.fit(X_a, y_a, model__eval_set=[(X_b, y_b)])` does **not** work: the
+eval set skips `prep` and LightGBM raises `ValueError: pandas dtypes must be
+int, float or bool` on your first string column. Use the
+`clone(preprocessor).fit(X_a)` pattern from *Gradient Boosting in Practice*,
+on a split carved out of `X_tr`.
+
 Record baseline mean ± std, untuned boosting mean ± std, and the gap. If the gap
 is smaller than the standard deviation, say so.
 
@@ -97,7 +112,7 @@ One study, one fixed budget, declared before it runs:
 ```python
 study = optuna.create_study(direction="maximize",
                             sampler=optuna.samplers.TPESampler(seed=SEED))
-study.optimize(objective, n_trials=40, timeout=600)
+study.optimize(objective, n_trials=25, timeout=None)
 ```
 
 Requirements:
@@ -105,8 +120,15 @@ Requirements:
 - the objective returns the cross-validated score over `splitter()`, nothing else
 - `learning_rate` and `reg_lambda` sampled with `log=True`
 - four to six parameters, no more; `n_estimators` is not one of them
+- cap `n_estimators` at 400 inside the objective, and lift the cap only for the
+  Part E refit. Measured on ~5,000 rows with `n_jobs=-1`: five folds of a
+  2,000-tree fit is **57 s per trial**, five folds at 400 trees is **14 s**.
+  Forty of the former do not fit in a twelve-minute part; twenty-five of the
+  latter take about six minutes
 - `n_trials` fixed in advance and stated in the report — not "until it stopped
-  improving"
+  improving". If a trial costs more than 20 s, halve `n_trials` rather than
+  adding a `timeout`: a timeout makes the budget you report different from the
+  budget that ran
 - the study persisted (`storage=`, or `study.trials_dataframe().to_csv(...)`)
 
 Report the best trial's score alongside the *median* of the top five. A large gap
@@ -120,9 +142,12 @@ Refit the winning configuration on all of `X_tr`, predict the held-out test set
 and compute the metric **once**.
 
 ```python
+from sklearn.base import clone
+from sklearn.metrics import get_scorer
+
 best = {f"model__{k}": v for k, v in study.best_params.items()}
 final = clone(boosted).set_params(**best).fit(X_tr, y_tr)
-test_score = scorer(final, X_te, y_te)     # called exactly once
+test_score = get_scorer(METRIC)(final, X_te, y_te)     # called exactly once
 ```
 
 `reports/lab3.md` states, in a table: baseline CV, boosted CV, tuned CV and the
@@ -131,6 +156,60 @@ far below the tuned CV means the search overfitted the folds — a finding.
 
 Report the top five features by **permutation importance on held-out data**, and
 one sentence on any that surprises you.
+
+---
+
+## Part F — Put it on the board (5 min)
+
+The session's competition is **2-Month Survival Prediction**, ML-Arena
+competition **172**: `alive` or `dead` at the two-month follow-up for
+critically ill hospitalised adults, scored on **accuracy**, higher is better.
+It ships its own table, so this is your Part A protocol applied to a second
+dataset — not a rerun of Parts B to E.
+
+Try the competition's **Datasets** tab first. It has been answering 404 for
+all three files; if it still does, read them straight from the workshop
+repository — byte for byte the same data:
+
+```python
+import pandas as pd
+BASE = ("https://raw.githubusercontent.com/racousin/"
+        "SCAI-4EUWorkshopAIinMedicineWorkshop/main/Hands-On-Session-1/data/")
+X      = pd.read_csv(BASE + "X_train.csv")   # 6,164 rows, patient_id + 28 features
+y      = pd.read_csv(BASE + "y_train.csv")   # patient_id,outcome
+X_test = pd.read_csv(BASE + "X_test.csv")    # 1,541 rows, no labels
+```
+
+Write `submission.csv` with two columns, `patient_id,outcome`, the outcome
+spelled `alive` or `dead`, one row per test id. Then submit once:
+
+```bash
+uv pip install mlarena-sdk        # the PyPI name; it imports as `mlarena`
+```
+
+```python
+import mlarena
+client = mlarena.connect(api_key="mlk_user_...")   # Profile -> API Keys
+client.submit(competition_id=172, files=["submission.csv"])
+print(client.leaderboard(172, top=5))
+```
+
+---
+
+## Part F — the ladder
+
+Predicting `alive` for every patient is the floor: about 59% of
+these patients survive, and the board's reference row `__benchmark__` scores
+**accuracy = 0.594**, 81st of 82. A logistic regression on a Lab-2-style
+pipeline scores **0.770 ± 0.006**, and LightGBM at 400 trees **0.770 ± 0.010** —
+five-fold CV on the 6,164 public training rows, seed 0. On this dataset untuned
+boosting *ties* the linear baseline, which is exactly the Part C outcome you
+were told to report honestly. The visible leaderboard is an earlier cohort:
+median **0.787**, best **0.811**. Higher is better.
+
+Your leaderboard accuracy and your own held-out accuracy should agree to within
+a fold standard deviation. If they do not, say so in the report — that
+disagreement is the finding.
 
 ---
 
@@ -200,3 +279,27 @@ metric.
 If your project takes the prediction track, this model is the submission you have
 to beat with everything you learn afterwards. Most of you will not beat it by
 much.
+
+---
+
+## Did you validate this session?
+
+- [ ] `uv sync && uv run pytest` is green on a fresh clone
+- [ ] `git log` shows `protocol.py` committed before any model file, and it has
+      not been edited since
+- [ ] `reports/lab3.md` names the splitter, the unit of generalisation that
+      forced it, and the metric
+- [ ] Baseline and boosted CV appear as mean ± std over the *same* five folds
+      from `protocol.splitter()`
+- [ ] The boosted fit used an eval set carved out of the training fold, and
+      `best_iteration_` is in the report
+- [ ] The study ran `n_trials` fixed in advance with no `timeout`, and its
+      trials are on disk (`storage=` or a committed CSV)
+- [ ] `reports/lab3.md` contains exactly one test-set number, and `git grep`
+      finds the scorer applied to `X_te` in exactly one place
+- [ ] My submission is on the leaderboard of 2-Month Survival Prediction (#172)
+- [ ] My score beats the baseline: **accuracy > 0.594** — a competent pipeline
+      lands near 0.79
+
+If the last two are not ticked you have not finished the lab, however good the
+code is.

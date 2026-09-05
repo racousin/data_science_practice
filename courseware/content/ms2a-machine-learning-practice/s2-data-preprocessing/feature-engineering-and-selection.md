@@ -73,9 +73,11 @@ df["hour_sin"] = np.sin(2 * np.pi * df["hour"] / 24)
 df["hour_cos"] = np.cos(2 * np.pi * df["hour"] / 24)
 ```
 
-Both are needed: the sine alone maps 06:00 and 18:00 to the same value. Do this
-for hour, day of week and month whenever the model is linear or a network. Trees
-can carve the discontinuity out with extra splits, so the gain there is smaller.
+Both are needed: the sine alone maps 03:00 and 09:00 to the same value (0.7071
+each), and the cosine alone maps 06:00 and 18:00 to the same value (0.0 each).
+Do this for hour, day of week and month whenever the model is linear or a
+network. Trees can carve the discontinuity out with extra splits, so the gain
+there is smaller.
 
 ---
 
@@ -250,3 +252,39 @@ Step 5 is the one to write on the wall. A feature that will not exist at
 inference — tomorrow's price, a field back-filled by an operator, an aggregate
 over the full dataset — makes a model that validates beautifully and predicts
 nothing.
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   import numpy as np
+
+   for h in (3, 9):
+       print(h, round(float(np.sin(2 * np.pi * h / 24)), 4),
+                round(float(np.cos(2 * np.pi * h / 24)), 4))
+   # -> 3 0.7071 0.7071
+   # -> 9 0.7071 -0.7071
+   ```
+
+   **Answer.** The sine alone cannot tell 03:00 from 09:00; the cosine can. That
+   is why cyclical encoding always ships both columns — either one on its own
+   folds two different hours onto the same value.
+
+2. A per-customer mean basket is one of the strongest tabular features there is.
+   Name the two distinct ways it leaks.
+
+   **Answer.** Computing the aggregate over train **and** test puts test rows
+   into a training feature. Aggregating the *target* per group puts the label
+   into the feature, exactly as target encoding does — it needs the same
+   out-of-fold treatment, or a strictly past-only window when the rows are
+   ordered in time.
+
+3. Name two situations in which PCA is the wrong tool, and say why.
+
+   **Answer.** When you need to know which columns matter — every component mixes
+   every input, so the explanation is gone. When the signal has low variance —
+   PCA discards low-variance directions first, and being unsupervised it has
+   never seen the target. (A third: when the structure is non-linear.)

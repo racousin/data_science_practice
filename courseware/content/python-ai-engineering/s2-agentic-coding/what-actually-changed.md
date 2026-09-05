@@ -83,3 +83,27 @@ The rest of this session is three techniques against exactly those three causes.
 
 Then a lab: extend the Session 1 package using an agent, with a pull request
 that a human would actually approve.
+
+---
+
+## Check yourself
+
+1. Chat models and agents both write code. Name the one capability the table
+   gives the agent and not chat, and say why it changes your job.
+
+   **Answer.** A feedback loop: the agent runs your tests, reads the failure and
+   tries again — chat never sees whether its answer worked. So your job moves
+   from transcribing to specifying and verifying.
+
+2. A classmate says "the agent will pick a good metric for my model". Which of
+   the three things this lesson says an agent does *not* buy you is that, and
+   what happens?
+
+   **Answer.** Judgement about what to build. The agent optimises the metric you
+   name; naming the wrong one is a Session 3 problem and the agent will not save
+   you from it.
+
+3. Almost every bad outcome traces to one of three causes. Name them.
+
+   **Answer.** Underspecified task, no verification, and too much at once — and
+   the rest of the session is three techniques against exactly those.

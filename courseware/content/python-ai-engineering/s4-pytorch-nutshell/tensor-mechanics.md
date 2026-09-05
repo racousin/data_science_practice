@@ -307,3 +307,37 @@ assert pred.shape == target.shape, f"{pred.shape} != {target.shape}"
 ```
 
 Fail fast: a wrong shape should stop the script, not quietly change your loss.
+
+---
+
+## Check yourself
+
+1. `x` has shape `(3, 4)`. What does `x.sum(dim=0)` return, and what is the
+   phrase this lesson gives you so you stop guessing?
+
+   **Answer.** Shape `(4,)`. `dim=k` means *the dimension that disappears* —
+   `dim=0` collapses the rows and leaves one number per column.
+
+2. Run this. The first line is the bug this lesson calls "broadcasting bites";
+   the second is the fix.
+
+   ```python
+   import torch
+   pred   = torch.randn(100, 1)
+   target = torch.randn(100)
+   print((pred - target).shape)             # -> torch.Size([100, 100])
+   print((pred.squeeze() - target).shape)   # -> torch.Size([100])
+   ```
+
+3. Why does this lesson tell you to reach for `reshape` rather than `view`?
+
+   **Answer.** `view` requires contiguous memory and fails on a non-contiguous
+   tensor; `reshape` copies when it has to, so it works either way. Use `view`
+   only when you have a reason.
+
+4. Your loss function raises an error that never mentions dtypes. Which two
+   dtypes should you check first?
+
+   **Answer.** Features must be `float32` and class labels must be `int64`. That
+   pairing is what loss functions expect, and a mismatch surfaces at the loss,
+   far from the line that caused it.

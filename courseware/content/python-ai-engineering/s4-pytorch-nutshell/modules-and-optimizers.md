@@ -17,6 +17,7 @@ y = xW^T + b
 $$
 
 ```python
+import torch
 import torch.nn as nn
 
 layer = nn.Linear(in_features=10, out_features=5)
@@ -263,3 +264,35 @@ model.eval()
 
 Save the `state_dict`, not the model object — pickling the object couples the
 file to your source layout, and it breaks the moment you rename a module.
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   import torch.nn as nn
+   layer = nn.Linear(in_features=10, out_features=5)
+   print(sum(p.numel() for p in layer.parameters()))   # -> 55
+   ```
+
+2. The `nn.Sequential` stack in this lesson ends with `nn.Linear(64, 10)` and no
+   activation. Why is adding an `nn.Softmax()` there wrong?
+
+   **Answer.** `nn.CrossEntropyLoss()` applies log-softmax internally and expects
+   raw logits. A softmax in front of it does not raise — it makes training
+   silently worse. The same holds for `nn.BCEWithLogitsLoss()`.
+
+3. Your loss is `nan` after a few steps. What does the diagnosis table say, and
+   what does this lesson tell you to change before touching the architecture?
+
+   **Answer.** The learning rate is far too high. Learning rate is *the*
+   hyperparameter: try `1e-2, 1e-3, 1e-4` and look at the curves before changing
+   anything else. The course default is Adam at `lr=1e-3`.
+
+4. You stored some layers in a plain Python list and they never train. Why?
+
+   **Answer.** Only a layer assigned to an attribute — `self.fc1 = nn.Linear(...)`
+   — is registered, so one inside a plain list never appears in
+   `model.parameters()` and the optimizer never sees it. Use `nn.ModuleList`.

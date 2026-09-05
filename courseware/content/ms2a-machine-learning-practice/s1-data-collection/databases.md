@@ -175,3 +175,48 @@ not.
 - parameters, never f-strings
 - assert the row count after every join
 - write the result to Parquet once, then work from that
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   import sqlite3, pandas as pd
+
+   con = sqlite3.connect(":memory:")
+   con.execute("CREATE TABLE orders (customer_id TEXT, amount REAL, created_at TEXT)")
+   con.executemany("INSERT INTO orders VALUES (?,?,?)", [
+       ("c1", 10.0, "2025-03-01"), ("c1", 20.0, "2025-04-01"),
+       ("c2", 45.0, "2025-05-01"), ("c3",  5.0, "2024-12-01")])
+
+   print(pd.read_sql("""
+       SELECT customer_id, COUNT(*) AS n_orders, SUM(amount) AS total
+       FROM orders WHERE created_at >= '2025-01-01'
+       GROUP BY customer_id
+   """, con).to_string(index=False))
+   ```
+
+   ```text
+   customer_id  n_orders  total
+            c1         2   30.0
+            c2         1   45.0
+   ```
+
+   **Answer.** Four order rows went in and two customer rows came out: the filter
+   and the aggregation both ran in the database. If your grain is "one customer",
+   that is already the dataframe you wanted.
+
+2. Why `os.environ["DATABASE_URL"]` and never
+   `os.getenv("DATABASE_URL", "postgresql://localhost/db")`?
+
+   **Answer.** The default silently connects you to an empty local database, and
+   you report that the table is missing. `os.environ[...]` raises `KeyError` at
+   the boundary instead.
+
+3. After a `JOIN` on `customers`, your order table has 12% more rows than before.
+   What happened, and which single line would have caught it?
+
+   **Answer.** `customers.id` is not unique, so the join multiplied rows.
+   `assert len(df) == n_orders_before_join`, after every join, every time.

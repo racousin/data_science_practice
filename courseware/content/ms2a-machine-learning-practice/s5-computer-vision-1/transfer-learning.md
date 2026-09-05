@@ -239,3 +239,39 @@ than a generic one.
 > fine-tuned number means nothing.
 
 That last line is the one the lab grades.
+
+---
+
+## Check yourself
+
+1. Backbone frozen with `requires_grad = False`, model left in `model.train()`,
+   and validation accuracy is far below training from the first epoch with no
+   other sign of overfitting. What is drifting, and what is the one-line fix?
+
+   **Answer.** BatchNorm's `running_mean` and `running_var`. They are buffers,
+   not parameters, so `requires_grad` never touched them and they keep updating
+   on every forward pass in training mode. Call `freeze_bn(model)` after every
+   `model.train()`.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import torch, torch.nn as nn
+   bn = nn.BatchNorm2d(3)
+   for p in bn.parameters():
+       p.requires_grad = False
+   before = bn.running_mean.clone()
+   bn(torch.randn(8, 3, 4, 4))                    # training mode, "frozen"
+   print(torch.equal(bn.running_mean, before))    # -> False
+   bn.eval()
+   after = bn.running_mean.clone()
+   bn(torch.randn(8, 3, 4, 4))
+   print(torch.equal(bn.running_mean, after))     # -> True
+   ```
+
+3. You have 120 photographs per class of a product catalogue. What does the
+   data table tell you to do — and what would you do instead with 40?
+
+   **Answer.** At 50–200 per class: freeze the backbone and train the head only.
+   Below 50: run the frozen backbone once, cache the feature vectors, and fit a
+   `LogisticRegression` on them.

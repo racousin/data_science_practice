@@ -287,3 +287,35 @@ model.train(data="data.yaml", epochs=50, imgsz=640)
 
 Default to fine-tuning a small pretrained one-stage model; reach for two-stage
 or transformer detectors when the mAP gap actually costs you something.
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   def iou_no_clamp(a, b):
+       x1, y1 = max(a[0], b[0]), max(a[1], b[1])
+       x2, y2 = min(a[2], b[2]), min(a[3], b[3])
+       inter = (x2 - x1) * (y2 - y1)              # the missing max(0, ...)
+       area = lambda z: (z[2] - z[0]) * (z[3] - z[1])
+       return inter / (area(a) + area(b) - inter)
+   print(iou_no_clamp([0, 0, 10, 10], [20, 20, 30, 30]))   # -> 1.0
+   ```
+
+   **Answer.** Two boxes that do not touch score a perfect 1.0, because both
+   widths come out negative and their product is positive. That is the whole
+   reason for the clamps, and the reason the two-line test on an identical and a
+   disjoint pair belongs in your suite.
+
+2. A model reports 55 mAP@0.5 and 32 mAP@[0.5:0.95]. What is the diagnosis?
+
+   **Answer.** It is finding the objects and boxing them loosely. The gap
+   between the two thresholds is a localization diagnostic, not a rounding
+   difference — and it is why the threshold is part of the metric's name.
+
+3. Why must NMS be run per class rather than once over all boxes?
+
+   **Answer.** Because suppression is by overlap alone: run globally, a
+   high-scoring dog box deletes the overlapping person box behind it.

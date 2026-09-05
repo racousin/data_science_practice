@@ -271,3 +271,43 @@ policy is exploitable.
 
 Both limitations have the same answer: stop learning values and learn the
 policy itself.
+
+---
+
+## Check yourself
+
+1. Name the three ingredients of the deadly triad, and say which one tabular
+   Q-learning is missing.
+
+   **Answer.** Function approximation, bootstrapping and off-policy training.
+   Tabular Q-learning bootstraps and is off-policy but uses no function
+   approximation, which is why it converges and naive deep Q-learning does not.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import torch
+   q = torch.tensor([[1.0, 3.0], [2.0, 0.5]])          # Q(s, ·) for two states
+   action = torch.tensor([[1], [0]])                    # the action actually taken
+   print(q.gather(1, action).squeeze(1))                # -> tensor([3., 2.])
+   ```
+
+   **Answer.** `gather` picks $Q(s, a)$ for the action that was taken, not the
+   best one. The `max` belongs in the *target*; using it on the prediction side
+   as well is a common way to train a network on its own optimism.
+
+3. Your DQN's loss looks healthy and the mean Q value climbs past any return the
+   environment can pay. What is that, and what does the lesson say to do about
+   it?
+
+   **Answer.** It is divergence, almost always the triad rather than a coding
+   bug. The fix is structural — experience replay plus a target network — not a
+   smaller learning rate. Logging the mean Q value is the earliest signal you
+   have.
+
+4. Why can DQN not drive a car with a steering angle in $[-1, 1]$?
+
+   **Answer.** Every target contains $\max_{a'} Q(s', a')$, which requires
+   enumerating the actions. On a continuous action the max is itself an
+   optimisation problem, solved at every training and inference step;
+   discretising works in one dimension and explodes combinatorially in six.

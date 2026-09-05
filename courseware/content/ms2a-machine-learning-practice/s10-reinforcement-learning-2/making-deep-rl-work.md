@@ -64,18 +64,24 @@ traceback from a subprocess is much less pleasant.
 
 ## Autoreset, and the trap in it
 
-Vector environments reset a finished sub-environment automatically, so the
-observation you receive after a termination belongs to the **next** episode.
+Vector environments reset a finished sub-environment automatically. In
+Gymnasium 1.x the terminating step still returns the **true final
+observation**; the reset observation arrives on the *next* step, where
+`terminated` and `truncated` are both False and the reward is 0. That extra
+transition is not a real transition — skip it when you write to the buffer.
 
 ```python
-real_next_obs[done] = infos["final_observation"][done]
+mask = ~prev_done                    # prev_done = done flags from the last step
+buffer.add(obs[mask], action[mask], reward[mask], next_obs[mask], terminated[mask])
+prev_done = terminated | truncated
 ```
 
-Bootstrapping the value of that observation is wrong for a genuine termination
-and right for a time-limit truncation — a CartPole episode cut at 500 steps had
-a real future, it was just not shown to you. Gymnasium separates `terminated`
-from `truncated` so you can tell them apart: cut the bootstrap on `terminated`,
-keep it on `truncated`. Backwards, and the agent learns to end episodes.
+Bootstrapping the value of the final observation is wrong for a genuine
+termination and right for a time-limit truncation — a CartPole episode cut at
+500 steps had a real future, it was just not shown to you. Gymnasium separates
+`terminated` from `truncated` so you can tell them apart: cut the bootstrap on
+`terminated`, keep it on `truncated`. Backwards, and the agent learns to end
+episodes.
 
 ---
 
@@ -86,7 +92,8 @@ LiDAR reading in metres next to an angular velocity in radians per second.
 
 ```python
 env = gym.wrappers.NormalizeObservation(env)
-env = gym.wrappers.ClipObservation(env, -10, 10)
+env = gym.wrappers.TransformObservation(
+    env, lambda o: np.clip(o, -10, 10), env.observation_space)
 ```
 
 The wrapper keeps a running mean and variance and standardises with them.
@@ -227,10 +234,18 @@ Climb it in order. Do not skip a rung because it "obviously" works.
 
 ```python
 from stable_baselines3 import PPO
+from stable_baselines3.common.env_util import make_vec_env
+
+envs = make_vec_env("CartPole-v1", n_envs=16, seed=0)
 model = PPO("MlpPolicy", envs, n_steps=1024, batch_size=256, seed=0)
 model.learn(total_timesteps=200_000)
 model.save("ppo_agent")
 ```
+
+Build the batch with SB3's own `make_vec_env`, not with `gym.make_vec`. SB3
+takes its own `VecEnv`, and handing it a Gymnasium `VectorEnv` raises
+`ValueError: The environment is of type ... not a Gymnasium environment` before
+a single step runs.
 
 SB3 is tested, benchmarked, and has the twenty undocumented details right —
 advantage normalisation, orthogonal init, the Adam epsilon, the autoreset
@@ -241,3 +256,50 @@ want a different network, which is a `policy_kwargs`.
 
 > Implement PPO once, from the paper, to understand it. Then use the library
 > for anything you intend to report.
+
+---
+
+## Check yourself
+
+1. Run this. You should get exactly the output shown.
+
+   ```python
+   import gymnasium as gym, numpy as np
+   envs = gym.make_vec("CartPole-v1", num_envs=1)
+   obs, _ = envs.reset(seed=0)
+   for t in range(20):
+       obs, r, term, trunc, _ = envs.step(np.array([0]))
+       if term[0] or trunc[0]:
+           print("terminating step:", t, r[0], term[0])   # -> terminating step: 10 1.0 True
+           obs, r, term, trunc, _ = envs.step(np.array([0]))
+           print("next step:", r[0], term[0], trunc[0])   # -> next step: 0.0 False False
+           break
+   ```
+
+   **Answer.** The terminating step carries the real final observation and a
+   real reward. The step after it is the autoreset: reward 0, both flags False.
+   Writing that one into the replay buffer teaches the agent that the state
+   after death is worth something.
+
+2. Your TD loss is falling steadily and the episode return is flat. Is the run
+   working?
+
+   **Answer.** No — and the loss cannot tell you. The TD loss measures
+   self-consistency, not performance. The only honest metric in RL is episode
+   return, evaluated on a separate environment with the deterministic policy.
+
+3. You trained with `NormalizeObservation` and your saved agent scores near
+   random at evaluation, though the checkpoint looks fine. What happened?
+
+   **Answer.** The wrapper's running mean and variance are learned parameters.
+   They must be saved with the weights and **frozen** at evaluation and
+   deployment; an agent evaluated under different normalisation statistics than
+   it trained with is being fed a different observation space.
+
+4. Your agent does not learn. What are the first three rungs of the debugging
+   ladder, in order?
+
+   **Answer.** (1) Does a random agent score what you expect — 100 episodes of
+   `action_space.sample()`, write the number down. (2) Does the reward arrive
+   where you think — print `(obs, action, reward)` for one episode and read it.
+   (3) Does your exact script learn CartPole. Hyperparameters are rung five.

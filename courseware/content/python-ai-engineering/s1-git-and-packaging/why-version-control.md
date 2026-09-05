@@ -87,3 +87,40 @@ By the end of Session 1 you will have a repository that contains:
 
 That repository is the starting point for Sessions 2, 3 and 4 — and the second
 half of your project grade is the quality of exactly this.
+
+---
+
+## Check yourself
+
+1. What does a single commit record, and which four properties fall out of that
+   one fact?
+
+   **Answer.** A commit records the full state of the project plus a pointer to
+   its parent — the repository is a directed graph of those snapshots. From that
+   alone you get history (every past state, recoverable exactly), attribution
+   (who changed what line, when), branching (isolated lines of work in one
+   directory) and distribution (every clone is a complete copy).
+
+2. Name the three places a file can be, and the command that puts it in each.
+   Then run this — the two `git status` lines show the first two places.
+
+   ```bash
+   rm -rf /tmp/vc-demo && mkdir /tmp/vc-demo && cd /tmp/vc-demo && git init -q
+   echo hello > a.txt
+   git status --short      # -> ?? a.txt   (working directory only: untracked)
+   git add a.txt
+   git status --short      # -> A  a.txt   (staged: now in the index)
+   ```
+
+   **Answer.** Working directory, filled by your editor; staging area (index),
+   filled by `git add`; repository (`.git`), filled by `git commit`. Everything
+   else in this session is commands that move files between those three.
+
+3. You fixed a bug and, on the way, renamed a variable in an unrelated file.
+   Why does the staging area let you ship that as two commits?
+
+   **Answer.** Because `git add` selects *part* of your work for the next
+   snapshot. You stage and commit the bug fix alone, then stage and commit the
+   rename — without undoing, stashing or copying anything. A good commit is one
+   change, explainable in one sentence; staging is the tool that makes your
+   commits look like your intentions rather than like your afternoon.

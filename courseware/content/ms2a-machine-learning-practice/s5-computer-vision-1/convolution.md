@@ -267,3 +267,28 @@ learned mean, so the convolution's bias is redundant.
 Print `x.shape` after every block the first time you build a network, then
 replace the prints with one assertion on the output shape that stays in the test
 suite forever.
+
+---
+
+## Check yourself
+
+1. A `Conv2d(3, 16, kernel_size=5, stride=2, padding=2)` reads a 64×64 input.
+   What is the output size, and how many parameters does the layer hold?
+
+   **Answer.** `(64 + 2*2 - 5) // 2 + 1 = 32`, so the output is
+   `(B, 16, 32, 32)`; and `16 * (3 * 5**2 + 1) = 1216` parameters.
+
+2. Run this. You should get exactly the output shown.
+
+   ```python
+   import torch, torch.nn as nn
+   conv = nn.Conv2d(3, 16, kernel_size=5, stride=2, padding=2)
+   print(conv(torch.randn(1, 3, 64, 64)).shape)      # -> torch.Size([1, 16, 32, 32])
+   print(sum(p.numel() for p in conv.parameters()))  # -> 1216
+   ```
+
+3. Two stacked 3×3 convolutions and one 5×5 convolution see the same 5×5 region.
+   Why does every architecture since VGG use the stack?
+
+   **Answer.** 18 weights per channel pair instead of 25, and one extra
+   nonlinearity between them. Strictly better on both axes.
