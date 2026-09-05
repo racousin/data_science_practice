@@ -23,7 +23,7 @@ Companion documents:
 | Name | MS2A - AI Engineering | MS2A - Machine Learning Practice |
 | Slug | `python-ai-engineering` | `ms2a-machine-learning-practice` |
 | Volume | 12h — 4 × 3h, one week | 30h — 10 × 3h, ten weeks |
-| Modules / lessons | 5 / 29 | 12 / 74 |
+| Modules / lessons | 5 / 30 | 12 / 74 |
 | Competitions attached | 4 (179-182) | 17 |
 | Dates | **2026-09-07 → 2026-09-11** | **2026-09-14 → 2026-11-27** |
 | Join code | `GR1WFC63` | `N1DX2QA4` |
@@ -39,6 +39,29 @@ PLACEHOLDER comment above them — delete it so the next reader does not re-open
 question. They are not cosmetic: `academic_courses/legacy.py:157-159` returns **410 on
 the enrol route once `end_date` has passed**, so an expired course cannot be joined at
 all.
+
+### 1b. Course 14 restructured and republished, 2026-09-05
+
+Session 2 was **Agentic Coding**. Its six lessons now sit at the end of
+`s1-git-and-packaging`, and competition **#180** went with them — Lab 2 is the lesson
+that submits to it. The freed slot is **Session 2 — Shell, Notebooks & Colab**
+(`s2-shell-notebooks-colab`, module #31), holding one *unpublished* `session-plan`
+lesson: the authoring brief for that build, not teaching material.
+
+Module slugs are immutable (`update_module` accepts title/summary/icon/visibility only),
+so a new identity meant a new module. Server module **#15** and its lessons **34-39**
+were deleted with `delete_module(15, force=True)` — the six lessons exist again as
+**131-136** under module #14. `publish_mlarena.py` never deletes, so that step was
+manual; a restructure of this shape always needs it, or the live course shows the same
+lessons twice. It also has to happen *before* `reorder_modules`, which rejects an id
+list that is not exactly the course's linked set — that is what failed the publish run.
+
+Verified live: 5 modules / 30 lessons in the order above, 12 lessons in session 1,
+no relative image paths left in any of the 30 bodies, all 12 image refs 200.
+
+Session 1 now authors **~5h against a 3h slot** (a 173-slide deck) — the sharpest form
+of open decision §5.3. Its bodies are unchanged and still read "this session is placed
+second" and "your Session 1 repository"; rewriting waits on the split.
 
 ---
 

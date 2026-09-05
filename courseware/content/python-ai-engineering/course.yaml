@@ -70,54 +70,70 @@ modules:
         file: s1-git-and-packaging/lab-1.md
         estimated_minutes: 60
         is_published: true
-    competitions:
-      - competition_id: 179
-        label: "textstats correctness"
-
-  # ---------------------------------------------------------------- session 2
-  - title: "Session 2 — Agentic Coding"
-    slug: s2-agentic-coding
-    icon: robot
-    visibility: unlisted
-    summary: >
-      Working with a coding agent as an engineer, not a spectator. Setup, the
-      core loop, context engineering, guardrails, and the failure modes you are
-      accountable for.
-    lessons:
+      # -- moved here from the former "Session 2 — Agentic Coding" module.
+      # Bodies are unchanged: they still say "Session 1's test suite" and
+      # "this session is placed second". Rewriting waits on the split below.
       - title: "What Actually Changed"
         slug: what-actually-changed
-        file: s2-agentic-coding/what-actually-changed.md
+        file: s1-git-and-packaging/what-actually-changed.md
         estimated_minutes: 20
         is_published: true
       - title: "Setup"
         slug: setup
-        file: s2-agentic-coding/setup.md
+        file: s1-git-and-packaging/setup.md
         estimated_minutes: 20
         is_published: true
       - title: "The Core Loop"
         slug: the-core-loop
-        file: s2-agentic-coding/the-core-loop.md
+        file: s1-git-and-packaging/the-core-loop.md
         estimated_minutes: 35
         is_published: true
       - title: "Context Engineering"
         slug: context-engineering
-        file: s2-agentic-coding/context-engineering.md
+        file: s1-git-and-packaging/context-engineering.md
         estimated_minutes: 30
         is_published: true
       - title: "Guardrails & Review"
         slug: guardrails-and-review
-        file: s2-agentic-coding/guardrails-and-review.md
+        file: s1-git-and-packaging/guardrails-and-review.md
         estimated_minutes: 30
         is_published: true
       - title: "Lab 2 — Agent-Driven Feature"
         slug: lab-2
         kind: exercise
-        file: s2-agentic-coding/lab-2.md
+        file: s1-git-and-packaging/lab-2.md
         estimated_minutes: 45
         is_published: true
     competitions:
+      - competition_id: 179
+        label: "textstats correctness"
+      # Follows Lab 2, which is the lesson that submits to it.
       - competition_id: 180
         label: "Flesch reading-ease"
+
+  # ---------------------------------------------------------------- session 2
+  #
+  # Was "Session 2 — Agentic Coding" (server module #15, slug
+  # s2-agentic-coding). Its six lessons moved to the end of session 1 and this
+  # slot is being rebuilt around the shell / notebook / Colab material. Module
+  # slugs are immutable server-side, so a new identity means a new module: #15
+  # and its six now-duplicated lessons have to be retired at publish time.
+  - title: "Session 2 — Shell, Notebooks & Colab"
+    slug: s2-shell-notebooks-colab
+    icon: terminal
+    visibility: unlisted
+    summary: >
+      The three environments the rest of the course runs in: a terminal, a local
+      notebook kernel, and a hosted Colab runtime with a GPU.
+    lessons:
+      - title: "Session Plan — Shell, Notebooks & Colab"
+        slug: session-plan
+        file: s2-shell-notebooks-colab/session-plan.md
+        estimated_minutes: 10
+        # Authoring brief, not teaching material — kept out of the student view.
+        is_published: false
+    # No competition. #180 went to session 1 with Lab 2; this session's own is
+    # specified in session-plan.md and not yet built.
 
   # ---------------------------------------------------------------- session 3
   - title: "Session 3 — Data Science in a Nutshell"

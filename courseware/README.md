@@ -36,7 +36,7 @@ courseware/
 │   │   ├── assets/                   # images referenced by the lessons
 │   │   ├── s1-git-and-packaging/     # one directory per module (= per session)
 │   │   │   └── *.md                  # one file per lesson
-│   │   ├── s2-agentic-coding/
+│   │   ├── s2-shell-notebooks-colab/
 │   │   ├── s3-data-science-nutshell/
 │   │   ├── s4-pytorch-nutshell/
 │   │   ├── reference/                # demoted, self-study material
@@ -153,7 +153,7 @@ uv run --with cairosvg python -c \
 
 ```bash
 make slides                              # all sessions
-make slides-one MODULE=s2-agentic-coding # one
+make slides-one MODULE=s2-shell-notebooks-colab # one
 make pdf                                 # slides + PDF (needs LibreOffice)
 ```
 
