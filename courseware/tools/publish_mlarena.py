@@ -429,7 +429,13 @@ def main() -> int:
                     client.link_module(course_id, module_id, position=position)
                 ordered_modules.append(module_id)
 
-        if len(ordered_modules) > 1:
+        # reorder_modules takes the course's complete module list — it is a
+        # reorder, not a partial move — so a --module run has nothing to say
+        # about order and must not try. The manifest's order is authoritative
+        # only when the whole manifest was synced.
+        if args.module:
+            syncer.log("skip", "reorder (only part of the course was synced)")
+        elif len(ordered_modules) > 1:
             client.reorder_modules(course_id, ordered_modules)
     except Exception as exc:
         checkpoint()
