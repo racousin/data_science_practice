@@ -1,8 +1,6 @@
 # Notebooks & Colab
 
-Sessions 2, 3 and 4 are notebook-shaped, and every challenge in the 30-hour
-module hands you a Colab link. Two ideas make both usable: the kernel, and the
-fact that Colab's machine is not yours.
+Sessions 2, 3 and 4 are notebook-shapedk. Two ideas make both usable: the kernel, and the fact that Colab's machine is not yours.
 
 <!-- notes: 25 minutes. The out-of-order demo is the lesson — do it live and let
 them watch the number be wrong. Everything else follows from the kernel model. -->

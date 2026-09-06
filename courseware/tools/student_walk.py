@@ -83,23 +83,41 @@ def cmd_dump(args) -> int:
     root.mkdir(parents=True, exist_ok=True)
     (root / "_course.json").write_text(json.dumps(data["course"], indent=2, default=str))
     index = []
+    stale: list[str] = []
     for m in data["modules"]:
         mslug = m["module"]["slug"]
         mdir = root / mslug
         mdir.mkdir(exist_ok=True)
         (mdir / "_module.json").write_text(json.dumps(
             {k: v for k, v in m.items() if k != "lessons"}, indent=2, default=str))
+        written = {"_module.json"}
         for les in m["lessons"]:
             name = les.get("slug", "unknown")
             if "error" in les:
                 (mdir / f"{name}.ERROR.txt").write_text(les["error"])
+                written.add(f"{name}.ERROR.txt")
                 index.append(f"{mslug}/{name}\tERROR\t{les['error']}")
                 continue
             body = les.get("body_md") or ""
             (mdir / f"{name}.md").write_text(body)
+            written.add(f"{name}.md")
             index.append(f"{mslug}/{name}\t{len(body)}\t{les.get('estimated_minutes')}min")
+
+        # A dump that keeps the lessons a restructure deleted is a dump of a
+        # course that does not exist — and it is read as evidence of what was
+        # delivered. Writing over the survivors is not enough; the ones that are
+        # gone have to go.
+        for path in sorted(mdir.iterdir()):
+            if path.is_file() and path.name not in written:
+                path.unlink()
+                stale.append(f"{mslug}/{path.name}")
+
     (root / "_index.tsv").write_text("\n".join(index) + "\n")
     print(f"dumped {len(data['modules'])} modules -> {root}")
+    if stale:
+        print(f"removed {len(stale)} file(s) for lessons no longer in the course:")
+        for name in stale:
+            print(f"  {name}")
     return 0
 
 

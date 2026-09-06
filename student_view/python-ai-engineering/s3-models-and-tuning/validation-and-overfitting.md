@@ -21,7 +21,11 @@ Symptom: training error keeps falling, validation error starts rising.
 | Good fit | 0.15 | 0.18 |
 | Overfit | 0.01 | 0.42 |
 
-It is not an accident you can avoid by being careful. It is available on demand:
+---
+
+## It is available on demand
+
+Overfitting is not an accident you can avoid by being careful:
 
 > **Theorem.** For $n$ data points with distinct $x$ values, a polynomial of
 > degree $d = n - 1$ fits all of them exactly.
@@ -91,6 +95,10 @@ X_val, X_test, y_val, y_test = train_test_split(
     X_temp, y_temp, test_size=0.5, random_state=42, stratify=y_temp
 )
 ```
+
+---
+
+## What each set is for
 
 | Set | Share | Used for |
 |---|---|---|

@@ -65,6 +65,7 @@ courseware/
 │   ├── figures/                      # committed generators for authored figures
 │   ├── mathrender.py                 # LaTeX -> Unicode / PNG
 │   ├── publish_mlarena.py            # Markdown -> ML-Arena (idempotent)
+│   ├── pull_mlarena.py               # ML-Arena -> Markdown (bodies only)
 │   ├── build_competitions.py         # competition packages -> ML-Arena
 │   └── harvest_website.py            # one-off: React JSX -> Markdown
 └── build/                            # generated, gitignored
@@ -272,7 +273,8 @@ Use it only when the server's media route is unavailable.
 `publish_mlarena.py` calls `update_lesson(body_md=…)`, which **replaces** the
 server's body with the file's. An edit made in the ML-Arena course editor is
 therefore destroyed by the next `make publish`, silently, and it is not
-recoverable from this repo. Nothing syncs back.
+recoverable from this repo once that has happened. `make pull` is the way to
+bring it here first; `make check-sync` is the way to find out that you need to.
 
 `make check-sync` is the guard. It is read-only — it never writes to ML-Arena
 and never touches your files — and it exits non-zero, so it gates a publish.
@@ -298,6 +300,43 @@ the deck build works, and the publisher rewrites them to served URLs on the way
 up — so both sides are reduced to the image's basename before comparing, and
 trailing whitespace is ignored. Everything else is literal, `<!-- notes: -->`
 comments included.
+
+### Pulling a website edit back
+
+`make pull` is the other direction, and the answer to what `check-sync` finds.
+It rewrites the source markdown from the live bodies, so the edit made on the
+website survives the next publish instead of being overwritten by it.
+
+```bash
+export MLARENA_API_KEY=mlk_teacher_...
+make pull-dry MODULE=s1-git-and-packaging          # what it would rewrite
+make pull-dry MODULE=s1-git-and-packaging DIFF=1   # ... line by line
+make pull MODULE=s1-git-and-packaging              # write the files
+```
+
+It pulls **lesson bodies only.** A body is a file the tool owns end to end, so
+overwriting it is safe and `git diff` shows exactly what arrived. Everything
+else — a title, a lesson deleted on the website, a reordering — lives in
+`course.yaml`, whose comments carry the reasoning behind every structural
+decision in the course and would not survive a YAML round-trip. So structural
+drift is **reported as the edits to make by hand** and the tool touches nothing:
+
+```
+3 change(s) this tool does not make — edit course.yaml by hand:
+  * reorder s1-git-and-packaging — put the lessons in the server's order: …
+  * delete s1-git-and-packaging/session-map — deleted on the website; …
+  * s1-git-and-packaging/accounts-and-tools (#174) — set title: 'X' -> 'Y'
+```
+
+Served image URLs are rewritten back to repo-relative paths on the way down,
+matched by basename against the paths the local body already used and then
+against `assets/<module>/<lesson>/`. Genuinely external images — a CI badge —
+are left alone, because only the media route is matched. An uploaded image with
+no local file behind it is reported rather than guessed at: `make slides` runs
+with `--strict-assets` and a wrong path would fail it.
+
+After a pull, rebuild what reads those files: `make check-slides`, then
+`make slides`.
 
 The four verdicts:
 

@@ -14,7 +14,8 @@ SDK_PATH    ?= ../../../mlarena-sdk
 PY_SLIDES   := uv run --quiet --with python-pptx --with pyyaml --with matplotlib python
 PY_PUBLISH  := uv run --quiet --with pyyaml --with requests python
 
-.PHONY: help slides check-slides check-sync pdf publish publish-dry harvest clean \
+.PHONY: help slides check-slides check-sync pdf publish publish-dry pull pull-dry \
+        harvest clean \
         competitions competitions-status competitions-publish competitions-attach
 
 help:
@@ -22,6 +23,8 @@ help:
 	@echo "make check-slides — list slides whose content overflows the slide"
 	@echo "make pdf          — slides, then convert to PDF (needs LibreOffice)"
 	@echo "make check-sync   — has anyone edited a lesson on the website?"
+	@echo "make pull-dry     — show which lesson bodies the website has changed"
+	@echo "make pull         — rewrite the Markdown from the live bodies"
 	@echo "make publish-dry  — show what would change on $(BASE_URL)"
 	@echo "make publish      — sync content to ML-Arena (needs MLARENA_API_KEY)"
 	@echo "                    add NO_MEDIA=1 to publish text without images"
@@ -73,6 +76,22 @@ check-sync:
 		echo "MLARENA_API_KEY is not set (needs a mlk_teacher_... key)."; exit 1; }
 	$(PY_PUBLISH) tools/check_sync.py $(CONTENT) --base-url $(BASE_URL) \
 		$(if $(MODULE),--module $(MODULE)) $(if $(QUICK),--quick) $(if $(DIFF),--diff)
+
+# The other direction, and the answer to what check-sync finds: rewrite the
+# Markdown from the live bodies, so the website edit survives the next publish.
+# Bodies only — a title, a deleted lesson or a reorder is reported as an edit to
+# make by hand in course.yaml, whose comments would not survive a YAML rewrite.
+pull-dry:
+	@test -n "$$MLARENA_API_KEY" || { \
+		echo "MLARENA_API_KEY is not set (needs a mlk_teacher_... key)."; exit 1; }
+	$(PY_PUBLISH) tools/pull_mlarena.py $(CONTENT) --base-url $(BASE_URL) \
+		$(if $(MODULE),--module $(MODULE)) --dry-run $(if $(DIFF),--diff)
+
+pull:
+	@test -n "$$MLARENA_API_KEY" || { \
+		echo "MLARENA_API_KEY is not set (needs a mlk_teacher_... key)."; exit 1; }
+	$(PY_PUBLISH) tools/pull_mlarena.py $(CONTENT) --base-url $(BASE_URL) \
+		$(if $(MODULE),--module $(MODULE)) $(if $(DIFF),--diff)
 
 publish-dry:
 	$(PY_PUBLISH) tools/publish_mlarena.py $(CONTENT) \

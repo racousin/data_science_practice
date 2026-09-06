@@ -95,7 +95,7 @@ told you.
 
 ## Part D — Submit to ML-Arena (10 min)
 
-**PAIE S4 — MNIST Warm-up** (competition `182`) takes a single
+**AIE S4 — MNIST Warm-up** (competition `182`) takes a single
 `submission.csv` of predictions on 5,000 held-out digits. Download `X_test.csv`
 from the competition's data tab; the columns `p0 … p783` are the image
 flattened row-major as `uint8` 0-255, i.e. what `datasets.MNIST` gives you
@@ -112,6 +112,10 @@ import pandas as pd
 pd.DataFrame({"id": test_ids, "label": predictions}).to_csv("submission.csv", index=False)
 ```
 
+---
+
+## Part D — send it
+
 ```bash
 uv pip install mlarena-sdk
 ```
@@ -127,7 +131,11 @@ client.submit(competition_id=182, files=["submission.csv"])
 print(client.leaderboard(182).head())
 ```
 
-**The numbers.** Ranking is on **accuracy — higher is better**. Predicting the
+---
+
+## Part D — the numbers
+
+Ranking is on **accuracy — higher is better**. Predicting the
 single most common digit for all 5,000 images scores **0.108**. The
 multinomial logistic regression on raw pixels that ships as the competition's
 benchmark scores **0.913** — that is the bar. The 784-128-10 MLP from Part C,
@@ -216,7 +224,7 @@ the project grade is this repository staying that way for ten more weeks.
 - [ ] `git status` is clean, and neither `data/` nor any `*.pt` is tracked
 - [ ] My PR description contains all five points from Part E, including the one
       thing that did not help
-- [ ] My submission is on the leaderboard of PAIE S4 — MNIST Warm-up (#182)
+- [ ] My submission is on the leaderboard of AIE S4 — MNIST Warm-up (#182)
 - [ ] My score beats the baseline: **accuracy ≥ 0.913**
 
 If the last two are not ticked you have not finished the lab, however good the

@@ -15,7 +15,18 @@ history slide — the last section is the one the rest of the session builds on.
 They nest: every deep learning system is machine learning, every machine
 learning system is AI, and most of what is *called* AI in 2026 is deep learning.
 
+---
+
+## Three nested sets, not three rivals
+
 ![AI contains ML contains DL](/api/academic_courses/assets/lessons/145/ai-ml-dl-venn.png)
+
+Each ring is strictly inside the one around it. "AI" is the widest word and the
+least informative one; say which ring you mean.
+
+---
+
+## Where you already meet it
 
 ![Applications of AI](/api/academic_courses/assets/lessons/145/ai-applications.png)
 
@@ -26,6 +37,10 @@ learning system is AI, and most of what is *called* AI in 2026 is deep learning.
 ![Data science as an intersection](/api/academic_courses/assets/lessons/145/data-science-venn.png)
 
 You have most of the first column already. It is worth naming which parts.
+
+---
+
+## The three columns, concretely
 
 | | What is actually used |
 |---|---|
@@ -128,6 +143,10 @@ So, for the rest of this course:
 
 **Use data to learn the rule, and judge the rule by what it does on data you
 have never seen.**
+
+---
+
+## On data you have never seen
 
 ![Predicting the future from historical data](/api/academic_courses/assets/lessons/145/temperature-extrapolation.png)
 

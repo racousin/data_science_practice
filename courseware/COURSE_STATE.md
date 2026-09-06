@@ -1,5 +1,6 @@
 # Course state — audited 2026-09-02, corrections applied and published 2026-09-03,
-# Session 1 rebuilt 2026-09-06, then consolidated 2026-09-06 (§1d)
+# Session 1 rebuilt 2026-09-06, consolidated 2026-09-06 (§1d), and the website's
+# own trim of it pulled back into the repo 2026-09-06 (§1f)
 
 What the two ML-Arena courses actually are today, what a student hits when they try to
 follow them, and what to build next. Produced by walking both courses end to end with a
@@ -24,7 +25,7 @@ Companion documents:
 | Name | MS2A - AI Engineering | MS2A - Machine Learning Practice |
 | Slug | `python-ai-engineering` | `ms2a-machine-learning-practice` |
 | Volume | 12h — 4 × 3h, one week | 30h — 10 × 3h, ten weeks |
-| Modules / lessons | 4 / 47 | 12 / 74 |
+| Modules / lessons | 4 / 45 | 12 / 74 |
 | Competitions attached | 9 (65, 181-188) | 17 |
 | Dates | **2026-09-07 → 2026-09-11** | **2026-09-14 → 2026-11-27** |
 | Join code | `GR1WFC63` | `N1DX2QA4` |
@@ -324,6 +325,130 @@ the competitions.
 
 Session 1's bodies are unchanged throughout all of this. They still read "this session is
 placed second" and "your Session 1 repository"; rewriting waits on the split.
+
+### 1f. The website trimmed Session 1, and it was pulled back, 2026-09-06
+
+Somebody cut the module down in the ML-Arena course editor between 18:08 and
+18:28, an hour after the §1d publish at 17:19. `make check-sync` found it, and it
+is the first drift on this course that was **kept** rather than overwritten:
+`make pull MODULE=s1-git-and-packaging` rewrote the five markdown files from the
+live bodies, so the repo now says what the website says.
+
+| lesson | server id | what the website did |
+|---|---|---|
+| `session-map` | 173 | **deleted outright** — the module opens on Accounts & Setup |
+| `accounts-and-tools` | 174 | retitled *Accounts & Setup*; cut the noreply-email paragraph and the two VS Code settings |
+| `the-shell` | 175 | cut the `# H1` + intro + speaker notes, the retyping aside, and the closing exit-code drill |
+| `git-essentials` | 29 | cut the `# H1` + intro + speaker notes, the `--show-origin` note and the whole `git reflog` block |
+| `branching-and-collaboration` | 30 | **cut 166 lines** — the entire review half |
+| `python-environments` | 31 | cut *What never goes in Git* and the closing checklist, then **rewrote** (see below) |
+
+The module is **15 lessons, 550 published minutes** (was 16 / 560). The deck
+rebuilt at **257 slides**, down from 280, with `make check-slides` still
+reporting 0 overflowing slides.
+
+**The editing was still going on while this was being written.** A second
+`check-sync`, twenty minutes after the first pull, found `python-environments`
+changed again — this time +77/−55 and *not* a trim: `uv.lock` added to the
+project tree with "what you actually ran (generated)" against pyproject's "what
+the project needs (you write this)", a paragraph explaining that `venv` manages
+the environment but not the declaration or the lock, and two forward references
+to Session 4 reworded out. A second `make pull` took it. Anyone publishing from
+this repo should run `make check-sync` immediately before `make publish`, not
+from memory of an earlier run — the window here was minutes.
+
+The big one is `branching-and-collaboration`. What went is everything §1d had
+just merged *into* it — how to write a reviewable pull request, size, the four
+review questions, comment style, suggested changes, draft PRs, linked issues,
+branch protection, forks, and the pre-review checklist. What survives is
+branching, merging, remotes and the three merge buttons. **Lab 2 is still
+"Pull Request & Review"**, so that lab now asks for a skill the session no longer
+teaches. That is the one thing to settle before the module is taught.
+
+Two smaller consequences, neither yet acted on:
+
+- `the-shell` and `git-essentials` now open on an `##`, having lost their `#`
+  heading, their opening paragraph and their *opening* `<!-- notes: -->` block —
+  the one carrying the timing and how to pitch the lesson. Their later notes
+  blocks survive (1 and 2 respectively). Every other lesson in the module still
+  has all three. The deck is unaffected — its section slide comes from the
+  manifest title, not the body — but the student page now starts mid-lesson.
+- `accounts-and-tools` is titled *Accounts & Setup* while its body H1 still reads
+  `# Accounts & Toolchain`. §1e records that the H1 had been changed to match on
+  the website and that the 09-06 publish overwrote it; only the title has been
+  redone since.
+
+`session-map`'s two figures are still drawn by `session_map()` in
+`tools/figures/s1_git_and_packaging.py`, which now has no lesson to write into.
+The function was left in place — the lesson is one `git revert` away — but
+re-running the figure script recreates an orphan `assets/.../session-map/`.
+
+**`tools/pull_mlarena.py` was written for this** and is the counterpart to
+`check_sync.py`: same normalisation, opposite direction. It pulls lesson bodies
+only, rewriting served image URLs back to repo-relative paths, and *reports* —
+never writes — anything that would mean editing `course.yaml`, whose comments are
+the record of why the course is shaped the way it is. The three structural
+changes above (delete the lesson, retitle, reorder) were applied by hand from
+that report. See `README.md` → *Pulling a website edit back*.
+
+Verified after the pull: `make check-sync MODULE=s1-git-and-packaging` reports
+**0 differences**, `make check-slides` 0 overflowing slides, and
+`make slides-one` builds the 257-slide deck with `--strict-assets`.
+`student_walk.py check` reports what it did before the trim and nothing new —
+42 `speaker-notes-in-body` and the test student's non-enrolment — so no image
+broke and no body emptied.
+
+`../student_view/python-ai-engineering` was re-dumped, and **`student_walk.py
+dump` was fixed while doing it**: it only ever wrote files, so the dump still
+held nine lessons the course had deleted — `why-version-control`,
+`pull-requests-and-review`, `github-desktop` and the five agentic lessons from
+the §1d consolidation, plus `session-map` from this one. A dump read as evidence
+of what was delivered cannot carry a course that no longer exists, so it now
+removes any file in a module directory the walk did not write, and says which.
+
+**Two other lessons are still drifted and were left alone**, being outside the
+module asked for: `s3-models-and-tuning/lab-3` (#165) and
+`s4-pytorch-nutshell/lab-4` (#50), each +2/-2 lines live vs repo. Pull or
+overwrite them before the next full-course publish.
+
+**Second pull, later the same day.** The trimming had not stopped. A re-run of
+`check-sync` found four more changes and they were pulled the same way:
+
+| lesson | server id | what the website did |
+|---|---|---|
+| `ide-syntax-linting` | 140 | **deleted outright** — the module's only `# extension` lesson |
+| `github-actions` | 139 | **cut 122 lines** — the linter step, the badge, caching, continuous delivery, what else CI is for, cost, and the whole "when it is red and you cannot see why" section |
+| `packaging-and-tests` | 32 | cut *Coverage — and its limit* |
+| `notebooks-and-colab` | 177 | reworded the opening; see below |
+
+The module is now **14 lessons, 520 published minutes**, and the deck is **235
+slides** (from 280 before any of this), still 0 overflowing.
+`make check-sync MODULE=s1-git-and-packaging` reports 0 differences.
+
+`github-actions` is the same shape of cut as `branching-and-collaboration`: a
+lesson §1c had *promoted* from reference to taught, reduced back to roughly the
+reference it was. What survives is the first workflow file, the matrix, and
+secrets. **Lab 1 still requires a green CI run**, and the badge it asks for is
+now explained nowhere in the course.
+
+Two things arrived with this pull that are worth fixing on the website rather
+than here, since the repo is downstream of it now:
+
+- `notebooks-and-colab`'s opening reads **"Sessions 2, 3 and 4 are
+  notebook-shapedk."** — a typo, and the clause it replaced ("every challenge in
+  the 30-hour module hands you a Colab link") is gone with it.
+- `notebooks-and-colab` line 92 still says "Or use the pre-commit hook from
+  *Code Quality*", which after the deletion above names a lesson that no longer
+  exists.
+
+`.mlarena-state.json` lost its `session-map` (173) and `ide-syntax-linting` (140)
+keys: both ids now 404, and a lockfile that maps a slug to a dead lesson is worse
+than one that does not know it. The stale `s3-data-science-nutshell/*` block
+predates all of this and was left alone.
+
+`ide-syntax-linting`'s figure is in the same position as `session-map`'s —
+`tools/figures/s1_git_and_packaging.py` still draws `quality-gates.png` with
+nowhere to put it.
 
 ---
 

@@ -64,7 +64,11 @@ where its argument crosses 0. So **the decision boundary is the hyperplane**
 $\theta^\top x = 0$: logistic regression is a linear classifier, and the sigmoid
 only decides how confidence varies as you move away from that hyperplane.
 
-Equivalently, the model is linear in the log-odds:
+---
+
+## Read $\theta$ in log-odds
+
+The model is linear in the log-odds:
 
 $$
 \log \frac{P(y = 1 \mid x)}{P(y = 0 \mid x)} = \theta^\top x
@@ -88,6 +92,10 @@ gradient carries a factor $\sigma'(z)$, which is near zero exactly when the
 model is confidently wrong: the points you most need to fix produce almost no
 gradient.
 
+---
+
+## Cross-entropy fixes both
+
 Cross-entropy fixes both. It is convex in $\theta$ here, and its gradient is
 
 $$
@@ -105,6 +113,10 @@ $$
 There is **no closed form** for this $\arg\min$. Logistic regression is the first
 model in the course that has to be fitted iteratively — but the problem is
 convex, so gradient descent finds the global optimum.
+
+---
+
+## Fitted by descent
 
 ![Gradient descent trajectory for a classifier](/api/academic_courses/assets/lessons/151/gd-trajectory-classification.gif)
 

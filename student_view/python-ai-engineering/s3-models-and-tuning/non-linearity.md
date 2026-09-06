@@ -37,7 +37,18 @@ $$
 \min_\theta \; -\sum_{i=1}^{n} \big[ y_i \log(\hat{p}_i) + (1 - y_i)\log(1 - \hat{p}_i) \big]
 $$
 
+---
+
+## The same hyperplane, twice
+
 ![Linear versus logistic regression](/api/academic_courses/assets/lessons/155/linear-vs-logistic.png)
+
+Left, the hyperplane *is* the prediction. Right, it is squashed into a
+probability and then thresholded.
+
+---
+
+## What the threshold draws
 
 ![A linear decision boundary](/api/academic_courses/assets/lessons/155/linear-decision-boundary.png)
 
@@ -49,12 +60,18 @@ The boundary is the line $\theta^T x = 0$. Everything on one side is class 1.
 
 ![Non-linear datasets](/api/academic_courses/assets/lessons/155/non-linear-datasets.png)
 
+Linear and logistic regression cannot cover any of these. No straight line
+separates a circle from the ring around it.
+
+---
+
+## Lift it, and a plane will do
+
 ![Concentric circles are not linearly separable](/api/academic_courses/assets/lessons/155/circles-lifted-3d.png)
 
-Linear and logistic regression cannot cover these cases. There is no line that
-separates a circle from the ring around it — but there is a *plane* that does,
-once you add a third dimension. That observation is the whole idea behind this
-lesson and behind the kernel trick later in the session.
+There is no such line — but there is a *plane*, once you add a third dimension.
+That observation is the whole idea behind this lesson and behind the kernel
+trick later in the session.
 
 ---
 
@@ -73,6 +90,10 @@ $$
 $$
 \min_\theta \|y - \Phi\theta\|^2 \;\Rightarrow\; \hat{\theta} = (\Phi^T \Phi)^{-1} \Phi^T y
 $$
+
+---
+
+## Non-linear in $x$, linear in $\theta$
 
 ![Polynomials of increasing degree](/api/academic_courses/assets/lessons/155/polynomial-degrees.png)
 

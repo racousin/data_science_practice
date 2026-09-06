@@ -152,6 +152,10 @@ $$
 F'(x) = f'\big(g(x)\big) \cdot g'(x)
 $$
 
+---
+
+## Two passes, one gradient
+
 ![Forward and backward pass](/api/academic_courses/assets/lessons/163/forward-backward-pass.png)
 
 1. **Forward pass** — for each layer $k$, compute the pre-activation and
@@ -172,6 +176,10 @@ trick, and Session 4 shows PyTorch doing it for you with `loss.backward()`.
 The circles dataset that defeated logistic regression, and the XOR dataset that
 defeats every linear model, are both solved — with no kernel and no hand-built
 features.
+
+---
+
+## Features, learned instead of designed
 
 ![Feature extraction, learned instead of designed](/api/academic_courses/assets/lessons/163/ml-vs-deep-learning.png)
 

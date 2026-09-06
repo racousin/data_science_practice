@@ -1,11 +1,81 @@
-# Git Essentials
+## The problem, concretely
 
-The eight commands that cover 95% of daily use, and the four that get you out of
-trouble.
+Every project you hand in this year lives in a Git repository. Not because the
+syllabus says so — because the alternative does not survive contact with a
+second person, a second machine, or a bad afternoon:
 
-<!-- notes: 40 minutes. Students type along. Install and authentication were
-done in *Accounts & Toolchain* — do not repeat them here. Do not lecture past
-`git log`; the undo section is where they actually need you. -->
+```text
+model.py
+model_v2.py
+model_v2_FINAL.py
+model_v2_FINAL_marie.py
+model_v2_FINAL_marie_works.py
+```
+
+Three questions you cannot answer from that directory:
+
+- What changed between `FINAL` and `FINAL_marie`?
+- Which one produced the result in the report?
+- If Marie and you both edited, how do you combine the work?
+
+---
+
+## What Git actually is
+
+A Git repository is a **directed graph of snapshots**. Each snapshot (a
+*commit*) records the full state of your project plus a pointer to its parent.
+
+![A graph of snapshots](/api/academic_courses/assets/lessons/29/commit-graph.png)
+
+Follow the arrows backwards from any commit and you have the exact state of the
+project at that moment — every file, not a diff you have to replay.
+
+---
+
+## What that single idea buys
+
+It gives you all of the following for free:
+
+- **History** — every state the project has ever been in, recoverable exactly.
+- **Attribution** — who changed what line, and when.
+- **Branching** — several lines of work in the same directory, isolated.
+- **Distribution** — every clone is a complete copy; there is no single point of failure.
+
+---
+
+## The three places a file can be
+
+This is the mental model to hold for the rest of the session. Everything else is
+commands that move files between these three places.
+
+| Place | What it holds | Command that fills it |
+|---|---|---|
+| **Working directory** | The files you edit | your editor |
+| **Staging area (index)** | Changes selected for the next snapshot | `git add` |
+| **Repository (.git)** | Committed snapshots, permanently | `git commit` |
+
+---
+
+## The three trees
+
+![The three trees](/api/academic_courses/assets/lessons/29/three-trees.png)
+
+Every command below moves a change between two of these boxes.
+
+---
+
+## Why staging exists
+
+Beginners find the staging area redundant. It is not. It lets you commit *part*
+of your work.
+
+You fixed a bug and, on the way, renamed a variable in an unrelated file. Those
+are two different commits. Staging is what makes that possible without undoing
+anything.
+
+> A good commit is one change, explainable in one sentence. Staging is the tool
+> that makes your commits look like your intentions rather than like your
+> afternoon.
 
 ---
 
@@ -17,10 +87,6 @@ done in *Accounts & Toolchain* — do not repeat them here. Do not lecture past
 git --version
 git config --list --show-origin | grep user
 ```
-
-`--show-origin` is the flag that saves you later, when a repository-local
-config overrides your global one and you cannot work out why your commits carry
-the wrong name.
 
 ---
 
@@ -166,13 +232,6 @@ commits you have never pushed, and only when you mean it.
 
 If you have just destroyed something and it was ever committed, this usually
 saves you:
-
-```bash
-git reflog
-```
-
-`reflog` records every position `HEAD` has occupied, including ones no branch
-points to any more. Find the SHA, `git checkout` it.
 
 ---
 

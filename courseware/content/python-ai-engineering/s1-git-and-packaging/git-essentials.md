@@ -1,15 +1,3 @@
-# Git Essentials
-
-Why version control exists, the one idea it is built on, and the eight commands
-that cover 95% of daily use — plus the four that get you out of trouble.
-
-<!-- notes: 45 minutes. The first third is motivation and the mental model, no
-keyboards; the rest is typing along. Install and authentication were done in
-*Accounts & Toolchain* — do not repeat them here. Do not lecture past
-`git log`; the undo section is where they actually need you. -->
-
----
-
 ## The problem, concretely
 
 Every project you hand in this year lives in a Git repository. Not because the
@@ -99,10 +87,6 @@ anything.
 git --version
 git config --list --show-origin | grep user
 ```
-
-`--show-origin` is the flag that saves you later, when a repository-local
-config overrides your global one and you cannot work out why your commits carry
-the wrong name.
 
 ---
 
@@ -248,13 +232,6 @@ commits you have never pushed, and only when you mean it.
 
 If you have just destroyed something and it was ever committed, this usually
 saves you:
-
-```bash
-git reflog
-```
-
-`reflog` records every position `HEAD` has occupied, including ones no branch
-points to any more. Find the SHA, `git checkout` it.
 
 ---
 

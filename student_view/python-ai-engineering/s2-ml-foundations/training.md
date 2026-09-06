@@ -69,7 +69,14 @@ for _ in range(n_steps):
     theta -= eta * grad(theta)
 ```
 
+---
+
+## What a well-tuned run looks like
+
 ![Gradient descent with a well-chosen learning rate](/api/academic_courses/assets/lessons/169/gd-optimal-lr.png)
+
+Big steps while the slope is steep, small ones near the bottom — the gradient
+shrinks on its own as the minimum approaches.
 
 ---
 
@@ -81,6 +88,10 @@ either direction and the run fails, in two very different ways.
 ![Learning rate too small](/api/academic_courses/assets/lessons/169/gd-small-lr.png)
 
 Too small ($\eta = 0.02$) — it converges, but so slowly you run out of budget.
+
+---
+
+## Too large, and it diverges
 
 ![Learning rate too large](/api/academic_courses/assets/lessons/169/gd-large-lr.png)
 
@@ -157,6 +168,10 @@ loss. Start from a deliberately bad initialisation:
 
 ![Initial fit](/api/academic_courses/assets/lessons/169/fit-init-line.png)
 
+---
+
+## The errors it starts with
+
 | Year | `y_true` | `y_pred` | Error |
 |---|---|---|---|
 | 1980 | 14.18 | 14.80 | 0.62 |
@@ -171,14 +186,33 @@ loss. Start from a deliberately bad initialisation:
 
 Take the gradient of that total error with respect to $a$ and $b$, step, repeat:
 
+---
+
+## The fit after 50 steps
+
 ![After updates](/api/academic_courses/assets/lessons/169/fit-updated-line.png)
 
+The same nine points, the same two parameters — moved by nothing but the
+gradient.
+
+---
+
+## The parameters, step by step
+
 ![Parameters over 50 steps](/api/academic_courses/assets/lessons/169/parameter-evolution.png)
+
+---
+
+## The error, step by step
 
 ![Total absolute error over 50 steps](/api/academic_courses/assets/lessons/169/error-evolution.png)
 
 The error falls from 3.45 to 0.60 in fifteen steps and then flattens — the shape
 of essentially every training curve you will ever plot.
+
+---
+
+## Before and after
 
 | | Initial | Trained |
 |---|---|---|

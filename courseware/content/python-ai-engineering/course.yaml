@@ -56,6 +56,14 @@ modules:
   # the one competition attached to this module and it is a required part of
   # that lab — an ELO board is the only outside opinion in the session that a
   # student cannot self-mark.
+  #
+  # Trimmed again in the course editor on 2026-09-06, after the publish, and
+  # pulled back into this repo with `make pull` the same day: `session-map`
+  # deleted, `accounts-and-tools` retitled, and 248 lines cut from five bodies —
+  # the whole review half of `branching-and-collaboration` among them. The
+  # module is now **15 lessons, 550 published minutes**. The website is upstream
+  # of these files for that change, so run `make check-sync` before the next
+  # publish, not after.
   - title: "Session 1 — The Engineering Floor"
     slug: s1-git-and-packaging
     icon: git-branch
@@ -66,12 +74,13 @@ modules:
       a tested Python package on GitHub whose tests run themselves, a Colab
       notebook that installs it, and an agent on a leaderboard.
     lessons:
-      - title: "What Session 1 Builds"
-        slug: session-map
-        file: s1-git-and-packaging/session-map.md
-        estimated_minutes: 10
-        is_published: true            # core
-      - title: "Accounts & Toolchain"
+      # `session-map` ("What Session 1 Builds", server lesson 173) was deleted
+      # in the course editor on 2026-09-06 and pulled down here the same day —
+      # the module now opens on Accounts & Setup. Its two figures are still
+      # drawn by `session_map()` in tools/figures/s1_git_and_packaging.py and
+      # now have no lesson to land in; the function stays only so the material
+      # is one `git revert` away.
+      - title: "Accounts & Setup"     # retitled on the website, 2026-09-06
         slug: accounts-and-tools
         file: s1-git-and-packaging/accounts-and-tools.md
         estimated_minutes: 30
@@ -108,11 +117,11 @@ modules:
         file: s1-git-and-packaging/packaging-and-tests.md
         estimated_minutes: 35
         is_published: true            # core
-      - title: "Code Quality: Linting, Formatting & Types"
-        slug: ide-syntax-linting
-        file: s1-git-and-packaging/ide-syntax-linting.md
-        estimated_minutes: 30
-        is_published: true            # extension
+      # `ide-syntax-linting` ("Code Quality: Linting, Formatting & Types",
+      # server lesson 140) was deleted in the course editor on 2026-09-06, in
+      # the same pass that cut github-actions in half — it was the module's only
+      # `# extension` lesson. `notebooks-and-colab` still says "the pre-commit
+      # hook from *Code Quality*", which now names nothing.
       - title: "Continuous Integration with GitHub Actions"
         slug: github-actions
         file: s1-git-and-packaging/github-actions.md

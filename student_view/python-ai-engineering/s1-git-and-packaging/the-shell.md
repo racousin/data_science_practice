@@ -1,14 +1,3 @@
-# The Shell
-
-Every command in this course, in every session, is typed into a shell. Twenty
-minutes here buys you the ability to read the error when one of them fails.
-
-<!-- notes: 20 minutes lectured, 40 minutes of material. Everyone types. The
-target is narrow and worth stating aloud: navigate to a repository, run
-something, and read the failure. Not shell scripting. -->
-
----
-
 ## What a shell is
 
 A program that reads a line, finds the executable it names, runs it with the
@@ -83,8 +72,6 @@ a spell-checker for paths that runs before you press Enter.
 Ctrl+R  pytest        →  uv run --all-extras pytest -q tests/test_core.py
 ```
 
-Students who do not use these two retype long commands, mistype them, and then
-debug the typo instead of the code.
 
 ---
 
@@ -287,13 +274,3 @@ ls -la
 cd ../..
 rm -rf scratch
 ```
-
-Then, deliberately:
-
-```bash
-uv run pytest 2>&1 | tail -5      # in a directory with no tests
-echo $?                           # non-zero, because it failed
-```
-
-If you can read what that printed and say why, the shell is not going to be what
-blocks you this term.

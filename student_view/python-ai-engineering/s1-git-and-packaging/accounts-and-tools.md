@@ -42,10 +42,6 @@ Sign up at [github.com](https://github.com). Three decisions, made once:
 - **Two-factor authentication.** GitHub requires it for accounts that push code.
   Set it up with an authenticator app rather than SMS.
 
-Then, in *Settings → Emails*, note **"Keep my email address private"**. Tick it
-and GitHub gives you a `…@users.noreply.github.com` address — use that one in
-`git config user.email` and your real address never appears in a public commit.
-
 <!-- notes: education.github.com gives students Copilot Pro and more with a
 university email. Mention it; do not spend class time on the verification flow,
 it can take days to come back. -->
@@ -63,14 +59,6 @@ exactly three extensions and stop:
 | **Jupyter** (Microsoft) | notebooks inside the editor, same window |
 | **Ruff** (Astral) | linting and formatting as you type |
 
-Two settings worth changing on day one:
-
-```json
-{
-  "editor.formatOnSave": true,
-  "python.terminal.activateEnvironment": true
-}
-```
 
 ---
 

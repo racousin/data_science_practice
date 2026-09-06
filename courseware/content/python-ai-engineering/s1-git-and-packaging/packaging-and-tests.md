@@ -257,19 +257,6 @@ excellent integration test.
 
 ---
 
-## Coverage — and its limit
-
-```bash
-uv run pytest --cov=my_project
-```
-
-Coverage tells you which lines *ran*. It does not tell you whether the
-assertions were meaningful. A suite with 100% coverage and no assertions on
-edge cases is 100% decorative.
-
-Use it to find untested files, not as a target to hit.
-
----
 
 ## The finished project
 
