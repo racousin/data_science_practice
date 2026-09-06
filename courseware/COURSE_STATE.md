@@ -241,25 +241,72 @@ client.detach_challenge(14, 180)
 set, so a publish run before those deletions fails at module #14 and changes
 nothing.
 
-Verified locally: `make check-slides` reports **0 overflowing slides** across all
-four modules, `make slides` builds 280 / 111 / 157 / 102, `make publish-dry`
-plans 201 actions with the 16 Session 1 lessons in order and competition 65
-attaching to module 14, and the lab's self-play harness reproduces the +0.975 /
-0.988 row above as written.
+Verified locally before publishing: `make check-slides` reported **0 overflowing
+slides** across all four modules, `make slides` built 280 / 111 / 157 / 102, and
+the lab's self-play harness reproduced the +0.975 / 0.988 row above as written.
 
-**Not verified: nothing has been published.** The table in §1 is the intended
-state, not a reading of the live course.
+**Executed against production, 2026-09-06.** The two detaches and eight deletes
+ran first, guarded — every id checked against the slug it was supposed to carry
+before the call, and the run set to abort if `live − retired` did not equal the
+16 the manifest declares. It did: 24 → 16. Then `make publish`.
+
+Verified live afterwards: module #14 is **16 lessons in manifest order**, its
+only competition is **65** labelled *PettingZoo · Connect-Four (Lab 3)*, all
+**34 image references return 200** and none is repo-relative, and
+`student_walk.py check` reports nothing but the known `speaker-notes-in-body`
+item (42 lessons course-wide) and the test student's own non-enrolment.
+
+**One casualty, and it was avoidable.** §1e records that Session 1 was
+deliberately not republished on 2026-09-06 because someone had renamed
+`accounts-and-tools` on the website — title *Tools & Accounts & Setup*, H1
+*# Accounts & Setup*. This publish was a full-course run and **overwrote it**
+back to the repo's *Accounts & Toolchain*. The wording survives only because
+§1e wrote it down. `make check-sync` exists precisely to catch this and was not
+run first; on a course anyone edits through the website, it belongs in front of
+every `make publish`, not in the documentation about it.
 
 ---
 
 **A silent deck defect was found and fixed.** `build_slides.py` steps down a font
 ladder until content fits the 4.95 in body box; when the last rung still does not
 fit it renders anyway and the overflow falls off the bottom of the slide, with no
-warning. An image block costs a flat **3.4 in**, so adding figures to Session 1
+warning. An image block cost a flat **3.4 in**, so adding figures to Session 1
 took it from 12 overflowing slides to 37. All 37 are now split at a real boundary
 with a heading, and `make check-slides` (`tools/check_slide_overflow.py`, exits
-non-zero) makes the next one visible. **`s2-ml-foundations` has 34 and
-`s3-models-and-tuning` has 38 — left as they are, deliberately.**
+non-zero) makes the next one visible.
+
+### 1e. Sessions 2-4: the deck measured honestly, and republished, 2026-09-06
+
+The 34 in `s2-ml-foundations` and 38 in `s3-models-and-tuning` that this section
+recorded as deliberately left alone are gone, and the cause under them with it.
+The height model was wrong in three places at once, so the count was never the
+real one: prose was charged **2.8× too much width** (5.6 characters to the inch
+at 10pt against Helvetica Neue's measured 15.8), which pushed slide after slide
+onto the smallest rung of the ladder and reported overflows that were not there;
+a table row was charged one line whatever its cells held, so a wrapping row grew
+under everything below it and overlapped the next block *inside* a slide the
+check called fine; and display math was a flat 0.62 in regardless of the formula.
+
+`Measurer` now measures all three from the real thing and is shared by the
+renderer and the check, so the two cannot disagree. Figures flex — filling a
+slide they have to themselves, giving way to text down to a 2.2 in floor — and
+only what is still over at that floor is reported. That left **35 genuinely
+over-full slides across Sessions 2, 3 and 4**, each now split at a real boundary
+with a heading: the decks go 79 → 111, 133 → 157 and 100 → 102 slides.
+
+Verified by rendering every page to PDF: no ink below the body box on any slide
+of any of the four decks, cover bands excepted.
+
+**Published to course 14 on 2026-09-06** — modules `s2-ml-foundations`,
+`s3-models-and-tuning`, `s4-pytorch-nutshell` only; `make check-sync` reports all
+three in sync. Session 1 was deliberately *not* republished: someone had renamed
+its `accounts-and-tools` lesson on the website (title `Tools & Accounts & Setup`,
+H1 `# Accounts & Setup`) and a publish would have overwritten that.
+
+A partial publish also found a bug in `publish_mlarena.py`: it ended by calling
+`reorder_modules` with only the modules it had synced, which the server rejects —
+that call takes the course's complete module list. It now skips the reorder when
+`--module` was used, since a subset has nothing to say about order.
 
 ---
 
