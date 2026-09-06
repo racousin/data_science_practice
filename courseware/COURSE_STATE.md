@@ -1,6 +1,7 @@
 # Course state — audited 2026-09-02, corrections applied and published 2026-09-03,
-# Session 1 rebuilt 2026-09-06, consolidated 2026-09-06 (§1d), and the website's
-# own trim of it pulled back into the repo 2026-09-06 (§1f)
+# Session 1 rebuilt 2026-09-06, consolidated 2026-09-06 (§1d), the website's
+# own trim of it pulled back into the repo 2026-09-06 (§1f), and Labs 1 and 2
+# merged into one group lab 2026-09-06 (§1g)
 
 What the two ML-Arena courses actually are today, what a student hits when they try to
 follow them, and what to build next. Produced by walking both courses end to end with a
@@ -363,7 +364,8 @@ review questions, comment style, suggested changes, draft PRs, linked issues,
 branch protection, forks, and the pre-review checklist. What survives is
 branching, merging, remotes and the three merge buttons. **Lab 2 is still
 "Pull Request & Review"**, so that lab now asks for a skill the session no longer
-teaches. That is the one thing to settle before the module is taught.
+teaches. That is the one thing to settle before the module is taught —
+**settled in §1g:** Lab 2 was merged into Lab 1, which is now a group lab.
 
 Two smaller consequences, neither yet acted on:
 
@@ -449,6 +451,79 @@ predates all of this and was left alone.
 `ide-syntax-linting`'s figure is in the same position as `session-map`'s —
 `tools/figures/s1_git_and_packaging.py` still draws `quality-gates.png` with
 nowhere to put it.
+
+### 1g. The website trimmed three more lessons, and Labs 1 and 2 were merged, 2026-09-06
+
+A third `check-sync` found three more edited bodies on course 14 —
+`notebooks-and-colab` (−54 lines: the `nbstripout` block, the install-cell
+slide, the Colab-secrets slide and the local-notebooks slide), `lab-1` (−85: the
+lint/format part, the ruff step in the CI workflow, the four verification
+commands, the grading table, the extensions and the validation checklist) and
+`lab-2` (−59: the grading table, the common failures, the extensions and the
+validation checklist). Two competition renames arrived with them, `PAIE S3/S4 →
+AIE S3/S4` in `s3/lab-3` and `s4/lab-4`. All five were taken with `make pull`;
+`make check-sync` then reported 0 differences.
+
+**Then Lab 2 was merged into Lab 1.** Lab 1 was a solo lab and Lab 2 (*Pull
+Request & Review*, lesson 136) the one that needed a partner. §1f had already
+recorded the problem: the website cut the entire review half of
+`branching-and-collaboration`, so Lab 2 asked for a skill the session no longer
+taught.
+
+Lab 1's body is unchanged in substance — the same `textstats` package, the same
+specification, the same CI, tag and Colab steps. What was added is the split:
+**groups of 2 or 3**, one or more of the three functions owned by each student,
+the skeleton branch merged before anybody branches off it, and one pull request
+per function that **somebody else in the group reviews and merges**. Everything
+else Lab 2 taught — branch protection, the deliberate merge conflict, the review
+rubric — went with it. 60 + 45 minutes became one 75-minute lab.
+
+Nothing about grading is stated anywhere in the merged lab; the website had
+already cut both grading tables and that was left cut.
+
+**Lab 3 is now Lab 2.** Lesson slugs are immutable server-side, so `lab-3` names
+the second lab; the title, the body H1, the `assistant-landscape` cross-link and
+the module's challenge label (*PettingZoo · Connect-Four (Lab 2)*, set with
+`update_challenge_link`, which `publish_mlarena.py` does not call) all moved. So
+did a speaker note claiming Lab 1 had a competition, which it has not since 179
+was retired.
+
+Module #14 is **13 lessons, 490 published minutes**; the deck is **211 slides**
+(from 235), 0 overflowing.
+
+**And the website trimmed `lab-3` in the minutes after that publish.** A
+`check-sync` run twenty minutes later found the last **115 lines** gone: *Part F
+— Reading an ELO board*, *Part G — Retrospective and pull request*, the grading
+table, the "if you cannot explain a line" rule, the extensions and the
+validation checklist. Same shape as every other trim recorded here — the
+closing checklist and the grading table are what go. Pulled with `make pull
+MODULE=s1-git-and-packaging`; `check-sync` then reports 0 differences across 45
+bodies and the deck rebuilds at 211.
+
+**One consequence to settle.** `lab-3`'s deliverable line still promises "a
+merged pull request carrying a `connect4` module and a `RETRO.md`", and Part G —
+the part that said how to write either — is what was cut. The lab now ends at
+*Part F — Submit*. Either restate the deliverable or put the retrospective back.
+
+**Executed against production.** `delete_lesson(136)` first, guarded on the id
+still carrying the `lab-2` slug and on the module having the 13 published
+lessons the manifest expected, then `make publish MODULE=s1-git-and-packaging`.
+
+That publish found a third website deletion that `check-sync` cannot see:
+**`session-plan` (144) was gone too**, and the publisher died on
+`update_lesson: Lesson not found or not owned` after writing all twelve
+published bodies. `check_sync.py` compares the *published* structure, so an
+unpublished lesson deleted on the website is invisible to it — the same class of
+gap as a lesson deleted before a `reorder_lessons`, and worth closing. Recovery
+was to drop the stale 144 from `.mlarena-state.json` and re-run: the run-sheet
+came back as lesson **181**, still `is_published: false`. **If that deletion was
+deliberate, delete 181 again and drop `session-plan` from `course.yaml`** — it
+was restored because it is the teacher's brief for a module that still owes
+material, and no student can see it either way.
+
+Verified live afterwards: 13 lessons in manifest order, `lab-2` gone, `lab-3`
+titled *Lab 2 — Ship an Agent to Connect Four*, the challenge relabelled, and
+`make check-sync` reporting **0 differences** across 45 bodies.
 
 ---
 

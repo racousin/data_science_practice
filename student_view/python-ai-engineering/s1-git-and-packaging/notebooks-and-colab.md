@@ -23,7 +23,7 @@ them watch the number be wrong. Everything else follows from the kernel model. -
 The document is what you see and what git stores. The kernel is what actually
 has state. Every confusing notebook bug is the gap between the two.
 
-> A notebook is not a program. It is a REPL with a scrollback that you are
+> A notebook is not a program. It is a REPL (Read-Eval-Print Loop) with a scrollback that you are
 > allowed to edit.
 
 ---
@@ -81,16 +81,6 @@ consequences:
   edited character.
 - **You commit whatever was printed** — including a dataframe of personal data,
   or an API key you echoed once.
-
-Strip the outputs on the way in:
-
-```bash
-uv tool install nbstripout
-nbstripout --install          # installs it as a git filter for this repo
-```
-
-Or use the pre-commit hook from *Code Quality*. Either way, the repository
-stores code and your disk keeps the pictures.
 
 ---
 
@@ -201,34 +191,6 @@ repository root, or the package is not under `src/`.
 
 ---
 
-## The first cell of every course notebook
-
-```python
-!pip install -q mlarena-sdk
-```
-
-Colab pre-installs a lot, but not everything, and the VM is fresh every time.
-This is why every notebook you are given starts with an install cell — it is not
-boilerplate, it is the only reason the next cell works.
-
----
-
-## Secrets in Colab
-
-Do not paste an API key into a cell. The key is then in the notebook, and the
-notebook is shareable.
-
-Use the key icon in the left sidebar (*Secrets*), then:
-
-```python
-from google.colab import userdata
-client = mlarena.connect(api_key=userdata.get("MLARENA_API_KEY"))
-```
-
-The value lives in your Google account, not in the file.
-
----
-
 ## Colab and GitHub
 
 Colab opens a notebook straight from a repository:
@@ -254,18 +216,3 @@ Three signals, any one of which means the work has outgrown it:
 At that point, extract to `src/`, write the test, and import it back. The
 notebook stays — it becomes the place you *use* the code rather than the place
 you keep it.
-
----
-
-## Local notebooks
-
-You do not need Colab unless you need the GPU:
-
-```bash
-uv add --dev jupyterlab ipykernel
-uv run jupyter lab
-```
-
-Or open the `.ipynb` directly in VS Code with the Jupyter extension, and pick
-your project's `.venv` as the kernel. Same kernel model, same out-of-order trap,
-your own filesystem, no GPU.

@@ -1,4 +1,4 @@
-# Lab 3 — Ship an Agent to Connect Four
+# Lab 2 — Ship an Agent to Connect Four
 
 You will drive an agent through the loop from *Coding Agents* to build a
 Connect-Four player, prove it works before you believe it, and put it on a
@@ -12,8 +12,8 @@ scored against a fixed answer key, you are scored against everybody else.
 `RETRO.md`, **and** your agent on the leaderboard of competition 65.
 
 <!-- notes: 45 minutes in the room, the pull request as homework. The thing to
-say out loud at the start: this challenge cannot be self-graded. Lab 1's
-competition compared you to a specification; this one compares you to other
+say out loud at the start: this challenge cannot be self-marked. Lab 1's
+checks compared you to a specification; this one compares you to other
 students, and a plausible-looking agent loses. That is the whole point of
 putting the agentic lesson in front of it. -->
 
@@ -301,117 +301,3 @@ The package is `mlarena-sdk`; it imports as `mlarena`. Your class must define
 **every method the starter template declares, including `__init__`** — upload
 validation compares your class against the template and rejects the submission
 before anything runs.
-
----
-
-## Part F — Reading an ELO board
-
-`client.leaderboard(65)` and the challenge page show the same thing. This board
-is not a score you earn alone: your agent is matched against the others already
-on it, and the rating moves with each result.
-
-A new agent enters at about **1200** and goes nowhere until it has played. As
-of 2026-09-06 the whole board was four agents, topped by the reference agent at
-**1248** — which tells you how empty the board is, not how strong 1248 is. By
-the time your cohort has submitted, it will not be four.
-
-Two consequences worth knowing before you read your rank:
-
-- **Rank is provisional at first.** One run against one opponent is noise. Give
-  it a few.
-- **The board moves without you.** Your number can fall while you sleep because
-  somebody else's agent got better. That is the mechanism working, not a bug.
-
----
-
-## Part G — Retrospective and pull request
-
-Finish `RETRO.md`:
-
-```markdown
-## Plan
-<the plan the agent proposed>
-
-## My objection
-<what you pushed back on, and why — written before any code existed>
-
-## What I rejected
-<at least one thing the agent produced that you refused, and why>
-
-## Measured
-<your mean reward over 400 self-play games, and your ELO after submitting>
-
-## What I could not explain
-<any line you had to go and understand — or "none", honestly>
-```
-
-Push and open the pull request, using the template from Lab 2: *why*, *how to
-check it*, *not in this PR*. Put the self-play number in the **how to check it**
-section — a reviewer can re-run one command and see it.
-
-Your partner's review and the merge are **homework**: they need a second person
-to stop what they are doing, and five minutes of class time does not buy that.
-
----
-
-## Grading
-
-| Criterion | Weight |
-|---|---|
-| `CLAUDE.md` is specific to this project, not generic | 10% |
-| Tests written before implementation, one per pinned rule | 25% |
-| Self-play measurement in `RETRO.md`, mean reward ≥ +0.90 | 20% |
-| `RETRO.md` shows real pushback, not a transcript | 15% |
-| Diff is clean: no silent failure, no unapproved deps, mask always honoured | 15% |
-| An agent of yours is on the leaderboard of competition 65 | 15% |
-
-Your **rank** is not graded. Being on the board is: the leaderboard is evidence
-that your code survived contact with a real opponent, and rank rewards whoever
-submitted last.
-
----
-
-## The rule for this lab
-
-> If you cannot explain a line, it does not merge.
-
-You may be asked to walk through any line of the diff. "The agent wrote it" is
-not an answer.
-
----
-
-## If you finish early
-
-- **Beat your own agent.** Point `selfplay.py` at two of your agents instead of
-  one and a random opponent, and see whether a fourth rule — *take a move that
-  creates two winning threats at once* — actually helps. Measure before you
-  believe it.
-- **Fresh-context review.** `/clear`, then: *"Review the diff between main and
-  this branch for silent failure handling, missing edge cases, and tests that
-  assert nothing. Do not fix anything."* A clean context finds things the
-  authoring context is blind to. Add what it found — and whether you agreed —
-  to `RETRO.md`.
-
----
-
-## Did you validate this lab?
-
-- [ ] `uv sync --all-extras && uv run pytest` is green in a fresh clone of my
-      repository, on the `feature/connect4` branch
-- [ ] `CLAUDE.md` names my install / test / lint commands, my `src/` layout and
-      at least one "do not", and is not unedited `/init` output (Part B)
-- [ ] `RETRO.md` contains the plan the agent proposed **and** the objection I
-      wrote before any code existed (Part C)
-- [ ] I have one test per pinned rule, including a **block** test whose blocking
-      column is not column 3 (Part D)
-- [ ] Those tests failed before the implementation existed, and pass now
-- [ ] `uv run --with "pettingzoo[classic]" python selfplay.py` prints a mean
-      reward of **≥ +0.90** over 400 games (Part E)
-- [ ] `git diff main...HEAD` shows no bare `except`, no default on a required
-      argument, no edited test, no new dependency, and no branch that returns a
-      column without checking `action_mask` (Part E)
-- [ ] My submission is on the leaderboard of **PettingZoo · Connect-Four (#65)**
-      and has an ELO rating
-- [ ] The pull request is merged and the branch is deleted
-
-If every box is ticked, the lab is finished — whatever your rank says.

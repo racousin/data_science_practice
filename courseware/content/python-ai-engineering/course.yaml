@@ -51,18 +51,21 @@ modules:
   # carries a `# core` or `# extension` marker, the greppable version of the
   # same decision.
   #
-  # Three labs, all graded from a GitHub URL: ship a package (1), pull request
-  # and review (2), an agent-built Connect-Four player (3). Lab 3's challenge is
-  # the one competition attached to this module and it is a required part of
-  # that lab — an ELO board is the only outside opinion in the session that a
-  # student cannot self-mark.
+  # Two labs, both read from a GitHub URL: ship a package as a group of 2-3,
+  # each owning a function (1), and an agent-built Connect-Four player (2, slug
+  # `lab-3`). Lab 2's challenge is the one competition attached to this module
+  # and it is a required part of that lab — an ELO board is the only outside
+  # opinion in the session that a student cannot self-mark.
   #
   # Trimmed again in the course editor on 2026-09-06, after the publish, and
   # pulled back into this repo with `make pull` the same day: `session-map`
   # deleted, `accounts-and-tools` retitled, and 248 lines cut from five bodies —
   # the whole review half of `branching-and-collaboration` among them. The
-  # module is now **15 lessons, 550 published minutes**. The website is upstream
-  # of these files for that change, so run `make check-sync` before the next
+  # module went to 15 lessons / 550 published minutes, then to **14 lessons,
+  # 520 published minutes** in a second pass that deleted `ide-syntax-linting`
+  # and halved `github-actions`. Merging the two labs below took it to
+  # **13 lessons, 490 published minutes**. The website is upstream of these
+  # files for those changes, so run `make check-sync` before the next
   # publish, not after.
   - title: "Session 1 — The Engineering Floor"
     slug: s1-git-and-packaging
@@ -132,17 +135,22 @@ modules:
         file: s1-git-and-packaging/notebooks-and-colab.md
         estimated_minutes: 35
         is_published: true            # core
+      # `lab-2` ("Pull Request & Review", server lesson 136) merged in here
+      # 2026-09-06. Lab 1 was a solo lab followed by a lab that needed a
+      # partner; it is now one group lab. The body is Lab 1's, unchanged in
+      # substance — what was added is the split: groups of 2 or 3, one or more
+      # of the three `textstats` functions owned by each student, each on their
+      # own branch, and nobody merging their own pull request. That is the half
+      # of Lab 2 the session still teaches; the rest of Lab 2 (branch
+      # protection, the deliberate conflict, the review rubric) went with it,
+      # because the website had already cut the review half of
+      # `branching-and-collaboration` and the lab asked for a skill the session
+      # no longer taught. `delete_lesson(136)` must run BEFORE the next publish.
       - title: "Lab 1 — Ship a Package to GitHub"
         slug: lab-1
         kind: exercise
         file: s1-git-and-packaging/lab-1.md
-        estimated_minutes: 60
-        is_published: true            # core
-      - title: "Lab 2 — Pull Request & Review"
-        slug: lab-2
-        kind: exercise
-        file: s1-git-and-packaging/lab-2.md
-        estimated_minutes: 45
+        estimated_minutes: 75
         is_published: true            # core
       # -- the agentic-coding block, now ONE lesson. `what-actually-changed`
       # (131), `setup` (132), `the-core-loop` (133), `context-engineering` (134)
@@ -158,7 +166,9 @@ modules:
         file: s1-git-and-packaging/assistant-landscape.md
         estimated_minutes: 60
         is_published: true            # core
-      - title: "Lab 3 — Ship an Agent to Connect Four"
+      # Retitled Lab 3 -> Lab 2 when the first two labs merged; the slug is
+      # immutable server-side, so `lab-3` still names the second lab.
+      - title: "Lab 2 — Ship an Agent to Connect Four"
         slug: lab-3
         kind: exercise
         file: s1-git-and-packaging/lab-3.md
@@ -190,7 +200,7 @@ modules:
     # server-side, because publish_mlarena.py only ever attaches.
     competitions:
       - competition_id: 65
-        label: "PettingZoo · Connect-Four (Lab 3)"
+        label: "PettingZoo · Connect-Four (Lab 2)"
 
   # ---------------------------------------------------------------- session 2
   #

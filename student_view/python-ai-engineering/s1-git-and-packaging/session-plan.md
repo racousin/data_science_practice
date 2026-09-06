@@ -17,7 +17,7 @@ containing a tested, installable Python package whose tests run themselves on
 GitHub's machines, plus a Colab notebook that installs it from that repository.
 
 Assessment for this session lives on the students' GitHub accounts, with one
-exception: **Lab 3 requires a submission to competition 65** (PettingZoo ·
+exception: **Lab 2 requires a submission to competition 65** (PettingZoo ·
 Connect-Four). That is deliberate — it is the only thing in the session a
 student cannot mark themselves, because an ELO board scores their agent against
 other people's rather than against an answer key. *Being on the board* is graded;
@@ -114,12 +114,16 @@ Expect roughly a third of the room not to have done it. Block 0 exists for them.
 | 137–147 | Notebooks and Colab: the kernel, the ephemeral VM | `notebooks-and-colab` | **D** |
 | 147–180 | **Lab 1**, in the room, you circulating | `lab-1` | **H** |
 
-Lab 1 needs 60 minutes and gets 33. That is intentional: students get to Part E
-(CI) in the room, where you can unblock them, and finish Parts F–G at home.
+Lab 1 needs 75 minutes and gets 33. That is intentional: students get to Part E
+(the pull request and its review) in the room, where you can unblock them, and
+finish Parts F–G at home.
 
-**Labs 2 and 3, and the agentic-coding lesson, do not fit in three hours.** See
-§7 for the three ways of dealing with that; decide before the session, not
-during it.
+**Form the groups before the lab starts, not at 147.** Groups of 3 map one
+`textstats` function to each student; a group of 2 gives someone two. Write the
+groups down — leaving it to the room produces four students with nobody.
+
+**Lab 2 and the agentic-coding lesson do not fit in three hours.** See §7 for
+the three ways of dealing with that; decide before the session, not during it.
 
 ---
 
@@ -219,12 +223,12 @@ Lab 1.
 
 ## 7. The agentic-coding block — three options
 
-**One lesson, 60 minutes** (`assistant-landscape`, *Coding Agents*), plus Lab 3.
+**One lesson, 60 minutes** (`assistant-landscape`, *Coding Agents*), plus Lab 2.
 It was six lessons and ~160 minutes until 2026-09-06; even at 60 it does not fit
 inside the 180 alongside everything above.
 
 **Option A — homework, recommended.** Lecture nothing today. Set *Coding Agents*
-as reading plus Lab 3 for the following week, and open Session 2 with a
+as reading plus Lab 2 for the following week, and open Session 2 with a
 15-minute recap and a live agent demo. Costs 15 minutes of Session 2; keeps
 Session 1 coherent.
 
@@ -243,25 +247,28 @@ Whichever you pick, say it out loud at the start of the session. Students who
 expect Claude Code and get git are disappointed by a scheduling decision, not by
 the content.
 
-**One thing to check before the session, whichever option you pick:** Lab 3
+**One thing to check before the session, whichever option you pick:** Lab 2
 submits to competition **65**, which this repository does not own. Confirm it is
 still public and started (`client.competition(65)` returns 200 to a student
 token) — a lab whose leaderboard 404s is worse than no leaderboard.
 
 ---
 
-## 8. The three labs
+## 8. The two labs
 
 | | Lab | Shape | When | Deliverable |
 |---|---|---|---|---|
-| 1 | Ship a Package to GitHub | solo | in the room, finish at home | repository URL |
-| 2 | Pull Request & Review | **pairs** | homework | a merged PR + a review given |
-| 3 | Ship an Agent to Connect Four | pairs | homework | a merged PR + `RETRO.md` + a rated agent on comp 65 |
+| 1 | Ship a Package to GitHub | **groups of 2-3** | in the room, finish at home | one repository URL per group |
+| 2 (slug `lab-3`) | Ship an Agent to Connect Four | groups | homework | a merged PR + `RETRO.md` + a rated agent on comp 65 |
 
-Lab 2 must be paired and cannot be faked alone: it requires a review *given* on
-someone else's repository and a review *received* on yours. Pair students at the
-end of the session, in the room, and write the pairs down — leaving it to them
-produces four students with no partner.
+Lab 1 absorbed the old *Pull Request & Review* lab on 2026-09-06 (§9c). It is
+the same package, built by a group instead of one student: three functions,
+one owner each, one branch and one pull request each, and nobody merges their
+own. Review is therefore inside Lab 1 rather than a lab of its own, and it
+still cannot be faked alone — a group of one has nobody to merge its work.
+
+Keep the same groups for Lab 2; its review and merge are homework and a
+reshuffle strands people mid-week.
 
 Each lab ends with a **"Did you validate this lab?"** checklist whose every row
 is objectively verifiable by the student. Marking is reading those rows against
@@ -271,8 +278,9 @@ The fast grading pass, per student, in under two minutes:
 
 ```bash
 git clone <url> /tmp/g && cd /tmp/g
-uv sync && uv run pytest -q          # 25% of Lab 1
+uv sync && uv run pytest -q          # it runs from a fresh clone
 git log --oneline --graph | head -20 # history quality
+git log --format='%an' | sort -u     # every member of the group is in it
 git ls-files | grep -E '\.venv|__pycache__'   # must be empty
 gh run list --limit 3                # CI actually ran
 ```
@@ -280,6 +288,30 @@ gh run list --limit 3                # CI actually ran
 ---
 
 ## 9. What changed
+
+### 9c. The two labs merged (2026-09-06, third pass)
+
+`lab-2` (*Pull Request & Review*, server lesson 136) was folded into `lab-1`;
+14 lessons → 13, 520 published minutes → 490.
+
+Lab 1 was a solo lab and Lab 2 the one that needed a partner. That split had
+stopped working: the website had already cut the entire review half of
+`branching-and-collaboration`, so Lab 2 asked for a skill the session no longer
+taught, and it was homework nobody could start until they had found a partner.
+
+Lab 1 is now **one group lab**, and its body is the old Lab 1 — the same
+`textstats` package, the same specification, the same CI, tag and Colab steps.
+What was added is the split: **groups of 2 or 3**, one or more of the three
+functions owned by each student, the skeleton merged before anyone branches,
+and a pull request per function that **somebody else in the group reviews and
+merges**. That is the part of Lab 2 worth keeping. Branch protection, the
+deliberate merge conflict and the review rubric went with the rest of it.
+
+**Lab 3 is now Lab 2.** The slug is immutable server-side, so `lab-3` names the
+second lab; only the title and the body's H1 changed.
+
+`delete_lesson(136)` must run server-side **before** the next publish, or
+`reorder_lessons` rejects the manifest.
 
 ### 9b. The consolidation (2026-09-06, second pass)
 
@@ -344,7 +376,7 @@ Since the module was previously *Git & Python Packaging*:
    is **not ours**. Its overview page is the PettingZoo blurb and states no
    baseline, and a challenge we do not own can be stopped or edited by its
    creator. Either adopt it (write the overview, state the measured ladder from
-   Lab 3 Part E) or build a Session 1 package that replaces it.
-5. **Pair assignment for Labs 2 and 3.** Fixed pairs for both, or reshuffle
-   between them. Reshuffling doubles the number of repositories each student has
-   to read, which is the point of the exercise.
+   Lab 2 Part E) or build a Session 1 package that replaces it.
+5. **Group size.** Lab 1 is written for 3 — one `textstats` function each — and
+   works at 2. At 4 somebody owns nothing, so a cohort that does not divide by
+   3 should be padded with 2s, not with 4s.

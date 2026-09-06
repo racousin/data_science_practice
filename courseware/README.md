@@ -47,7 +47,7 @@ courseware/
 │       ├── reference/
 │       └── .mlarena-state.json
 ├── competitions/                     # one or more per taught session, except
-│   │                                 # Session 1, whose Lab 3 borrows comp 65
+│   │                                 # Session 1, whose Lab 2 borrows comp 65
 │   ├── s2-bike-demand/               # file_v1 — regression, worked
 │   ├── s2-bank-marketing/            # file_v1 — classification, guided
 │   ├── s3-adult-income/              # file_v1 — Lab 3's pipeline
@@ -376,7 +376,7 @@ them (`tools/build_notebooks.py`, output under
 the Colab links resolve against on GitHub). They grade a *submission file*
 (`file_v1`).
 
-**Session 1 has no package.** Since 2026-09-06 its Lab 3 submits to the existing
+**Session 1 has no package.** Since 2026-09-06 its Lab 2 submits to the existing
 PettingZoo · Connect-Four challenge (**65**, `flex_v1`, ELO-ranked), which this
 repository does not own, does not build and cannot benchmark. It is the only
 attachment in the course that `make competitions` knows nothing about — it is
@@ -479,10 +479,10 @@ own `.mlarena-state.json`, so the two publish independently.
   module describes three tracks (CURRICULUM_PLAN.md §7); the competition ids do
   not exist yet, so there is no `competitions:` block. Add one per track once
   they are created.
-- **Session 1's challenge is not ours.** Lab 3 submits to competition **65**
+- **Session 1's challenge is not ours.** Lab 2 submits to competition **65**
   (PettingZoo · Connect-Four), which this repository does not build and cannot
   benchmark. Its overview page is the PettingZoo blurb and states no baseline.
-  Either adopt it — write the overview, state the measured ladder from Lab 3
+  Either adopt it — write the overview, state the measured ladder from Lab 2
   Part E — or build a Session 1 package to replace it. The two packages that
   used to serve this module (179, 180) were retired on 2026-09-06;
   `detach_competition(14, 179)` / `(14, 180)` still has to be run server-side,

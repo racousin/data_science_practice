@@ -191,7 +191,7 @@ reached neither list reached neither transformer.
 
 ## Part F — Submit (5 min)
 
-The competition **PAIE S3 — Adult Census Income** (`181`) is this lab with the
+The competition **AIE S3 — Adult Census Income** (`181`) is this lab with the
 last step attached: the same data, but the test labels are held back, so the
 number you get is one you cannot have tuned against.
 
@@ -290,7 +290,7 @@ noticing that is the skill.
 - [ ] My gradient-boosting `cross_val_score` returned 5 numbers, not `All the 5 fits failed`
 - [ ] `RESULTS.md` names the best threshold, its F1, and what moving it did to precision and recall
 - [ ] `submission.csv` has 9,770 lines (header + 9,769 test ids) and no duplicate id
-- [ ] My submission is on the leaderboard of PAIE S3 — Adult Census Income (#181)
+- [ ] My submission is on the leaderboard of AIE S3 — Adult Census Income (#181)
 - [ ] My score beats the baseline: **F1 ≥ 0.656**
 
 If the last two are not ticked you have not finished the lab, however good the

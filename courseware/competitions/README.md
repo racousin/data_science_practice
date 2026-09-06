@@ -4,7 +4,7 @@ The competition packages of `python-ai-engineering`. Sibling of `../content/` :
 that directory owns modules and lessons, this one owns the competitions those
 modules link to.
 
-**Session 1 has no package here.** Its Lab 3 submits to the existing
+**Session 1 has no package here.** Its Lab 2 submits to the existing
 [PettingZoo · Connect-Four](https://ml-arena.com/viewchallenge/65) challenge,
 which this repository does not own and does not build. The two flex_v1 packages
 that used to sit at the top of this list — `s1-textstats` (competition 179) and
@@ -119,7 +119,7 @@ a full ML stack, but a scorer needing only `csv` and arithmetic has one less way
 to break. They reject a malformed submission with a message naming the line,
 rather than imputing anything.
 
-**flex_v1** (Session 1's Lab 3, but no package here) — competitors upload
+**flex_v1** (Session 1's Lab 2, but no package here) — competitors upload
 `agent.py`, which runs in its own container and is called method by method.
 Session 1 used to build two of these (`s1-textstats`, `s2-readability`) and now
 borrows an existing one instead: PettingZoo · Connect-Four, competition **65**,

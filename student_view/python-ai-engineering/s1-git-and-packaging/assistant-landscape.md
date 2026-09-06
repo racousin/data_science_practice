@@ -597,5 +597,5 @@ they stop listening. -->
 - [ ] No new dependency you did not approve
 - [ ] You can explain every line
 
-Then **Lab 3**: an agent writes a Connect-Four player, and a leaderboard of
+Then **Lab 2**: an agent writes a Connect-Four player, and a leaderboard of
 other people's agents decides whether you were right to merge it.
