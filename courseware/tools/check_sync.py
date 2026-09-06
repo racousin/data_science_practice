@@ -1,0 +1,178 @@
+#!/usr/bin/env python3
+"""Has anyone edited the course on the website since the last publish?
+
+`publish_mlarena.py` is **one-way**. It calls `update_lesson(body_md=...)`, which
+replaces the server's body with the file's — so an edit made in the ML-Arena
+course editor is silently destroyed by the next `make publish`. Nothing warns
+you, and the edit is not recoverable from this repo.
+
+This is the guard. Read-only: it never writes to ML-Arena and never touches your
+files.
+
+Two tiers, because they cost different amounts:
+
+    make check-sync QUICK=1     1 request.  Structure only: which lessons exist,
+                                their order, titles, kind, published flag,
+                                estimated minutes. Catches a lesson unpublished,
+                                renamed, reordered, added or deleted on the site.
+
+    make check-sync             1 + N requests (~57 for a 12h course, a few
+                                seconds). Everything above, plus the body of
+                                every lesson compared line by line.
+
+    make check-sync DIFF=1      ... and print the diff, so you can see what to
+                                copy back into the markdown.
+
+Exit status is 1 if anything drifted, so either tier gates a publish.
+
+What "the same" means
+---------------------
+The markdown on disk keeps repo-relative image paths so the PPTX build works;
+the publisher rewrites them to served URLs on the way up. Both sides are
+therefore reduced to the image's basename before comparing, and trailing
+whitespace is ignored. Everything else is compared literally, speaker-notes
+comments included.
+"""
+from __future__ import annotations
+
+import argparse
+import difflib
+import os
+import re
+import sys
+from pathlib import Path
+
+_SDK = Path(__file__).resolve().parents[3].parent / "mlarena-sdk"
+if _SDK.exists():
+    sys.path.insert(0, str(_SDK))
+
+import mlarena  # noqa: E402
+import yaml  # noqa: E402
+
+IMAGE_RE = re.compile(r"(!\[[^\]]*\]\()([^)\s]+)(\))")
+
+# Fields the manifest owns. `estimated_minutes` is included because it is the
+# one a teacher most plausibly nudges in the editor without thinking of it as
+# an edit.
+META = ("title", "kind", "is_published", "estimated_minutes")
+
+
+def normalise(body: str) -> list[str]:
+    """Reduce a body to what the two sides should agree on."""
+    body = IMAGE_RE.sub(lambda m: m.group(1) + os.path.basename(m.group(2)) + m.group(3),
+                        body)
+    return [line.rstrip() for line in body.replace("\r\n", "\n").strip().split("\n")]
+
+
+def declared(spec: dict) -> dict:
+    return {
+        "title": spec["title"],
+        "kind": spec.get("kind", "lesson"),
+        "is_published": bool(spec.get("is_published", False)),
+        "estimated_minutes": spec.get("estimated_minutes"),
+    }
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("content", help="course content directory (holds course.yaml)")
+    ap.add_argument("--base-url",
+                    default=os.environ.get("MLARENA_BASE_URL", "https://ml-arena.com"))
+    ap.add_argument("--module", action="append", help="only this module slug")
+    ap.add_argument("--quick", action="store_true",
+                    help="structure only — one request, no bodies")
+    ap.add_argument("--diff", action="store_true", help="print the unified diff")
+    args = ap.parse_args()
+
+    token = os.environ.get("MLARENA_API_KEY")
+    if not token:
+        raise SystemExit("MLARENA_API_KEY is not set (needs a mlk_teacher_... key)")
+
+    content = Path(args.content)
+    manifest = yaml.safe_load((content / "course.yaml").read_text())
+    client = mlarena.connect(token, base_url=args.base_url)
+
+    # One request. Carries every module, every lesson id, and the metadata the
+    # quick tier compares — unpublished lessons included, for a key that can
+    # manage the course.
+    course = client.course(manifest["course"]["slug"])
+    live = {m["slug"]: {l["slug"]: l for l in m.get("lessons", [])}
+            for m in course.get("modules", [])}
+    live_order = {m["slug"]: [l["slug"] for l in m.get("lessons", [])]
+                  for m in course.get("modules", [])}
+
+    problems: list[str] = []
+    diffs: list[tuple] = []
+    checked = 0
+
+    for module in manifest["modules"]:
+        mslug = module["slug"]
+        if args.module and mslug not in args.module:
+            continue
+        if mslug not in live:
+            problems.append(f"MISSING  module {mslug} — in course.yaml, not on the server")
+            continue
+
+        want = [s["slug"] for s in module.get("lessons", [])]
+        if want != live_order[mslug]:
+            problems.append(
+                f"ORDER    {mslug} — the server's lesson order is not the manifest's\n"
+                f"         repo: {', '.join(want)}\n"
+                f"         live: {', '.join(live_order[mslug])}")
+
+        for spec in module.get("lessons", []):
+            lslug = spec["slug"]
+            row = live[mslug].get(lslug)
+            if row is None:
+                problems.append(f"MISSING  {mslug}/{lslug} — in course.yaml, not on the server")
+                continue
+
+            for field in META:
+                a, b = declared(spec)[field], row.get(field)
+                if a != b:
+                    problems.append(
+                        f"META     {mslug}/{lslug} (#{row['id']}) — {field}: "
+                        f"repo {a!r} vs live {b!r}")
+
+            if args.quick:
+                continue
+
+            local = normalise((content / spec["file"]).read_text())
+            remote = client.get_lesson(row["id"])
+            remote = normalise((remote.get("lesson", remote).get("body_md") or ""))
+            checked += 1
+            if local != remote:
+                diffs.append((f"{mslug}/{lslug}", row["id"], local, remote))
+
+        for lslug, row in live[mslug].items():
+            if lslug not in want:
+                problems.append(
+                    f"ORPHAN   {mslug}/{lslug} (#{row['id']}) — on the server, "
+                    f"not in course.yaml")
+
+    for name, lesson_id, local, remote in diffs:
+        delta = list(difflib.ndiff(local, remote))
+        added = sum(1 for line in delta if line.startswith("+ "))
+        removed = sum(1 for line in delta if line.startswith("- "))
+        print(f"BODY     {name} (#{lesson_id}) — live has +{added}/-{removed} lines vs repo")
+        if args.diff:
+            for line in difflib.unified_diff(local, remote, fromfile=f"repo/{name}",
+                                             tofile=f"live/{name}", lineterm="", n=2):
+                print("         " + line)
+    for line in problems:
+        print(line)
+
+    total = len(diffs) + len(problems)
+    scope = "structure" if args.quick else f"structure + {checked} bodies"
+    print(f"\n{scope} compared — {total} difference(s)")
+    if not total:
+        print("in sync: the live course is what this repo says it is")
+    if diffs:
+        print("\nA BODY difference means the lesson was edited on the website.\n"
+              "`make publish` will overwrite it with the repo copy — copy the change\n"
+              "into the markdown first. `make check-sync DIFF=1` shows what to copy.")
+    return 1 if total else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

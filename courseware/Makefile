@@ -14,13 +14,14 @@ SDK_PATH    ?= ../../../mlarena-sdk
 PY_SLIDES   := uv run --quiet --with python-pptx --with pyyaml --with matplotlib python
 PY_PUBLISH  := uv run --quiet --with pyyaml --with requests python
 
-.PHONY: help slides pdf publish publish-dry harvest clean \
+.PHONY: help slides check-slides check-sync pdf publish publish-dry harvest clean \
         competitions competitions-status competitions-publish competitions-attach
 
 help:
 	@echo "make slides       — build one PPTX per session into $(OUT)/slides"
 	@echo "make check-slides — list slides whose content overflows the slide"
 	@echo "make pdf          — slides, then convert to PDF (needs LibreOffice)"
+	@echo "make check-sync   — has anyone edited a lesson on the website?"
 	@echo "make publish-dry  — show what would change on $(BASE_URL)"
 	@echo "make publish      — sync content to ML-Arena (needs MLARENA_API_KEY)"
 	@echo "                    add NO_MEDIA=1 to publish text without images"
@@ -63,6 +64,15 @@ pdf: slides
 # --------------------------------------------------------------------------- #
 # ML-Arena
 # --------------------------------------------------------------------------- #
+
+# Read-only. Publishing is one-way (it overwrites body_md), so an edit made in
+# the ML-Arena course editor is destroyed by the next `make publish` with no
+# warning. This is what tells you before that happens.
+check-sync:
+	@test -n "$$MLARENA_API_KEY" || { \
+		echo "MLARENA_API_KEY is not set (needs a mlk_teacher_... key)."; exit 1; }
+	$(PY_PUBLISH) tools/check_sync.py $(CONTENT) --base-url $(BASE_URL) \
+		$(if $(MODULE),--module $(MODULE)) $(if $(QUICK),--quick) $(if $(DIFF),--diff)
 
 publish-dry:
 	$(PY_PUBLISH) tools/publish_mlarena.py $(CONTENT) \

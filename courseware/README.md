@@ -62,6 +62,7 @@ courseware/
 ├── tools/
 │   ├── build_slides.py               # Markdown -> PPTX
 │   ├── check_slide_overflow.py       # slides that render off the bottom
+│   ├── check_sync.py                 # has the live course drifted from here?
 │   ├── figures/                      # committed generators for authored figures
 │   ├── mathrender.py                 # LaTeX -> Unicode / PNG
 │   ├── publish_mlarena.py            # Markdown -> ML-Arena (idempotent)
@@ -255,6 +256,51 @@ uploads each file and rewrites the bodies. Nothing is lost — the reference is
 still in the markdown, which is why the flag does not substitute a placeholder.
 
 Use it only when the server's media route is unavailable.
+
+### Publishing is one-way — check before you publish
+
+`publish_mlarena.py` calls `update_lesson(body_md=…)`, which **replaces** the
+server's body with the file's. An edit made in the ML-Arena course editor is
+therefore destroyed by the next `make publish`, silently, and it is not
+recoverable from this repo. Nothing syncs back.
+
+`make check-sync` is the guard. It is read-only — it never writes to ML-Arena
+and never touches your files — and it exits non-zero, so it gates a publish.
+
+```bash
+export MLARENA_API_KEY=mlk_teacher_...
+make check-sync QUICK=1     # 1 request. structure only
+make check-sync             # 1 + N requests (~57, a few seconds). + every body
+make check-sync DIFF=1      # ... and print the diff, so you can copy it back
+make check-sync MODULE=s2-ml-foundations
+```
+
+| Tier | Cost | Catches |
+|---|---|---|
+| `QUICK=1` | one request | a lesson added, deleted, renamed, reordered, unpublished, or re-timed on the site |
+| default | one request per lesson | all of the above, **plus any edit to a lesson body** |
+
+Both compare against `course.yaml` and the markdown, not against a recorded
+snapshot, so there is no state to keep current and nothing to seed.
+
+What it treats as equal: the markdown on disk keeps repo-relative image paths so
+the deck build works, and the publisher rewrites them to served URLs on the way
+up — so both sides are reduced to the image's basename before comparing, and
+trailing whitespace is ignored. Everything else is literal, `<!-- notes: -->`
+comments included.
+
+The four verdicts:
+
+| | Means |
+|---|---|
+| `BODY` | the lesson text differs — someone edited it on the website |
+| `META` | title, kind, published flag or estimated minutes differ |
+| `ORDER` | the server's lesson order is not the manifest's |
+| `MISSING` / `ORPHAN` | declared but absent / present but undeclared — the residue of a move (see §1c of `COURSE_STATE.md`) |
+
+**When it reports `BODY`, decide which side wins before publishing.** Copy the
+change into the markdown, or accept that the publish will overwrite it. There is
+no merge.
 
 ### Idempotency
 
