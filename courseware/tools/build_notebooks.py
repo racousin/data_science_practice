@@ -118,7 +118,7 @@ def notebook(cells: list[dict]) -> dict:
 # 0. pandas & seaborn — the pre-flight notebook
 # --------------------------------------------------------------------------- #
 def build_preflight() -> dict:
-    """Companion to the `Reference — pandas & seaborn` lesson in Session 1.
+    """Companion to the `Reference — pandas & seaborn` lesson in Session 2.
 
     Needs no API key and no ML-Arena account: it runs on seaborn's bundled
     penguins frame, which is also the dataset Session 2's "The Data" lesson is
@@ -141,7 +141,7 @@ def build_preflight() -> dict:
             "*The Data* lesson is built on, so you meet it twice.",
             "",
             "The written version is the *Reference — pandas & seaborn* lesson in",
-            "Session 1. Read either; do this one.",
+            "Session 2. Read either; do this one.",
         ),
         md("---", "", "## 1. The DataFrame",
            "",

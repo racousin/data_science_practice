@@ -289,7 +289,7 @@ notebooks are executed and their submissions scored, and the guided ones are
 asserted to contain no code.
 
 `build_notebooks.py` also emits three notebooks that are not challenges and need
-no ML-Arena account — the pandas/seaborn pre-flight for Session 1 and the two
+no ML-Arena account — the pandas/seaborn pre-flight for Session 2 and the two
 Session 4 warm-ups. They are reached from their lessons rather than from a
 competition page.
 

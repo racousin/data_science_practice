@@ -137,6 +137,34 @@ image paths in any body, `session-plan` confirmed `is_published=False`, and
 `../student_view/` was re-dumped — it had been the 2026-09-02 baseline, so it
 also picks up the 09-03 and 09-05 republishes.
 
+**`Reference — pandas & seaborn` then moved to Session 2, same day.** It teaches
+the libraries Session 2 is the first to use, and `s2-ml-foundations/the-data`
+links straight to it, so it now sits last in module **#32** as lesson **180**;
+module #14 is 24 lessons.
+
+The move cost one manual deletion, and the publish that skipped it **failed**:
+
+```
+reorder_lessons failed: ordered_ids must be exactly this module's lesson ids
+```
+
+`publish_mlarena.py` never deletes, so lesson 170 stayed in module #14 while the
+manifest stopped listing it, and `reorder_lessons` rejects a list that is not the
+module's exact set — the same constraint §1b records for `reorder_modules`, one
+level down. **`delete_lesson` has to run before the publish, not after.** The
+failed run changed nothing live (it stops at the first module and module #32 was
+never reached), so recovery was: delete 170, drop its key from
+`.mlarena-state.json`, re-publish.
+
+Four references moved with it, and none of them is in the lesson body: the
+`the-data` callout (which said "in Session 1"), the `build_preflight` docstring
+and the Colab notebook text in `tools/build_notebooks.py`, and one line of
+`README.md`. Regenerating the notebooks changed exactly one line of
+`aie-s0-pandas-seaborn.ipynb`, which is also the evidence that the other eight
+were already in sync.
+
+---
+
 **A silent deck defect was found and fixed.** `build_slides.py` steps down a font
 ladder until content fits the 4.95 in body box; when the last rung still does not
 fit it renders anyway and the overflow falls off the bottom of the slide, with no

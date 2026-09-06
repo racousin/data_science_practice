@@ -41,10 +41,10 @@ are available to you.
 The Palmer Archipelago penguins: 344 individuals, 7 measurements each.
 
 > The `pandas` and `seaborn` calls from here on are explained in
-> **Reference — pandas & seaborn** in Session 1, with a runnable Colab notebook
-> alongside it. If `groupby`, `get_dummies` or `pairplot` are unfamiliar, run
-> that notebook first — it takes twenty minutes and every session after this one
-> assumes it.
+> **Reference — pandas & seaborn**, the last lesson of this session, with a
+> runnable Colab notebook alongside it. If `groupby`, `get_dummies` or
+> `pairplot` are unfamiliar, run that notebook first — it takes twenty minutes
+> and every session after this one assumes it.
 
 ```python
 import seaborn as sns

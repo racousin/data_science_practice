@@ -8,10 +8,10 @@ If you already work with data frames, skim to *Categories into numbers* — the
 `reindex` alignment idiom in that section is the one thing here that reliably
 catches people who know pandas.
 
-<!-- notes: Reference lesson, in_deck: false. Pointed at from Session 2's "The
-Data". The scope is deliberately the intersection of "what the course uses" and
-nothing more — it was derived from the actual API calls in the lessons and the
-four challenge notebooks. -->
+<!-- notes: Reference lesson, in_deck: false. Pointed at from this session's
+"The Data". The scope is deliberately the intersection of "what the course uses"
+and nothing more — it was derived from the actual API calls in the lessons and
+the four challenge notebooks. -->
 
 ---
 
@@ -30,8 +30,8 @@ numbers. `pandas` is how you get there and `seaborn` is how you look at what you
 have before you commit to it.
 
 There is a **runnable companion notebook** to this page. Open it in Colab and
-execute it before Session 2; reading about a data frame is much less useful than
-having one in front of you.
+execute it before the rest of this session; reading about a data frame is much
+less useful than having one in front of you.
 
 ---
 

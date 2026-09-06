@@ -183,16 +183,6 @@ modules:
         estimated_minutes: 5
         is_published: true
         in_deck: false
-      # The course reads a CSV, reshapes it and plots it from session 2 onward
-      # and taught neither library anywhere; the 30h module that does teach them
-      # runs afterwards. Scope is the intersection of "what this course actually
-      # calls" and nothing else. Companion Colab: aie-s0-pandas-seaborn.ipynb.
-      - title: "Reference — pandas & seaborn"
-        slug: pandas-and-seaborn
-        file: s1-git-and-packaging/pandas-and-seaborn.md
-        estimated_minutes: 30
-        is_published: true
-        in_deck: false
       # The teacher's run-sheet for this module: the 3h core path, the cut list,
       # the live demos, and what to do when the room is behind. Not teaching
       # material — out of the student view and out of the deck.
@@ -278,6 +268,16 @@ modules:
         file: s2-ml-foundations/data-preparation.md
         estimated_minutes: 40
         is_published: true
+      # Moved here from session 1 on 2026-09-06: this is the session that first
+      # reads a CSV, reshapes it and plots it, and `the-data` links straight to
+      # it. Self-study, never lectured, so it sits last and out of the deck.
+      # Companion Colab: aie-s0-pandas-seaborn.ipynb.
+      - title: "Reference — pandas & seaborn"
+        slug: pandas-and-seaborn
+        file: s2-ml-foundations/pandas-and-seaborn.md
+        estimated_minutes: 30
+        is_published: true
+        in_deck: false
     # Two challenges, one per model family taught here: bike demand exercises
     # linear regression, bank term deposit exercises logistic regression. Both
     # are file_v1 (upload a CSV). Packages in competitions/s2-bike-demand and
