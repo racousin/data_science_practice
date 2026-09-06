@@ -1,147 +1,297 @@
-# Session Plan — Shell, Notebooks & Colab
+# Session Plan — Teacher's Run-Sheet
 
-> **Draft.** This is the authoring brief for the session, not the session. It is
-> unpublished: it states what will be built and why, so the next pass writes
-> lessons against a fixed target instead of re-deciding the scope.
+> **Not teaching material.** Unpublished and out of the deck. This is the plan
+> for running Session 1: what to lecture, what to demo, what to cut, and what to
+> do when the room falls behind.
 
-Session 2 was Agentic Coding; those six lessons now sit at the end of Session 1.
-This slot is free, and the material it should carry is the one thing the course
-assumes everywhere and teaches nowhere: **the shell, the notebook, and Colab.**
+Session 1 is the engineering floor for both modules — the 12h *AI Engineering*
+and the 30h *Machine Learning Practice* that follows it. Nothing after it works
+if this does not land.
 
 ---
 
-## Why this session exists
+## 1. The contract
 
-Session 1 opens with `git init`, `uv venv`, `uv run pytest`. Sessions 3 and 4
-are built out of notebook-shaped work — load a dataframe, plot it, train a
-model, read a traceback — and the MS2A competitions hand students a Colab link
-as the starting point. Three tools, used from the first hour, taught in none.
+**One deliverable, one URL.** Every student leaves with a GitHub repository
+containing a tested, installable Python package whose tests run themselves on
+GitHub's machines, plus a Colab notebook that installs it from that repository.
 
-The failure mode is not that students cannot learn them alone. It is that the
-ones who cannot spend Session 1 debugging their terminal instead of learning
-git, and the gap is invisible from the front of the room: a student who cannot
-read `command not found` looks identical to one who disagrees with the design.
+Assessment for this session lives entirely on the students' GitHub accounts. The
+two ML-Arena competitions attached to the module (179, 180) are **optional** parts
+of Labs 1 and 3 — an outside opinion, not a requirement.
 
-The three tools are also a progression, not a list:
+Six things, and a student can check all six themselves:
 
-| | Where the code runs | What persists | Taught for |
+| | Evidence |
+|---|---|
+| a GitHub repository | the URL |
+| an installable package | `import textstats` from outside the project |
+| a test suite | `uv run pytest` — 8+ green |
+| CI | a green run in the Actions tab, badge in the README |
+| a reviewed pull request | merged, with a comment that is not "LGTM" |
+| Colab | a notebook that `pip install`s from the tag and runs |
+
+---
+
+## 2. What is written, and what fits
+
+The module holds **725 minutes** of written material against a **180-minute**
+slot. That is deliberate: the written lessons are the reference students keep
+for the year, and the run-sheet below is the subset you lecture.
+
+| | Lessons | Minutes |
+|---|---|---|
+| Core — the 3h path | 15 | ~410 written, ~145 lectured |
+| Extension — same session, not lectured | 6 | ~185 |
+| Reference — never lectured | 3 | 45 |
+| Labs | 3 | 150 |
+
+The deck is 288 slides. You will show perhaps 120 of them. Nothing is lost by
+skipping a slide — the web lesson is where the student reads it afterwards.
+
+---
+
+## 3. Before the session
+
+Send this to the cohort **three days ahead**. It is worth twenty minutes of
+class time.
+
+> Before Session 1, please do the following. It takes 20 minutes and it is not
+> optional — the session starts with everyone typing.
+>
+> 1. Create a GitHub account: <https://github.com>. Use a username you would put
+>    on a CV. Enable two-factor authentication.
+> 2. Install VS Code: <https://code.visualstudio.com>, plus the **Python**,
+>    **Jupyter** and **Ruff** extensions.
+> 3. Install git. Windows: <https://git-scm.com/download/win> — it includes
+>    **Git Bash**, which you will use as your terminal all term.
+> 4. Install uv: `curl -LsSf https://astral.sh/uv/install.sh | sh`
+>    (Windows: `powershell -c "irm https://astral.sh/uv/install.ps1 | iex"`).
+> 5. Open <https://colab.research.google.com> and run one cell.
+>
+> Then paste these four lines into a terminal. All four must print a version:
+>
+> ```
+> git --version
+> uv --version
+> uv run --python 3.12 python -c "print('python ok')"
+> code --version
+> ```
+>
+> If any fails, come 15 minutes early.
+
+Expect roughly a third of the room not to have done it. Block 0 exists for them.
+
+---
+
+## 4. The 3-hour run-sheet
+
+`L` = lecture, `D` = live demo on the projector, `H` = hands on keyboards.
+
+| Minutes | Block | Lesson | Mode |
 |---|---|---|---|
-| **Shell** | your machine | the filesystem | running anything the course asks you to run |
-| **Notebook** | your machine, one kernel | the kernel's memory | exploration, plots, iteration |
-| **Colab** | Google's machine, with a GPU | nothing, unless you mount it | Sessions 3-4 and every MS2A competition |
+| 0–8 | What we are building today | `session-map` | L |
+| 8–25 | Accounts, install, verify | `accounts-and-tools` | **H** |
+| 25–40 | The shell: paths, PATH, streams, errors | `the-shell` | L + H |
+| 40–45 | Why version control | `why-version-control` | L |
+| 45–65 | Git: status / add / commit / log / diff / undo | `git-essentials` | **D** |
+| 65–80 | Branching, merging, a real conflict | `branching-and-collaboration` | **D** |
+| 80–90 | Pull requests and review | `pull-requests-and-review` | **D** |
+| **90–100** | **break** | | |
+| 100–110 | Environments: venv, uv, lock | `python-environments` | L |
+| 110–125 | Packaging and tests | `packaging-and-tests` | L + D |
+| 125–137 | CI: one workflow file, watch it go green then red | `github-actions` | **D** |
+| 137–147 | Notebooks and Colab: the kernel, the ephemeral VM | `notebooks-and-colab` | **D** |
+| 147–180 | **Lab 1**, in the room, you circulating | `lab-1` | **H** |
 
-The last column is the argument. Each is introduced because something later
-requires it, not for completeness.
+Lab 1 needs 60 minutes and gets 33. That is intentional: students get to Part E
+(CI) in the room, where you can unblock them, and finish Parts F–G at home.
 
----
-
-## Block 1 — The Shell
-
-**Target:** a student can navigate to a repository, inspect it, run a command,
-and read the error when it fails.
-
-- Paths — absolute vs relative, `.`, `..`, `~`, and why `cd` is the source of
-  half of all "the file is not there" reports.
-- `ls`, `cd`, `pwd`, `cat`, `less`, `mkdir`, `rm`, `mv`, `cp`. Ten commands, no
-  more.
-- Tab completion and history. Taught as the two habits, not as trivia.
-- `$PATH` and `which` — the mechanism behind `command not found` and behind
-  "it works in the terminal but not in VS Code".
-- Exit codes, `stdout` vs `stderr`, and the pipe. Enough to understand
-  `uv run pytest -q | tail -20`.
-- Environment variables — `export MLARENA_API_KEY=…` is a lab step in this
-  course; students should know what it does and why it dies with the shell.
-
-**Deliberately excluded:** `sed`/`awk`/`grep` beyond a literal search, shell
-scripting, job control, `vim`. They are a reference lesson at most.
-
-**Windows.** Decide once and state it on the page: WSL, or Git Bash. The rest of
-the session assumes it. Undecided — see open questions.
+**Labs 2 and 3, and the six agentic-coding lessons, do not fit in three hours.**
+See §7 for the three ways of dealing with that; decide before the session, not
+during it.
 
 ---
 
-## Block 2 — Notebooks
+## 5. The five live demos
 
-**Target:** a student can run a notebook, explain why it broke, and know when to
-stop using one.
+The demos are the session. Slides are the notes students read afterwards.
 
-- The kernel model — cells are not a program; a notebook is a REPL with a
-  scrollback. This is the whole lesson and everything else follows from it.
-- Out-of-order execution. The demo is the lesson: run cells 1, 3, 2 and produce
-  a result that no fresh run reproduces. Then *Restart & Run All* as the only
-  honest check.
-- `!` and `%` — shell escape and magics, which is where Block 1 pays off.
-- Where the file lives and what `git diff` shows for it: a JSON blob with
-  outputs, which is why the packaging lesson said "notebooks are not the
-  deliverable".
-- The handoff, and the through-line back to Session 1: explore in the notebook,
-  ship the tested module. Not one or the other.
+### D1 — Git, from nothing (45–65)
 
-**Deliberately excluded:** widgets, `nbconvert`, Jupyter server configuration.
+Empty directory, projector, no notes. Narrate every command.
 
----
+```bash
+mkdir demo && cd demo && git init
+echo "hello" > a.txt
+git status                      # untracked
+git add a.txt && git status     # staged
+git commit -m "Add a.txt"
+echo "world" >> a.txt
+git diff                        # unstaged
+git add a.txt && git diff       # nothing! -- this is the moment
+git diff --staged               # there it is
+git restore --staged a.txt
+git log --oneline --graph
+```
 
-## Block 3 — Colab
-
-**Target:** a student can open the competition's starter notebook, get a GPU,
-and get their data and results in and out.
-
-- What it is: a hosted notebook on someone else's machine, and every consequence
-  of that word *hosted*.
-- Runtime types and the GPU toggle — the reason Sessions 3-4 use it at all.
-- The ephemeral filesystem. Uploads, `!wget`, Drive mount; the runtime dies and
-  takes everything with it. Save the weights or lose them.
-- `!pip install` in a session, and why the first cell of every course notebook
-  is an install cell.
-- Submitting from Colab to ML-Arena — the API key, and the fact that pasting one
-  into a shared notebook publishes it.
-
-**Deliberately excluded:** Colab Pro, TPUs, local runtime connection.
+The pause after `git add a.txt && git diff` printing nothing is the single most
+valuable ten seconds of the session. Let it sit before explaining.
 
 ---
 
-## Lab
+### D2 — A conflict, resolved (65–80)
 
-One lab, three parts, one artifact — the same shape as Labs 1 and 2:
+```bash
+git switch -c feature/x
+echo "HELLO" > a.txt && git commit -am "Shout"
+git switch main
+echo "bonjour" > a.txt && git commit -am "Translate"
+git merge feature/x             # CONFLICT
+cat a.txt                       # show the markers
+```
 
-1. **Shell** — from a fresh terminal: clone the Session 1 repository, create the
-   environment, run the tests, and capture the output of a failing run into a
-   file. Graded on the file, which cannot be produced without the pipe.
-2. **Notebook** — open the provided notebook, which is broken by out-of-order
-   execution. Diagnose it, fix it, and prove it with a clean *Restart & Run All*.
-3. **Colab** — open the same notebook in Colab, enable the GPU, print the device,
-   and submit a result to the session competition from the notebook itself.
+Then resolve it **badly** first — take one side wholesale — and ask the room
+what was lost. Then resolve it properly.
 
-The lab ends where every lab in this course ends: a submission on a leaderboard.
+### D3 — A pull request (80–90)
 
----
+On a prepared throwaway repository with a partner in the room:
 
-## Competition
+push a branch → open the PR → have a student leave a `suggestion` comment →
+apply it with one click → merge → delete the branch.
 
-Session 2 currently carries **#180 (PAIE S2 — Flesch reading-ease)**, which
-belongs to Lab 2 and moves to Session 1 with it. This session needs its own.
-
-The requirement it has to meet is the one Session 1's does not: it must be
-submittable **from a Colab notebook in the last twenty minutes of class**. That
-argues for a scorer with a trivial floor and a one-cell reference solution —
-closer to `s4-mnist-warmup` than to `s3-adult-income` — so the thing being
-tested is the submission path, not the model.
-
-Per the house style in `competitions/s3-adult-income/overview.md:50-63`, its
-page must state the measured trivial floor, the reference score, and the
-direction. Numbers, not "beat the baseline".
+Ninety seconds of GitHub UI beats ten minutes of description.
 
 ---
 
-## Open questions
+### D4 — CI going red (125–137)
 
-1. **Where does this session go?** It is written as Session 2, but the argument
-   in *Why this session exists* is an argument for it being **Session 0** —
-   everything Session 1 does assumes it. Renumbering costs four module slugs,
-   which are immutable, so decide before the next publish.
-2. **Windows policy.** WSL or Git Bash. Affects every command on every page.
-3. **Session 1 is now 12 lessons / ~5 hours** against a 3-hour slot. It holds
-   two sessions' material and has to be split; this plan does not depend on how.
-4. **Does the notebook block duplicate Session 3?** Session 3 already opens in a
-   notebook. This block should teach the kernel model and hand Session 3 a
-   student who has it — not teach pandas twice.
+Commit `.github/workflows/tests.yml`, push, switch to the Actions tab, wait for
+green. Then break one assertion, push, and **wait for the red**. The red run is
+the demo; the green one is just setup.
+
+If the room is short on time, have the green run already in history and only do
+the red.
+
+### D5 — The notebook that lies (137–147)
+
+```python
+x = 1        # cell 1, run it
+print(x)     # cell 2, run it -> 1
+```
+
+Now edit cell 1 to `x = 2` and **do not re-run it**. Re-run cell 2. It still
+prints 1. Then *Restart & Run All* and it prints 2.
+
+Ten seconds, and every student understands the kernel model.
+
+---
+
+## 6. Where the room stalls, and the fix
+
+| Stall | Fix |
+|---|---|
+| `command not found` right after installing | open a new terminal — it is `PATH`, always |
+| `Permission denied (publickey)` | the SSH key is not on the account; or use `gh auth login` |
+| Windows student in PowerShell | move them to Git Bash before anything else |
+| VS Code cannot import the package | *Python: Select Interpreter* → the project `.venv` |
+| `uv sync` then `Failed to spawn: pytest` | pytest is in `[project.optional-dependencies]`; it belongs in `[dependency-groups]` |
+| CI red, local green | uncommitted file — almost always `uv.lock` |
+| Repository is 200 MB | `.venv/` was committed; `.gitignore` first, then `git rm -r --cached .venv` |
+
+The last three are worth putting on the board pre-emptively at the start of
+Lab 1.
+
+---
+
+## 7. The agentic-coding block — three options
+
+Six lessons, ~160 minutes, plus Lab 3. It cannot go inside the 180.
+
+**Option A — homework, recommended.** Lecture nothing today. Set
+`assistant-landscape` → `guardrails-and-review` as reading plus Lab 3 for the
+following week, and open Session 2 with a 15-minute recap and a live agent
+demo. Costs 15 minutes of Session 2; keeps Session 1 coherent.
+
+**Option B — a 25-minute demo, no theory.** Cut the shell block to 10 minutes
+and Lab 1 to 20 in the room. Show one agent loop live — plan, test-first,
+implement, review the diff, reject something — and point at the lessons. The
+room sees the shape; nobody practises it.
+
+**Option C — a fifth session.** The honest answer if agentic coding matters as
+much as the rest. This module is currently three sessions of content in four
+slots wearing four names; adding a slot for it would also fix the numbering that
+`COURSE_STATE.md` §1b flags.
+
+Whichever you pick, say it out loud at the start of the session. Students who
+expect Claude Code and get git are disappointed by a scheduling decision, not by
+the content.
+
+---
+
+## 8. The three labs
+
+| | Lab | Shape | When | Deliverable |
+|---|---|---|---|---|
+| 1 | Ship a Package to GitHub | solo | in the room, finish at home | repository URL |
+| 2 | Pull Request & Review | **pairs** | homework | a merged PR + a review given |
+| 3 | Agent-Driven Feature | pairs | homework | a merged PR + `RETRO.md` |
+
+Lab 2 must be paired and cannot be faked alone: it requires a review *given* on
+someone else's repository and a review *received* on yours. Pair students at the
+end of the session, in the room, and write the pairs down — leaving it to them
+produces four students with no partner.
+
+Each lab ends with a **"Did you validate this lab?"** checklist whose every row
+is objectively verifiable by the student. Marking is reading those rows against
+the repository.
+
+The fast grading pass, per student, in under two minutes:
+
+```bash
+git clone <url> /tmp/g && cd /tmp/g
+uv sync && uv run pytest -q          # 25% of Lab 1
+git log --oneline --graph | head -20 # history quality
+git ls-files | grep -E '\.venv|__pycache__'   # must be empty
+gh run list --limit 3                # CI actually ran
+```
+
+---
+
+## 9. What changed in this rebuild (2026-09-06)
+
+For the record, since the module was previously *Git & Python Packaging*:
+
+- **New:** `session-map`, `accounts-and-tools`, `the-shell`,
+  `pull-requests-and-review`, `notebooks-and-colab`, `assistant-landscape`.
+- **Promoted from reference to taught:** `github-actions` (now a full CI/CD
+  lesson) and `ide-syntax-linting` (now linting, formatting, types and
+  pre-commit). Both kept their slugs; both were rewritten.
+- **Labs renumbered:** Lab 1 rewritten around the GitHub + CI + Colab
+  deliverable; Lab 2 is now the pull-request-and-review lab; the old Lab 2
+  (agent-driven feature) became Lab 3.
+- **Competitions demoted to optional.** Session 1 is assessed from GitHub.
+- **30 figures authored**, generated by
+  `tools/figures/s1_git_and_packaging.py`. Session 1 had no taught PPTX to lift
+  stills from, so every diagram is drawn by that script and traceable to it.
+
+---
+
+## 10. Open decisions
+
+1. **The agentic block** — options A / B / C in §7. Needs a call before the
+   session, and it changes the deck you present.
+2. **Windows policy.** The lessons assume Git Bash or WSL and say so once, in
+   `accounts-and-tools`. If the cohort is mostly Windows, decide which and put
+   it in the pre-flight email.
+3. **Public or private lab repositories.** The lessons recommend **public**:
+   free CI minutes, unrestricted branch protection, and `pip install
+   git+https://…` works in Colab with no token. If the school requires private,
+   Lab 1 Part G needs a token step and CI minutes become finite.
+4. **Whether to keep 179/180 attached at all.** They are optional today. If the
+   evaluation for this session ends up being purely GitHub-based, detaching them
+   removes two cards from the module page that no required lesson uses.
+5. **Pair assignment for Labs 2 and 3.** Fixed pairs for both, or reshuffle
+   between them. Reshuffling doubles the number of repositories each student has
+   to read, which is the point of the exercise.

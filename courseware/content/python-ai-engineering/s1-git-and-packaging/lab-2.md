@@ -1,250 +1,208 @@
-# Lab 2 — Agent-Driven Feature
+# Lab 2 — Pull Request & Review
 
-Same pairs, same repository as Lab 1. You will add a feature using an agent and
-open a pull request that would survive a real review.
+Lab 1 was you and a repository. This one needs a second person, because review
+is the half of version control that cannot be practised alone.
 
-**Time:** 45 minutes in class for Parts A–E; Part F is five more, in the room
-if there is time and before the next session otherwise. **Deliverable:** a
-merged PR, a short retrospective file, and a scored submission on
-competition `180`.
+**Pair up.** You keep your own `textstats` repository from Lab 1; you will
+contribute to your partner's and they will contribute to yours.
 
----
+**Time:** 45 minutes. **Deliverable:** in *your* repository — one merged pull
+request that you authored, one review you gave on your partner's, and one
+resolved merge conflict.
 
-## Part A — Set the context (10 min)
-
-If you still have the throwaway `agent-sandbox` branch from *Setup*, throw it
-away first: `git restore . && git switch main && git branch -D agent-sandbox`.
-
-1. `git switch main && git pull && git switch -c feature/readability`
-2. Confirm `git status` is clean.
-3. Create `CLAUDE.md` (or `CONVENTIONS.md` for Aider) covering:
-   - the install / test / lint commands
-   - your `src/` layout and test-mirroring convention
-   - the fail-fast rule: no defaults for required arguments, no bare `except`
-   - one explicit "do not": no new dependencies without asking
-
-Write it yourself, or run `/init` and then **edit it** — an unedited `/init`
-draft does not count.
+<!-- notes: Pairing is the whole lab; if the room is odd, make one trio and have
+the third person review both. Part D (the conflict) is the part that actually
+teaches — protect the time for it. -->
 
 ---
 
-## Part B — Plan before code (10 min)
+## Part A — Grant access (5 min)
 
-The feature: a `readability` module implementing the Flesch reading-ease score.
+In **your** repository: *Settings → Collaborators → Add people*, add your
+partner. They do the same for you. Accept the invitation from your email or from
+`github.com/notifications`.
 
-$$
-206.835 - 1.015 \times \frac{\text{words}}{\text{sentences}} - 84.6 \times \frac{\text{syllables}}{\text{words}}
-$$
-
-The formula is the easy part. *Word*, *sentence* and *syllable* are not defined
-by it, and syllable counting has no canonical answer — so the two sections
-below pin one. Those rules are the specification, they are what competition
-`180` grades against, and you hand them to your agent **verbatim**.
-
----
-
-## Part B — the pinned specification
-
-**Sentences.** Count the maximal *runs* of characters drawn from `.!?`.
-`"Wait... no!"` is **two** sentences, not four — the `...` is one run. A text
-with no such punctuation counts as **one** sentence, never zero.
-
-**Words.** Split on whitespace, then strip leading and trailing characters that
-are not letters or digits. Tokens that become empty are dropped.
-`"end."` → `end`; `"--"` → dropped; `"under_scores"` → `under_scores`, because
-the stripping is only at the ends.
-
-**Syllables**, per word. Lowercase it and count the maximal runs of `aeiouy`
-(`y` counts). Then: if the word ends in `e` **and** that count is greater than
-1, subtract 1. The result is never less than 1.
-
----
-
-## Part B — worked syllable counts
-
-| word | vowel runs | ends in `e`? | syllables |
-|---|---|---|---|
-| `time` | `i`, `e` → 2 | yes, and count > 1 → −1 | **1** |
-| `the` | `e` → 1 | yes, but count is 1 → no change | **1** |
-| `place` | `a`, `e` → 2 | yes → −1 | **1** |
-| `queueing` | `ueuei` is *one* run → 1 | no | **1** |
-| `rhythm` | `y` → 1 | no | **1** |
-| `dryly` | `y`, `y` → 2 | no | **2** |
-| `reevaluation` | `ee`, `a`, `ua`, `io` → 4 | no | **4** |
-| `42` | none → 0 | no | **1** (the floor) |
-
-`queueing` is the one worth staring at: `u e u e i` are five *contiguous*
-vowels, so the rule sees a single run. That is not how English works, and it is
-still the answer — the spec is the spec. An implementation that is right about
-the arithmetic and has its own opinion about the rules scores half. Part F has
-the measured numbers.
-
----
-
-## Part B — ask for the plan
-
-Ask for a **plan only**, and paste the specification into the prompt:
-
-```text
-> Read src/textstats/ and tests/. Here is the specification for a Flesch
-> reading-ease score, which is fixed and not up for negotiation:
-> <paste the three pinned rules, verbatim>
-> Propose how to add it: module, signature, syllable-counting approach, edge
-> cases, and the tests you would write. Do not write any code.
-```
-
-Pasting the rules is the whole trick. Without them the agent invents a
-syllable heuristic, you have no way to say it is wrong, and the leaderboard
-disagrees with you twenty times.
-
-**Save the plan** into `RETRO.md` under a heading `## Plan`. Then push back on
-it at least once — a real objection, in writing, before any code exists.
-
----
-
-## Part C — Test first (10 min)
-
-```text
-> Write the tests from the plan. Do not write the implementation.
-```
-
-Read every test. At minimum you must have:
-
-- **a known value.** `flesch_reading_ease("The cat sat on the mat.")` is
-  `pytest.approx(116.145)` — 6 words, 1 sentence, 6 syllables. Do that
-  arithmetic yourself before you accept the number.
-- **one case per pinned rule.** `"Wait... no!"` is two sentences; `dryly` is
-  two syllables; `queueing` is one; `42` is one. If your module exposes the
-  counters, assert on them directly. If it does not, one whole-text assertion
-  covers the `y` rule five times over:
-  `flesch_reading_ease("Rhythm myths fly by dryly.")` is
-  `pytest.approx(100.24)`.
-- **empty input → raises `ValueError`**, does not return `0.0`.
-- **text with no sentence-ending punctuation** — one sentence, never zero.
-
-If the generated tests do not fail for the right reason, they are not tests.
-Run them and confirm they fail:
+Then clone each other's:
 
 ```bash
-uv run --all-extras pytest -v
+git clone git@github.com:<partner>/textstats.git partner-textstats
 ```
 
-`--all-extras` is what installs `pytest` when your Session 1 `pyproject.toml`
-declares it under `[project.optional-dependencies]`. If yours declares a
-`[dependency-groups] dev` instead, the flag is a harmless no-op.
+You now have two repositories on disk. Keep them straight — `pwd` before every
+command for the rest of this lab.
 
 ---
 
-## Part D — Implement and verify (10 min)
+## Part B — Protect main (5 min)
 
-```text
-> Now implement it so the tests pass. Do not modify the tests.
-```
+In your own repository: *Settings → Branches → Add branch ruleset*, targeting
+`main`:
 
-Let the loop run. Then, yourself:
+- ✅ Require a pull request before merging
+- ✅ Require status checks to pass → select `test`
+- ✅ Require approvals: **1**
+
+Push directly to `main` now and watch it be refused:
 
 ```bash
-git diff
-uv run --all-extras pytest
+git switch main
+echo "x" >> README.md && git commit -am "direct push" && git push
 ```
 
-**Reject and re-prompt** if you see any of: a bare `except`, a default value for
-a required argument, a new dependency, or an edited test.
+```text
+! [remote rejected] main -> main (protected branch hook declined)
+```
+
+Undo it locally — `git reset --hard origin/main` — and note what just happened:
+your process is now enforced by the server, not by your intentions.
 
 ---
 
-## Part E — Retrospective (5 min) + PR
+## Part C — Contribute to your partner's package (15 min)
 
-Finish `RETRO.md`:
+In **their** repository, add one function on a branch:
+
+```bash
+cd partner-textstats
+git switch -c feature/average-word-length
+```
+
+```python
+def average_word_length(text: str) -> float:
+    """Mean token length, over the tokens of `text`.
+
+    Raises ValueError if `text` contains no tokens.
+    """
+```
+
+Use *their* conventions, not yours: same tokenisation rule as their
+`word_count`, same error behaviour as their `longest_word`, tests in the same
+style, exported from `__init__.py` if that is what they do.
+
+
+---
+
+## Part C — push it and open the pull request
+
+Write the test **first**, watch it fail, then implement.
+
+```bash
+uv sync && uv run pytest -q
+git push -u origin feature/average-word-length
+```
+
+Open the pull request with a real description:
 
 ```markdown
-## Plan
-<the plan you were given>
+## Why
+`textstats` reports counts but nothing about token size. Readability
+metrics in Lab 3 need a mean length.
 
-## My objection
-<what you pushed back on, and why>
+## How to check it
+uv sync && uv run pytest -q   →  11 passed
 
-## What I rejected
-<at least one thing the agent produced that you refused, and why>
-
-## What I could not explain
-<any line you had to go and understand — or "none", honestly>
+## Not in this PR
+Median and standard deviation — separate change if wanted.
 ```
 
-Push and open the PR now. Your partner's review and the merge are
-**homework** — they need a second person to stop what they are doing, and five
-minutes of class time does not buy that.
+**Check:** CI runs on their repository, against your branch, and is green.
 
 ---
 
-## Part F — Put it on the board (5 min)
+## Part D — Review (10 min)
 
-**PAIE S2 — Flesch reading-ease** (competition `180`) runs your module against
-twenty hidden texts and the reference implementation of the specification in
-Part B. Same rules, same tie-breaks, no taste involved — which is the point:
-this is the one part of the lab that is settled by a number rather than by a
-reader.
+Now review the pull request **they** opened on **your** repository. On the
+*Files changed* tab, leave at least **three** comments, and at least one of each:
 
-Copy `readability.py` out of your package into a flat directory. It must not
-import anything from `textstats`, because only the files you upload are there.
-Put a six-line `agent.py` next to it:
+| Kind | Example |
+|---|---|
+| A question | "Why strip here rather than in `word_count`? It duplicates line 8" |
+| A concrete defect, with a location | "`average_word_length(' ')` divides by zero — no test covers it" |
+| A `suggestion` block | a two-line fix the author applies with one click |
 
-```python
-from readability import flesch_reading_ease
+Then choose a verdict: **Request changes** if something must change,
+**Approve** if you would ship it. Not "Comment" — this lab requires a decision.
 
+**"LGTM" does not count.** A comment that does not name a location and a
+consequence is not a review.
 
-class Agent:
-    def __init__(self):
-        pass
-
-    def flesch_reading_ease(self, text):
-        return flesch_reading_ease(text)
-```
-
-Then submit both files:
+The author addresses the comments by pushing to the same branch:
 
 ```bash
-uv pip install mlarena-sdk
+git add -p && git commit -m "Raise on whitespace-only input"
+git push          # the PR updates itself
 ```
 
-```python
-import mlarena
-
-client = mlarena.connect(api_key="mlk_user_...")   # from your Profile page
-client.submit(competition_id=180, files=["agent.py", "readability.py"])
-print(client.status())                             # queue_info / run_info / message
-```
-
-The package is `mlarena-sdk`; it imports as `mlarena`. Once the run has
-finished, `client.leaderboard(180)` and the competition page both show your
-score. If `client.competition(180)` raises `CompetitionNotFoundError`, the
-competition is not open yet — tell your teacher, it is one command on their
-side.
+Re-review, approve, **Squash and merge**, delete the branch.
 
 ---
 
-## The number you are aiming at
+## Part E — A conflict, on purpose (8 min)
 
-The ranked column is **pass rate**: the fraction of the twenty texts you answer
-within `1e-6` of the reference. It runs 0% to 100% and **higher is better**.
-Measured on this exact evaluation set:
+Both of you, in **your own** repository, at the same time:
 
-| implementation | pass rate | mean abs error |
-|---|---|---|
-| the starter you are given (`raise NotImplementedError`) | 0.0% | 0.0000 (nothing to measure) |
-| every rule guessed: vowel *letters* not runs, no `y`, no silent `e`, no stripping, one sentence per `.!?` character | 20.0% | 43.6401 |
-| the spec followed except that `y` is not a vowel | 50.0% | 5.4622 |
-| the pinned specification, implemented exactly | **100.0%** | 0.0000 |
+1. `git switch main && git pull`
+2. Each of you creates a branch and edits **the same line** of `README.md` —
+   the project description line.
+3. Both push and open pull requests.
+4. Merge the first one.
 
-**A completed Lab 2 scores 100.0%, 20 of 20.** Unusually, the bar is a ceiling
-rather than a target: the spec is pinned, so anything below it means your rules
-and the specification disagree somewhere. Mean absolute error tells you how
-badly — around `5` is one rule, above `40` is several. The competition overview
-has the full ladder, one rung per rule.
 
-Note the third row. Dropping a single rule — `y` — costs you half the board
-while leaving an implementation that looks entirely reasonable in review. That
-is the argument for pinning a specification before you prompt, made in numbers.
+---
+
+## Part E — resolving it
+
+The second pull request now says *"This branch has conflicts that must be
+resolved"*. Resolve it locally:
+
+```bash
+git switch main && git pull
+git switch feature/<your-branch>
+git merge main
+```
+
+```text
+CONFLICT (content): Merge conflict in README.md
+```
+
+
+---
+
+## Part E — the markers
+
+Open the file. Git has written both versions into it:
+
+```text
+<<<<<<< HEAD
+Text statistics utilities for the MS2A AI Engineering course.
+=======
+A small library of text metrics: counts, lengths, frequencies.
+>>>>>>> main
+```
+
+Edit it into the sentence you actually want — often neither side verbatim —
+delete all three markers, then:
+
+```bash
+git add README.md
+git commit                 # git pre-fills the merge message
+git push
+```
+
+**Check:** `git log --graph --oneline -10` shows the merge commit, and the pull
+request is now mergeable.
+
+---
+
+## Part F — Read your own history (2 min)
+
+```bash
+git log --graph --oneline --decorate -15
+git log --format='%an' | sort | uniq -c
+```
+
+The second command must show **both** names. A repository that only ever had one
+author has not exercised anything this lab is about.
 
 ---
 
@@ -252,60 +210,55 @@ is the argument for pinning a specification before you prompt, made in numbers.
 
 | Criterion | Weight |
 |---|---|
-| `CLAUDE.md` is specific to this project, not generic | 15% |
-| Tests written before implementation, and meaningful | 25% |
-| `RETRO.md` shows real pushback, not a transcript | 20% |
-| Diff is clean: no silent failure, no unapproved deps | 20% |
-| Competition `180` pass rate 100.0% (20/20) | 10% |
-| PR reviewed by your partner before merge | 10% |
+| A merged PR you authored on your partner's repository, CI green | 25% |
+| Three substantive review comments, one of them a `suggestion` | 25% |
+| Branch protection active on your `main`, and demonstrably enforcing | 15% |
+| A resolved conflict, with both contributions surviving | 20% |
+| Both authors present in your repository's history | 15% |
 
 ---
 
-## The rule for this lab
+## Common failures
 
-> If you cannot explain a line, it does not merge.
-
-You may be asked to walk through any line of the diff. "The agent wrote it" is
-not an answer.
+- **Reviewing on the *Conversation* tab.** Line comments live on *Files changed*.
+- **`git pull` in the middle of a conflict.** Finish or `git merge --abort`; do
+  not start a second merge inside the first.
+- **Resolving by taking one side wholesale.** `--ours` / `--theirs` are for
+  lockfiles, not for prose or code you should be reading.
+- **Leaving the `=======` markers in.** They are valid text and Git will happily
+  commit them. Your tests will not be so relaxed.
+- **A green PR that nobody read.** Approval is a claim about your attention.
 
 ---
 
 ## If you finish early
 
-Ask the agent to review its own work with a fresh session:
-
-```text
-> /clear
-> Review the diff between main and this branch for silent failure handling,
-> missing edge cases, and tests that assert nothing. Do not fix anything.
-```
-
-A clean context finds things the authoring context is blind to. Add whatever it
-finds — and whether you agreed — to `RETRO.md`.
+- Open an **issue** on your partner's repository describing a real limitation,
+  then a PR whose description says `Closes #<n>`, and watch the issue close on
+  merge.
+- Add a `.github/pull_request_template.md` with the *Why / How to check / Not in
+  this PR* headings, so every future PR starts with them.
+- Try `gh pr create`, `gh pr view --web`, `gh pr review --approve` from the
+  terminal.
 
 ---
 
-## Did you validate this session?
+## Did you validate this lab?
 
-- [ ] `uv sync --all-extras && uv run pytest` is green in a fresh clone of my
-      repository, on the `feature/readability` branch
-- [ ] `CLAUDE.md` names my install / test / lint commands, my `src/` layout and
-      at least one "do not", and is not unedited `/init` output (Part A)
-- [ ] `RETRO.md` contains the plan the agent proposed **and** the objection I
-      wrote before any code existed (Part B)
-- [ ] My tests contain the known value `pytest.approx(116.145)`, an empty-input
-      case expecting `ValueError`, and a case with no terminal punctuation
-      (Part C)
-- [ ] Those tests failed before the implementation existed, and pass now
-      (Parts C and D)
-- [ ] `git diff main...HEAD` shows no bare `except`, no default value on a
-      required argument, no edited test and no new dependency (Part D)
-- [ ] `RETRO.md` names at least one thing the agent produced that I refused,
-      and why (Part E)
-- [ ] My submission is on the leaderboard of **PAIE S2 — Flesch reading-ease**
-      (`#180`)
-- [ ] My score reaches the bar: **pass rate = 100.0%** (20/20). 50% means the
-      arithmetic is right and one rule is wrong
+- [ ] A pull request I authored is **merged** on my partner's repository, and its
+      check run was green before the merge
+- [ ] My repository's `main` refuses a direct push — I tried it and saw
+      `protected branch hook declined`
+- [ ] I left ≥ 3 line comments on my partner's PR, including one `suggestion`
+      block, and gave an explicit Approve or Request-changes verdict
+- [ ] At least one of my comments named a file and a line, and stated a
+      consequence
+- [ ] `git log --graph --oneline` in my repository shows a merge commit from a
+      conflict I resolved by hand
+- [ ] The final `README.md` contains both contributions, sensibly merged — not
+      one side deleted
+- [ ] `git log --format='%an' | sort -u` prints two names
+- [ ] `grep -r '<<<<<<<' .` finds nothing
 
-If the last two are not ticked you have not finished the lab, however good the
-code is.
+The last one takes two seconds and catches the single most common way this lab
+is handed in broken.

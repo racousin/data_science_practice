@@ -10,24 +10,7 @@ repo. The demo is the lesson; the slides are the notes. -->
 
 ## The cycle
 
-```text
-   ┌──────────┐
-   │ EXPLORE  │  read files, grep, understand
-   └────┬─────┘
-        v
-   ┌──────────┐
-   │   PLAN   │  state the approach before touching anything
-   └────┬─────┘
-        v
-   ┌──────────┐
-   │   ACT    │  edit files, run commands
-   └────┬─────┘
-        v
-   ┌──────────┐
-   │  VERIFY  │  tests, linter, actually run it
-   └────┬─────┘
-        └──────> back to ACT if verification failed
-```
+![The agent loop](assets/s1-git-and-packaging/the-core-loop/agent-loop.png)
 
 **Your leverage is highest at PLAN and VERIFY.** Those are the two steps
 students skip.
@@ -100,8 +83,8 @@ Now the loop closes on its own: it edits, runs `pytest`, reads the traceback,
 edits again. You are supervising a search, not typing.
 
 **No tests means no loop.** With nothing to check against, the agent stops when
-the code *looks* finished. This is the strongest practical argument for
-Session 1's test suite.
+the code *looks* finished. This is the strongest practical argument for the test
+suite you wrote in Lab 1.
 
 ---
 

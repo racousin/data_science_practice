@@ -61,6 +61,8 @@ courseware/
 │   └── .mlarena-state.json           # id lockfile — committed
 ├── tools/
 │   ├── build_slides.py               # Markdown -> PPTX
+│   ├── check_slide_overflow.py       # slides that render off the bottom
+│   ├── figures/                      # committed generators for authored figures
 │   ├── mathrender.py                 # LaTeX -> Unicode / PNG
 │   ├── publish_mlarena.py            # Markdown -> ML-Arena (idempotent)
 │   ├── build_competitions.py         # competition packages -> ML-Arena
@@ -149,7 +151,12 @@ traced to the code that drew it:
 ```bash
 uv run --with seaborn --with scikit-learn --with pandas \
     python tools/figures/s2_ml_foundations.py
+uv run --with matplotlib --with numpy \
+    python tools/figures/s1_git_and_packaging.py
 ```
+
+Session 1 has no taught deck to lift stills from, so **all 30** of its diagrams
+come out of that second script.
 
 Add a figure by adding a function there, not by dropping a PNG into the tree.
 
@@ -189,6 +196,7 @@ server-side, so neither can simply be renamed. See `COURSE_STATE.md` §1b, §5.3
 ```bash
 make slides                              # all sessions
 make slides-one MODULE=s1-git-and-packaging # one
+make check-slides                        # slides whose content overflows
 make pdf                                 # slides + PDF (needs LibreOffice)
 ```
 
@@ -198,6 +206,18 @@ with a cover, a divider per lesson, and speaker notes.
 Body text is auto-fitted: the builder estimates the content height and steps
 down a font ladder until the slide fits. A slide that comes out small is a
 slide with too much on it — split it with a `---`.
+
+When even the last rung of the ladder does not fit, the builder renders anyway
+and the overflow falls off the bottom of the slide, silently. `make check-slides`
+finds those; it exits non-zero, so it gates a build. `VERBOSE=1` prints the
+per-block heights, which is how you pick the split point. The budget worth
+remembering: the body box is **4.95 in**, and an **image costs a flat 3.4 in** of
+it — so a slide carrying a figure has room for about one short paragraph or a
+four-row table, and nothing else.
+
+Session 1 is clean. `s2-ml-foundations` and `s3-models-and-tuning` are not —
+they were authored before the check existed and carry ~70 overflowing slides
+between them.
 
 A lesson marked `in_deck: false` in `course.yaml` is skipped by the deck builder
 and published as usual — that is how the `Reference — …` self-study lessons sit

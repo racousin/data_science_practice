@@ -1,71 +1,26 @@
 # Git Essentials
 
-Install, configure, and the eight commands that cover 95% of daily use.
+The eight commands that cover 95% of daily use, and the four that get you out of
+trouble.
 
-<!-- notes: 45 minutes. Students type along. Do not lecture past `git log` —
-the undo section is where they actually need you. -->
+<!-- notes: 40 minutes. Students type along. Install and authentication were
+done in *Accounts & Toolchain* — do not repeat them here. Do not lecture past
+`git log`; the undo section is where they actually need you. -->
 
 ---
 
-## Install
+## Before you start
 
-| Platform | Command |
-|---|---|
-| macOS | `brew install git` (or Xcode command line tools) |
-| Debian / Ubuntu | `sudo apt install git` |
-| Windows | [git-scm.com/download/win](https://git-scm.com/download/win) — includes Git Bash |
-
-Verify:
+`git` is installed and configured — that was *Accounts & Toolchain*. Confirm:
 
 ```bash
 git --version
+git config --list --show-origin | grep user
 ```
 
-Anything from 2.30 onwards is fine for this course.
-
----
-
-## Configure once, per machine
-
-Git stamps your name and email into every commit. Set them before your first
-commit, or you will be rewriting history to fix attribution.
-
-```bash
-git config --global user.name "Marie Durand"
-git config --global user.email "marie.durand@example.edu"
-git config --global init.defaultBranch main
-```
-
-Check what is set:
-
-```bash
-git config --list --show-origin
-```
-
-<!-- notes: --show-origin is the one that saves them later, when a repo-local
-config overrides the global one and they cannot work out why. -->
-
----
-
-## Authenticating with GitHub
-
-GitHub stopped accepting passwords over HTTPS in 2021. Two options:
-
-**SSH key** (recommended — set once, works everywhere):
-
-```bash
-ssh-keygen -t ed25519 -C "marie.durand@example.edu"
-cat ~/.ssh/id_ed25519.pub
-```
-
-Paste the public key into *GitHub → Settings → SSH and GPG keys*. Test it:
-
-```bash
-ssh -T git@github.com
-```
-
-**Personal access token** — a generated string used as your HTTPS password.
-Fine, but expires and has to be stored somewhere.
+`--show-origin` is the flag that saves you later, when a repository-local
+config overrides your global one and you cannot work out why your commits carry
+the wrong name.
 
 ---
 
@@ -159,20 +114,34 @@ git blame src/model.py    # who last touched each line
 
 The three diffs, and the difference between them:
 
+
 ```bash
 git diff             # working directory vs staging  (not yet added)
 git diff --staged    # staging vs last commit        (added, not yet committed)
 git diff HEAD        # working directory vs last commit (everything)
 ```
 
-<!-- notes: This trips up nearly everyone. Draw the three areas on the board
-again and put each diff command as an arrow between two of them. -->
+
+---
+
+## The three diffs
+
+![The three diffs](assets/s1-git-and-packaging/git-essentials/three-diffs.png)
+
+<!-- notes: This trips up nearly everyone. Point at each arrow on the diagram as
+you name the command. -->
 
 ---
 
 ## Undoing — the four cases
 
 The command you need depends on how far the change has travelled.
+
+![Which undo](assets/s1-git-and-packaging/git-essentials/undo-map.png)
+
+---
+
+## Undoing — the four cases, as commands
 
 | Situation | Command |
 |---|---|

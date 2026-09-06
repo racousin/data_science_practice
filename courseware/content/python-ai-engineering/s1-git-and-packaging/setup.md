@@ -1,4 +1,4 @@
-# Setup
+# Assistant Setup
 
 Two tracks. Everyone does track A if they can; track B exists so that nobody is
 blocked by an account or a budget.
@@ -48,7 +48,8 @@ Pick one. The mental model in this session is identical across all of them.
 
 ## First contact
 
-In your Session 1 repository, `git status` must be clean first, and:
+In your `textstats` repository from Lab 1, `git status` must be clean first,
+and:
 
 ```bash
 git switch -c agent-sandbox
@@ -152,7 +153,7 @@ students who conclude the whole technique is useless. -->
 
 Confirm all four:
 
-- [ ] The tool starts inside your Session 1 repository.
+- [ ] The tool starts inside your `textstats` repository.
 - [ ] It can answer "what does this project do?" using your actual files.
 - [ ] It can run `pytest` and report the result.
 - [ ] You have interrupted it at least once with `Esc` / `Ctrl-C`.

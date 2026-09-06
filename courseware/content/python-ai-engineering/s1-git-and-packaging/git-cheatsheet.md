@@ -133,3 +133,52 @@ git reflog                        # what have I done, including undone things
 
 Four commands, in that order. They resolve most "my repository is broken"
 situations without anyone losing work.
+
+---
+
+## GitHub, from the terminal (`gh`)
+
+| Command | Description |
+|---|---|
+| `gh auth login` | Authenticate, and configure git's credentials |
+| `gh repo create <name> --public --clone` | Create and clone in one step |
+| `gh pr create --fill` | Open a pull request from the current branch |
+| `gh pr create --draft --fill` | Open it as a draft — CI runs, review does not |
+| `gh pr view --web` | Open the pull request in a browser |
+| `gh pr checks` | Status of the CI runs on this pull request |
+| `gh pr review --approve` | Approve it |
+| `gh pr merge --squash --delete-branch` | Merge and clean up |
+| `gh run list --limit 5` | The last five CI runs |
+| `gh run view --log-failed` | Just the failing step's log |
+
+---
+
+## uv, since it is always next to git here
+
+| Command | Description |
+|---|---|
+| `uv init --lib --name <pkg> .` | Scaffold a `src/` layout package |
+| `uv add <pkg>` / `uv add --dev <pkg>` | Add a runtime / development dependency |
+| `uv sync` | Make `.venv` match `uv.lock` exactly |
+| `uv lock` | Re-resolve and rewrite `uv.lock` |
+| `uv run <cmd>` | Run in the project environment, no activation |
+| `uv run --project <path> <cmd>` | Run against a project you are not standing in |
+| `uv python install 3.12` | Fetch an interpreter |
+| `uv tool install <pkg>` | Install a command-line tool globally, isolated |
+
+---
+
+## The one-screen recovery card
+
+| "I…" | Do this |
+|---|---|
+| …edited a file and want it back | `git restore <file>` |
+| …staged the wrong thing | `git restore --staged <file>` |
+| …wrote a bad commit message | `git commit --amend` |
+| …committed to `main` by mistake | `git switch -c fix && git switch main && git reset --hard origin/main` |
+| …pushed something wrong | `git revert <sha>` |
+| …am in a merge I do not want | `git merge --abort` |
+| …am in a rebase I do not want | `git rebase --abort` |
+| …deleted a commit and panicked | `git reflog`, find the SHA, `git switch -c rescue <sha>` |
+| …committed `.venv/` | `git rm -r --cached .venv && git commit -m "Untrack .venv"` |
+| …committed a secret | rotate the credential. Then remove it. In that order. |

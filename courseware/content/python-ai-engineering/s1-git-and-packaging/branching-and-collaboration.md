@@ -1,7 +1,8 @@
-# Branching & Collaboration
+# Branching & Merging
 
 Branches are how two people work on one codebase without waiting for each other.
-Remotes are how the work gets back together.
+Remotes are how the work gets back together. Review — the part with a second
+person in it — is the next lesson.
 
 <!-- notes: 50 minutes. The conflict resolution demo is the part they remember —
 budget 15 minutes for it and actually create a conflict live. -->
@@ -16,11 +17,12 @@ Creating a branch writes 41 bytes to disk. It is not a copy of your files, it
 does not duplicate history, and it costs nothing. This is why Git workflows use
 branches liberally where older tools used them sparingly.
 
-```text
-        A---B---C   main
-             \
-              D---E   feature/scaling
-```
+
+---
+
+## Two branches, one history
+
+![A branch is a pointer](assets/s1-git-and-packaging/branching-and-collaboration/branch-pointers.png)
 
 `main` points at `C`. `feature/scaling` points at `E`. Both share `A` and `B`.
 
@@ -74,14 +76,6 @@ Two things can happen.
 If `main` has not moved since you branched, Git just slides the pointer forward.
 No merge commit, no new history.
 
-```text
-before:   A---B   main
-               \
-                D---E   feature
-
-after:    A---B---D---E   main, feature
-```
-
 ![Fast-forward merge](assets/s1-git-and-packaging/branching-and-collaboration/Git_Fast-forward_Merge.png)
 
 ---
@@ -89,12 +83,6 @@ after:    A---B---D---E   main, feature
 ### Three-way merge
 
 If `main` *has* moved, Git builds a new commit with two parents.
-
-```text
-        A---B---C-------M   main
-             \         /
-              D---E---/     feature
-```
 
 ![Three-way merge](assets/s1-git-and-packaging/branching-and-collaboration/Git_Three-way_Merge.png)
 
@@ -172,6 +160,10 @@ git push                                        # subsequent pushes
 `origin` is a convention, not a keyword. It is the name given to the remote you
 cloned from.
 
+---
+
+## The remote workflow
+
 ![Remote workflow](assets/s1-git-and-packaging/branching-and-collaboration/Git_Remote_Workflow.png)
 
 ---
@@ -182,6 +174,11 @@ cloned from.
 git fetch      # download refs, change nothing in your files
 git pull       # fetch + merge into the current branch
 ```
+
+
+---
+
+## Fetch, merge, pull
 
 ![Fetch, merge, pull](assets/s1-git-and-packaging/branching-and-collaboration/Git_Fetch_Merge_Pull.png)
 
@@ -209,7 +206,7 @@ branch, in one step. You get the entire history, not just the latest state.
 
 ## The pull-request workflow
 
-This is the loop you will use for every assignment and every project commit.
+This is the loop you will use for every assignment and every project commit:
 
 1. `git switch -c feature/thing` — branch off `main`
 2. Work. Commit in small, readable steps.
@@ -219,23 +216,9 @@ This is the loop you will use for every assignment and every project commit.
 6. Push fixes to the same branch — the PR updates itself
 7. Merge, then delete the branch
 
----
-
-## Why the PR matters here
-
-The pull request is where review happens, and review is half of what this module
-is teaching. In your project grade, repository quality is a graded axis
-alongside leaderboard performance.
-
-A reviewable PR:
-
-- changes one thing
-- has a title a stranger can understand
-- is small enough to read in ten minutes
-- has a green test run
-
-<!-- notes: Tell them the honest number: a 900-line PR gets rubber-stamped, a
-90-line PR gets read. Reviewer attention is the scarce resource. -->
+The next lesson, *Pull Requests & Code Review*, is that loop in detail: how to
+write one a stranger can review, what to look for when you are the reviewer, and
+how to make the process a rule rather than a good intention.
 
 ---
 
@@ -248,6 +231,13 @@ up:
 git merge main       # safe; adds a merge commit
 git rebase main      # linear history; rewrites your commits
 ```
+
+
+---
+
+## Merge or rebase
+
+![Merge versus rebase](assets/s1-git-and-packaging/branching-and-collaboration/merge-vs-rebase.png)
 
 **Rule:** rebase only commits you have not pushed. Rebasing shared history
 rewrites SHAs under your collaborators' feet, and their next `pull` becomes a

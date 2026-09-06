@@ -50,6 +50,13 @@ With `src/`, the only way to import your code is to install it. So your tests
 exercise the same thing your users get — and a broken `pyproject.toml` fails
 immediately rather than three weeks later on someone else's machine.
 
+
+---
+
+## Flat and src, side by side
+
+![Flat versus src layout](assets/s1-git-and-packaging/packaging-and-tests/src-layout.png)
+
 ---
 
 ## pyproject.toml
@@ -71,6 +78,11 @@ dependencies = ["numpy>=1.26", "pandas>=2.2"]
 [dependency-groups]
 dev = ["pytest>=8", "pytest-cov>=5", "ruff>=0.6"]
 ```
+
+
+---
+
+## Two names, and where the dev tools go
 
 Note the two names: the **distribution** name (`my-project`, with a hyphen) and
 the **import** name (`my_project`, with an underscore). They differ by
@@ -129,9 +141,9 @@ Two reasons, in order of how much they will matter to you:
 
 1. **You can change code without fear.** A test suite is what makes refactoring
    a decision rather than a gamble.
-2. **It is the contract with a coding agent.** In Session 2 the agent writes
-   code; the tests are how you find out whether it works. An agent with no
-   tests is a very fast way to produce plausible, wrong code.
+2. **It is the contract with a coding agent.** Later in this session an agent
+   writes code; the tests are how you find out whether it works. An agent with
+   no tests is a very fast way to produce plausible, wrong code.
 
 ---
 
@@ -226,6 +238,12 @@ broke.
 
 ## Unit vs integration
 
+![How many of each](assets/s1-git-and-packaging/packaging-and-tests/test-pyramid.png)
+
+---
+
+## The two kinds
+
 | | Unit | Integration |
 |---|---|---|
 | Scope | one function | several components together |
@@ -271,4 +289,6 @@ uv sync
 uv run pytest
 ```
 
-Three commands, green output. That is the deliverable.
+Three commands, green output. That is the deliverable — and the next two
+lessons make a machine that is not yours run them on every push, so the claim
+stops depending on your memory.

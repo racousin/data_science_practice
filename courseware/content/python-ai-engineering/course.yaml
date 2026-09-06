@@ -31,99 +31,150 @@ course:
 
 modules:
   # ---------------------------------------------------------------- session 1
-  - title: "Session 1 — Git & Python Packaging - Shell, Notebooks & Colab"
+  #
+  # Rebuilt 2026-09-06. This module is the whole engineering floor and it is
+  # deliberately over-provisioned: ~11h of written material against a 3h slot,
+  # so the teacher chooses what to lecture rather than what to invent. The 3h
+  # core path, the extensions and the run-sheet are in `session-plan.md`
+  # (unpublished). Every lesson carries a `# core` or `# extension` marker below,
+  # which is the greppable version of the same decision.
+  #
+  # Three labs, all graded from a GitHub URL: ship a package (1), pull request
+  # and review (2), agent-driven feature (3). The two attached competitions are
+  # optional parts of labs 1 and 3, not requirements — the assessment for this
+  # session lives on the students' GitHub accounts.
+  #
+  # `github-actions` and `ide-syntax-linting` kept their slugs (server lessons
+  # 139 and 140) but are no longer `Reference — …`: both are now taught, and
+  # both were rewritten for it. `lab-2` was the agent lab and is now the
+  # pull-request lab; the agent lab is the new `lab-3`.
+  - title: "Session 1 — The Engineering Floor"
     slug: s1-git-and-packaging
     icon: git-branch
     visibility: unlisted
     summary: >
-      The engineering floor: version control, reproducible Python projects, an
-      agentic coding workflow, and the three environments the rest of the course
-      runs in — terminal, notebook kernel, hosted Colab runtime.
+      Shell, git, GitHub, environments, packaging, tests, linting, CI, notebooks
+      and Colab — then an agentic coding workflow on top of them. You leave with
+      a tested Python package on GitHub whose tests run themselves, and a Colab
+      notebook that installs it.
     lessons:
+      - title: "What Session 1 Builds"
+        slug: session-map
+        file: s1-git-and-packaging/session-map.md
+        estimated_minutes: 10
+        is_published: true            # core
+      - title: "Accounts & Toolchain"
+        slug: accounts-and-tools
+        file: s1-git-and-packaging/accounts-and-tools.md
+        estimated_minutes: 30
+        is_published: true            # core
+      - title: "The Shell"
+        slug: the-shell
+        file: s1-git-and-packaging/the-shell.md
+        estimated_minutes: 40
+        is_published: true            # core
       - title: "Why Version Control"
         slug: why-version-control
         file: s1-git-and-packaging/why-version-control.md
         estimated_minutes: 10
-        is_published: true
+        is_published: true            # core
       - title: "Git Essentials"
         slug: git-essentials
         file: s1-git-and-packaging/git-essentials.md
-        estimated_minutes: 45
-        is_published: true
-      - title: "Branching & Collaboration"
+        estimated_minutes: 40
+        is_published: true            # core
+      - title: "Branching & Merging"
         slug: branching-and-collaboration
         file: s1-git-and-packaging/branching-and-collaboration.md
-        estimated_minutes: 50
-        is_published: true
+        estimated_minutes: 45
+        is_published: true            # core
+      - title: "Pull Requests & Code Review"
+        slug: pull-requests-and-review
+        file: s1-git-and-packaging/pull-requests-and-review.md
+        estimated_minutes: 35
+        is_published: true            # core
       - title: "Python Environments"
         slug: python-environments
         file: s1-git-and-packaging/python-environments.md
         estimated_minutes: 30
-        is_published: true
+        is_published: true            # core
       - title: "Packaging & Tests"
         slug: packaging-and-tests
         file: s1-git-and-packaging/packaging-and-tests.md
         estimated_minutes: 35
-        is_published: true
-      - title: "Lab 1 — Ship a Package"
+        is_published: true            # core
+      - title: "Code Quality: Linting, Formatting & Types"
+        slug: ide-syntax-linting
+        file: s1-git-and-packaging/ide-syntax-linting.md
+        estimated_minutes: 30
+        is_published: true            # extension
+      - title: "Continuous Integration with GitHub Actions"
+        slug: github-actions
+        file: s1-git-and-packaging/github-actions.md
+        estimated_minutes: 30
+        is_published: true            # core
+      - title: "Notebooks & Colab"
+        slug: notebooks-and-colab
+        file: s1-git-and-packaging/notebooks-and-colab.md
+        estimated_minutes: 35
+        is_published: true            # core
+      - title: "Lab 1 — Ship a Package to GitHub"
         slug: lab-1
         kind: exercise
         file: s1-git-and-packaging/lab-1.md
         estimated_minutes: 60
-        is_published: true
-      # -- moved here from the former "Session 2 — Agentic Coding" module.
-      # Bodies are unchanged: they still say "Session 1's test suite" and
-      # "this session is placed second". Rewriting waits on the split below.
-      - title: "What Actually Changed"
-        slug: what-actually-changed
-        file: s1-git-and-packaging/what-actually-changed.md
-        estimated_minutes: 20
-        is_published: true
-      - title: "Setup"
-        slug: setup
-        file: s1-git-and-packaging/setup.md
-        estimated_minutes: 20
-        is_published: true
-      - title: "The Core Loop"
-        slug: the-core-loop
-        file: s1-git-and-packaging/the-core-loop.md
-        estimated_minutes: 35
-        is_published: true
-      - title: "Context Engineering"
-        slug: context-engineering
-        file: s1-git-and-packaging/context-engineering.md
-        estimated_minutes: 30
-        is_published: true
-      - title: "Guardrails & Review"
-        slug: guardrails-and-review
-        file: s1-git-and-packaging/guardrails-and-review.md
-        estimated_minutes: 30
-        is_published: true
-      - title: "Lab 2 — Agent-Driven Feature"
+        is_published: true            # core
+      - title: "Lab 2 — Pull Request & Review"
         slug: lab-2
         kind: exercise
         file: s1-git-and-packaging/lab-2.md
         estimated_minutes: 45
-        is_published: true
-      # -- moved here from the former "Reference" module, which was removed.
-      # Self-study, never lectured: the title carries that signal now that the
-      # module no longer does, and `in_deck: false` keeps them out of the deck.
+        is_published: true            # core
+      # -- the agentic-coding block. Placed after the labs on purpose: an agent
+      # that edits a repository is only safe on top of a branch, a test suite
+      # and a review habit, and the student now has all three.
+      - title: "The Coding-Assistant Landscape"
+        slug: assistant-landscape
+        file: s1-git-and-packaging/assistant-landscape.md
+        estimated_minutes: 25
+        is_published: true            # extension
+      - title: "What Actually Changed"
+        slug: what-actually-changed
+        file: s1-git-and-packaging/what-actually-changed.md
+        estimated_minutes: 20
+        is_published: true            # core
+      - title: "Assistant Setup"
+        slug: setup
+        file: s1-git-and-packaging/setup.md
+        estimated_minutes: 20
+        is_published: true            # core
+      - title: "The Core Loop"
+        slug: the-core-loop
+        file: s1-git-and-packaging/the-core-loop.md
+        estimated_minutes: 35
+        is_published: true            # core
+      - title: "Context Engineering"
+        slug: context-engineering
+        file: s1-git-and-packaging/context-engineering.md
+        estimated_minutes: 30
+        is_published: true            # extension
+      - title: "Guardrails & Review"
+        slug: guardrails-and-review
+        file: s1-git-and-packaging/guardrails-and-review.md
+        estimated_minutes: 30
+        is_published: true            # core
+      - title: "Lab 3 — Agent-Driven Feature"
+        slug: lab-3
+        kind: exercise
+        file: s1-git-and-packaging/lab-3.md
+        estimated_minutes: 45
+        is_published: true            # extension
+      # -- self-study, never lectured. `in_deck: false` keeps them out of the
+      # deck; the title is what tells a student they are not class material.
       - title: "Reference — GitHub Desktop"
         slug: github-desktop
         file: s1-git-and-packaging/github-desktop.md
         estimated_minutes: 10
-        is_published: true
-        in_deck: false
-      - title: "Reference — GitHub Actions"
-        slug: github-actions
-        file: s1-git-and-packaging/github-actions.md
-        estimated_minutes: 15
-        is_published: true
-        in_deck: false
-      - title: "Reference — IDE, Syntax & Linting"
-        slug: ide-syntax-linting
-        file: s1-git-and-packaging/ide-syntax-linting.md
-        estimated_minutes: 15
         is_published: true
         in_deck: false
       - title: "Reference — Git Cheatsheet"
@@ -135,29 +186,30 @@ modules:
       # The course reads a CSV, reshapes it and plots it from session 2 onward
       # and taught neither library anywhere; the 30h module that does teach them
       # runs afterwards. Scope is the intersection of "what this course actually
-      # calls" and nothing else, derived from the lessons + the four challenge
-      # notebooks. Companion Colab notebook: aie-s0-pandas-seaborn.ipynb.
+      # calls" and nothing else. Companion Colab: aie-s0-pandas-seaborn.ipynb.
       - title: "Reference — pandas & seaborn"
         slug: pandas-and-seaborn
         file: s1-git-and-packaging/pandas-and-seaborn.md
         estimated_minutes: 30
         is_published: true
         in_deck: false
-      # Authoring brief for the shell / notebook / Colab half of this module —
-      # the material the title now promises and the lessons do not yet carry.
-      # Not teaching material: out of the student view and out of the deck.
-      - title: "Session Plan — Shell, Notebooks & Colab"
+      # The teacher's run-sheet for this module: the 3h core path, the cut list,
+      # the live demos, and what to do when the room is behind. Not teaching
+      # material — out of the student view and out of the deck.
+      - title: "Session Plan — Teacher's Run-Sheet"
         slug: session-plan
         file: s1-git-and-packaging/session-plan.md
         estimated_minutes: 10
         is_published: false
         in_deck: false
+    # Both are OPTIONAL parts of their labs, not requirements. Session 1 is
+    # assessed from the students' GitHub repositories; these exist because a
+    # measured leaderboard is a cheap outside opinion on a pinned specification.
     competitions:
       - competition_id: 179
-        label: "textstats correctness"
-      # Follows Lab 2, which is the lesson that submits to it.
+        label: "textstats correctness (optional, Lab 1)"
       - competition_id: 180
-        label: "Flesch reading-ease"
+        label: "Flesch reading-ease (optional, Lab 3)"
 
   # ---------------------------------------------------------------- session 2
   #

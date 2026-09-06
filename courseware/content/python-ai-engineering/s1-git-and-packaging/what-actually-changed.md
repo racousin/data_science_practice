@@ -1,25 +1,17 @@
 # What Actually Changed
 
-This session is placed second, not last, on purpose: you will use these tools in
-Sessions 3 and 4 and across all 30 hours of *MS2A - Machine Learning Practice*. A
-tool taught in the final hour is a demo. Taught now, it is leverage.
+This comes at the end of Session 1 and not at the end of the module, on purpose:
+you will use these tools in Sessions 2, 3 and 4 and across all 30 hours of
+*MS2A - Machine Learning Practice*. A tool taught in the final hour is a demo.
+Taught now, it is leverage.
+
+It also comes *after* git, tests and review rather than before, and that order is
+not decoration. An agent that edits your repository is only safe on top of a
+branch you can throw away, a test suite it has to satisfy, and a diff you read.
+You now have all three.
 
 <!-- notes: 20 minutes. Resist the urge to evangelise. The room contains both
 students who use these tools daily and students who have never opened one. -->
-
----
-
-## Three generations of assistance
-
-| Generation | What it sees | What it does | Your job |
-|---|---|---|---|
-| **Autocomplete** | the current line | suggests the next token | accept / reject |
-| **Chat** | what you paste | answers, you copy back | transcribe and integrate |
-| **Agent** | your repository | reads, edits, runs commands, iterates | specify and verify |
-
-The jump that matters is the third. An agent has a **feedback loop**: it runs
-your tests, reads the failure, and tries again. Chat cannot do that — it never
-sees whether its answer worked.
 
 ---
 
@@ -81,5 +73,5 @@ The rest of this session is three techniques against exactly those three causes.
 3. **Context engineering** — what the agent knows, and how you control it.
 4. **Guardrails** — permissions, scope, and tests as the contract.
 
-Then a lab: extend the Session 1 package using an agent, with a pull request
-that a human would actually approve.
+Then **Lab 3**: extend your `textstats` package using an agent, with a pull
+request that a human would actually approve.

@@ -19,6 +19,7 @@ PY_PUBLISH  := uv run --quiet --with pyyaml --with requests python
 
 help:
 	@echo "make slides       — build one PPTX per session into $(OUT)/slides"
+	@echo "make check-slides — list slides whose content overflows the slide"
 	@echo "make pdf          — slides, then convert to PDF (needs LibreOffice)"
 	@echo "make publish-dry  — show what would change on $(BASE_URL)"
 	@echo "make publish      — sync content to ML-Arena (needs MLARENA_API_KEY)"
@@ -39,6 +40,12 @@ help:
 
 slides:
 	$(PY_SLIDES) tools/build_slides.py $(CONTENT) --out $(OUT)/slides --strict-assets
+
+# Slides whose content renders off the bottom. The deck builder shrinks the font
+# until the content fits and then gives up silently, so this is the only way to
+# see it without reading 300 slides. Exits non-zero, so it gates a build.
+check-slides:
+	$(PY_SLIDES) tools/check_slide_overflow.py $(CONTENT) $(if $(MODULE),--module $(MODULE)) $(if $(VERBOSE),--verbose)
 
 # One session only:  make slides-one MODULE=s2-agentic-coding
 slides-one:

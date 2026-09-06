@@ -16,6 +16,8 @@ Two projects on your laptop. One needs `numpy 1.26`, the other needs
 Install globally and the projects fight. The fight is silent: your code imports
 successfully and then behaves differently from your teammate's.
 
+![Environment isolation](assets/s1-git-and-packaging/python-environments/env-isolation.png)
+
 ---
 
 ## The solution
@@ -110,7 +112,15 @@ Two files, two different jobs. Confusing them is the most common mistake.
 | `pyproject.toml` | ranges you *support* | "what does this project need?" |
 | `uv.lock` / `requirements.txt` | exact pinned versions | "what exactly did I run?" |
 
-Commit both. The first is intent; the second is reproducibility.
+
+---
+
+## Declaration and lock, side by side
+
+![Declaration versus lock](assets/s1-git-and-packaging/python-environments/declaration-vs-lock.png)
+
+Commit both. The first is intent; the second is reproducibility. The CI lesson
+shows what happens when you commit only the first.
 
 ---
 
