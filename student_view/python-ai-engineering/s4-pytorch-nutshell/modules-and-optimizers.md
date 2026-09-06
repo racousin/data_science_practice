@@ -17,6 +17,7 @@ y = xW^T + b
 $$
 
 ```python
+import torch
 import torch.nn as nn
 
 layer = nn.Linear(in_features=10, out_features=5)

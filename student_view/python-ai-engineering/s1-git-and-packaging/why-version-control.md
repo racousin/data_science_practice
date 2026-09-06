@@ -34,7 +34,17 @@ Three questions you cannot answer from that directory:
 A Git repository is a **directed graph of snapshots**. Each snapshot (a
 *commit*) records the full state of your project plus a pointer to its parent.
 
-That single idea gives you all of the following for free:
+![A graph of snapshots](/api/academic_courses/assets/lessons/28/commit-graph.png)
+
+Follow the arrows backwards from any commit and you have the exact state of the
+project at that moment — every file, not a diff you have to replay.
+
+
+---
+
+## What that single idea buys
+
+It gives you all of the following for free:
 
 - **History** — every state the project has ever been in, recoverable exactly.
 - **Attribution** — who changed what line, and when.
@@ -54,9 +64,14 @@ commands that move files between these three places.
 | **Staging area (index)** | Changes selected for the next snapshot | `git add` |
 | **Repository (.git)** | Committed snapshots, permanently | `git commit` |
 
-![The three areas of a Git repository](/api/academic_courses/assets/lessons/28/commit-main.png)
 
-*Source: [Visual Git Guide](https://marklodato.github.io/visual-git-guide/index-en.html)*
+---
+
+## The three trees
+
+![The three trees](/api/academic_courses/assets/lessons/28/three-trees.png)
+
+Every command in the next lesson moves a change between two of these boxes.
 
 ---
 
@@ -77,13 +92,14 @@ anything.
 
 ## What we are building today
 
-By the end of Session 1 you will have a repository that contains:
+By the end of today you will have a repository that contains:
 
 - a Python package installable with `pip install -e .`
 - a test suite that runs with `pytest`
 - a pinned, reproducible environment
 - a history of small, readable commits on a feature branch
 - a pull request, reviewed and merged
+- a CI workflow that re-runs the tests on a machine that is not yours
 
 That repository is the starting point for Sessions 2, 3 and 4 — and the second
 half of your project grade is the quality of exactly this.

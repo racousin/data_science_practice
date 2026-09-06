@@ -1,4 +1,5 @@
-# Course state — audited 2026-09-02, corrections applied and published 2026-09-03
+# Course state — audited 2026-09-02, corrections applied and published 2026-09-03,
+# Session 1 rebuilt and republished 2026-09-06
 
 What the two ML-Arena courses actually are today, what a student hits when they try to
 follow them, and what to build next. Produced by walking both courses end to end with a
@@ -23,16 +24,19 @@ Companion documents:
 | Name | MS2A - AI Engineering | MS2A - Machine Learning Practice |
 | Slug | `python-ai-engineering` | `ms2a-machine-learning-practice` |
 | Volume | 12h — 4 × 3h, one week | 30h — 10 × 3h, ten weeks |
-| Modules / lessons | 3 / 30 | 12 / 74 |
-| Competitions attached | 4 (179-182) | 17 |
+| Modules / lessons | 4 / 56 | 12 / 74 |
+| Competitions attached | 10 (179-188) | 17 |
 | Dates | **2026-09-07 → 2026-09-11** | **2026-09-14 → 2026-11-27** |
 | Join code | `GR1WFC63` | `N1DX2QA4` |
 | Enrolled students | 1 (test account) | 1 (test account) |
 | Visibility | public | public |
 
 Both courses are **published, browsable and joinable**. Every lesson body serves, and
-all 146 image references return 200 — the "132 images never uploaded" note that used
+every image reference returns 200 — the "132 images never uploaded" note that used
 to be in `README.md` was stale and has been removed.
+
+The course-14 row is as of 2026-09-06: the two ML modules were built on 09-05 and
+Session 1 was rebuilt on 09-06 (§1c). The 3 / 30 that used to be here predated both.
 
 The dates were **confirmed real on 2026-09-03**, though `course.yaml` still carries the
 PLACEHOLDER comment above them — delete it so the next reader does not re-open the
@@ -93,6 +97,56 @@ the exact three-module set).
 
 Verified live: **3 modules / 30 lessons**, 17 in session 1, no relative image paths in
 any body, all 12 image refs 200.
+
+### 1c. Session 1 rebuilt and republished, 2026-09-06
+
+Session 1 was *Git & Python Packaging*; it is now **"Session 1 — The Engineering
+Floor"** and carries the whole engineering floor: shell, git, GitHub review,
+environments, packaging, tests, linting, CI, notebooks and Colab, then the
+agentic-coding block on top. **25 lessons, 27k words, live on module #14.**
+
+Six lessons created — `session-map` (173), `accounts-and-tools` (174),
+`the-shell` (175), `pull-requests-and-review` (176), `notebooks-and-colab` (177),
+`assistant-landscape` (178) — plus `lab-3` (179).
+
+Two `Reference — …` lessons were **promoted to taught** rather than duplicated:
+`github-actions` (139) is now a full CI/CD lesson and `ide-syntax-linting` (140)
+a code-quality one. Both kept their slugs, so both updated in place and nothing
+had to be deleted server-side — the first restructure of this module that needed
+no manual deletion at all.
+
+Labs renumbered around a GitHub deliverable: Lab 1 (33) ships the package, gets
+CI green and installs it in Colab; **Lab 2 (136) is now the paired
+pull-request-and-review lab**, reusing the slug the agent lab had; the agent lab
+is Lab 3 (179). Competitions 179/180 stay attached but are **optional** parts of
+Labs 1 and 3 — this session is assessed from the students' GitHub accounts.
+
+The module is deliberately over-provisioned: **725 written minutes against a
+180-minute slot**, marked `# core` / `# extension` per lesson in `course.yaml`.
+The 3h run-sheet, five scripted live demos, the stall table and the open
+decisions are in the unpublished `session-plan` lesson (144), retitled
+*Teacher's Run-Sheet*.
+
+**30 figures were authored** by `tools/figures/s1_git_and_packaging.py` — Session
+1 has no taught PPTX to lift stills from, so all of its diagrams are drawn by
+that script.
+
+Verified live: 25 lessons in order, **all 34 image references 200**, no relative
+image paths in any body, `session-plan` confirmed `is_published=False`, and
+`student_walk.py check` reports nothing but the known speaker-notes item.
+`../student_view/` was re-dumped — it had been the 2026-09-02 baseline, so it
+also picks up the 09-03 and 09-05 republishes.
+
+**A silent deck defect was found and fixed.** `build_slides.py` steps down a font
+ladder until content fits the 4.95 in body box; when the last rung still does not
+fit it renders anyway and the overflow falls off the bottom of the slide, with no
+warning. An image block costs a flat **3.4 in**, so adding figures to Session 1
+took it from 12 overflowing slides to 37. All 37 are now split at a real boundary
+with a heading, and `make check-slides` (`tools/check_slide_overflow.py`, exits
+non-zero) makes the next one visible. **`s2-ml-foundations` has 34 and
+`s3-models-and-tuning` has 38 — left as they are, deliberately.**
+
+---
 
 **There is now no Session 2** — the course is Sessions 1, 3, 4. The course description
 still promises "four 3-hour sessions", and the labs, deck eyebrows and competition

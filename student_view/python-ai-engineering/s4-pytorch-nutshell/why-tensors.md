@@ -133,6 +133,11 @@ b = b.to("cpu")      # or a = a.to("cuda")
 That last one is the practical reason for this course: everything you touch for
 the rest of the year takes and returns `torch.Tensor`.
 
+How the field arrived here — and why ideas from 1986 only became practical in
+2012 — is in
+[Reference → A Short History of Deep Learning](/courses/python-ai-engineering/s4-pytorch-nutshell/course/deep-learning-history).
+Self-study; it is not lectured.
+
 ---
 
 ## What to take away

@@ -50,6 +50,13 @@ With `src/`, the only way to import your code is to install it. So your tests
 exercise the same thing your users get — and a broken `pyproject.toml` fails
 immediately rather than three weeks later on someone else's machine.
 
+
+---
+
+## Flat and src, side by side
+
+![Flat versus src layout](/api/academic_courses/assets/lessons/32/src-layout.png)
+
 ---
 
 ## pyproject.toml
@@ -68,13 +75,27 @@ description = "Session 1 deliverable"
 requires-python = ">=3.11"
 dependencies = ["numpy>=1.26", "pandas>=2.2"]
 
-[project.optional-dependencies]
-dev = ["pytest>=8", "ruff>=0.6"]
+[dependency-groups]
+dev = ["pytest>=8", "pytest-cov>=5", "ruff>=0.6"]
 ```
+
+
+---
+
+## Two names, and where the dev tools go
 
 Note the two names: the **distribution** name (`my-project`, with a hyphen) and
 the **import** name (`my_project`, with an underscore). They differ by
 convention and that is fine.
+
+`[dependency-groups]` (PEP 735) is where development tools go — they are needed
+to *work on* the project, not to *use* it. `uv sync` installs them by default,
+which is what makes `uv sync && uv run pytest` work on a fresh clone. The older
+`[project.optional-dependencies]` spelling is for extras your users opt into,
+and `uv sync` does **not** install those. Put pytest there and the fresh-clone
+check either dies with `error: Failed to spawn: pytest` or — worse — picks up
+some other `pytest` that happens to be on the machine's PATH and cannot import
+your package.
 
 ---
 
@@ -82,7 +103,7 @@ convention and that is fine.
 
 ```bash
 uv pip install -e .
-uv pip install -e ".[dev]"    # with the dev extras
+uv pip install -e . --group dev   # with the dev tools
 ```
 
 `-e` (editable) links the installed package to your source directory. Edit
@@ -91,8 +112,12 @@ uv pip install -e ".[dev]"    # with the dev extras
 Check it worked:
 
 ```bash
-python -c "import my_project; print(my_project.__file__)"
+uv run python -c "import my_project; print(my_project.__file__)"
 ```
+
+It must print a path under your `src/`. Use `uv run`, not a bare `python`: a
+bare `python` is whatever interpreter is on your PATH, which is not the
+project environment you just installed into.
 
 ---
 
@@ -116,9 +141,9 @@ Two reasons, in order of how much they will matter to you:
 
 1. **You can change code without fear.** A test suite is what makes refactoring
    a decision rather than a gamble.
-2. **It is the contract with a coding agent.** In Session 2 the agent writes
-   code; the tests are how you find out whether it works. An agent with no
-   tests is a very fast way to produce plausible, wrong code.
+2. **It is the contract with a coding agent.** Later in this session an agent
+   writes code; the tests are how you find out whether it works. An agent with
+   no tests is a very fast way to produce plausible, wrong code.
 
 ---
 
@@ -213,6 +238,12 @@ broke.
 
 ## Unit vs integration
 
+![How many of each](/api/academic_courses/assets/lessons/32/test-pyramid.png)
+
+---
+
+## The two kinds
+
 | | Unit | Integration |
 |---|---|---|
 | Scope | one function | several components together |
@@ -258,4 +289,6 @@ uv sync
 uv run pytest
 ```
 
-Three commands, green output. That is the deliverable.
+Three commands, green output. That is the deliverable — and the next two
+lessons make a machine that is not yours run them on every push, so the claim
+stops depending on your memory.
