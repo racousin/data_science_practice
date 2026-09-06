@@ -1,11 +1,93 @@
 # Git Essentials
 
-The eight commands that cover 95% of daily use, and the four that get you out of
-trouble.
+Why version control exists, the one idea it is built on, and the eight commands
+that cover 95% of daily use — plus the four that get you out of trouble.
 
-<!-- notes: 40 minutes. Students type along. Install and authentication were
-done in *Accounts & Toolchain* — do not repeat them here. Do not lecture past
+<!-- notes: 45 minutes. The first third is motivation and the mental model, no
+keyboards; the rest is typing along. Install and authentication were done in
+*Accounts & Toolchain* — do not repeat them here. Do not lecture past
 `git log`; the undo section is where they actually need you. -->
+
+---
+
+## The problem, concretely
+
+Every project you hand in this year lives in a Git repository. Not because the
+syllabus says so — because the alternative does not survive contact with a
+second person, a second machine, or a bad afternoon:
+
+```text
+model.py
+model_v2.py
+model_v2_FINAL.py
+model_v2_FINAL_marie.py
+model_v2_FINAL_marie_works.py
+```
+
+Three questions you cannot answer from that directory:
+
+- What changed between `FINAL` and `FINAL_marie`?
+- Which one produced the result in the report?
+- If Marie and you both edited, how do you combine the work?
+
+---
+
+## What Git actually is
+
+A Git repository is a **directed graph of snapshots**. Each snapshot (a
+*commit*) records the full state of your project plus a pointer to its parent.
+
+![A graph of snapshots](assets/s1-git-and-packaging/git-essentials/commit-graph.png)
+
+Follow the arrows backwards from any commit and you have the exact state of the
+project at that moment — every file, not a diff you have to replay.
+
+---
+
+## What that single idea buys
+
+It gives you all of the following for free:
+
+- **History** — every state the project has ever been in, recoverable exactly.
+- **Attribution** — who changed what line, and when.
+- **Branching** — several lines of work in the same directory, isolated.
+- **Distribution** — every clone is a complete copy; there is no single point of failure.
+
+---
+
+## The three places a file can be
+
+This is the mental model to hold for the rest of the session. Everything else is
+commands that move files between these three places.
+
+| Place | What it holds | Command that fills it |
+|---|---|---|
+| **Working directory** | The files you edit | your editor |
+| **Staging area (index)** | Changes selected for the next snapshot | `git add` |
+| **Repository (.git)** | Committed snapshots, permanently | `git commit` |
+
+---
+
+## The three trees
+
+![The three trees](assets/s1-git-and-packaging/git-essentials/three-trees.png)
+
+Every command below moves a change between two of these boxes.
+
+---
+
+## Why staging exists
+
+Beginners find the staging area redundant. It is not. It lets you commit *part*
+of your work.
+
+You fixed a bug and, on the way, renamed a variable in an unrelated file. Those
+are two different commits. Staging is what makes that possible without undoing
+anything.
+
+> A good commit is one change, explainable in one sentence. Staging is the tool
+> that makes your commits look like your intentions rather than like your
+> afternoon.
 
 ---
 

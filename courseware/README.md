@@ -46,9 +46,8 @@ courseware/
 │       ├── project/                  # the ML-Arena project brief (50% of the grade)
 │       ├── reference/
 │       └── .mlarena-state.json
-├── competitions/                     # one or more per taught session
-│   ├── s1-textstats/                 # flex_v1 — Lab 1's three functions
-│   ├── s2-readability/               # flex_v1 — Lab 2's Flesch score
+├── competitions/                     # one or more per taught session, except
+│   │                                 # Session 1, whose Lab 3 borrows comp 65
 │   ├── s2-bike-demand/               # file_v1 — regression, worked
 │   ├── s2-bank-marketing/            # file_v1 — classification, guided
 │   ├── s3-adult-income/              # file_v1 — Lab 3's pipeline
@@ -157,7 +156,9 @@ uv run --with matplotlib --with numpy \
 ```
 
 Session 1 has no taught deck to lift stills from, so **all 30** of its diagrams
-come out of that second script.
+come out of that second script. Which lesson directory a figure lands in is the
+`lesson = "…"` line at the top of each function — when lessons merge, that line
+moves with the PNG.
 
 Add a figure by adding a function there, not by dropping a PNG into the tree.
 
@@ -183,12 +184,13 @@ uv run --with cairosvg python -c \
 were both folded into Session 1, whose title now names all three scopes; the slot
 that freed is what the two ML modules were built into, from the taught decks.
 
-Two things still carry the old numbering: the retired server module
+One thing still carries the old numbering: the retired server module
 `s3-data-science-nutshell` (#16), whose five lessons were split across
 `s2-ml-foundations` and `s3-models-and-tuning` and which must be deleted
-server-side, and the competition names (`PAIE S2 — Flesch reading-ease`) which
-still label Session 1's second competition. Module *slugs* are immutable
-server-side, so neither can simply be renamed. See `COURSE_STATE.md` §1b, §5.3.
+server-side. Module *slugs* are immutable server-side, so it cannot simply be
+renamed. The two competitions that also carried it (`PAIE S1 — textstats`,
+`PAIE S2 — Flesch reading-ease`) were retired on 2026-09-06. See
+`COURSE_STATE.md` §1b, §1d, §5.3.
 
 ---
 
@@ -204,21 +206,29 @@ make pdf                                 # slides + PDF (needs LibreOffice)
 Output: `build/slides/<module-slug>.pptx`, one deck per 3-hour session, 16:9,
 with a cover, a divider per lesson, and speaker notes.
 
-Body text is auto-fitted: the builder estimates the content height and steps
-down a font ladder until the slide fits. A slide that comes out small is a
-slide with too much on it — split it with a `---`.
+Body text is auto-fitted: the builder measures the content and steps down a font
+ladder until the slide fits. A slide that comes out small is a slide with too
+much on it — split it with a `---`.
 
-When even the last rung of the ladder does not fit, the builder renders anyway
-and the overflow falls off the bottom of the slide, silently. `make check-slides`
-finds those; it exits non-zero, so it gates a build. `VERBOSE=1` prints the
-per-block heights, which is how you pick the split point. The budget worth
-remembering: the body box is **4.95 in**, and an **image costs a flat 3.4 in** of
-it — so a slide carrying a figure has room for about one short paragraph or a
-four-row table, and nothing else.
+Measuring is `Measurer` in `build_slides.py`, and the renderer and
+`check_slide_overflow` share one instance, so what the check reports is what the
+deck does. Everything is measured from the real thing: an image from its file, a
+formula from the PNG mathtext renders, and a table row from the text that wraps
+inside it.
 
-Session 1 is clean. `s2-ml-foundations` and `s3-models-and-tuning` are not —
-they were authored before the check existed and carry ~70 overflowing slides
-between them.
+Figures are the one block that flexes. A figure alone on a slide grows to fill
+the body box (**4.95 in**); sharing with text it shrinks — keeping **3.0 in** for
+as long as a rung of the ladder allows, then giving way down to **2.2 in**. It is
+never enlarged past 110 dpi, so a small screenshot stays small and sharp.
+
+Only when a figure is at that 2.2 in floor and the slide *still* does not fit is
+there nothing left to give: the builder renders anyway, the overflow falls off
+the bottom silently, and `make check-slides` reports it. It exits non-zero, so it
+gates a build. `VERBOSE=1` prints the per-block heights, which is how you pick
+the split point, and the fix from there is editorial — split with a `---` and
+give the second half a heading.
+
+All four sessions are clean.
 
 A lesson marked `in_deck: false` in `course.yaml` is skipped by the deck builder
 and published as usual — that is how the `Reference — …` self-study lessons sit
@@ -319,14 +329,20 @@ endpoint — per the frontend↔SDK parity rule in `mlarena-sdk/PROCESS.md`.
 
 ## Competitions
 
-Each taught session has at least one competition, built from a package under
-`competitions/` and linked to that session's module. Sessions 2, 3 and 4 have
-two apiece — one per model family or target type they teach — plus the notebooks
-that go with them (`tools/build_notebooks.py`, output under
+Each taught session has at least one competition linked to its module. Sessions
+2, 3 and 4 build theirs from a package under `competitions/` — two apiece, one
+per model family or target type they teach — plus the notebooks that go with
+them (`tools/build_notebooks.py`, output under
 `website/public/modules/python-ai-engineering/challenges/`, which is the path
-the Colab links resolve against on GitHub). Session 1 grades the lab's *code*
-(`flex_v1` — competitors upload `agent.py`); Sessions 2, 3 and 4 grade a
-*submission file* (`file_v1`). The `Reference — …` self-study lessons have none.
+the Colab links resolve against on GitHub). They grade a *submission file*
+(`file_v1`).
+
+**Session 1 has no package.** Since 2026-09-06 its Lab 3 submits to the existing
+PettingZoo · Connect-Four challenge (**65**, `flex_v1`, ELO-ranked), which this
+repository does not own, does not build and cannot benchmark. It is the only
+attachment in the course that `make competitions` knows nothing about — it is
+declared in `course.yaml` and nowhere else. The `Reference — …` self-study
+lessons have none.
 
 Within each pair the first challenge ships a **worked** notebook that runs top
 to bottom and the second ships a **guided** one — the same protocol in English
@@ -424,15 +440,14 @@ own `.mlarena-state.json`, so the two publish independently.
   module describes three tracks (CURRICULUM_PLAN.md §7); the competition ids do
   not exist yet, so there is no `competitions:` block. Add one per track once
   they are created.
-- **`python-ai-engineering`'s four competitions are hidden.** Ids 179–182 are
-  live, benchmarked and attached to modules 14–17 (`make competitions-status`),
-  and `course.yaml` declares them. But they are still `is_public=False`, so
-  enrolled students get a 404 on the competition pages. One command closes it,
-  once the real term dates are set:
-
-  ```bash
-  make competitions-publish
-  ```
+- **Session 1's challenge is not ours.** Lab 3 submits to competition **65**
+  (PettingZoo · Connect-Four), which this repository does not build and cannot
+  benchmark. Its overview page is the PettingZoo blurb and states no baseline.
+  Either adopt it — write the overview, state the measured ladder from Lab 3
+  Part E — or build a Session 1 package to replace it. The two packages that
+  used to serve this module (179, 180) were retired on 2026-09-06;
+  `detach_competition(14, 179)` / `(14, 180)` still has to be run server-side,
+  because `publish_mlarena.py` only ever attaches.
 - **No lesson `mlarena:` directives are used yet.** If any are added,
   `preview_lesson` should be wired into `publish_mlarena.py` to validate them
   before publishing.

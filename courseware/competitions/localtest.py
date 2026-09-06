@@ -16,7 +16,7 @@ package's declared `metrics_schema`, which the executor enforces at run time
 (`workers/shared/executor/metric_contract.py`).
 
 Usage:
-    python localtest.py s1-textstats
+    python localtest.py s3-adult-income
     python localtest.py s3-adult-income --submission data/benchmark_submission.csv
 """
 import argparse

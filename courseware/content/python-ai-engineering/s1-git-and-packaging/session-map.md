@@ -1,7 +1,8 @@
 # What Session 1 Builds
 
 One artifact: a Python package that lives on GitHub, proves itself with tests,
-and runs in a notebook you do not own.
+and runs in a notebook you do not own — and, at the very end, an agent of yours
+playing other people's agents on a leaderboard.
 
 <!-- notes: 10 minutes, no keyboards yet. The point of this lesson is that every
 student can name the deliverable before the first command. Ask at the end: "what
@@ -36,9 +37,11 @@ does your project.
 
 ![The deliverable](assets/s1-git-and-packaging/session-map/the-deliverable.png)
 
-Note what is *not* on that list: a model, a score, a dataset. Session 1 is
-engineering only. The machine learning starts in Session 2 and stands on top of
-this.
+Note what is *not* on that list: a model, a dataset, anything trained. The last
+row is a Connect-Four player built from three rules, and it is there because it
+is the one deliverable you cannot mark yourself — it is scored by playing your
+classmates' agents. Session 1 is engineering only. The machine learning starts
+in Session 2 and stands on top of this.
 
 ---
 
@@ -89,5 +92,9 @@ And this cell runs in a fresh Colab notebook:
 import textstats; print(textstats.word_count("hello world"))
 ```
 
-If both work, you are done. If either does not, the lab is not finished —
-whatever the code looks like.
+If both work, Labs 1 and 2 are done. If either does not, the lab is not
+finished — whatever the code looks like.
+
+Lab 3 adds one more check, and it is not one you can run: your agent has to
+appear on the [Connect-Four leaderboard](https://ml-arena.com/viewchallenge/65)
+with a rating next to it.

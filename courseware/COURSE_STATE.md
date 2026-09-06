@@ -1,5 +1,5 @@
 # Course state — audited 2026-09-02, corrections applied and published 2026-09-03,
-# Session 1 rebuilt and republished 2026-09-06
+# Session 1 rebuilt 2026-09-06, then consolidated 2026-09-06 (§1d)
 
 What the two ML-Arena courses actually are today, what a student hits when they try to
 follow them, and what to build next. Produced by walking both courses end to end with a
@@ -24,8 +24,8 @@ Companion documents:
 | Name | MS2A - AI Engineering | MS2A - Machine Learning Practice |
 | Slug | `python-ai-engineering` | `ms2a-machine-learning-practice` |
 | Volume | 12h — 4 × 3h, one week | 30h — 10 × 3h, ten weeks |
-| Modules / lessons | 4 / 56 | 12 / 74 |
-| Competitions attached | 10 (179-188) | 17 |
+| Modules / lessons | 4 / 47 | 12 / 74 |
+| Competitions attached | 9 (65, 181-188) | 17 |
 | Dates | **2026-09-07 → 2026-09-11** | **2026-09-14 → 2026-11-27** |
 | Join code | `GR1WFC63` | `N1DX2QA4` |
 | Enrolled students | 1 (test account) | 1 (test account) |
@@ -35,8 +35,11 @@ Both courses are **published, browsable and joinable**. Every lesson body serves
 every image reference returns 200 — the "132 images never uploaded" note that used
 to be in `README.md` was stale and has been removed.
 
-The course-14 row is as of 2026-09-06: the two ML modules were built on 09-05 and
-Session 1 was rebuilt on 09-06 (§1c). The 3 / 30 that used to be here predated both.
+The course-14 row is as of 2026-09-06 **after the consolidation in §1d**, and it
+is the *intended* state — the eight `delete_lesson` and two `detach_competition`
+calls it depends on are manual and had not been run when this line was written.
+The two ML modules were built on 09-05, Session 1 was rebuilt on 09-06 (§1c) and
+consolidated the same day (§1d).
 
 The dates were **confirmed real on 2026-09-03**, though `course.yaml` still carries the
 PLACEHOLDER comment above them — delete it so the next reader does not re-open the
@@ -163,6 +166,90 @@ and the Colab notebook text in `tools/build_notebooks.py`, and one line of
 `aie-s0-pandas-seaborn.ipynb`, which is also the evidence that the other eight
 were already in sync.
 
+### 1d. Session 1 consolidated, 2026-09-06
+
+The rebuild in §1c left 25 lessons and 725 written minutes against a 180-minute
+slot, and three places where the same material was taught twice. Nine lessons
+became three; the module is **16 lessons, 560 published minutes**.
+
+| merged away | into | why |
+|---|---|---|
+| `why-version-control` (28) | `git-essentials` | the motivation and the three-trees model belong to the lesson whose commands they explain |
+| `pull-requests-and-review` (176), `Reference — GitHub Desktop` (138) | `branching-and-collaboration`, retitled *Branching, Pull Requests & Review* | branching and the pull request are one workflow; the GUI page was a reference nobody was sent to |
+| `what-actually-changed` (131), `setup` (132), `the-core-loop` (133), `context-engineering` (134), `guardrails-and-review` (135) | `assistant-landscape`, retitled *Coding Agents* | six lessons on one tool, in a session that could never fit them |
+
+The surviving slug is always the one kept, because module and lesson slugs are
+immutable server-side. Titles are not, so all three merged lessons were
+retitled in place.
+
+**The agentic lesson now carries numbers the six-lesson version refused to.** A
+dated price table (Copilot / Cursor / Claude / Gemini CLI / Aider / Ollama, each
+row linked to its pricing page, checked 2026-09-06) and a dated SWE-bench
+Verified table, followed by three reasons not to trust the second one —
+contamination, staleness, and that it is not the student's repository. The old
+lesson said "do not put numbers on a slide; point at the pricing page", and that
+was wrong in practice: students were choosing a tool anyway, from marketing
+copy. It also now states plainly that **Gemini is built into Colab**, free and
+with nothing to install, which is the only route in the table that costs a
+student nothing and is where this course's notebooks already run.
+
+**Lab 3 was replaced.** It was *Agent-Driven Feature* — implement Flesch
+reading-ease, optional submission to competition 180. It is now **Ship an Agent
+to Connect Four**: the same agentic loop against
+[competition 65](https://ml-arena.com/viewchallenge/65) (PettingZoo ·
+Connect-Four, `flex_v1`, ELO), and the submission is **required**. It is the one
+deliverable in the session a student cannot self-mark — an ELO board scores
+their agent against other people's rather than against an answer key. Being on
+the board is 15% of the lab; rank is not graded.
+
+Its ladder is measured, 400 games per row against uniform-random with seats
+alternating, reproducible with the fifteen-line harness the lab ships:
+
+| policy | mean reward | wins |
+|---|---|---|
+| uniform random | −0.052 | 0.472 |
+| **win-now, never block** | **+0.485** | **0.743** |
+| centre column, no tactics | +0.780 | 0.890 |
+| win + block | +0.940 | 0.970 |
+| the pinned three-rule spec | **+0.975** | **0.988** |
+
+Row two is why the lab exists: **an agent that hunts its own win and ignores
+yours scores worse than one that always plays the centre column.** It reads like
+the smarter program. That is "plausible, not correct" as a number, which is the
+claim the whole agentic lesson makes in prose.
+
+**Competitions 179 and 180 were retired** and their packages
+(`competitions/s1-textstats`, `competitions/s2-readability`) deleted, along with
+their entries in `.mlarena-state.json` and `build_competitions.py`'s `PACKAGES`.
+Lab 1's optional Part H went with them. No package in `competitions/` is
+`flex_v1` any more; `competitions/README.md` keeps the flex_v1 env-design notes
+because Session 1's Lab 3 still submits to one.
+
+**What has to run server-side before the next publish**, in this order — §1c
+records the failure mode when it does not:
+
+```python
+for lid in (28, 131, 132, 133, 134, 135, 138, 176):
+    client.delete_lesson(lid)
+client.detach_challenge(14, 179)
+client.detach_challenge(14, 180)
+# then: make publish
+```
+
+`publish_mlarena.py` only ever creates and attaches. A `reorder_lessons` or
+`reorder_modules` call rejects any list that is not the module's exact server
+set, so a publish run before those deletions fails at module #14 and changes
+nothing.
+
+Verified locally: `make check-slides` reports **0 overflowing slides** across all
+four modules, `make slides` builds 280 / 111 / 157 / 102, `make publish-dry`
+plans 201 actions with the 16 Session 1 lessons in order and competition 65
+attaching to module 14, and the lab's self-play harness reproduces the +0.975 /
+0.988 row above as written.
+
+**Not verified: nothing has been published.** The table in §1 is the intended
+state, not a reading of the live course.
+
 ---
 
 **A silent deck defect was found and fixed.** `build_slides.py` steps down a font
@@ -177,11 +264,16 @@ non-zero) makes the next one visible. **`s2-ml-foundations` has 34 and
 ---
 
 **There is now no Session 2** — the course is Sessions 1, 3, 4. The course description
-still promises "four 3-hour sessions", and the labs, deck eyebrows and competition
-names (`PAIE S2 — Flesch reading-ease`) all carry the old numbers. Module slugs cannot
-be renumbered at all. Settle the numbering with the Session 1 split (§5.3):
-that module now authors **~5h of lecture plus two labs against a 3h slot**, a 173-slide
-deck, and splitting it is what would supply a real Session 2.
+still promises "four 3-hour sessions", and the labs and deck eyebrows carry the old
+numbers. Module slugs cannot be renumbered at all. Settle the numbering with the
+Session 1 split (§5.3).
+
+The consolidation in §1d cut that module from 725 written minutes to 560 and from
+a 173-slide to a 280-slide deck (the growth is figures and slide splits, not
+words), so splitting it is a smaller job than it was — but still the thing that
+would supply a real Session 2. The competition names that carried the old
+numbering (`PAIE S1 — textstats`, `PAIE S2 — Flesch reading-ease`) are gone with
+the competitions.
 
 Session 1's bodies are unchanged throughout all of this. They still read "this session is
 placed second" and "your Session 1 repository"; rewriting waits on the split.
@@ -304,22 +396,28 @@ defined". Measured against that:
 
 | Verdict | At audit | Now | Competitions |
 |---|---|---|---|
-| **clear and measured** | 6 | **8** | 177, 176, 172, 178, 181, 182, **+179, +180** |
+| **clear and measured** | 6 | **6** | 177, 176, 172, 178, 181, 182 |
 | stated but unmeasured | 3 | 3 | 43, 48, 168 |
-| vague — a starter is named, no number | 8 | 8 | 8, 47, 49, 65, 165, 173, 174, 171 |
+| vague — a starter is named, no number | 8 | 8 | 8, 47, 49, **65**, 165, 173, 174, 171 |
 | absent | 2 | 2 | 169, 170 (both serve the platform's placeholder text) |
-| unreachable to a student | 4 | **0** | 179-182, all flipped public 2026-09-03 |
+| unreachable to a student | 4 | **0** | 181-182 public 2026-09-03; 179-180 retired 2026-09-06 |
 
-179 and 180 moved into the top row on 2026-09-03: both now carry a measured ladder
-produced by scoring real agents through `competitions/localtest.py`. For 179 the most
-instructive rung is that the shipped `agent_broken.py` and an implementation with the
-same three functions differing only by a crash score **0.267 vs 0.667** — the flex_v1
-error latch costs 40 points, stated on the page as a number. For 180 each rung breaks
-exactly one pinned Flesch rule (0.45 / 0.50 / 0.70 / 0.95), so a student's score names
-which rule they got wrong.
+**Competition 65 moved from a curiosity to a dependency on 2026-09-06** and did
+not move rows. It is now Session 1's only attached challenge and a required part
+of Lab 3, and its page is still the PettingZoo blurb with no baseline on it. The
+numbers exist — Lab 3 §Part E measures the full ladder — they are just in the
+lesson rather than on the competition page, and the competition is not ours to
+edit. That is the single most actionable item in this section.
+
+179 and 180 briefly held the top row — measured ladders produced by scoring real
+agents through `competitions/localtest.py` — and were retired on 2026-09-06 with
+the lessons that used them (§1d). The technique they demonstrated is worth
+keeping: for 179, the shipped `agent_broken.py` and a correct implementation
+differing only by a crash scored **0.267 vs 0.667**, which put the flex_v1 error
+latch on the page as a number rather than as a warning.
 
 The remaining 13 are the standing gap: **12 of the 17 MS2A competitions still state no
-numeric floor.**
+numeric floor**, and comp 65 has now joined them from the AIE side.
 
 **The house style already exists** and should be copied everywhere:
 `competitions/s3-adult-income/overview.md:50-63` states the trivial floor

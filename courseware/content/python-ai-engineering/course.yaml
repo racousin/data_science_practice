@@ -32,22 +32,30 @@ course:
 modules:
   # ---------------------------------------------------------------- session 1
   #
-  # Rebuilt 2026-09-06. This module is the whole engineering floor and it is
-  # deliberately over-provisioned: ~11h of written material against a 3h slot,
-  # so the teacher chooses what to lecture rather than what to invent. The 3h
-  # core path, the extensions and the run-sheet are in `session-plan.md`
-  # (unpublished). Every lesson carries a `# core` or `# extension` marker below,
-  # which is the greppable version of the same decision.
+  # Rebuilt 2026-09-06, then consolidated 2026-09-06 (second pass). This module
+  # is the whole engineering floor. The consolidation merged nine lessons into
+  # three and took the module from 725 written minutes to 560 published (plus the
+  # unpublished run-sheet) against a 3h slot:
+  #
+  #   why-version-control        -> git-essentials
+  #   pull-requests-and-review   -> branching-and-collaboration
+  #   github-desktop (reference) -> branching-and-collaboration
+  #   what-actually-changed, setup, the-core-loop, context-engineering,
+  #   guardrails-and-review      -> assistant-landscape (one agentic lesson)
+  #
+  # The surviving slug is the one kept because module slugs are immutable
+  # server-side; the eight retired lessons (server ids 28, 176, 138, 131, 132,
+  # 133, 134, 135) must be deleted with `delete_lesson` BEFORE the publish, or
+  # `reorder_lessons` rejects the manifest. The 3h core path, the extensions and
+  # the run-sheet are in `session-plan.md` (unpublished); every lesson below
+  # carries a `# core` or `# extension` marker, the greppable version of the
+  # same decision.
   #
   # Three labs, all graded from a GitHub URL: ship a package (1), pull request
-  # and review (2), agent-driven feature (3). The two attached competitions are
-  # optional parts of labs 1 and 3, not requirements — the assessment for this
-  # session lives on the students' GitHub accounts.
-  #
-  # `github-actions` and `ide-syntax-linting` kept their slugs (server lessons
-  # 139 and 140) but are no longer `Reference — …`: both are now taught, and
-  # both were rewritten for it. `lab-2` was the agent lab and is now the
-  # pull-request lab; the agent lab is the new `lab-3`.
+  # and review (2), an agent-built Connect-Four player (3). Lab 3's challenge is
+  # the one competition attached to this module and it is a required part of
+  # that lab — an ELO board is the only outside opinion in the session that a
+  # student cannot self-mark.
   - title: "Session 1 — The Engineering Floor"
     slug: s1-git-and-packaging
     icon: git-branch
@@ -55,8 +63,8 @@ modules:
     summary: >
       Shell, git, GitHub, environments, packaging, tests, linting, CI, notebooks
       and Colab — then an agentic coding workflow on top of them. You leave with
-      a tested Python package on GitHub whose tests run themselves, and a Colab
-      notebook that installs it.
+      a tested Python package on GitHub whose tests run themselves, a Colab
+      notebook that installs it, and an agent on a leaderboard.
     lessons:
       - title: "What Session 1 Builds"
         slug: session-map
@@ -73,25 +81,22 @@ modules:
         file: s1-git-and-packaging/the-shell.md
         estimated_minutes: 40
         is_published: true            # core
-      - title: "Why Version Control"
-        slug: why-version-control
-        file: s1-git-and-packaging/why-version-control.md
-        estimated_minutes: 10
-        is_published: true            # core
+      # `why-version-control` (server lesson 28) merged in here 2026-09-06: the
+      # motivation and the three-trees model now open the lesson whose commands
+      # they explain, and its two figures moved to assets/git-essentials/.
       - title: "Git Essentials"
         slug: git-essentials
         file: s1-git-and-packaging/git-essentials.md
-        estimated_minutes: 40
-        is_published: true            # core
-      - title: "Branching & Merging"
-        slug: branching-and-collaboration
-        file: s1-git-and-packaging/branching-and-collaboration.md
         estimated_minutes: 45
         is_published: true            # core
-      - title: "Pull Requests & Code Review"
-        slug: pull-requests-and-review
-        file: s1-git-and-packaging/pull-requests-and-review.md
-        estimated_minutes: 35
+      # `pull-requests-and-review` (176) and `Reference — GitHub Desktop` (138)
+      # merged in here 2026-09-06. Branching and the pull request were one
+      # workflow taught as two lessons, and the GUI was a reference page nobody
+      # was sent to; it is now the last two slides of the lesson it belongs to.
+      - title: "Branching, Pull Requests & Review"
+        slug: branching-and-collaboration
+        file: s1-git-and-packaging/branching-and-collaboration.md
+        estimated_minutes: 60
         is_published: true            # core
       - title: "Python Environments"
         slug: python-environments
@@ -130,53 +135,28 @@ modules:
         file: s1-git-and-packaging/lab-2.md
         estimated_minutes: 45
         is_published: true            # core
-      # -- the agentic-coding block. Placed after the labs on purpose: an agent
-      # that edits a repository is only safe on top of a branch, a test suite
-      # and a review habit, and the student now has all three.
-      - title: "The Coding-Assistant Landscape"
+      # -- the agentic-coding block, now ONE lesson. `what-actually-changed`
+      # (131), `setup` (132), `the-core-loop` (133), `context-engineering` (134)
+      # and `guardrails-and-review` (135) merged in here 2026-09-06; the
+      # `agent-loop` figure moved to assets/assistant-landscape/. It carries a
+      # dated price table and a dated benchmark table, which the six-lesson
+      # version deliberately refused to — students were choosing a tool anyway
+      # and doing it from marketing copy. Placed after the labs on purpose: an
+      # agent that edits your repository is only safe on top of a branch, a test
+      # suite and a review habit, and the student now has all three.
+      - title: "Coding Agents"
         slug: assistant-landscape
         file: s1-git-and-packaging/assistant-landscape.md
-        estimated_minutes: 25
-        is_published: true            # extension
-      - title: "What Actually Changed"
-        slug: what-actually-changed
-        file: s1-git-and-packaging/what-actually-changed.md
-        estimated_minutes: 20
+        estimated_minutes: 60
         is_published: true            # core
-      - title: "Assistant Setup"
-        slug: setup
-        file: s1-git-and-packaging/setup.md
-        estimated_minutes: 20
-        is_published: true            # core
-      - title: "The Core Loop"
-        slug: the-core-loop
-        file: s1-git-and-packaging/the-core-loop.md
-        estimated_minutes: 35
-        is_published: true            # core
-      - title: "Context Engineering"
-        slug: context-engineering
-        file: s1-git-and-packaging/context-engineering.md
-        estimated_minutes: 30
-        is_published: true            # extension
-      - title: "Guardrails & Review"
-        slug: guardrails-and-review
-        file: s1-git-and-packaging/guardrails-and-review.md
-        estimated_minutes: 30
-        is_published: true            # core
-      - title: "Lab 3 — Agent-Driven Feature"
+      - title: "Lab 3 — Ship an Agent to Connect Four"
         slug: lab-3
         kind: exercise
         file: s1-git-and-packaging/lab-3.md
         estimated_minutes: 45
-        is_published: true            # extension
-      # -- self-study, never lectured. `in_deck: false` keeps them out of the
-      # deck; the title is what tells a student they are not class material.
-      - title: "Reference — GitHub Desktop"
-        slug: github-desktop
-        file: s1-git-and-packaging/github-desktop.md
-        estimated_minutes: 10
-        is_published: true
-        in_deck: false
+        is_published: true            # core
+      # -- self-study, never lectured. `in_deck: false` keeps it out of the
+      # deck; the title is what tells a student it is not class material.
       - title: "Reference — Git Cheatsheet"
         slug: git-cheatsheet
         file: s1-git-and-packaging/git-cheatsheet.md
@@ -192,14 +172,16 @@ modules:
         estimated_minutes: 10
         is_published: false
         in_deck: false
-    # Both are OPTIONAL parts of their labs, not requirements. Session 1 is
-    # assessed from the students' GitHub repositories; these exist because a
-    # measured leaderboard is a cheap outside opinion on a pinned specification.
+    # One challenge, and unlike 179/180 it is a REQUIRED part of its lab. It is
+    # the only thing in this session a student cannot mark themselves: an ELO
+    # board scores your agent against other people's, so a plausible-looking
+    # agent loses in public. Competitions 179 (PAIE S1 — textstats) and 180
+    # (PAIE S2 — Flesch reading-ease) were retired on 2026-09-06 along with
+    # their packages; `detach_competition(14, 179)` / `(14, 180)` has to be run
+    # server-side, because publish_mlarena.py only ever attaches.
     competitions:
-      - competition_id: 179
-        label: "textstats correctness (optional, Lab 1)"
-      - competition_id: 180
-        label: "Flesch reading-ease (optional, Lab 3)"
+      - competition_id: 65
+        label: "PettingZoo · Connect-Four (Lab 3)"
 
   # ---------------------------------------------------------------- session 2
   #

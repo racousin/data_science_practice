@@ -1,13 +1,18 @@
 # Competitions
 
-One competition per taught session of `python-ai-engineering`, and the packages
-that build them. Sibling of `../content/` : that directory owns modules and
-lessons, this one owns the competitions those modules link to.
+The competition packages of `python-ai-engineering`. Sibling of `../content/` :
+that directory owns modules and lessons, this one owns the competitions those
+modules link to.
+
+**Session 1 has no package here.** Its Lab 3 submits to the existing
+[PettingZoo · Connect-Four](https://ml-arena.com/viewchallenge/65) challenge,
+which this repository does not own and does not build. The two flex_v1 packages
+that used to sit at the top of this list — `s1-textstats` (competition 179) and
+`s2-readability` (180) — were **retired on 2026-09-06** together with the
+lessons that submitted to them; see `../COURSE_STATE.md` §1d.
 
 ```text
 competitions/
-├── s1-textstats/        flex_v1   Lab 1's three functions, on hidden texts
-├── s2-readability/      flex_v1   Lab 2's Flesch score, against a pinned spec
 ├── s2-bike-demand/      file_v1   Session 2 regression — hourly bike rentals
 ├── s2-bank-marketing/   file_v1   Session 2 classification — term deposit
 ├── s3-adult-income/     file_v1   Lab 3's pipeline, on a held-out Adult split
@@ -106,34 +111,33 @@ grade fails the build instead of quietly mis-ranking a class.
 
 ## Two kernels, two shapes
 
-**flex_v1** (Sessions 1 & 2) — competitors upload `agent.py`, which runs in its
-own container. `env.py` calls creator-named methods through
-`agents[i].call("word_count", text)`. Used where the thing being graded *is*
-the code from the lab.
+**file_v1** (Sessions 2, 3 & 4 — every package in this directory) — competitors
+upload one `submission.csv`; no competitor code runs. `env.py` reads it and
+scores against a private `y_test.csv` that is uploaded to the env folder and
+never published. The scorers are **pure standard library**: the env image ships
+a full ML stack, but a scorer needing only `csv` and arithmetic has one less way
+to break. They reject a malformed submission with a message naming the line,
+rather than imputing anything.
 
-One property of the platform drives both env designs: **the first failed call
-latches the agent channel**, and every later call short-circuits without
-reaching the agent (`workers/flex_v1/executor/agent_channel.py:154`). So both
-envs score with `catch_errors=True`, award partial credit for everything that
-passed before the crash, and put the failing case and method into
-`info_message`. It also means neither competition can test a *required*
-exception — `longest_word("")` raising `ValueError` would be recorded as a
-crash — so those stay in the labs' own pytest suites, and every input sent is
-well-formed. Both overviews say so.
+**flex_v1** (Session 1's Lab 3, but no package here) — competitors upload
+`agent.py`, which runs in its own container and is called method by method.
+Session 1 used to build two of these (`s1-textstats`, `s2-readability`) and now
+borrows an existing one instead: PettingZoo · Connect-Four, competition **65**,
+where `flexkit`'s AEC loop drives the agent and the leaderboard is ELO.
 
-**file_v1** (Sessions 2, 3 & 4) — competitors upload one `submission.csv`; no
-competitor code runs. `env.py` reads it and scores against a private
-`y_test.csv` that is uploaded to the env folder and never published. Both
-scorers are **pure standard library**: the env image ships a full ML stack, but
-a scorer needing only `csv` and arithmetic has one less way to break. Both
-reject a malformed submission with a message naming the line, rather than
-imputing anything.
+The `agent.py` / `agent_template.py` rows in the table above are therefore
+unexercised today. Keep them documented: the one property of the platform that
+drives every flex_v1 env design is that **the first failed call latches the
+agent channel** and every later call short-circuits without reaching the agent
+(`workers/flex_v1/executor/agent_channel.py:154`). An env that does not score
+with `catch_errors=True` and award partial credit turns one crash into a zero,
+and an env cannot test a *required* exception at all — a raised `ValueError`
+is indistinguishable from a fault. Both facts belong in the overview of any
+flex_v1 competition built here next.
 
 ## Testing before publishing
 
 ```bash
-python competitions/localtest.py s1-textstats            # reference agent
-python competitions/localtest.py s1-textstats --agent agent_broken.py
 python competitions/localtest.py s3-adult-income
 python competitions/localtest.py s4-california-housing
 ```

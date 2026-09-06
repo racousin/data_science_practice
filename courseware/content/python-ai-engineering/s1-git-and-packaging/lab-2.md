@@ -92,8 +92,8 @@ Open the pull request with a real description:
 
 ```markdown
 ## Why
-`textstats` reports counts but nothing about token size. Readability
-metrics in Lab 3 need a mean length.
+`textstats` reports counts but nothing about token size. A mean length is
+the smallest useful statistic it is missing.
 
 ## How to check it
 uv sync && uv run pytest -q   →  11 passed

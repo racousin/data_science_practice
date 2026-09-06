@@ -1,21 +1,99 @@
-# Lab 3 — Agent-Driven Feature
+# Lab 3 — Ship an Agent to Connect Four
 
-Same repository as Labs 1 and 2. You will add a feature using an agent and open
-a pull request that would survive the review you just learned to give.
+You will drive an agent through the loop from *Coding Agents* to build a
+Connect-Four player, prove it works before you believe it, and put it on a
+leaderboard where other people's agents get a vote.
 
-**Deliverable:** a merged pull request carrying a `readability` module, and a
-`RETRO.md` in your repository. Part F is optional and puts the same code on a
-leaderboard.
+**The challenge:** [PettingZoo · Connect-Four](https://ml-arena.com/viewchallenge/65),
+competition `65`. Two agents, alternating moves, ranked by **ELO** — you are not
+scored against a fixed answer key, you are scored against everybody else.
+
+**Deliverable:** a merged pull request carrying a `connect4` module and a
+`RETRO.md`, **and** your agent on the leaderboard of competition 65.
+
+<!-- notes: 45 minutes in the room, the pull request as homework. The thing to
+say out loud at the start: this challenge cannot be self-graded. Lab 1's
+competition compared you to a specification; this one compares you to other
+students, and a plausible-looking agent loses. That is the whole point of
+putting the agentic lesson in front of it. -->
 
 ---
 
-## Part A — Give the agent its context
-If you still have the throwaway `agent-sandbox` branch from *Setup*, throw it
-away first: `git restore . && git switch main && git branch -D agent-sandbox`.
+## Why this lab and not another feature
 
-1. `git switch main && git pull && git switch -c feature/readability`
-2. Confirm `git status` is clean.
-3. Create `CLAUDE.md` (or `CONVENTIONS.md` for Aider) covering:
+Three properties, and each one closes a hole the previous labs could not:
+
+- **You cannot mark your own work.** There is no reference answer to diff
+  against. The only honest evidence is games played.
+- **Plausible and correct come apart visibly.** An agent that reads well and
+  never blocks loses every game. You will see that in a number.
+- **It is small.** The whole agent is about forty lines. The work is in
+  specifying it, testing it, and refusing what the agent gets wrong.
+
+---
+
+## Part A — The contract
+
+Your submission is one file, `agent.py`, exposing a class named `Agent`. The
+platform's loop calls exactly these four methods:
+
+```python
+class Agent:
+    def __init__(self):                                   # zero-arg. Required.
+        ...
+    def setup(self, observation_space, action_space):     # once, before episode 1
+        return True
+    def reset(self, env_player_name, episode_index):      # EVERY episode
+        return True
+    def choose_action(self, observation, reward=0.0, terminated=False,
+                      truncated=False, info=None, action_mask=None):
+        ...
+```
+
+`reset` is not optional. Seats rotate between episodes — you play first in some
+games and second in others — and `reset` is how you are told which you are.
+
+---
+
+## Part A — What `choose_action` receives
+
+| Argument | Shape | Meaning |
+|---|---|---|
+| `observation` | `(6, 7, 2)` array | plane `0` = **your** pieces, plane `1` = the opponent's |
+| `action_mask` | length-7 array | `1` where the column is playable, `0` where it is full |
+| `reward` | float | the reward from your previous move |
+| `terminated` / `truncated` | bool | the game is over — **return `None`** |
+
+Return an integer column, `0`–`6`.
+
+Row `0` is the **top** of the board and row `5` is the bottom, so a piece
+dropped in column `c` lands in the largest `r` with both planes zero at
+`(r, c)`. Getting that backwards produces an agent that blocks the wrong
+square and still runs.
+
+---
+
+## Part A — Three ways to lose without losing a game
+
+The platform does not forgive these, and none of them raise on your laptop:
+
+- **An illegal move.** A column with `action_mask[c] == 0` is a no-contest and
+  the game is scored against you. Honour the mask on every single turn.
+- **A crash.** Any exception out of `choose_action` ends the match the same way.
+- **Slowness.** You get **0.5 s per move**. A heuristic takes microseconds; a
+  search you did not bound does not.
+
+---
+
+## Part B — Branch, and give the agent its context
+
+If you still have the throwaway `agent-sandbox` branch from the lecture, throw
+it away first: `git restore . && git switch main && git branch -D agent-sandbox`.
+
+1. `git switch main && git pull && git switch -c feature/connect4`
+2. Confirm `git status` is clean — this is what makes `git diff` mean "what the
+   agent did".
+3. Create or extend `CLAUDE.md` (or `CONVENTIONS.md` for Aider) with:
    - the install / test / lint commands
    - your `src/` layout and test-mirroring convention
    - the fail-fast rule: no defaults for required arguments, no bare `except`
@@ -26,106 +104,73 @@ draft does not count.
 
 ---
 
-## Part B — Get a plan before any code
-The feature: a `readability` module implementing the Flesch reading-ease score,
-added to the `textstats` package you shipped in Lab 1.
+## Part C — The pinned strategy
 
-$$
-206.835 - 1.015 \times \frac{\text{words}}{\text{sentences}} - 84.6 \times \frac{\text{syllables}}{\text{words}}
-$$
+Hand your agent this, verbatim. It is short on purpose: a specification you
+wrote is a specification you can hold the agent to, and "play well" is not one.
 
-The formula is the easy part. *Word*, *sentence* and *syllable* are not defined
-by it, and syllable counting has no canonical answer — so the two sections
-below pin one. Those rules are the specification, they are what Part F
-grades against, and you hand them to your agent **verbatim**.
+> On your turn, consider only columns where `action_mask` is 1, and pick the
+> first rule that applies:
+>
+> 1. **Win now.** If dropping in a column gives you four in a row —
+>    horizontal, vertical, or either diagonal — play it.
+> 2. **Block.** If dropping in a column would give the *opponent* four in a
+>    row on their next turn, play it.
+> 3. **Centre.** Otherwise play the legal column closest to column 3, breaking
+>    ties towards the lower index.
+>
+> Never return a column whose mask is 0, and never raise.
 
----
-
-## Part B — The pinned specification
-
-**Sentences.** Count the maximal *runs* of characters drawn from `.!?`.
-`"Wait... no!"` is **two** sentences, not four — the `...` is one run. A text
-with no such punctuation counts as **one** sentence, never zero.
-
-**Words.** Split on whitespace, then strip leading and trailing characters that
-are not letters or digits. Tokens that become empty are dropped.
-`"end."` → `end`; `"--"` → dropped; `"under_scores"` → `under_scores`, because
-the stripping is only at the ends.
-
-**Syllables**, per word. Lowercase it and count the maximal runs of `aeiouy`
-(`y` counts). Then: if the word ends in `e` **and** that count is greater than
-1, subtract 1. The result is never less than 1.
+Rule 2 is the one that decides the lab. Part E puts a number on it.
 
 ---
 
-## Part B — Worked syllable counts
-
-| word | vowel runs | ends in `e`? | syllables |
-|---|---|---|---|
-| `time` | `i`, `e` → 2 | yes, and count > 1 → −1 | **1** |
-| `the` | `e` → 1 | yes, but count is 1 → no change | **1** |
-| `place` | `a`, `e` → 2 | yes → −1 | **1** |
-| `queueing` | `ueuei` is *one* run → 1 | no | **1** |
-| `rhythm` | `y` → 1 | no | **1** |
-| `dryly` | `y`, `y` → 2 | no | **2** |
-| `reevaluation` | `ee`, `a`, `ua`, `io` → 4 | no | **4** |
-| `42` | none → 0 | no | **1** (the floor) |
-
-`queueing` is the one worth staring at: `u e u e i` are five *contiguous*
-vowels, so the rule sees a single run. That is not how English works, and it is
-still the answer — the spec is the spec. An implementation that is right about
-the arithmetic and has its own opinion about the rules is wrong in a way that
-looks entirely reasonable in review. Part F puts a number on it.
-
----
-
-## Part B — Ask for the plan
-
-Ask for a **plan only**, and paste the specification into the prompt:
+## Part C — Ask for the plan, not the code
 
 ```text
-> Read src/textstats/ and tests/. Here is the specification for a Flesch
-> reading-ease score, which is fixed and not up for negotiation:
-> <paste the three pinned rules, verbatim>
-> Propose how to add it: module, signature, syllable-counting approach, edge
-> cases, and the tests you would write. Do not write any code.
+> Read src/ and tests/. Here is the specification for a Connect-Four agent,
+> which is fixed and not up for negotiation:
+> <paste the three rules, verbatim>
+> The platform calls Agent.choose_action(observation, reward, terminated,
+> truncated, info, action_mask); observation is (6,7,2) with plane 0 = my
+> pieces, action_mask is length 7. Propose how to build it: module layout,
+> the win-detection helper, the edge cases, and the tests you would write.
+> Do not write any code.
 ```
 
 Pasting the rules is the whole trick. Without them the agent invents a
-syllable heuristic, you have no way to say it is wrong, and the leaderboard
-disagrees with you twenty times.
+strategy, you have no standing to call it wrong, and you find out from the
+leaderboard a day later.
 
-**Save the plan** into `RETRO.md` under a heading `## Plan`. Then push back on
-it at least once — a real objection, in writing, before any code exists.
+**Save the plan** into `RETRO.md` under `## Plan`. Then push back on it at least
+once — a real objection, in writing, before any code exists.
 
 ---
 
-## Part C — Tests before implementation
+## Part D — Tests before implementation
+
 ```text
 > Write the tests from the plan. Do not write the implementation.
 ```
 
-Read every test. At minimum you must have:
+Read every test. At minimum you must have one per rule, each built from a board
+you constructed by hand:
 
-- **a known value.** `flesch_reading_ease("The cat sat on the mat.")` is
-  `pytest.approx(116.145)` — 6 words, 1 sentence, 6 syllables. Do that
-  arithmetic yourself before you accept the number.
-- **one case per pinned rule.** `"Wait... no!"` is two sentences; `dryly` is
-  two syllables; `queueing` is one; `42` is one. If your module exposes the
-  counters, assert on them directly. If it does not, one whole-text assertion
-  covers the `y` rule five times over:
-  `flesch_reading_ease("Rhythm myths fly by dryly.")` is
-  `pytest.approx(100.24)`.
-- **empty input → raises `ValueError`**, does not return `0.0`.
-- **text with no sentence-ending punctuation** — one sentence, never zero.
-
+- **Win now.** Three of your pieces in a row with an open fourth column → the
+  agent plays that column.
+- **Block.** Three *opponent* pieces in a row with an open fourth column → the
+  agent plays that column. Set it up so the blocking column and the centre
+  column differ, or the test passes for the wrong reason.
+- **Win beats block.** A board where both are available → the agent takes the
+  win.
+- **Centre.** An empty board → column 3.
+- **Mask.** A board with column 3 full → the agent never returns 3.
 
 ---
 
-## Part C — Confirm they fail first
+## Part D — Confirm they fail first
 
 If the generated tests do not fail for the right reason, they are not tests.
-Run them and confirm they fail:
 
 ```bash
 uv run --all-extras pytest -v
@@ -137,86 +182,108 @@ If your Lab 1 `pyproject.toml` declares pytest under `[dependency-groups] dev`
 
 ---
 
-## Part D — Implement, then verify
+## Part E — Implement, then play real games
+
 ```text
 > Now implement it so the tests pass. Do not modify the tests.
 ```
 
-Let the loop run. Then, yourself:
+Passing tests is necessary and nowhere near sufficient — every board in them is
+one *you* thought of, and the boards that beat you are the ones you did not.
+
+So play four hundred games against a random opponent before you believe
+anything. The harness on the next slide is fifteen lines and it is the only
+evidence in this lab that does not come from your own imagination.
+
+---
+
+## Part E — The self-play harness
+
+Save this as `selfplay.py`, next to your package:
+
+```python
+import random
+from pettingzoo.classic import connect_four_v3
+from connect4 import Agent                       # your module
+
+def play(seed, my_seat):
+    env = connect_four_v3.env(); env.reset(seed=seed)
+    names, rng, me = list(env.agents), random.Random(seed), Agent()
+    me.reset(names[my_seat], seed); reward = 0.0
+    for name in env.agent_iter():
+        obs, rew, term, trunc, _ = env.last()
+        mine = name == names[my_seat]
+        if mine:
+            reward = rew
+        if term or trunc:
+            env.step(None); continue
+        mask, board = obs["action_mask"], obs["observation"]
+        legal = [i for i, ok in enumerate(mask) if ok]
+        env.step(me.choose_action(board, rew, False, False, {}, mask)
+                 if mine else rng.choice(legal))
+    env.close()
+    return reward
+```
+
+---
+
+## Part E — Run it
+
+```python
+rs = [play(s, s % 2) for s in range(400)]        # 400 games, seats alternating
+print(f"mean {sum(rs)/len(rs):+.3f}  wins {sum(r > 0 for r in rs)/len(rs):.3f}")
+```
+
+```bash
+uv run --with "pettingzoo[classic]" python selfplay.py
+```
+
+`--with` installs pettingzoo for that one run without touching your
+`pyproject.toml`. It is a test harness, not a dependency of your package —
+adding it to your dependencies is exactly the "do not" you wrote in Part B.
+
+`s % 2` alternates which seat you take. Measuring only as the first player
+flatters you: in Connect Four moving first is a real advantage.
+
+---
+
+## Part E — The numbers you are aiming at
+
+Four hundred games against a uniform-random opponent, seats alternating.
+Measured, not estimated — you can reproduce every row with the script above:
+
+| implementation | mean reward | wins |
+|---|---|---|
+| uniform random (the floor) | −0.052 | 0.472 |
+| **rules 1 and 3 only — wins, never blocks** | **+0.485** | **0.743** |
+| rule 3 only — always play the centre-most legal column | +0.780 | 0.890 |
+| rules 1 and 2 — win and block, random otherwise | +0.940 | 0.970 |
+| **all three rules — the pinned specification** | **+0.975** | **0.988** |
+
+Stare at rows two and three. **Dropping the blocking rule scores worse than
+having no tactics at all** — an agent that hunts for its own win while ignoring
+yours loses to an opponent playing at random. It reads like the smarter program
+and it is 25 points worse.
+
+That is what "plausible, not correct" costs, as a number. If your agent lands
+near +0.49, you have almost certainly shipped exactly that bug.
+
+**Below +0.90, do not submit — debug.** Then read the diff yourself:
 
 ```bash
 git diff
-uv run --all-extras pytest
 ```
 
 **Reject and re-prompt** if you see any of: a bare `except`, a default value for
-a required argument, a new dependency, or an edited test.
+a required argument, a new dependency, an edited test, or a move chosen without
+consulting `action_mask`.
 
 ---
 
-## Part E — Retrospective and pull request
+## Part F — Submit
 
-Finish `RETRO.md`:
-
-```markdown
-## Plan
-<the plan you were given>
-
-## My objection
-<what you pushed back on, and why>
-
-## What I rejected
-<at least one thing the agent produced that you refused, and why>
-
-## What I could not explain
-<any line you had to go and understand — or "none", honestly>
-```
-
-Push and open the pull request now, using the template from Lab 2: *why*, *how
-to check it*, *not in this PR*. Your partner's review and the merge are
-**homework** — they need a second person to stop what they are doing, and five
-minutes of class time does not buy that.
-
----
-
-## Part F — Optional: the leaderboard
-This part needs an ML-Arena account and is not required to pass the lab; the
-graded deliverable is the repository. If the challenge is open, it is the
-cheapest possible outside opinion on whether you implemented the spec.
-
-**PAIE — Flesch reading-ease** (competition `180`) runs your module against
-twenty hidden texts and the reference implementation of the specification in
-Part B. Same rules, same tie-breaks, no taste involved — which is the point:
-this is the one part of the lab that is settled by a number rather than by a
-reader.
-
-
----
-
-## Part F — The submission shape
-
-Copy `readability.py` out of your package into a flat directory. It must not
-import anything from `textstats`, because only the files you upload are there.
-Put a six-line `agent.py` next to it:
-
-```python
-from readability import flesch_reading_ease
-
-
-class Agent:
-    def __init__(self):
-        pass
-
-    def flesch_reading_ease(self, text):
-        return flesch_reading_ease(text)
-```
-
-
----
-
-## Part F — Submitting
-
-Then submit both files:
+Copy your agent into a flat directory as `agent.py`. It must not import from
+your package — only the files you upload exist on the platform. Then:
 
 ```bash
 uv pip install mlarena-sdk
@@ -226,40 +293,64 @@ uv pip install mlarena-sdk
 import mlarena
 
 client = mlarena.connect(api_key="mlk_user_...")   # from your Profile page
-client.submit(competition_id=180, files=["agent.py", "readability.py"])
+client.submit(competition_id=65, files=["agent.py"], agent_name="<you>-c4")
 print(client.status())                             # queue_info / run_info / message
 ```
 
-The package is `mlarena-sdk`; it imports as `mlarena`. Once the run has
-finished, `client.leaderboard(180)` and the competition page both show your
-score. If `client.competition(180)` raises `CompetitionNotFoundError`, the
-competition is not open yet — tell your teacher, it is one command on their
-side.
+The package is `mlarena-sdk`; it imports as `mlarena`. Your class must define
+**every method the starter template declares, including `__init__`** — upload
+validation compares your class against the template and rejects the submission
+before anything runs.
 
 ---
 
-## The number you are aiming at
+## Part F — Reading an ELO board
 
-The ranked column is **pass rate**: the fraction of the twenty texts you answer
-within `1e-6` of the reference. It runs 0% to 100% and **higher is better**.
-Measured on this exact evaluation set:
+`client.leaderboard(65)` and the challenge page show the same thing. This board
+is not a score you earn alone: your agent is matched against the others already
+on it, and the rating moves with each result.
 
-| implementation | pass rate | mean abs error |
-|---|---|---|
-| the starter you are given (`raise NotImplementedError`) | 0.0% | 0.0000 (nothing to measure) |
-| every rule guessed: vowel *letters* not runs, no `y`, no silent `e`, no stripping, one sentence per `.!?` character | 20.0% | 43.6401 |
-| the spec followed except that `y` is not a vowel | 50.0% | 5.4622 |
-| the pinned specification, implemented exactly | **100.0%** | 0.0000 |
+A new agent enters at about **1200** and goes nowhere until it has played. As
+of 2026-09-06 the whole board was four agents, topped by the reference agent at
+**1248** — which tells you how empty the board is, not how strong 1248 is. By
+the time your cohort has submitted, it will not be four.
 
-**A completed Lab 2 scores 100.0%, 20 of 20.** Unusually, the bar is a ceiling
-rather than a target: the spec is pinned, so anything below it means your rules
-and the specification disagree somewhere. Mean absolute error tells you how
-badly — around `5` is one rule, above `40` is several. The competition overview
-has the full ladder, one rung per rule.
+Two consequences worth knowing before you read your rank:
 
-Note the third row. Dropping a single rule — `y` — costs you half the board
-while leaving an implementation that looks entirely reasonable in review. That
-is the argument for pinning a specification before you prompt, made in numbers.
+- **Rank is provisional at first.** One run against one opponent is noise. Give
+  it a few.
+- **The board moves without you.** Your number can fall while you sleep because
+  somebody else's agent got better. That is the mechanism working, not a bug.
+
+---
+
+## Part G — Retrospective and pull request
+
+Finish `RETRO.md`:
+
+```markdown
+## Plan
+<the plan the agent proposed>
+
+## My objection
+<what you pushed back on, and why — written before any code existed>
+
+## What I rejected
+<at least one thing the agent produced that you refused, and why>
+
+## Measured
+<your mean reward over 400 self-play games, and your ELO after submitting>
+
+## What I could not explain
+<any line you had to go and understand — or "none", honestly>
+```
+
+Push and open the pull request, using the template from Lab 2: *why*, *how to
+check it*, *not in this PR*. Put the self-play number in the **how to check it**
+section — a reviewer can re-run one command and see it.
+
+Your partner's review and the merge are **homework**: they need a second person
+to stop what they are doing, and five minutes of class time does not buy that.
 
 ---
 
@@ -267,14 +358,16 @@ is the argument for pinning a specification before you prompt, made in numbers.
 
 | Criterion | Weight |
 |---|---|
-| `CLAUDE.md` is specific to this project, not generic | 15% |
-| Tests written before implementation, and meaningful | 30% |
-| `RETRO.md` shows real pushback, not a transcript | 20% |
-| Diff is clean: no silent failure, no unapproved deps | 20% |
-| PR reviewed by your partner before merge | 15% |
+| `CLAUDE.md` is specific to this project, not generic | 10% |
+| Tests written before implementation, one per pinned rule | 25% |
+| Self-play measurement in `RETRO.md`, mean reward ≥ +0.90 | 20% |
+| `RETRO.md` shows real pushback, not a transcript | 15% |
+| Diff is clean: no silent failure, no unapproved deps, mask always honoured | 15% |
+| An agent of yours is on the leaderboard of competition 65 | 15% |
 
-Part F is not graded. If you do it, a pass rate below 100% tells you something
-the grade does not.
+Your **rank** is not graded. Being on the board is: the leaderboard is evidence
+that your code survived contact with a real opponent, and rank rewards whoever
+submitted last.
 
 ---
 
@@ -289,38 +382,36 @@ not an answer.
 
 ## If you finish early
 
-Ask the agent to review its own work with a fresh session:
-
-```text
-> /clear
-> Review the diff between main and this branch for silent failure handling,
-> missing edge cases, and tests that assert nothing. Do not fix anything.
-```
-
-A clean context finds things the authoring context is blind to. Add whatever it
-finds — and whether you agreed — to `RETRO.md`.
+- **Beat your own agent.** Point `selfplay.py` at two of your agents instead of
+  one and a random opponent, and see whether a fourth rule — *take a move that
+  creates two winning threats at once* — actually helps. Measure before you
+  believe it.
+- **Fresh-context review.** `/clear`, then: *"Review the diff between main and
+  this branch for silent failure handling, missing edge cases, and tests that
+  assert nothing. Do not fix anything."* A clean context finds things the
+  authoring context is blind to. Add what it found — and whether you agreed —
+  to `RETRO.md`.
 
 ---
 
-## Did you validate this session?
+## Did you validate this lab?
 
 - [ ] `uv sync --all-extras && uv run pytest` is green in a fresh clone of my
-      repository, on the `feature/readability` branch
+      repository, on the `feature/connect4` branch
 - [ ] `CLAUDE.md` names my install / test / lint commands, my `src/` layout and
-      at least one "do not", and is not unedited `/init` output (Part A)
+      at least one "do not", and is not unedited `/init` output (Part B)
 - [ ] `RETRO.md` contains the plan the agent proposed **and** the objection I
-      wrote before any code existed (Part B)
-- [ ] My tests contain the known value `pytest.approx(116.145)`, an empty-input
-      case expecting `ValueError`, and a case with no terminal punctuation
-      (Part C)
+      wrote before any code existed (Part C)
+- [ ] I have one test per pinned rule, including a **block** test whose blocking
+      column is not column 3 (Part D)
 - [ ] Those tests failed before the implementation existed, and pass now
-      (Parts C and D)
-- [ ] `git diff main...HEAD` shows no bare `except`, no default value on a
-      required argument, no edited test and no new dependency (Part D)
-- [ ] `RETRO.md` names at least one thing the agent produced that I refused,
-      and why (Part E)
+- [ ] `uv run --with "pettingzoo[classic]" python selfplay.py` prints a mean
+      reward of **≥ +0.90** over 400 games (Part E)
+- [ ] `git diff main...HEAD` shows no bare `except`, no default on a required
+      argument, no edited test, no new dependency, and no branch that returns a
+      column without checking `action_mask` (Part E)
+- [ ] My submission is on the leaderboard of **PettingZoo · Connect-Four (#65)**
+      and has an ELO rating
 - [ ] The pull request is merged and the branch is deleted
-- [ ] *(optional)* My submission scores **pass rate = 100.0%** (20/20) on
-      competition `180`. 50% means the arithmetic is right and one rule is wrong
 
-If everything except the last line is ticked, the lab is finished.
+If every box is ticked, the lab is finished — whatever your rank says.

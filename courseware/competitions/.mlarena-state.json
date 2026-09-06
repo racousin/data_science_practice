@@ -1,65 +1,53 @@
 {
   "https://ml-arena.com": {
     "competitions": {
-      "s1-textstats": {
-        "id": 179,
-        "label": "textstats correctness",
-        "module_slug": "s1-git-and-packaging",
-        "name": "PAIE S1 \u2014 textstats"
-      },
       "s2-bank-marketing": {
         "id": 184,
         "label": "Bank Term Deposit",
         "module_slug": "s2-ml-foundations",
-        "name": "AIE S2 \u2014 Bank Term Deposit"
+        "name": "AIE S2 — Bank Term Deposit"
       },
       "s2-bike-demand": {
         "id": 183,
         "label": "Bike Sharing Demand",
         "module_slug": "s2-ml-foundations",
-        "name": "AIE S2 \u2014 Bike Sharing Demand"
-      },
-      "s2-readability": {
-        "id": 180,
-        "label": "Flesch reading-ease",
-        "module_slug": "s1-git-and-packaging",
-        "name": "PAIE S2 \u2014 Flesch reading-ease"
+        "name": "AIE S2 — Bike Sharing Demand"
       },
       "s3-adult-income": {
         "id": 181,
         "label": "Adult Census Income",
         "module_slug": "s3-models-and-tuning",
-        "name": "PAIE S3 \u2014 Adult Census Income"
+        "name": "PAIE S3 — Adult Census Income"
       },
       "s3-credit-risk": {
         "id": 186,
         "label": "Credit Risk",
         "module_slug": "s3-models-and-tuning",
-        "name": "AIE S3 \u2014 Credit Risk"
+        "name": "AIE S3 — Credit Risk"
       },
       "s3-diabetes-progression": {
         "id": 185,
         "label": "Diabetes Progression",
         "module_slug": "s3-models-and-tuning",
-        "name": "AIE S3 \u2014 Diabetes Progression"
+        "name": "AIE S3 — Diabetes Progression"
       },
       "s4-california-housing": {
         "id": 187,
         "label": "California Housing",
         "module_slug": "s4-pytorch-nutshell",
-        "name": "AIE S4 \u2014 California Housing"
+        "name": "AIE S4 — California Housing"
       },
       "s4-forest-cover": {
         "id": 188,
         "label": "Forest Cover Type",
         "module_slug": "s4-pytorch-nutshell",
-        "name": "AIE S4 \u2014 Forest Cover Type"
+        "name": "AIE S4 — Forest Cover Type"
       },
       "s4-mnist-warmup": {
         "id": 182,
         "label": "MNIST Warm-up",
         "module_slug": "s4-pytorch-nutshell",
-        "name": "PAIE S4 \u2014 MNIST Warm-up"
+        "name": "PAIE S4 — MNIST Warm-up"
       }
     }
   }

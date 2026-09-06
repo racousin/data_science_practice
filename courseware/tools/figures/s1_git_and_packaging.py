@@ -225,16 +225,18 @@ def session_map() -> None:
         ("a CI workflow", "runs on every push and every pull request"),
         ("a merged pull request", "with a review comment that is not 'LGTM'"),
         ("a Colab notebook", "that pip-installs the package from GitHub"),
+        ("an agent on a leaderboard", "Connect-Four, rated against other people's"),
     ]
-    y = 42
+    y = 44
     for i, (what, detail) in enumerate(rows):
-        fc = GREEN_BG if i in (0, 5) else GREY_BG
-        box(ax, 8, y - 4.6, 84, 5.6, fc=fc, ec=RULE, lw=1.0)
-        label(ax, 12.5, y - 1.8, "✓", fs=12, color=GREEN, weight="bold")
-        label(ax, 17, y - 1.8, what, fs=10.5, weight="bold", ha="left")
-        label(ax, 47, y - 1.8, detail, fs=9, color=MUTED, ha="left")
-        y -= 6.6
-    caption(ax, 50, 1.5, "Nothing here is graded on ML. All six are engineering.")
+        fc = GREEN_BG if i in (0, 5, 6) else GREY_BG
+        box(ax, 8, y - 4.2, 84, 5.2, fc=fc, ec=RULE, lw=1.0)
+        label(ax, 12.5, y - 1.6, "✓", fs=12, color=GREEN, weight="bold")
+        label(ax, 17, y - 1.6, what, fs=10.5, weight="bold", ha="left")
+        label(ax, 49, y - 1.6, detail, fs=9, color=MUTED, ha="left")
+        y -= 6.1
+    caption(ax, 50, 1.5,
+            "Nothing here is graded on machine learning. All seven are engineering.")
     save(fig, lesson, "the-deliverable.png")
 
 
@@ -390,11 +392,12 @@ def the_shell() -> None:
 
 
 # --------------------------------------------------------------------------- #
-# why-version-control
+# git-essentials — the motivation half (was the `why-version-control` lesson,
+# merged in 2026-09-06; its two figures now live in the git-essentials folder)
 # --------------------------------------------------------------------------- #
 
 def why_version_control() -> None:
-    lesson = "why-version-control"
+    lesson = "git-essentials"
 
     fig, ax = canvas(10.5, 4.2)
     label(ax, 50, 36, "A repository is a graph of snapshots", fs=12.5, weight="bold")
@@ -429,7 +432,7 @@ def why_version_control() -> None:
     arrow(ax, (36.5, 19), (32.5, 19), color=WARM)
     label(ax, 34.5, 15.6, "git restore", fs=8, mono=True, color=WARM)
     caption(ax, 50, 8,
-            "Every command in the next lesson moves a change between two of these boxes.")
+            "Every command in the rest of this lesson moves a change between two of these boxes.")
     save(fig, lesson, "three-trees.png")
 
 
@@ -537,11 +540,12 @@ def branching() -> None:
 
 
 # --------------------------------------------------------------------------- #
-# pull-requests-and-review
+# branching-and-collaboration — the review half (was the
+# `pull-requests-and-review` lesson, merged in 2026-09-06)
 # --------------------------------------------------------------------------- #
 
 def pull_requests() -> None:
-    lesson = "pull-requests-and-review"
+    lesson = "branching-and-collaboration"
 
     fig, ax = canvas(11, 4.6)
     label(ax, 50, 38, "The pull-request loop", fs=12.5, weight="bold")
@@ -983,11 +987,12 @@ def assistant_landscape() -> None:
 
 
 # --------------------------------------------------------------------------- #
-# the-core-loop
+# assistant-landscape — the loop figure (was the `the-core-loop` lesson; the
+# whole agentic block was merged into one lesson on 2026-09-06)
 # --------------------------------------------------------------------------- #
 
 def core_loop() -> None:
-    lesson = "the-core-loop"
+    lesson = "assistant-landscape"
 
     fig, ax = canvas(10.5, 5.4)
     label(ax, 48, 55, "The loop — and the two steps students skip",
