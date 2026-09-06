@@ -6,9 +6,9 @@ is the half of version control that cannot be practised alone.
 **Pair up.** You keep your own `textstats` repository from Lab 1; you will
 contribute to your partner's and they will contribute to yours.
 
-**Time:** 45 minutes. **Deliverable:** in *your* repository — one merged pull
-request that you authored, one review you gave on your partner's, and one
-resolved merge conflict.
+**Deliverable:** in *your* repository — one merged pull request that you
+authored, one review you gave on your partner's, and one resolved merge
+conflict.
 
 <!-- notes: Pairing is the whole lab; if the room is odd, make one trio and have
 the third person review both. Part D (the conflict) is the part that actually
@@ -16,8 +16,7 @@ teaches — protect the time for it. -->
 
 ---
 
-## Part A — Grant access (5 min)
-
+## Part A — Grant each other access
 In **your** repository: *Settings → Collaborators → Add people*, add your
 partner. They do the same for you. Accept the invitation from your email or from
 `github.com/notifications`.
@@ -33,8 +32,7 @@ command for the rest of this lab.
 
 ---
 
-## Part B — Protect main (5 min)
-
+## Part B — Protect your main branch
 In your own repository: *Settings → Branches → Add branch ruleset*, targeting
 `main`:
 
@@ -58,8 +56,7 @@ your process is now enforced by the server, not by your intentions.
 
 ---
 
-## Part C — Contribute to your partner's package (15 min)
-
+## Part C — Contribute to your partner's package
 In **their** repository, add one function on a branch:
 
 ```bash
@@ -82,7 +79,7 @@ style, exported from `__init__.py` if that is what they do.
 
 ---
 
-## Part C — push it and open the pull request
+## Part C — Push it and open the pull request
 
 Write the test **first**, watch it fail, then implement.
 
@@ -109,8 +106,7 @@ Median and standard deviation — separate change if wanted.
 
 ---
 
-## Part D — Review (10 min)
-
+## Part D — Review their pull request
 Now review the pull request **they** opened on **your** repository. On the
 *Files changed* tab, leave at least **three** comments, and at least one of each:
 
@@ -137,8 +133,7 @@ Re-review, approve, **Squash and merge**, delete the branch.
 
 ---
 
-## Part E — A conflict, on purpose (8 min)
-
+## Part E — Cause a conflict on purpose
 Both of you, in **your own** repository, at the same time:
 
 1. `git switch main && git pull`
@@ -150,7 +145,7 @@ Both of you, in **your own** repository, at the same time:
 
 ---
 
-## Part E — resolving it
+## Part E — Resolve it
 
 The second pull request now says *"This branch has conflicts that must be
 resolved"*. Resolve it locally:
@@ -168,7 +163,7 @@ CONFLICT (content): Merge conflict in README.md
 
 ---
 
-## Part E — the markers
+## Part E — Reading the markers
 
 Open the file. Git has written both versions into it:
 
@@ -194,8 +189,7 @@ request is now mergeable.
 
 ---
 
-## Part F — Read your own history (2 min)
-
+## Part F — Read your own history
 ```bash
 git log --graph --oneline --decorate -15
 git log --format='%an' | sort | uniq -c

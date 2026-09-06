@@ -1,8 +1,7 @@
 # Accounts & Toolchain
 
-Five things to install or sign up for, once. Do them now, together, in the room —
-this is the twenty minutes that stops Session 3 from being about Python
-installation.
+Five things to install or sign up for, once. Do them now, together, in the room:
+this is what stops Session 3 from being about Python installation.
 
 <!-- notes: 20-30 minutes, everyone on keyboards, walk the room. Do NOT lecture
 over this. The single most valuable thing you do today is make sure all four

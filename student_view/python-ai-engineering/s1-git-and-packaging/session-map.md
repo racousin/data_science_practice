@@ -1,7 +1,7 @@
 # What Session 1 Builds
 
-Three hours, one artifact: a Python package that lives on GitHub, proves itself
-with tests, and can be used from a notebook you do not own.
+One artifact: a Python package that lives on GitHub, proves itself with tests,
+and runs in a notebook you do not own.
 
 <!-- notes: 10 minutes, no keyboards yet. The point of this lesson is that every
 student can name the deliverable before the first command. Ask at the end: "what
@@ -56,25 +56,6 @@ Everything in this session is a consequence of that one change:
 - **Git** exists because two people editing one file is otherwise a negotiation.
 - **CI** exists because "I ran the tests" is a claim, and a green tick is
   evidence.
-
----
-
-## The shape of the three hours
-
-| Block | What | Minutes |
-|---|---|---|
-| 0 | Accounts and toolchain — everyone, working | 25 |
-| 1 | The shell | 15 |
-| 2 | Git, GitHub and review | 45 |
-| — | break | 10 |
-| 3 | Environments, packaging, tests | 25 |
-| 4 | Linting and CI | 12 |
-| 5 | Notebooks and Colab | 10 |
-| — | **Lab 1** — build the thing | 38 |
-
-The written lessons hold considerably more than that. What is lectured is the
-spine; the rest is there because you will need it in week six and there will be
-nobody to ask.
 
 ---
 

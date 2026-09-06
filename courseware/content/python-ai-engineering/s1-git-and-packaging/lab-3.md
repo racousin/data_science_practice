@@ -3,14 +3,13 @@
 Same repository as Labs 1 and 2. You will add a feature using an agent and open
 a pull request that would survive the review you just learned to give.
 
-**Time:** 45 minutes in class for Parts A–E. **Deliverable:** a merged pull
-request carrying a `readability` module, and a `RETRO.md` in your repository.
-Part F is optional and puts the same code on a leaderboard.
+**Deliverable:** a merged pull request carrying a `readability` module, and a
+`RETRO.md` in your repository. Part F is optional and puts the same code on a
+leaderboard.
 
 ---
 
-## Part A — Set the context (10 min)
-
+## Part A — Give the agent its context
 If you still have the throwaway `agent-sandbox` branch from *Setup*, throw it
 away first: `git restore . && git switch main && git branch -D agent-sandbox`.
 
@@ -27,8 +26,7 @@ draft does not count.
 
 ---
 
-## Part B — Plan before code (10 min)
-
+## Part B — Get a plan before any code
 The feature: a `readability` module implementing the Flesch reading-ease score,
 added to the `textstats` package you shipped in Lab 1.
 
@@ -43,7 +41,7 @@ grades against, and you hand them to your agent **verbatim**.
 
 ---
 
-## Part B — the pinned specification
+## Part B — The pinned specification
 
 **Sentences.** Count the maximal *runs* of characters drawn from `.!?`.
 `"Wait... no!"` is **two** sentences, not four — the `...` is one run. A text
@@ -60,7 +58,7 @@ the stripping is only at the ends.
 
 ---
 
-## Part B — worked syllable counts
+## Part B — Worked syllable counts
 
 | word | vowel runs | ends in `e`? | syllables |
 |---|---|---|---|
@@ -81,7 +79,7 @@ looks entirely reasonable in review. Part F puts a number on it.
 
 ---
 
-## Part B — ask for the plan
+## Part B — Ask for the plan
 
 Ask for a **plan only**, and paste the specification into the prompt:
 
@@ -102,8 +100,7 @@ it at least once — a real objection, in writing, before any code exists.
 
 ---
 
-## Part C — Test first (10 min)
-
+## Part C — Tests before implementation
 ```text
 > Write the tests from the plan. Do not write the implementation.
 ```
@@ -125,7 +122,7 @@ Read every test. At minimum you must have:
 
 ---
 
-## Part C — confirm they fail first
+## Part C — Confirm they fail first
 
 If the generated tests do not fail for the right reason, they are not tests.
 Run them and confirm they fail:
@@ -140,8 +137,7 @@ If your Lab 1 `pyproject.toml` declares pytest under `[dependency-groups] dev`
 
 ---
 
-## Part D — Implement and verify (10 min)
-
+## Part D — Implement, then verify
 ```text
 > Now implement it so the tests pass. Do not modify the tests.
 ```
@@ -158,7 +154,7 @@ a required argument, a new dependency, or an edited test.
 
 ---
 
-## Part E — Retrospective (5 min) + pull request
+## Part E — Retrospective and pull request
 
 Finish `RETRO.md`:
 
@@ -183,8 +179,7 @@ minutes of class time does not buy that.
 
 ---
 
-## Part F — Optional: put it on the board (5 min)
-
+## Part F — Optional: the leaderboard
 This part needs an ML-Arena account and is not required to pass the lab; the
 graded deliverable is the repository. If the challenge is open, it is the
 cheapest possible outside opinion on whether you implemented the spec.
@@ -198,7 +193,7 @@ reader.
 
 ---
 
-## Part F — the submission shape
+## Part F — The submission shape
 
 Copy `readability.py` out of your package into a flat directory. It must not
 import anything from `textstats`, because only the files you upload are there.
@@ -219,7 +214,7 @@ class Agent:
 
 ---
 
-## Part F — submitting
+## Part F — Submitting
 
 Then submit both files:
 

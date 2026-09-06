@@ -3,8 +3,8 @@
 Build a Python package, prove it with tests, make GitHub run those tests for
 you, and use the result from a Colab notebook you have never opened before.
 
-**Time:** 60 minutes. **Deliverable:** a GitHub repository URL. Everything is
-graded from that URL — there is nothing to upload anywhere else.
+**Deliverable:** a GitHub repository URL. Everything is graded from that URL —
+there is nothing to upload anywhere else.
 
 <!-- notes: Everyone works solo here; Lab 2 is the one that needs a partner.
 Walk the room during Part B — the src/ layout and the editable install are where
@@ -36,8 +36,7 @@ will be green.
 
 ---
 
-## Part A — The repository (8 min)
-
+## Part A — Create the repository
 1. On GitHub, **New repository** → name it `textstats` → **Public** → tick *Add
    a README*.
    Public, because CI minutes are free on public repositories and branch
@@ -70,8 +69,7 @@ git push
 
 ---
 
-## Part B — The package (15 min)
-
+## Part B — Write the package
 Work on a branch, not on `main`:
 
 ```bash
@@ -87,7 +85,7 @@ fresh-clone check below is what your grade is read from.
 
 ---
 
-## Part B — the files
+## Part B — The files it needs
 
 `pyproject.toml` must end up with at least:
 
@@ -114,7 +112,7 @@ def longest_word(text: str) -> str:
 
 ---
 
-## Part B — the specification
+## Part B — The specification
 
 The docstrings do not pin these down, and two defensible readings disagree. This
 is the specification; the tests in Part C are graded against it.
@@ -130,7 +128,7 @@ is the specification; the tests in Part C are graded against it.
 
 ---
 
-## Part B — exports and the check
+## Part B — Exports, and the check
 
 Re-export the three from `src/textstats/__init__.py` so `from textstats import
 word_count` works:
@@ -153,8 +151,7 @@ point of the environment.
 
 ---
 
-## Part C — Tests (15 min)
-
+## Part C — Write the tests
 Write at least **eight** tests in `tests/test_core.py`. They must include:
 
 - one `@pytest.mark.parametrize` with three or more cases
@@ -166,7 +163,7 @@ Write at least **eight** tests in `tests/test_core.py`. They must include:
 
 ---
 
-## Part C — what a test looks like
+## Part C — What a test looks like
 
 ```python
 import pytest
@@ -196,8 +193,7 @@ implementation, it is not testing anything.
 
 ---
 
-## Part D — Quality gate (5 min)
-
+## Part D — Lint and format
 Add ruff configuration to `pyproject.toml`:
 
 ```toml
@@ -218,8 +214,7 @@ git add -A && git commit -m "Apply ruff format and fix lint findings"
 
 ---
 
-## Part E — Continuous integration (7 min)
-
+## Part E — Make GitHub run the tests
 Create `.github/workflows/tests.yml`:
 
 ```yaml
@@ -245,7 +240,7 @@ jobs:
 
 ---
 
-## Part E — commit, push, watch it run
+## Part E — Commit, push, watch it run
 
 Commit `uv.lock` — without it, `uv sync` on the runner resolves different
 versions from yours, and CI stops being evidence about *your* code.
@@ -267,8 +262,7 @@ Then add the badge to `README.md` on `main`:
 
 ---
 
-## Part F — Release it (3 min)
-
+## Part F — Tag a release
 A tag is what makes the next part reproducible.
 
 ```bash
@@ -279,8 +273,7 @@ git push origin v0.1.0
 
 ---
 
-## Part G — Use it in Colab (7 min)
-
+## Part G — Install it in Colab
 Open a **new** Colab notebook — not one you have used before. Two cells:
 
 ```python
@@ -305,7 +298,7 @@ Then, *File → Save a copy in GitHub*, into your `textstats` repository as
 
 ---
 
-## Part H — Optional: put it on a leaderboard
+## Part H — Optional: the leaderboard
 
 Not required, and not graded — the deliverable is the repository. But if you
 have an ML-Arena account, **PAIE S1 — textstats** (competition `179`) is a free
@@ -318,7 +311,7 @@ Part B specification says.
 
 ---
 
-## Part H — the submission shape
+## Part H — The submission shape
 
 ```python
 # agent.py, next to a copy of core.py
@@ -353,7 +346,7 @@ otherwise.
 
 ---
 
-## Part H — the numbers
+## Part H — The numbers
 
 A starter that raises scores **0.000**. `word_count` alone
 scores **0.333**. An implementation that read the docstrings but not the Part B
