@@ -39,7 +39,11 @@ $$
 
 ![The margin](assets/s3-models-and-tuning/support-vector-machines/svm-margin.png)
 
-Fix the scale so the support vectors sit at $\pm 1$:
+---
+
+## Fixing the scale
+
+Choose the scale so the support vectors sit at $\pm 1$:
 
 $$
 w^T x_+ + b = +1 \;\Longrightarrow\; d_+ = \frac{|+1|}{\|w\|} = \frac{1}{\|w\|}
@@ -52,6 +56,10 @@ $$
 $$
 \text{margin} = d_+ + d_- = \frac{1}{\|w\|} + \frac{1}{\|w\|} = \frac{2}{\|w\|}
 $$
+
+---
+
+## Maximum margin is minimum $\|w\|$
 
 Maximising the margin is therefore minimising $\|w\|$:
 
@@ -101,6 +109,10 @@ $$
 and never compute $\phi(x)$ at all.
 
 ![Lifting with a kernel](assets/s3-models-and-tuning/support-vector-machines/kernel-lift.png)
+
+---
+
+## Kernels you will meet
 
 | Kernel | Formula |
 |---|---|

@@ -36,7 +36,14 @@ The hat on $\hat{y}$ means *estimated*. A **model family** $\mathcal{F} =
 \{f_\theta : \theta \in \mathbb{R}^d\}$ is the set of functions you are willing
 to consider; training picks one element of it.
 
+---
+
+## Training picks one function out of the family
+
 ![Fitting a function to data](assets/s2-ml-foundations/models/regression.png)
+
+Every curve the family allows is a candidate. The data and the loss decide which
+one you end up with.
 
 ---
 
@@ -59,32 +66,56 @@ which is the whole argument of the logistic regression lesson.
 
 ## Size: $d$ is the number of values the model must learn
 
-Picking a family fixes $d$ before you see any data.
+Picking a family fixes $d$ before you see any data. The five that follow are the
+same template with more $\theta$.
+
+---
+
+## Linear — 2 parameters
 
 ![Linear functions](assets/s2-ml-foundations/models/family-linear.png)
 
-Linear, $\mathbb{R} \rightarrow \mathbb{R}$ — **2 parameters** (slope $a$,
-intercept $b$).
+$\mathbb{R} \rightarrow \mathbb{R}$, with a slope $a$ and an intercept $b$.
+
+---
+
+## Polynomial of degree 2 — 3 parameters
 
 ![Polynomial functions](assets/s2-ml-foundations/models/family-polynomial.png)
 
-Polynomial of degree 2, $\mathbb{R} \rightarrow \mathbb{R}$ — **3 parameters**
-($a$, $b$, $c$).
+$\mathbb{R} \rightarrow \mathbb{R}$, with $a$, $b$ and $c$. One more parameter
+buys one bend.
+
+---
+
+## Logistic — 2 parameters, and a bounded output
 
 ![Logistic functions](assets/s2-ml-foundations/models/family-logistic.png)
 
-Logistic, $\mathbb{R} \rightarrow [0, 1]$ — **2 parameters**. Note the codomain:
-this one *cannot* output anything outside $[0,1]$, which is exactly why it is
-used for probabilities.
+$\mathbb{R} \rightarrow [0, 1]$. Note the codomain: this one *cannot* output
+anything outside $[0,1]$, which is exactly why it is used for probabilities.
+
+---
+
+## Quadratic surface — 5 parameters
 
 ![Quadratic surfaces](assets/s2-ml-foundations/models/family-quadratic-surface.png)
 
-Quadratic, $\mathbb{R}^2 \rightarrow \mathbb{R}$ — **5 parameters**.
+$\mathbb{R}^2 \rightarrow \mathbb{R}$: two inputs, one output, five numbers to
+learn.
+
+---
+
+## A small network — 47 parameters
 
 ![A small neural network](assets/s2-ml-foundations/models/neural-network-diagram.png)
 
-A small network, $\mathbb{R}^6 \rightarrow \mathbb{R}$ — **47 parameters**.
-Modern ones have $10^9$ or more. Same template, more $\theta$.
+$\mathbb{R}^6 \rightarrow \mathbb{R}$. Modern ones have $10^9$ or more, and
+nothing about the template has changed.
+
+---
+
+## What $d$ costs you
 
 In general, a linear model on $p$ features has $d = p + 1$: one coefficient per
 feature, plus the intercept. Capacity grows with $d$, and so does the amount of

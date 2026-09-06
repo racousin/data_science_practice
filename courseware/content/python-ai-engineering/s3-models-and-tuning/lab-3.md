@@ -126,6 +126,10 @@ gb = Pipeline([("pre", pre_dense),
                ("clf", HistGradientBoostingClassifier(random_state=42))])
 ```
 
+---
+
+## Part D — the failure to expect
+
 If you forget, `cross_val_score` reports `ValueError: All the 5 fits failed. It
 is very likely that your model is misconfigured.` The real error underneath is
 `TypeError: Sparse data was passed for X, but dense data is required.` Expect
@@ -202,6 +206,10 @@ client = mlarena.connect(api_key="mlk_user_...")   # from your Profile page
 client.download_dataset(181, dest_dir="data")      # X_train.csv y_train.csv X_test.csv
 ```
 
+---
+
+## Part F — refit and write the file
+
 Refit your Part C pipeline (or your Part D one) on `data/X_train.csv` against
 `data/y_train.csv`, predict `data/X_test.csv`, and write `submission.csv` with
 columns `id,prediction`, where `1` means >50K:
@@ -221,6 +229,10 @@ pd.DataFrame({"id": X_te.index, "prediction": pred}).to_csv(
 client.submit(competition_id=181, files=["submission.csv"])
 print(client.leaderboard(181).head())
 ```
+
+---
+
+## Part F — the number to beat
 
 Setting `id` as the index is not cosmetic — it keeps the row identifier out of
 the feature matrix. Re-derive `num` and `cat` from a frame where `id` is still a

@@ -47,6 +47,10 @@ $$
 \alpha_t = \frac{1}{2} \ln \frac{1 - \epsilon_t}{\epsilon_t}
 $$
 
+---
+
+## AdaBoost — the weight update
+
 **2d.** Update the sample weights — misclassified points get heavier:
 
 $$
@@ -60,6 +64,8 @@ $$
 $$
 H(x) = \text{sign}\left( \sum_{t=1}^{T} \alpha_t h_t(x) \right)
 $$
+
+---
 
 ### Reading $\alpha_t$
 

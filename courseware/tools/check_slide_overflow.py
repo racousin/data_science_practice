@@ -14,10 +14,13 @@ does.
 
 Exit status is 1 if anything overflows, so it works as a build gate.
 
-The fix is always editorial: split the slide with a `---` and give the second
-half a heading. An image block costs a flat 3.4 in of the 4.95 available, so a
-slide holding a figure has room for roughly one short paragraph or a four-row
-table and nothing else.
+It measures with the same `Measurer` the renderer lays slides out with, so what
+it reports is what the deck does. A figure has already given up all the height
+it can by the time a slide is listed here — it shrinks to fit the text down to
+IMAGE_MIN_H — so the remaining fix is editorial: split the slide with a `---`
+and give the second half a heading. Of the 4.95 in a titled slide has, a figure
+at full size takes 3.4, which leaves room for one short paragraph or a
+four-row table and nothing else.
 """
 from __future__ import annotations
 
@@ -49,9 +52,16 @@ def main() -> int:
     ap.add_argument("content", help="course content directory (holds course.yaml)")
     ap.add_argument("--module", action="append", help="only this module slug")
     ap.add_argument("--verbose", action="store_true", help="show per-block heights")
+    ap.add_argument("--cache", default="build/slides/.mathcache",
+                    help="where display-math PNGs are cached (shared with the build)")
     args = ap.parse_args()
 
     course = bs.load_manifest(args.content)
+    base = os.path.abspath(args.content)
+    measure = bs.Measurer(
+        [base, os.path.join(base, "assets"), os.path.dirname(base)],
+        bs.MathRenderer(args.cache),
+    )
     titled = (bs.BODY_BOTTOM - bs.BODY_TOP) / bs.Emu(914400)
     untitled = (bs.BODY_BOTTOM - bs.Inches(1.0)) / bs.Emu(914400)
     smallest = bs.SIZE_LADDER[-1]
@@ -70,7 +80,7 @@ def main() -> int:
                 if not title and not blocks:
                     continue
                 avail = titled if title else untitled
-                height = bs.estimate_height(blocks, smallest)
+                height, image_heights = measure.plan(blocks, smallest, avail)
                 if height <= avail:
                     continue
                 problems += 1
@@ -79,8 +89,9 @@ def main() -> int:
                     f"{title or '(untitled)'} — needs {height:.2f} in of {avail:.2f}"
                 )
                 if args.verbose:
-                    for b in blocks:
-                        h = bs.estimate_height([b], smallest)
+                    for i, b in enumerate(blocks):
+                        h = (image_heights[i] + 0.16 if b.kind == "image"
+                             else measure.block_height(b, smallest))
                         print(f"    {b.kind:8} {h:5.2f}  {describe(b)}")
 
     print(f"{problems} overflowing slide(s)")

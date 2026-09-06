@@ -58,12 +58,24 @@ SLIDE_W = Inches(13.333)
 SLIDE_H = Inches(7.5)
 MARGIN = Inches(0.75)
 CONTENT_W = SLIDE_W - 2 * MARGIN
+CONTENT_W_IN = CONTENT_W / Emu(914400)
 BODY_TOP = Inches(1.85)
 BODY_BOTTOM = SLIDE_H - Inches(0.7)
 
 # Body font sizes, largest first. The renderer measures the slide and steps
 # down this ladder until the content fits.
 SIZE_LADDER = [20, 18, 16, 14, 12, 11, 10]
+
+# A figure is the one block on a slide that can give ground: it takes whatever
+# height the text leaves it and no more. Alone on a slide it grows to fill the
+# body; sharing with text it shrinks, keeping IMAGE_GOOD_H for as long as a rung
+# of the ladder allows and bottoming out at IMAGE_MIN_H — below which it stops
+# being readable from the back of a room and the slide has to be split instead.
+IMAGE_MIN_H = 2.2   # inches; the floor, past which check_slide_overflow speaks up
+IMAGE_GOOD_H = 3.0  # inches; kept in preference to a larger body font
+IMAGE_BASE_H = 3.4  # inches; every figure may reach this regardless of resolution
+IMAGE_MAX_H = 4.6   # inches; a figure alone on a slide fills the body to here
+IMAGE_MIN_DPI = 110  # do not enlarge a small figure past this
 
 
 # --------------------------------------------------------------------------- #
@@ -204,7 +216,7 @@ def parse_blocks(text: str) -> tuple[str | None, list[Block]]:
                     items.append((len(b.group(1)) // 2, b.group(2).strip(), None))
                 elif o:
                     items.append((len(o.group(1)) // 2, o.group(3).strip(), o.group(2)))
-                elif lines[i].strip() and lines[i].startswith(("   ", "\t")) and items:
+                elif lines[i].strip() and lines[i].startswith(("  ", "\t")) and items:
                     lvl, txt, marker = items[-1]
                     items[-1] = (lvl, f"{txt} {lines[i].strip()}", marker)
                 else:
@@ -290,7 +302,13 @@ def _run(paragraph, text: str, size: int, color, bold: bool, italic=False, mono=
 # Height estimation (drives the auto-fit ladder)
 # --------------------------------------------------------------------------- #
 
-CHARS_PER_INCH = 5.6  # at 10pt; scales inversely with font size
+# Measured off Helvetica Neue: mixed-case prose averages 15.8 characters to the
+# inch at 10pt (bold, 14.8). The model is set a little under that because a line
+# breaks at a word boundary and so wastes up to one word of the last inch.
+CHARS_PER_INCH = 14.0
+
+# Matches the left/right cell margins _table sets.
+TABLE_CELL_PAD_IN = 0.08
 
 
 def _wrapped_lines(text: str, size: int, width_in: float) -> int:
@@ -302,31 +320,177 @@ def _plain(text: str) -> str:
     return re.sub(r"[*`$]|\[|\]\([^)]*\)", "", text)
 
 
-def estimate_height(blocks: list[Block], size: int) -> float:
-    """Rough content height in inches for a given body font size."""
-    line_h = size * 1.45 / 72.0
-    total = 0.0
-    width_in = CONTENT_W / Emu(914400)
-    for b in blocks:
+class Measurer:
+    """How tall each block renders, in inches.
+
+    The renderer and ``check_slide_overflow`` share one of these, so the height
+    the auto-fit ladder searches over is the height the slide actually gets. The
+    three things a flat per-block guess got wrong are all resolved from the real
+    thing here: an image from its file, display math from the PNG mathtext
+    produces, and a table row from the text that has to wrap inside it.
+    """
+
+    def __init__(self, asset_roots: list[str], math: MathRenderer | None = None):
+        self.asset_roots = list(asset_roots)
+        self.math = math
+        self._pixels: dict[str, tuple[int, int] | None] = {}
+
+    # -- assets ------------------------------------------------------------ #
+    def resolve(self, src: str) -> str | None:
+        if src.startswith(("http://", "https://")):
+            return None
+        for root in self.asset_roots:
+            candidate = os.path.normpath(os.path.join(root, src.lstrip("/")))
+            if os.path.isfile(candidate):
+                return candidate
+        return None
+
+    def pixels(self, src: str) -> tuple[int, int] | None:
+        """An image's pixel size, or None if it cannot be resolved."""
+        if src not in self._pixels:
+            path = self.resolve(src)
+            size = None
+            if path is not None:
+                from PIL import Image as PILImage  # ships with python-pptx
+
+                with PILImage.open(path) as im:
+                    size = im.size
+            self._pixels[src] = size
+        return self._pixels[src]
+
+    def image_cap(self, block: Block) -> float:
+        """The tallest this figure may be drawn.
+
+        Bounded three ways: it may not be wider than the body box, it may not be
+        enlarged past IMAGE_MIN_DPI (a 300 px screenshot blown up to fill a slide
+        looks worse than a small sharp one), and it may not exceed IMAGE_MAX_H.
+        IMAGE_BASE_H is the floor on the resolution rule, so no figure is ever
+        drawn smaller than it used to be.
+        """
+        size = self.pixels(block.src)
+        if size is None:
+            return 0.60  # renders as a one-line "[missing image]" placeholder
+        px_w, px_h = size
+        return min(
+            IMAGE_MAX_H,
+            CONTENT_W_IN / (px_w / px_h),
+            max(IMAGE_BASE_H, px_h / IMAGE_MIN_DPI),
+        )
+
+    def image_floor(self, block: Block) -> float:
+        return min(IMAGE_MIN_H, self.image_cap(block))
+
+    def image_comfort(self, block: Block) -> float:
+        return min(IMAGE_GOOD_H, self.image_cap(block))
+
+    # -- blocks ------------------------------------------------------------ #
+    def math_height(self, block: Block, size: int) -> float:
+        """The rendered PNG's height, scaled the way _math scales it."""
+        if self.math is None:
+            return 0.62
+        from PIL import Image as PILImage
+
+        with PILImage.open(self.math.render(block.text, fontsize=size + 6)) as im:
+            px_w, px_h = im.size
+            dpi_x, dpi_y = im.info.get("dpi", (72.0, 72.0))
+        w_in, h_in = px_w / dpi_x, px_h / dpi_y
+        return h_in * min(1.0, (CONTENT_W_IN * 0.75) / w_in)
+
+    def table_row_heights(self, rows: list[list[str]], size: int) -> list[float]:
+        """One height per row, tall enough for the row's most wrapped cell.
+
+        PowerPoint grows a row that its text does not fit in, which used to push
+        everything below the table down the slide without anyone measuring it.
+        """
+        cols = max(len(r) for r in rows)
+        fs = max(9, size - 3)
+        col_in = CONTENT_W_IN / cols - 2 * TABLE_CELL_PAD_IN
+        line_in = fs * 1.30 / 72.0
+        return [
+            max(
+                size * 1.9 / 72.0,
+                max(_wrapped_lines(c, fs, col_in) for c in row) * line_in + 0.10,
+            )
+            for row in rows
+        ]
+
+    def block_height(self, block: Block, size: int) -> float:
+        """Height of one non-image block, spacing included.
+
+        Every arm mirrors what the matching renderer method advances ``y`` by.
+        Images are absent on purpose — they are allocated together, in `plan`.
+        """
+        line_h = size * 1.45 / 72.0
+        b = block
         if b.kind == "para":
-            total += _wrapped_lines(b.text, size, width_in) * line_h + 0.10
-        elif b.kind == "subhead":
-            total += (size + 3) * 1.5 / 72.0 + 0.12
-        elif b.kind == "list":
-            for lvl, txt, _ in b.items:
-                total += _wrapped_lines(txt, size, width_in - lvl * 0.35) * line_h + 0.05
-            total += 0.10
-        elif b.kind == "code":
-            total += len(b.lines) * (size - 2) * 1.35 / 72.0 + 0.34
-        elif b.kind == "table":
-            total += len(b.rows) * (size * 1.9 / 72.0) + 0.16
-        elif b.kind == "math":
-            total += 0.62 + 0.18
-        elif b.kind == "quote":
-            total += _wrapped_lines(b.text, size, width_in - 0.4) * line_h + 0.22
-        elif b.kind == "image":
-            total += b.__dict__.get("height_in", 3.2) + 0.2
-    return total
+            return _wrapped_lines(b.text, size, CONTENT_W_IN) * line_h + 0.10
+        if b.kind == "subhead":
+            return (size + 3) * 1.5 / 72.0 + 0.12
+        if b.kind == "list":
+            return sum(
+                _wrapped_lines(t, size, CONTENT_W_IN - lvl * 0.35) * line_h + 0.05
+                for lvl, t, _ in b.items
+            ) + 0.10
+        if b.kind == "code":
+            return len(b.lines) * max(9, size - 2) * 1.35 / 72.0 + 0.28 + 0.14
+        if b.kind == "table":
+            return sum(self.table_row_heights(b.rows, size)) + 0.16
+        if b.kind == "math":
+            return self.math_height(b, size) + 0.20
+        if b.kind == "quote":
+            return _wrapped_lines(b.text, size, CONTENT_W_IN - 0.4) * line_h + 0.32
+        raise ValueError(f"unmeasurable block kind: {b.kind!r}")
+
+    # -- whole slide -------------------------------------------------------- #
+    def plan(self, blocks: list[Block], size: int, avail: float
+             ) -> tuple[float, dict[int, float]]:
+        """Lay a slide out at `size`: (total height, height per image block).
+
+        Text is incompressible. Figures are not, so they are handed what the
+        text leaves, shared equally, capped at their natural height and floored
+        at IMAGE_MIN_H — below which shrinking stops and the total runs past
+        `avail`, which is exactly what "this slide overflows" means.
+        """
+        images = [(i, b) for i, b in enumerate(blocks) if b.kind == "image"]
+        fixed = sum(self.block_height(b, size) for b in blocks if b.kind != "image")
+        if not images:
+            return fixed, {}
+
+        gaps = 0.16 * len(images)
+        share = max(0.0, avail - fixed - gaps) / len(images)
+        heights = [
+            max(self.image_floor(b), min(self.image_cap(b), share))
+            for _, b in images
+        ]
+        return (
+            fixed + gaps + sum(heights),
+            {i: h for (i, _), h in zip(images, heights)},
+        )
+
+    def fit(self, blocks: list[Block], avail: float
+            ) -> tuple[int, dict[int, float], float]:
+        """Pick the body size: (size, height per image block, total height).
+
+        Largest rung that fits — except that a figure is worth more than two
+        points of body text, so a rung only wins while it still leaves every
+        figure its comfortable height. When no rung does, the largest one that
+        merely fits is taken, and when none of them fit the smallest is used and
+        `check_slide_overflow` reports the slide.
+        """
+        fitting = None
+        for size in SIZE_LADDER:
+            total, heights = self.plan(blocks, size, avail)
+            if total > avail:
+                continue
+            if fitting is None:
+                fitting = (size, heights, total)
+            if all(h >= self.image_comfort(blocks[i]) for i, h in heights.items()):
+                return size, heights, total
+        if fitting is not None:
+            return fitting
+        size = SIZE_LADDER[-1]
+        total, heights = self.plan(blocks, size, avail)
+        return size, heights, total
 
 
 # --------------------------------------------------------------------------- #
@@ -341,9 +505,9 @@ class DeckBuilder:
         self.prs = Presentation()
         self.prs.slide_width = SLIDE_W
         self.prs.slide_height = SLIDE_H
-        self.asset_roots = asset_roots
         self.strict_assets = strict_assets
         self.missing_assets: list[str] = []
+        self.measure = Measurer(asset_roots, math)
 
     # -- primitives -------------------------------------------------------- #
     def _blank(self):
@@ -418,19 +582,17 @@ class DeckBuilder:
             _run(tf.paragraphs[0], eyebrow, 10, MUTED, False)
 
         avail = (BODY_BOTTOM - top) / Emu(914400)
-        size = next(
-            (s for s in SIZE_LADDER if estimate_height(blocks, s) <= avail),
-            SIZE_LADDER[-1],
-        )
-        self._render_blocks(slide, blocks, top, size)
+        size, image_heights, _ = self.measure.fit(blocks, avail)
+        self._render_blocks(slide, blocks, top, size, image_heights)
 
         if notes:
             slide.notes_slide.notes_text_frame.text = notes
 
     # -- block layout ------------------------------------------------------- #
-    def _render_blocks(self, slide, blocks: list[Block], top, size: int) -> None:
+    def _render_blocks(self, slide, blocks: list[Block], top, size: int,
+                       image_heights: dict[int, float]) -> None:
         y = top
-        for b in blocks:
+        for idx, b in enumerate(blocks):
             if b.kind == "para":
                 y = self._para(slide, b.text, y, size)
             elif b.kind == "subhead":
@@ -446,7 +608,7 @@ class DeckBuilder:
             elif b.kind == "quote":
                 y = self._quote(slide, b.text, y, size)
             elif b.kind == "image":
-                y = self._image(slide, b, y)
+                y = self._image(slide, b, y, image_heights[idx])
 
     def _para(self, slide, text: str, y, size: int):
         h = Inches(_wrapped_lines(text, size, CONTENT_W / Emu(914400)) * size * 1.45 / 72.0)
@@ -507,9 +669,14 @@ class DeckBuilder:
     def _table(self, slide, rows, y, size: int):
         cols = max(len(r) for r in rows)
         rows = [r + [""] * (cols - len(r)) for r in rows]
-        h = Inches(len(rows) * size * 1.9 / 72.0)
+        row_heights = self.measure.table_row_heights(rows, size)
+        h = Inches(sum(row_heights))
         shape = slide.shapes.add_table(len(rows), cols, MARGIN, y, CONTENT_W, h)
         table = shape.table
+        # Set every row explicitly: add_table splits the total evenly, and a row
+        # whose text needs two lines then grows past what was measured.
+        for ri, rh in enumerate(row_heights):
+            table.rows[ri].height = Inches(rh)
         for ri, row in enumerate(rows):
             for ci, cell_text in enumerate(row):
                 cell = table.cell(ri, ci)
@@ -546,28 +713,19 @@ class DeckBuilder:
         write_inline(tf.paragraphs[0], text, size, MUTED)
         return y + h + Inches(0.16)
 
-    def _image(self, slide, block: Block, y):
-        path = self._resolve_asset(block.src)
+    def _image(self, slide, block: Block, y, height_in: float):
+        path = self.measure.resolve(block.src)
         if path is None:
             self.missing_assets.append(block.src)
             return self._quote(slide, f"[missing image: {block.src}]", y, 14)
-        max_h = min(Inches(3.4), BODY_BOTTOM - y)
-        pic = slide.shapes.add_picture(path, MARGIN, y, height=max_h)
-        if pic.width > CONTENT_W:
+        h = min(Inches(height_in), BODY_BOTTOM - y)
+        pic = slide.shapes.add_picture(path, MARGIN, y, height=h)
+        if pic.width > CONTENT_W:  # guard; the plan already caps on width
             ratio = CONTENT_W / pic.width
             pic.width = int(pic.width * ratio)
             pic.height = int(pic.height * ratio)
         pic.left = int((SLIDE_W - pic.width) / 2)
         return y + pic.height + Inches(0.16)
-
-    def _resolve_asset(self, src: str) -> str | None:
-        if src.startswith(("http://", "https://")):
-            return None
-        for root in self.asset_roots:
-            candidate = os.path.normpath(os.path.join(root, src.lstrip("/")))
-            if os.path.isfile(candidate):
-                return candidate
-        return None
 
     def save(self, path: str) -> None:
         os.makedirs(os.path.dirname(path) or ".", exist_ok=True)

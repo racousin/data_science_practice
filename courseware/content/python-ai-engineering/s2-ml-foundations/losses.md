@@ -67,16 +67,28 @@ $$
 The residuals $y_i - \hat{y}_i$ are the vertical distances. The loss is a choice
 of how to aggregate them.
 
+---
+
+## The shape is the whole story
+
 ![Shapes of common regression losses](assets/s2-ml-foundations/losses/loss-function-shapes.png)
 
 The shape is the whole story. MSE is quadratic, so a residual of 10 costs 100
 while a hundred residuals of 1 cost 100 between them — one bad point weighs as
 much as a hundred ordinary ones. MAE is linear and charges them proportionally.
 
+---
+
+## One outlier, two fits
+
 ![MAE is more robust than MSE](assets/s2-ml-foundations/losses/mae-vs-mse-robustness.png)
 
 The statistical version of the same statement: the minimiser of MSE over a
 constant is the **mean**, and the minimiser of MAE is the **median**.
+
+---
+
+## Mean or median, inherited
 
 $$
 \arg\min_{c} \sum_i (y_i - c)^2 = \bar{y}
@@ -107,6 +119,10 @@ L_{\text{CE}}(y, \hat{p}) = -\sum_{k=1}^{K} y_k \log \hat{p}_k
 $$
 
 ![Log loss](assets/s2-ml-foundations/losses/log-loss.png)
+
+---
+
+## Reading the two branches
 
 | If | The term that survives | What it punishes |
 |---|---|---|

@@ -24,9 +24,17 @@ Everything downstream is sensitive to the ratio. $n \gg p$ is the classical
 statistical regime. Once $p$ approaches $n$, least squares stops having a unique
 solution and regularisation stops being optional.
 
-The same phenomenon can be recorded at very different $(n, p)$:
+---
+
+## The same phenomenon, at two shapes
+
+Nine years of temperature, recorded with two variables:
 
 ![9 observations, 2 variables](assets/s2-ml-foundations/the-data/temperature-2var.png)
+
+---
+
+## A third variable moves you along $p$
 
 ![9 observations, 3 variables](assets/s2-ml-foundations/the-data/temperature-3d.png)
 
@@ -93,7 +101,11 @@ standard deviation on `body_mass_g` is 802 g: predicting the mean for every
 penguin is a model, and it is wrong by about 800 g. That is the number anything
 you fit has to beat.
 
-Condition on a categorical and the picture changes:
+---
+
+## Condition on a categorical
+
+The picture changes once the rows are grouped:
 
 ```python
 df.groupby("species")["body_mass_g"].agg(["count", "mean", "std"])
@@ -210,6 +222,10 @@ The task is fixed by the target's type, not by the model you reach for.
 Same $X$, same 342 rows, same axes. Left, `body_mass_g` — continuous, and the
 colour varies smoothly across the cloud. Right, `species` — three levels, and
 the question becomes where to draw the boundaries.
+
+---
+
+## Which task, column by column
 
 | Target column | Example values | $y \in$ | Task |
 |---|---|---|---|

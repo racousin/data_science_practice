@@ -69,6 +69,10 @@ $$
 \text{Minkowski:} \quad d(x, x') = \left( \sum_{j=1}^{p} |x_j - x'_j|^q \right)^{1/q}
 $$
 
+---
+
+## Scale before you measure
+
 ![Three distance metrics](assets/s3-models-and-tuning/k-nearest-neighbours/distance-metrics.png)
 
 > **Features must be scaled.** Use `StandardScaler`.

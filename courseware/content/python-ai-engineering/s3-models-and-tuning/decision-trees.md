@@ -17,11 +17,21 @@ up the next two lessons. -->
 
 ![Anatomy of a tree](assets/s3-models-and-tuning/decision-trees/tree-anatomy.png)
 
+---
+
+## A partition and the tree that produces it
+
 ![A partition and the tree that produces it](assets/s3-models-and-tuning/decision-trees/tree-partition-and-structure.png)
 
 Goal: find the feature $j$ and threshold $t$ that best separate the labels.
 
+---
+
+## The regions it carves
+
 ![Decision regions](assets/s3-models-and-tuning/decision-trees/tree-decision-regions.png)
+
+Every boundary is axis-aligned: a tree can only cut along one feature at a time.
 
 ---
 
@@ -103,6 +113,8 @@ $$
 p_{pass} = \frac{4}{6}, \quad p_{fail} = \frac{2}{6}
 $$
 
+---
+
 ### Candidate split $x_1 \leq 5$
 
 Left (students 1, 2, 3): 1 Pass, 2 Fail; right (4, 5, 6): 3 Pass, 0 Fail.
@@ -116,6 +128,8 @@ $$
 $$
 G_{split} = \frac{3}{6} \times 0.44 + \frac{3}{6} \times 0 = 0.22
 $$
+
+---
 
 ### Candidate split $x_1 \leq 3$
 

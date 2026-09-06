@@ -42,6 +42,8 @@ Two ordinary causes:
 - **Not collected** — through oversight, or because it was not available.
 - **Corrupted** — entries lost in transfer or storage.
 
+---
+
 ### Look at the pattern first
 
 ```python
@@ -57,6 +59,10 @@ measurement columns go missing *together*, in exactly 2 rows — two birds that
 were never measured — while `sex` is missing in 11 rows scattered
 independently. Those are two different mechanisms and they deserve two different
 treatments.
+
+---
+
+### Blocks or scatter
 
 The pattern matters more than the count. Blocks mean something systematic;
 scatter means something closer to random.
@@ -222,6 +228,10 @@ and the MAD.
 
 The distinction decides the encoding, and getting it wrong invents structure the
 data never had.
+
+---
+
+### Count the levels first
 
 ```python
 sns.countplot(x='color', data=df)

@@ -40,10 +40,16 @@ Computing it for every step is expensive. Three options:
 | Stochastic GD | $\nabla_\theta \mathcal{L} \approx \nabla_\theta \ell(f_\theta(x_i), y_i)$ | a single sample |
 | **Mini-batch GD** | $\nabla_\theta \mathcal{L} \approx \frac{1}{m}\sum_{i \in \mathcal{B}} \nabla_\theta \ell(f_\theta(x_i), y_i)$ | a subset $\mathcal{B}$ of size $m$ |
 
+---
+
+## Three convergence paths
+
 ![Convergence paths for the three variants](assets/s3-models-and-tuning/training-neural-networks/batch-sgd-minibatch.png)
 
 Batch GD takes a smooth path and is slow. SGD is fast and noisy. Mini-batch is
 the compromise everybody uses.
+
+---
 
 ### Two words that get confused
 
@@ -80,6 +86,10 @@ How it works:
 4. When it stops improving for $N$ epochs → stop.
 5. Return the model from the **best** epoch — the one with the lowest validation
    loss, not the last one.
+
+---
+
+## Early stopping in scikit-learn
 
 ```python
 from sklearn.neural_network import MLPClassifier
