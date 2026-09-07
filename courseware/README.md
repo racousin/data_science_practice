@@ -63,8 +63,10 @@ courseware/
 │   ├── check_slide_overflow.py       # slides that render off the bottom
 │   ├── check_sync.py                 # has the live course drifted from here?
 │   ├── figures/                      # committed generators for authored figures
+│   ├── lesson_sync.py                # the publish guard: what we last published
+│   ├── test_lesson_sync.py           # its tests — no network (`make test-tools`)
 │   ├── mathrender.py                 # LaTeX -> Unicode / PNG
-│   ├── publish_mlarena.py            # Markdown -> ML-Arena (idempotent)
+│   ├── publish_mlarena.py            # Markdown -> ML-Arena (idempotent, guarded)
 │   ├── pull_mlarena.py               # ML-Arena -> Markdown (bodies only)
 │   ├── build_competitions.py         # competition packages -> ML-Arena
 │   └── harvest_website.py            # one-off: React JSX -> Markdown
@@ -240,10 +242,30 @@ inside a session on the web without being lectured from its deck.
 ## Publishing to ML-Arena
 
 ```bash
-export MLARENA_API_KEY=mlk_teacher_...
-make publish-dry     # print the plan, touch nothing
+make publish-dry     # print the plan and what it would overwrite, touch nothing
 make publish
 ```
+
+Every run reads the live course before it plans anything, and refuses if the
+website has been edited since this repo last published — see *Publishing
+overwrites, so it checks first*, below.
+
+### Keys
+
+The keys live in **`courseware/.env`**, which the Makefile reads and which the
+root `.gitignore` keeps out of git. One `NAME=value` per line:
+
+```bash
+MLARENA_API_KEY=mlk_teacher_...          # publish / check-sync / pull
+MLARENA_TEACHER_API_KEY=mlk_teacher_...  # competitions-attach
+MLARENA_CREATOR_API_KEY=mlk_creator_...  # competitions
+MLARENA_STUDENT_API_KEY=mlk_user_...     # tools/student_walk.py
+```
+
+Scope is checked exactly, so the four are not interchangeable and the file is
+the only reason `make competitions` and `make publish` can both be run without
+remembering which key each one needs. A key exported in the shell still wins,
+so a one-off `MLARENA_API_KEY=… make publish` works as before.
 
 ### Token scope
 
@@ -268,19 +290,92 @@ still in the markdown, which is why the flag does not substitute a placeholder.
 
 Use it only when the server's media route is unavailable.
 
-### Publishing is one-way — check before you publish
+### Publishing overwrites, so it checks first
 
 `publish_mlarena.py` calls `update_lesson(body_md=…)`, which **replaces** the
-server's body with the file's. An edit made in the ML-Arena course editor is
-therefore destroyed by the next `make publish`, silently, and it is not
-recoverable from this repo once that has happened. `make pull` is the way to
-bring it here first; `make check-sync` is the way to find out that you need to.
+server's body with the file's, and the same is true of every title, flag and
+lesson order it writes. An edit made in the ML-Arena course editor is therefore
+destroyed by a publish, and it is not recoverable from this repo once that has
+happened. It has happened: COURSE_STATE §1d records a lesson renamed on the
+website and put back by a full-course run that was not checked first.
 
-`make check-sync` is the guard. It is read-only — it never writes to ML-Arena
-and never touches your files — and it exits non-zero, so it gates a publish.
+So the check is **inside the publisher**, not in the documentation about it.
+Before it writes anything, `make publish` reads the live course and compares it
+against the **baseline** — what the server held right after the last publish,
+recorded under `"published"` in `.mlarena-state.json` — and refuses if the two
+differ:
+
+```
+publish refused — 2 change(s) on the website that this repo did not put there.
+Publishing overwrites each of them, silently and unrecoverably:
+
+  s1-git-and-packaging/git-essentials
+      body — the live text is not the one this repo published
+  s1-git-and-packaging/accounts-and-tools
+      title
+        published Accounts & Toolchain
+        live      Accounts & Setup
+```
+
+**Why a baseline, and not simply repo vs live.** Repo-vs-live cannot tell the
+two directions apart: a lesson you edited here and a lesson someone edited
+there look identical to it. Gating on it would block every publish that has
+anything to publish. The comparison is therefore three-way —
+
+| | |
+|---|---|
+| baseline | what the server held right after our last publish |
+| live | what it holds now |
+| plan | what this run is about to send |
+
+— and only `live ≠ baseline` is a refusal. Your own local edits, however large,
+are never in the way; the plan is not consulted except where no baseline exists.
+
+**With no baseline** (a first guarded run, or a lost state file) there is
+nothing to compare against, so each item falls back to `live` vs `plan` —
+`check-sync`'s comparison, with `check-sync`'s blind spot. Agreement clears it,
+because nothing can be lost when the two already match; disagreement is
+genuinely ambiguous, is reported as `(no baseline — either side could be the
+newer)`, and still refuses.
+
+What is guarded is exactly what a publish writes: lesson bodies, titles,
+`is_published`, `gated`, `estimated_minutes`, lesson order, module title /
+summary / icon, module order, and the course fields. A lesson's `kind` is not —
+it is set at creation and never updated, so a publish cannot destroy it. Cost is
+one request plus one per live lesson, against a publish that is about to make as
+many writes.
+
+A lesson **deleted** on the website is caught too, and it is the one case a
+publish does not overwrite but *recreates*: the state file's id map is what
+tells that apart from a lesson which has simply never been published. The
+course cover is the gap — `set_course_cover` re-uploads it on every run that
+declares `cover:` in `course.yaml`, unguarded; no course here declares one.
+
+The baseline is recorded per lesson **as each one lands**, so a run that dies
+half way still leaves an honest record, and the metadata half is re-read from
+the server afterwards, so a field the backend normalises on the way in (a YAML
+block scalar's trailing newline, say) cannot read as drift for ever after. A
+`MODULE=` run baselines only that module: recording the live state of a session
+this run never looked at would silently accept a website edit to it.
 
 ```bash
-export MLARENA_API_KEY=mlk_teacher_...
+make publish                      # refuses on drift
+make publish FORCE=1              # overwrite it deliberately
+make publish MODULE=s1-git-and-packaging
+make test-tools                   # the guard's tests: no network, no SDK
+```
+
+`FORCE=1` is for when you have read the drift and mean to discard it. It prints
+what it overwrote.
+
+### Reading the drift: `make check-sync`
+
+`check-sync` is the read-only inspection tool — it never writes to ML-Arena and
+never touches your files — and it answers the different question: *is the live
+course what this repo says it is?* That is what you want after a publish, and
+what you want in order to **read** what the guard refused over.
+
+```bash
 make check-sync QUICK=1     # 1 request. structure only
 make check-sync             # 1 + N requests (~57, a few seconds). + every body
 make check-sync DIFF=1      # ... and print the diff, so you can copy it back
@@ -292,8 +387,11 @@ make check-sync MODULE=s2-ml-foundations
 | `QUICK=1` | one request | a lesson added, deleted, renamed, reordered, unpublished, or re-timed on the site |
 | default | one request per lesson | all of the above, **plus any edit to a lesson body** |
 
-Both compare against `course.yaml` and the markdown, not against a recorded
-snapshot, so there is no state to keep current and nothing to seed.
+Both compare against `course.yaml` and the markdown, not against the baseline,
+so they see every difference in either direction and cannot say which side
+moved. That is the right tool for reading a difference and the wrong one for
+gating a publish, which is why the guard in `make publish` is a separate
+comparison rather than this one wired in front of it.
 
 What it treats as equal: the markdown on disk keeps repo-relative image paths so
 the deck build works, and the publisher rewrites them to served URLs on the way
@@ -308,11 +406,19 @@ It rewrites the source markdown from the live bodies, so the edit made on the
 website survives the next publish instead of being overwritten by it.
 
 ```bash
-export MLARENA_API_KEY=mlk_teacher_...
 make pull-dry MODULE=s1-git-and-packaging          # what it would rewrite
 make pull-dry MODULE=s1-git-and-packaging DIFF=1   # ... line by line
 make pull MODULE=s1-git-and-packaging              # write the files
 ```
+
+A pull also **records the baseline** for every body it compared: once the repo
+holds the live text, that text is ours, and the next publish can prove the
+server was untouched since. Bodies only, and that limit is load bearing — the
+titles and orders a pull merely *reports* are not absorbed, so baselining them
+would tell the next publish it was free to overwrite the very edit it had just
+printed as a to-do. It is also how a repo with no baseline gets one without
+publishing: with the repo and the site already in sync, `make pull` rewrites
+nothing and records all of it.
 
 It pulls **lesson bodies only.** A body is a file the tool owns end to end, so
 overwriting it is safe and `git diff` shows exactly what arrived. Everything
@@ -400,11 +506,10 @@ picks up the real id on the next regeneration; the sync test then fails if
 nobody re-ran the script.
 
 ```bash
-export MLARENA_API_KEY=mlk_creator_...
 make competitions                 # build, benchmark, verify, start
 make competitions-status
 make competitions-publish         # flip them public when the course is ready
-MLARENA_TEACHER_API_KEY=mlk_teacher_... make competitions-attach
+make competitions-attach
 ```
 
 `make competitions` refuses to start a competition whose reference solution does
@@ -412,10 +517,14 @@ not score the benchmark its package declares, so a green run is evidence the
 scoring works — not just that the upload did. See `competitions/README.md` for
 the package layout and the platform behaviours the envs are written around.
 
-Note the two different keys. Competition authoring is `creator` scope; attaching
-a competition to a module is `/api/teacher/*`, and API-key auth requires the
-scope to match **exactly** — a creator key is rejected with
-`Key scope 'creator' cannot access 'teacher' route`.
+Note the two different keys, which is why these targets read
+`MLARENA_CREATOR_API_KEY` and `MLARENA_TEACHER_API_KEY` from `.env` rather than
+the `MLARENA_API_KEY` everything else uses. Competition authoring is `creator`
+scope; attaching a competition to a module is `/api/teacher/*`, and API-key auth
+requires the scope to match **exactly** — a creator key is rejected with
+`Key scope 'creator' cannot access 'teacher' route`. Without
+`MLARENA_CREATOR_API_KEY` set, the competition targets fall back to
+`MLARENA_API_KEY`, which is the older behaviour and now the wrong key.
 
 ## Harvesting from the React site
 

@@ -9,3 +9,7 @@ _harvest/
 # a second copy of every competition.
 !content/*/.mlarena-state.json
 !competitions/.mlarena-state.json
+
+# Reference results of the labs, worked end to end. Built artefacts, not
+# courseware: each one is its own repository, pushed separately.
+labs/

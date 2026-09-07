@@ -1,13 +1,18 @@
 #!/usr/bin/env python3
-"""Has anyone edited the course on the website since the last publish?
+"""Is the live course what this repo says it is?
 
-`publish_mlarena.py` is **one-way**. It calls `update_lesson(body_md=...)`, which
-replaces the server's body with the file's — so an edit made in the ML-Arena
-course editor is silently destroyed by the next `make publish`. Nothing warns
-you, and the edit is not recoverable from this repo.
+Read-only: it never writes to ML-Arena and never touches your files.
 
-This is the guard. Read-only: it never writes to ML-Arena and never touches your
-files.
+This is the *inspection* tool, not the guard. It compares the repo against the
+live course, which sees every difference in either direction and cannot say
+which side moved — a lesson you edited here and a lesson someone edited on the
+website look identical to it. Gating a publish on that would block every
+publish that has anything to publish, so the guard is a different comparison
+and lives inside the publisher (`lesson_sync.py`, three-way, against what was
+last published).
+
+What this is for: reading a difference once you know there is one — after a
+publish, or when `make publish` has refused and you want the diff.
 
 Two tiers, because they cost different amounts:
 
@@ -23,7 +28,7 @@ Two tiers, because they cost different amounts:
     make check-sync DIFF=1      ... and print the diff, so you can see what to
                                 copy back into the markdown.
 
-Exit status is 1 if anything drifted, so either tier gates a publish.
+Exit status is 1 if anything differs, in either direction.
 
 What "the same" means
 ---------------------
@@ -38,30 +43,26 @@ from __future__ import annotations
 import argparse
 import difflib
 import os
-import re
 import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 _SDK = Path(__file__).resolve().parents[3].parent / "mlarena-sdk"
 if _SDK.exists():
     sys.path.insert(0, str(_SDK))
 
+# One definition of "the same body", shared with the publisher's guard and with
+# `pull_mlarena.py`, so no two of the three can drift apart about it.
+from lesson_sync import IMAGE_RE, normalise  # noqa: E402,F401
+
 import mlarena  # noqa: E402
 import yaml  # noqa: E402
-
-IMAGE_RE = re.compile(r"(!\[[^\]]*\]\()([^)\s]+)(\))")
 
 # Fields the manifest owns. `estimated_minutes` is included because it is the
 # one a teacher most plausibly nudges in the editor without thinking of it as
 # an edit.
 META = ("title", "kind", "is_published", "estimated_minutes")
-
-
-def normalise(body: str) -> list[str]:
-    """Reduce a body to what the two sides should agree on."""
-    body = IMAGE_RE.sub(lambda m: m.group(1) + os.path.basename(m.group(2)) + m.group(3),
-                        body)
-    return [line.rstrip() for line in body.replace("\r\n", "\n").strip().split("\n")]
 
 
 def declared(spec: dict) -> dict:
@@ -168,9 +169,10 @@ def main() -> int:
     if not total:
         print("in sync: the live course is what this repo says it is")
     if diffs:
-        print("\nA BODY difference means the lesson was edited on the website.\n"
-              "`make publish` will overwrite it with the repo copy — copy the change\n"
-              "into the markdown first. `make check-sync DIFF=1` shows what to copy.")
+        print("\nA BODY difference is the repo and the site disagreeing; it does not\n"
+              "say which one moved. `make publish` refuses if it was the site (it\n"
+              "compares against what it last published), and `make pull` is how the\n"
+              "site's copy comes back here. `make check-sync DIFF=1` shows the text.")
     return 1 if total else 0
 
 

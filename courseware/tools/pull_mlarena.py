@@ -24,6 +24,13 @@ already uses, then against `assets/<module>/<lesson>/`. A URL that matches
 neither is left alone and reported, because inventing a path would produce a
 lesson that publishes a broken image.
 
+A pull also records what the publisher's guard calls the **baseline**: once the
+repo holds the live body, that body is ours, and the next `make publish` can
+prove the server was not touched since. Bodies only, and that limit is load
+bearing — the titles and orders this tool only *reports* are not absorbed, so
+baselining them would tell the next publish it was free to overwrite the very
+edit it just printed as a to-do. See `lesson_sync.py`.
+
 Usage::
 
     export MLARENA_API_KEY=mlk_teacher_...
@@ -45,6 +52,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 # SDK path insertion, the image normalisation and the metadata field list all
 # come from the checker.
 from check_sync import META, declared, normalise  # noqa: E402
+
+import lesson_sync  # noqa: E402
+from publish_mlarena import load_state, save_state  # noqa: E402
 
 import mlarena  # noqa: E402
 import yaml  # noqa: E402
@@ -107,6 +117,10 @@ def main() -> int:
     written: list[tuple[str, int, int]] = []
     unresolved: list[str] = []
     todo: list[str] = []
+    # Every body this run compared, rewritten or already identical: either way
+    # the repo and the server now hold the same text, which is what the
+    # baseline records.
+    baselined: dict[str, str] = {}
 
     for module in manifest["modules"]:
         mslug = module["slug"]
@@ -153,6 +167,8 @@ def main() -> int:
             body = SERVED_IMAGE_RE.sub(_back, body)
             body = body.rstrip("\n") + "\n"
 
+            baselined[f"{mslug}/{lslug}"] = lesson_sync.digest(body)
+
             if normalise(local_raw) == normalise(body):
                 continue
 
@@ -196,8 +212,19 @@ def main() -> int:
         for line in todo:
             print(f"  * {line}")
 
+    if baselined and not args.dry_run:
+        state = load_state(str(content), args.base_url)
+        lessons = state["published"]["lessons"]
+        for key, body_digest in baselined.items():
+            entry = dict(lessons.get(key) or {})
+            entry["body"] = body_digest
+            lessons[key] = entry
+        save_state(str(content), args.base_url, state)
+        print(f"\nbaselined {len(baselined)} lesson body(ies) — the next `make publish` "
+              f"can tell a website edit from a local one.")
+
     if written and not args.dry_run:
-        print("\nRebuild what reads these files: `make check-slides` then `make slides`.")
+        print("Rebuild what reads these files: `make check-slides` then `make slides`.")
     return 0
 
 

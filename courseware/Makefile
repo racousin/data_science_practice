@@ -3,6 +3,20 @@
 # Dependencies are pulled per-invocation by `uv run --with`, so there is no
 # environment to create or keep in sync.
 
+# Keys live in `.env` next to this file (gitignored — it is a secret), one
+# `NAME=value` per line, so no target needs them exported by hand:
+#
+#   MLARENA_API_KEY=mlk_teacher_...          publish / check-sync / pull
+#   MLARENA_TEACHER_API_KEY=mlk_teacher_...  competitions-attach
+#   MLARENA_CREATOR_API_KEY=mlk_creator_...  competitions
+#   MLARENA_STUDENT_API_KEY=mlk_user_...     tools/student_walk.py
+#
+# A key already exported in the shell wins, so a one-off run can still say
+# `MLARENA_API_KEY=... make publish`.
+-include .env
+export MLARENA_API_KEY MLARENA_TEACHER_API_KEY MLARENA_CREATOR_API_KEY
+export MLARENA_STUDENT_API_KEY
+
 COURSE      ?= python-ai-engineering
 CONTENT     := content/$(COURSE)
 OUT         := build
@@ -15,7 +29,7 @@ PY_SLIDES   := uv run --quiet --with python-pptx --with pyyaml --with matplotlib
 PY_PUBLISH  := uv run --quiet --with pyyaml --with requests python
 
 .PHONY: help slides check-slides check-sync pdf publish publish-dry pull pull-dry \
-        harvest clean \
+        harvest clean test-tools \
         competitions competitions-status competitions-publish competitions-attach
 
 help:
@@ -25,9 +39,13 @@ help:
 	@echo "make check-sync   — has anyone edited a lesson on the website?"
 	@echo "make pull-dry     — show which lesson bodies the website has changed"
 	@echo "make pull         — rewrite the Markdown from the live bodies"
-	@echo "make publish-dry  — show what would change on $(BASE_URL)"
+	@echo "make publish-dry  — show what would change on $(BASE_URL), and what"
+	@echo "                    publishing would overwrite there"
 	@echo "make publish      — sync content to ML-Arena (needs MLARENA_API_KEY)"
+	@echo "                    refuses if the website has been edited since the"
+	@echo "                    last publish; FORCE=1 overwrites it anyway"
 	@echo "                    add NO_MEDIA=1 to publish text without images"
+	@echo "                    add MODULE=<slug> to publish one session"
 	@echo "make harvest      — re-extract Markdown from the React site into _harvest/"
 	@echo "make clean        — remove $(OUT)/"
 	@echo
@@ -93,17 +111,25 @@ pull:
 	$(PY_PUBLISH) tools/pull_mlarena.py $(CONTENT) --base-url $(BASE_URL) \
 		$(if $(MODULE),--module $(MODULE)) $(if $(DIFF),--diff)
 
+# Both targets read the live course before they plan anything: publishing
+# overwrites it, so the run refuses unless the server still holds what this repo
+# last put there (tools/lesson_sync.py). That check is inside the publisher, not
+# in front of it — remembering to run `make check-sync` first is exactly what
+# failed once already, and cost a lesson title.
 publish-dry:
 	$(PY_PUBLISH) tools/publish_mlarena.py $(CONTENT) \
-		--base-url $(BASE_URL) --sdk-path $(SDK_PATH) --dry-run
+		--base-url $(BASE_URL) --sdk-path $(SDK_PATH) --dry-run \
+		$(if $(MODULE),--module $(MODULE))
 
 publish:
 	@test -n "$$MLARENA_API_KEY" || { \
 		echo "MLARENA_API_KEY is not set."; \
-		echo "Mint a teacher-scope key (mlk_teacher_...) on your ML-Arena Profile page."; \
+		echo "Mint a teacher-scope key (mlk_teacher_...) on your ML-Arena Profile page,"; \
+		echo "then put it in courseware/.env as MLARENA_API_KEY=mlk_teacher_..."; \
 		exit 1; }
 	$(PY_PUBLISH) tools/publish_mlarena.py $(CONTENT) \
-		--base-url $(BASE_URL) --sdk-path $(SDK_PATH) $(if $(NO_MEDIA),--skip-media)
+		--base-url $(BASE_URL) --sdk-path $(SDK_PATH) $(if $(NO_MEDIA),--skip-media) \
+		$(if $(MODULE),--module $(MODULE)) $(if $(FORCE),--force)
 
 # --------------------------------------------------------------------------- #
 # Competitions
@@ -116,16 +142,24 @@ publish:
 PY_COMPS := uv run --quiet --with requests python
 COMP_ARGS := --base-url $(BASE_URL) --course $(COURSE)
 
+# API-key auth matches the scope exactly, and these are /api/creator_competition/*
+# routes: a teacher key is rejected. MLARENA_API_KEY is a teacher key for every
+# other target here, so the creator key is named separately and passed in — an
+# unset one falls back to whatever is exported, which is the old behaviour.
+CREATOR_KEY := $(if $(MLARENA_CREATOR_API_KEY),$(MLARENA_CREATOR_API_KEY),$(MLARENA_API_KEY))
+COMP_ENV := MLARENA_SDK_PATH=$(SDK_PATH) MLARENA_API_KEY=$(CREATOR_KEY)
+
 competitions:
-	@test -n "$$MLARENA_API_KEY" || { \
-		echo "MLARENA_API_KEY is not set (needs a mlk_creator_... key)."; exit 1; }
-	MLARENA_SDK_PATH=$(SDK_PATH) $(PY_COMPS) tools/build_competitions.py build $(COMP_ARGS) $(if $(ONLY),--only $(ONLY))
+	@test -n "$(CREATOR_KEY)" || { \
+		echo "no creator key: set MLARENA_CREATOR_API_KEY=mlk_creator_... in courseware/.env"; \
+		exit 1; }
+	$(COMP_ENV) $(PY_COMPS) tools/build_competitions.py build $(COMP_ARGS) $(if $(ONLY),--only $(ONLY))
 
 competitions-status:
-	MLARENA_SDK_PATH=$(SDK_PATH) $(PY_COMPS) tools/build_competitions.py status $(COMP_ARGS)
+	$(COMP_ENV) $(PY_COMPS) tools/build_competitions.py status $(COMP_ARGS)
 
 competitions-publish:
-	MLARENA_SDK_PATH=$(SDK_PATH) $(PY_COMPS) tools/build_competitions.py publish $(COMP_ARGS)
+	$(COMP_ENV) $(PY_COMPS) tools/build_competitions.py publish $(COMP_ARGS)
 
 # attach_competition is an /api/teacher/* route and API-key auth requires the
 # scope to match exactly — a creator key is rejected here.
@@ -133,6 +167,10 @@ competitions-attach:
 	@test -n "$$MLARENA_TEACHER_API_KEY" || { \
 		echo "MLARENA_TEACHER_API_KEY is not set (needs a mlk_teacher_... key)."; exit 1; }
 	MLARENA_SDK_PATH=$(SDK_PATH) $(PY_COMPS) tools/build_competitions.py attach $(COMP_ARGS)
+
+# The guard's unit tests — no network, no SDK.
+test-tools:
+	uv run --quiet --with pytest pytest tools/test_lesson_sync.py -q
 
 # --------------------------------------------------------------------------- #
 # Migration aid

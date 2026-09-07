@@ -17,6 +17,14 @@ Commit that file — it is what makes a second run an update rather than a
 duplicate. If it is lost, the script re-resolves modules by slug from the server
 and only the lesson→id map has to be rebuilt (also by slug).
 
+Publishing overwrites the server, so it is guarded. Before it writes anything
+it compares the live course against the **baseline** — what the server held
+right after the last publish, recorded under ``"published"`` in the same state
+file — and refuses if the two differ, because the difference is an edit someone
+made in the ML-Arena editor that this run would destroy. ``--force`` overrides
+it deliberately; ``lesson_sync.py`` explains why the comparison is three-way
+and not simply repo-vs-live.
+
 Token scopes (see mlarena-sdk/PROCESS.md):
   * creating the course itself works with **any** scope and flips the account to
     teacher;
@@ -38,6 +46,12 @@ import re
 import sys
 
 import yaml
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+# The guard. Imported here rather than duplicated so the publisher, the checker
+# and the puller cannot disagree about what "unchanged" means.
+import lesson_sync  # noqa: E402
 
 STATE_FILENAME = ".mlarena-state.json"
 
@@ -95,7 +109,8 @@ def load_manifest(base: str) -> dict:
 def load_state(base: str, base_url: str) -> dict:
     path = os.path.join(base, STATE_FILENAME)
     if not os.path.isfile(path):
-        return {"course_id": None, "modules": {}, "lessons": {}}
+        return {"course_id": None, "modules": {}, "lessons": {},
+                "published": lesson_sync.empty_snapshot()}
     with open(path, encoding="utf-8") as fh:
         all_state = json.load(fh)
     entry = all_state.get(base_url) or {}
@@ -103,6 +118,10 @@ def load_state(base: str, base_url: str) -> dict:
         "course_id": entry.get("course_id"),
         "modules": entry.get("modules") or {},
         "lessons": entry.get("lessons") or {},
+        # What the server held right after our last publish. The guard compares
+        # the live course against this rather than against the repo, which is
+        # the only way to tell an edit made here from one made on the website.
+        "published": entry.get("published") or lesson_sync.empty_snapshot(),
     }
 
 
@@ -139,21 +158,103 @@ def meta(spec: dict, allowed: set) -> dict:
 
 
 # --------------------------------------------------------------------------- #
+# The guard
+# --------------------------------------------------------------------------- #
+
+
+def build_plan(base: str, course_spec: dict, modules: list, publish_all: bool,
+               full_run: bool) -> dict:
+    """What this run would write, in the shape `lesson_sync` compares.
+
+    Only fields the publisher actually sends are included, because a field it
+    does not send is one it cannot destroy: `kind` (set at creation, never
+    updated) and a module's `visibility` (written as `visibility`, read back as
+    `is_published`, so the two are not comparable) are both absent by design.
+    """
+    plan = lesson_sync.empty_snapshot()
+    plan["course"] = meta(course_spec, COURSE_META_FIELDS)
+    # reorder_modules takes the course's whole module list, so a --module run
+    # does not touch the order and must not claim to.
+    if full_run:
+        plan["module_order"] = [m.get("slug") or slugify(m["title"]) for m in modules]
+
+    for spec in modules:
+        mslug = spec.get("slug") or slugify(spec["title"])
+        entry = meta(spec, MODULE_META_FIELDS)
+        entry.pop("visibility", None)
+        lessons = spec.get("lessons") or []
+        entry["lessons"] = [l.get("slug") or slugify(l["title"]) for l in lessons]
+        plan["modules"][mslug] = entry
+
+        for lesson in lessons:
+            lslug = lesson.get("slug") or slugify(lesson["title"])
+            item = {
+                "title": lesson["title"],
+                "gated": bool(lesson.get("gated", False)),
+                "is_published": bool(lesson.get("is_published", False) or publish_all),
+                "body": lesson_sync.digest(read_body(base, lesson)),
+            }
+            if lesson.get("estimated_minutes") is not None:
+                item["estimated_minutes"] = lesson["estimated_minutes"]
+            plan["lessons"][f"{mslug}/{lslug}"] = item
+    return plan
+
+
+def preflight(client, course_slug: str, plan: dict, baseline: dict,
+              known_ids: dict, force: bool) -> list:
+    """Everything on the website this run would overwrite and did not write.
+
+    Costs one request plus one per lesson already live — the same order as
+    `make check-sync`, a few seconds for a whole course, against a publish that
+    is about to make as many writes.
+    """
+    try:
+        course = client.course(course_slug)
+    except Exception as exc:  # noqa: BLE001 — any failure here is the same failure
+        note = f"cannot read the live course {course_slug!r} to check it first: {exc}"
+        if force:
+            print(f"warning: {note}\n         FORCE=1: publishing over it unchecked.",
+                  file=sys.stderr)
+            return []
+        raise SystemExit(
+            f"{note}\n"
+            "Refusing to overwrite a course this run could not read. Fix the key,\n"
+            "the base URL or the slug — or re-run with FORCE=1 to publish anyway.")
+
+    ids = {f"{m['slug']}/{lesson['slug']}": lesson["id"]
+           for m in course.get("modules") or []
+           for lesson in m.get("lessons") or []}
+    live_keys = [key for key in plan["lessons"] if key in ids]
+    print(f"  checking {len(live_keys)} live lesson(s) against the last publish")
+
+    bodies = {}
+    for key in live_keys:
+        row = client.get_lesson(ids[key])
+        bodies[key] = row.get("lesson", row).get("body_md") or ""
+    return lesson_sync.drift(baseline, lesson_sync.live_snapshot(course, bodies),
+                             plan, known_ids)
+
+
+# --------------------------------------------------------------------------- #
 # Sync
 # --------------------------------------------------------------------------- #
 
 
 class Syncer:
     def __init__(self, client, base: str, state: dict, dry_run: bool, publish: bool,
-                 skip_media: bool = False):
+                 skip_media: bool = False, plan: dict | None = None):
         self.c = client
         self.base = base
         self.state = state
         self.dry_run = dry_run
         self.publish = publish
         self.skip_media = skip_media
+        self.plan = plan or lesson_sync.empty_snapshot()
         self.skipped_media: list[str] = []
         self.actions: list[str] = []
+        # Every body written this run, so the baseline can record what the
+        # server was left holding.
+        self.sent_bodies: dict[str, str] = {}
 
     def log(self, verb: str, what: str) -> None:
         prefix = "would " if self.dry_run else ""
@@ -271,10 +372,23 @@ class Syncer:
             self.c.update_lesson(lesson_id, **updates)
 
             self.state["lessons"][key] = lesson_id
+            self.record(key, body)
             ordered.append(lesson_id)
 
         if len(ordered) > 1 and not self.dry_run:
             self.c.reorder_lessons(module_id, ordered)
+
+    def record(self, key: str, body: str) -> None:
+        """Baseline this lesson the moment the server takes it.
+
+        Written per lesson rather than once at the end so that a run which dies
+        half way still leaves an honest record: without it the lessons already
+        written would look, to the next run, like edits someone else made.
+        """
+        self.sent_bodies[key] = body
+        entry = dict(self.plan["lessons"].get(key) or {})
+        entry["body"] = lesson_sync.digest(body)
+        self.state["published"]["lessons"][key] = entry
 
     # -- media ------------------------------------------------------------- #
     def upload_media(self, lesson_id: int, body: str) -> str:
@@ -348,6 +462,9 @@ def main() -> int:
                     help="publish lesson text without uploading images. The "
                          "relative paths stay in the body, so a later run "
                          "uploads and rewrites them.")
+    ap.add_argument("--force", action="store_true",
+                    help="publish over a website edit this repo has not seen. "
+                         "Read it first: `make check-sync DIFF=1`.")
     args = ap.parse_args()
 
     if not args.api_key and not args.dry_run:
@@ -375,15 +492,50 @@ def main() -> int:
             raise SystemExit(f"no module matched {sorted(wanted)}")
 
     state = load_state(base, args.base_url)
+    # The guard reads the live course by slug. A manifest without one can still
+    # be published — it just cannot be checked, and says so rather than dying
+    # on a KeyError deep in the run.
+    course_slug = course_spec.get("slug")
+    full_run = not args.module
+    scope = None if full_run else [m.get("slug") or slugify(m["title"]) for m in modules]
+    plan = build_plan(base, course_spec, modules, args.publish, full_run)
 
+    # A dry run reads the live course too, when it has a key: "what would this
+    # overwrite?" is the question it is asked, and the plan alone cannot answer
+    # it. It still writes nothing, here or on the server.
     client = None
-    if not args.dry_run:
+    if not args.dry_run or args.api_key:
         mlarena = load_sdk(args.sdk_path)
         client = mlarena.connect(api_key=args.api_key, base_url=args.base_url)
 
     print(f"ML-Arena sync -> {args.base_url}")
+
+    # Nothing to protect until the course exists.
+    found: list = []
+    live_course = state.get("course_id") or course_spec.get("course_id")
+    if client is not None and course_slug and live_course:
+        found = preflight(client, course_slug, plan, state["published"],
+                          state["lessons"], args.force)
+        if found:
+            # stdout, like check_sync's findings: this is the run's output, and
+            # a refusal interleaved with the plan on stderr reads as neither.
+            print(lesson_sync.report(found))
+            if args.dry_run:
+                print("\n(dry run — nothing was written)")
+                return 1
+            if not args.force:
+                return 1
+            print("\nFORCE=1 — overwriting all of the above.\n")
+        else:
+            print("  in sync with the last publish — nothing on the website to lose")
+    elif client is None:
+        print("  drift check skipped: no API key, so the live course was not read")
+    elif live_course and not course_slug:
+        print("  drift check skipped: course.yaml declares no slug, so the live "
+              "course cannot be read back. This run is unguarded.")
+
     syncer = Syncer(client, base, state, args.dry_run, args.publish,
-                    skip_media=args.skip_media)
+                    skip_media=args.skip_media, plan=plan)
 
     def checkpoint() -> None:
         """Persist the id map so a failure part-way never orphans what was
@@ -446,6 +598,23 @@ def main() -> int:
         raise
 
     if not args.dry_run:
+        # The baseline for the next run. Metadata comes from re-reading the
+        # server (a field it renames or normalises on the way in would
+        # otherwise read as drift for ever after); bodies come from what was
+        # sent, since they were not read back.
+        try:
+            after = client.course(course_slug) if course_slug else None
+        except Exception as exc:  # noqa: BLE001
+            print(f"\nwarning: published, but the course could not be re-read to record\n"
+                  f"         the baseline ({exc}). Lesson bodies are recorded; the next\n"
+                  f"         run falls back to comparing metadata against the repo.",
+                  file=sys.stderr)
+        else:
+            if after is not None:
+                state["published"] = lesson_sync.absorb(
+                    state["published"],
+                    lesson_sync.live_snapshot(after, syncer.sent_bodies),
+                    modules=scope, course_meta=True, module_order=full_run)
         checkpoint()
         print(f"\nstate written to {os.path.join(base, STATE_FILENAME)} — commit it.")
         print(f"course: {args.base_url}/courses/{course_spec.get('slug')}")

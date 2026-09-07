@@ -527,6 +527,75 @@ titled *Lab 2 — Ship an Agent to Connect Four*, the challenge relabelled, and
 
 ---
 
+### 1h. The publish now refuses to overwrite the website, 2026-09-07
+
+§1d closed with "on a course anyone edits through the website, it belongs in
+front of every `make publish`, not in the documentation about it". It now is.
+`make publish` reads the live course before it plans anything and **refuses**
+if the site has changed since this repo last published; `FORCE=1` overrides it
+and prints what it overwrote.
+
+**It could not simply be `check-sync` wired in front.** `check-sync` compares
+the repo against the site, which cannot tell which side moved — every publish
+worth running differs from the site, that being the point of it, so gating on
+that comparison would have blocked all of them and been switched off inside a
+week. The guard (`tools/lesson_sync.py`) is three-way instead: **baseline** —
+what the server held right after our last publish, recorded under `"published"`
+in `.mlarena-state.json` — against **live**, with the repo consulted only where
+no baseline exists. Local edits are never in the way; `live ≠ baseline` is the
+only refusal.
+
+Guarded: lesson bodies, titles, `is_published`, `gated`, `estimated_minutes`,
+lesson order, module title/summary/icon, module order, course fields. That
+metadata is not padding — the edit actually lost in §1d was a **title**, which a
+body-only guard would have walked straight past. `kind` is excluded because the
+publisher never updates it. Cost is one request plus one per live lesson.
+
+**§1g's gap is closed too.** A lesson deleted on the website is not overwritten
+by a publish, it is *recreated* — §1g had to undo that by hand after
+`session-plan` came back as lesson 181. The guard reports it, because the state
+file's id map is what tells a deletion apart from a lesson that has never been
+published. `client.course(slug)` does return drafts to a manager key (verified:
+the unpublished `session-plan` is in the payload), so an unpublished lesson
+deleted on the site is visible to this check and to `check-sync` alike — §1g's
+reading that the structure comparison is published-only does not hold.
+
+Recording is per lesson as each one lands, so a run that dies half way still
+leaves an honest record rather than making its own writes look like someone
+else's edits; the metadata half is re-read from the server afterwards, so a
+field the backend normalises on the way in cannot read as drift for ever after.
+A `MODULE=` run baselines only that module — recording the live state of a
+session it never looked at would silently accept a website edit to it. `make
+pull` records the bodies it absorbs, and only the bodies: the titles and orders
+it merely reports as to-dos stay unbaselined, or the next publish would be
+cleared to overwrite the very edit that was just reported.
+
+**Seeded without a publish.** The repo and the site were at 0 differences across
+45 bodies, so `make pull` rewrote nothing and recorded all 45 — a verified
+baseline rather than an assumed one.
+
+Verified: with the baseline in place, a simulated website edit (one body digest
+and one title) is refused with both named, and a local markdown edit publishes
+clean. 18 unit tests in `tools/test_lesson_sync.py` (`make test-tools`, no
+network) cover the cases, the first of them being that local edits do **not**
+block a publish.
+
+**Keys moved to `courseware/.env`** (gitignored), read by the Makefile, so no
+target needs one exported by hand. `make competitions` now takes
+`MLARENA_CREATOR_API_KEY` explicitly rather than whatever `MLARENA_API_KEY`
+happens to hold — with the teacher key now sitting in `.env` for publishing, the
+old arrangement would have sent it at `/api/creator_competition/*` routes that
+reject it on scope.
+
+**Still unguarded: the course cover.** `set_course_cover` re-uploads it on every
+run that declares `cover:` in `course.yaml`, so a cover changed on the website
+would be replaced without a word. `course.yaml` declares none today, which is
+the only reason it does not matter yet. A competition *relabelled* on the
+website is not at risk by contrast — `sync_competitions` only ever attaches what
+is missing, and `update_challenge_link` is never called by the publisher.
+
+---
+
 ## 2. What a student hits
 
 **All of the below has been fixed and is live.** This section is kept as the record of
