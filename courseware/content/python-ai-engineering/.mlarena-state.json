@@ -13,7 +13,7 @@
       "s1-git-and-packaging/notebooks-and-colab": 177,
       "s1-git-and-packaging/packaging-and-tests": 32,
       "s1-git-and-packaging/python-environments": 31,
-      "s1-git-and-packaging/session-plan": 181,
+      "s1-git-and-packaging/session-plan": 182,
       "s1-git-and-packaging/the-shell": 175,
       "s2-ml-foundations/ai-ml-dl-landscape": 145,
       "s2-ml-foundations/data-preparation": 152,
@@ -59,6 +59,229 @@
       "s3-data-science-nutshell": 16,
       "s3-models-and-tuning": 33,
       "s4-pytorch-nutshell": 17
+    },
+    "published": {
+      "course": {
+        "code": "MS2A-AIE-2026",
+        "description": "A 12-hour mise \u00e0 niveau in four 3-hour sessions, taken before\n*MS2A - Machine Learning Practice*. It assumes you already write Python and\nbuilds the engineering floor the rest of the year stands on: version\ncontrol, reproducible environments, an agentic coding workflow, the\nvocabulary of applied machine learning, and PyTorch.\n\nEvery session is half lecture, half lab. You finish the module with a\npackaged, tested, version-controlled Python project that trains a neural\nnetwork \u2014 and a submission on ML-Arena.",
+        "end_date": "2026-09-11",
+        "instructor_name": "Raphael Cousin",
+        "name": "MS2A - AI Engineering",
+        "start_date": "2026-09-07",
+        "visibility": "public"
+      },
+      "lessons": {
+        "s1-git-and-packaging/accounts-and-tools": {
+          "body": "03530ae126d8fc014d1f7001b87dc892dd254099a4a30eb37ec0152adff2cd03",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Accounts & Setup"
+        },
+        "s1-git-and-packaging/assistant-landscape": {
+          "body": "4501b952d65ea8111e40f783fb460a765cedd557c66df3d4d01044aedfcebe74",
+          "estimated_minutes": 60,
+          "gated": false,
+          "is_published": true,
+          "title": "Coding Agents"
+        },
+        "s1-git-and-packaging/branching-and-collaboration": {
+          "body": "48c0a402136afac6f1d7b98bd74c8eea12f7b681e05cab3068ca81d69dafbbb2",
+          "estimated_minutes": 60,
+          "gated": false,
+          "is_published": true,
+          "title": "Branching, Pull Requests & Review"
+        },
+        "s1-git-and-packaging/git-cheatsheet": {
+          "body": "b901b84c341f6a79bdbb19eae8efa574aa6f4069d20d79242f0871108f25ee01",
+          "estimated_minutes": 5,
+          "gated": false,
+          "is_published": true,
+          "title": "Reference \u2014 Git Cheatsheet"
+        },
+        "s1-git-and-packaging/git-essentials": {
+          "body": "2de3ad99fca7ef9ecd5e750f47eb5296896e5afb8476963d35e570370c27bcb6",
+          "estimated_minutes": 45,
+          "gated": false,
+          "is_published": true,
+          "title": "Git Essentials"
+        },
+        "s1-git-and-packaging/github-actions": {
+          "body": "674d2a59155b72392d37af4c08a81332ae3f5a1cf00413dd3ef6dfcc36b72183",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Continuous Integration with GitHub Actions"
+        },
+        "s1-git-and-packaging/lab-1": {
+          "body": "236ed9ff785734d6a4fa95f2f8a4a68fdf8de1a2bee3637022ed3bfb50971622",
+          "estimated_minutes": 75,
+          "gated": false,
+          "is_published": true,
+          "title": "Lab 1 \u2014 Ship a Package to GitHub"
+        },
+        "s1-git-and-packaging/lab-3": {
+          "body": "04e17c3e2b31d9f2ffa65e24c72042b392852dc529b462b08e51f373679c3e8c",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Lab 2 \u2014 Ship an Agent to Connect Four"
+        },
+        "s1-git-and-packaging/notebooks-and-colab": {
+          "body": "b02209d94a6d56aaf05c18fc39e565939ef1b5cfb3ff58ef88752d02595e1b06",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Notebooks & Colab"
+        },
+        "s1-git-and-packaging/packaging-and-tests": {
+          "body": "dd736f812a3bdd832f9d0a9e7e6b6b083955984fe6e8f11a49c67aa72998c304",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Packaging & Tests"
+        },
+        "s1-git-and-packaging/python-environments": {
+          "body": "900cade4c40c72c589bc0484c2ede5a10c1e909fd6c2e866de0b5b660d1eb91d",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Python Environments"
+        },
+        "s1-git-and-packaging/session-plan": {
+          "body": "3ea48a01fd6f48dd91d87d60f9b07443a2cf51c5924c9502c14cdd9dccd80945",
+          "estimated_minutes": 10,
+          "gated": false,
+          "is_published": false,
+          "title": "Session Plan \u2014 Teacher's Run-Sheet"
+        },
+        "s1-git-and-packaging/the-shell": {
+          "body": "e0627429e718ce67084f285a84f0da478402fc777394e4c4a19a2ea18c13f204",
+          "estimated_minutes": 40,
+          "gated": false,
+          "is_published": true,
+          "title": "The Shell"
+        },
+        "s2-ml-foundations/ai-ml-dl-landscape": {
+          "body": "b80add415b0539a4b98164e8bd47e88ab5c0465a916d35975863d03a0993f9b6"
+        },
+        "s2-ml-foundations/data-preparation": {
+          "body": "4b3b547a7444442892228952c0149f9c9c56d6b647cce0d4ce9a50b54f66ba16"
+        },
+        "s2-ml-foundations/linear-regression": {
+          "body": "5a24e382f8494111993bfb83fe3a7f1ea1dd6e629cd10b0d2f00103557a826f2"
+        },
+        "s2-ml-foundations/logistic-regression": {
+          "body": "c81ade78cf01f89d18bce9e92dbf99473026789fc11eb17217fad8999fe93dd8"
+        },
+        "s2-ml-foundations/losses": {
+          "body": "3a6c8d4fcd13050c3a37c11c19e899d8ea4d0c81fc9351caa7a1a364c91b699f"
+        },
+        "s2-ml-foundations/models": {
+          "body": "743a97c254efbfd9e53d6145d5abbd485d04a11290d9be3ab21eff9224bcfda7"
+        },
+        "s2-ml-foundations/pandas-and-seaborn": {
+          "body": "af37717fcf7dc8c27b150a1ce24195caac659cf391f5263c0b24dad0c9870d0a"
+        },
+        "s2-ml-foundations/the-data": {
+          "body": "04b5abadd603f1d18fce089225529440d4a078fd9ff05a93df65b0ad240969c3"
+        },
+        "s2-ml-foundations/training": {
+          "body": "75533ad4f602b01075f1ce2588bda184c5ee1644e4a3901bf98613b7a445752b"
+        },
+        "s3-models-and-tuning/decision-trees": {
+          "body": "56fd0c91f4070492116428fadbe0a60720adfdfbd43fbda498795f648baa9a1e"
+        },
+        "s3-models-and-tuning/ensembles-bagging": {
+          "body": "bbc93dc0865eccbb44dfbc24cd8270af8856527007b7cbb470062d175ceb6e2d"
+        },
+        "s3-models-and-tuning/ensembles-boosting": {
+          "body": "d5c41390d7025d82f16b224632a87882757c6c74f44a2b004cd0127941016b4f"
+        },
+        "s3-models-and-tuning/evaluation-metrics": {
+          "body": "59e8e3eaab9acd434d1f0ef30ca0b2f764bcbffba937b54b026d7e7f66c9f22f"
+        },
+        "s3-models-and-tuning/hyperparameter-optimization": {
+          "body": "3ff80add0eff8378ab0b67e5b29eca79857730f1fb19a9503250a219aa195023"
+        },
+        "s3-models-and-tuning/k-nearest-neighbours": {
+          "body": "b70678f8a4f1cfde5208b652a9863ce05ce87b6933f9db8d3e6e90ca73aa9b45"
+        },
+        "s3-models-and-tuning/lab-3": {
+          "body": "45c650fd0c4aa9cb5ac3165026412b94cca9a78ce428ead3d4cf6c6426ff3a92"
+        },
+        "s3-models-and-tuning/neural-networks": {
+          "body": "d0aaa84947d8ae036c592dfd2af870b5cccce96c3731724ad15a0a65aeaeeb44"
+        },
+        "s3-models-and-tuning/non-linearity": {
+          "body": "825a5f3774f5775a68da2f80c914a2e1355f3e01927f15c953f49dd3238a610c"
+        },
+        "s3-models-and-tuning/regularization": {
+          "body": "408a6e1512bc38e4d45ee3d96a558f4b034f7b56d0793ecb4849f0d7fcad68e2"
+        },
+        "s3-models-and-tuning/support-vector-machines": {
+          "body": "b1422289d6615ee179e168fc620a1c9e1376dd4977434cf3dfc3f988bd3ff354"
+        },
+        "s3-models-and-tuning/training-neural-networks": {
+          "body": "1f6780de60cccb40d37072d5f08b2de3ac8c274ba03cdf1023b77d391f618f7d"
+        },
+        "s3-models-and-tuning/validation-and-overfitting": {
+          "body": "92025d86d7dcb79f74f89f6d70c74bd2f99302c08dcb9b35d5bad10d3083863f"
+        },
+        "s4-pytorch-nutshell/autograd": {
+          "body": "3b2ed9886e532a676676fad03dc37ef3b684ba05d663ae3a102bc70af6a6e291"
+        },
+        "s4-pytorch-nutshell/autograd-mathematics": {
+          "body": "f0e1d39f17b4ae80800bebf1f6606ed6a4ce92937f59543189496dc687138e42"
+        },
+        "s4-pytorch-nutshell/deep-learning-history": {
+          "body": "567ff3877362d767b28c699e0ac2975ba665b62f43a22362fe469a3cc290c115"
+        },
+        "s4-pytorch-nutshell/lab-4": {
+          "body": "7f4ffff6a10ff52153e940138c1ad7eed3e637bd44a504cd8dfeb1d4bd283df4"
+        },
+        "s4-pytorch-nutshell/modules-and-optimizers": {
+          "body": "02a03d65b31cbf02fe2184ad98585891544fcb91c7f34b7be16b04b222219440"
+        },
+        "s4-pytorch-nutshell/tensor-mechanics": {
+          "body": "ee8e22cf9e6c33d5b616b06c1b4bc67c4aa4ae7778f6b627c46b1ae89b28081e"
+        },
+        "s4-pytorch-nutshell/training-loop-end-to-end": {
+          "body": "75d17ac22c0c55c446732bae426af54062fafc27202d2dc5cb5ac89d34211b66"
+        },
+        "s4-pytorch-nutshell/warmup-1-optimization": {
+          "body": "1560cae6867c3038577cec7380c6ee85ea873e85927b707f33c8ea6f7f885b79"
+        },
+        "s4-pytorch-nutshell/warmup-2-cpu-gpu": {
+          "body": "5e89f76b32afbe4d4bed5bdfc7030f06f13d9c861967a5187bd4f5fa1907a880"
+        },
+        "s4-pytorch-nutshell/why-tensors": {
+          "body": "cd9f49f13fc41e20b25e784dd9f86bd001825f7b2e11cb2a2ce7d9b4e8c1d0eb"
+        }
+      },
+      "module_order": [],
+      "modules": {
+        "s1-git-and-packaging": {
+          "icon": "git-branch",
+          "lessons": [
+            "accounts-and-tools",
+            "the-shell",
+            "git-essentials",
+            "branching-and-collaboration",
+            "python-environments",
+            "packaging-and-tests",
+            "github-actions",
+            "notebooks-and-colab",
+            "lab-1",
+            "assistant-landscape",
+            "lab-3",
+            "git-cheatsheet",
+            "session-plan"
+          ],
+          "summary": "Shell, git, GitHub, environments, packaging, tests, linting, CI, notebooks and Colab \u2014 then an agentic coding workflow on top of them. You leave with a tested Python package on GitHub whose tests run themselves, a Colab notebook that installs it, and an agent on a leaderboard.",
+          "title": "Session 1 \u2014 The Engineering Floor"
+        }
+      }
     }
   }
 }
