@@ -187,16 +187,6 @@ git diff --staged    # staging vs last commit        (added, not yet committed)
 git diff HEAD        # working directory vs last commit (everything)
 ```
 
-
----
-
-## The three diffs
-
-![The three diffs](assets/s1-git-and-packaging/git-essentials/three-diffs.png)
-
-<!-- notes: This trips up nearly everyone. Point at each arrow on the diagram as
-you name the command. -->
-
 ---
 
 ## Undoing — the four cases

@@ -53,9 +53,12 @@ modules:
   #
   # Two labs, both read from a GitHub URL: ship a package as a group of 2-3,
   # each owning a function (1), and an agent-built Connect-Four player (2, slug
-  # `lab-3`). Lab 2's challenge is the one competition attached to this module
-  # and it is a required part of that lab — an ELO board is the only outside
-  # opinion in the session that a student cannot self-mark.
+  # `lab-3`). Lab 2's challenge is the one competition attached to this module.
+  # It WAS a required part of that lab; the 2026-09-07 website rewrite made the
+  # lab optional self-study opening on a one-click Colab, so it is now the
+  # session's extension, not core. An ELO board is still the only outside
+  # opinion in the session that a student cannot self-mark — which is why it
+  # stays attached even as homework.
   #
   # Trimmed again in the course editor on 2026-09-06, after the publish, and
   # pulled back into this repo with `make pull` the same day: `session-map`
@@ -168,12 +171,15 @@ modules:
         is_published: true            # core
       # Retitled Lab 3 -> Lab 2 when the first two labs merged; the slug is
       # immutable server-side, so `lab-3` still names the second lab.
+      # Rewritten in the course editor on 2026-09-07 and pulled back the same
+      # day: the lab became optional self-study opening on a one-click Colab, so
+      # it no longer costs a 45-minute room slot. 45 -> 30 follows that edit.
       - title: "Lab 2 — Ship an Agent to Connect Four"
         slug: lab-3
         kind: exercise
         file: s1-git-and-packaging/lab-3.md
-        estimated_minutes: 45
-        is_published: true            # core
+        estimated_minutes: 30
+        is_published: true            # extension
       # -- self-study, never lectured. `in_deck: false` keeps it out of the
       # deck; the title is what tells a student it is not class material.
       - title: "Reference — Git Cheatsheet"
