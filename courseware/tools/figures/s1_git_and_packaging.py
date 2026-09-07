@@ -248,22 +248,27 @@ def accounts_and_tools() -> None:
     lesson = "accounts-and-tools"
 
     fig, ax = canvas(11, 5.2)
+    # A shell sits between git and uv: on Windows it is what the git installer
+    # just handed you (Git Bash), and it is what the uv install line is typed
+    # into. Six boxes need a narrower one than five did, so w/gap shrink to keep
+    # the row centred on the same span.
     items = [
         ("GitHub", "account", "where the work\nis handed in", WARM_BG, WARM),
         ("VS Code", "install", "editor, terminal,\nnotebooks, agent", ACCENT_BG, ACCENT),
         ("git", "install", "the version\ncontrol client", GOLD_BG, GOLD),
+        ("a shell", "set up", "where every\ncommand runs", GREY_BG, MUTED),
         ("uv", "install", "Python + envs\n+ packages", GREEN_BG, GREEN),
         ("Colab", "account", "a GPU you\ndo not own", ACCENT_BG, ACCENT),
     ]
-    w, gap = 16.0, 3.5
-    x = 4.0
+    w, gap, h = 13.8, 2.6, 21.0
+    x = (100.0 - (len(items) * w + (len(items) - 1) * gap)) / 2
     for name, kind, why, fc, ec in items:
-        box(ax, x, 12, w, 24, fc=fc, ec=ec, lw=1.5)
-        label(ax, x + w / 2, 32.5, name, fs=13, weight="bold", color=ec)
-        label(ax, x + w / 2, 28.4, kind, fs=8.5, color=MUTED, mono=True)
-        label(ax, x + w / 2, 20.5, why, fs=9, color=INK)
+        box(ax, x, 12, w, h, fc=fc, ec=ec, lw=1.5)
+        label(ax, x + w / 2, 29.5, name, fs=12, weight="bold", color=ec)
+        label(ax, x + w / 2, 25.6, kind, fs=8.5, color=MUTED, mono=True)
+        label(ax, x + w / 2, 18.0, why, fs=8.5, color=INK)
         x += w + gap
-    label(ax, 50, 42, "Five things, thirty minutes, once", fs=13, weight="bold")
+    label(ax, 50, 42, "Six things, thirty minutes, once", fs=13, weight="bold")
     caption(ax, 50, 6.5,
             "If any one of these is missing you spend Session 3 debugging it "
             "instead of training a model.")
@@ -455,7 +460,9 @@ def git_essentials() -> None:
     label(ax, 35, 27, "git diff", fs=9, mono=True)
     arrow(ax, (62.5, 23), (67.5, 23), color=INK, style="<|-|>")
     label(ax, 65, 27, "git diff --staged", fs=9, mono=True)
-    arrow(ax, (20, 12), (80, 12), color=MUTED, style="<|-|>", rad=-0.12)
+    # Left-to-right, so the sign is mirrored from the two above: rad=-0.12 was
+    # the one lifting this span into the boxes (14..26). Positive drops it clear.
+    arrow(ax, (20, 12), (80, 12), color=MUTED, style="<|-|>", rad=0.10)
     label(ax, 50, 5.5, "git diff HEAD", fs=9, mono=True, color=MUTED)
     caption(ax, 50, 1.0, "\"My change is not in the diff\" nearly always means it is already staged.")
     save(fig, lesson, "three-diffs.png")
@@ -566,7 +573,14 @@ def pull_requests() -> None:
         if x > 3.0:
             arrow(ax, (x - gap + 0.2, 20.5), (x - 0.5, 20.5), color=MUTED, lw=1.4)
         x += w + gap
-    arrow(ax, (72, 13), (30, 13), color=WARM, lw=1.4, rad=0.25)
+    # The rework arrow, review -> commit, routed UNDER the row. arc3 puts its
+    # control point at midpoint + rad*(dy, -dx), so on a right-to-left arrow a
+    # POSITIVE rad lifts the curve into the boxes (rad=0.25 landed it at y=23.5,
+    # drawing the arc straight through "open PR" and "push"). Negative bows it
+    # down into the empty band between the boxes (bottom y=14) and the caption.
+    centre = lambda i: 3.0 + i * (w + gap) + w / 2
+    arrow(ax, (centre(4), 13.2), (centre(1), 13.2),
+          color=WARM, lw=1.4, rad=-0.12)
     label(ax, 51, 6.5, "reviewer asks for a change → you push to the same branch,\nthe PR updates itself",
           fs=9, color=WARM)
     save(fig, lesson, "pr-lifecycle.png")
@@ -918,7 +932,11 @@ def notebooks_and_colab() -> None:
     label(ax, 33, 24, "extract", fs=8.5, mono=True)
     arrow(ax, (62.5, 20), (71.5, 20), color=INK)
     label(ax, 67, 24, "pip install", fs=8.5, mono=True)
-    arrow(ax, (84, 11), (16, 11), color=MUTED, rad=0.16, lw=1.2, ls=":")
+    # Same arc3 trap as pr-lifecycle: right-to-left with a positive rad puts the
+    # control point at y=21.9, inside the boxes (12..28), so the dotted loop drew
+    # a strike-through across "the version that has to be right". Negative bows
+    # it into the gap under the row instead.
+    arrow(ax, (84, 11), (16, 11), color=MUTED, rad=-0.10, lw=1.2, ls=":")
     label(ax, 50, 4.5, "the loop, not a one-way trip", fs=9, color=MUTED, style="italic")
     save(fig, lesson, "notebook-to-package.png")
 
