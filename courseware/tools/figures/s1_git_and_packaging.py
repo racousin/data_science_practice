@@ -256,7 +256,7 @@ def accounts_and_tools() -> None:
         ("GitHub", "account", "where the work\nis handed in", WARM_BG, WARM),
         ("VS Code", "install", "editor, terminal,\nnotebooks, agent", ACCENT_BG, ACCENT),
         ("git", "install", "the version\ncontrol client", GOLD_BG, GOLD),
-        ("a shell", "set up", "where every\ncommand runs", GREY_BG, MUTED),
+        ("shell", "set up", "where every\ncommand runs", GREY_BG, MUTED),
         ("uv", "install", "Python + envs\n+ packages", GREEN_BG, GREEN),
         ("Colab", "account", "a GPU you\ndo not own", ACCENT_BG, ACCENT),
     ]
@@ -268,7 +268,7 @@ def accounts_and_tools() -> None:
         label(ax, x + w / 2, 25.6, kind, fs=8.5, color=MUTED, mono=True)
         label(ax, x + w / 2, 18.0, why, fs=8.5, color=INK)
         x += w + gap
-    label(ax, 50, 42, "Six things, thirty minutes, once", fs=13, weight="bold")
+    label(ax, 50, 42, "Six things, once", fs=13, weight="bold")
     caption(ax, 50, 6.5,
             "If any one of these is missing you spend Session 3 debugging it "
             "instead of training a model.")
