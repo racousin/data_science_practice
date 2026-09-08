@@ -120,22 +120,6 @@ anyway.
 
 ---
 
-## How much data per step
-
-The loss is a sum over observations, so its gradient is too — and you may
-evaluate that sum on any subset you like.
-
-| | Gradient computed on | Cost per step | Behaviour |
-|---|---|---|---|
-| **Batch** | all $n$ observations | high | smooth, exact descent direction |
-| **Stochastic (SGD)** | 1 observation | tiny | very noisy, cheap, escapes shallow minima |
-| **Mini-batch** | $B$ observations, typically 32–512 | tuneable | the default everywhere |
-
-The noise in mini-batch gradients is not purely a cost: it is unbiased, and it
-helps the iterate leave narrow minima. Mini-batch is what PyTorch does in
-Session 4.
-
----
 
 ## Optimisers: better use of the same gradient
 
@@ -221,3 +205,29 @@ of essentially every training curve you will ever plot.
 
 The initial model predicts cooling, the trained one warming. Nothing changed
 except 50 gradient steps.
+
+---
+
+## The interface
+
+`fit` is the missing half: it searches for the $\theta$ that makes that loss
+small on the training set, `predict` applies $f_\theta$.
+
+```python
+model.fit(X_train, y_train)       # training:   find theta
+y_pred = model.predict(X_test)    # prediction: apply f_theta
+```
+
+You never pass the loss to `fit` — it comes with the class: squared error for
+`LinearRegression`, log-loss for `LogisticRegression`.
+
+For classification, ask for the probability rather than the label where you can
+— you can always threshold afterwards, and you cannot recover a probability from
+a label:
+
+```python
+proba = model.predict_proba(X_test)[:, 1]
+y_pred = (proba > 0.5).astype(int)
+```
+
+`0.5` is a **choice**, not part of the model.
