@@ -270,21 +270,19 @@ modules:
         file: s2-ml-foundations/logistic-regression.md
         estimated_minutes: 30
         is_published: true
+      # `Reference — pandas & seaborn` (lesson 180, moved here from session 1 on
+      # 2026-09-06) was merged into this one on 2026-09-08 and deleted from the
+      # server. It was self-study nobody did, and the API it documented is only
+      # worth reading next to the problem it solves — so the pandas and seaborn
+      # each section needs now sits in front of that section, and the five
+      # imputation strategies it used to compete with are gone. Surviving slug
+      # is `data-preparation`: slugs are immutable server-side.
+      # Companion Colab: aie-s0-pandas-seaborn.ipynb.
       - title: "Data Preparation"
         slug: data-preparation
         file: s2-ml-foundations/data-preparation.md
-        estimated_minutes: 40
+        estimated_minutes: 45
         is_published: true
-      # Moved here from session 1 on 2026-09-06: this is the session that first
-      # reads a CSV, reshapes it and plots it, and `the-data` links straight to
-      # it. Self-study, never lectured, so it sits last and out of the deck.
-      # Companion Colab: aie-s0-pandas-seaborn.ipynb.
-      - title: "Reference — pandas & seaborn"
-        slug: pandas-and-seaborn
-        file: s2-ml-foundations/pandas-and-seaborn.md
-        estimated_minutes: 30
-        is_published: true
-        in_deck: false
     # Two challenges, one per model family taught here: bike demand exercises
     # linear regression, bank term deposit exercises logistic regression. Both
     # are file_v1 (upload a CSV). Packages in competitions/s2-bike-demand and

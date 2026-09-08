@@ -21,7 +21,6 @@
       "s2-ml-foundations/logistic-regression": 151,
       "s2-ml-foundations/losses": 168,
       "s2-ml-foundations/models": 167,
-      "s2-ml-foundations/pandas-and-seaborn": 180,
       "s2-ml-foundations/the-data": 166,
       "s2-ml-foundations/training": 169,
       "s3-data-science-nutshell/evaluation-metrics": 42,
@@ -170,8 +169,8 @@
           "title": "The AI / ML / DL Landscape"
         },
         "s2-ml-foundations/data-preparation": {
-          "body": "4b3b547a7444442892228952c0149f9c9c56d6b647cce0d4ce9a50b54f66ba16",
-          "estimated_minutes": 40,
+          "body": "abd13190b40d980e53c07402371fb37ae6def224f5701074e8cbd1b21119d2ab",
+          "estimated_minutes": 45,
           "gated": false,
           "is_published": true,
           "title": "Data Preparation"
@@ -204,15 +203,8 @@
           "is_published": true,
           "title": "Models"
         },
-        "s2-ml-foundations/pandas-and-seaborn": {
-          "body": "af37717fcf7dc8c27b150a1ce24195caac659cf391f5263c0b24dad0c9870d0a",
-          "estimated_minutes": 30,
-          "gated": false,
-          "is_published": true,
-          "title": "Reference \u2014 pandas & seaborn"
-        },
         "s2-ml-foundations/the-data": {
-          "body": "04b5abadd603f1d18fce089225529440d4a078fd9ff05a93df65b0ad240969c3",
+          "body": "0bda70f8dcbb863d6b4dcd8319975b5a5d04bbc9c436a70882b121990000de5e",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
@@ -424,8 +416,7 @@
             "training",
             "linear-regression",
             "logistic-regression",
-            "data-preparation",
-            "pandas-and-seaborn"
+            "data-preparation"
           ],
           "summary": "What machine learning is, stated precisely: the data, the model, the loss, and the training that connects them \u2014 then linear and logistic regression end to end in scikit-learn, and the data preparation they both assume.",
           "title": "Session 2 \u2014 Machine Learning Foundations"

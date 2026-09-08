@@ -1,13 +1,17 @@
 # Data Preparation
 
 Every model in this session is a function on $\mathbb{R}^p$. Real tables are not
-in $\mathbb{R}^p$ — they have holes and they have words. Getting from one to the
-other is where most of the project's time goes, and every choice you make along
-the way is a modelling assumption whether you declare it or not.
+in $\mathbb{R}^p$ — they have holes, they have words, and they have values no
+sensor ever produced. This lesson is the three of them: how to see each one, and
+the simplest thing that fixes it.
 
-<!-- notes: 40 minutes. The domain-knowledge table on missing data is the one to
-slow down for — it is the difference between a student who imputes the mean
-everywhere and one who thinks. -->
+`pandas` is how you get from a CSV to a rectangle of numbers. `seaborn` is how
+you look at what you have before you commit to it.
+
+<!-- notes: 45 minutes. Merged with the old pandas & seaborn reference on
+2026-09-08 — the reference was self-study nobody did, and its content is only
+useful next to the problem it solves. The three sections are deliberately the
+same shape: a picture, one line to catch it, one line to fix it. -->
 
 ---
 
@@ -23,264 +27,274 @@ and it is not defined when $x_j$ is `"Torgersen"`. Before any model:
 - **no missing entries** — every cell has a number
 - **no non-numeric entries** — categories are mapped into $\mathbb{R}$
 
-Neither requirement has a canonical answer. Both are decisions, and both change
-what the model can learn.
-
-One consequence to keep in view. Supervised learning means predicting on rows
-whose target you do not have — so whatever mapping you build here must be
-applicable to those rows too. An encoding that needs the target to compute, or a
-category-to-integer map you did not keep, is not a preparation step you can use.
+Neither has a canonical answer. Both are decisions, and both change what the
+model can learn.
 
 ---
 
-## Missing values
+## The DataFrame
+
+A `DataFrame` is a dictionary of **typed columns** sharing one index.
+
+- **Typed columns** — each column has one dtype, not each cell. This is why a
+  single bad value turns a whole numeric column into text.
+- **A shared index** — two columns, or two frames, align by index and not by
+  position. Most surprising pandas behaviour is that alignment doing its job.
+
+```python
+import pandas as pd, seaborn as sns
+df = sns.load_dataset("penguins")     # 344 rows x 7 columns
+```
+
+---
+
+## Read and inspect
+
+Four calls, in the order you should always run them.
+
+```python
+df = pd.read_csv("X_train.csv")
+df.shape        # -> (344, 7)   the (n, p) of the data lesson
+df.head(3)      # do you believe the columns?
+df.dtypes       # what pandas decided each column is
+df.describe()   # count/mean/std/quartiles — numeric columns only
+```
+
+`dtypes` is the one people skip and the one that bites: a numeric column with a
+stray `"N/A"` comes back as `str`. And `describe` **drops missing values**, so
+its `count` row is your first evidence they exist — 342 against 344 rows means
+two are gone.
+
+---
+
+## Selecting
+
+One bracket gives a **Series**, two give a **DataFrame**.
+
+```python
+df["body_mass_g"]                                  # Series
+df[df["body_mass_g"] > 5000]                       # rows, by boolean mask
+df[(df["sex"] == "Male") & (df["island"] == "Dream")]   # & and |, not and/or
+X = df.drop(columns=["species"])                   # NOT df.drop("species")
+df.select_dtypes("number")                         # the numeric block
+```
+
+The parentheses are required, and `and` genuinely does not work: `&` operates
+element-wise, `and` tries to collapse a column to one truth value and raises.
+
+---
+
+## seaborn: pass the frame, name the columns
+
+Every plot takes tidy data — you hand it the whole frame and name columns, and
+seaborn does the grouping, the aggregation and the legend. `hue=` splits any
+plot by a third column.
+
+```python
+sns.histplot(df["body_mass_g"])                        # one distribution
+sns.boxplot(data=df, x="species", y="body_mass_g")     # y across the levels of x
+sns.countplot(data=df, x="island")                     # rows per level
+sns.pairplot(df, hue="species")                        # every numeric pair
+```
+
+`pairplot` is the first thing to run and the most expensive ($p^2$ panels);
+restrict it with `vars=[...]` on a wide frame.
+
+---
+
+## Problem 1 — missing values
 
 ![A table with NaNs](assets/s2-ml-foundations/data-preparation/missing-values-table.png)
 
-Two ordinary causes:
-
-- **Not collected** — through oversight, or because it was not available.
-- **Corrupted** — entries lost in transfer or storage.
+Two ordinary causes: **not collected**, or **corrupted in transfer**. Which one
+it is decides what you should do about it.
 
 ---
 
-### Look at the pattern first
+### See them
 
 ```python
-df.isna().sum()
-sns.heatmap(df.isna(), cbar=False)
+df.isna().sum()                      # count per column
+sns.heatmap(df.isna(), cbar=False)   # where the holes are
 ```
 
 ![Missingness in the penguins table](assets/s2-ml-foundations/data-preparation/penguins-missing.png)
 
-The penguins table from the data lesson, with its 344 rows across. Two things
-are visible that `df.isna().sum()` alone does not tell you: the four
-measurement columns go missing *together*, in exactly 2 rows — two birds that
-were never measured — while `sex` is missing in 11 rows scattered
-independently. Those are two different mechanisms and they deserve two different
-treatments.
+The four measurement columns go missing *together*, in exactly 2 rows — two
+birds never measured — while `sex` is missing in 11 scattered rows. Two
+mechanisms, and the picture is what tells them apart. A block means something
+systematic; scatter means something closer to random.
 
 ---
 
-### Blocks or scatter
-
-The pattern matters more than the count. Blocks mean something systematic;
-scatter means something closer to random.
-
-![Missing-value patterns](assets/s2-ml-foundations/data-preparation/missing-values-heatmap.png)
-
-The formal version of the distinction — MCAR, MAR, MNAR — is the one you already
-know from your statistics courses, and it is exactly what decides whether the
-strategies below are unbiased.
-
----
-
-### Strategy 1 — drop
+### Replace them
 
 ```python
-df.dropna()                    # drop rows with any NaN
-df.dropna(subset=['age'])      # only where 'age' is NaN
+df["sex"] = df["sex"].fillna("unknown")            # a category: a word
+df["bill_length_mm"] = df["bill_length_mm"].fillna(df["bill_length_mm"].median())
+df = df.dropna()                                   # or drop the rows entirely
 ```
 
-| When to use | Risk |
-|---|---|
-| Few missing values (<5%) | You lose data |
-| Missing completely at random | Bias, if the missingness is not random |
+For a category, a literal `"unknown"` is usually the honest fix: it keeps the
+row and says what is true. For a number, the median — it does not move when the
+column is skewed, and unlike the mean it is not dragged by the extremes you are
+about to go looking for.
+
+Both cost you something. Filling shrinks the variance of that column: you have
+not added information, you have added confidence you do not have.
 
 ---
 
-### Strategy 2 — impute a central value
+### When the hole *is* the signal
 
-Mean, median or mode. Simple, and reasonable when the column has low variance.
-
-![Mean imputation](assets/s2-ml-foundations/data-preparation/mean-imputation.png)
+A lab test not ordered means the patient was fine. No mortgage history means
+they never had one. Imputing the mean there destroys the thing you wanted.
 
 ```python
-from sklearn.impute import SimpleImputer
-df[['age']] = SimpleImputer(strategy='mean').fit_transform(df[['age']])
+df["income_missing"] = df["income"].isna().astype(int)
 ```
 
-Note what it costs: imputing the mean leaves the mean unchanged and shrinks the
-variance and every covariance involving that column. You have not added
-information, you have added confidence you do not have.
+One binary column, and the model decides for itself. When in doubt, do this
+before you fill.
 
 ---
 
-### Strategy 3 — forward fill (time series)
-
-Propagate the last observed value into the gap.
-
-![Forward fill](assets/s2-ml-foundations/data-preparation/forward-fill.png)
-
-```python
-df['temp'] = df['temp'].ffill()
-df['temp'] = df['temp'].interpolate(method='linear')
-```
-
-`interpolate` uses the future as well as the past. On a time series that is a
-statement about what you will know at prediction time — be sure it is true.
-
----
-
-### Strategy 4 — predict the missing value
-
-Use the similarity between rows: more accurate than a central value on complex
-tables, and considerably more expensive.
-
-![KNN imputation](assets/s2-ml-foundations/data-preparation/knn-imputation.png)
-
-```python
-from sklearn.impute import KNNImputer
-df_imputed = KNNImputer(n_neighbors=5).fit_transform(df)
-```
-
----
-
-### Strategy 5 — domain knowledge
-
-Often the missingness *is* the signal, and imputing destroys it:
-
-| Domain | Missing ≠ random — it means something | Fix |
-|---|---|---|
-| Medicine | Lab not ordered → the patient was fine | Impute normal, not mean-of-sick |
-| Finance | No price → the market was closed | Forward-fill, never mean |
-| Sensors | Gap → the sensor died, not random | Use a neighbouring sensor |
-| Credit | No mortgage history → never had one | Encode missingness as a feature |
-| E-commerce | No rating → didn't care enough | Implicit feedback, do not ignore |
-
-The last column is worth more than the four techniques above it. When in doubt,
-add an explicit `was_missing` indicator column and let the model decide — it
-costs one binary feature and it preserves the information that imputation
-throws away.
-
----
-
-## Outliers
-
-![An outlier in a scatter plot](assets/s2-ml-foundations/data-preparation/outlier-scatter.png)
-
-The first question is never "how do I remove it".
-
-| Errors | Real signal |
-|---|---|
-| Sensor malfunction | Legitimate extreme values |
-| Data entry mistake | Rare but real events |
-| ETL bug | Important for the model |
-
-Delete a fraud case as an outlier and you have deleted the thing you were hired
-to predict.
-
----
-
-### Detection: the IQR rule
-
-![IQR on a boxplot](assets/s2-ml-foundations/data-preparation/iqr-boxplot.png)
-
-```python
-q1, q3 = df['col'].quantile([0.25, 0.75])
-outliers = df[~df['col'].between(q1 - 1.5*(q3-q1), q3 + 1.5*(q3-q1))]
-```
-
-The interquartile range measures the spread of the middle 50%. Because it is
-built from quantiles, the extreme points cannot move the threshold that is being
-used to judge them.
-
----
-
-### Detection: the z-score
-
-![Z-scores on a normal distribution](assets/s2-ml-foundations/data-preparation/z-score-normal.png)
-
-```python
-from scipy import stats
-outliers = df[np.abs(stats.zscore(df['col'])) > 3]
-```
-
-Two failure modes you should expect. It **assumes approximate normality** — on a
-skewed column it flags the whole tail. And it is not robust: the outlier
-inflates the $\hat{\sigma}$ it is then measured against. On
-$\{1, 2, 3, 4, 100\}$ the z-score of 100 is 2.0 — comfortably under 3, so the
-test **misses the one point it exists to find** — while the IQR fence sits at 7
-and catches it immediately. Prefer IQR, or a robust z-score built on the median
-and the MAD.
-
----
-
-### Strategy
-
-![Ways to handle outliers](assets/s2-ml-foundations/data-preparation/outlier-strategies.png)
-
-| Strategy | Code | When |
-|---|---|---|
-| Remove | `df = df[~mask]` | Clear errors, few outliers |
-| Clip | `df['col'].clip(lo, hi)` | Limit extremes without dropping rows |
-| Transform | `np.log1p(df['col'])` | Reduce skewness |
-| Keep | do nothing | Legitimate extremes |
-
----
-
-## Categorical values
+## Problem 2 — categories
 
 ![Nominal versus ordinal](assets/s2-ml-foundations/data-preparation/categorical-types.png)
 
 - **Nominal** — no inherent order (`island ∈ {Torgersen, Biscoe, Dream}`).
 - **Ordinal** — a logical order (`{bad, good, excellent}`).
 
-The distinction decides the encoding, and getting it wrong invents structure the
-data never had.
+Getting the distinction wrong invents structure the data never had.
 
 ---
 
-### Count the levels first
+### See them
 
 ```python
-sns.countplot(x='color', data=df)
+df.select_dtypes(exclude="number").columns   # which columns are words
+df["island"].value_counts()                  # the levels, and how many of each
+sns.countplot(data=df, x="island")
 ```
 
 ![Categorical distribution](assets/s2-ml-foundations/data-preparation/categorical-barplot.png)
 
+Count the levels before you encode. Two levels cost you one column; five hundred
+cost you five hundred.
+
 ---
 
-### Ordinal encoding
-
-![Label encoding](assets/s2-ml-foundations/data-preparation/label-encoding.png)
+### Replace them
 
 ```python
-from sklearn.preprocessing import OrdinalEncoder
-df[['size']] = OrdinalEncoder(categories=[['bad','good','excellent']]).fit_transform(df[['size']])
+X = pd.get_dummies(df)      # island -> island_Biscoe, island_Dream, island_Torgersen
 ```
 
-Map each category to an integer. This embeds the categories in $\mathbb{R}$ with
-their order *and their spacing*, so it asserts both that `excellent > good` and
-that the gap `good → excellent` equals the gap `bad → good`. The first claim is
-usually what you want; the second rarely is, and a linear model acts on it.
-
-Pass `categories=` explicitly. `LabelEncoder` sorts alphabetically, which on
-`{bad, good, excellent}` gives exactly the wrong order — and `LabelEncoder` is
-meant for the target column, not for features.
-
-On a **nominal** column this is simply false: it tells the model
-`Dream (1) < Torgersen (2)`, and the model will use it.
-
----
-
-### One-hot encoding
+One binary column per level: no order, no spacing, nothing asserted. This is the
+default for nominal columns, and it is one call for the whole frame — numeric
+columns pass through untouched.
 
 ![Label versus one-hot encoding](assets/s2-ml-foundations/data-preparation/label-vs-onehot.png)
 
+---
+
+### The alignment trap
+
+Encode train and test separately and a level present in one and absent in the
+other gives you two matrices of different widths — fed to the model without an
+error, and wrong.
+
 ```python
-from sklearn.preprocessing import OneHotEncoder
-ohe = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
-X_enc = ohe.fit_transform(df[['island', 'sex']])
+X_train_enc = pd.get_dummies(X_train)
+X_test_enc = pd.get_dummies(X_test).reindex(columns=X_train_enc.columns, fill_value=0)
+assert list(X_train_enc.columns) == list(X_test_enc.columns)
 ```
 
-One binary column per category: no order, no spacing, nothing asserted. This is
-the default for nominal features.
+`reindex` forces the second frame onto the first's exact column list. Assert it
+once and never think about it again.
 
-Three practical notes. `handle_unknown='ignore'` matters — the default raises on
-a category that appears only at prediction time, which is a class of failure you
-meet in production and not in the notebook. The columns are exactly collinear
-with the intercept, so drop one level (`drop='first'`) for a linear model, and
-leave them all for a tree. And the cost is width: a column with 500 categories
-becomes 500 mostly-empty columns, pushing $p$ towards $n$ — which is where the
-curse of dimensionality and mandatory regularisation both start, in Session 3.
+---
+
+### If the order is real
+
+```python
+from sklearn.preprocessing import OrdinalEncoder
+df[["size"]] = OrdinalEncoder(categories=[["bad", "good", "excellent"]]).fit_transform(df[["size"]])
+```
+
+Pass `categories=` explicitly, or the levels are sorted alphabetically — which
+on `{bad, good, excellent}` is exactly the wrong order. Integers assert order
+*and* spacing, so this says the gap `good → excellent` equals `bad → good`. On a
+nominal column it is simply false, and a linear model will use it.
+
+---
+
+## Problem 3 — outliers
+
+![An outlier in a scatter plot](assets/s2-ml-foundations/data-preparation/outlier-scatter.png)
+
+The first question is never "how do I remove it". A sensor fault and a real rare
+event look identical in the plot and are opposite in meaning — delete a fraud
+case as an outlier and you have deleted the thing you were hired to predict.
+
+---
+
+### See them
+
+```python
+sns.boxplot(data=df, x="species", y="body_mass_g")
+
+q1, q3 = df["col"].quantile([0.25, 0.75])
+iqr = q3 - q1
+outliers = df[~df["col"].between(q1 - 1.5*iqr, q3 + 1.5*iqr)]
+```
+
+![IQR on a boxplot](assets/s2-ml-foundations/data-preparation/iqr-boxplot.png)
+
+The interquartile range is the spread of the middle 50%. Because it is built
+from quantiles, an extreme point cannot move the threshold that is judging it —
+which is exactly what a z-score lets it do.
+
+---
+
+### Replace them
+
+```python
+lo, hi = df["col"].quantile([0.01, 0.99])
+df["col"] = df["col"].clip(lo, hi)        # keep the row, cap the value
+df["col"] = np.log1p(df["col"])           # or squash a long right tail
+```
+
+Clipping keeps the row and its other columns, which is why it is usually better
+than dropping. Dropping is for values that cannot exist — a negative age, a
+timestamp from 1900 — and those you should fix at the source.
+
+---
+
+## Writing the submission
+
+```python
+pd.DataFrame({"id": X_test["id"], "prediction": preds}).to_csv("submission.csv", index=False)
+```
+
+`index=False` is not cosmetic. Without it pandas writes its row labels as a
+leading unnamed column, the file gains a column the scorer did not ask for, and
+the submission is rejected.
+
+---
+
+## The habit worth keeping
+
+Four lines on every new dataset, before any modelling:
+
+```python
+df.shape          # how much data, how wide
+df.dtypes         # what pandas thinks each column is
+df.isna().sum()   # where the holes are
+df.describe()     # the scale of each numeric column
+```
+
+then one plot of the target and one `pairplot`. It costs a minute, and it is the
+difference between modelling the data you have and modelling the data you
+assumed you had.
