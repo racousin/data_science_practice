@@ -84,11 +84,19 @@ the benchmark, which is the actual claim of the session.
 ### Ranking direction
 
 The leaderboard sorts `score` **descending** and has no lower-is-better flag
-(`modelmanager/modelmanager/competitions.py:214`). A regression challenge
-therefore cannot rank on RMSE. `s2-bike-demand` ranks on **R²**, which is
-monotone in RMSE and carries a free reading: R² = 0 is exactly the model that
-predicts the training mean, so the sign of the score answers "did I beat the
-average". RMSE and MAE ride along in `metrics_detail` for display.
+(`modelmanager/modelmanager/competitions.py:210-213`). A regression challenge
+therefore cannot rank on RMSE or MAE as they stand. `s2-bike-demand` ranks on
+**-MAE**: negated, so higher is better, while keeping the target's units — -103.74
+reads as "wrong by 103.74 bikes an hour on average". RMSE and R² ride along in
+`metrics_detail` for display. The other regressors still rank on R².
+
+**Negating an error metric moves where zero sits, and the error path has to move
+with it.** Under R² a rejected submission could score 0.0 and land mid-table, at
+the mean model. Under -MAE, 0.0 is a *perfect* score — and the ranking query
+filters on nothing, not even `is_agent_code_error` — so a malformed CSV scoring
+0.0 would top the board. `s2-bike-demand/env.py` returns `ERROR_SCORE = -1e9`
+instead, and `test_rejects_malformed_submissions` asserts the general property
+(a rejection scores below the package's own benchmark) rather than `== 0.0`.
 
 The `Reference — …` lessons at the end of sessions 1 and 4 have no competition:
 self-study material, never lectured, with nothing to score.

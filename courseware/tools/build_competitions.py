@@ -320,6 +320,21 @@ def refresh_one(client, user_client, cfg: dict, base_url: str) -> int:
     client.update_env_file_content(cid, "env.py", (pkg_dir / "env.py").read_text())
     print("    overview.md + env.py re-uploaded")
 
+    # Settings are locked while started, so they can only be re-applied here.
+    # A refresh that changes the metric and not the schema would fail the
+    # worker's equal-mapping check on the first run, not on the upload.
+    settings = {
+        "evaluation_metric": cfg["metric"],
+        "evaluation_deployment_nb_constraint_run": cfg["deployment_nb_constraint_run"],
+        "evaluation_deployment_nb_initial_score_run": cfg["deployment_nb_initial_score_run"],
+        "evaluation_metrics_schema": cfg["metrics_schema"],
+    }
+    if cfg.get("metric2"):
+        settings["evaluation_metric2"] = cfg["metric2"]
+    client.update_settings(cid, **settings)
+    print(f"    settings: metric={cfg['metric']} "
+          f"metrics_schema={[d['key'] for d in cfg['metrics_schema']]}")
+
     for rel in cfg.get("private_files", []):
         src = pkg_dir / "data" / rel
         if not src.exists():

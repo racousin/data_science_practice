@@ -13,13 +13,12 @@ Submission — `submission.csv`, one row per test id:
 model does return negatives on the low hours and that is not rejected — it is
 scored, and the score is what tells you it happened.
 
-Ranking is on **R²**, not RMSE. The leaderboard sorts descending
-(`modelmanager/modelmanager/competitions.py:214`), so the primary score has to
-be higher-is-better; R² is the natural monotone rescaling of RMSE for this
-purpose. R² = 0 is exactly the constant model that predicts the training mean,
-so the sign of your score answers "did I beat predicting the average" without
-any further arithmetic. RMSE and MAE are on the leaderboard as well, in the
-units of the target.
+Ranking is on **-MAE** — the mean absolute error, negated. The leaderboard
+sorts `mean_reward` descending and has no lower-is-better flag
+(`modelmanager/modelmanager/competitions.py:210-213`), so the primary score has
+to increase with quality; negating an error metric is the direct way to get
+that, and it keeps MAE's units — -103.74 reads as "wrong by 103.74 bikes an
+hour on average", and 0 is perfect. RMSE and R2 ride along for display.
 
 Pure standard library on purpose: the env image ships a full ML stack, but a
 scorer that only needs `csv` and arithmetic has one less way to break.
@@ -30,6 +29,14 @@ import os
 
 ID_COLUMN = "id"
 TARGET_COLUMN = "prediction"
+
+# A rejected submission must not out-rank a real model. Under R2 an error could
+# score 0.0 and land mid-table, at the mean model. Under -MAE 0.0 is a *perfect*
+# score, and the leaderboard orders on mean_reward DESC with no filter on
+# is_agent_code_error (`modelmanager/modelmanager/competitions.py:210-213`) — so
+# a rejection scoring 0.0 would sit at the top of the board. Predicting a
+# constant zero for every hour scores about -189; nothing honest comes near this.
+ERROR_SCORE = -1e9
 
 
 class Env:
@@ -75,17 +82,17 @@ class Env:
         note = f"  ({n_negative} negative prediction(s))" if n_negative else ""
         return {"agent_results": [{
             "agent_index": 0,
-            "score": round(r2, 6),
+            "score": round(-mae, 6),
             "score2": round(rmse, 6),
             "steps": n,
             "info_message": (
-                f"R2={r2:.4f}  RMSE={rmse:.2f}  MAE={mae:.2f}  "
+                f"-MAE={-mae:.2f}  RMSE={rmse:.2f}  R2={r2:.4f}  "
                 f"on {n} test rows{note}"
             ),
             "metrics_detail": {
-                "r2": round(r2, 6),
+                "neg_mae": round(-mae, 6),
                 "rmse": round(rmse, 6),
-                "mae": round(mae, 6),
+                "r2": round(r2, 6),
                 "n_negative": n_negative,
             },
         }]}
@@ -138,12 +145,12 @@ class Env:
     def _error(message):
         return {"agent_results": [{
             "agent_index": 0,
-            "score": 0.0,
+            "score": ERROR_SCORE,
             "steps": 0,
             "is_agent_code_error": True,
             "agent_code_error_message": message,
             "info_message": message,
             "metrics_detail": {
-                "r2": 0.0, "rmse": 0.0, "mae": 0.0, "n_negative": 0,
+                "neg_mae": ERROR_SCORE, "rmse": 0.0, "r2": 0.0, "n_negative": 0,
             },
         }]}

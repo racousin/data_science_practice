@@ -61,6 +61,9 @@ PACKAGES = ["s2-bike-demand", "s2-bank-marketing",
             "s3-diabetes-progression", "s3-credit-risk",
             "s4-california-housing", "s4-forest-cover"]
 REGRESSION = {"s2-bike-demand", "s3-diabetes-progression", "s4-california-housing"}
+# s2-bike-demand ranks on -MAE, so the "R2 = 0 is the mean model" claim is not
+# made on its page and not asserted of its score.
+R2_RANKED = REGRESSION - {"s2-bike-demand"}
 # Multi-class, so the binary-classifier assertions (F1 = 0 for always-0, a
 # `prediction` of 0/1) do not apply to it.
 MULTICLASS = {"s4-forest-cover"}
@@ -212,7 +215,14 @@ def test_rejects_malformed_submissions(pkg, tmp_path):
         path = write_csv(tmp_path / "sub.csv", rows)
         result = score(pkg, path)
         assert result.get("is_agent_code_error"), f"{pkg}: accepted {label}"
-        assert result["score"] == 0.0
+        # Not `== 0.0`: under an error metric negated for ranking (-MAE) zero is
+        # a *perfect* score. The leaderboard orders on score DESC with no filter
+        # on is_agent_code_error, so what has to hold is that a rejection ranks
+        # below a real model — whatever the metric's zero happens to mean.
+        assert result["score"] < cfg["benchmark_expected_score"], (
+            f"{pkg}: rejecting {label} scored {result['score']}, which is not "
+            f"worse than the benchmark ({cfg['benchmark_expected_score']}); a "
+            f"malformed submission would out-rank an honest model.")
         assert result["agent_code_error_message"], f"{pkg}: no message for {label}"
 
 
@@ -229,7 +239,7 @@ def test_regressor_accepts_negative_predictions(tmp_path):
     assert result["metrics_detail"]["n_negative"] > 0
 
 
-@pytest.mark.parametrize("pkg", sorted(REGRESSION))
+@pytest.mark.parametrize("pkg", sorted(R2_RANKED))
 def test_r2_zero_is_the_mean_model(pkg, tmp_path):
     """The overview tells students R2 = 0 is exactly predict-the-training-mean.
     That claim should be true of the scorer, not just of the textbook."""
@@ -241,6 +251,20 @@ def test_r2_zero_is_the_mean_model(pkg, tmp_path):
                      [f"{i},{mean_of_test}" for i in yte["id"]])
     result = score(pkg, path)
     assert abs(result["score"]) < 1e-9, "constant-mean predictor is not R2 = 0"
+
+
+def test_neg_mae_is_the_negated_mean_absolute_error(tmp_path):
+    """The bike overview reads -103.74 as "wrong by 103.74 bikes an hour on
+    average". That is a claim about the scorer, not a figure of speech."""
+    import pandas as pd
+    yte = pd.read_csv(HERE / "s2-bike-demand" / "data" / "y_test.csv")
+    const = 100.0
+    path = write_csv(tmp_path / "sub.csv", [f"{i},{const}" for i in yte["id"]])
+    result = score("s2-bike-demand", path)
+    expected = -(yte["prediction"] - const).abs().mean()
+    assert abs(result["score"] - expected) < 1e-6
+    assert result["score"] == result["metrics_detail"]["neg_mae"]
+    assert result["score"] < 0, "-MAE is negative for every imperfect model"
 
 
 @pytest.mark.parametrize("pkg", ["s2-bank-marketing", "s3-credit-risk"])
@@ -364,7 +388,7 @@ def test_preflight_notebook_runs_standalone(tmp_path):
 
 
 @pytest.mark.parametrize("pkg,notebook,expect_key,tol", [
-    ("s2-bike-demand", "aie-s2-bike-demand.ipynb", "r2", 1e-6),
+    ("s2-bike-demand", "aie-s2-bike-demand.ipynb", "neg_mae", 1e-6),
     ("s3-diabetes-progression", "aie-s3-diabetes-progression.ipynb", "r2", 1e-6),
     ("s4-california-housing", "aie-s4-california-housing.ipynb", "r2", 1e-6),
 ])
