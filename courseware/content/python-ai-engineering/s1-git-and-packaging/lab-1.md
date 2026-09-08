@@ -302,37 +302,7 @@ Skeleton and workflow first, then one function at a time.
 
 ---
 
-## Part E — The badge
-
-Once a run has gone green on `main`, add the badge to `README.md`:
-
-```markdown
-![tests](https://github.com/<owner>/textstats/actions/workflows/tests.yml/badge.svg)
-```
-
-**Check:** the Actions tab shows a successful run, the badge is green, and
-
-```bash
-git log --format='%an' | sort -u
-```
-
-prints every name in the group.
-
----
-
-## Part F — Tag a release
-A tag is what makes the next part reproducible. One person, once every
-function has merged:
-
-```bash
-git switch main && git pull
-git tag v0.1.0
-git push origin v0.1.0
-```
-
----
-
-## Part G — Install it in Colab
+## Part E — Install it in Colab
 Each of you opens a **new** Colab notebook — not one you have used before. Two
 cells:
 

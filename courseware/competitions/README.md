@@ -86,9 +86,12 @@ the benchmark, which is the actual claim of the session.
 The leaderboard sorts `score` **descending** and has no lower-is-better flag
 (`modelmanager/modelmanager/competitions.py:210-213`). A regression challenge
 therefore cannot rank on RMSE or MAE as they stand. `s2-bike-demand` ranks on
-**-MAE**: negated, so higher is better, while keeping the target's units — -103.74
-reads as "wrong by 103.74 bikes an hour on average". RMSE and R² ride along in
-`metrics_detail` for display. The other regressors still rank on R².
+**-MAE**: negated, so higher is better, while keeping the target's units — -138.88
+reads as "wrong by 138.88 bikes an hour on average". RMSE rides along in
+`metrics_detail` for display; R² was dropped from that challenge on 2026-09-08,
+because a second view of the same residuals invites quoting whichever is kinder,
+and because a chronological split scores the forecast against a test-window mean
+the forecaster could not have known. The other regressors still rank on R².
 
 **A rejected submission still scores 0.0, even though -MAE makes zero the best
 possible score.** That looks like a bug and is not: a rejection never reaches the
@@ -140,6 +143,15 @@ reproducible split. The salt is **not in the repo** — that is the entire point
 since `SEED` is. Replaying the split now scores R² = −0.97 / F1 = 0.10: worse
 than predicting the mean, which is a legible tell rather than a silent 1.0.
 
+Since 2026-09-08 `s2-bike-demand` splits **chronologically** rather than at
+random, which makes the split even easier to reproduce — it is two slices — and
+leaves the shuffle doing all the work. Its **training** half now ships
+unshuffled (`shuffle_and_label(..., shuffle=False)`), because the row order is
+calendar order and a student needs it to hold out the last hours rather than
+random ones. Nothing is given away by that: the training targets ship in
+`y_train.csv` anyway, so the permutation was defending an asset that was never
+secret. `X_test` is still shuffled, and that is the one that matters.
+
 ```bash
 export MLARENA_ID_SALT=...        # never committed; see .id-salt, gitignored
 python competitions/s2-bike-demand/prepare_data.py
@@ -149,6 +161,14 @@ python competitions/s2-bike-demand/prepare_data.py
 public default. Keep the salt: rebuilding under a different one changes every
 id, which invalidates the files students have already downloaded and every
 submission written against them.
+
+Changing the ids is occasionally the *right* move, and then it is done through
+the `split=` key rather than the salt. `s2-bike-demand` went to `train-v2` /
+`test-v2` when its split became chronological: the rows behind every id had
+changed, so an old submission was nonsense against the new ground truth — but
+under the old key it would still have validated (same 3,476 ids, all present)
+and scored silently. It now fails on the first check with "missing 3476 of 3476
+test ids", which is an error a student can act on.
 
 ### What this does not fix
 

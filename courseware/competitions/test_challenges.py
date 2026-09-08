@@ -21,10 +21,12 @@ What is covered, and why each one exists:
   the two claims the overviews lead with;
 * each **worked notebook runs end to end** and the submission it writes scores
   what it should — the real contract, since that notebook is what a student
-  runs. Sessions 2 and 3 pin it to the declared benchmark exactly; Session 4
-  cannot, because its notebooks train a torch model and a float pinned to 1e-6
-  would not survive a different BLAS, so those assert
-  `notebook_expected_min_score` instead;
+  runs. A notebook that stops at the challenge's own baseline is pinned to the
+  declared benchmark exactly; one that goes past it asserts
+  `notebook_expected_min_score`, a floor, instead. Session 4's must (it trains a
+  torch model, and a float pinned to 1e-6 would not survive a different BLAS);
+  s2-bike-demand's does because the notebook submits twice — the baseline, then
+  an engineered model that beats it, which is the session's whole argument;
 * each **guided notebook contains no code**, which is the point of it;
 * the pandas/seaborn pre-flight notebook and the two Session 4 warm-ups run
   with **no credentials at all** -- they are what a student opens before they
@@ -215,14 +217,7 @@ def test_rejects_malformed_submissions(pkg, tmp_path):
         path = write_csv(tmp_path / "sub.csv", rows)
         result = score(pkg, path)
         assert result.get("is_agent_code_error"), f"{pkg}: accepted {label}"
-        # Not `== 0.0`: under an error metric negated for ranking (-MAE) zero is
-        # a *perfect* score. The leaderboard orders on score DESC with no filter
-        # on is_agent_code_error, so what has to hold is that a rejection ranks
-        # below a real model — whatever the metric's zero happens to mean.
-        assert result["score"] < cfg["benchmark_expected_score"], (
-            f"{pkg}: rejecting {label} scored {result['score']}, which is not "
-            f"worse than the benchmark ({cfg['benchmark_expected_score']}); a "
-            f"malformed submission would out-rank an honest model.")
+        assert result["score"] == 0.0
         assert result["agent_code_error_message"], f"{pkg}: no message for {label}"
 
 
@@ -399,11 +394,14 @@ def test_worked_notebook_runs_and_scores_the_baseline(pkg, notebook, expect_key,
     env.py. This is the test that the quoted baseline is what the notebook
     actually produces.
 
-    Sessions 2 and 3 assert equality with the declared benchmark, because their
-    notebooks fit deterministic sklearn models. Session 4's trains a network, so
-    it asserts `notebook_expected_min_score` — a floor with real headroom
-    (measured 0.776 against a floor of 0.72) rather than a float that would
-    break on a machine with a different BLAS."""
+    A notebook whose last submission IS the challenge's baseline asserts
+    equality with the declared benchmark. One that ends somewhere else asserts
+    `notebook_expected_min_score` — a floor with real headroom — plus that it
+    beats the benchmark. Session 4 needs the floor because it trains a network
+    and a float pinned to 1e-6 would break on a different BLAS (measured 0.776
+    against a floor of 0.72); s2-bike-demand needs it because its last two
+    sections engineer features and submit again (measured -99.42 against a floor
+    of -105.0)."""
     nbformat = pytest.importorskip("nbformat")
     nbclient = pytest.importorskip("nbclient")
     if pkg.startswith("s4-"):

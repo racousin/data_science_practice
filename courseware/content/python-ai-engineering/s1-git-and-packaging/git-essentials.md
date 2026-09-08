@@ -275,6 +275,3 @@ git diff                 # inspect changes
 git restore <file>       # undo working-directory changes
 git revert <sha>         # undo a shared commit, safely
 ```
-
-The full cheatsheet, including everything in the next lesson, is in
-[Reference → Git Cheatsheet](/courses/python-ai-engineering/s1-git-and-packaging/course/git-cheatsheet).

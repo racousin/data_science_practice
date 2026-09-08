@@ -112,11 +112,14 @@ small enough $\eta$ converges to it regardless of where it started. MSE with a
 linear model, and cross-entropy with a logistic model, are both convex in
 $\theta$ — which is why the two models in this session are safe.
 
-Drop convexity and the guarantee goes with it: you reach *a* stationary point,
-and which one depends on the initialisation. The run above starts on the wrong
-side of a hill and settles in a local minimum with the global one untouched.
-Neural network losses are non-convex, and Session 4 is spent making that work
-anyway.
+---
+
+## Descent, animated
+
+![Gradient_descent.gif](assets/s2-ml-foundations/training/Gradient_descent.gif)
+
+The ball does not know where the bottom is. Each step reads only the slope
+underfoot — and that is enough, on a surface with one basin.
 
 ---
 
@@ -124,24 +127,20 @@ anyway.
 ## Optimisers: better use of the same gradient
 
 Plain descent uses only the current gradient. **Momentum** accumulates a running
-mean, so steps persist through flat regions and oscillation cancels out:
+mean of gradients, so steps persist through flat regions and oscillation cancels
+out:
 
 $$
-m_t = \beta_1 m_{t-1} + (1 - \beta_1) \nabla \ell(\theta_t)
-$$
-
-**Adam** keeps that and a running second moment, which rescales each coordinate
-by its own recent gradient magnitude:
-
-$$
-v_t = \beta_2 v_{t-1} + (1 - \beta_2) \big(\nabla \ell(\theta_t)\big)^2
+m_t = \beta m_{t-1} + (1 - \beta) \nabla \ell(\theta_t)
 \qquad
-\theta_{t+1} = \theta_t - \eta \, \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \varepsilon}
+\theta_{t+1} = \theta_t - \eta \, m_t
 $$
+
+with $m_0 = 0$ and $\beta \in [0, 1)$ typically around $0.9$, which averages over
+roughly the last $1/(1-\beta)$ gradients.
 
 ![SGD versus SGD with momentum](assets/s2-ml-foundations/training/gd-momentum.gif)
 
-Adam is the default you will reach for in PyTorch next session.
 
 ---
 

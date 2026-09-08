@@ -32,7 +32,7 @@ drawable at $p = 3$; the algebra does not change.
 
 ## The loss
 
-MSE, for the reasons in the previous lesson — differentiable everywhere, and
+For example the MSE: differentiable everywhere, and
 the only choice here that admits a closed form:
 
 $$
@@ -80,12 +80,10 @@ choice among infinitely many, and reading them as effect sizes is meaningless.
 ## Or descend
 
 The same $\theta^{*}$ is reachable by the previous lesson's algorithm, and for
-large $p$ that is the only practical route.
+large $p$ that is the only practical route. It is also open the option with another losse.
 
 ![Gradient descent trajectory in parameter space](assets/s2-ml-foundations/linear-regression/gd-trajectory-regression.gif)
 
-The loss is convex, so both routes land in the same place. From the next model
-onward there is no closed form and the choice disappears.
 
 ---
 

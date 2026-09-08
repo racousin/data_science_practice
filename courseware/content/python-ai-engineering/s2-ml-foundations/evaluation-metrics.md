@@ -3,8 +3,15 @@
 The metric is the definition of "better". Choose it before you model, and
 choose it for the problem rather than for convenience.
 
-<!-- notes: 40 minutes. The imbalanced-accuracy example is the one they
-remember. Do it with real numbers on the board. -->
+*Losses* taught the other number: the one training minimises, which has to be
+differentiable. This lesson is the one **you** are judged on, which does not.
+They are rarely the same function, and the gap between them is where most
+disappointing models live.
+
+<!-- notes: 40 minutes. Moved from session 3 on 2026-09-08 — it belongs next to
+`losses`, which sets it up, and both session-2 challenges are ranked on a metric
+from this lesson. The imbalanced-accuracy example is the one they remember. Do
+it with real numbers on the board. -->
 
 ---
 
@@ -149,7 +156,7 @@ cancer screening, safety faults.
 
 ---
 
-![Precision and recall](assets/s3-models-and-tuning/evaluation-metrics/Precisionrecall.png)
+![Precision and recall](assets/s2-ml-foundations/evaluation-metrics/Precisionrecall.png)
 
 ---
 
@@ -201,7 +208,7 @@ roc_auc_score(y_true, y_proba)     # probabilities, not labels
 - 1.0 — perfect ranking
 - 0.5 — no better than chance
 
-![ROC curve](assets/s3-models-and-tuning/evaluation-metrics/roc_auc.png)
+![ROC curve](assets/s2-ml-foundations/evaluation-metrics/roc_auc.png)
 
 ---
 
@@ -263,11 +270,28 @@ Used for search, recommendation, and retrieval.
 
 ---
 
+## On a leaderboard
+
+A board sorts one column descending, so the metric it ranks on has to *increase*
+with quality. Accuracy, F1 and AUC already do. An error does not — so it is
+**negated**: the bike-demand challenge ranks on $-MAE$, where $-138.88$ means
+"wrong by 138.88 bikes an hour on average" and $0$ is perfect.
+
+| Challenge | Ranked on |
+|---|---|
+| Bike Sharing Demand | $-MAE$ — negated so higher is better |
+| Bank Term Deposit | F1 — the classes are imbalanced |
+
+Read the sign before you read the number. A score of $-100$ beats a score of
+$-139$.
+
+---
+
 ## The rule
 
 > Fix the metric **before** you look at the results.
 
 Choosing the metric after seeing which one flatters your model is how you fool
 your supervisor, then your users, then yourself. On ML-Arena the metric is fixed
-by the competition — which is exactly the discipline the leaderboard is
+by the challenge — which is exactly the discipline the leaderboard is
 enforcing.

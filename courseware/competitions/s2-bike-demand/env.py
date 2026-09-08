@@ -1,7 +1,12 @@
 """Session 2 — Bike sharing demand (file_v1).
 
 Predict the hourly rental count from calendar and weather columns. The first
-challenge of the course: read a table, look at it, fit a linear model, submit.
+challenge of the course: read a table, look at it, patch the holes in it, fit a
+linear model, submit.
+
+The split is **chronological** — the last 20% of the hours are held out, so this
+is a forecast and not an interpolation. The features carry missing values on
+purpose; the scorer never sees them, but nothing fits until they are dealt with.
 
 Submission — `submission.csv`, one row per test id:
 
@@ -17,8 +22,14 @@ Ranking is on **-MAE** — the mean absolute error, negated. The leaderboard
 sorts `mean_reward` descending and has no lower-is-better flag
 (`modelmanager/modelmanager/competitions.py:210-213`), so the primary score has
 to increase with quality; negating an error metric is the direct way to get
-that, and it keeps MAE's units — -103.74 reads as "wrong by 103.74 bikes an
-hour on average", and 0 is perfect. RMSE and R2 ride along for display.
+that, and it keeps MAE's units — -138.88 reads as "wrong by 138.88 bikes an
+hour on average", and 0 is perfect. RMSE rides along for display.
+
+R2 was reported alongside until 2026-09-08 and is gone. Two numbers measuring
+the same residuals invite the student to quote whichever is kinder, which is the
+one habit `evaluation-metrics` (now Session 2) exists to break; and R2 is
+measured against the variance of the *test* window, so under a chronological
+split it compares a forecast to a mean the forecaster could not have known.
 
 Pure standard library on purpose: the env image ships a full ML stack, but a
 scorer that only needs `csv` and arithmetic has one less way to break.
@@ -29,14 +40,6 @@ import os
 
 ID_COLUMN = "id"
 TARGET_COLUMN = "prediction"
-
-# A rejected submission must not out-rank a real model. Under R2 an error could
-# score 0.0 and land mid-table, at the mean model. Under -MAE 0.0 is a *perfect*
-# score, and the leaderboard orders on mean_reward DESC with no filter on
-# is_agent_code_error (`modelmanager/modelmanager/competitions.py:210-213`) — so
-# a rejection scoring 0.0 would sit at the top of the board. Predicting a
-# constant zero for every hour scores about -189; nothing honest comes near this.
-ERROR_SCORE = -1e9
 
 
 class Env:
@@ -68,14 +71,9 @@ class Env:
             )
 
         n = len(self.ground_truth)
-        truths = [self.ground_truth[k] for k in self.ground_truth]
         errors = [predictions[k] - self.ground_truth[k] for k in self.ground_truth]
-        mean_truth = sum(truths) / n
 
-        ss_res = sum(e * e for e in errors)
-        ss_tot = sum((t - mean_truth) ** 2 for t in truths)
-        r2 = 1.0 - ss_res / ss_tot if ss_tot else 0.0
-        rmse = math.sqrt(ss_res / n)
+        rmse = math.sqrt(sum(e * e for e in errors) / n)
         mae = sum(abs(e) for e in errors) / n
         n_negative = sum(1 for k in self.ground_truth if predictions[k] < 0)
 
@@ -86,13 +84,11 @@ class Env:
             "score2": round(rmse, 6),
             "steps": n,
             "info_message": (
-                f"-MAE={-mae:.2f}  RMSE={rmse:.2f}  R2={r2:.4f}  "
-                f"on {n} test rows{note}"
+                f"-MAE={-mae:.2f}  RMSE={rmse:.2f}  on {n} test rows{note}"
             ),
             "metrics_detail": {
                 "neg_mae": round(-mae, 6),
                 "rmse": round(rmse, 6),
-                "r2": round(r2, 6),
                 "n_negative": n_negative,
             },
         }]}
@@ -145,12 +141,22 @@ class Env:
     def _error(message):
         return {"agent_results": [{
             "agent_index": 0,
-            "score": ERROR_SCORE,
+            # 0.0 despite -MAE making zero the *best* possible score: a
+            # rejected submission never reaches the leaderboard to be ranked.
+            # Upload validation stops a malformed CSV before deployment
+            # (`backend/app/services/check_upload_files/check_csv_submission.py`),
+            # and anything that gets past it and errors here fails the
+            # deployment (`serviceapiclient/job/deployment.py:298`
+            # check_deployment_completion -> DEPLOY_FAILED), which both
+            # leaderboard queries exclude by `status == ACTIVE`
+            # (`backend/app/views/leaderboard_helpers.py:131`,
+            # `modelmanager/modelmanager/competitions.py:244`). Verified live.
+            "score": 0.0,
             "steps": 0,
             "is_agent_code_error": True,
             "agent_code_error_message": message,
             "info_message": message,
             "metrics_detail": {
-                "neg_mae": ERROR_SCORE, "rmse": 0.0, "r2": 0.0, "n_negative": 0,
+                "neg_mae": 0.0, "rmse": 0.0, "n_negative": 0,
             },
         }]}

@@ -2,16 +2,22 @@
 
 Every model in this session is a function on $\mathbb{R}^p$. Real tables are not
 in $\mathbb{R}^p$ — they have holes, they have words, and they have values no
-sensor ever produced. This lesson is the three of them: how to see each one, and
-the simplest thing that fixes it.
+sensor ever produced. This lesson is those three: how to see each one, and the
+simplest thing that fixes it.
+
+Then a fourth part that is not repair but design — **feature engineering**,
+where you stop asking what the model needs and start asking what it cannot work
+out for itself.
 
 `pandas` is how you get from a CSV to a rectangle of numbers. `seaborn` is how
 you look at what you have before you commit to it.
 
-<!-- notes: 45 minutes. Merged with the old pandas & seaborn reference on
+<!-- notes: 55 minutes. Merged with the old pandas & seaborn reference on
 2026-09-08 — the reference was self-study nobody did, and its content is only
-useful next to the problem it solves. The three sections are deliberately the
-same shape: a picture, one line to catch it, one line to fix it. -->
+useful next to the problem it solves. The three problem sections are
+deliberately the same shape: a picture, one line to catch it, one line to fix
+it. Feature engineering was added the same day; the pptx lists it as step 6 of
+preprocessing and has no slide behind it. -->
 
 ---
 
@@ -272,6 +278,118 @@ timestamp from 1900 — and those you should fix at the source.
 
 ---
 
+## Beyond the three problems — feature engineering
+
+The three above are what the model *requires*: without them `fit` raises. This
+one is what the model **cannot do for itself**.
+
+$f_\theta$ is fixed once you have chosen the family — a linear model can only
+ever add up its inputs. $x$ is not fixed. So when the shape you need is not in
+the family, you put it in the columns instead.
+
+<!-- notes: the pptx lists "Feature Engineering" as step 6 of preprocessing and
+has no slide behind it. This is that slide. Do the hour example live — it is
+worth more than the rest of the session's modelling advice put together. -->
+
+---
+
+### The column a linear model cannot use
+
+![hour as a number versus hour as 24 categories](assets/s2-ml-foundations/data-preparation/hour-numeric-vs-onehot.png)
+
+`hour` in the bike-demand data runs 0–23, and demand climbs to a commute peak at
+08:00, falls, climbs again at 17:00, falls. A linear model gets **one**
+coefficient for `hour`, so the only two statements it can make are "later is
+busier" and "later is quieter". Both are wrong, and the fitted line above is the
+compromise between them: nearly flat, and useless.
+
+---
+
+### Fixing it is one line
+
+```python
+X["hour"] = X["hour"].astype(str)      # 24 unordered levels, not a quantity
+X = pd.get_dummies(X)
+```
+
+Twenty-four columns instead of one, and the model can put a different number on
+every hour — the right-hand panel. On the Session 2 challenge that single change
+takes −MAE from **−138.9 to −100.3** with the same `LinearRegression`, which is a
+larger gain than any model in Session 3 buys you.
+
+The same argument applies to `month` and `weekday`, and to every integer code
+that names a thing rather than counting one.
+
+---
+
+### Cyclical columns
+
+`astype(str)` throws away one true fact: 23:00 is next to 00:00. If that
+adjacency matters — and it does for wind direction, day of year, angle — encode
+the circle instead.
+
+```python
+X["hour_sin"] = np.sin(2 * np.pi * X["hour"] / 24)
+X["hour_cos"] = np.cos(2 * np.pi * X["hour"] / 24)
+```
+
+Two columns instead of twenty-four, and midnight sits beside 23:00 where it
+belongs. The cost is that one sine can only bend once per cycle, so it fits a
+single daily hump and not a double commute peak. Dummies when you have the rows
+to spare; sine and cosine when $p$ has to stay small.
+
+---
+
+### The other three moves
+
+| Move | Example | Why it helps |
+|---|---|---|
+| **decompose** | timestamp → year, month, hour, weekday | the parts carry the signal; the timestamp is one huge integer |
+| **combine** | `price / surface`, `debt / income` | ratios are what the domain actually talks in |
+| **interact** | `temp × workingday` | the effect of one column depends on another, and no linear model can discover that on its own |
+
+```python
+X["price_per_m2"] = X["price"] / X["surface"]
+X["temp_x_working"] = X["temp"] * X["workingday"].astype(int)
+```
+
+Each one is a hypothesis about the problem, written as a column. A domain expert
+is worth more here than a bigger model.
+
+---
+
+### Scale
+
+`get_dummies` gives you 0/1 columns next to a `windspeed` in the tens. Linear
+regression does not care — it just learns a smaller coefficient. Anything that
+measures a **distance** does: KNN, SVM, and every neural network in Session 4.
+
+```python
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler().fit(X_train)         # mean and std, from train
+X_train_s, X_test_s = scaler.transform(X_train), scaler.transform(X_test)
+```
+
+---
+
+### The rule that makes all of it safe
+
+Everything in this lesson — the median you filled with, the clip bounds, the
+`get_dummies` column list, the scaler's mean — is a number **learned from data**.
+Learn it on the training set only.
+
+```python
+med = X_train["temp"].median()                 # learned once, on train
+X_train["temp"] = X_train["temp"].fillna(med)
+X_test["temp"] = X_test["temp"].fillna(med)    # NOT X_test["temp"].median()
+```
+
+Impute the test set with its own median and your validation score improves while
+your leaderboard score does not. That gap is the definition of **leakage**: you
+measured a model that had already seen the test set.
+
+---
+
 ## Writing the submission
 
 ```python
@@ -298,3 +416,7 @@ df.describe()     # the scale of each numeric column
 then one plot of the target and one `pairplot`. It costs a minute, and it is the
 difference between modelling the data you have and modelling the data you
 assumed you had.
+
+And one question after that, which is the whole of the section above: **is the
+shape I can see in the plot expressible by the model I picked?** If it is not,
+the answer is a column, not a bigger model.

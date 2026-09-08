@@ -66,21 +66,6 @@ only decides how confidence varies as you move away from that hyperplane.
 
 ---
 
-## Read $\theta$ in log-odds
-
-The model is linear in the log-odds:
-
-$$
-\log \frac{P(y = 1 \mid x)}{P(y = 0 \mid x)} = \theta^\top x
-$$
-
-which is how $\theta_j$ should be read — a one-unit change in $x_j$ shifts the
-log-odds by $\theta_j$, multiplying the odds by $e^{\theta_j}$.
-
-The threshold is a **choice**, not part of the model. Moving it trades precision
-against recall; Session 3.
-
----
 
 ## Why not MSE
 
@@ -138,9 +123,3 @@ y_proba = model.predict_proba(X_test)[:, 1]
 Same interface as `LinearRegression` — different family, different loss,
 different solver, identical two methods. With $p$ features it learns $p + 1$
 parameters, exactly as the linear model does; the sigmoid adds none.
-
-One warning: `sklearn` applies L2 regularisation **by default**, at strength
-`C=1.0`. So the fit above is *not* the unpenalised maximum-likelihood estimate
-you would derive on paper — pass `C=np.inf` for that. (The older `penalty=None`
-spelling was deprecated in scikit-learn 1.8 and is removed in 1.10.)
-Regularisation itself is the opening of Session 3.

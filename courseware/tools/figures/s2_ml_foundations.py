@@ -29,6 +29,10 @@ ASSETS = (
     / "assets"
     / "s2-ml-foundations"
 )
+# The feature-engineering figure is drawn from the session's own challenge data,
+# not from a bundled seaborn dataset: the -104 -> -74 number the lesson quotes is
+# a claim about *these* CSVs, so the picture has to come from them too.
+BIKE = pathlib.Path(__file__).resolve().parents[2] / "competitions" / "s2-bike-demand"
 
 INK = "#1f2933"
 ACCENT = "#2f6f9f"
@@ -199,6 +203,52 @@ def penguins_missing(df) -> None:
     save(fig, "data-preparation", "penguins-missing.png")
 
 
+def hour_numeric_vs_onehot() -> None:
+    """The feature-engineering claim, drawn from the challenge's own CSVs.
+
+    `hour` as a quantity buys a linear model one coefficient, so it can only
+    tilt; `hour` as 24 unordered levels buys it 24, so it can trace the commute
+    curve. Both panels are the same LinearRegression on the same rows — the only
+    difference is the encoding, which is the entire point of the section.
+    """
+    import pandas as pd
+    from sklearn.linear_model import LinearRegression
+
+    data = BIKE / "data"
+    if not (data / "X_train.csv").exists():           # pragma: no cover
+        raise SystemExit(f"{data}/X_train.csv missing — run the package's "
+                         f"prepare_data.py first")
+    X = pd.read_csv(data / "X_train.csv")
+    y = pd.read_csv(data / "y_train.csv")["prediction"]
+
+    hours = np.arange(24)
+    observed = y.groupby(X["hour"]).mean().reindex(hours)
+
+    fits = {
+        "hour as a number — 1 coefficient":
+            (X[["hour"]].to_numpy(float), hours.reshape(-1, 1)),
+        "hour as 24 categories — 24 coefficients":
+            (np.eye(24)[X["hour"].to_numpy()], np.eye(24)),
+    }
+
+    fig, axes = plt.subplots(1, 2, figsize=(11.5, 4.0), sharey=True)
+    for ax, (title, (design, grid)) in zip(axes, fits.items()):
+        pred = LinearRegression().fit(design, y).predict(grid)
+        ax.plot(hours, observed, "o-", color=ACCENT, ms=4, lw=1.6,
+                label="mean rentals, observed")
+        ax.plot(hours, pred, color=WARM, lw=2.4, label="what the model can say")
+        ax.set_title(title, fontsize=12, color=INK)
+        ax.set_xlabel("hour")
+        ax.set_xticks(range(0, 24, 4))
+    axes[0].set_ylabel("rentals")
+    axes[0].legend(frameon=False, fontsize=9)
+
+    fig.suptitle("Same model, same rows. Only the encoding of one column changed.",
+                 fontsize=13, color=INK, y=1.02)
+    fig.tight_layout()
+    save(fig, "data-preparation", "hour-numeric-vs-onehot.png")
+
+
 def main() -> None:
     print("generating Session 2 figures ->", ASSETS)
     df = sns.load_dataset("penguins")
@@ -206,6 +256,7 @@ def main() -> None:
     penguins_pairplot(df)
     penguins_targets(df)
     penguins_missing(df)
+    hour_numeric_vs_onehot()
     print("done.")
 
 

@@ -57,19 +57,32 @@ def _digest(*parts: str, size: int) -> bytes:
     ).digest()
 
 
-def shuffle_and_label(X, y, *, dataset: str, split: str, prefix: str):
+def shuffle_and_label(X, y, *, dataset: str, split: str, prefix: str,
+                      shuffle: bool = True):
     """Shuffle a split into a salt-derived order and give it opaque ids.
 
     `dataset` and `split` are mixed into the key so no two splits share a
     permutation. Returns `(X, y)` with a fresh contiguous index, `X` carrying
     the ids in column 0 and `y` aligned to them.
+
+    `shuffle=False` labels the rows without reordering them, for a **training**
+    split whose row order is itself information the student needs — a time
+    series ordered past-to-future, where the honest way to carve a validation
+    set is to take the last rows rather than random ones. There is nothing to
+    protect there: the training targets ship in `y_train.csv` anyway, so the
+    permutation was defending an asset that was never secret. Never pass it for
+    a test split, whose held-back targets are exactly what the shuffle defends
+    (see the module docstring).
     """
     n = len(X)
     if n != len(y):
         raise SystemExit(f"{dataset}/{split}: X has {n} rows, y has {len(y)}")
 
-    seed = int.from_bytes(_digest(dataset, split, "order", size=8), "big")
-    order = np.random.default_rng(seed).permutation(n)
+    if shuffle:
+        seed = int.from_bytes(_digest(dataset, split, "order", size=8), "big")
+        order = np.random.default_rng(seed).permutation(n)
+    else:
+        order = np.arange(n)
 
     X = X.iloc[order].reset_index(drop=True)
     y = y.iloc[order].reset_index(drop=True)

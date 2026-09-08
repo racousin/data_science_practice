@@ -162,9 +162,9 @@ and they do not always move together — a model can have the lower loss and the
 worse F1, usually because the decision threshold is wrong, and the loss never
 sees the threshold.
 
-<!-- notes: This is the setup for Session 3's evaluation lesson: threshold
-tuning is a metric-side fix, applied after training, and it changes no
-parameter. -->
+<!-- notes: This is the setup for the evaluation lesson at the end of this
+session: threshold tuning is a metric-side fix, applied after training, and it
+changes no parameter. -->
 
 ---
 

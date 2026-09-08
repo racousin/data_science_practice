@@ -5,7 +5,6 @@
       "s1-git-and-packaging/accounts-and-tools": 174,
       "s1-git-and-packaging/assistant-landscape": 178,
       "s1-git-and-packaging/branching-and-collaboration": 30,
-      "s1-git-and-packaging/git-cheatsheet": 141,
       "s1-git-and-packaging/git-essentials": 29,
       "s1-git-and-packaging/github-actions": 139,
       "s1-git-and-packaging/lab-1": 33,
@@ -17,6 +16,7 @@
       "s1-git-and-packaging/the-shell": 175,
       "s2-ml-foundations/ai-ml-dl-landscape": 145,
       "s2-ml-foundations/data-preparation": 152,
+      "s2-ml-foundations/evaluation-metrics": 183,
       "s2-ml-foundations/linear-regression": 150,
       "s2-ml-foundations/logistic-regression": 151,
       "s2-ml-foundations/losses": 168,
@@ -31,7 +31,6 @@
       "s3-models-and-tuning/decision-trees": 158,
       "s3-models-and-tuning/ensembles-bagging": 160,
       "s3-models-and-tuning/ensembles-boosting": 161,
-      "s3-models-and-tuning/evaluation-metrics": 153,
       "s3-models-and-tuning/hyperparameter-optimization": 162,
       "s3-models-and-tuning/k-nearest-neighbours": 157,
       "s3-models-and-tuning/lab-3": 165,
@@ -91,15 +90,8 @@
           "is_published": true,
           "title": "Branching, Pull Requests & Review"
         },
-        "s1-git-and-packaging/git-cheatsheet": {
-          "body": "b901b84c341f6a79bdbb19eae8efa574aa6f4069d20d79242f0871108f25ee01",
-          "estimated_minutes": 5,
-          "gated": false,
-          "is_published": true,
-          "title": "Reference \u2014 Git Cheatsheet"
-        },
         "s1-git-and-packaging/git-essentials": {
-          "body": "2de3ad99fca7ef9ecd5e750f47eb5296896e5afb8476963d35e570370c27bcb6",
+          "body": "f0f64631cdee7bdbe0a12cebd20ec07a74769bfa58836ab47970c50983f566b0",
           "estimated_minutes": 45,
           "gated": false,
           "is_published": true,
@@ -113,7 +105,7 @@
           "title": "Continuous Integration with GitHub Actions"
         },
         "s1-git-and-packaging/lab-1": {
-          "body": "236ed9ff785734d6a4fa95f2f8a4a68fdf8de1a2bee3637022ed3bfb50971622",
+          "body": "6ff93ea71161a98e64042395d5f6e99f8d3746e7b84bc0926a310c7dbc0eeb79",
           "estimated_minutes": 75,
           "gated": false,
           "is_published": true,
@@ -169,28 +161,35 @@
           "title": "The AI / ML / DL Landscape"
         },
         "s2-ml-foundations/data-preparation": {
-          "body": "abd13190b40d980e53c07402371fb37ae6def224f5701074e8cbd1b21119d2ab",
-          "estimated_minutes": 45,
+          "body": "0f0af11f877476d7481103ca886e080ca6eb27b5b8d280248138f54b0695caae",
+          "estimated_minutes": 55,
           "gated": false,
           "is_published": true,
           "title": "Data Preparation"
         },
+        "s2-ml-foundations/evaluation-metrics": {
+          "body": "3b79acb79a9c95a093dce5ee8dcc069e77fbd998f96bef88c32d6458c6e21a18",
+          "estimated_minutes": 40,
+          "gated": false,
+          "is_published": true,
+          "title": "Evaluation Metrics"
+        },
         "s2-ml-foundations/linear-regression": {
-          "body": "5a24e382f8494111993bfb83fe3a7f1ea1dd6e629cd10b0d2f00103557a826f2",
+          "body": "fe67101fc56966cf7be08c85b730f78e1aacd0252f8fae816047707a5e166846",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
           "title": "Linear Regression"
         },
         "s2-ml-foundations/logistic-regression": {
-          "body": "c81ade78cf01f89d18bce9e92dbf99473026789fc11eb17217fad8999fe93dd8",
+          "body": "3648b03daa06d05014f32a8864b4b9bb956a4d621579514f20f682ceb127709c",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
           "title": "Logistic Regression"
         },
         "s2-ml-foundations/losses": {
-          "body": "c0cf3613221c2a5d217713fb3ffd114972d8457bdf14150ccfc9703fcb6b40b9",
+          "body": "78dff728690a3df176e740fd906be9083e600db94bf45d4bec1025b5c4f823a3",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
@@ -204,14 +203,14 @@
           "title": "Models"
         },
         "s2-ml-foundations/the-data": {
-          "body": "0bda70f8dcbb863d6b4dcd8319975b5a5d04bbc9c436a70882b121990000de5e",
+          "body": "231098b0033e353757bfae47fe5f60eb7d433ac7804106324f966dbafb04fd18",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
           "title": "The Data"
         },
         "s2-ml-foundations/training": {
-          "body": "1b039628dcb54c08836b1c18feedaead2de12cf0f196548400c0a273d04587b7",
+          "body": "dc8cc4dcbaef102f630cd72a8d6aac574dead4222a07f757b7c8c5948bd592bb",
           "estimated_minutes": 40,
           "gated": false,
           "is_published": true,
@@ -237,13 +236,6 @@
           "gated": false,
           "is_published": true,
           "title": "Ensembles: Boosting"
-        },
-        "s3-models-and-tuning/evaluation-metrics": {
-          "body": "59e8e3eaab9acd434d1f0ef30ca0b2f764bcbffba937b54b026d7e7f66c9f22f",
-          "estimated_minutes": 40,
-          "gated": false,
-          "is_published": true,
-          "title": "Evaluation Metrics"
         },
         "s3-models-and-tuning/hyperparameter-optimization": {
           "body": "3ff80add0eff8378ab0b67e5b29eca79857730f1fb19a9503250a219aa195023",
@@ -400,7 +392,6 @@
             "lab-1",
             "assistant-landscape",
             "lab-3",
-            "git-cheatsheet",
             "session-plan"
           ],
           "summary": "Shell, git, GitHub, environments, packaging, tests, linting, CI, notebooks and Colab \u2014 then an agentic coding workflow on top of them. You leave with a tested Python package on GitHub whose tests run themselves, a Colab notebook that installs it, and an agent on a leaderboard.",
@@ -416,15 +407,15 @@
             "training",
             "linear-regression",
             "logistic-regression",
+            "evaluation-metrics",
             "data-preparation"
           ],
-          "summary": "What machine learning is, stated precisely: the data, the model, the loss, and the training that connects them \u2014 then linear and logistic regression end to end in scikit-learn, and the data preparation they both assume.",
+          "summary": "What machine learning is, stated precisely: the data, the model, the loss, and the training that connects them \u2014 then linear and logistic regression end to end in scikit-learn, the metrics that say which one is better, and the data preparation they both assume.",
           "title": "Session 2 \u2014 Machine Learning Foundations"
         },
         "s3-models-and-tuning": {
           "icon": "sitemap",
           "lessons": [
-            "evaluation-metrics",
             "validation-and-overfitting",
             "non-linearity",
             "regularization",
