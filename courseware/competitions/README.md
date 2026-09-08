@@ -90,13 +90,28 @@ therefore cannot rank on RMSE or MAE as they stand. `s2-bike-demand` ranks on
 reads as "wrong by 103.74 bikes an hour on average". RMSE and R² ride along in
 `metrics_detail` for display. The other regressors still rank on R².
 
-**Negating an error metric moves where zero sits, and the error path has to move
-with it.** Under R² a rejected submission could score 0.0 and land mid-table, at
-the mean model. Under -MAE, 0.0 is a *perfect* score — and the ranking query
-filters on nothing, not even `is_agent_code_error` — so a malformed CSV scoring
-0.0 would top the board. `s2-bike-demand/env.py` returns `ERROR_SCORE = -1e9`
-instead, and `test_rejects_malformed_submissions` asserts the general property
-(a rejection scores below the package's own benchmark) rather than `== 0.0`.
+**A rejected submission still scores 0.0, even though -MAE makes zero the best
+possible score.** That looks like a bug and is not: a rejection never reaches the
+leaderboard to be ranked. Two gates gets it there, and both were verified against
+the live platform rather than read:
+
+1. **Upload.** `backend/app/services/check_upload_files/check_csv_submission.py`
+   checks the submission's columns and id set against the competition's ground
+   truth at upload time. A CSV with a row missing never deploys — the agent goes
+   to `UPLOAD_FAILED` and `env.py` is never called.
+2. **Deployment.** Anything that gets past upload and is rejected by `env.py` —
+   a non-numeric value, a `NaN` — sets `is_agent_code_error`, which
+   `check_deployment_completion` counts into `code_error`, making
+   `is_success` False and the agent `DEPLOY_FAILED`
+   (`serviceapiclient/job/deployment.py:277-285`). Both leaderboard queries
+   filter `status == AgentStatus.ACTIVE`
+   (`backend/app/views/leaderboard_helpers.py:131`,
+   `modelmanager/modelmanager/competitions.py:244`), so it is never listed.
+
+The `ORDER BY` does sort `mean_reward` DESC with no error filter
+(`competitions.py:210-213`), which is what makes this look dangerous at a glance
+— but nothing errored is ever in the set being ordered. Scoring an error 0.0 is
+therefore safe under any metric, and all eight packages do it.
 
 The `Reference — …` lessons at the end of sessions 1 and 4 have no competition:
 self-study material, never lectured, with nothing to score.
