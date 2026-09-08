@@ -11,8 +11,7 @@ machine.
 uv run pytest -q tests/
 ```
 
-One command (`uv`), three arguments. The shell does not know what any of them
-mean.
+One command (`uv`), three arguments.
 
 ---
 

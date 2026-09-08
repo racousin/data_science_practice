@@ -72,7 +72,7 @@
       },
       "lessons": {
         "s1-git-and-packaging/accounts-and-tools": {
-          "body": "03530ae126d8fc014d1f7001b87dc892dd254099a4a30eb37ec0152adff2cd03",
+          "body": "b205dd0bad68d3f9e3afa8f746c70695a5c72634bcb59e04db8ee6843023053d",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
@@ -156,7 +156,7 @@
           "title": "Session Plan \u2014 Teacher's Run-Sheet"
         },
         "s1-git-and-packaging/the-shell": {
-          "body": "e0627429e718ce67084f285a84f0da478402fc777394e4c4a19a2ea18c13f204",
+          "body": "2e8578e34cfec7709e66cf387f662aebd764170539b07ff2771f49c9c4f60ec9",
           "estimated_minutes": 40,
           "gated": false,
           "is_published": true,

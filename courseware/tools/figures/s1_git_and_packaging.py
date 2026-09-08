@@ -317,33 +317,44 @@ def the_shell() -> None:
         "projects": (58, 50),
         "Downloads": (58, 38),
         "textstats": (83, 50),
+        # The file the two paths below name. Drawn under textstats rather than
+        # to its right, where there is no room left on a 0..100 canvas.
+        "core.py": (83, 38),
     }
     for name, (x, y) in nodes.items():
         w = 4.0 + 2.0 * len(name)
-        box(ax, x - w / 2, y - 3.0, w, 6.0, fc=GREY_BG, ec=MUTED, lw=1.2)
-        label(ax, x, y, name, fs=9.5, mono=True)
+        is_file = name == "core.py"
+        box(ax, x - w / 2, y - 3.0, w, 6.0,
+            fc=ACCENT_BG if is_file else GREY_BG,
+            ec=ACCENT if is_file else MUTED, lw=1.2)
+        label(ax, x, y, name, fs=9.5, mono=True,
+              color=ACCENT if is_file else INK,
+              weight="bold" if is_file else "normal")
     edges = [("/", "home"), ("home", "marie"), ("marie", "projects"),
              ("marie", "Downloads"), ("projects", "textstats")]
     for a, b in edges:
         ax.plot([nodes[a][0] + 2 + len(a), nodes[b][0] - 2 - len(b)],
                 [nodes[a][1], nodes[b][1]], color=MUTED, lw=1.2, zorder=1)
+    # textstats -> core.py is the one vertical edge; the formula above assumes
+    # the child sits to the right of its parent and would draw it backwards.
+    ax.plot([nodes["textstats"][0]] * 2,
+            [nodes["textstats"][1] - 3.0, nodes["core.py"][1] + 3.0],
+            color=MUTED, lw=1.2, zorder=1)
 
-    box(ax, 5, 2, 90, 26, fc=PAPER, ec=RULE, lw=1.0)
+    box(ax, 5, 12, 90, 16, fc=PAPER, ec=RULE, lw=1.0)
     label(ax, 50, 24.5, "You are in  ~/projects/textstats", fs=10.5,
           weight="bold", mono=True, color=ACCENT)
+    # Two ways to name the same file, and the only two worth the slide: what you
+    # type when you are standing next to it, and what always works.
     rows = [
-        ("core.py", "relative", "→  ~/projects/textstats/core.py"),
-        ("./core.py", "relative, explicit", "→  the same file"),
-        ("../core.py", "one level up", "→  ~/projects/core.py"),
-        ("~/core.py", "home", "→  /home/marie/core.py"),
-        ("/core.py", "absolute", "→  /core.py, the filesystem root"),
+        ("relative", "core.py"),
+        ("absolute", "/home/marie/projects/textstats/core.py"),
     ]
-    y = 19.0
-    for path, kind, resolves in rows:
-        label(ax, 10, y, path, fs=9.5, mono=True, ha="left", color=INK)
-        label(ax, 27, y, kind, fs=8.5, color=MUTED, ha="left", style="italic")
-        label(ax, 52, y, resolves, fs=9, mono=True, ha="left", color=ACCENT)
-        y -= 3.3
+    y = 20.0
+    for kind, path in rows:
+        label(ax, 12, y, kind, fs=9, color=MUTED, ha="left", style="italic")
+        label(ax, 30, y, path, fs=9.5, mono=True, ha="left", color=INK)
+        y -= 4.4
     label(ax, 50, 61, "Where a path points depends on where you are standing",
           fs=12, weight="bold")
     save(fig, lesson, "paths.png")
