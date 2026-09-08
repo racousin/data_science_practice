@@ -195,6 +195,27 @@ Use it when you need one number and both errors matter.
 
 ---
 
+## The constant model, scored
+
+Back to `return 0`. On the Bank Term Deposit challenge 11.7% of clients
+subscribe, so it scores **88.3% accuracy**. Its confusion matrix on the 9,043
+test calls:
+
+| | predicted 1 | predicted 0 |
+|---|---|---|
+| **actually 1** | TP = 0 | FN = 1,058 |
+| **actually 0** | FP = 0 | TN = 7,985 |
+
+Recall is $0 / (0 + 1058) = 0$. Precision is $0/0$ — undefined, and
+`precision_score` returns 0 for it, with a `zero_division` warning worth reading
+rather than silencing. Both zero, so **F1 = 0.00**.
+
+That is what accuracy was hiding: 88.3% right, and not one subscriber found.
+A model has to actually predict a positive to score anything at all on F1, which
+is the whole reason the challenge ranks on it.
+
+---
+
 ## ROC AUC
 
 Plot true positive rate against false positive rate across **every** threshold;

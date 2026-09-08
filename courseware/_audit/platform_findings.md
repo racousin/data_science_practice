@@ -1142,3 +1142,64 @@ FIX: No change needed for enrolment (the landing-page form already covers it). W
 
 ---
 
+
+## [blocker/course] module_competition_link for competition 183 (Bike Sharing Demand) on module 32 — found 2026-09-08
+
+The link's `pass_threshold` is **0.399304**, a leftover from when that challenge
+ranked on R². It now ranks on **-MAE** (commit "Rank Bike Sharing Demand on
+-MAE"), so every score on that board is negative and the verdict
+`ranked_value >= pass_threshold` can never be true. No student can validate the
+regression half of Session 2 — the teacher board shows every one of them as
+failing, including a perfect submission.
+
+Nothing in this repository declares `pass_threshold`, so nothing caught the
+drift: `build_competitions.py:do_attach` attaches with a `label` only, and
+`course.yaml` carries `competition_id` + `label`. The value was set in the
+course editor and is invisible to the build.
+
+EVIDENCE:
+```
+teacher key, c.get_module(32)["competitions"]:
+  {"competition_id": 183, "label": "Bike Sharing Demand",  "pass_threshold": 0.399304}
+  {"competition_id": 184, "label": "Bank Term Deposit",    "pass_threshold": 0.452761}   <- correct, = its benchmark
+competitions/s2-bike-demand/config.py:27  "metric": "neg_mae"
+competitions/s2-bike-demand/config.py:38  "benchmark_expected_score": -138.879599
+backend/app/views/leaderboard.py:192      row["Passed"] = ... ranked_value >= pass_threshold
+backend/app/views/teacher/leaderboard.py:101-104  same comparison on the teacher board
+```
+
+FIX: Two halves. (course, one call, teacher key)
+`update_challenge_link(32, 183, pass_threshold=-138.879599)` — the benchmark is
+the natural bar, as it already is on 184. (repo) Declare `pass_threshold` in
+each package's `config.py` next to `benchmark_expected_score`, and have
+`do_attach` write it on attach *and* update it on an already-attached link.
+A challenge whose ranking metric changes then cannot silently orphan its bar,
+which is the same argument that makes `build` verify the benchmark score.
+
+---
+
+## [minor/platform] backend/app/views/direct_attache_agents/_schemas.py:30 vs modelmanager/modelmanager/competition_agent_attaches.py:98 — found 2026-09-08
+
+`AttachAgentRequest.agent_name` validates to `max_length=255`; the column is
+`db.String(40)`. A name of 41-255 characters therefore passes the boundary,
+fails on INSERT, and is returned to the student as
+`{"error": "internal_server_error"}` — a 500 for what is a validation error,
+and with no mention of the real limit. It is a plausible student action: the SDK
+derives a default agent name from the submission and `submit(agent_name=...)`
+takes whatever they type.
+
+EVIDENCE:
+```
+student key, c.create_attached_agent(184, "x"*40)  -> OK   (id 8550)
+              c.create_attached_agent(184, "x"*44)  -> SubmissionError: create_attached_agent failed: internal_server_error
+              c.create_attached_agent(184, "student walkthrough — engineered + threshold 0.24")  (48 chars) -> same
+_schemas.py:30                      agent_name: str = Field(..., min_length=1, max_length=255)
+competition_agent_attaches.py:98    agent_name = db.Column(db.String(40), nullable=False)
+```
+
+FIX: Set `max_length=40` in the schema so the boundary rejects it as a 400 that
+names the limit (Fail Fast: validate at the boundary, not deep in the stack).
+Widening the column instead is also defensible — but then the two numbers still
+have to be made equal, and the leaderboard column is sized for short names.
+
+---

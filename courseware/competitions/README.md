@@ -157,6 +157,25 @@ export MLARENA_ID_SALT=...        # never committed; see .id-salt, gitignored
 python competitions/s2-bike-demand/prepare_data.py
 ```
 
+### The pass threshold
+
+`attach` also writes the course's **pass threshold** onto each module-challenge
+link: the value a student's best leaderboard score must reach for the module to
+show the challenge validated. It is `benchmark_expected_score` — the bar is
+"match the worked baseline" for every challenge in the course — so it is derived
+from the package rather than typed into the course editor, and `attach`
+reconciles an existing link instead of skipping it.
+
+That is not how it started. The bars were set by hand, and when `s2-bike-demand`
+changed metric from R² to -MAE on 2026-09-08 its bar stayed behind at the old R²
+(0.399304). Nothing under -MAE reaches 0.4, so the card read `-138.88 · NEEDS ≥
+0.40` and no submission could ever validate it. A number that has to agree with
+another number should not be stored twice; now it is not.
+
+```bash
+make competitions-attach          # idempotent: prints only what it changes
+```
+
 `prepare_data.py` **exits** without the salt rather than falling back to a
 public default. Keep the salt: rebuilding under a different one changes every
 id, which invalidates the files students have already downloaded and every

@@ -17,6 +17,7 @@ frontend<->SDK parity rule in `mlarena-sdk/PROCESS.md`.
 Modes
 -----
     build     create/update, upload, benchmark, verify, start     (creator key)
+    overview  re-publish overview.md alone, started or not         (creator key)
     refresh   replace the data of a STARTED competition, in place  (creator + user key)
     status    show what is live                                   (creator key)
     publish   flip the competitions public                        (creator key)
@@ -28,7 +29,11 @@ Modes
 a lockfile, not an artifact. A competition that is already started is left
 alone, because the platform locks settings after start.
 
-`refresh` is the escape hatch from that: it stops the competition, replaces the
+`overview` is the small escape hatch: the competition page is the one thing the
+platform does *not* lock at start, so a wording fix does not need a stop, a
+re-benchmark, or the loss of every score on the board. It uploads nothing else.
+
+`refresh` is the big one: it stops the competition, replaces the
 dataset files and the private ground truth, re-benchmarks, and starts it again.
 Use it when `prepare_data.py` has produced a *different* split or different ids
 — every score already on the board was computed against data that no longer
@@ -406,6 +411,27 @@ def do_status(args):
         print(f"  {'':18s} {args.base_url}/viewcompetition/{entry['id']}")
 
 
+def do_overview(args):
+    """Re-publish overview.md and nothing else.
+
+    `build` skips a started competition outright, because settings, datasets and
+    the agent template are locked once it starts. The markdown is not — so a
+    correction to the competition page is one call, and does not have to go
+    through `refresh` and throw away the leaderboard to fix a sentence.
+    """
+    client = connect("MLARENA_API_KEY", args.base_url)
+    state = read_state(args.base_url)
+    for pkg in args.packages:
+        entry = (state.get("competitions") or {}).get(pkg)
+        if not entry:
+            print(f"  {pkg}: not built, skipping")
+            continue
+        body = (PACKAGES_DIR / pkg / "overview.md").read_text()
+        client.set_challenge_markdown(entry["id"], body)
+        print(f"  {pkg}: overview.md -> competition {entry['id']} "
+              f"({len(body)} chars)")
+
+
 def do_publish(args):
     client = connect("MLARENA_API_KEY", args.base_url)
     state = read_state(args.base_url)
@@ -431,6 +457,16 @@ def do_attach(args):
 
     Module ids come from the course's publish lockfile
     (`content/<course>/.mlarena-state.json`), written by publish_mlarena.py.
+
+    The link carries the course's **pass threshold** — the value a student's
+    best leaderboard score has to reach for the module to count the challenge
+    validated — and it is `benchmark_expected_score`: the bar is "match the
+    worked baseline", uniformly, so it is derived here rather than typed into
+    the course editor. It was typed in, once, and then s2-bike-demand changed
+    metric from R2 to -MAE on 2026-09-08 and its bar stayed at the old R2
+    (0.399304). Under -MAE nothing reaches 0.4, so the challenge read
+    "NEEDS >= 0.40" and could not be validated by anyone. Hence the
+    reconciliation below: an existing attachment is not skipped, it is checked.
     """
     teacher = connect("MLARENA_TEACHER_API_KEY", args.base_url)
     state = read_state(args.base_url)
@@ -447,22 +483,33 @@ def do_attach(args):
         module_id = modules.get(entry["module_slug"])
         if module_id is None:
             sys.exit(f"{pkg}: module {entry['module_slug']!r} is not in the lockfile")
+        threshold = load_config(pkg)["benchmark_expected_score"]
         detail = teacher.get_module(module_id)
-        already = {c["competition_id"] for c in (detail.get("competitions") or [])}
-        if entry["id"] in already:
-            print(f"  {pkg}: already attached to module {module_id}")
+        already = {c["competition_id"]: c for c in (detail.get("competitions") or [])}
+        link = already.get(entry["id"])
+        if link is None:
+            teacher.attach_competition(module_id, entry["id"], label=entry["label"],
+                                       pass_threshold=threshold)
+            print(f"  {pkg}: competition {entry['id']} -> module {module_id} "
+                  f"({entry['module_slug']}), pass >= {threshold}")
             continue
-        teacher.attach_competition(module_id, entry["id"], label=entry["label"])
-        print(f"  {pkg}: competition {entry['id']} -> module {module_id} "
-              f"({entry['module_slug']})")
+        live = link.get("pass_threshold")
+        if live is not None and abs(live - threshold) <= 1e-6:
+            print(f"  {pkg}: already attached to module {module_id}, "
+                  f"pass >= {live}")
+            continue
+        teacher.update_challenge_link(module_id, entry["id"],
+                                      pass_threshold=threshold)
+        print(f"  {pkg}: pass threshold {live} -> {threshold} "
+              f"(module {module_id})")
 
 
 def main():
     ap = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("mode", nargs="?", default="build",
-                    choices=["build", "refresh", "status", "publish",
-                             "attach", "teardown"])
+                    choices=["build", "overview", "refresh", "status",
+                             "publish", "attach", "teardown"])
     ap.add_argument("--base-url", default=os.environ.get("MLARENA_BASE_URL",
                                                          "https://ml-arena.com"))
     ap.add_argument("--course", default="python-ai-engineering")
@@ -473,8 +520,8 @@ def main():
     unknown = [p for p in args.packages if p not in PACKAGES]
     if unknown:
         sys.exit(f"unknown package(s): {unknown}; known: {PACKAGES}")
-    {"build": do_build, "refresh": do_refresh, "status": do_status,
-     "publish": do_publish, "attach": do_attach,
+    {"build": do_build, "overview": do_overview, "refresh": do_refresh,
+     "status": do_status, "publish": do_publish, "attach": do_attach,
      "teardown": do_teardown}[args.mode](args)
 
 

@@ -275,6 +275,88 @@ def test_always_zero_is_f1_zero(pkg, tmp_path):
 
 
 # --------------------------------------------------------------------------- #
+# the bank-marketing ladder
+#
+# The overview prints a five-row ladder and the notebook tells students to read
+# themselves against it, so the rows are claims about this split and are checked
+# here rather than asserted. Every row is the same LogisticRegression: what
+# moves between them is the threshold, and then the columns. The engineered row
+# is reproduced with one recipe out of many — the test proves the rung exists
+# and is reachable with Session 2 material, not that it is the only way up.
+# --------------------------------------------------------------------------- #
+LADDER_TOL = 0.01   # solver and version drift; the rungs are 0.05+ apart
+
+
+def _bank_frames():
+    pd = pytest.importorskip("pandas")
+    d = HERE / "s2-bank-marketing" / "data"
+    return (pd.read_csv(d / "X_train.csv"), pd.read_csv(d / "y_train.csv")["prediction"],
+            pd.read_csv(d / "X_test.csv"), pd.read_csv(d / "y_test.csv")["prediction"])
+
+
+def _bank_proba(X_tr, y_tr, X_te):
+    """get_dummies + align + StandardScaler + LogisticRegression — the baseline
+    the overview quotes, returning probabilities so a threshold can be applied."""
+    pd = pytest.importorskip("pandas")
+    pytest.importorskip("sklearn")
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.preprocessing import StandardScaler
+    A = pd.get_dummies(X_tr)
+    B = pd.get_dummies(X_te).reindex(columns=A.columns, fill_value=0)
+    scaler = StandardScaler().fit(A)
+    model = LogisticRegression(max_iter=1000).fit(scaler.transform(A), y_tr)
+    return model.predict_proba(scaler.transform(B))[:, 1]
+
+
+def _f1(y_true, y_pred):
+    from sklearn.metrics import f1_score
+    return f1_score(y_true, y_pred, zero_division=0)
+
+
+@pytest.mark.parametrize("threshold,expected", [(0.50, 0.453), (0.30, 0.568), (0.20, 0.581)])
+def test_bank_overview_threshold_ladder(threshold, expected):
+    """One line moves F1 by 0.128 — the overview's central claim."""
+    X_tr, y_tr, X_te, y_te = _bank_frames()
+    proba = _bank_proba(X_tr.drop(columns=["id"]), y_tr, X_te.drop(columns=["id"]))
+    got = _f1(y_te, (proba >= threshold).astype(int))
+    assert abs(got - expected) < LADDER_TOL, f"threshold {threshold}: F1 {got:.4f} != {expected}"
+
+
+def test_bank_overview_duration_row():
+    """Dropping the leaky column costs 0.17 of F1 at the default threshold.
+    That price tag is why the notebook makes the student decide rather than
+    telling them."""
+    X_tr, y_tr, X_te, y_te = _bank_frames()
+    proba = _bank_proba(X_tr.drop(columns=["id", "duration"]), y_tr,
+                        X_te.drop(columns=["id", "duration"]))
+    got = _f1(y_te, (proba >= 0.50).astype(int))
+    assert abs(got - 0.283) < LADDER_TOL, f"no-duration F1 {got:.4f} != 0.283"
+
+
+def test_bank_overview_engineered_row():
+    """The top rung: same model, columns re-cut so the non-monotone rate plots
+    of `age`, `day` and `duration` become something a single coefficient can
+    express. Asserted as a number AND as an ordering, because the ordering is
+    what the lesson claims."""
+    pd = pytest.importorskip("pandas")
+    X_tr, y_tr, X_te, y_te = _bank_frames()
+
+    def recut(df):
+        X = df.drop(columns=["id"]).copy()
+        X["age"] = pd.cut(X["age"], [17, 25, 30, 40, 50, 60, 120]).astype(str)
+        X["day"] = X["day"].astype(str)
+        X["duration"] = pd.cut(X["duration"],
+                               [-1, 60, 120, 180, 240, 320, 420, 560, 800, 1200, 1e9]).astype(str)
+        return X
+
+    engineered = _f1(y_te, (_bank_proba(recut(X_tr), y_tr, recut(X_te)) >= 0.24).astype(int))
+    baseline = _f1(y_te, (_bank_proba(X_tr.drop(columns=["id"]), y_tr,
+                                      X_te.drop(columns=["id"])) >= 0.20).astype(int))
+    assert abs(engineered - 0.592) < LADDER_TOL, f"engineered F1 {engineered:.4f} != 0.592"
+    assert engineered > baseline, "re-cut columns must beat the tuned baseline"
+
+
+# --------------------------------------------------------------------------- #
 # notebooks
 # --------------------------------------------------------------------------- #
 def test_notebooks_match_their_builder(tmp_path):

@@ -50,6 +50,8 @@ help:
 	@echo "make clean        — remove $(OUT)/"
 	@echo
 	@echo "make competitions          — build/benchmark/start the session competitions"
+	@echo "make competitions-overview — re-publish overview.md alone (works on a"
+	@echo "                             started competition; ONLY=<pkg> for one)"
 	@echo "make competitions-status   — show what is live"
 	@echo "make competitions-publish  — flip them public"
 	@echo "make competitions-attach   — link them to their modules (TEACHER key)"
@@ -154,6 +156,15 @@ competitions:
 		echo "no creator key: set MLARENA_CREATOR_API_KEY=mlk_creator_... in courseware/.env"; \
 		exit 1; }
 	$(COMP_ENV) $(PY_COMPS) tools/build_competitions.py build $(COMP_ARGS) $(if $(ONLY),--only $(ONLY))
+
+# The competition page is the one thing the platform does NOT lock at start, so
+# a wording fix on a live challenge is this, not a `refresh` that would throw
+# away the leaderboard.
+competitions-overview:
+	@test -n "$(CREATOR_KEY)" || { \
+		echo "no creator key: set MLARENA_CREATOR_API_KEY=mlk_creator_... in courseware/.env"; \
+		exit 1; }
+	$(COMP_ENV) $(PY_COMPS) tools/build_competitions.py overview $(COMP_ARGS) $(if $(ONLY),--only $(ONLY))
 
 competitions-status:
 	$(COMP_ENV) $(PY_COMPS) tools/build_competitions.py status $(COMP_ARGS)
