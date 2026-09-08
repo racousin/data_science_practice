@@ -72,7 +72,7 @@
       },
       "lessons": {
         "s1-git-and-packaging/accounts-and-tools": {
-          "body": "b205dd0bad68d3f9e3afa8f746c70695a5c72634bcb59e04db8ee6843023053d",
+          "body": "03530ae126d8fc014d1f7001b87dc892dd254099a4a30eb37ec0152adff2cd03",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
@@ -86,7 +86,7 @@
           "title": "Coding Agents"
         },
         "s1-git-and-packaging/branching-and-collaboration": {
-          "body": "48c0a402136afac6f1d7b98bd74c8eea12f7b681e05cab3068ca81d69dafbbb2",
+          "body": "1e949cef7c699bef36ed702f78bc315a2c12b003c846510efb930a4b738f1180",
           "estimated_minutes": 60,
           "gated": false,
           "is_published": true,
@@ -142,7 +142,7 @@
           "title": "Packaging & Tests"
         },
         "s1-git-and-packaging/python-environments": {
-          "body": "900cade4c40c72c589bc0484c2ede5a10c1e909fd6c2e866de0b5b660d1eb91d",
+          "body": "a6ddbb5e02536fb43a76ed8a5376cdbd1fac2e623aaa9541128106cf716accaf",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
@@ -163,103 +163,236 @@
           "title": "The Shell"
         },
         "s2-ml-foundations/ai-ml-dl-landscape": {
-          "body": "b80add415b0539a4b98164e8bd47e88ab5c0465a916d35975863d03a0993f9b6"
+          "body": "2c4637b9268ce923510bcf9d09adee835b64df12b21de27769bc72264cd03d52",
+          "estimated_minutes": 20,
+          "gated": false,
+          "is_published": true,
+          "title": "The AI / ML / DL Landscape"
         },
         "s2-ml-foundations/data-preparation": {
-          "body": "4b3b547a7444442892228952c0149f9c9c56d6b647cce0d4ce9a50b54f66ba16"
+          "body": "4b3b547a7444442892228952c0149f9c9c56d6b647cce0d4ce9a50b54f66ba16",
+          "estimated_minutes": 40,
+          "gated": false,
+          "is_published": true,
+          "title": "Data Preparation"
         },
         "s2-ml-foundations/linear-regression": {
-          "body": "5a24e382f8494111993bfb83fe3a7f1ea1dd6e629cd10b0d2f00103557a826f2"
+          "body": "5a24e382f8494111993bfb83fe3a7f1ea1dd6e629cd10b0d2f00103557a826f2",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Linear Regression"
         },
         "s2-ml-foundations/logistic-regression": {
-          "body": "c81ade78cf01f89d18bce9e92dbf99473026789fc11eb17217fad8999fe93dd8"
+          "body": "c81ade78cf01f89d18bce9e92dbf99473026789fc11eb17217fad8999fe93dd8",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Logistic Regression"
         },
         "s2-ml-foundations/losses": {
-          "body": "3a6c8d4fcd13050c3a37c11c19e899d8ea4d0c81fc9351caa7a1a364c91b699f"
+          "body": "c0cf3613221c2a5d217713fb3ffd114972d8457bdf14150ccfc9703fcb6b40b9",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Losses"
         },
         "s2-ml-foundations/models": {
-          "body": "743a97c254efbfd9e53d6145d5abbd485d04a11290d9be3ab21eff9224bcfda7"
+          "body": "82e69079dede4bba2235d5283242650e1c0a89c558b1cf7296cca39f68e4b023",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Models"
         },
         "s2-ml-foundations/pandas-and-seaborn": {
-          "body": "af37717fcf7dc8c27b150a1ce24195caac659cf391f5263c0b24dad0c9870d0a"
+          "body": "af37717fcf7dc8c27b150a1ce24195caac659cf391f5263c0b24dad0c9870d0a",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Reference \u2014 pandas & seaborn"
         },
         "s2-ml-foundations/the-data": {
-          "body": "04b5abadd603f1d18fce089225529440d4a078fd9ff05a93df65b0ad240969c3"
+          "body": "04b5abadd603f1d18fce089225529440d4a078fd9ff05a93df65b0ad240969c3",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "The Data"
         },
         "s2-ml-foundations/training": {
-          "body": "75533ad4f602b01075f1ce2588bda184c5ee1644e4a3901bf98613b7a445752b"
+          "body": "1b039628dcb54c08836b1c18feedaead2de12cf0f196548400c0a273d04587b7",
+          "estimated_minutes": 40,
+          "gated": false,
+          "is_published": true,
+          "title": "Training"
         },
         "s3-models-and-tuning/decision-trees": {
-          "body": "56fd0c91f4070492116428fadbe0a60720adfdfbd43fbda498795f648baa9a1e"
+          "body": "56fd0c91f4070492116428fadbe0a60720adfdfbd43fbda498795f648baa9a1e",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Decision Trees"
         },
         "s3-models-and-tuning/ensembles-bagging": {
-          "body": "bbc93dc0865eccbb44dfbc24cd8270af8856527007b7cbb470062d175ceb6e2d"
+          "body": "bbc93dc0865eccbb44dfbc24cd8270af8856527007b7cbb470062d175ceb6e2d",
+          "estimated_minutes": 20,
+          "gated": false,
+          "is_published": true,
+          "title": "Ensembles: Bagging"
         },
         "s3-models-and-tuning/ensembles-boosting": {
-          "body": "d5c41390d7025d82f16b224632a87882757c6c74f44a2b004cd0127941016b4f"
+          "body": "d5c41390d7025d82f16b224632a87882757c6c74f44a2b004cd0127941016b4f",
+          "estimated_minutes": 20,
+          "gated": false,
+          "is_published": true,
+          "title": "Ensembles: Boosting"
         },
         "s3-models-and-tuning/evaluation-metrics": {
-          "body": "59e8e3eaab9acd434d1f0ef30ca0b2f764bcbffba937b54b026d7e7f66c9f22f"
+          "body": "59e8e3eaab9acd434d1f0ef30ca0b2f764bcbffba937b54b026d7e7f66c9f22f",
+          "estimated_minutes": 40,
+          "gated": false,
+          "is_published": true,
+          "title": "Evaluation Metrics"
         },
         "s3-models-and-tuning/hyperparameter-optimization": {
-          "body": "3ff80add0eff8378ab0b67e5b29eca79857730f1fb19a9503250a219aa195023"
+          "body": "3ff80add0eff8378ab0b67e5b29eca79857730f1fb19a9503250a219aa195023",
+          "estimated_minutes": 15,
+          "gated": false,
+          "is_published": true,
+          "title": "Hyperparameter Optimization"
         },
         "s3-models-and-tuning/k-nearest-neighbours": {
-          "body": "b70678f8a4f1cfde5208b652a9863ce05ce87b6933f9db8d3e6e90ca73aa9b45"
+          "body": "b70678f8a4f1cfde5208b652a9863ce05ce87b6933f9db8d3e6e90ca73aa9b45",
+          "estimated_minutes": 20,
+          "gated": false,
+          "is_published": true,
+          "title": "K-Nearest Neighbours"
         },
         "s3-models-and-tuning/lab-3": {
-          "body": "45c650fd0c4aa9cb5ac3165026412b94cca9a78ce428ead3d4cf6c6426ff3a92"
+          "body": "45c650fd0c4aa9cb5ac3165026412b94cca9a78ce428ead3d4cf6c6426ff3a92",
+          "estimated_minutes": 45,
+          "gated": false,
+          "is_published": true,
+          "title": "Lab 3 \u2014 Baseline on a Real Dataset"
         },
         "s3-models-and-tuning/neural-networks": {
-          "body": "d0aaa84947d8ae036c592dfd2af870b5cccce96c3731724ad15a0a65aeaeeb44"
+          "body": "d0aaa84947d8ae036c592dfd2af870b5cccce96c3731724ad15a0a65aeaeeb44",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Multi-Layer Perceptrons"
         },
         "s3-models-and-tuning/non-linearity": {
-          "body": "825a5f3774f5775a68da2f80c914a2e1355f3e01927f15c953f49dd3238a610c"
+          "body": "825a5f3774f5775a68da2f80c914a2e1355f3e01927f15c953f49dd3238a610c",
+          "estimated_minutes": 20,
+          "gated": false,
+          "is_published": true,
+          "title": "Non-Linearity"
         },
         "s3-models-and-tuning/regularization": {
-          "body": "408a6e1512bc38e4d45ee3d96a558f4b034f7b56d0793ecb4849f0d7fcad68e2"
+          "body": "408a6e1512bc38e4d45ee3d96a558f4b034f7b56d0793ecb4849f0d7fcad68e2",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Regularization"
         },
         "s3-models-and-tuning/support-vector-machines": {
-          "body": "b1422289d6615ee179e168fc620a1c9e1376dd4977434cf3dfc3f988bd3ff354"
+          "body": "b1422289d6615ee179e168fc620a1c9e1376dd4977434cf3dfc3f988bd3ff354",
+          "estimated_minutes": 20,
+          "gated": false,
+          "is_published": true,
+          "title": "Support Vector Machines"
         },
         "s3-models-and-tuning/training-neural-networks": {
-          "body": "1f6780de60cccb40d37072d5f08b2de3ac8c274ba03cdf1023b77d391f618f7d"
+          "body": "1f6780de60cccb40d37072d5f08b2de3ac8c274ba03cdf1023b77d391f618f7d",
+          "estimated_minutes": 20,
+          "gated": false,
+          "is_published": true,
+          "title": "Training Neural Networks"
         },
         "s3-models-and-tuning/validation-and-overfitting": {
-          "body": "92025d86d7dcb79f74f89f6d70c74bd2f99302c08dcb9b35d5bad10d3083863f"
+          "body": "92025d86d7dcb79f74f89f6d70c74bd2f99302c08dcb9b35d5bad10d3083863f",
+          "estimated_minutes": 40,
+          "gated": false,
+          "is_published": true,
+          "title": "Validation & Overfitting"
         },
         "s4-pytorch-nutshell/autograd": {
-          "body": "3b2ed9886e532a676676fad03dc37ef3b684ba05d663ae3a102bc70af6a6e291"
+          "body": "3b2ed9886e532a676676fad03dc37ef3b684ba05d663ae3a102bc70af6a6e291",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Autograd"
         },
         "s4-pytorch-nutshell/autograd-mathematics": {
-          "body": "f0e1d39f17b4ae80800bebf1f6606ed6a4ce92937f59543189496dc687138e42"
+          "body": "f0e1d39f17b4ae80800bebf1f6606ed6a4ce92937f59543189496dc687138e42",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Reference \u2014 Autograd, the Mathematics"
         },
         "s4-pytorch-nutshell/deep-learning-history": {
-          "body": "567ff3877362d767b28c699e0ac2975ba665b62f43a22362fe469a3cc290c115"
+          "body": "567ff3877362d767b28c699e0ac2975ba665b62f43a22362fe469a3cc290c115",
+          "estimated_minutes": 15,
+          "gated": false,
+          "is_published": true,
+          "title": "Reference \u2014 A Short History of Deep Learning"
         },
         "s4-pytorch-nutshell/lab-4": {
-          "body": "7f4ffff6a10ff52153e940138c1ad7eed3e637bd44a504cd8dfeb1d4bd283df4"
+          "body": "7f4ffff6a10ff52153e940138c1ad7eed3e637bd44a504cd8dfeb1d4bd283df4",
+          "estimated_minutes": 45,
+          "gated": false,
+          "is_published": true,
+          "title": "Lab 4 \u2014 Train and Submit"
         },
         "s4-pytorch-nutshell/modules-and-optimizers": {
-          "body": "02a03d65b31cbf02fe2184ad98585891544fcb91c7f34b7be16b04b222219440"
+          "body": "02a03d65b31cbf02fe2184ad98585891544fcb91c7f34b7be16b04b222219440",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Modules & Optimizers"
         },
         "s4-pytorch-nutshell/tensor-mechanics": {
-          "body": "ee8e22cf9e6c33d5b616b06c1b4bc67c4aa4ae7778f6b627c46b1ae89b28081e"
+          "body": "ee8e22cf9e6c33d5b616b06c1b4bc67c4aa4ae7778f6b627c46b1ae89b28081e",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Tensor Mechanics"
         },
         "s4-pytorch-nutshell/training-loop-end-to-end": {
-          "body": "75d17ac22c0c55c446732bae426af54062fafc27202d2dc5cb5ac89d34211b66"
+          "body": "75d17ac22c0c55c446732bae426af54062fafc27202d2dc5cb5ac89d34211b66",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Training Loop End to End"
         },
         "s4-pytorch-nutshell/warmup-1-optimization": {
-          "body": "1560cae6867c3038577cec7380c6ee85ea873e85927b707f33c8ea6f7f885b79"
+          "body": "1560cae6867c3038577cec7380c6ee85ea873e85927b707f33c8ea6f7f885b79",
+          "estimated_minutes": 45,
+          "gated": false,
+          "is_published": true,
+          "title": "Warm-up 1 \u2014 Optimization & Training"
         },
         "s4-pytorch-nutshell/warmup-2-cpu-gpu": {
-          "body": "5e89f76b32afbe4d4bed5bdfc7030f06f13d9c861967a5187bd4f5fa1907a880"
+          "body": "5e89f76b32afbe4d4bed5bdfc7030f06f13d9c861967a5187bd4f5fa1907a880",
+          "estimated_minutes": 20,
+          "gated": false,
+          "is_published": true,
+          "title": "Warm-up 2 \u2014 CPU vs GPU"
         },
         "s4-pytorch-nutshell/why-tensors": {
-          "body": "cd9f49f13fc41e20b25e784dd9f86bd001825f7b2e11cb2a2ce7d9b4e8c1d0eb"
+          "body": "cd9f49f13fc41e20b25e784dd9f86bd001825f7b2e11cb2a2ce7d9b4e8c1d0eb",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Why Tensors"
         }
       },
-      "module_order": [],
+      "module_order": [
+        "s1-git-and-packaging",
+        "s2-ml-foundations",
+        "s3-models-and-tuning",
+        "s4-pytorch-nutshell"
+      ],
       "modules": {
         "s1-git-and-packaging": {
           "icon": "git-branch",
@@ -280,6 +413,59 @@
           ],
           "summary": "Shell, git, GitHub, environments, packaging, tests, linting, CI, notebooks and Colab \u2014 then an agentic coding workflow on top of them. You leave with a tested Python package on GitHub whose tests run themselves, a Colab notebook that installs it, and an agent on a leaderboard.",
           "title": "Session 1 \u2014 The Engineering Floor"
+        },
+        "s2-ml-foundations": {
+          "icon": "chart-line",
+          "lessons": [
+            "ai-ml-dl-landscape",
+            "the-data",
+            "models",
+            "losses",
+            "training",
+            "linear-regression",
+            "logistic-regression",
+            "data-preparation",
+            "pandas-and-seaborn"
+          ],
+          "summary": "What machine learning is, stated precisely: the data, the model, the loss, and the training that connects them \u2014 then linear and logistic regression end to end in scikit-learn, and the data preparation they both assume.",
+          "title": "Session 2 \u2014 Machine Learning Foundations"
+        },
+        "s3-models-and-tuning": {
+          "icon": "sitemap",
+          "lessons": [
+            "evaluation-metrics",
+            "validation-and-overfitting",
+            "non-linearity",
+            "regularization",
+            "k-nearest-neighbours",
+            "decision-trees",
+            "support-vector-machines",
+            "ensembles-bagging",
+            "ensembles-boosting",
+            "hyperparameter-optimization",
+            "neural-networks",
+            "training-neural-networks",
+            "lab-3"
+          ],
+          "summary": "Beyond the straight line: regularisation, KNN, trees, SVM, bagging and boosting, hyperparameter search \u2014 and the multi-layer perceptron that session 4 implements in PyTorch.",
+          "title": "Session 3 \u2014 Models, Ensembles & Tuning"
+        },
+        "s4-pytorch-nutshell": {
+          "icon": "flame",
+          "lessons": [
+            "why-tensors",
+            "tensor-mechanics",
+            "autograd",
+            "modules-and-optimizers",
+            "training-loop-end-to-end",
+            "warmup-1-optimization",
+            "warmup-2-cpu-gpu",
+            "lab-4",
+            "autograd-mathematics",
+            "deep-learning-history"
+          ],
+          "summary": "Tensors, autograd, modules, optimizers \u2014 and one MLP trained end to end. Enough PyTorch to read and write the code the rest of the year uses.",
+          "title": "Session 4 \u2014 PyTorch in a Nutshell"
         }
       }
     }

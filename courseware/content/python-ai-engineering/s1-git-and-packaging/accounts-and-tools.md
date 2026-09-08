@@ -166,6 +166,9 @@ import sys, torch
 print(sys.version, torch.__version__)
 ```
 
+`torch` is already installed there. That is the entire reason Sessions 3 and 4
+use Colab, and *Notebooks & Colab* covers the consequences.
+
 ---
 
 ## Three machines, one repository

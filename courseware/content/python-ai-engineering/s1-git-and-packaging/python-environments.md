@@ -88,6 +88,31 @@ It is not wrong, but it is not needed, and it is where the drift starts. -->
 
 ---
 
+## `uv run` — how you execute anything
+
+```bash
+uv run pytest -q                        # in the project environment
+uv run python train.py
+uv run --project ~/textstats pytest     # a project you are not standing in
+uv run --python 3.12 python -V          # a specific interpreter
+uv run --with seaborn python plot.py    # one dependency, this run only
+```
+
+Every `uv run` **syncs before it runs**: it makes `.venv` match `uv.lock`, then
+executes. A teammate's `uv add` reaches you the moment you pull and run — there
+is no stale environment to notice, and nothing to activate.
+
+`--with` is the one form that does not touch the project: it adds the package
+for that invocation and writes to neither `pyproject.toml` nor `uv.lock`. It is
+for a one-off script. Anything the project needs twice gets `uv add`.
+
+<!-- notes: The CI workflow in *GitHub Actions* is `uv sync` then `uv run
+pytest -q`, and Lab 1 runs the same two commands locally. That is the point:
+the runner and the laptop execute the same environment, because both are
+derived from uv.lock rather than from what someone installed. -->
+
+---
+
 ## Installing packages
 
 ```bash
