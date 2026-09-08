@@ -6,8 +6,8 @@ challenge of the course: read a table, look at it, fit a linear model, submit.
 Submission — `submission.csv`, one row per test id:
 
     id,prediction
-    te_00000,143.2
-    te_00001,88.0
+    te_75c7a09e8d17,143.2
+    te_a10c9b861188,88.0
 
 `prediction` is a real number. Counts are non-negative, but a plain linear
 model does return negatives on the low hours and that is not rejected — it is

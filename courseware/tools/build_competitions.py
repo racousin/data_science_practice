@@ -17,6 +17,7 @@ frontend<->SDK parity rule in `mlarena-sdk/PROCESS.md`.
 Modes
 -----
     build     create/update, upload, benchmark, verify, start     (creator key)
+    refresh   replace the data of a STARTED competition, in place  (creator + user key)
     status    show what is live                                   (creator key)
     publish   flip the competitions public                        (creator key)
     attach    link each competition to its course module          (TEACHER key)
@@ -27,6 +28,13 @@ Modes
 a lockfile, not an artifact. A competition that is already started is left
 alone, because the platform locks settings after start.
 
+`refresh` is the escape hatch from that: it stops the competition, replaces the
+dataset files and the private ground truth, re-benchmarks, and starts it again.
+Use it when `prepare_data.py` has produced a *different* split or different ids
+— every score already on the board was computed against data that no longer
+exists, so refresh deletes those agents rather than leaving stale numbers
+ranked. It refuses to run if anyone but you is on the board.
+
 The benchmark is the real test: it runs the actual worker pipeline (JobPod,
 env.py, and for flex_v1 an agent container) against the package's reference
 solution, and `build` fails unless the resulting score equals the package's
@@ -36,6 +44,8 @@ what it says it scores.
 Env vars:
     MLARENA_API_KEY          creator-scope token (mlk_creator_...)
     MLARENA_TEACHER_API_KEY  teacher-scope token, `attach` only
+    MLARENA_USER_API_KEY     user-scope token, `refresh` only — deleting a
+                             stale agent is a /direct_attache_agents route
     MLARENA_BASE_URL         defaults to https://ml-arena.com
 """
 import argparse
@@ -268,6 +278,100 @@ def do_build(args):
     do_status(args)
 
 
+def refresh_one(client, user_client, cfg: dict, base_url: str) -> int:
+    """Replace the data of an already-started competition, in place.
+
+    The platform locks settings, datasets and the agent template once a
+    competition starts, so this has to stop it first. Stopping leaves agents and
+    results untouched (`stop_competition` only clears `is_started`), which is
+    exactly the problem when the ids have changed underneath them: a score
+    computed against the old X_test is meaningless against the new one but still
+    ranks. So the stale agents are deleted, not left on the board.
+    """
+    name, pkg_dir = cfg["name"], cfg["_dir"]
+    print(f"\n=== refresh {name}  ({cfg['_pkg']})")
+
+    existing = find_existing(client, name)
+    if not existing:
+        raise SystemExit(f"{name}: not on the server — use `build`, not `refresh`.")
+    cid = existing["id"]
+
+    me = client.profile().get("username")
+    board = client.leaderboard(cid)
+    rows = board.to_dict("records") if hasattr(board, "to_dict") else list(board)
+    others = sorted({r["Username"] for r in rows if r.get("Username") != me})
+    if others:
+        raise SystemExit(
+            f"{name}: {len(others)} other competitor(s) on the board ({others}). "
+            f"Refreshing invalidates their scores — stop the competition and "
+            f"decide deliberately rather than through this script."
+        )
+    stale = [r for r in rows if r.get("AgentName") != "__benchmark__"]
+
+    client.stop_competition(cid)
+    print(f"    stopped id={cid}")
+
+    for r in stale:
+        user_client.delete_agent(cid, r["agentAttachId"])
+        print(f"    deleted stale agent {r['agentAttachId']} "
+              f"({r.get('AgentName')}, {cfg['metric']}={r.get('MeanReward')})")
+
+    client.set_competition_markdown(cid, (pkg_dir / "overview.md").read_text())
+    client.update_env_file_content(cid, "env.py", (pkg_dir / "env.py").read_text())
+    print("    overview.md + env.py re-uploaded")
+
+    for rel in cfg.get("private_files", []):
+        src = pkg_dir / "data" / rel
+        if not src.exists():
+            raise SystemExit(f"missing private file {rel} — run {cfg['_pkg']}/prepare_data.py")
+        client.upload_env_file(cid, str(src))
+        print(f"    private env file replaced: {rel}")
+
+    public = cfg.get("public_files") or []
+    if public:
+        label = cfg.get("dataset_label", name)
+        ds = next((d for d in client.creator_datasets(cid).get("datasets", [])
+                   if d.get("label") == label), None)
+        if ds is None:
+            raise SystemExit(f"{name}: no dataset labelled {label!r} to refresh")
+        ds_id = ds["id"]
+        if cfg.get("dataset_description"):
+            client.update_dataset(cid, ds_id,
+                                  description=cfg["dataset_description"])
+        # upload_dataset_file always adds a row, so replacing means delete first.
+        for f in ds.get("files", []):
+            if f["label"] in public:
+                client.delete_dataset_file(cid, ds_id, f["id"])
+                print(f"    dataset file deleted: {f['label']}")
+        for fname in public:
+            path = pkg_dir / "data" / fname
+            if not path.exists():
+                raise SystemExit(f"missing public file {fname} — run {cfg['_pkg']}/prepare_data.py")
+            client.upload_dataset_file(cid, ds_id, str(path))
+            print(f"    dataset file uploaded: {fname} "
+                  f"({path.stat().st_size / 1e6:.2f} MB)")
+
+    bench = pkg_dir / cfg["benchmark_file"]
+    fname = "submission.csv" if cfg["kernel_version"] == "file_v1" else "agent.py"
+    client.update_benchmark_file_content(cid, fname, bench.read_text())
+    print(f"    benchmark file: {cfg['benchmark_file']}")
+
+    client.run_benchmark(cid)
+    verify_benchmark(cfg, wait_for_benchmark(client, cid))
+
+    client.start_competition(cid)
+    print(f"    RESTARTED id={cid}")
+    return cid
+
+
+def do_refresh(args):
+    client = connect("MLARENA_API_KEY", args.base_url)
+    user_client = connect("MLARENA_USER_API_KEY", args.base_url)
+    for pkg in args.packages:
+        refresh_one(client, user_client, load_config(pkg), args.base_url)
+    do_status(args)
+
+
 def do_status(args):
     client = connect("MLARENA_API_KEY", args.base_url)
     state = read_state(args.base_url)
@@ -342,7 +446,8 @@ def main():
     ap = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("mode", nargs="?", default="build",
-                    choices=["build", "status", "publish", "attach", "teardown"])
+                    choices=["build", "refresh", "status", "publish",
+                             "attach", "teardown"])
     ap.add_argument("--base-url", default=os.environ.get("MLARENA_BASE_URL",
                                                          "https://ml-arena.com"))
     ap.add_argument("--course", default="python-ai-engineering")
@@ -353,8 +458,9 @@ def main():
     unknown = [p for p in args.packages if p not in PACKAGES]
     if unknown:
         sys.exit(f"unknown package(s): {unknown}; known: {PACKAGES}")
-    {"build": do_build, "status": do_status, "publish": do_publish,
-     "attach": do_attach, "teardown": do_teardown}[args.mode](args)
+    {"build": do_build, "refresh": do_refresh, "status": do_status,
+     "publish": do_publish, "attach": do_attach,
+     "teardown": do_teardown}[args.mode](args)
 
 
 if __name__ == "__main__":

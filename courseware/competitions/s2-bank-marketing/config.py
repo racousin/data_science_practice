@@ -21,10 +21,11 @@ CONFIG = {
     "benchmark_score_tol": 1e-6,
     "dataset_label": "Bank Term Deposit",
     "dataset_description": (
-        "Stratified 80/20 split of openml `bank-marketing` (version 1), 45,211 "
-        "direct-marketing calls from a Portuguese bank. The anonymised V1..V16 "
-        "columns are restored to their UCI names. X_train.csv + y_train.csv to "
-        "fit on, X_test.csv to predict. The test labels are held back."
+        "Stratified 80/20 split of a public direct-marketing dataset, 45,211 "
+        "calls from a Portuguese bank, shuffled and re-identified. The "
+        "anonymised V1..V16 columns are restored to their UCI names. "
+        "X_train.csv + y_train.csv to fit on, X_test.csv to predict. The test "
+        "labels are held back."
     ),
     # Deterministic scorer: the same CSV always yields the same F1.
     "deployment_nb_constraint_run": 1,

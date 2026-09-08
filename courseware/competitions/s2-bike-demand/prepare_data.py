@@ -7,8 +7,12 @@ Benchmark -> data/benchmark_submission.csv  (the notebook's baseline: get_dummie
              + LinearRegression, no tuning — so the declared benchmark is exactly
              what a student following the worked notebook produces)
 
-Deterministic: one random 80/20 split at SEED. Re-running reproduces the same
-files byte for byte, so the leaderboard stays comparable across rebuilds.
+Deterministic given `MLARENA_ID_SALT`: one 80/20 split at SEED, then a
+salt-derived shuffle and opaque ids (`../_dataset_ids.py`). Re-running under the
+same salt reproduces the same files byte for byte, so the leaderboard stays
+comparable across rebuilds; under a different salt every id changes. SEED is
+public — this file is in a public repo — and the salt is what stops the split
+from being replayed straight onto the ids.
 
 The benchmark is fitted on the CSVs **as written and read back**, not on the
 in-memory frame. pandas re-infers dtypes on read (the True/False columns come
@@ -18,6 +22,7 @@ student's `pd.read_csv` takes or the declared score would not be reachable.
     python prepare_data.py
 """
 import os
+import sys
 
 import numpy as np
 import pandas as pd
@@ -29,6 +34,10 @@ SEED = 42
 TEST_SIZE = 0.2
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(HERE, "data")
+DATASET = "s2-bike-demand"
+
+sys.path.insert(0, os.path.dirname(HERE))
+from _dataset_ids import shuffle_and_label  # noqa: E402
 
 
 def main():
@@ -44,14 +53,14 @@ def main():
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=TEST_SIZE, random_state=SEED
     )
-    # Fresh contiguous ids; the source ordering is discarded so a submission
-    # cannot be reconstructed by index alignment against the openml frame.
-    X_train = X_train.reset_index(drop=True)
-    X_test = X_test.reset_index(drop=True)
-    y_train = y_train.reset_index(drop=True)
-    y_test = y_test.reset_index(drop=True)
-    X_train.insert(0, "id", [f"tr_{i:05d}" for i in range(len(X_train))])
-    X_test.insert(0, "id", [f"te_{i:05d}" for i in range(len(X_test))])
+    # Salted shuffle + opaque ids. SEED is public — this file is committed to a
+    # public repository — so a sequential id over the split's own order would
+    # hand back y_test to anyone who re-ran the two lines above. See
+    # ../_dataset_ids.py.
+    X_train, y_train = shuffle_and_label(
+        X_train, y_train, dataset=DATASET, split="train", prefix="tr")
+    X_test, y_test = shuffle_and_label(
+        X_test, y_test, dataset=DATASET, split="test", prefix="te")
 
     X_train.to_csv(os.path.join(DATA, "X_train.csv"), index=False)
     pd.DataFrame({"id": X_train["id"], "prediction": y_train}).to_csv(

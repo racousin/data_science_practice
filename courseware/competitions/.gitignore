@@ -3,3 +3,6 @@
 */data/
 __pycache__/
 *.pyc
+
+# The dataset id salt — see _dataset_ids.py. Never commit.
+.id-salt

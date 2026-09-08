@@ -13,13 +13,17 @@ data itself rather than taken on trust: V1 ranges 18-95 (age), V6 spans
 abbreviations, V12 is 0-4918 seconds (duration), V16 is the four poutcome
 levels. Restoring the names is what makes the dataset explorable at all.
 
-Deterministic: one stratified 80/20 split at SEED. The benchmark is fitted on
-the CSVs as written and read back, so the declared score is reachable through
-exactly the path a student's `pd.read_csv` takes.
+Deterministic given `MLARENA_ID_SALT`: one stratified 80/20 split at SEED, then
+a salt-derived shuffle and opaque ids (`../_dataset_ids.py`) — SEED is public,
+this file is in a public repo, and the salt is what stops the split from being
+replayed straight onto the ids. The benchmark is fitted on the CSVs as written
+and read back, so the declared score is reachable through exactly the path a
+student's `pd.read_csv` takes.
 
     python prepare_data.py
 """
 import os
+import sys
 
 import pandas as pd
 from sklearn.datasets import fetch_openml
@@ -31,6 +35,10 @@ SEED = 42
 TEST_SIZE = 0.2
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(HERE, "data")
+DATASET = "s2-bank-marketing"
+
+sys.path.insert(0, os.path.dirname(HERE))
+from _dataset_ids import shuffle_and_label  # noqa: E402
 
 # UCI bank-full.csv column order, restored over openml's V1..V16.
 NAMES = ["age", "job", "marital", "education", "default", "balance", "housing",
@@ -73,12 +81,14 @@ def main():
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=TEST_SIZE, random_state=SEED, stratify=y
     )
-    X_train = X_train.reset_index(drop=True)
-    X_test = X_test.reset_index(drop=True)
-    y_train = y_train.reset_index(drop=True)
-    y_test = y_test.reset_index(drop=True)
-    X_train.insert(0, "id", [f"tr_{i:05d}" for i in range(len(X_train))])
-    X_test.insert(0, "id", [f"te_{i:05d}" for i in range(len(X_test))])
+    # Salted shuffle + opaque ids. SEED is public — this file is committed to a
+    # public repository — so a sequential id over the split's own order would
+    # hand back y_test to anyone who re-ran the two lines above. See
+    # ../_dataset_ids.py.
+    X_train, y_train = shuffle_and_label(
+        X_train, y_train, dataset=DATASET, split="train", prefix="tr")
+    X_test, y_test = shuffle_and_label(
+        X_test, y_test, dataset=DATASET, split="test", prefix="te")
 
     X_train.to_csv(os.path.join(DATA, "X_train.csv"), index=False)
     pd.DataFrame({"id": X_train["id"], "prediction": y_train}).to_csv(

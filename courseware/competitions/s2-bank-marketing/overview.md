@@ -22,11 +22,12 @@ steps on a continuous target.
 | `y_train.csv` | 36,168 | `id,prediction` — 1 means subscribed |
 | `X_test.csv` | 9,043 | `id` + the same 16 features |
 
-A stratified 80/20 split of openml `bank-marketing` (version 1) at
-`random_state=42`. openml serves the columns anonymised as `V1..V16`; they have
-been restored to their UCI names, and the restoration is checked against the
-data (age lies in 18–95, `month` carries twelve month abbreviations, and so on)
-rather than taken on trust.
+A stratified 80/20 split of a public direct-marketing dataset. The rows are
+shuffled and the ids are freshly assigned, so a row's id says nothing about
+where it came from. The source serves the columns anonymised as `V1..V16`; they
+have been restored to their UCI names, and the restoration is checked against
+the data (age lies in 18–95, `month` carries twelve month abbreviations, and so
+on) rather than taken on trust.
 
 | column | meaning |
 |---|---|
@@ -48,8 +49,8 @@ is part of the exercise.
 
 ```csv
 id,prediction
-te_00000,0
-te_00001,1
+te_a2bc08ec9a5a,0
+te_cbc8d2c09b81,1
 ```
 
 `prediction` is **1** for subscribed and **0** otherwise. Every id in
@@ -103,3 +104,8 @@ of iterations if you hand it both untouched.
 
 Submissions are scored once and deterministically — the same file always gets
 the same number.
+
+The underlying data is public, so the held-out labels can be looked up rather
+than predicted. That is not modelling, it is not what is being assessed, and a
+score far above the gradient-boosting row is visible on the leaderboard for what
+it is. Fit something.

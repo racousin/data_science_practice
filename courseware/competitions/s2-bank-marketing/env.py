@@ -8,8 +8,8 @@ is F1 and not accuracy.
 Submission — `submission.csv`, one row per test id:
 
     id,prediction
-    te_00000,0
-    te_00001,1
+    te_a2bc08ec9a5a,0
+    te_cbc8d2c09b81,1
 
 `prediction` is 1 for "subscribed" and 0 otherwise. Every test id must appear
 exactly once; extra ids are an error, and so is any value other than 0 or 1 —

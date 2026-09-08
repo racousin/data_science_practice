@@ -25,10 +25,10 @@ CONFIG = {
     "benchmark_score_tol": 1e-6,
     "dataset_label": "Bike Sharing Demand",
     "dataset_description": (
-        "Random 80/20 split of openml `Bike_Sharing_Demand` (version 2), "
-        "17,379 hourly observations from a bike-share system. X_train.csv + "
-        "y_train.csv to fit on, X_test.csv to predict. The test counts are "
-        "held back."
+        "Random 80/20 split of a public bike-sharing dataset, 17,379 hourly "
+        "observations from a bike-share system, shuffled and re-identified. "
+        "X_train.csv + y_train.csv to fit on, X_test.csv to predict. The test "
+        "counts are held back."
     ),
     # Deterministic scorer: the same CSV always yields the same R2.
     "deployment_nb_constraint_run": 1,

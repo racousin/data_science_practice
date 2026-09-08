@@ -25,9 +25,9 @@ run all.
 | `y_train.csv` | 13,903 | `id,prediction` — the hourly rental count |
 | `X_test.csv` | 3,476 | `id` + the same 12 features |
 
-A random 80/20 split of openml `Bike_Sharing_Demand` (version 2) at
-`random_state=42`. Ids are freshly assigned and the source ordering is
-discarded. There are no missing values.
+A random 80/20 split of a public bike-sharing dataset. The rows are shuffled
+and the ids are freshly assigned, so a row's id says nothing about where it came
+from. There are no missing values.
 
 | column | meaning |
 |---|---|
@@ -46,8 +46,8 @@ discarded. There are no missing values.
 
 ```csv
 id,prediction
-te_00000,143.2
-te_00001,88.0
+te_75c7a09e8d17,143.2
+te_a10c9b861188,88.0
 ```
 
 `prediction` is a real number. Every id in `X_test.csv` must appear exactly
@@ -100,3 +100,8 @@ this is the size of it.
 
 Submissions are scored once and deterministically — the same file always gets
 the same number.
+
+The underlying data is public, so the held-out counts can be looked up rather
+than predicted. That is not modelling, it is not what is being assessed, and a
+score far above the gradient-boosting row is visible on the leaderboard for what
+it is. Fit something.

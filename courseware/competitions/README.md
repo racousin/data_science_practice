@@ -21,6 +21,7 @@ competitions/
 ├── s4-california-housing/ file_v1 Session 4 regression — the MLP, worked
 ├── s4-forest-cover/     file_v1   Session 4 classification — the same, guided
 ├── s4-mnist-warmup/     file_v1   Lab 4's MLP — the submission-path dry run
+├── _dataset_ids.py      salted row ids — see "Why the ids are salted"
 ├── localtest.py         run an env.py locally, the way the worker would
 ├── test_challenges.py   pytest — scorers, splits, and the notebooks
 └── .mlarena-state.json  the id lockfile — committed, see "Publishing"
@@ -91,6 +92,63 @@ average". RMSE and MAE ride along in `metrics_detail` for display.
 
 The `Reference — …` lessons at the end of sessions 1 and 4 have no competition:
 self-study material, never lectured, with nothing to score.
+
+## Why the ids are salted
+
+Every dataset here is a split of a **public** source, and every `prepare_data.py`
+is committed to a **public** repository. Those two facts together used to give
+the whole test set away. `SEED = 42` is right there in the file, so:
+
+```python
+_, _, _, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+pd.DataFrame({"id": X_test["id"], "prediction": y_test.values})
+```
+
+reproduced the shipped `y_test.csv` **exactly** — the ids ran `te_00000,
+te_00001, …` over the split's own order, so position *was* the answer key. Both
+Session 2 overviews additionally printed `random_state=42` on the competition
+page. Measured on the pre-2026-09-08 data, that submission scored R² = 1.0 on
+bike-demand and F1 = 1.0 on bank-marketing.
+
+`_dataset_ids.py` fixes that. `shuffle_and_label` permutes each split into an
+order derived from `MLARENA_ID_SALT` and labels it with opaque ids
+(`te_75c7a09e8d17`), so a row's published id is unrelated to its position in the
+reproducible split. The salt is **not in the repo** — that is the entire point,
+since `SEED` is. Replaying the split now scores R² = −0.97 / F1 = 0.10: worse
+than predicting the mean, which is a legible tell rather than a silent 1.0.
+
+```bash
+export MLARENA_ID_SALT=...        # never committed; see .id-salt, gitignored
+python competitions/s2-bike-demand/prepare_data.py
+```
+
+`prepare_data.py` **exits** without the salt rather than falling back to a
+public default. Keep the salt: rebuilding under a different one changes every
+id, which invalidates the files students have already downloaded and every
+submission written against them.
+
+### What this does not fix
+
+A student who identifies the source dataset can download it and join `X_test`
+back to it **on the feature columns**, reading the target off the match. On both
+Session 2 datasets that join is exact and unambiguous for 100% of test rows, so
+it still scores a perfect 1.0. Nothing that ships the features unchanged can
+prevent it — the defence would have to perturb the data, which changes the
+modelling problem the session is teaching.
+
+So the honest position is: the cheap attack is closed, the expensive one is not,
+and both overviews now say plainly that the targets are lookup-able and that
+doing so is not what is being assessed. A perfect score on a linear-regression
+exercise is conspicuous. Treat these as coursework, not as a secure benchmark.
+
+### Still exposed
+
+Only the two Session 2 packages have been re-generated. `s3-adult-income`,
+`s3-diabetes-progression`, `s3-credit-risk`, `s4-california-housing`,
+`s4-forest-cover` and `s4-mnist-warmup` still ship sequential
+`tr_%05d` / `te_%05d` ids over a public seeded split, and are open to the replay
+attack described above. They need the same `shuffle_and_label` change and a
+`refresh` before their sessions run.
 
 ## A package
 
@@ -218,6 +276,25 @@ Module ids come from the course lockfile
 first. The same attachment is also declared in `course.yaml`, so
 `make publish` performs it too — `attach` exists for when you want the
 competitions linked without republishing lesson bodies.
+
+### Refreshing a started competition
+
+`build` skips a competition that is already started, because the platform locks
+settings, datasets and the agent template at that point. When the data itself
+changes — a new split, or new ids — use `refresh`:
+
+```bash
+export MLARENA_API_KEY=mlk_creator_...
+export MLARENA_USER_API_KEY=mlk_user_...   # deleting an agent is a user route
+python tools/build_competitions.py refresh --only s2-bike-demand
+```
+
+It stops the competition, deletes the now-meaningless agents (a score computed
+against ids that no longer exist still *ranks* — stopping does not clear it),
+replaces the dataset files and the private ground truth, re-runs the benchmark
+against `benchmark_expected_score`, and starts it again. It **refuses to run if
+anyone but you is on the board**: throwing away other people's scores is a
+decision to take deliberately, not through a script.
 
 ### Idempotency
 
