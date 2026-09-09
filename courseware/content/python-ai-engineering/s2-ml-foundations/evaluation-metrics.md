@@ -195,27 +195,6 @@ Use it when you need one number and both errors matter.
 
 ---
 
-## The constant model, scored
-
-Back to `return 0`. On the Bank Term Deposit challenge 11.7% of clients
-subscribe, so it scores **88.3% accuracy**. Its confusion matrix on the 9,043
-test calls:
-
-| | predicted 1 | predicted 0 |
-|---|---|---|
-| **actually 1** | TP = 0 | FN = 1,058 |
-| **actually 0** | FP = 0 | TN = 7,985 |
-
-Recall is $0 / (0 + 1058) = 0$. Precision is $0/0$ — undefined, and
-`precision_score` returns 0 for it, with a `zero_division` warning worth reading
-rather than silencing. Both zero, so **F1 = 0.00**.
-
-That is what accuracy was hiding: 88.3% right, and not one subscriber found.
-A model has to actually predict a positive to score anything at all on F1, which
-is the whole reason the challenge ranks on it.
-
----
-
 ## ROC AUC
 
 Plot true positive rate against false positive rate across **every** threshold;
@@ -265,17 +244,6 @@ number anyone can compare against.
 
 ---
 
-## Ranking metrics
-
-When the output is an ordered list rather than a label:
-
-- **MAP** — mean average precision; rewards putting relevant items early
-- **NDCG** — discounted cumulative gain, normalised; handles graded relevance
-
-Used for search, recommendation, and retrieval.
-
----
-
 ## Choosing
 
 | Situation | Metric |
@@ -288,31 +256,3 @@ Used for search, recommendation, and retrieval.
 | Regression, outliers matter | MSE / RMSE |
 | Regression, outliers are noise | MAE |
 | Errors are relative | MAPE |
-
----
-
-## On a leaderboard
-
-A board sorts one column descending, so the metric it ranks on has to *increase*
-with quality. Accuracy, F1 and AUC already do. An error does not — so it is
-**negated**: the bike-demand challenge ranks on $-MAE$, where $-138.88$ means
-"wrong by 138.88 bikes an hour on average" and $0$ is perfect.
-
-| Challenge | Ranked on |
-|---|---|
-| Bike Sharing Demand | $-MAE$ — negated so higher is better |
-| Bank Term Deposit | F1 — the classes are imbalanced |
-
-Read the sign before you read the number. A score of $-100$ beats a score of
-$-139$.
-
----
-
-## The rule
-
-> Fix the metric **before** you look at the results.
-
-Choosing the metric after seeing which one flatters your model is how you fool
-your supervisor, then your users, then yourself. On ML-Arena the metric is fixed
-by the challenge — which is exactly the discipline the leaderboard is
-enforcing.
