@@ -17,6 +17,7 @@
       "s2-ml-foundations/ai-ml-dl-landscape": 145,
       "s2-ml-foundations/data-preparation": 152,
       "s2-ml-foundations/evaluation-metrics": 183,
+      "s2-ml-foundations/lab-1": 184,
       "s2-ml-foundations/linear-regression": 150,
       "s2-ml-foundations/logistic-regression": 151,
       "s2-ml-foundations/losses": 168,
@@ -168,11 +169,18 @@
           "title": "Data Preparation"
         },
         "s2-ml-foundations/evaluation-metrics": {
-          "body": "3b79acb79a9c95a093dce5ee8dcc069e77fbd998f96bef88c32d6458c6e21a18",
+          "body": "d1a48ee2c2edc1328c539bf34f53c6f80d688ddca4cc35ecc029ac3f19fd1607",
           "estimated_minutes": 40,
           "gated": false,
           "is_published": true,
           "title": "Evaluation Metrics"
+        },
+        "s2-ml-foundations/lab-1": {
+          "body": "aed184609f9a8d51c9baa18e257ae7017e64930770f8cfd742d111274439e9ab",
+          "estimated_minutes": 75,
+          "gated": false,
+          "is_published": true,
+          "title": "Lab 1 \u2014 Two Challenges and a Toolkit"
         },
         "s2-ml-foundations/linear-regression": {
           "body": "fe67101fc56966cf7be08c85b730f78e1aacd0252f8fae816047707a5e166846",
@@ -408,7 +416,8 @@
             "linear-regression",
             "logistic-regression",
             "evaluation-metrics",
-            "data-preparation"
+            "data-preparation",
+            "lab-1"
           ],
           "summary": "What machine learning is, stated precisely: the data, the model, the loss, and the training that connects them \u2014 then linear and logistic regression end to end in scikit-learn, the metrics that say which one is better, and the data preparation they both assume.",
           "title": "Session 2 \u2014 Machine Learning Foundations"

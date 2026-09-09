@@ -302,6 +302,38 @@ modules:
         file: s2-ml-foundations/data-preparation.md
         estimated_minutes: 55
         is_published: true
+      # Added 2026-09-09. The session had lectures and two attached challenges
+      # and nothing that told a student to do them, so the challenges were
+      # optional by omission. Three sections: the two challenges (short — the
+      # notebooks carry the work, the lab only points at them and states the
+      # bar), then the one that is actually new. Section 3 has the student
+      # extract the code they have now written twice into an installable
+      # package, `dskit`, which is Session 1's `textstats` skeleton with real
+      # code in it: same src/ layout, same pytest, same CI, same
+      # install-from-GitHub into Colab. Session 3's lab completes it —
+      # cross-validation, model comparison, hyperparameter search — so the
+      # package is left deliberately short of a `models.py`.
+      #
+      # `overview`, `target_by_category` and `target_by_bins` are written out in
+      # full; the rest of the file is a signature table. Every number quoted was
+      # measured against the committed CSVs in competitions/s2-*/data/, not
+      # copied from the lesson bodies: bike time-holdout -146.32, the same with
+      # `hour` as strings -108.21 (the "worth 38 MAE" claim), the random holdout
+      # -97.09 (the 49 MAE of flattery), bank positive rate 0.1170, and the
+      # three printed tables (bank `overview`, bike `hour` bins, bank `age`
+      # bins). `target_by_bins` on `pdays` returning two bins instead of ten is
+      # real `qcut` behaviour on a column that is 90% -1, kept as a lesson
+      # rather than fixed.
+      #
+      # 75 minutes is the whole lab; only section 1 is meant for the room. That
+      # takes the module to 375 written minutes against a 3h slot — it was
+      # already at 300 and is not triaged here either.
+      - title: "Lab 1 — Two Challenges and a Toolkit"
+        slug: lab-1
+        kind: exercise
+        file: s2-ml-foundations/lab-1.md
+        estimated_minutes: 75
+        is_published: true
     # Two challenges, one per model family taught here: bike demand exercises
     # linear regression, bank term deposit exercises logistic regression. Both
     # are file_v1 (upload a CSV). Packages in competitions/s2-bike-demand and
