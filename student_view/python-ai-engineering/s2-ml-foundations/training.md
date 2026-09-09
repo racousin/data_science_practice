@@ -112,52 +112,35 @@ small enough $\eta$ converges to it regardless of where it started. MSE with a
 linear model, and cross-entropy with a logistic model, are both convex in
 $\theta$ — which is why the two models in this session are safe.
 
-Drop convexity and the guarantee goes with it: you reach *a* stationary point,
-and which one depends on the initialisation. The run above starts on the wrong
-side of a hill and settles in a local minimum with the global one untouched.
-Neural network losses are non-convex, and Session 4 is spent making that work
-anyway.
+---
+
+## Descent, animated
+
+![Gradient_descent.gif](/api/academic_courses/assets/lessons/169/Gradient_descent.gif)
+
+The ball does not know where the bottom is. Each step reads only the slope
+underfoot — and that is enough, on a surface with one basin.
 
 ---
 
-## How much data per step
-
-The loss is a sum over observations, so its gradient is too — and you may
-evaluate that sum on any subset you like.
-
-| | Gradient computed on | Cost per step | Behaviour |
-|---|---|---|---|
-| **Batch** | all $n$ observations | high | smooth, exact descent direction |
-| **Stochastic (SGD)** | 1 observation | tiny | very noisy, cheap, escapes shallow minima |
-| **Mini-batch** | $B$ observations, typically 32–512 | tuneable | the default everywhere |
-
-The noise in mini-batch gradients is not purely a cost: it is unbiased, and it
-helps the iterate leave narrow minima. Mini-batch is what PyTorch does in
-Session 4.
-
----
 
 ## Optimisers: better use of the same gradient
 
 Plain descent uses only the current gradient. **Momentum** accumulates a running
-mean, so steps persist through flat regions and oscillation cancels out:
+mean of gradients, so steps persist through flat regions and oscillation cancels
+out:
 
 $$
-m_t = \beta_1 m_{t-1} + (1 - \beta_1) \nabla \ell(\theta_t)
-$$
-
-**Adam** keeps that and a running second moment, which rescales each coordinate
-by its own recent gradient magnitude:
-
-$$
-v_t = \beta_2 v_{t-1} + (1 - \beta_2) \big(\nabla \ell(\theta_t)\big)^2
+m_t = \beta m_{t-1} + (1 - \beta) \nabla \ell(\theta_t)
 \qquad
-\theta_{t+1} = \theta_t - \eta \, \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \varepsilon}
+\theta_{t+1} = \theta_t - \eta \, m_t
 $$
+
+with $m_0 = 0$ and $\beta \in [0, 1)$ typically around $0.9$, which averages over
+roughly the last $1/(1-\beta)$ gradients.
 
 ![SGD versus SGD with momentum](/api/academic_courses/assets/lessons/169/gd-momentum.gif)
 
-Adam is the default you will reach for in PyTorch next session.
 
 ---
 
@@ -221,3 +204,29 @@ of essentially every training curve you will ever plot.
 
 The initial model predicts cooling, the trained one warming. Nothing changed
 except 50 gradient steps.
+
+---
+
+## The interface
+
+`fit` is the missing half: it searches for the $\theta$ that makes that loss
+small on the training set, `predict` applies $f_\theta$.
+
+```python
+model.fit(X_train, y_train)       # training:   find theta
+y_pred = model.predict(X_test)    # prediction: apply f_theta
+```
+
+You never pass the loss to `fit` — it comes with the class: squared error for
+`LinearRegression`, log-loss for `LogisticRegression`.
+
+For classification, ask for the probability rather than the label where you can
+— you can always threshold afterwards, and you cannot recover a probability from
+a label:
+
+```python
+proba = model.predict_proba(X_test)[:, 1]
+y_pred = (proba > 0.5).astype(int)
+```
+
+`0.5` is a **choice**, not part of the model.

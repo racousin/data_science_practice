@@ -338,7 +338,16 @@ class Syncer:
             slug = spec.get("slug") or slugify(spec["title"])
             key = f"{module_slug}/{slug}"
             body = read_body(self.base, spec)
-            lesson_id = existing.get(slug) or self.state["lessons"].get(key)
+            # The live module is authoritative when we have it: a lesson
+            # deleted in the course editor is gone from `existing` while the
+            # lockfile still holds its dead id, and taking that id sends every
+            # later call to a lesson the server no longer has ("Lesson not
+            # found or not owned", mid-run). Falling back to the lockfile is
+            # for the dry run, where `detail` is None and nothing is written.
+            if detail is not None:
+                lesson_id = existing.get(slug)
+            else:
+                lesson_id = self.state["lessons"].get(key)
 
             if lesson_id is None:
                 self.log("create", f"lesson {key} ({len(body)} chars)")

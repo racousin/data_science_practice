@@ -150,24 +150,3 @@ y_pred = svr_rbf.predict(X_test_s)
 
 > **SVM needs scaled features** — like KNN, for the same reason: the kernel is a
 > function of distances and inner products.
-
----
-
-## Pros and cons
-
-| Pros | Cons |
-|---|---|
-| Effective in high dimensions | Slow for large datasets: $O(n^2)$ to $O(n^3)$ |
-| Memory-efficient (only support vectors) | Sensitive to feature scaling |
-| Flexible via kernel choice | No native probability output |
-
----
-
-## Models so far
-
-| Model | Type | Parametric? | Scaling? | Key hyperparameters |
-|---|---|---|---|---|
-| Linear / Ridge / Lasso | Reg / Clf | Yes | Recommended | $\lambda$ |
-| KNN | Reg / Clf | No | **Required** | $K$ |
-| Decision Tree | Reg / Clf | No | Not needed | `max_depth` |
-| SVM | Clf (Reg) | Yes | **Required** | $C$, kernel |

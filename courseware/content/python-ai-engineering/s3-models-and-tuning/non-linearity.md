@@ -46,13 +46,7 @@ $$
 Left, the hyperplane *is* the prediction. Right, it is squashed into a
 probability and then thresholded.
 
----
 
-## What the threshold draws
-
-![A linear decision boundary](assets/s3-models-and-tuning/non-linearity/linear-decision-boundary.png)
-
-The boundary is the line $\theta^T x = 0$. Everything on one side is class 1.
 
 ---
 

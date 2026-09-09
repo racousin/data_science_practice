@@ -27,13 +27,7 @@ Goal: find the feature $j$ and threshold $t$ that best separate the labels.
 
 ---
 
-## The regions it carves
 
-![Decision regions](assets/s3-models-and-tuning/decision-trees/tree-decision-regions.png)
-
-Every boundary is axis-aligned: a tree can only cut along one feature at a time.
-
----
 
 ## Splitting for classification: Gini impurity
 
@@ -42,27 +36,20 @@ Minimise the Gini impurity within each child node:
 $$
 G = 1 - \sum_{k=1}^{K} p_k^2
 $$
+$ p_k $ = the proportion of samples belonging to class k inside the node
 
 - $G = 0$ → pure node (all the same class)
 - $G = 0.5$ → maximum impurity (binary case)
+
+---
+
+## Gini impurity — choosing the split
 
 $$
 \text{Prediction:} \quad \hat{y} = \arg\max_k p_k \quad \text{(majority class in the leaf)}
 $$
 
 ![Gini impurity by candidate feature](assets/s3-models-and-tuning/decision-trees/gini-by-feature.png)
-
----
-
-## Splitting for regression: MSE
-
-Minimise the MSE within each child node:
-
-$$
-\text{Prediction:} \quad \hat{y} = \bar{y} = \frac{1}{n}\sum_{i=1}^{n} y_i \quad \text{(mean of the leaf)}
-$$
-
-![A regression tree](assets/s3-models-and-tuning/decision-trees/tree-regression-example.png)
 
 ---
 
@@ -94,62 +81,9 @@ $$
 
 Exhaustive, greedy, and locally optimal — it never revisits an earlier split.
 
----
-
-## Worked example
-
-| Student | Hours studied | Sleep | Result |
-|---|---|---|---|
-| 1 | 2 | 8 | Fail |
-| 2 | 3 | 6 | Fail |
-| 3 | 5 | 7 | Pass |
-| 4 | 6 | 5 | Pass |
-| 5 | 7 | 8 | Pass |
-| 6 | 8 | 4 | Pass |
-
-At the root: 4 Pass, 2 Fail, so
-
-$$
-p_{pass} = \frac{4}{6}, \quad p_{fail} = \frac{2}{6}
-$$
 
 ---
 
-### Candidate split $x_1 \leq 5$
-
-Left (students 1, 2, 3): 1 Pass, 2 Fail; right (4, 5, 6): 3 Pass, 0 Fail.
-
-$$
-G_{left} = 1 - \left(\frac{1}{3}\right)^2 - \left(\frac{2}{3}\right)^2 = 0.44
-\qquad
-G_{right} = 0
-$$
-
-$$
-G_{split} = \frac{3}{6} \times 0.44 + \frac{3}{6} \times 0 = 0.22
-$$
-
----
-
-### Candidate split $x_1 \leq 3$
-
-Left (students 1, 2): 0 Pass, 2 Fail — **pure**; right (3, 4, 5, 6): 4 Pass, 0
-Fail — **pure**.
-
-$$
-G_{left} = 1 - 0^2 - 1^2 = 0
-\qquad
-G_{right} = 1 - 1^2 - 0^2 = 0
-$$
-
-$$
-G_{split} = \frac{2}{6} \times 0 + \frac{4}{6} \times 0 = 0
-$$
-
-**Conclusion:** $x_1 \leq 3$ gives lower impurity, so the algorithm picks it. In
-practice it tests every threshold for every feature and keeps the best.
-
----
 
 ## Controlling complexity
 
@@ -185,16 +119,3 @@ y_pred = tree.predict(X_test)
 No scaling anywhere. A threshold test $x_j \leq t$ is invariant to the units of
 $x_j$, which is why trees are the one family in this session that does not need
 `StandardScaler`.
-
----
-
-## Pros and cons
-
-| Pros | Cons |
-|---|---|
-| Interpretable (white-box) | High variance — unstable |
-| No feature scaling needed | Axis-aligned splits only |
-| Handles mixed feature types | Overfits easily without pruning |
-| Fast training and prediction | **Weak alone — powerful in ensembles** |
-
-That last row is the next two lessons.

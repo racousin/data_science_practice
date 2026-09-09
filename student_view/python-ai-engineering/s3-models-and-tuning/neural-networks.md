@@ -78,11 +78,9 @@ $$
 
 $l$ layers, $r_k$ neurons per layer. The parameter count is
 
-$$
-\text{total} = \sum_{k=1}^{l} r_k \cdot (r_{k-1} + 1)
-$$
 
-— the $+1$ being the bias of each neuron.
+![mlp.jpeg](/api/academic_courses/assets/lessons/163/mlp.jpeg)
+
 
 ---
 
@@ -93,6 +91,8 @@ $$
    size 1?
 2. What is the general formula?
 3. Is there any point in stacking two layers with no activation between them?
+
+---
 
 ### Answers
 
@@ -162,46 +162,15 @@ $$
    activation values, and keep them.
 2. **Backward pass** — compute each gradient from the stored forward values and
    the gradient of the following layer.
-3. **Apply gradient descent.**
 
-Every derivative reduces to a product of simple local terms. That is the entire
-trick, and Session 4 shows PyTorch doing it for you with `loss.backward()`.
+Every derivative reduces to a product of simple local terms.
 
 ---
 
-## Why it matters
+## Then apply gradient descent
 
-![MLP decision boundaries on three datasets](/api/academic_courses/assets/lessons/163/mlp-decision-boundaries.png)
+Backpropagation returns $\nabla_\theta \ell$. Then Update the parameters (with gradient descent optimizer)
 
-The circles dataset that defeated logistic regression, and the XOR dataset that
-defeats every linear model, are both solved — with no kernel and no hand-built
-features.
-
----
-
-## Features, learned instead of designed
-
-![Feature extraction, learned instead of designed](/api/academic_courses/assets/lessons/163/ml-vs-deep-learning.png)
-
-> **The promise of deep learning:** the model learns the relevant features
-> automatically from raw data (images, text, audio). Feature extraction and
-> classification are unified in a single end-to-end network.
-
----
-
-## Why they became the standard
-
-| | |
-|---|---|
-| **Modularity** | architectures adapt to very different data types |
-| **Parallelisation** | fast, efficient training on GPUs |
-| **Performance** | capacity to model complex relationships |
-
-| Field | Moment |
-|---|---|
-| Computer vision | **2012** — AlexNet wins ImageNet by a huge margin (15.3% vs 26.2% error) |
-| Speech recognition | **2012** — deep networks replace GMM-HMMs as the standard acoustic model |
-| Games | **2016** — AlphaGo defeats Lee Sedol |
-| Machine translation | **2017** — the Transformer ("Attention Is All You Need") becomes the new paradigm |
-
-![AlphaGo versus Lee Sedol](/api/academic_courses/assets/lessons/163/alphago.png)
+$$
+\theta_{t+1} = \theta_t - \eta \, \nabla_\theta \ell(Y, f_{\theta_t}(X))
+$$

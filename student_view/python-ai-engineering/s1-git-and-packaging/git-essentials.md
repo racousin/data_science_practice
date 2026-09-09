@@ -187,16 +187,6 @@ git diff --staged    # staging vs last commit        (added, not yet committed)
 git diff HEAD        # working directory vs last commit (everything)
 ```
 
-
----
-
-## The three diffs
-
-![The three diffs](/api/academic_courses/assets/lessons/29/three-diffs.png)
-
-<!-- notes: This trips up nearly everyone. Point at each arrow on the diagram as
-you name the command. -->
-
 ---
 
 ## Undoing — the four cases
@@ -285,6 +275,3 @@ git diff                 # inspect changes
 git restore <file>       # undo working-directory changes
 git revert <sha>         # undo a shared commit, safely
 ```
-
-The full cheatsheet, including everything in the next lesson, is in
-[Reference → Git Cheatsheet](/courses/python-ai-engineering/s1-git-and-packaging/course/git-cheatsheet).

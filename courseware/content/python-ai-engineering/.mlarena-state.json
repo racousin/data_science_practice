@@ -34,12 +34,12 @@
       "s3-models-and-tuning/ensembles-boosting": 161,
       "s3-models-and-tuning/hyperparameter-optimization": 162,
       "s3-models-and-tuning/k-nearest-neighbours": 157,
-      "s3-models-and-tuning/lab-3": 165,
+      "s3-models-and-tuning/lab-3": 187,
       "s3-models-and-tuning/neural-networks": 163,
       "s3-models-and-tuning/non-linearity": 155,
       "s3-models-and-tuning/regularization": 156,
       "s3-models-and-tuning/support-vector-machines": 159,
-      "s3-models-and-tuning/training-neural-networks": 164,
+      "s3-models-and-tuning/training-neural-networks": 186,
       "s3-models-and-tuning/validation-and-overfitting": 154,
       "s4-pytorch-nutshell/autograd": 47,
       "s4-pytorch-nutshell/autograd-mathematics": 142,
@@ -162,7 +162,7 @@
           "title": "The AI / ML / DL Landscape"
         },
         "s2-ml-foundations/data-preparation": {
-          "body": "0f0af11f877476d7481103ca886e080ca6eb27b5b8d280248138f54b0695caae",
+          "body": "7e458ab20381b684fe9d6a836035e19247e048549a099bbbbe6408cb7622a320",
           "estimated_minutes": 55,
           "gated": false,
           "is_published": true,
@@ -176,7 +176,7 @@
           "title": "Evaluation Metrics"
         },
         "s2-ml-foundations/lab-1": {
-          "body": "611e2a98653c09ab6bceeae68d3bba23e9bb35d9055975b98f558e561cfad0da",
+          "body": "53772ec506c2fe75b79a92e9ad87751af7e880b6e03d7ddf2481b7558345215a",
           "estimated_minutes": 75,
           "gated": false,
           "is_published": true,
@@ -225,7 +225,7 @@
           "title": "Training"
         },
         "s3-models-and-tuning/decision-trees": {
-          "body": "56fd0c91f4070492116428fadbe0a60720adfdfbd43fbda498795f648baa9a1e",
+          "body": "4a3c6e009b089e2b978fba9b1cf1f0555f59c4737ddfab57f900f128cbba48c3",
           "estimated_minutes": 25,
           "gated": false,
           "is_published": true,
@@ -253,28 +253,28 @@
           "title": "Hyperparameter Optimization"
         },
         "s3-models-and-tuning/k-nearest-neighbours": {
-          "body": "b70678f8a4f1cfde5208b652a9863ce05ce87b6933f9db8d3e6e90ca73aa9b45",
+          "body": "35ce6ba067a1ae34b915d7a566840aa9d834c177e4f23f9cb8f33f77ebda0e3e",
           "estimated_minutes": 20,
           "gated": false,
           "is_published": true,
           "title": "K-Nearest Neighbours"
         },
         "s3-models-and-tuning/lab-3": {
-          "body": "45c650fd0c4aa9cb5ac3165026412b94cca9a78ce428ead3d4cf6c6426ff3a92",
-          "estimated_minutes": 45,
+          "body": "d45f796e37c484c401ddc96d3b2b8da95c8cc7096d60451bd9dbb69849e72b56",
+          "estimated_minutes": 75,
           "gated": false,
           "is_published": true,
-          "title": "Lab 3 \u2014 Baseline on a Real Dataset"
+          "title": "Lab 1 \u2014 Modelling & Evaluation"
         },
         "s3-models-and-tuning/neural-networks": {
-          "body": "d0aaa84947d8ae036c592dfd2af870b5cccce96c3731724ad15a0a65aeaeeb44",
+          "body": "41ea5e70d1e698fc6deaa0556f2a94eeca386b4a12c1895729076e075e0f12ed",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
           "title": "Multi-Layer Perceptrons"
         },
         "s3-models-and-tuning/non-linearity": {
-          "body": "825a5f3774f5775a68da2f80c914a2e1355f3e01927f15c953f49dd3238a610c",
+          "body": "e3e5eea850f0f83357f21873c80ea4421f226f8ec24a8e02bf8e3ca4f6ffabdb",
           "estimated_minutes": 20,
           "gated": false,
           "is_published": true,
@@ -288,7 +288,7 @@
           "title": "Regularization"
         },
         "s3-models-and-tuning/support-vector-machines": {
-          "body": "b1422289d6615ee179e168fc620a1c9e1376dd4977434cf3dfc3f988bd3ff354",
+          "body": "36f5a8f1e6b4dc7322df5b7378ed25543fa76ee9c736a444345ee365ccff01a7",
           "estimated_minutes": 20,
           "gated": false,
           "is_published": true,
@@ -302,7 +302,7 @@
           "title": "Training Neural Networks"
         },
         "s3-models-and-tuning/validation-and-overfitting": {
-          "body": "92025d86d7dcb79f74f89f6d70c74bd2f99302c08dcb9b35d5bad10d3083863f",
+          "body": "9e84cdccb1ce7f6085bae1757dbf9151801b5289c1c341c57c00e12182034bb6",
           "estimated_minutes": 40,
           "gated": false,
           "is_published": true,
@@ -330,7 +330,7 @@
           "title": "Reference \u2014 A Short History of Deep Learning"
         },
         "s4-pytorch-nutshell/lab-4": {
-          "body": "7f4ffff6a10ff52153e940138c1ad7eed3e637bd44a504cd8dfeb1d4bd283df4",
+          "body": "113750eca8b0a4abd1e6649e9894beb6a64da2239c365b7d9f9613f19e1716c7",
           "estimated_minutes": 45,
           "gated": false,
           "is_published": true,
@@ -435,7 +435,6 @@
             "ensembles-boosting",
             "hyperparameter-optimization",
             "neural-networks",
-            "training-neural-networks",
             "lab-3"
           ],
           "summary": "Beyond the straight line: regularisation, KNN, trees, SVM, bagging and boosting, hyperparameter search \u2014 and the multi-layer perceptron that session 4 implements in PyTorch.",

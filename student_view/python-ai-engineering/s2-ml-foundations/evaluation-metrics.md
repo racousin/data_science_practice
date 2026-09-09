@@ -3,8 +3,15 @@
 The metric is the definition of "better". Choose it before you model, and
 choose it for the problem rather than for convenience.
 
-<!-- notes: 40 minutes. The imbalanced-accuracy example is the one they
-remember. Do it with real numbers on the board. -->
+*Losses* taught the other number: the one training minimises, which has to be
+differentiable. This lesson is the one **you** are judged on, which does not.
+They are rarely the same function, and the gap between them is where most
+disappointing models live.
+
+<!-- notes: 40 minutes. Moved from session 3 on 2026-09-08 — it belongs next to
+`losses`, which sets it up, and both session-2 challenges are ranked on a metric
+from this lesson. The imbalanced-accuracy example is the one they remember. Do
+it with real numbers on the board. -->
 
 ---
 
@@ -149,7 +156,7 @@ cancer screening, safety faults.
 
 ---
 
-![Precision and recall](/api/academic_courses/assets/lessons/153/Precisionrecall.png)
+![Precision and recall](/api/academic_courses/assets/lessons/183/Precisionrecall.png)
 
 ---
 
@@ -201,7 +208,7 @@ roc_auc_score(y_true, y_proba)     # probabilities, not labels
 - 1.0 — perfect ranking
 - 0.5 — no better than chance
 
-![ROC curve](/api/academic_courses/assets/lessons/153/roc_auc.png)
+![ROC curve](/api/academic_courses/assets/lessons/183/roc_auc.png)
 
 ---
 
@@ -237,17 +244,6 @@ number anyone can compare against.
 
 ---
 
-## Ranking metrics
-
-When the output is an ordered list rather than a label:
-
-- **MAP** — mean average precision; rewards putting relevant items early
-- **NDCG** — discounted cumulative gain, normalised; handles graded relevance
-
-Used for search, recommendation, and retrieval.
-
----
-
 ## Choosing
 
 | Situation | Metric |
@@ -260,14 +256,3 @@ Used for search, recommendation, and retrieval.
 | Regression, outliers matter | MSE / RMSE |
 | Regression, outliers are noise | MAE |
 | Errors are relative | MAPE |
-
----
-
-## The rule
-
-> Fix the metric **before** you look at the results.
-
-Choosing the metric after seeing which one flatters your model is how you fool
-your supervisor, then your users, then yourself. On ML-Arena the metric is fixed
-by the competition — which is exactly the discipline the leaderboard is
-enforcing.

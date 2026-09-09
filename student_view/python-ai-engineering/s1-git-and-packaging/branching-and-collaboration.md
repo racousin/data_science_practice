@@ -167,7 +167,7 @@ cloned from.
 
 ## The remote workflow
 
-![Remote workflow](/api/academic_courses/assets/lessons/30/Git_Remote_Workflow.png)
+![Remote workflow](/api/academic_courses/assets/lessons/30/remote.png)
 
 ---
 
@@ -177,13 +177,6 @@ cloned from.
 git fetch      # download refs, change nothing in your files
 git pull       # fetch + merge into the current branch
 ```
-
-
----
-
-## Fetch, merge, pull
-
-![Fetch, merge, pull](/api/academic_courses/assets/lessons/30/Git_Fetch_Merge_Pull.png)
 
 `fetch` then `log` is the cautious version: you can see what arrived before it
 touches your working directory.

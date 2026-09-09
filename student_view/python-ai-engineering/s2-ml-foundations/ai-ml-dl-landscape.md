@@ -13,7 +13,7 @@ history slide — the last section is the one the rest of the session builds on.
 | **DL** | Neural networks with multiple layers (millions of parameters) that learn complex representations from raw data. |
 
 They nest: every deep learning system is machine learning, every machine
-learning system is AI, and most of what is *called* AI in 2026 is deep learning.
+learning system is AI, and most of what is *called* AI in 2026 is deep generative models.
 
 ---
 

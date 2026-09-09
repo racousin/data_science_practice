@@ -28,9 +28,7 @@ $$
 $$
 
 which matters more than it looks: it makes the loss an empirical mean, so it
-estimates $\mathbb{E}\,[L(y, f_\theta(x))]$ — the quantity you actually care
-about — and its gradient decomposes over observations. Mini-batch gradient
-descent in the next lesson is that decomposition being used.
+estimates $\mathbb{E}\,[L(y, f_\theta(x))]$.
 
 ---
 
@@ -164,6 +162,24 @@ and they do not always move together — a model can have the lower loss and the
 worse F1, usually because the decision threshold is wrong, and the loss never
 sees the threshold.
 
-<!-- notes: This is the setup for Session 3's evaluation lesson: threshold
-tuning is a metric-side fix, applied after training, and it changes no
-parameter. -->
+<!-- notes: This is the setup for the evaluation lesson at the end of this
+session: threshold tuning is a metric-side fix, applied after training, and it
+changes no parameter. -->
+
+---
+
+## The interface
+
+A prediction is only worth something next to the truth. The loss is a plain
+function of two vectors, and it lives in `sklearn.metrics`:
+
+```python
+from sklearn.metrics import mean_squared_error, log_loss
+
+mean_squared_error(y_test, y_hat)   # regression:     (y - f(x))^2
+log_loss(y_test, proba)             # classification: -log p(y | x)
+```
+
+Nothing here mentions a model — you could compute the same number on a constant
+prediction, or on a guess written by hand. That is the point: the loss defines
+what "good $\theta$" means, independently of how you found $\theta$.

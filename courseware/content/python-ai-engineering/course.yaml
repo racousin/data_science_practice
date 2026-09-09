@@ -356,9 +356,10 @@ modules:
   # baselines / splits / non linearity / models and strategy (knn, ...) /
   # hyperparameters" (92 slides, pptxs/). `evaluation-metrics`,
   # `validation-and-overfitting` and `lab-3` moved here from #16 with the deck
-  # merged in; competition 181 follows lab-3. `evaluation-metrics` moved on
-  # again to session 2 on 2026-09-08 — it defines "better", which every session
-  # before this one already needed.
+  # merged in. `evaluation-metrics` moved on again to session 2 on 2026-09-08 —
+  # it defines "better", which every session before this one already needed.
+  # The lab was rewritten on 2026-09-09 onto Session 2's two datasets; see the
+  # `competitions:` comment at the bottom of this module for why.
   #
   # Deck slides 75-92 are in French; the bodies are English, to match the rest
   # of the course. They are the conceptual half of the MLP — session 4 is the
@@ -375,6 +376,20 @@ modules:
       # `evaluation-metrics` moved to session 2 on 2026-09-08 — see the comment
       # above it there. `delete_lesson(153)` must run BEFORE the next publish,
       # or `reorder_lessons` rejects this module's manifest.
+      # The model-selection figure was redrawn on 2026-09-09 by
+      # `model_selection_flow()` in tools/figures/s3_models_and_tuning.py — the
+      # deck's version scored the candidates on the *test* set, this lesson's
+      # own Leak 4 drawn as if it were the method — and the asset moved under
+      # validation-and-overfitting/. The section that shows it stayed in
+      # `hyperparameter-optimization`, which is where the website has it; the
+      # `make pull` later that day is what settled that.
+      #
+      # The body they were inserted into is the website's, not this repo's: the
+      # lesson was trimmed in the course editor the same week (underfitting, the
+      # diagnosis table and the checklist cut, `Fighting overfitting` moved to
+      # the end, three fold diagrams uploaded) and `make pull` brought that back
+      # here first. `tskfold.webp` was converted to PNG — python-pptx cannot
+      # embed WEBP, so the uploaded file would have failed every `make slides`.
       - title: "Validation & Overfitting"
         slug: validation-and-overfitting
         file: s3-models-and-tuning/validation-and-overfitting.md
@@ -425,29 +440,54 @@ modules:
         file: s3-models-and-tuning/neural-networks.md
         estimated_minutes: 30
         is_published: true
-      - title: "Training Neural Networks"
-        slug: training-neural-networks
-        file: s3-models-and-tuning/training-neural-networks.md
-        estimated_minutes: 20
-        is_published: true
-      - title: "Lab 3 — Baseline on a Real Dataset"
+      # `training-neural-networks` was deleted in the course editor on
+      # 2026-09-09, restored by a publish that day, and deleted again straight
+      # after — so the second one is a decision, not the accident the lab
+      # deletion was. Dropped from the manifest so `publish` stops recreating
+      # it. The body stays at s3-models-and-tuning/training-neural-networks.md,
+      # unreferenced: re-add the four lines below to bring it back.
+      #
+      #   - title: "Training Neural Networks"
+      #     slug: training-neural-networks
+      #     file: s3-models-and-tuning/training-neural-networks.md
+      #     estimated_minutes: 20
+      #     is_published: true
+      # Rewritten 2026-09-09 and retitled `Lab 1` to match Session 2, whose lab
+      # this one continues: same two datasets, same three-objective shape (two
+      # challenges, then the package). The slug stays `lab-3` — lesson slugs are
+      # immutable server-side, and Session 1's `Lab 2` has slug `lab-3` for the
+      # same reason.
+      - title: "Lab 1 — Modelling & Evaluation"
         slug: lab-3
         kind: exercise
         file: s3-models-and-tuning/lab-3.md
-        estimated_minutes: 45
+        estimated_minutes: 75
         is_published: true
-    # Three challenges. 185 is the session's centrepiece: the same split scored
-    # by a linear model and a 500-tree forest, where the forest fits to R2 0.92
-    # and loses held out -- the demonstration that a training score is not a
-    # score. 186 repeats it, guided, on a classification target. 181 stays as
-    # Lab 3's end-to-end pipeline. Notebooks: tools/build_notebooks.py.
+    # Session 2's two challenges again, on purpose (changed 2026-09-09). A
+    # student arrives here having done EDA and fitted one linear model on each;
+    # this session is the modelling and the evaluation on the SAME data, so the
+    # score moves for a reason they can name rather than because the dataset
+    # got easier. Bike is the worked notebook (chronological hold-out, model
+    # comparison, grid search), bank the guided one (higher bar: F1 0.55 against
+    # Session 2's 0.453). Notebooks: tools/build_notebooks.py, written to
+    # website/public/modules/python-ai-engineering/challenges/aie-s3-*.
+    #
+    # Both links carry a `pass_threshold` set to the lab's stated bar — -60.0
+    # and 0.55, against module 2's -138.879599 and 0.452761. That is the
+    # "higher bar" as the platform sees it, and `publish` cannot write it (the
+    # spec below only carries `label`), so it is set by hand with
+    # `update_challenge_link(33, id, pass_threshold=...)`.
+    #
+    # 185 (Diabetes Progression), 186 (Credit Risk) and 181 (Adult Census
+    # Income) were detached the same day. `sync_competitions` only ever
+    # attaches, so removing them here does NOT detach them — that was done with
+    # `detach_challenge(<module id>, id)`. Their packages and notebooks stay in
+    # the repo; the competitions stay live and unattached.
     competitions:
-      - competition_id: 185
-        label: "Diabetes Progression"
-      - competition_id: 186
-        label: "Credit Risk"
-      - competition_id: 181
-        label: "Adult Census Income"
+      - competition_id: 183
+        label: "Bike Sharing Demand"
+      - competition_id: 184
+        label: "Bank Term Deposit"
 
   # ---------------------------------------------------------------- session 4
   - title: "Session 4 — PyTorch in a Nutshell"

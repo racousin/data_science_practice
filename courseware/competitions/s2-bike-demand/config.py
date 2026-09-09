@@ -19,6 +19,11 @@
 # residuals is an invitation to quote whichever is kinder, and under a
 # chronological split it scores the forecast against a test-window mean the
 # forecaster could not have known.
+# Attached to TWO modules since 2026-09-09: s2-ml-foundations (EDA + a first
+# linear model) and s3-models-and-tuning (model choice and honest evaluation on
+# the same rows). `module_slug` below drives `make competitions-attach` only, so
+# it still names session 2; session 3's link is written by `make publish` from
+# the `competitions:` block in course.yaml, and carries the higher bar.
 CONFIG = {
     "name": "AIE S2 — Bike Sharing Demand",
     "kernel_version": "file_v1",

@@ -132,14 +132,3 @@ other, and "nearest" stops carrying information.
 
 This is the single reason KNN is a poor default on wide data, and it is why the
 500-column one-hot encoding from Session 2 was flagged as a problem.
-
----
-
-## Pros and cons
-
-| Pros | Cons |
-|---|---|
-| Simple and intuitive | Slow at prediction: $O(n \cdot p)$ per query |
-| No training phase | Curse of dimensionality |
-| Works for any number of classes | Requires feature scaling |
-| Non-linear decision boundaries | Stores the whole training set |

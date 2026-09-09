@@ -41,7 +41,7 @@ finely for the same cost.
 
 ## Model selection
 
-![Selecting among candidates](assets/s3-models-and-tuning/hyperparameter-optimization/model-selection-flow.png)
+![Selecting among candidates](assets/s3-models-and-tuning/validation-and-overfitting/model-selection-flow.png)
 
 Train each candidate on the training set, score each on held-out data, keep the
 best. The loop is the same whether the candidates differ by hyperparameter or by

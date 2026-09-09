@@ -10,7 +10,7 @@ Session 4 as PyTorch code, so keep it conceptual and do not pre-empt it. -->
 
 ## Wide or deep — a new hyperparameter
 
-![A wide MLP and a deep MLP](/api/academic_courses/assets/lessons/186/wide-vs-deep-mlp.png)
+![A wide MLP and a deep MLP](/api/academic_courses/assets/lessons/164/wide-vs-deep-mlp.png)
 
 - **Wide MLP** (shallow and wide) — few layers, many neurons per layer
 - **Deep MLP** (deep and narrow) — many layers, few neurons per layer
@@ -44,7 +44,7 @@ Computing it for every step is expensive. Three options:
 
 ## Three convergence paths
 
-![Convergence paths for the three variants](/api/academic_courses/assets/lessons/186/batch-sgd-minibatch.png)
+![Convergence paths for the three variants](/api/academic_courses/assets/lessons/164/batch-sgd-minibatch.png)
 
 Batch GD takes a smooth path and is slow. SGD is fast and noisy. Mini-batch is
 the compromise everybody uses.
@@ -53,7 +53,7 @@ the compromise everybody uses.
 
 ### Two words that get confused
 
-![Batch size and epoch](/api/academic_courses/assets/lessons/186/batch-and-epoch.png)
+![Batch size and epoch](/api/academic_courses/assets/lessons/164/batch-and-epoch.png)
 
 - **Batch size** — the number of samples processed before the parameters are
   updated once.
@@ -76,7 +76,7 @@ that has the most capacity to do it.
 
 ## Early stopping
 
-![Training and validation error against iterations](/api/academic_courses/assets/lessons/186/early-stopping.png)
+![Training and validation error against iterations](/api/academic_courses/assets/lessons/164/early-stopping.png)
 
 How it works:
 

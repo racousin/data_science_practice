@@ -70,6 +70,22 @@ R2_RANKED = REGRESSION - {"s2-bike-demand"}
 # `prediction` of 0/1) do not apply to it.
 MULTICLASS = {"s4-forest-cover"}
 
+# The handed-out files, by the role they play rather than by name. Sessions 3
+# and 4 were renamed on 2026-09-09: X/y is the labelled data you fit on and
+# X_submission is what the leaderboard scores, because `X_test.csv` and the
+# `X_test` of a train/test split were two different things wearing one name.
+# Session 2 keeps the old names — it was taught on 09-07/09-08 and its students
+# have notebooks open against those files.
+FILES = {"fit_X": "X.csv", "fit_y": "y.csv",
+         "sub_X": "X_submission.csv", "sub_y": "y_submission.csv"}
+LEGACY_FILES = {"fit_X": "X_train.csv", "fit_y": "y_train.csv",
+                "sub_X": "X_test.csv", "sub_y": "y_test.csv"}
+
+
+def data_files(pkg: str) -> dict:
+    return LEGACY_FILES if pkg.startswith("s2-") else FILES
+
+
 # Notebooks a student can open before they have an ML-Arena account. They must
 # not mention the SDK or a key.
 CREDENTIAL_FREE = ["aie-s0-pandas-seaborn.ipynb",
@@ -171,14 +187,15 @@ def test_benchmark_hits_declared_score(pkg):
 def test_split_is_disjoint_and_complete(pkg):
     import pandas as pd
     d = HERE / pkg / "data"
-    tr = pd.read_csv(d / "X_train.csv")
-    te = pd.read_csv(d / "X_test.csv")
-    ytr = pd.read_csv(d / "y_train.csv")
-    yte = pd.read_csv(d / "y_test.csv")
+    f = data_files(pkg)
+    tr = pd.read_csv(d / f["fit_X"])
+    te = pd.read_csv(d / f["sub_X"])
+    ytr = pd.read_csv(d / f["fit_y"])
+    yte = pd.read_csv(d / f["sub_y"])
 
     assert set(tr["id"]) & set(te["id"]) == set(), "train and test ids overlap"
-    assert list(tr["id"]) == list(ytr["id"]), "X_train / y_train ids misaligned"
-    assert list(te["id"]) == list(yte["id"]), "X_test / y_test ids misaligned"
+    assert list(tr["id"]) == list(ytr["id"]), f"{f['fit_X']} / {f['fit_y']} ids misaligned"
+    assert list(te["id"]) == list(yte["id"]), f"{f['sub_X']} / {f['sub_y']} ids misaligned"
     assert tr["id"].is_unique and te["id"].is_unique
     assert list(tr.columns) == list(te.columns), "train and test schemas differ"
     # The held-back labels must not be reachable from anything published.
@@ -240,7 +257,7 @@ def test_r2_zero_is_the_mean_model(pkg, tmp_path):
     That claim should be true of the scorer, not just of the textbook."""
     import pandas as pd
     d = HERE / pkg / "data"
-    yte = pd.read_csv(d / "y_test.csv")
+    yte = pd.read_csv(d / data_files(pkg)["sub_y"])
     mean_of_test = yte["prediction"].mean()
     path = write_csv(tmp_path / "sub.csv",
                      [f"{i},{mean_of_test}" for i in yte["id"]])
@@ -267,7 +284,7 @@ def test_always_zero_is_f1_zero(pkg, tmp_path):
     """Likewise for the classifiers' headline claim."""
     import pandas as pd
     d = HERE / pkg / "data"
-    yte = pd.read_csv(d / "y_test.csv")
+    yte = pd.read_csv(d / data_files(pkg)["sub_y"])
     path = write_csv(tmp_path / "sub.csv", [f"{i},0" for i in yte["id"]])
     result = score(pkg, path)
     assert result["metrics_detail"]["f1"] == 0.0
@@ -391,6 +408,7 @@ def test_notebook_code_cells_compile():
 
 
 @pytest.mark.parametrize("notebook", ["aie-s2-bank-marketing.ipynb",
+                                     "aie-s3-bank-marketing.ipynb",
                                      "aie-s3-credit-risk.ipynb",
                                      "aie-s4-forest-cover.ipynb"])
 def test_guide_notebook_has_no_code(notebook):
@@ -404,6 +422,7 @@ def test_guide_notebook_has_no_code(notebook):
 
 
 @pytest.mark.parametrize("notebook", ["aie-s2-bike-demand.ipynb",
+                                     "aie-s3-bike-demand.ipynb",
                                      "aie-s3-diabetes-progression.ipynb",
                                      "aie-s4-california-housing.ipynb"])
 def test_worked_notebook_has_no_leftover_placeholder_key(notebook):
@@ -464,13 +483,19 @@ def test_preflight_notebook_runs_standalone(tmp_path):
         "that is the artefact every later challenge asks for")
 
 
-@pytest.mark.parametrize("pkg,notebook,expect_key,tol", [
-    ("s2-bike-demand", "aie-s2-bike-demand.ipynb", "neg_mae", 1e-6),
-    ("s3-diabetes-progression", "aie-s3-diabetes-progression.ipynb", "r2", 1e-6),
-    ("s4-california-housing", "aie-s4-california-housing.ipynb", "r2", 1e-6),
+@pytest.mark.parametrize("pkg,notebook,expect_key,tol,floor", [
+    ("s2-bike-demand", "aie-s2-bike-demand.ipynb", "neg_mae", 1e-6, None),
+    # Same package, same leaderboard, a different notebook: Session 3 refits the
+    # Session 2 data with a searched RandomForest and measures -48.06. The
+    # package's own floor (-105.0) is the Session 2 notebook's and would pass on
+    # a run that had silently fallen back to a linear model, so this one carries
+    # its own.
+    ("s2-bike-demand", "aie-s3-bike-demand.ipynb", "neg_mae", 1e-6, -60.0),
+    ("s3-diabetes-progression", "aie-s3-diabetes-progression.ipynb", "r2", 1e-6, None),
+    ("s4-california-housing", "aie-s4-california-housing.ipynb", "r2", 1e-6, None),
 ])
 def test_worked_notebook_runs_and_scores_the_baseline(pkg, notebook, expect_key, tol,
-                                                      user_key, tmp_path):
+                                                      floor, user_key, tmp_path):
     """Execute the student-facing notebook for real — download, EDA, fit,
     predict, write submission.csv — then score that file with the package's own
     env.py. This is the test that the quoted baseline is what the notebook
@@ -483,7 +508,9 @@ def test_worked_notebook_runs_and_scores_the_baseline(pkg, notebook, expect_key,
     and a float pinned to 1e-6 would break on a different BLAS (measured 0.776
     against a floor of 0.72); s2-bike-demand needs it because its last two
     sections engineer features and submit again (measured -99.42 against a floor
-    of -105.0)."""
+    of -105.0). The Session 3 notebook on the same package carries an explicit
+    floor in the parametrize instead (-60.0 against a measured -48.06), because
+    the package's own floor was written for a different notebook."""
     nbformat = pytest.importorskip("nbformat")
     nbclient = pytest.importorskip("nbclient")
     if pkg.startswith("s4-"):
@@ -515,7 +542,8 @@ def test_worked_notebook_runs_and_scores_the_baseline(pkg, notebook, expect_key,
     result = score(pkg, produced)
     assert not result.get("is_agent_code_error"), result.get("agent_code_error_message")
 
-    floor = cfg.get("notebook_expected_min_score")
+    if floor is None:
+        floor = cfg.get("notebook_expected_min_score")
     if floor is not None:
         assert result["score"] >= floor, (
             f"notebook scored {result['score']}, below the floor {floor} the "

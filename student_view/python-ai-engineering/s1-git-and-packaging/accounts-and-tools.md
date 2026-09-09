@@ -1,6 +1,6 @@
 # Accounts & Toolchain
 
-Five things to install or sign up for, once. Do them now, together, in the room:
+Six things to install or sign up for, once. Do them now, together, in the room:
 this is what stops Session 3 from being about Python installation.
 
 <!-- notes: 20-30 minutes, everyone on keyboards, walk the room. Do NOT lecture
@@ -10,7 +10,7 @@ board and leave them there. -->
 
 ---
 
-## The five
+## The six
 
 ![The toolchain](/api/academic_courses/assets/lessons/174/toolchain.png)
 
@@ -23,6 +23,7 @@ board and leave them there. -->
 | **GitHub account** | free | every deliverable this year is a repository URL |
 | **VS Code** | free | one window: editor, terminal, notebook, agent |
 | **git** | free | the client that talks to GitHub |
+| **a POSIX shell** | free | where every command in this course is typed |
 | **uv** | free | Python versions, environments, packages, one tool |
 | **Google account** | free | Colab, for the sessions that need a GPU |
 
@@ -88,10 +89,8 @@ working directory every command in this course assumes.
 git --version
 ```
 
-**Windows students:** the installer includes **Git Bash**. Use it — or WSL — as
-your terminal for this course. Every shell command in these lessons is written
-for a POSIX shell; PowerShell has different names for most of them, and mixing
-the two is a reliable way to lose an afternoon.
+**Windows students:** tick **Git Bash** in the installer. It is the shell you
+will use for the rest of the course — step 4.
 
 Set your identity before your first commit:
 
@@ -103,7 +102,38 @@ git config --global init.defaultBranch main
 
 ---
 
-## 4 — uv
+## 4 — A shell
+
+Every command in this course is written for a **POSIX shell**. You need one that
+speaks that language before the next install line will work.
+
+| Platform | What to use |
+|---|---|
+| macOS | Terminal, or the VS Code terminal — already there |
+| Linux | your terminal — already there |
+| Windows | **Git Bash**, installed with git in step 3 — or WSL |
+
+```bash
+echo $SHELL
+```
+
+A path like `/bin/zsh` or `/usr/bin/bash` means you are in the right place. If
+that prints `$SHELL` back at you literally, you are in PowerShell or `cmd`:
+close it and open Git Bash.
+
+This is not a style preference. PowerShell has different names for most of these
+commands, and mixing the two is the reliable way to lose an afternoon. *The
+Shell* — the next lesson — is the whole story; this step is just making sure you
+have one to type into.
+
+<!-- notes: the Windows half of the room is the only part that has work to do
+here, and Git Bash arrives with the step-3 installer, so it is usually already
+done. Do not spend more than three minutes. WSL is the better long-term answer
+but not a thing to start installing in the room. -->
+
+---
+
+## 5 — uv
 
 One binary that replaces `pyenv`, `virtualenv`, `pip` and `pip-tools`.
 
@@ -126,7 +156,7 @@ the terminal and open a new one. *The Shell* explains the mechanism.
 
 ---
 
-## 5 — Google / Colab
+## 6 — Google / Colab
 
 Open [colab.research.google.com](https://colab.research.google.com), create a
 notebook, and run one cell:
@@ -162,6 +192,9 @@ uv --version
 uv run --python 3.12 python -c "print('python ok')"
 code --version
 ```
+
+That these four *run at all* is the shell check — you are typing them into the
+one from step 4.
 
 <!-- notes: `code --version` fails on macOS until the student runs "Shell
 Command: Install 'code' command in PATH" from the palette. It is not important —
