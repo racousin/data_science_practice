@@ -111,8 +111,10 @@ session.mount("https://", HTTPAdapter(max_retries=Retry(
 )))
 ```
 
-`backoff_factor=1` waits 1s, 2s, 4s, 8s, 16s. Exponential backoff is what
-separates a client the provider tolerates from one they block.
+`backoff_factor=1` waits 0 s, 2 s, 4 s, 8 s, 16 s: urllib3 retries the first
+failure at once, then doubles. When a 429 or 503 carries `Retry-After`, that
+wait replaces the backoff. Exponential backoff is what separates a client the
+provider tolerates from one they block.
 
 Note what is **not** in `status_forcelist`: 401 and 404. Retrying those is just
 noise.

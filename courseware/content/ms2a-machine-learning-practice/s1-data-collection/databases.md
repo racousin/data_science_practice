@@ -116,6 +116,10 @@ totals = sum(c["amount"].sum() for c in chunks)
 genuinely does not fit in memory — and ask first whether an aggregate would have
 answered the question.
 
+On PostgreSQL it bounds the dataframe, not the transfer: the driver receives
+the whole result first. Pass a connection opened with
+`execution_options(stream_results=True)` to stream it.
+
 ---
 
 ## Joins duplicate rows
