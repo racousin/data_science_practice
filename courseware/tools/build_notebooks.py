@@ -14,11 +14,12 @@ Session 2 — the shape of the task:
 Session 3 — modelling and evaluation, on Session 2's two datasets:
 
 * `aie-s3-bike-demand.ipynb` — **worked**. The same challenge as Session 2
-  (183), with the feature engineering deliberately left out: one chronological
-  train/validation split, a linear model and a 500-tree forest scored on train
-  *and* validation, `GridSearchCV` on the forest over that same split, a refit
-  on everything, a submission; then other model families, with no code.
-  -138.88 -> -48.11 with no new column.
+  (183), with the feature engineering deliberately left out: a chronological
+  `train_test_split`, a linear model and a 500-tree forest scored on train
+  *and* test, `GridSearchCV` on the forest with `TimeSeriesSplit(n_splits=2)`
+  inside the train part, one look at the test set, a refit on everything, a
+  submission; then other model families, with no code. -138.88 -> -47.56 with
+  no new column.
 
 Challenge 184 (bank marketing) has no Session 3 notebook: its Session 3
 instructions live in the lab page, `s3-models-and-tuning/lab-3.md`.
@@ -1035,20 +1036,23 @@ def build_bank() -> dict:
 #
 # Same challenge as section 1 (183). That is the point: the student arrives with
 # EDA done and one linear model submitted, and this notebook changes only the
-# model. One chronological train/validation split; a linear model and a
-# 500-tree forest scored on train AND validation; a grid search on the forest
-# over that same split (PredefinedSplit), so the winner is the best validation
-# score in the table the student reads; a refit on everything; a submission.
-# Other model families are left to the student, with no code.
+# model. A chronological `train_test_split`; a linear model and a 500-tree
+# forest scored on train AND test; a grid search on the forest with
+# `TimeSeriesSplit(n_splits=2)` inside the train part only, so the test set
+# plays no part in the choice; one look at the test set; a refit on everything;
+# a submission. Other model families are left to the student, with no code.
+#
+# Selecting on the train part is the fix for the earlier versions, which chose
+# on the same slice they then reported (a validation slice here, the test slice
+# before): the winner's score was flattered by the choice itself, and it lost to
+# the plain forest on the leaderboard.
 #
 # Measured against the committed CSVs in competitions/s2-bike-demand/data/ with
-# the exact code in the cells: LinearRegression 84.96 / 146.37 (train / val
-# MAE), RandomForest(500) 8.03 / 53.03, grid winner max_depth=15,
-# min_samples_leaf=1 at 11.25 / 52.59. The refit scores -48.11 on the
-# leaderboard (-138.88 in Session 2). The unrestricted forest refit the same way
-# scores -47.56: the top two rows of the grid are 0.44 MAE apart on validation,
-# which is noise, and the notebook says so. Only the top two: max_depth=10, third
-# on validation at 53.17, scores -54.64 refit on everything.
+# the exact code in the cells: LinearRegression 84.97 / 146.32 (train / test
+# MAE), RandomForest(500) 8.02 / 53.41. The search keeps the unrestricted forest
+# (validation MAE 53.34 over the two folds; max_depth=15 is second at 53.40),
+# so the winner is the section-5 forest and tests at 53.41. Refit on everything
+# it scores -47.56 on the leaderboard (-138.88 in Session 2).
 # --------------------------------------------------------------------------- #
 def build_bike_modeling() -> dict:
     name = "aie-s3-bike-demand.ipynb"
@@ -1067,10 +1071,10 @@ def build_bike_modeling() -> dict:
             "",
             "The data does not change; the model does. The plan:",
             "",
-            "1. keep a **validation** set aside;",
-            "2. compare a linear model and a random forest on train **and**",
-            "   validation;",
-            "3. tune the forest with a **grid search**;",
+            "1. keep a **test** set aside;",
+            "2. compare a linear model and a random forest on train **and** test;",
+            "3. tune the forest with a **grid search**, cross-validated on the",
+            "   train part only;",
             "4. retrain the best model on all the data and submit.",
         ),
         md("---", "", "## 0. Setup"),
@@ -1097,29 +1101,29 @@ def build_bike_modeling() -> dict:
             "",
             'print("X", X.shape, " X_submission", X_submission.shape)',
         ),
-        md("---", "", "## 3. Keep a validation set aside",
+        md("---", "", "## 3. Keep a test set aside",
            "",
-           "The model never sees the validation rows during `fit`, so its score",
-           "on them estimates the leaderboard before you submit.",
+           "The model never sees the test rows during `fit`, so its score on them",
+           "estimates the leaderboard before you submit.",
            "",
            "`X` is in time order and the leaderboard scores the hours that come",
-           "after it, so the validation set is the **last 20%** — no shuffle."),
+           "after it, so `shuffle=False`: the test set is the **last 20%**."),
         code(
-            "n_val = int(0.2 * len(X))",
-            "X_train, y_train = X.iloc[:-n_val], y.iloc[:-n_val]",
-            "X_val,   y_val   = X.iloc[-n_val:], y.iloc[-n_val:]",
+            "from sklearn.model_selection import train_test_split",
             "",
-            'print("train", X_train.shape, " val", X_val.shape)',
-            'print("mean rentals per hour: train %.0f, val %.0f" % (y_train.mean(), y_val.mean()))',
+            "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle=False)",
+            "",
+            'print("train", X_train.shape, " test", X_test.shape)',
+            'print("mean rentals per hour: train %.0f, test %.0f" % (y_train.mean(), y_test.mean()))',
         ),
-        md("The validation hours are busier (268 against 151 bikes an hour): the",
-           "system grew over the two years. Every model will do worse on them."),
+        md("The test hours are busier (268 against 151 bikes an hour): the system",
+           "grew over the two years. Every model will do worse on them."),
         md("---", "", "## 4. Turn it into numbers",
            "",
            "Same preparation as Session 2: the median for missing numbers,",
            "`\"unknown\"` for missing text, one-hot encoding for the text. The",
-           "medians come from the **training rows only**, and the validation",
-           "columns are aligned on the training ones."),
+           "medians come from the **training rows only**, and the test columns",
+           "are aligned on the training ones."),
         code(
             "def encode(frame, medians, columns=None):",
             '    f = frame.drop(columns=["id"]).fillna(medians)',
@@ -1132,14 +1136,14 @@ def build_bike_modeling() -> dict:
             "",
             "medians = X_train.median(numeric_only=True)",
             "X_train_enc = encode(X_train, medians)",
-            "X_val_enc = encode(X_val, medians, X_train_enc.columns)",
-            "X_train_enc.shape, X_val_enc.shape",
+            "X_test_enc = encode(X_test, medians, X_train_enc.columns)",
+            "X_train_enc.shape, X_test_enc.shape",
         ),
         md("---", "", "## 5. Two models, two scores",
            "",
            "Each model is fitted on the training rows, then scored twice: on",
-           "those same rows (**train MAE**) and on the validation rows it has",
-           "never seen (**val MAE**)."),
+           "those same rows (**train MAE**) and on the test rows it has never",
+           "seen (**test MAE**)."),
         code(
             "from sklearn.linear_model import LinearRegression",
             "from sklearn.ensemble import RandomForestRegressor",
@@ -1149,8 +1153,8 @@ def build_bike_modeling() -> dict:
             "def evaluate(model):",
             "    model.fit(X_train_enc, y_train)",
             "    train_mae = mean_absolute_error(y_train, model.predict(X_train_enc))",
-            "    val_mae = mean_absolute_error(y_val, model.predict(X_val_enc))",
-            '    print(f"train MAE {train_mae:6.1f} | val MAE {val_mae:6.1f} | {model}")',
+            "    test_mae = mean_absolute_error(y_test, model.predict(X_test_enc))",
+            '    print(f"train MAE {train_mae:6.1f} | test MAE {test_mae:6.1f} | {model}")',
             "",
             "",
             "evaluate(LinearRegression())",
@@ -1158,9 +1162,9 @@ def build_bike_modeling() -> dict:
         ),
         md("**What happens?**",
            "",
-           "- Which model is better on validation?",
+           "- Which model is better on the test set?",
            "- The forest is almost perfect on the training rows. Is it as good on",
-           "  the validation rows? What has it learned?",
+           "  the test rows? What has it learned?",
            "- The linear model is bad on both. What does that tell you?"),
         md("**Try other hyperparameters.** Change the forest below, re-run it, and",
            "watch **both** numbers:",
@@ -1172,60 +1176,79 @@ def build_bike_modeling() -> dict:
         code(
             "evaluate(RandomForestRegressor(n_estimators=500, max_depth=5, random_state=0, n_jobs=-1))",
         ),
-        md("---", "", "## 6. Grid search",
+        md("---", "", "## 6. Grid search, cross-validated on the train part",
            "",
-           "`GridSearchCV` does what you just did, for every combination in a",
-           "grid: fit on train, score on validation.",
+           "Picking hyperparameters by looking at the test score uses the test",
+           "set to **choose**: after a few tries it no longer measures new data.",
+           "So the search only looks at the **train part**:",
            "",
-           "- `PredefinedSplit` makes it use **our** split: `-1` marks the",
-           "  training rows, `0` the validation rows.",
-           "- `return_train_score=True` keeps the train score too.",
+           "- `TimeSeriesSplit(n_splits=2)` cuts it in time order: fit on the",
+           "  first third, validate on the second; then fit on the first two",
+           "  thirds, validate on the last one. Always the past predicting the",
+           "  future, like the leaderboard.",
+           "- `return_train_score=True` keeps the train score of each fit.",
            "- scikit-learn maximises a score, so the MAE comes back negated",
            "  (`neg_mean_absolute_error`).",
            "",
-           "12 forests of 500 trees: expect a minute or two on Colab."),
+           "12 forests × 2 folds: expect a minute or two on Colab."),
         code(
-            "from sklearn.model_selection import GridSearchCV, PredefinedSplit",
+            "from sklearn.model_selection import GridSearchCV, TimeSeriesSplit",
             "",
             "grid = {",
             '    "max_depth": [5, 10, 15, None],',
             '    "min_samples_leaf": [1, 5, 20],',
             "}",
-            "split = PredefinedSplit([-1] * len(X_train_enc) + [0] * len(X_val_enc))",
-            "",
             "search = GridSearchCV(",
             "    RandomForestRegressor(n_estimators=500, random_state=0, n_jobs=-1), grid,",
-            '    cv=split, scoring="neg_mean_absolute_error", return_train_score=True,',
-            "    refit=False,   # section 7 retrains the winner on all the data",
+            '    cv=TimeSeriesSplit(n_splits=2), scoring="neg_mean_absolute_error",',
+            "    return_train_score=True,",
             ")",
-            "search.fit(pd.concat([X_train_enc, X_val_enc]), pd.concat([y_train, y_val]))",
+            "search.fit(X_train_enc, y_train)",
             'print("best:", search.best_params_)',
         ),
+        md("Each forest gets two scores, averaged over the two folds: **train MAE**",
+           "on the hours it was fitted on, **validation MAE** on the later hours",
+           "it had not seen. (scikit-learn names the second one `test`; it is",
+           "not your test set, which is still untouched.)"),
         code(
-            "results = pd.DataFrame(search.cv_results_)",
+            "import matplotlib.pyplot as plt",
+            "",
+            'results = pd.DataFrame(search.cv_results_).sort_values("rank_test_score")',
             'results["train MAE"] = -results["mean_train_score"]',
-            'results["val MAE"] = -results["mean_test_score"]',
-            'cols = ["param_max_depth", "param_min_samples_leaf", "train MAE", "val MAE"]',
-            'results[cols].sort_values("val MAE").round(1)',
+            'results["validation MAE"] = -results["mean_test_score"]',
+            'results["forest"] = results["params"].map(str)',
+            "",
+            'ax = results.plot.barh(x="forest", y=["train MAE", "validation MAE"], figsize=(8, 5))',
+            "ax.invert_yaxis()   # best forest on top",
+            'ax.set_xlabel("MAE — lower is better")',
+            "plt.show()",
+            "",
+            'results[["forest", "train MAE", "validation MAE"]].round(1)',
         ),
-        md("Read it from the bottom up:",
+        md("Read the plot from the bottom up:",
            "",
-           "- `max_depth=5` and `min_samples_leaf=20` are bad on **both** columns:",
-           "  the trees are too simple. That is **underfitting**, like the linear",
-           "  model.",
-           "- The forest of section 5 (`None`, `1`) scores 8 on train and 53 on",
-           "  validation: it has memorised the training hours. That is",
-           "  **overfitting**.",
-           "- The winner, `max_depth=15`, is worse on train (11 against 8) and",
-           "  better on validation (52.6 against 53.0). **Choose on the validation",
-           "  column**, never on the train one.",
-           "- The first two rows are within 0.5 MAE of each other. A gap that",
-           "  small is noise: on the leaderboard they score about the same."),
+           "- `max_depth=5`, then `min_samples_leaf=20`: both bars are long. The",
+           "  trees are too simple — **underfitting**, like the linear model.",
+           "- At the top, `max_depth=None, min_samples_leaf=1`: a tiny train bar",
+           "  (7) and a long validation bar (53). It has memorised the training",
+           "  hours — **overfitting** — and it is still the best on validation.",
+           "- So the search keeps the forest of section 5: every restriction makes",
+           "  validation worse. A gap between train and validation is not by",
+           "  itself a reason to restrict a model. **Choose on validation.**",
+           "- `max_depth=15` is less than 0.1 MAE behind: a tie."),
+        md("Now, once, the test set. `GridSearchCV` has already refitted the winner",
+           "on the whole train part, so `search` predicts directly."),
+        code(
+            "test_mae = mean_absolute_error(y_test, search.predict(X_test_enc))",
+            'print(f"grid winner: test MAE {test_mae:.1f}")',
+        ),
+        md("53.4, as in section 5 — it is the same forest. This time the test set",
+           "checked a choice made without it."),
         md("---", "", "## 7. Retrain on all the data and submit",
            "",
            "The grid chose the hyperparameters. Retrain them on **all** 13,903",
-           "labelled hours: the validation hours are the most recent ones, the",
-           "closest to the hours the leaderboard scores."),
+           "labelled hours: the test hours are the most recent ones, the closest",
+           "to the hours the leaderboard scores."),
         code(
             "medians_all = X.median(numeric_only=True)",
             "X_all_enc = encode(X, medians_all)",
@@ -1247,13 +1270,13 @@ def build_bike_modeling() -> dict:
         code(
             "client.leaderboard(CHALLENGE_ID).head(10)",
         ),
-        md("About **−48**, against **−138.88** for the Session 2 line: the same",
+        md("About **−47.6**, against **−138.88** for the Session 2 line: the same",
            "columns, another model."),
         md("---", "", "## 8. Your turn: other models",
            "",
            "Same protocol for other model families: fit on train, compare train",
-           "and validation MAE, then a grid search on the promising ones. No code",
-           "this time.",
+           "and test MAE, then a grid search with `TimeSeriesSplit` on the train",
+           "part. No code this time.",
            "",
            "- `Ridge` and `Lasso` — a linear model with a penalty, `alpha`;",
            "- `KNeighborsRegressor` — `n_neighbors`;",
@@ -1267,9 +1290,10 @@ def build_bike_modeling() -> dict:
            "`make_pipeline(StandardScaler(), SVR())`. For each one: does it",
            "underfit or overfit? Does the grid search help?",
            "",
-           "Improve your **validation MAE**. When a model clearly beats the",
-           "forest, retrain it on all the data and submit — the leaderboard is a",
-           "check, not a search space."),
+           "Improve your local evaluation — the validation MAE of the search,",
+           "then one look at the test MAE. When a model clearly beats the forest,",
+           "retrain it on all the data and submit: the leaderboard is a check,",
+           "not a search space."),
         code(""),
     ]), name
 
