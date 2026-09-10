@@ -426,8 +426,8 @@
             "support-vector-machines",
             "ensembles-bagging",
             "ensembles-boosting",
-            "hyperparameter-optimization",
             "neural-networks",
+            "hyperparameter-optimization",
             "lab-3"
           ],
           "summary": "Beyond the straight line: regularisation, KNN, trees, SVM, bagging and boosting, hyperparameter search \u2014 and the multi-layer perceptron that session 4 implements in PyTorch.",
