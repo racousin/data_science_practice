@@ -430,15 +430,17 @@ modules:
         file: s3-models-and-tuning/ensembles-boosting.md
         estimated_minutes: 20
         is_published: true
-      - title: "Hyperparameter Optimization"
-        slug: hyperparameter-optimization
-        file: s3-models-and-tuning/hyperparameter-optimization.md
-        estimated_minutes: 15
-        is_published: true
+      # Reordered in the course editor on 2026-09-10 and taken here from
+      # `make pull`'s report: the MLP now comes before the search that tunes it.
       - title: "Multi-Layer Perceptrons"
         slug: neural-networks
         file: s3-models-and-tuning/neural-networks.md
         estimated_minutes: 30
+        is_published: true
+      - title: "Hyperparameter Optimization"
+        slug: hyperparameter-optimization
+        file: s3-models-and-tuning/hyperparameter-optimization.md
+        estimated_minutes: 15
         is_published: true
       # `training-neural-networks` was deleted in the course editor on
       # 2026-09-09, restored by a publish that day, and deleted again straight
@@ -555,11 +557,21 @@ modules:
         estimated_minutes: 25
         is_published: true
         in_deck: false
-      - title: "Reference — A Short History of Deep Learning"
-        slug: deep-learning-history
-        file: s4-pytorch-nutshell/deep-learning-history.md
-        estimated_minutes: 15
-        is_published: true
+      # `Reference — A Short History of Deep Learning` (server lesson 143) was
+      # deleted in the course editor and pulled down here on 2026-09-10; its
+      # file went with it.
+      #
+      # `todo` (server lesson 185) was created in the course editor on
+      # 2026-09-09: a copy of Session 3's retired `training-neural-networks`
+      # (wide vs deep, mini-batch GD, batch & epoch, early stopping), parked
+      # here as material for the Session 4 rework. Unpublished and out of the
+      # deck. Its images pointed at lesson 164's upload directory, which 404s
+      # since that lesson was deleted; the local copy points at the committed
+      # files under assets/s3-models-and-tuning/training-neural-networks/.
+      - title: "todo"
+        slug: todo
+        file: s4-pytorch-nutshell/todo.md
+        is_published: false
         in_deck: false
     # Three challenges. The two new ones carry the session's argument -- that
     # Session 2's linear model has a ceiling and a small MLP clears it -- on a

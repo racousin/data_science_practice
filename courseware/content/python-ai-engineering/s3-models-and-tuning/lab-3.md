@@ -1,12 +1,9 @@
 # Lab 1 — Modelling & Evaluation
 
-Same two datasets as Session 2. In that session you looked at them and fitted
-one linear model on each — an EDA and a first baseline. Everything that decides
-*which* model you keep was still missing.
-
-That is this lab. The data does not change, the columns do not change; what
+Same two datasets as Session 2.
+The data does not change, the columns do not change; what
 changes is the model, and the machinery that ranks models honestly before the
-leaderboard does. Both scores move a long way for that reason alone.
+leaderboard does.
 
 **Deliverable:** a better submission on each of the two challenges, and the
 model-selection half of your toolkit.
@@ -47,7 +44,7 @@ Also the challenge you already submitted to. 11.7% positive, ranked on **F1**.
 
 Continue the work you started and evaluate and improve your performances.
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/data_science_practice/blob/main/website/public/modules/python-ai-engineering/challenges/aie-s3-bank-marketing.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/data_science_practice/blob/main/website/public/modules/python-ai-engineering/challenges/aie-s2-bank-marketing.ipynb)
 
 
 
@@ -75,7 +72,7 @@ dskit/
 
 ---
 
-## Complete your toolkit — The two new modules examples (DO THE ONES YOU USE!)
+## Complete your toolkit — New modules examples (DO THE ONES YOU USE!)
 
 They hold exactly the code you have now written twice:
 

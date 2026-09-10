@@ -66,6 +66,16 @@ only decides how confidence varies as you move away from that hyperplane.
 
 ---
 
+## What the threshold draws
+
+![A linear decision boundary](assets/s3-models-and-tuning/non-linearity/linear-decision-boundary.png)
+
+The boundary is the line $\theta^T x = 0$. Everything on one side is class 1.
+
+---
+
+
+
 
 ## Why not MSE
 
