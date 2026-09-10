@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Report slides whose content does not fit, even at the smallest font.
+"""Report slide content that does not fit: slides too tall even at the smallest
+font, and code lines too wide for their panel.
 
 `build_slides.py` steps down a font ladder until the content fits the body box.
 When even the last rung does not fit, it renders anyway — and the overflow falls
@@ -10,7 +11,8 @@ does.
         python tools/check_slide_overflow.py content/python-ai-engineering
 
     ... --module s1-git-and-packaging     # one module
-    ... --verbose                         # per-block heights, to pick a split
+    ... --verbose                         # per-block heights, to pick a split;
+                                          # the text of each too-wide code line
 
 Exit status is 1 if anything overflows, so it works as a build gate.
 
@@ -21,6 +23,13 @@ IMAGE_MIN_H — so the remaining fix is editorial: split the slide with a `---`
 and give the second half a heading. Of the 4.95 in a titled slide has, a figure
 at full size takes 3.4, which leaves room for one short paragraph or a
 four-row table and nothing else.
+
+Code overflows sideways. A code panel does not wrap, so a line longer than the
+panel runs past its right edge and, if long enough, off the slide. Each such
+line is measured at the code size the ladder picks for its slide (the body size
+`Measurer.fit` returns, through `code_size`), so the same line can fit on a
+crowded slide set small and be reported on a sparse one set large. At the top
+rung a panel holds 76 characters. The fix is to break the line.
 """
 from __future__ import annotations
 
@@ -47,11 +56,34 @@ def describe(block) -> str:
     return str(getattr(block, "text", ""))[:60]
 
 
+def code_overruns(blocks, size: int):
+    """Each code line wider than its panel on a slide set at `size`.
+
+    Yields (line, inches past the panel's text area). The panel is sized the way
+    `DeckBuilder._code` draws it: the body box wide, text inset CODE_PAD_IN on
+    each side, set in `code_size(size)` points of a font whose every glyph
+    advances MONO_ADVANCE_EM. Trailing blanks are dropped — they draw nothing.
+    A tab counts as one character, though PowerPoint advances it to the next
+    tab stop, so a tab-indented line is measured short.
+    """
+    room = bs.CONTENT_W_IN - 2 * bs.CODE_PAD_IN
+    char_in = bs.code_size(size) * bs.MONO_ADVANCE_EM / 72.0
+    for block in blocks:
+        if block.kind != "code":
+            continue
+        for line in block.lines:
+            line = line.rstrip()
+            excess = len(line) * char_in - room
+            if excess > 0:
+                yield line, excess
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("content", help="course content directory (holds course.yaml)")
     ap.add_argument("--module", action="append", help="only this module slug")
-    ap.add_argument("--verbose", action="store_true", help="show per-block heights")
+    ap.add_argument("--verbose", action="store_true",
+                    help="show per-block heights, and each too-wide code line")
     ap.add_argument("--cache", default="build/slides/.mathcache",
                     help="where display-math PNGs are cached (shared with the build)")
     args = ap.parse_args()
@@ -67,6 +99,7 @@ def main() -> int:
     smallest = bs.SIZE_LADDER[-1]
 
     problems = 0
+    too_wide = 0
     for module in course["modules"]:
         slug = module.get("slug") or bs._slug(module["title"])
         if args.module and slug not in args.module:
@@ -79,23 +112,36 @@ def main() -> int:
                 title, blocks = bs.parse_blocks(bs.NOTES_RE.sub("", chunk))
                 if not title and not blocks:
                     continue
+                where = f"{slug}/{lesson['slug']} slide {n}"
                 avail = titled if title else untitled
                 height, image_heights = measure.plan(blocks, smallest, avail)
-                if height <= avail:
+                if height > avail:
+                    problems += 1
+                    print(
+                        f"{where}: "
+                        f"{title or '(untitled)'} — needs {height:.2f} in of {avail:.2f}"
+                    )
+                    if args.verbose:
+                        for i, b in enumerate(blocks):
+                            h = (image_heights[i] + 0.16 if b.kind == "image"
+                                 else measure.block_height(b, smallest))
+                            print(f"    {b.kind:8} {h:5.2f}  {describe(b)}")
+
+                if not any(b.kind == "code" for b in blocks):
                     continue
-                problems += 1
-                print(
-                    f"{slug}/{lesson['slug']} slide {n}: "
-                    f"{title or '(untitled)'} — needs {height:.2f} in of {avail:.2f}"
-                )
-                if args.verbose:
-                    for i, b in enumerate(blocks):
-                        h = (image_heights[i] + 0.16 if b.kind == "image"
-                             else measure.block_height(b, smallest))
-                        print(f"    {b.kind:8} {h:5.2f}  {describe(b)}")
+                size, _, _ = measure.fit(blocks, avail)
+                for line, excess in code_overruns(blocks, size):
+                    too_wide += 1
+                    print(
+                        f"{where}: code line of {len(line)} characters "
+                        f"is {excess:.2f} in wider than its panel"
+                    )
+                    if args.verbose:
+                        print(f"    {line}")
 
     print(f"{problems} overflowing slide(s)")
-    return 1 if problems else 0
+    print(f"{too_wide} code line(s) wider than their panel")
+    return 1 if problems or too_wide else 0
 
 
 if __name__ == "__main__":

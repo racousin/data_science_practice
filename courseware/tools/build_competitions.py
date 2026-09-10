@@ -77,10 +77,14 @@ DEFAULT_SDK = COURSEWARE.parent.parent.parent / "mlarena-sdk"
 # Build order = course order. Session 1 has no package of its own: its lab
 # submits to the existing PettingZoo Connect-Four challenge (65), which this
 # repository does not own. `s1-textstats` (179) and `s2-readability` (180) were
-# retired on 2026-09-06 with the lessons that used them.
+# retired on 2026-09-06 with the lessons that used them. Session 4's three —
+# `s4-mnist-warmup` (182), `s4-california-housing` (187) and `s4-forest-cover`
+# (188) — were retired on 2026-09-10 and replaced by `s4-taxi-eta`, Lab 1's
+# challenge. Retiring a package means removing it HERE too: `attach` re-links
+# every listed package that has a lockfile entry, detached or not.
 PACKAGES = ["s2-bike-demand", "s2-bank-marketing",
             "s3-adult-income", "s3-diabetes-progression", "s3-credit-risk",
-            "s4-mnist-warmup", "s4-california-housing", "s4-forest-cover"]
+            "s4-taxi-eta"]
 
 
 # --------------------------------------------------------------------------- #

@@ -596,6 +596,63 @@ is missing, and `update_challenge_link` is never called by the publisher.
 
 ---
 
+### 1i. Session 4 rebuilt, and its challenge replaced, 2026-09-10
+
+Session 4 (`s4-pytorch-nutshell`, module #17) was rebuilt around the owner's
+nine-step outline: what PyTorch is and why (hardware, memory, gradients),
+tensors, autograd, optimizers, `nn.Module`, losses, the training loop with
+batches and epochs, saving and loading, and tracking with Weights & Biases.
+Concept first: every code block is at most four lines, and `make check-slides`
+now also reports code lines wider than their slide panel (it measured height
+only; 13 such lines remain in Sessions 1-3 and 35 in course 15, reported, not
+fixed). Lessons 45-49 kept their slugs under new titles; `optimizers`,
+`losses`, `save-and-load` and `weights-and-biases` are new. Deck: 115 slides,
+0 overflowing, 0 over-wide; all 71 code blocks executed and every stated
+output checked.
+
+**Lab 1 — Taxi Arrival Promise** (`lab-4`, retitled) replaces the MNIST lab:
+the student writes the training loop in a Colab starter
+(`aie-s4-taxi-eta.ipynb`; solution `aie-s4-taxi-eta-solution.ipynb`) on NYC
+green-taxi trip durations, trained and scored on the pinball loss at
+tau = 0.9. Challenge **189** (`competitions/s4-taxi-eta`), measured ladder on
+the submission rows:
+
+| | -Pinball | kept |
+|---|---|---|
+| constant (90th percentile) | -2.2331 | 89.4% |
+| LinearRegression on MSE | -2.0866 | 55.7% |
+| QuantileRegressor = benchmark = pass bar | **-1.042916** | 88.4% |
+| the solution notebook (live submission, test account) | **-0.940711** | 87.7% |
+
+The first build stopped at `start_competition`: **the platform refuses to
+start a file_v1 CSV challenge without an env file named `y_test.csv`**
+(`backend/app/views/creator_competition/lifecycle.py`), which the 2026-09-09
+rename to `y_submission.csv` would have hit on any rebuild. The package now
+uploads the labels under both names; the `y_test.csv` copy also turns on the
+upload gate (header + id set), so a malformed file no longer costs a student
+one of their two daily deploys.
+
+Executed against production, in this order: `make competitions
+ONLY=s4-taxi-eta` (create hidden, benchmark verified -1.042916, start);
+`update_challenge(189, is_public=True)`; `detach_challenge(17, ...)` for 182,
+187 and 188 (guarded on module 17 holding exactly those); `make publish
+MODULE=s4-pytorch-nutshell FORCE=1` (the only drift was the lesson order the
+website's `todo` / `deep-learning-history` edits changed, already absorbed);
+`build_competitions.py attach --only s4-taxi-eta` (pass threshold -1.042916).
+Verified: `check-sync` 0 differences over 14 bodies, `student_walk.py check`
+nothing but the known speaker-notes item, and a real submission of the
+solution scoring -0.940711 on the live board.
+
+**Still open, deliberately:** `warmup-1-optimization` (171),
+`warmup-2-cpu-gpu` (172), `autograd-mathematics` (142) and `todo` (185) are
+**unpublished, not deleted**, pending the owner's review of the new lessons —
+then `delete_lesson` them BEFORE the next publish and drop their entries.
+182, 187 and 188 are detached but still public and started. The packages for
+them and their notebooks were deleted from this repo (the §1d precedent).
+Session 3 is frozen and was not touched.
+
+---
+
 ## 2. What a student hits
 
 **All of the below has been fixed and is live.** This section is kept as the record of

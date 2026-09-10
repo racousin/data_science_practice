@@ -18,9 +18,7 @@ competitions/
 ├── s3-adult-income/     file_v1   Lab 3's pipeline, on a held-out Adult split
 ├── s3-diabetes-progression/ file_v1  Session 3 regression — the overfitting demo
 ├── s3-credit-risk/      file_v1   Session 3 classification — the same, guided
-├── s4-california-housing/ file_v1 Session 4 regression — the MLP, worked
-├── s4-forest-cover/     file_v1   Session 4 classification — the same, guided
-├── s4-mnist-warmup/     file_v1   Lab 4's MLP — the submission-path dry run
+├── s4-taxi-eta/         file_v1   Session 4's Lab 1 — an MLP on the pinball loss
 ├── _dataset_ids.py      salted row ids — see "Why the ids are salted"
 ├── localtest.py         run an env.py locally, the way the worker would
 ├── test_challenges.py   pytest — scorers, splits, and the notebooks
@@ -69,34 +67,42 @@ six models by 5-fold CV on the training set alone reproduces their test ranking
 **exactly**; ranking them by training score gets it almost backwards. That is
 the session's whole argument, and it is reproducible rather than asserted.
 
-Session 4 carries two more, and they make the opposite argument to Session 3's.
-There, extra capacity was a trap; here the data is genuinely non-linear and the
-capacity pays. Both are measured on the shipped splits, with the MLP trained the
-way the notebooks train it (60 epochs of Adam, best-validation checkpoint
-restored):
+Session 4 carries one, and it moves the question from the model to the loss.
+Lab 1's network is fixed — a 12-64-64-1 MLP — and `s4-taxi-eta` asks it for an
+arrival time the ride beats 9 times out of 10: NYC green-taxi trips from
+January 2024, scored with the pinball loss at τ = 0.9, which the student writes
+along with the training loop. Measured on the shipped split (the MLP rows are
+the lab's recipe — 30 epochs of Adam, best-validation checkpoint restored —
+over five seeds):
 
-| | linear baseline | MLP | unstandardised MLP |
-|---|---|---|---|
-| `s4-california-housing` (R²) | 0.576 | **0.776** | 0.541 |
-| `s4-forest-cover` (accuracy) | 0.696 | **0.814** | 0.737 |
+| submission | −Pinball | promises kept |
+|---|---|---|
+| always 24.7 min, the 90th percentile of `y.csv` | −2.233 | 89.4% |
+| `LinearRegression` on MSE | −2.087 | 55.7% |
+| the MLP trained on MSE | ≈ −1.74 | ≈ 54% |
+| **`QuantileRegressor(quantile=0.9)` — the benchmark** | **−1.0429** | 88.4% |
+| the MLP trained on pinball | ≈ −0.94 | ≈ 89% |
 
-The third column is the one worth keeping. On California housing the *identical*
-network, minus one `StandardScaler`, scores below the straight line it was
-supposed to replace — and nothing warns you, because the loss still goes down
-and the run still completes.
+The same network goes from below the straight line to above it by changing one
+function, which is the reason to own the loop. `s4-california-housing` (187),
+`s4-forest-cover` (188) and `s4-mnist-warmup` (182) were retired on 2026-09-10
+with the lab they served; git history keeps them.
 
-### The Session 4 benchmarks are the linear model, not the notebook
+### The Session 4 benchmark is a linear model, not the notebook
 
 Sessions 2 and 3 pin `benchmark_expected_score` to what the worked notebook
 produces. Session 4 cannot: a torch training run is bit-reproducible on one
 machine and not across machines, so a float pinned to 1e-6 would be a claim the
 test suite eventually falsifies on somebody else's BLAS.
 
-So both Session 4 packages declare the **linear** model as the benchmark — the
-bar rather than the answer — and add `notebook_expected_min_score`, a floor with
-real headroom (0.72 declared against 0.776 measured, stable to ±0.003 across
-seeds). `test_challenges.py` asserts the notebook clears the floor *and* beats
-the benchmark, which is the actual claim of the session.
+So `s4-taxi-eta` declares the best **linear** model under the same loss —
+`QuantileRegressor`, solved exactly — as the benchmark and the pass bar: the
+bar rather than the answer. It adds `notebook_expected_min_score`, a floor with
+real headroom (−0.99 declared against −0.93 to −0.95 measured for the solution
+notebook), and `test_challenges.py` asserts the notebook clears the floor *and*
+beats the benchmark. The bar certifies the promises, not the loop — an
+MSE-trained network rescaled by one factor clears it too — so the notebook's
+check cells, not the leaderboard, are the evidence that a student wrote it.
 
 ### Ranking direction
 
@@ -118,7 +124,18 @@ the live platform rather than read:
 1. **Upload.** `backend/app/services/check_upload_files/check_csv_submission.py`
    checks the submission's columns and id set against the competition's ground
    truth at upload time. A CSV with a row missing never deploys — the agent goes
-   to `UPLOAD_FAILED` and `env.py` is never called.
+   to `UPLOAD_FAILED` and `env.py` is never called. **Only where that ground
+   truth exists:** the backend extracts it from an env file named `y_test.csv`
+   (`backend/app/views/creator_competition/env_files.py`), which is Session 2's
+   convention. Session 3's packages upload only `y_submission.csv`, so their
+   upload check only confirms the file has a header row, and `env.py` is the
+   only gate — a malformed file fails at deployment, with `env.py`'s message,
+   and still uses one of the student's daily deploys. `s4-taxi-eta` uploads the
+   same labels a second time as `y_test.csv`, and has to: the platform refuses
+   to **start** a file_v1 CSV challenge without an env file of that name
+   (`lifecycle.py`, found on 2026-09-10 when challenge 189's first build
+   stopped at `start_competition`). Its upload gate therefore checks the
+   header and the id set.
 2. **Deployment.** Anything that gets past upload and is rejected by `env.py` —
    a non-numeric value, a `NaN` — sets `is_agent_code_error`, which
    `check_deployment_completion` counts into `code_error`, making
@@ -131,7 +148,7 @@ the live platform rather than read:
 The `ORDER BY` does sort `mean_reward` DESC with no error filter
 (`competitions.py:210-213`), which is what makes this look dangerous at a glance
 — but nothing errored is ever in the set being ordered. Scoring an error 0.0 is
-therefore safe under any metric, and all eight packages do it.
+therefore safe under any metric, and all six packages do it.
 
 The `Reference — …` lessons at the end of sessions 1 and 4 have no competition:
 self-study material, never lectured, with nothing to score.
@@ -222,9 +239,9 @@ exercise is conspicuous. Treat these as coursework, not as a secure benchmark.
 
 ### Still exposed
 
-Only the two Session 2 packages have been re-generated. `s3-adult-income`,
-`s3-diabetes-progression`, `s3-credit-risk`, `s4-california-housing`,
-`s4-forest-cover` and `s4-mnist-warmup` still ship sequential
+The two Session 2 packages have been re-generated, and `s4-taxi-eta` was built
+salted from the start. `s3-adult-income`, `s3-diabetes-progression` and
+`s3-credit-risk` still ship sequential
 `tr_%05d` / `te_%05d` ids over a public seeded split, and are open to the replay
 attack described above. They need the same `shuffle_and_label` change and a
 `refresh` before their sessions run.
@@ -277,25 +294,29 @@ flex_v1 competition built here next.
 
 ```bash
 python competitions/localtest.py s3-adult-income
-python competitions/localtest.py s4-california-housing
+python competitions/localtest.py s4-taxi-eta
 ```
 
-For the six file_v1 packages of Sessions 2–4 there is also a pytest suite, which
+For five of the six file_v1 packages — all but `s3-adult-income` — there is
+also a pytest suite, which
 additionally **executes the worked notebooks** and scores the submissions they
 write — the contract that matters, since those notebooks are what a student
-runs. It also executes the three credential-free notebooks (the pandas/seaborn
-pre-flight and the two Session 4 warm-ups), which need no key at all:
+runs. It also executes the two credential-free notebooks (the pandas/seaborn
+pre-flight and the Session 4 CPU/GPU benchmark), which need no key at all:
 
 ```bash
 export MLARENA_USER_API_KEY=mlk_user_...     # the notebook downloads its own data
 uv run --with pytest --with pandas --with seaborn --with scikit-learn \
-       --with torch --with nbclient --with nbformat --with ipykernel \
+       --with torch --with wandb --with nbclient --with nbformat --with ipykernel \
        --with mlarena-sdk \
        pytest competitions/test_challenges.py -v
 ```
 
-`torch` is needed from Session 4 on; without it those notebook tests skip and
-everything else still runs.
+`torch` and `wandb` are needed from Session 4 on; without them those notebook
+tests skip and everything else still runs. For `s4-taxi-eta` it is the
+**solution** notebook that is executed (the starter stops at its first check
+by design). Its `wandb.init` carries no mode; the test sets
+`WANDB_MODE=disabled`, which the kernel inherits, so no W&B account is needed.
 
 Without the key the two notebook-execution tests skip and the rest still run.
 The submit cell is neutralised during the run, so a test never puts a row on a

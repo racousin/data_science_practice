@@ -53,9 +53,7 @@ courseware/
 │   ├── s3-adult-income/              # file_v1 — Lab 3's pipeline
 │   ├── s3-diabetes-progression/      # file_v1 — the overfitting demo, worked
 │   ├── s3-credit-risk/               # file_v1 — the same, guided
-│   ├── s4-california-housing/        # file_v1 — the PyTorch MLP, worked
-│   ├── s4-forest-cover/              # file_v1 — the same, guided
-│   ├── s4-mnist-warmup/              # file_v1 — Lab 4's submission dry run
+│   ├── s4-taxi-eta/                  # file_v1 — Lab 1's MLP, on a pinball loss
 │   ├── localtest.py                  # run an env.py the way the worker would
 │   └── .mlarena-state.json           # id lockfile — committed
 ├── tools/
@@ -232,6 +230,14 @@ the split point, and the fix from there is editorial — split with a `---` and
 give the second half a heading.
 
 All four sessions are clean.
+
+`make check-slides` also reports every code line wider than its panel — code
+does not wrap, so such a line runs past the panel's edge and, if long enough,
+off the slide — measured at the code size the font ladder picks for that slide,
+and counts it in the exit status. In practice a panel holds about **76
+characters** at the default size (18 pt code, the top rung), 85 at 16 pt and 98
+at 14 pt, so break a longer line rather than count on a crowded slide to shrink
+the font.
 
 A lesson marked `in_deck: false` in `course.yaml` is skipped by the deck builder
 and published as usual — that is how the `Reference — …` self-study lessons sit
@@ -475,9 +481,10 @@ endpoint — per the frontend↔SDK parity rule in `mlarena-sdk/PROCESS.md`.
 ## Competitions
 
 Each taught session has at least one competition linked to its module. Sessions
-2, 3 and 4 build theirs from a package under `competitions/` — two apiece, one
-per model family or target type they teach — plus the notebooks that go with
-them (`tools/build_notebooks.py`, output under
+2, 3 and 4 build theirs from a package under `competitions/` — Sessions 2 and 3
+one per model family or target type they teach, Session 4 a single one,
+`s4-taxi-eta`, for Lab 1 (its three earlier packages were retired on
+2026-09-10) — plus the notebooks that go with them (`tools/build_notebooks.py`, output under
 `website/public/modules/python-ai-engineering/challenges/`, which is the path
 the Colab links resolve against on GitHub). They grade a *submission file*
 (`file_v1`).
@@ -496,12 +503,17 @@ notebooks are executed and their submissions scored, and the guided ones are
 asserted to contain no code. Session 3 is the exception: its bank challenge
 (184) has no notebook of its own — the steps are in
 `s3-models-and-tuning/lab-3.md`, and students continue in their Session 2
-notebook.
+notebook. Session 4 has one challenge and a different pair: a **starter**
+(`aie-s4-taxi-eta.ipynb`) that gives everything around the training loop and
+leaves seven `# TODO` cells, each followed by a check cell, and its
+**solution** (`aie-s4-taxi-eta-solution.ipynb`), which the tests execute. One
+builder writes both, and `test_taxi_starter_matches_solution_scaffold` holds
+them to the same cells outside the seven.
 
-`build_notebooks.py` also emits three notebooks that are not challenges and need
-no ML-Arena account — the pandas/seaborn pre-flight for Session 2 and the two
-Session 4 warm-ups. They are reached from their lessons rather than from a
-competition page.
+`build_notebooks.py` also emits two notebooks that are not challenges and need
+no ML-Arena account — the pandas/seaborn pre-flight for Session 2 and the
+Session 4 CPU/GPU benchmark, linked from lesson 1. They are reached from their
+lessons rather than from a competition page.
 
 Challenge ids come from `competitions/.mlarena-state.json` rather than being
 typed into the generator, so a notebook written before its competition exists

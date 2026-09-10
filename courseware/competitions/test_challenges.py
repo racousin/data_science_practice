@@ -2,11 +2,11 @@
 """Tests for the Session 2, 3 and 4 challenge packages and their notebooks.
 
     uv run --with pytest --with pandas --with scikit-learn --with seaborn \
-        --with torch --with nbformat --with nbclient --with ipykernel \
+        --with torch --with wandb --with nbformat --with nbclient --with ipykernel \
         pytest courseware/competitions/test_challenges.py -v
 
-`torch` is needed from Session 4 on; without it the Session 4 notebook tests
-skip and everything else still runs.
+`torch` and `wandb` are needed from Session 4 on; without them the Session 4
+notebook tests skip and everything else still runs.
 
 What is covered, and why each one exists:
 
@@ -28,9 +28,12 @@ What is covered, and why each one exists:
   s2-bike-demand's does because the notebook submits twice — the baseline, then
   an engineered model that beats it, which is the session's whole argument;
 * each **guided notebook contains no code**, which is the point of it;
-* the pandas/seaborn pre-flight notebook and the two Session 4 warm-ups run
-  with **no credentials at all** -- they are what a student opens before they
-  have an account;
+* the Session 4 **starter** is its solution cell for cell, except the seven
+  cells the student writes, which hold only `# TODO` comments naming what the
+  check after them reads;
+* the pandas/seaborn pre-flight notebook and the Session 4 CPU/GPU benchmark
+  run with **no credentials at all** -- they are what a student opens before
+  they have an account;
 * every notebook is in sync with the builder that generates them.
 
 Notebook execution needs a real key (the notebook downloads its own data):
@@ -39,7 +42,9 @@ Notebook execution needs a real key (the notebook downloads its own data):
 
 Without it the notebook-execution tests skip; everything else still runs.
 The submit cell is neutralised during the test — a test run must not put rows on
-a live leaderboard. `--submit-for-real` opts into it.
+a live leaderboard. `--submit-for-real` opts into it. W&B logging is off in the
+executed notebooks: the test sets `WANDB_MODE=disabled`, which the kernel
+inherits and wandb honours, so no account and no W&B network access are needed.
 """
 from __future__ import annotations
 
@@ -61,14 +66,16 @@ NOTEBOOKS = REPO / "website" / "public" / "modules" / "python-ai-engineering" / 
 
 PACKAGES = ["s2-bike-demand", "s2-bank-marketing",
             "s3-diabetes-progression", "s3-credit-risk",
-            "s4-california-housing", "s4-forest-cover"]
-REGRESSION = {"s2-bike-demand", "s3-diabetes-progression", "s4-california-housing"}
-# s2-bike-demand ranks on -MAE, so the "R2 = 0 is the mean model" claim is not
-# made on its page and not asserted of its score.
-R2_RANKED = REGRESSION - {"s2-bike-demand"}
-# Multi-class, so the binary-classifier assertions (F1 = 0 for always-0, a
-# `prediction` of 0/1) do not apply to it.
-MULTICLASS = {"s4-forest-cover"}
+            "s4-taxi-eta"]
+REGRESSION = {"s2-bike-demand", "s3-diabetes-progression", "s4-taxi-eta"}
+# s2-bike-demand ranks on -MAE and s4-taxi-eta on -Pinball, so the "R2 = 0 is
+# the mean model" claim is not made on their pages and not asserted of their
+# scores.
+R2_RANKED = REGRESSION - {"s2-bike-demand", "s4-taxi-eta"}
+# Multi-class packages, for which the binary-classifier assertions (F1 = 0 for
+# always-0, a `prediction` of 0/1) do not apply. None since s4-forest-cover
+# retired on 2026-09-10; the branch that reads this is kept for the next one.
+MULTICLASS = set()
 
 # The handed-out files, by the role they play rather than by name. Sessions 3
 # and 4 were renamed on 2026-09-09: X/y is the labelled data you fit on and
@@ -89,8 +96,14 @@ def data_files(pkg: str) -> dict:
 # Notebooks a student can open before they have an ML-Arena account. They must
 # not mention the SDK or a key.
 CREDENTIAL_FREE = ["aie-s0-pandas-seaborn.ipynb",
-                   "aie-s4-optimization-warmup.ipynb",
                    "aie-s4-cpu-gpu-benchmark.ipynb"]
+
+# Session 4's lab: one builder writes the starter and its solution. The starter
+# holds comment-only `# TODO` cells where the solution has code — Steps 1, 2, 3,
+# 4, 5a, 5b and 5c — and is otherwise the same notebook.
+TAXI_STARTER = "aie-s4-taxi-eta.ipynb"
+TAXI_SOLUTION = "aie-s4-taxi-eta-solution.ipynb"
+TAXI_STUDENT_CELLS = 7
 
 
 # --------------------------------------------------------------------------- #
@@ -279,6 +292,28 @@ def test_neg_mae_is_the_negated_mean_absolute_error(tmp_path):
     assert result["score"] < 0, "-MAE is negative for every imperfect model"
 
 
+@pytest.mark.parametrize("const", [20.0, -5.0])
+def test_neg_pinball_is_the_negated_pinball_loss(const, tmp_path):
+    """The taxi overview reads -Pinball as the mean cost of a promise, 0.9 per
+    minute late and 0.1 per minute early. Checked against scikit-learn's own
+    pinball loss on a constant promise — and on a negative one, which the
+    scorer must score and count rather than reject."""
+    import pandas as pd
+    from sklearn.metrics import mean_pinball_loss
+    yte = pd.read_csv(HERE / "s4-taxi-eta" / "data" / "y_submission.csv")
+    path = write_csv(tmp_path / "sub.csv", [f"{i},{const}" for i in yte["id"]])
+    result = score("s4-taxi-eta", path)
+    assert not result.get("is_agent_code_error"), result.get("agent_code_error_message")
+    expected = -mean_pinball_loss(yte["prediction"], [const] * len(yte), alpha=0.9)
+    assert abs(result["score"] - expected) < 1e-6
+    assert result["score"] == result["metrics_detail"]["neg_pinball"]
+    detail = result["metrics_detail"]
+    kept = 100 * (yte["prediction"] <= const).mean()
+    assert abs(detail["promise_kept_pct"] - kept) < 1e-4
+    assert abs(detail["avg_promise_min"] - const) < 1e-9
+    assert detail["n_negative"] == (len(yte) if const < 0 else 0)
+
+
 @pytest.mark.parametrize("pkg", ["s2-bank-marketing", "s3-credit-risk"])
 def test_always_zero_is_f1_zero(pkg, tmp_path):
     """Likewise for the classifiers' headline claim."""
@@ -408,8 +443,7 @@ def test_notebook_code_cells_compile():
 
 
 @pytest.mark.parametrize("notebook", ["aie-s2-bank-marketing.ipynb",
-                                     "aie-s3-credit-risk.ipynb",
-                                     "aie-s4-forest-cover.ipynb"])
+                                     "aie-s3-credit-risk.ipynb"])
 def test_guide_notebook_has_no_code(notebook):
     """The guided notebooks guide in English and ship empty cells on purpose."""
     nb = json.loads((NOTEBOOKS / notebook).read_text())
@@ -423,7 +457,7 @@ def test_guide_notebook_has_no_code(notebook):
 @pytest.mark.parametrize("notebook", ["aie-s2-bike-demand.ipynb",
                                      "aie-s3-bike-demand.ipynb",
                                      "aie-s3-diabetes-progression.ipynb",
-                                     "aie-s4-california-housing.ipynb"])
+                                     TAXI_STARTER, TAXI_SOLUTION])
 def test_worked_notebook_has_no_leftover_placeholder_key(notebook):
     nb = json.loads((NOTEBOOKS / notebook).read_text())
     src = "".join("".join(c["source"]) for c in nb["cells"])
@@ -432,10 +466,72 @@ def test_worked_notebook_has_no_leftover_placeholder_key(notebook):
         "a real API key leaked into the committed notebook"
 
 
+def test_taxi_starter_matches_solution_scaffold():
+    """Session 4's lab ships a starter and its solution from one builder.
+    Everything but the seven cells the student writes must be the same cell in
+    both — the download, the split, the checks, the predict and submit cells —
+    and each of the starter's seven must hold comments only, ending on the
+    names the check after it reads, so that the check stops the notebook with a
+    NameError until the step is written. W&B gets no mode in the code: the
+    student chooses one, and the test run sets WANDB_MODE."""
+    import re
+    starter = json.loads((NOTEBOOKS / TAXI_STARTER).read_text())["cells"]
+    solution = json.loads((NOTEBOOKS / TAXI_SOLUTION).read_text())["cells"]
+
+    def src(cell):
+        return "".join(cell["source"])
+
+    assert [c["cell_type"] for c in starter] == [c["cell_type"] for c in solution], (
+        "the starter and the solution differ in their sequence of cells")
+    assert [c["id"] for c in starter] == [c["id"] for c in solution]
+
+    # Cell 0: the solution opens on a line for the teacher, and each Colab
+    # badge opens its own file. Nothing else may differ.
+    s0, t0 = src(starter[0]), src(solution[0])
+    assert t0.startswith("**Solution — for the teacher"), "the solution must say so on its first line"
+    assert "Solution" not in s0
+    assert t0.replace(TAXI_SOLUTION, TAXI_STARTER).endswith(s0), (
+        "cell 0 differs beyond the teacher line and the Colab badge")
+
+    written = []
+    for i in range(1, len(starter)):
+        s, t = src(starter[i]), src(solution[i])
+        if s == t:
+            continue
+        assert starter[i]["cell_type"] == "code", f"markdown cell {i} differs between the two"
+        lines = s.splitlines()
+        assert lines and all(ln.startswith("#") for ln in lines), (
+            f"starter cell {i} differs from the solution but is not comment-only")
+        assert lines[0].startswith("# TODO Step"), f"starter cell {i} does not open on '# TODO Step'"
+        assert lines[-1].startswith("# The check below reads: "), (
+            f"starter cell {i} does not end on the names its check reads")
+        assert any(ln.strip() and not ln.lstrip().startswith("#") for ln in t.splitlines()), (
+            f"solution cell {i} holds no code")
+        check = src(starter[i + 1])
+        assert starter[i + 1]["cell_type"] == "code" and "assert" in check, (
+            f"student cell {i} is not followed by a check cell")
+        for name in lines[-1].split(": ", 1)[1].split(", "):
+            assert re.search(rf"\b{re.escape(name)}\b", check), (
+                f"the TODO in cell {i} says its check reads {name!r}; the check does not")
+        written.append(i)
+    assert len(written) == TAXI_STUDENT_CELLS, (
+        f"{len(written)} student cells, expected {TAXI_STUDENT_CELLS} (Steps 1-4 and 5a-5c)")
+
+    for cells in (starter, solution):
+        body = "\n".join(src(c) for c in cells if c["cell_type"] == "code")
+        assert 'API_KEY = "mlk_user_..."   # <- paste yours here' in body
+        assert "mode=" not in body, "wandb.init must not hard-code a mode"
+        assert not re.search(r'^\s*os\.environ\["WANDB_MODE"\]\s*=', body, re.M), (
+            "the notebook must not set WANDB_MODE itself: the student chooses")
+    solution_code = "\n".join(src(c) for c in solution if c["cell_type"] == "code")
+    assert 'wandb.init(project="aie-s4-taxi", config=CONFIG)' in solution_code
+
+
 @pytest.mark.parametrize("notebook", CREDENTIAL_FREE)
 def test_credential_free_notebooks_need_no_credentials(notebook):
-    """The pre-flight and the two Session 4 warm-ups are what a student runs
-    before they have an ML-Arena account. None may reference the SDK or a key."""
+    """The pre-flight and the Session 4 CPU/GPU benchmark are what a student
+    runs before they have an ML-Arena account. Neither may reference the SDK or
+    a key."""
     nb = json.loads((NOTEBOOKS / notebook).read_text())
     src = "".join("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code")
     for forbidden in ("mlarena", "API_KEY", "mlk_", "download_dataset", "client."):
@@ -444,12 +540,11 @@ def test_credential_free_notebooks_need_no_credentials(notebook):
 
 
 def test_warmup_notebooks_do_not_install_from_git():
-    """The Session 4 warm-ups are readapted from a workshop whose notebooks
-    open with `pip install git+https://github.com/...`. That dependency is the
-    thing the readaptation removed — the helpers are inlined instead — and it
-    must not creep back."""
-    for notebook in ("aie-s4-optimization-warmup.ipynb",
-                     "aie-s4-cpu-gpu-benchmark.ipynb"):
+    """The Session 4 CPU/GPU benchmark is readapted from a workshop whose
+    notebooks open with `pip install git+https://github.com/...`. That
+    dependency is the thing the readaptation removed — the helpers are inlined
+    instead — and it must not creep back."""
+    for notebook in ("aie-s4-cpu-gpu-benchmark.ipynb",):
         nb = json.loads((NOTEBOOKS / notebook).read_text())
         src = "".join("".join(c["source"]) for c in nb["cells"])
         assert "git+http" not in src, f"{notebook} installs from a git URL"
@@ -457,8 +552,7 @@ def test_warmup_notebooks_do_not_install_from_git():
             f"{notebook} imports the workshop package; inline the helper instead")
 
 
-@pytest.mark.parametrize("notebook", ["aie-s4-optimization-warmup.ipynb",
-                                      "aie-s4-cpu-gpu-benchmark.ipynb"])
+@pytest.mark.parametrize("notebook", ["aie-s4-cpu-gpu-benchmark.ipynb"])
 def test_warmup_notebooks_run(notebook, tmp_path):
     """Executed with no key and no network. The CPU/GPU one must also survive
     having no GPU, which is the case on every machine that runs this suite."""
@@ -491,10 +585,13 @@ def test_preflight_notebook_runs_standalone(tmp_path):
     # its own.
     ("s2-bike-demand", "aie-s3-bike-demand.ipynb", "neg_mae", 1e-6, -60.0),
     ("s3-diabetes-progression", "aie-s3-diabetes-progression.ipynb", "r2", 1e-6, None),
-    ("s4-california-housing", "aie-s4-california-housing.ipynb", "r2", 1e-6, None),
+    # The solution of the Session 4 lab; the starter stops at Step 1's check by
+    # design, so only the solution can run end to end.
+    ("s4-taxi-eta", TAXI_SOLUTION, "neg_pinball", 1e-6, None),
 ])
 def test_worked_notebook_runs_and_scores_the_baseline(pkg, notebook, expect_key, tol,
-                                                      floor, user_key, tmp_path):
+                                                      floor, user_key, tmp_path,
+                                                      monkeypatch):
     """Execute the student-facing notebook for real — download, EDA, fit,
     predict, write submission.csv — then score that file with the package's own
     env.py. This is the test that the quoted baseline is what the notebook
@@ -504,16 +601,23 @@ def test_worked_notebook_runs_and_scores_the_baseline(pkg, notebook, expect_key,
     equality with the declared benchmark. One that ends somewhere else asserts
     `notebook_expected_min_score` — a floor with real headroom — plus that it
     beats the benchmark. Session 4 needs the floor because it trains a network
-    and a float pinned to 1e-6 would break on a different BLAS (measured 0.776
-    against a floor of 0.72); s2-bike-demand needs it because its last two
-    sections engineer features and submit again (measured -99.42 against a floor
-    of -105.0). The Session 3 notebook on the same package carries an explicit
-    floor in the parametrize instead (-60.0 against a measured -47.56), because
-    the package's own floor was written for a different notebook."""
+    and a float pinned to 1e-6 would break on a different BLAS (measured about
+    -0.94 against a floor of -0.99); s2-bike-demand needs it because its last
+    two sections engineer features and submit again (measured -99.42 against a
+    floor of -105.0). The Session 3 notebook on the same package carries an
+    explicit floor in the parametrize instead (-60.0 against a measured
+    -47.56), because the package's own floor was written for a different
+    notebook.
+
+    The Session 4 notebook calls `wandb.init` with no mode — the student logs
+    in or goes offline. Here the kernel inherits WANDB_MODE=disabled, so the
+    run is a no-op that needs no account and no network."""
     nbformat = pytest.importorskip("nbformat")
     nbclient = pytest.importorskip("nbclient")
     if pkg.startswith("s4-"):
         pytest.importorskip("torch")
+        pytest.importorskip("wandb")
+    monkeypatch.setenv("WANDB_MODE", "disabled")
 
     nb = nbformat.read(str(NOTEBOOKS / notebook), as_version=4)
     submit_for_real = os.environ.get("MLARENA_SUBMIT_FOR_REAL") == "1"
@@ -546,7 +650,7 @@ def test_worked_notebook_runs_and_scores_the_baseline(pkg, notebook, expect_key,
     if floor is not None:
         assert result["score"] >= floor, (
             f"notebook scored {result['score']}, below the floor {floor} the "
-            f"package declares. The MLP is not learning — check the scaler.")
+            f"package declares: the notebook's model is not learning what it did.")
         assert result["score"] > cfg["benchmark_expected_score"], (
             f"notebook scored {result['score']}, which does not beat the "
             f"challenge's own linear benchmark "

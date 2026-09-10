@@ -5,49 +5,37 @@
         "id": 184,
         "label": "Bank Term Deposit",
         "module_slug": "s2-ml-foundations",
-        "name": "AIE S2 — Bank Term Deposit"
+        "name": "AIE S2 \u2014 Bank Term Deposit"
       },
       "s2-bike-demand": {
         "id": 183,
         "label": "Bike Sharing Demand",
         "module_slug": "s2-ml-foundations",
-        "name": "AIE S2 — Bike Sharing Demand"
+        "name": "AIE S2 \u2014 Bike Sharing Demand"
       },
       "s3-adult-income": {
         "id": 181,
         "label": "Adult Census Income",
         "module_slug": "s3-models-and-tuning",
-        "name": "AIE S3 — Adult Census Income"
+        "name": "AIE S3 \u2014 Adult Census Income"
       },
       "s3-credit-risk": {
         "id": 186,
         "label": "Credit Risk",
         "module_slug": "s3-models-and-tuning",
-        "name": "AIE S3 — Credit Risk"
+        "name": "AIE S3 \u2014 Credit Risk"
       },
       "s3-diabetes-progression": {
         "id": 185,
         "label": "Diabetes Progression",
         "module_slug": "s3-models-and-tuning",
-        "name": "AIE S3 — Diabetes Progression"
+        "name": "AIE S3 \u2014 Diabetes Progression"
       },
-      "s4-california-housing": {
-        "id": 187,
-        "label": "California Housing",
+      "s4-taxi-eta": {
+        "id": 189,
+        "label": "Taxi Arrival Promise",
         "module_slug": "s4-pytorch-nutshell",
-        "name": "AIE S4 — California Housing"
-      },
-      "s4-forest-cover": {
-        "id": 188,
-        "label": "Forest Cover Type",
-        "module_slug": "s4-pytorch-nutshell",
-        "name": "AIE S4 — Forest Cover Type"
-      },
-      "s4-mnist-warmup": {
-        "id": 182,
-        "label": "MNIST Warm-up",
-        "module_slug": "s4-pytorch-nutshell",
-        "name": "AIE S4 — MNIST Warm-up"
+        "name": "AIE S4 \u2014 Taxi Arrival Promise"
       }
     }
   }

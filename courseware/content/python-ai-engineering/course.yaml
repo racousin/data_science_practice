@@ -492,98 +492,135 @@ modules:
         label: "Bank Term Deposit"
 
   # ---------------------------------------------------------------- session 4
+  #
+  # Rebuilt 2026-09-10 around the owner's nine-step outline: what PyTorch is
+  # and why (hardware, memory, gradients), tensors, autograd, optimizers,
+  # nn.Module, losses, the training loop with batches and epochs, saving, and
+  # tracking with Weights & Biases. Concept first: every code block is at most
+  # four lines, and no code line is wider than the slide's code panel holds.
+  # Authored figures are drawn by tools/figures/s4_pytorch_nutshell.py; the
+  # rest are reused from the website's python-deep-learning pages and from
+  # Session 3's retired training-neural-networks lesson.
+  #
+  # Slugs are immutable server-side, so five lessons keep theirs under new
+  # titles: why-tensors, tensor-mechanics, autograd, modules-and-optimizers
+  # (now nn.Module only — the optimizer half is `optimizers`), and
+  # training-loop-end-to-end, which absorbs the website's `todo` draft.
+  # `optimizers`, `losses`, `save-and-load` and `weights-and-biases` are new.
+  #
+  # Lab 1 (slug lab-4) has the student write the training loop on a new
+  # tabular challenge, 189 (package competitions/s4-taxi-eta): NYC green-taxi
+  # trip durations scored on the pinball loss at tau = 0.9, "promise an
+  # arrival time the ride beats 9 times out of 10".
   - title: "Session 4 — PyTorch in a Nutshell"
     slug: s4-pytorch-nutshell
     icon: flame
     visibility: unlisted
     summary: >
-      Tensors, autograd, modules, optimizers — and one MLP trained end to end.
-      Enough PyTorch to read and write the code the rest of the year uses.
+      What PyTorch is and why; tensors, autograd, optimizers, modules and
+      losses; the training loop, checkpoints and experiment tracking. Then one
+      network, trained on an asymmetric loss and submitted.
     lessons:
-      - title: "Why Tensors"
+      - title: "What PyTorch Is, and Why"
         slug: why-tensors
         file: s4-pytorch-nutshell/why-tensors.md
-        estimated_minutes: 25
+        estimated_minutes: 12
         is_published: true
-      - title: "Tensor Mechanics"
+      - title: "Tensors"
         slug: tensor-mechanics
         file: s4-pytorch-nutshell/tensor-mechanics.md
-        estimated_minutes: 35
+        estimated_minutes: 9
         is_published: true
       - title: "Autograd"
         slug: autograd
         file: s4-pytorch-nutshell/autograd.md
-        estimated_minutes: 35
+        estimated_minutes: 10
         is_published: true
-      - title: "Modules & Optimizers"
+      - title: "Optimizers"
+        slug: optimizers
+        file: s4-pytorch-nutshell/optimizers.md
+        estimated_minutes: 7
+        is_published: true
+      - title: "Neural Networks with nn.Module"
         slug: modules-and-optimizers
         file: s4-pytorch-nutshell/modules-and-optimizers.md
-        estimated_minutes: 30
+        estimated_minutes: 8
         is_published: true
-      - title: "Training Loop End to End"
+      - title: "Losses"
+        slug: losses
+        file: s4-pytorch-nutshell/losses.md
+        estimated_minutes: 6
+        is_published: true
+      - title: "Batches, Epochs and the Training Loop"
         slug: training-loop-end-to-end
         file: s4-pytorch-nutshell/training-loop-end-to-end.md
-        estimated_minutes: 30
+        estimated_minutes: 13
         is_published: true
-      # Two runnable Colab warm-ups, placed after the theory and before the
-      # lab: the lectures describe the loop, these two make the student run it.
-      # Readapted from the SCAI-4EU "AI in Medicine" workshop
-      # (Hands-On-Session-warmup/), with its git+https install replaced by
-      # inlined helpers and its BERT benchmark replaced by the MLP this session
-      # actually ships. Neither needs an ML-Arena account.
+      - title: "Saving and Loading"
+        slug: save-and-load
+        file: s4-pytorch-nutshell/save-and-load.md
+        estimated_minutes: 9
+        is_published: true
+      - title: "Tracking with Weights & Biases"
+        slug: weights-and-biases
+        file: s4-pytorch-nutshell/weights-and-biases.md
+        estimated_minutes: 7
+        is_published: true
+      # Rewritten 2026-09-10 and retitled Lab 1; the slug stays lab-4 because
+      # lesson slugs are immutable server-side. Starter and solution Colabs:
+      # aie-s4-taxi-eta.ipynb / aie-s4-taxi-eta-solution.ipynb, built by
+      # tools/build_notebooks.py (the solution link is published after the
+      # session).
+      - title: "Lab 1 — Taxi Arrival Promise"
+        slug: lab-4
+        kind: exercise
+        file: s4-pytorch-nutshell/lab-4.md
+        estimated_minutes: 85
+        is_published: true
+      # Retired by the rebuild, and kept here UNPUBLISHED rather than deleted
+      # until the owner has reviewed the new lessons: unpublishing is
+      # reversible and `delete_lesson` is not, and `reorder_lessons` needs the
+      # module's exact server set either way. Once the review is done, run
+      # delete_lesson on 171, 172, 142 and 185 BEFORE the next publish, then
+      # drop these four entries and their files.
       - title: "Warm-up 1 — Optimization & Training"
         slug: warmup-1-optimization
         kind: exercise
         file: s4-pytorch-nutshell/warmup-1-optimization.md
         estimated_minutes: 45
-        is_published: true
+        is_published: false
+        in_deck: false
       - title: "Warm-up 2 — CPU vs GPU"
         slug: warmup-2-cpu-gpu
         kind: exercise
         file: s4-pytorch-nutshell/warmup-2-cpu-gpu.md
         estimated_minutes: 20
-        is_published: true
-      - title: "Lab 4 — Train and Submit"
-        slug: lab-4
-        kind: exercise
-        file: s4-pytorch-nutshell/lab-4.md
-        estimated_minutes: 45
-        is_published: true
-      # -- moved here from the former "Reference" module, which was removed.
-      # Both are linked from the session's own lessons (autograd, why-tensors).
+        is_published: false
+        in_deck: false
       - title: "Reference — Autograd, the Mathematics"
         slug: autograd-mathematics
         file: s4-pytorch-nutshell/autograd-mathematics.md
         estimated_minutes: 25
-        is_published: true
+        is_published: false
         in_deck: false
-      # `Reference — A Short History of Deep Learning` (server lesson 143) was
-      # deleted in the course editor and pulled down here on 2026-09-10; its
-      # file went with it.
-      #
       # `todo` (server lesson 185) was created in the course editor on
-      # 2026-09-09: a copy of Session 3's retired `training-neural-networks`
-      # (wide vs deep, mini-batch GD, batch & epoch, early stopping), parked
-      # here as material for the Session 4 rework. Unpublished and out of the
-      # deck. Its images pointed at lesson 164's upload directory, which 404s
-      # since that lesson was deleted; the local copy points at the committed
-      # files under assets/s3-models-and-tuning/training-neural-networks/.
+      # 2026-09-09: a copy of Session 3's retired `training-neural-networks`,
+      # parked as material for this rebuild. training-loop-end-to-end absorbs
+      # it; its images point at the committed files under
+      # assets/s3-models-and-tuning/training-neural-networks/.
       - title: "todo"
         slug: todo
         file: s4-pytorch-nutshell/todo.md
         is_published: false
         in_deck: false
-    # Three challenges. The two new ones carry the session's argument -- that
-    # Session 2's linear model has a ceiling and a small MLP clears it -- on a
-    # continuous target and on a class label. 187 is worked end to end by its
-    # notebook, building PyTorch from a bare tensor up to a training loop; 188
-    # is the same machinery with no code, which is where the student finds out
-    # whether they can write it. 182 stays as Lab 4's submission dry run.
-    # Notebooks: tools/build_notebooks.py.
+    # One challenge: 189, the lab's. 187 (California Housing), 188 (Forest
+    # Cover Type) and 182 (MNIST Warm-up) were removed from this module on
+    # 2026-09-10 with the rebuild, and their packages and notebooks deleted.
+    # `sync_competitions` only ever attaches, so removing them here does NOT
+    # detach them — that is `detach_challenge(17, id)`, run server-side. The
+    # pass threshold (the linear-quantile benchmark, -1.042916) is set by
+    # `build_competitions.py attach --only s4-taxi-eta`, which `publish` cannot
+    # write.
     competitions:
-      - competition_id: 187
-        label: "California Housing"
-      - competition_id: 188
-        label: "Forest Cover Type"
-      - competition_id: 182
-        label: "MNIST Warm-up"
+      - competition_id: 189
+        label: "Taxi Arrival Promise"

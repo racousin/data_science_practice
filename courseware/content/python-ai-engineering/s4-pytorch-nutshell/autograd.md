@@ -1,242 +1,191 @@
 # Autograd
 
-PyTorch computes derivatives for you. This lesson is what it actually does,
-enough that you can debug it — not the mathematics, which is in
-[Reference → Autograd, the Mathematics](/courses/python-ai-engineering/s4-pytorch-nutshell/course/autograd-mathematics).
+Training needs the gradient of the loss with respect to every parameter.
+Session 3 derived it by hand for an MLP, layer by layer. PyTorch derives it for
+any code written with tensor operations: you write the forward pass, and the
+backward pass is derived from it.
 
-<!-- notes: 35 minutes. The gradient-accumulation slide is the one that fixes
-real bugs. Do not skip zero_grad. -->
-
----
-
-## The problem
-
-To train, you need $\frac{\partial L}{\partial \theta}$ for every parameter. A
-network has millions of them, and the function is a composition of hundreds of
-operations.
-
-Deriving that by hand, once, is a research paper. Deriving it again after you
-change a layer is not viable.
+<!-- notes: 9 minutes. One running example for this lesson and the next: one
+parameter w = 1, one input x = 2, one target y = 5, loss (wx - y)^2 = 9,
+gradient -12. Everything is checkable by hand, which is the point. Leave the
+chain-rule derivation to Session 3; here, show that the machine agrees with it.
+Run the snippets live, in order, in one session: each builds on the previous.
+Re-running the backward() cell on its own reproduces the last row of the error
+table; worth doing once. If asked why gradients add up rather than overwrite:
+so that several batches can contribute to one update. If asked why backward
+costs about two forward passes: each matrix product of the forward pass needs
+two in the backward pass, one for the weight's gradient and one to pass the
+gradient on to the layer before. Measured on an Apple M4 CPU (torch 2.14.0,
+4 threads): backward took 1.5x to 2.6x the forward time, over two runs, on
+MLPs of 4 to 50 million parameters. -->
 
 ---
 
 ## What autograd does
 
-While your forward pass runs, PyTorch records every operation into a graph.
-Calling `.backward()` walks that graph in reverse, applying the chain rule at
-each node.
+![The forward pass recorded as a graph, and the gradients flowing back through it](assets/s4-pytorch-nutshell/autograd/autograd-graph.png)
 
-You write the forward pass. The backward pass is derived from it.
-
----
-
-## requires_grad
-
-```python
-import torch
-
-x = torch.tensor([2.0], requires_grad=True)
-y = x ** 2
-
-y.backward()
-print(x.grad)        # tensor([4.])
-```
-
-$y = x^2$, so $\frac{dy}{dx} = 2x = 4$ at $x = 2$. Correct, and you wrote no
-derivative.
-
-Only tensors with `requires_grad=True` accumulate gradients. Model parameters
-get it automatically; your input data should not have it.
+1. While the code runs, PyTorch **records** each operation on a tensor that
+   needs gradients: the computation graph.
+2. `loss.backward()` walks that record **backwards**, applying the chain rule.
+3. The gradient lands in `.grad` of every parameter, all of them in one pass.
 
 ---
 
-## The graph
+## Mark the parameters; the graph records itself
 
 ```python
-x = torch.tensor([2.0], requires_grad=True)
-y = x ** 2
-z = torch.sin(y)
-
-print(y.grad_fn)     # <PowBackward0 object>
-print(z.grad_fn)     # <SinBackward0 object>
+w = torch.tensor(1.0, requires_grad=True)   # a parameter: to learn
+x = torch.tensor(2.0)                       # data: nothing to learn
+pred = w * x              # tensor(2., grad_fn=<MulBackward0>)
+loss = (pred - 5.0) ** 2  # tensor(9., grad_fn=<PowBackward0>)
 ```
 
-Each result carries a `grad_fn` — the function that knows how to reverse that
-step. Chained together, they are the computational graph.
-
-```text
-x --[Pow]--> y --[Sin]--> z
-   <--------    <--------
-     backward pass
-```
+- `requires_grad=True` marks what to learn; `x.requires_grad` is `False`. In
+  [lesson 5](/courses/python-ai-engineering/s4-pytorch-nutshell/course/modules-and-optimizers),
+  a network's layers set it on their weights for you.
+- Each result remembers the operation that produced it, its `grad_fn`, the
+  unnamed `pred - 5.0` included: that chain is the graph in the figure. It is
+  rebuilt at every forward pass, so a model may contain ordinary Python `if`s
+  and loops.
 
 ---
 
-## Leaf vs intermediate
+## `backward()` applies the chain rule
 
 ```python
-x.is_leaf        # True  — you created it
-y.is_leaf        # False — it came from an operation
+loss.backward()           # from loss back to w
+w.grad, x.grad            # (tensor(-12.), None)
 ```
 
-After `backward()`, `.grad` is populated on **leaves only**. `y.grad` is `None`,
-and PyTorch warns you if you ask — intermediate gradients are computed, used, and
-discarded.
+With $\ell = (wx - y)^2$ and the target $y = 5$:
 
-To keep one:
+$$
+\frac{\partial \ell}{\partial w} = 2(wx - y)\,x = 2(2 - 5)(2) = -12
+$$
 
-```python
-y.retain_grad()
-```
+The machine and the hand calculation agree. A **leaf** is a tensor created
+directly, such as `w` or `x`, rather than by a recorded operation. Gradients
+are kept only on leaves with `requires_grad=True`: `x` gets none, and the
+intermediate `pred` keeps none; its gradient is used during the pass, then
+dropped.
 
 ---
 
-## backward() needs a scalar
+## `backward()` needs one number
 
 ```python
-x = torch.randn(3, requires_grad=True)
-y = x ** 2
-
-y.backward()          # RuntimeError: grad can be implicitly created
-                      # only for scalar outputs
-y.sum().backward()    # fine
+v = torch.tensor([1., 2., 3.], requires_grad=True)
+(v ** 2).sum().backward()
+v.grad                    # tensor([2., 4., 6.])
 ```
 
-"The gradient of a vector" is a Jacobian, not a vector. Your loss is always
-reduced to one number — which is why `loss = criterion(...)` returns a scalar.
+- On `v ** 2`, three numbers, `backward()` fails:
+  `grad can be implicitly created only for scalar outputs`. A loss is one
+  number, a mean over the batch.
+- From that one number, one backward pass gives the gradient of every
+  parameter (reverse mode), for about the cost of two forward passes, whether
+  the model has one parameter or millions.
+- The price is memory: the intermediate values the backward pass needs are
+  kept until `backward()` has used them.
 
 ---
 
 ## Gradients accumulate
 
-This is the behaviour that bites everybody once.
-
 ```python
-x = torch.tensor([2.0], requires_grad=True)
-
-(x ** 2).backward()
-print(x.grad)        # tensor([4.])
-
-(x ** 2).backward()
-print(x.grad)        # tensor([8.])  — added, not replaced
+w = torch.tensor(1.0, requires_grad=True)
+for _ in range(2):
+    ((w * x - 5.0) ** 2).backward()
+    print(w.grad)         # tensor(-12.)  then  tensor(-24.)
 ```
 
-`.backward()` **adds** to `.grad`. Without a reset, batch 2's gradient contains
-batch 1's, batch 3's contains both, and your model diverges for no visible
-reason.
+`backward()` **adds** to `.grad`; it does not replace it. Between two updates
+the gradient must be reset: `w.grad = None` by hand, or the optimizer's
+`zero_grad()` for every parameter at once
+([next lesson](/courses/python-ai-engineering/s4-pytorch-nutshell/course/optimizers)).
 
 ---
 
-## Which is why every loop has this
-
-```python
-optimizer.zero_grad()    # clear last step's gradients
-loss.backward()          # compute this step's
-optimizer.step()         # apply them
-```
-
-Forgetting `zero_grad()` produces a model that trains badly rather than one that
-crashes. That is the worst kind of bug, and it is why the three lines are always
-written together.
-
-<!-- notes: Ask them what accumulation is *for* — gradient accumulation across
-micro-batches to simulate a larger batch. It is a feature, not an oversight. -->
-
----
-
-## Turning it off
-
-At inference you do not need gradients, and building the graph costs memory and
-time.
+## Turning recording off
 
 ```python
 with torch.no_grad():
-    predictions = model(x_test)
+    pred = w * x                     # no graph recorded
+pred.requires_grad, pred.grad_fn     # (False, None)
 ```
 
-Roughly halves memory use during evaluation. Always wrap your validation loop.
+- `torch.no_grad()`: for code whose gradient is never taken, such as
+  validation, prediction, and the parameter update itself.
+- Nothing inside it is recorded, so no intermediate values are kept in memory
+  for a backward pass.
 
 ---
 
-## detach()
-
-Take a tensor out of the graph:
+## Getting the values out
 
 ```python
-y = x ** 2
-z = y.detach()       # same values, no history, requires_grad=False
+loss.detach().numpy()                # array(9., dtype=float32)
+loss.item()                          # 9.0
 ```
 
-Use it when storing a value for logging or for numpy:
-
-```python
-losses.append(loss.detach().cpu().item())
-```
-
-Appending `loss` itself keeps its whole graph alive. Do that in a loop and you
-leak memory until the process dies — a real and common bug.
+- `.detach()`: the same values with no history. `.numpy()` refuses any tensor
+  that requires grad, `w` included, so detach first; from a GPU, also copy
+  back: `.detach().cpu().numpy()`.
+- `.item()` returns a Python number, the value to print or log, and needs no
+  detach.
 
 ---
 
-## `.item()`
+## One step by hand
 
 ```python
-loss.item()          # Python float from a 1-element tensor
-```
-
-Use it for anything you print, log, or compare. It also detaches, which is why
-the logging idiom above is safe.
-
----
-
-## Worked example — one gradient step by hand
-
-```python
-w = torch.tensor([1.0], requires_grad=True)
-x = torch.tensor([2.0])
-target = torch.tensor([5.0])
-
-pred = w * x                      # 2.0
-loss = (pred - target) ** 2       # 9.0
-loss.backward()
-
-print(w.grad)                     # tensor([-12.])
-```
-
-Check it: $L = (wx - t)^2$, so $\frac{\partial L}{\partial w} = 2(wx - t)x
-= 2(2 - 5)(2) = -12$. The gradient is negative, so increasing $w$ decreases the
-loss — which is right, since $w$ needs to reach 2.5.
-
----
-
-## Applying it
-
-```python
+w = torch.tensor(1.0, requires_grad=True)
+((w * x - 5.0) ** 2).backward()     # w.grad is tensor(-12.)
 with torch.no_grad():
-    w -= 0.01 * w.grad
-w.grad.zero_()
+    w -= 0.1 * w.grad               # 1 - 0.1 * (-12) = 2.2
 ```
 
-`no_grad` because the update itself is not part of the model. This is exactly
-what `optimizer.step()` does — next lesson replaces these three lines with one.
+Session 2's update, $w \leftarrow w - \eta \partial \ell / \partial w$ with
+$\eta = 0.1$; `w` is now `tensor(2.2000, requires_grad=True)`. The update runs
+under `no_grad` because it is not part of the model, and PyTorch refuses an
+in-place change (`-=` overwrites `w` itself) to a leaf that requires grad while
+it records. The next lesson packages the update and the reset as an optimizer.
 
 ---
 
-## Debugging autograd
+## When autograd complains
 
-| Symptom | Cause |
-|---|---|
-| `.grad` is `None` | not a leaf, or `requires_grad=False`, or `backward()` never ran |
-| "element 0 does not require grad" | the graph was broken — a `.detach()`, a `.numpy()`, or an in-place op |
-| Loss decreases then explodes | missing `zero_grad()` |
-| Memory grows every epoch | storing tensors that still carry a graph |
-| "backward through the graph a second time" | two `backward()` calls on one graph — pass `retain_graph=True`, or restructure |
+| The error starts with | Cause | Fix |
+|---|---|---|
+| `grad can be implicitly created only for scalar outputs` | the loss is not one number | `.mean()` |
+| `Can't call numpy() on Tensor that requires grad` | the tensor is tracked for gradients | `.detach().numpy()` |
+| `a leaf Variable that requires grad is being used in an in-place operation` | a parameter updated while recording | `torch.no_grad()` |
+| `Trying to backward through the graph a second time` | `backward()` twice on one forward pass | recompute the forward pass |
 
 ---
 
-## Recap
+## Check yourself
 
-1. `requires_grad=True` starts recording.
-2. `.backward()` on a **scalar** walks the graph in reverse.
-3. Gradients land on **leaves** and **accumulate** — reset every step.
-4. `no_grad()` for inference, `detach()` for logging.
+1. From a fresh `w = 1` with `x = 2`, `((w * x - 5.0) ** 2).backward()` runs
+   three times with no reset. What do `w.grad` and `w` hold?
+
+   **Answer.** `w.grad` is `tensor(-36.)`: three gradients of −12, summed. `w`
+   is still 1: `backward()` computes gradients; it does not update anything.
+
+2. Run this. What does it print?
+
+   ```python
+   w = torch.tensor(3.0, requires_grad=True)
+   loss = (w * 2.0 - 5.0) ** 2
+   loss.backward()
+   print(w.grad)
+   ```
+
+   **Answer.** `tensor(4.)`: $2(wx - y)\,x = 2(6 - 5)(2) = 4$. It is positive,
+   so decreasing $w$ decreases the loss, down to its minimum at $w = 2.5$.
+
+3. Why does validation run under `torch.no_grad()`?
+
+   **Answer.** Nothing will be differentiated, so recording the graph would only
+   cost memory: intermediate values kept for a backward pass that never runs.

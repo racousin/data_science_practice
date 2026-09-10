@@ -1,232 +1,177 @@
-# Lab 4 — Train and Submit
+# Lab 1 — Taxi Arrival Promise
 
-The module's closing exercise. Everything from Sessions 1–4 in one deliverable:
-a packaged, tested, version-controlled PyTorch training pipeline, submitted to
-ML-Arena.
+Write the training loop yourself, on a problem where the usual loss is the
+wrong one. A ride-hailing app shows an arrival time before the ride starts. You
+train the lab's network to promise a time the ride beats 9 times out of 10,
+step by step in a Colab notebook, and submit its promises to ML-Arena.
 
-**Time:** 45 minutes. **Deliverable:** a merged PR + a leaderboard entry.
+**Time:** 85 minutes. **Deliverable:** a leaderboard entry on challenge 189 at
+or above the pass bar, **−Pinball ≥ −1.0429**.
 
----
-
-## Part A — Package it (10 min)
-
-Add to your Lab 1 repository, on a branch:
-
-```text
-src/textstats/          <- existing
-src/mlp/
-    __init__.py
-    model.py            <- the nn.Module
-    data.py             <- Dataset / DataLoader construction
-    train.py            <- the loop, importable and callable
-tests/test_mlp.py
-```
-
-Add `torch` **and `torchvision`** to `pyproject.toml` dependencies and
-re-lock. Part C loads MNIST through `torchvision.datasets`; a fresh clone
-with only `torch` fails `uv run pytest` with `ModuleNotFoundError: No module
-named 'torchvision'`, which is the 20% row at the top of the grading table.
-
-**Requirement:** `train.py` exposes `train(config: dict) -> dict` returning the
-metrics. No work at import time — importing must not train anything.
+<!-- notes: 85 minutes. 5 for setup: Colab, the ML-Arena key, and a free W&B
+account (about five minutes; a student without one switches W&B to offline and
+reads the notebook's own plot). 5 to present the objective and the ladder: the
+network trained on MSE keeps about half its promises, which is why the loss is
+theirs to write. 60 for Steps 1 to 5c; walk the room at Step 4 (a loss that
+does not fall on one batch is a bug in the code, not in the settings) and at
+Step 5c. 15 to submit and tick the checklist. Each account may deploy 2 times
+per rolling 24 hours across all challenges (daily_agent_deploy_limit), so
+Session 3 submissions from the last 24 hours count against it: variants are
+compared on the notebook's validation score, and only the best-validation
+checkpoint is submitted. The solution notebook, aie-s4-taxi-eta-solution.ipynb,
+is linked after the session. -->
 
 ---
 
-## Part B — Tests that catch real bugs (10 min)
+## The challenge
 
-At minimum, four:
+**Challenge:** <https://ml-arena.com/viewchallenge/189>
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/data_science_practice/blob/main/website/public/modules/python-ai-engineering/challenges/aie-s4-taxi-eta.ipynb)
+
+- 52,305 New York green-taxi trips, January 2024. `X.csv` and `y.csv`: the
+  first 25 days, 41,844 trips, in pickup order. `X_submission.csv`: the rest of
+  the month, 10,461 trips, shuffled.
+- 12 features: trip distance (miles), pickup hour, day of week, a weekend flag,
+  and the pickup and drop-off borough (four 0/1 columns each).
+- Target: the trip's duration in minutes. You submit `id,prediction`: your
+  promised duration.
+
+---
+
+## Setup, the first five minutes
+
+1. Open the notebook with the Colab badge and paste your ML-Arena key
+   (`mlk_user_...`, the one from Sessions 2 and 3) into `API_KEY`.
+2. In the notebook's W&B cell, choose one line to uncomment. With a free
+   account (wandb.ai, GitHub sign-in works): `wandb.login()`, then paste the
+   key from wandb.ai/authorize.
+3. No account: the `WANDB_MODE = "offline"` line. The run stays on disk, and
+   the notebook's own plot draws the curves.
+4. Run the given cells down to Step 1: download, split, standardisation,
+   tensors.
+
+---
+
+## The objective
+
+**Promise an arrival time the ride beats 9 times out of 10.**
+
+$$
+L_{0.9}(y, \hat{y}) = \max(0.9\,(y - \hat{y}),\ -0.1\,(y - \hat{y}))
+$$
+
+- $y$ is the trip's duration and $\hat{y}$ the promise. A minute late costs
+  0.9 and a minute early 0.1, so the best promise is the 90th percentile of the
+  duration, not its mean
+  ([lesson 6](/courses/python-ai-engineering/s4-pytorch-nutshell/course/losses)).
+- The leaderboard ranks on **−Pinball**, the mean loss negated: higher is
+  better, 0 is perfect, four decimals. **Promise kept (%)**, the share of trips
+  that arrive at or before the promise, should be near 90.
+- A real app would base the promise on the length of the planned route; this
+  data stands in with the metered `trip_distance`, known only once the ride is
+  over.
+
+---
+
+## The ladder
+
+| Submission | −Pinball | Promise kept |
+|---|---|---|
+| Always 24.7 min, the 90th percentile of `y.csv` | −2.233 | 89.4% |
+| `LinearRegression` on MSE | −2.087 | 55.7% |
+| The lab's MLP, trained on MSE | ≈ −1.74 | ≈ 54% |
+| **`QuantileRegressor(quantile=0.9)`: the pass bar** | **−1.0429** | 88.4% |
+| The lab's MLP, trained on pinball (the solution) | −0.941 | 87.7% |
+
+The two MLP rows are the same network and the same 30 epochs; only the loss
+changes. The bar checks the promises, not how they were made: an MSE network
+multiplied by one factor fitted on the training rows also clears it (about
+−0.93 to −0.96). What shows that you wrote the loop is the notebook's check
+cells.
+
+---
+
+## What is given, what you write
+
+Given: the download, the split (the last 20% of `X.csv`, in time order, is the
+validation part), standardisation, the tensors `X_tr_t`, `y_tr_t`, `X_val_t`,
+`y_val_t`, the scorer `leaderboard_score`, and the plot, save, predict and
+submit cells. Each step you write ends on a check cell that reads these names.
+
+| Step | You write | The check reads | Lesson | The check prints |
+|---|---|---|---|---|
+| 1 | 12 → 64 → 64 → 1, ReLU between | `make_model()`, `model` | [5](/courses/python-ai-engineering/s4-pytorch-nutshell/course/modules-and-optimizers) | 5057 parameters, output `(5, 1)` |
+| 2 | the loss, a scalar tensor | `pinball(pred, target, tau=TAU)` | [6](/courses/python-ai-engineering/s4-pytorch-nutshell/course/losses) | 1.05 on the hand example |
+| 3 | Adam at `1e-3`; batches of 256, shuffled | `opt`, `loader` | [4](/courses/python-ai-engineering/s4-pytorch-nutshell/course/optimizers), [7](/courses/python-ai-engineering/s4-pytorch-nutshell/course/training-loop-end-to-end) | 131 batches per epoch |
+| 4 | 500 steps on 64 rows: a fresh model, Adam at `1e-2` | `probe`, `probe_opt`, `first`, `last` | [7](/courses/python-ai-engineering/s4-pytorch-nutshell/course/training-loop-end-to-end) | `first -> last`, e.g. 11.80 -> 0.564 |
+| 5a | one training epoch | `train_one_epoch(model, loader, opt)` → float | [7](/courses/python-ai-engineering/s4-pytorch-nutshell/course/training-loop-end-to-end), [9](/courses/python-ai-engineering/s4-pytorch-nutshell/course/weights-and-biases) | two epochs of a fresh model, e.g. 6.015 -> 1.340 |
+| 5b | one validation pass | `evaluate(model, X, y)` → `(loss, kept_pct)` | [7](/courses/python-ai-engineering/s4-pytorch-nutshell/course/training-loop-end-to-end) | your two numbers beside the scorer's |
+| 5c | 30 epochs, keeping the best | `history`, `best_val`, `best_epoch`, `best_state` | [7](/courses/python-ai-engineering/s4-pytorch-nutshell/course/training-loop-end-to-end), [8](/courses/python-ai-engineering/s4-pytorch-nutshell/course/save-and-load), [9](/courses/python-ai-engineering/s4-pytorch-nutshell/course/weights-and-biases) | `best_epoch`; `best_val` below 1.10 |
+
+---
+
+## Step 5, in words
+
+- **5a** — `model.train()`, then for each batch: `opt.zero_grad()`, the
+  pinball loss, `backward()`, `opt.step()`, and
+  `total += loss.item() * len(xb)`. Return `total / len(loader.dataset)`, the
+  epoch's mean training pinball, as a float.
+- **5b** — `model.eval()`, predict under `torch.no_grad()`, and return the
+  pinball loss as a float and `kept_pct`, the percentage of rows with
+  `y <= pred`.
+- **5c** — for each of `EPOCHS = 30` epochs: 5a on `loader`, 5b on `X_val_t`
+  and `y_val_t`, one dict appended to `history` and logged to W&B. When the
+  validation loss is the lowest so far, record `best_val`, `best_epoch` and
+  `copy.deepcopy(model.state_dict())`. After the loop, load that copy back into
+  `model`.
+
+Expect a best validation pinball near 0.98 (0.983 at epoch 29 in the
+solution run), and seconds, not minutes, per run on a CPU.
+
+---
+
+## Submit
 
 ```python
-def test_forward_shape():
-    """Model maps (batch, in_dim) -> (batch, n_classes)."""
-
-def test_overfits_one_batch():
-    """200 steps on 32 examples drives the loss below 0.1."""
-
-def test_eval_mode_is_deterministic():
-    """Two forward passes under model.eval() give identical output."""
-
-def test_missing_config_key_raises():
-    """train({}) raises KeyError — no silent defaults."""
+client.submit(challenge_id=CHALLENGE_ID, files=["submission.csv"])
+client.leaderboard(CHALLENGE_ID)
 ```
 
-The second is the valuable one: it fails if shapes, the loss, the optimizer
-wiring, or `zero_grad` are wrong.
-
-The fourth enforces fail-fast — `config["lr"]`, never `config.get("lr", 1e-3)`.
-
----
-
-## Part C — Train (10 min)
-
-Train an MLP on MNIST. Requirements:
-
-- seeded
-- train/validation split, stratified
-- both losses printed every epoch
-- early stopping with best-checkpoint restore
-- final metrics written to `results.json`
-
-```python
-from torchvision import datasets, transforms
-
-tf = transforms.Compose([
-    transforms.ToTensor(),
-    transforms.Normalize((0.1307,), (0.3081,)),
-])
-train = datasets.MNIST("data/", train=True, download=True, transform=tf)
-```
-
-`data/` is gitignored. Committing MNIST is an automatic deduction.
-
-**What good looks like.** A correctly wired 784-128-10 MLP with Adam at
-`lr=1e-3` reaches **97% validation accuracy within 5 epochs** — measured on a
-laptop CPU: 0.954 after epoch 1, 0.972 after epoch 5, about 13 seconds an
-epoch. Below 95%, stop and re-read the failure table in *Training Loop End to
-End*: the cause is almost always the normalisation, a softmax before
-`CrossEntropyLoss`, or a missing `model.eval()`. Multinomial logistic
-regression on the same pixels gets 91.3% — under that, the network is not
-learning at all.
-
-Overfit one batch **before** the full run. Say in your PR description what it
-told you.
+- The given cells save the model to `taxi.pt` with the scaler's mean and std,
+  reload it, standardise `X_submission` with that mean and std, predict, and
+  check the file before writing it: one row per id of `X_submission.csv`, one
+  finite prediction in minutes each.
+- The scorer rejects a missing, unknown, duplicate or empty id, a non-number, a
+  `NaN` or an infinity, and names the line. Negative predictions are scored.
+- Each account may submit **2 times per rolling 24 hours, across all
+  challenges**, and a file the scorer rejects still uses one. Validate first:
+  choose on the notebook's validation score, then submit once.
 
 ---
 
-## Part D — Submit to ML-Arena (10 min)
+## If you finish early
 
-**AIE S4 — MNIST Warm-up** (competition `182`) takes a single
-`submission.csv` of predictions on 5,000 held-out digits. Download
-`X_submission.csv` from the competition's data tab; the columns `p0 … p783` are
-the image flattened row-major as `uint8` 0-255, i.e. what `datasets.MNIST`
-gives you before `ToTensor()`.
+Compare each variant on the validation part with `evaluate` or
+`leaderboard_score`, not by submitting: every submission uses one of your two
+daily slots.
 
-**The submission schema is `id,label`** — not `id,prediction`. Lab 3 used
-`prediction`; this competition does not, and upload validation rejects the file
-before anything runs (`Column mismatch. Expected: ['id', 'label']`). Every id in
-`X_submission.csv` must appear exactly once, and `label` is the predicted digit,
-0-9.
-
-```python
-import pandas as pd
-
-pd.DataFrame({"id": test_ids, "label": predictions}).to_csv("submission.csv", index=False)
-```
-
----
-
-## Part D — send it
-
-```bash
-uv pip install mlarena-sdk
-```
-
-The distribution is `mlarena-sdk` and it imports as `mlarena`. `uv pip install
-mlarena` gets you an unrelated package with no `connect`.
-
-```python
-import mlarena
-
-client = mlarena.connect(api_key="mlk_user_...")   # from your Profile page
-client.submit(competition_id=182, files=["submission.csv"])
-print(client.leaderboard(182).head())
-```
-
----
-
-## Part D — the numbers
-
-Ranking is on **accuracy — higher is better**. Predicting the
-single most common digit for all 5,000 images scores **0.108**. The
-multinomial logistic regression on raw pixels that ships as the competition's
-benchmark scores **0.913** — that is the bar. The 784-128-10 MLP from Part C,
-Adam at `lr=1e-3` for five epochs, scores **0.982**. Under 0.913 means
-something is broken, not under-tuned.
-
-Read that number honestly: 4,300 of the 5,000 evaluation images are
-byte-identical to images in the torchvision train split Part C has you train
-on, so the leaderboard is an **upper bound**. The same model measured 0.982
-there against 0.972 on its own held-out validation split. The validation
-number is the honest one.
-
-Getting on the board matters; your position does not. This is the dry run for
-the project, and the point is that the submission path works before it counts.
-
----
-
-## Part E — Pull request (5 min)
-
-Description must contain:
-
-- what the one-batch overfit test told you
-- your final train and validation numbers, and whether they indicate overfitting
-- the learning rate you settled on and how you chose it
-- your competition 182 accuracy next to your own validation accuracy, and
-  which of the two you believe
-- one thing you tried that did not help
-
-That last one is not filler. A PR with only successes describes a process that
-did not happen.
-
----
-
-## Grading
-
-| Criterion | Weight |
-|---|---|
-| `uv sync && uv run pytest` green on a fresh clone | 20% |
-| The four required tests present and meaningful | 25% |
-| Training loop correct: eval mode, no_grad, early stopping + restore | 25% |
-| Fail-fast config: no defaults for required keys | 10% |
-| ML-Arena submission accepted | 10% |
-| PR description covers all five points | 10% |
-
----
-
-## Automatic deductions
-
-- `data/` or `*.pt` committed
-- a softmax before `CrossEntropyLoss`
-- `model.eval()` missing from the validation path
-- any bare `except`
-
----
-
-## What you should now have
-
-A repository that:
-
-- installs and tests from a clean clone in three commands
-- has a readable history on feature branches with reviewed PRs
-- contains a documented `CLAUDE.md` your agent actually uses
-- trains a neural network with an honest validation protocol
-- produces a submission the platform accepts
-
-That is the engineering floor for *MS2A - Machine Learning Practice*, and half of
-the project grade is this repository staying that way for ten more weeks.
+- Train the same network on `nn.MSELoss()` and compare its **Promise kept**
+  with the pinball network's.
+- Train with `tau=0.5`. Which of the two numbers moves, and why?
+- Try a wider or deeper network, or another learning rate. Log each run to W&B
+  with its `config`, compare the validation curves, and keep the best.
 
 ---
 
 ## Did you validate this session?
 
-- [ ] `uv sync && uv run pytest` is green on a fresh clone — cloned into a new
-      directory, not the one I worked in
-- [ ] `torch` and `torchvision` are both in `pyproject.toml` and in the lockfile,
-      and `python -c "import mlp.train"` returns immediately without training
-- [ ] All four tests named in Part B exist and pass, and
-      `test_overfits_one_batch` drives the loss below 0.1
-- [ ] My epoch log prints train and validation loss on every epoch, and
-      `results.json` holds the numbers from the restored best checkpoint, not
-      from the last epoch
-- [ ] My best validation accuracy over the five epochs is **≥ 0.96** (a
-      correctly wired 784-128-10 MLP with Adam at `lr=1e-3` lands between 0.965
-      and 0.976 depending on seed and split; 0.972 at epoch 5 is one such run, and
-      measured reference; below 0.95 is a bug, not a tuning problem)
-- [ ] `git status` is clean, and neither `data/` nor any `*.pt` is tracked
-- [ ] My PR description contains all five points from Part E, including the one
-      thing that did not help
-- [ ] My submission is on the leaderboard of AIE S4 — MNIST Warm-up (#182)
-- [ ] My score beats the baseline: **accuracy ≥ 0.913**
-
-If the last two are not ticked you have not finished the lab, however good the
-code is.
+- [ ] Step 1's check prints 5,057 parameters and an output of shape `(5, 1)`
+- [ ] Step 2's check passes: my `pinball` gives 1.05 on the hand example
+- [ ] Step 3's check passes: `loader` has 131 batches per epoch
+- [ ] Step 4's check passes: one batch ends below a tenth of its first loss
+- [ ] The checks of Steps 5a and 5b pass
+- [ ] Step 5c's check prints my `best_epoch` and passes: `best_val` < 1.10
+- [ ] A chart — W&B or the notebook's plot — shows both losses per epoch
+- [ ] My submission is on the leaderboard of AIE S4 — Taxi Arrival Promise (#189)
+- [ ] My score beats the baseline: **−Pinball ≥ −1.0429**

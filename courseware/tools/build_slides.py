@@ -53,6 +53,9 @@ PAPER = RGBColor(0xFF, 0xFF, 0xFF)
 
 BODY_FONT = "Helvetica Neue"
 MONO_FONT = "Menlo"
+# Menlo is monospaced: every glyph, box-drawing and arrows included, advances
+# 1233/2048 em. check_slide_overflow measures code lines with it.
+MONO_ADVANCE_EM = 0.602
 
 SLIDE_W = Inches(13.333)
 SLIDE_H = Inches(7.5)
@@ -310,6 +313,16 @@ CHARS_PER_INCH = 14.0
 # Matches the left/right cell margins _table sets.
 TABLE_CELL_PAD_IN = 0.08
 
+# A code panel spans the body box and insets its text by this on either side.
+# Code does not wrap, so a line longer than the inset width runs past the
+# panel's edge; check_slide_overflow reports those lines.
+CODE_PAD_IN = 0.18
+
+
+def code_size(size: int) -> int:
+    """The code font on a slide whose body text is set at `size`."""
+    return max(9, size - 2)
+
 
 def _wrapped_lines(text: str, size: int, width_in: float) -> int:
     per_line = max(10, int(width_in * CHARS_PER_INCH * (10.0 / size)))
@@ -432,7 +445,7 @@ class Measurer:
                 for lvl, t, _ in b.items
             ) + 0.10
         if b.kind == "code":
-            return len(b.lines) * max(9, size - 2) * 1.35 / 72.0 + 0.28 + 0.14
+            return len(b.lines) * code_size(size) * 1.35 / 72.0 + 0.28 + 0.14
         if b.kind == "table":
             return sum(self.table_row_heights(b.rows, size)) + 0.16
         if b.kind == "math":
@@ -641,7 +654,7 @@ class DeckBuilder:
         return y + Inches(total) + Inches(0.10)
 
     def _code(self, slide, lines: list[str], y, size: int):
-        csize = max(9, size - 2)
+        csize = code_size(size)
         h = Inches(len(lines) * csize * 1.35 / 72.0 + 0.28)
         panel = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, MARGIN, y, CONTENT_W, h)
         panel.fill.solid()
@@ -652,7 +665,7 @@ class DeckBuilder:
 
         tf = panel.text_frame
         tf.word_wrap = False
-        tf.margin_left = tf.margin_right = Inches(0.18)
+        tf.margin_left = tf.margin_right = Inches(CODE_PAD_IN)
         tf.margin_top = tf.margin_bottom = Inches(0.12)
         tf.vertical_anchor = MSO_ANCHOR.TOP
         for idx, line in enumerate(lines):

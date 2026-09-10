@@ -44,12 +44,16 @@
       "s4-pytorch-nutshell/autograd": 47,
       "s4-pytorch-nutshell/autograd-mathematics": 142,
       "s4-pytorch-nutshell/lab-4": 50,
+      "s4-pytorch-nutshell/losses": 189,
       "s4-pytorch-nutshell/modules-and-optimizers": 48,
+      "s4-pytorch-nutshell/optimizers": 188,
+      "s4-pytorch-nutshell/save-and-load": 190,
       "s4-pytorch-nutshell/tensor-mechanics": 46,
       "s4-pytorch-nutshell/todo": 185,
       "s4-pytorch-nutshell/training-loop-end-to-end": 49,
       "s4-pytorch-nutshell/warmup-1-optimization": 171,
       "s4-pytorch-nutshell/warmup-2-cpu-gpu": 172,
+      "s4-pytorch-nutshell/weights-and-biases": 191,
       "s4-pytorch-nutshell/why-tensors": 45
     },
     "modules": {
@@ -309,8 +313,8 @@
           "title": "Validation & Overfitting"
         },
         "s4-pytorch-nutshell/autograd": {
-          "body": "3b2ed9886e532a676676fad03dc37ef3b684ba05d663ae3a102bc70af6a6e291",
-          "estimated_minutes": 35,
+          "body": "0afc46061007f52bc52e4d1b3a2f9ffb563958a93f6ee9174a6ab223879517bc",
+          "estimated_minutes": 10,
           "gated": false,
           "is_published": true,
           "title": "Autograd"
@@ -319,57 +323,92 @@
           "body": "f0e1d39f17b4ae80800bebf1f6606ed6a4ce92937f59543189496dc687138e42",
           "estimated_minutes": 25,
           "gated": false,
-          "is_published": true,
+          "is_published": false,
           "title": "Reference \u2014 Autograd, the Mathematics"
         },
         "s4-pytorch-nutshell/lab-4": {
-          "body": "113750eca8b0a4abd1e6649e9894beb6a64da2239c365b7d9f9613f19e1716c7",
-          "estimated_minutes": 45,
+          "body": "58909fd79b0c03eb2b412cd30e6985e724d3c516cc35490b940c263bdec58a57",
+          "estimated_minutes": 85,
           "gated": false,
           "is_published": true,
-          "title": "Lab 4 \u2014 Train and Submit"
+          "title": "Lab 1 \u2014 Taxi Arrival Promise"
+        },
+        "s4-pytorch-nutshell/losses": {
+          "body": "0bae8ff16c0d72735bdc592f789cc87437dbbc1214ab6c4aa2e6528f50b05372",
+          "estimated_minutes": 6,
+          "gated": false,
+          "is_published": true,
+          "title": "Losses"
         },
         "s4-pytorch-nutshell/modules-and-optimizers": {
-          "body": "02a03d65b31cbf02fe2184ad98585891544fcb91c7f34b7be16b04b222219440",
-          "estimated_minutes": 30,
+          "body": "973d67ab5364dbbc5becd1f65d6732342b2a54829bbe0c74a126cfd5b7b52dd2",
+          "estimated_minutes": 8,
           "gated": false,
           "is_published": true,
-          "title": "Modules & Optimizers"
+          "title": "Neural Networks with nn.Module"
+        },
+        "s4-pytorch-nutshell/optimizers": {
+          "body": "5e7f320bd381b965e8a35f4e6f773867cff9652c934a8d82a69f3cb2be849d0f",
+          "estimated_minutes": 7,
+          "gated": false,
+          "is_published": true,
+          "title": "Optimizers"
+        },
+        "s4-pytorch-nutshell/save-and-load": {
+          "body": "e02b1304ceb1d22775d587ca44ed567c31013705da373060e8d6ca6ec9e0878d",
+          "estimated_minutes": 9,
+          "gated": false,
+          "is_published": true,
+          "title": "Saving and Loading"
         },
         "s4-pytorch-nutshell/tensor-mechanics": {
-          "body": "ee8e22cf9e6c33d5b616b06c1b4bc67c4aa4ae7778f6b627c46b1ae89b28081e",
-          "estimated_minutes": 35,
+          "body": "70d0f66dab0db525867b5345921c8cbcbe1e4cc1a09960d082d48bd47b6797cc",
+          "estimated_minutes": 9,
           "gated": false,
           "is_published": true,
-          "title": "Tensor Mechanics"
+          "title": "Tensors"
+        },
+        "s4-pytorch-nutshell/todo": {
+          "body": "1f6780de60cccb40d37072d5f08b2de3ac8c274ba03cdf1023b77d391f618f7d",
+          "estimated_minutes": null,
+          "gated": false,
+          "is_published": false,
+          "title": "todo"
         },
         "s4-pytorch-nutshell/training-loop-end-to-end": {
-          "body": "75d17ac22c0c55c446732bae426af54062fafc27202d2dc5cb5ac89d34211b66",
-          "estimated_minutes": 30,
+          "body": "7a94b40d2729e7e25d4977ec9c1e465f6ad71d881c86c3fb8f3d314c2b0c354c",
+          "estimated_minutes": 13,
           "gated": false,
           "is_published": true,
-          "title": "Training Loop End to End"
+          "title": "Batches, Epochs and the Training Loop"
         },
         "s4-pytorch-nutshell/warmup-1-optimization": {
           "body": "1560cae6867c3038577cec7380c6ee85ea873e85927b707f33c8ea6f7f885b79",
           "estimated_minutes": 45,
           "gated": false,
-          "is_published": true,
+          "is_published": false,
           "title": "Warm-up 1 \u2014 Optimization & Training"
         },
         "s4-pytorch-nutshell/warmup-2-cpu-gpu": {
           "body": "5e89f76b32afbe4d4bed5bdfc7030f06f13d9c861967a5187bd4f5fa1907a880",
           "estimated_minutes": 20,
           "gated": false,
-          "is_published": true,
+          "is_published": false,
           "title": "Warm-up 2 \u2014 CPU vs GPU"
         },
-        "s4-pytorch-nutshell/why-tensors": {
-          "body": "cd9f49f13fc41e20b25e784dd9f86bd001825f7b2e11cb2a2ce7d9b4e8c1d0eb",
-          "estimated_minutes": 25,
+        "s4-pytorch-nutshell/weights-and-biases": {
+          "body": "d81106e51217b497b56c245f96a6d830d53a965e770c8158c0cdc32685b86ec0",
+          "estimated_minutes": 7,
           "gated": false,
           "is_published": true,
-          "title": "Why Tensors"
+          "title": "Tracking with Weights & Biases"
+        },
+        "s4-pytorch-nutshell/why-tensors": {
+          "body": "75d7ad8e585a8ef85c0b889082ef41329f3af5900d4d585c9f1cab9010e9f9a0",
+          "estimated_minutes": 12,
+          "gated": false,
+          "is_published": true,
+          "title": "What PyTorch Is, and Why"
         }
       },
       "module_order": [
@@ -439,15 +478,19 @@
             "why-tensors",
             "tensor-mechanics",
             "autograd",
+            "optimizers",
             "modules-and-optimizers",
+            "losses",
             "training-loop-end-to-end",
+            "save-and-load",
+            "weights-and-biases",
+            "lab-4",
             "warmup-1-optimization",
             "warmup-2-cpu-gpu",
-            "lab-4",
             "autograd-mathematics",
-            "deep-learning-history"
+            "todo"
           ],
-          "summary": "Tensors, autograd, modules, optimizers \u2014 and one MLP trained end to end. Enough PyTorch to read and write the code the rest of the year uses.",
+          "summary": "What PyTorch is and why; tensors, autograd, optimizers, modules and losses; the training loop, checkpoints and experiment tracking. Then one network, trained on an asymmetric loss and submitted.",
           "title": "Session 4 \u2014 PyTorch in a Nutshell"
         }
       }
