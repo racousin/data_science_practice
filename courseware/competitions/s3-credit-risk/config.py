@@ -16,8 +16,8 @@ CONFIG = {
     "label": "Credit Risk",
     "metric": "f1",
     "metric2": "accuracy",
-    "public_files": ["X_train.csv", "y_train.csv", "X_test.csv"],
-    "private_files": ["y_test.csv"],
+    "public_files": ["X.csv", "y.csv", "X_submission.csv"],
+    "private_files": ["y_submission.csv"],
     "benchmark_file": "data/benchmark_submission.csv",
     # get_dummies + StandardScaler + LogisticRegression(max_iter=2000) on the
     # CSVs as written. Reference points on this split: always-0 is F1 = 0.0 at
@@ -29,8 +29,8 @@ CONFIG = {
     "dataset_description": (
         "Stratified 70/30 split of openml `credit-g` (version 1), 1,000 German "
         "credit applications with 20 attributes. The target is coded 1 for a "
-        "bad credit risk (30% of rows). X_train.csv + y_train.csv to fit on, "
-        "X_test.csv to predict. The test labels are held back."
+        "bad credit risk (30% of rows). X.csv + y.csv to fit on, "
+        "X_submission.csv to predict. Its labels are held back."
     ),
     # Deterministic scorer: the same CSV always yields the same F1.
     "deployment_nb_constraint_run": 1,

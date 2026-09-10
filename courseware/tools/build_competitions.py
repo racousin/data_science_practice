@@ -19,6 +19,7 @@ Modes
     build     create/update, upload, benchmark, verify, start     (creator key)
     overview  re-publish overview.md alone, started or not         (creator key)
     refresh   replace the data of a STARTED competition, in place  (creator + user key)
+              --keep-agents: same split, renamed files — keep the board (creator key)
     status    show what is live                                   (creator key)
     publish   flip the competitions public                        (creator key)
     attach    link each competition to its course module          (TEACHER key)
@@ -39,6 +40,13 @@ Use it when `prepare_data.py` has produced a *different* split or different ids
 — every score already on the board was computed against data that no longer
 exists, so refresh deletes those agents rather than leaving stale numbers
 ranked. It refuses to run if anyone but you is on the board.
+
+`refresh --keep-agents` is the same run with both of those safeguards off,
+for the one case that does not need them: the split, the ids and the bytes are
+identical and only the *file names* changed, so every score on the board is
+still the score. Nothing here verifies that — it is your claim. On a real data
+change it would leave the board silently wrong, which is what plain `refresh`
+exists to prevent.
 
 The benchmark is the real test: it runs the actual worker pipeline (JobPod,
 env.py, and for flex_v1 an agent container) against the package's reference
@@ -283,18 +291,27 @@ def do_build(args):
     do_status(args)
 
 
-def refresh_one(client, user_client, cfg: dict, base_url: str) -> int:
+def refresh_one(client, user_client, cfg: dict, base_url: str,
+                keep_agents: bool = False) -> int:
     """Replace the data of an already-started competition, in place.
 
     The platform locks settings, datasets and the agent template once a
     competition starts, so this has to stop it first. Stopping leaves agents and
     results untouched (`stop_competition` only clears `is_started`), which is
     exactly the problem when the ids have changed underneath them: a score
-    computed against the old X_test is meaningless against the new one but still
-    ranks. So the stale agents are deleted, not left on the board.
+    computed against the old submission set is meaningless against the new one
+    but still ranks. So the stale agents are deleted, not left on the board.
+
+    `keep_agents=True` is the narrow exception: the bytes and the ids are
+    unchanged and only the *file names* differ, so every score on the board was
+    computed against data that still exists and stays valid. It is the caller's
+    claim, not something this script can verify — pass it only when
+    `prepare_data.py` produced the same split, and never to get past the
+    other-competitors guard on a real data change.
     """
     name, pkg_dir = cfg["name"], cfg["_dir"]
-    print(f"\n=== refresh {name}  ({cfg['_pkg']})")
+    print(f"\n=== refresh {name}  ({cfg['_pkg']})"
+          f"{'  [keep-agents]' if keep_agents else ''}")
 
     existing = find_existing(client, name)
     if not existing:
@@ -305,16 +322,20 @@ def refresh_one(client, user_client, cfg: dict, base_url: str) -> int:
     board = client.leaderboard(cid)
     rows = board.to_dict("records") if hasattr(board, "to_dict") else list(board)
     others = sorted({r["Username"] for r in rows if r.get("Username") != me})
-    if others:
+    if others and not keep_agents:
         raise SystemExit(
             f"{name}: {len(others)} other competitor(s) on the board ({others}). "
             f"Refreshing invalidates their scores — stop the competition and "
             f"decide deliberately rather than through this script."
         )
-    stale = [r for r in rows if r.get("AgentName") != "__benchmark__"]
+    stale = [] if keep_agents else [r for r in rows if r.get("AgentName") != "__benchmark__"]
 
     client.stop_competition(cid)
     print(f"    stopped id={cid}")
+    if keep_agents:
+        kept = [r for r in rows if r.get("AgentName") != "__benchmark__"]
+        print(f"    keeping {len(kept)} agent(s) on the board "
+              f"({sorted({r.get('Username') for r in kept})})")
 
     for r in stale:
         user_client.delete_agent(cid, r["agentAttachId"])
@@ -358,11 +379,13 @@ def refresh_one(client, user_client, cfg: dict, base_url: str) -> int:
         if cfg.get("dataset_description"):
             client.update_dataset(cid, ds_id,
                                   description=cfg["dataset_description"])
-        # upload_dataset_file always adds a row, so replacing means delete first.
+        # upload_dataset_file always adds a row, so replacing means delete
+        # first — and delete *every* file, not just the ones public_files still
+        # names. A rename (X_train.csv -> X.csv) or a dropped file would
+        # otherwise leave the old row served alongside the new one.
         for f in ds.get("files", []):
-            if f["label"] in public:
-                client.delete_dataset_file(cid, ds_id, f["id"])
-                print(f"    dataset file deleted: {f['label']}")
+            client.delete_dataset_file(cid, ds_id, f["id"])
+            print(f"    dataset file deleted: {f['label']}")
         for fname in public:
             path = pkg_dir / "data" / fname
             if not path.exists():
@@ -386,9 +409,13 @@ def refresh_one(client, user_client, cfg: dict, base_url: str) -> int:
 
 def do_refresh(args):
     client = connect("MLARENA_API_KEY", args.base_url)
-    user_client = connect("MLARENA_USER_API_KEY", args.base_url)
+    # Deleting a stale agent is the only thing here that needs a user key, so a
+    # keep-agents refresh does not ask for one.
+    user_client = (None if args.keep_agents
+                   else connect("MLARENA_USER_API_KEY", args.base_url))
     for pkg in args.packages:
-        refresh_one(client, user_client, load_config(pkg), args.base_url)
+        refresh_one(client, user_client, load_config(pkg), args.base_url,
+                    keep_agents=args.keep_agents)
     do_status(args)
 
 
@@ -515,6 +542,9 @@ def main():
     ap.add_argument("--course", default="python-ai-engineering")
     ap.add_argument("--only", action="append", dest="only",
                     help="restrict to one package (repeatable)")
+    ap.add_argument("--keep-agents", action="store_true",
+                    help="refresh only: the split is unchanged and only the "
+                         "file names differ, so leave the leaderboard alone")
     args = ap.parse_args()
     args.packages = args.only or PACKAGES
     unknown = [p for p in args.packages if p not in PACKAGES]

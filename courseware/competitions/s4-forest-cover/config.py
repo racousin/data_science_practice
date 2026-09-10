@@ -22,8 +22,8 @@ CONFIG = {
     "label": "Forest Cover Type",
     "metric": "accuracy",
     "metric2": "macro_f1",
-    "public_files": ["X_train.csv", "y_train.csv", "X_test.csv"],
-    "private_files": ["y_test.csv"],
+    "public_files": ["X.csv", "y.csv", "X_submission.csv"],
+    "private_files": ["y_submission.csv"],
     "benchmark_file": "data/benchmark_submission.csv",
     # StandardScaler + LogisticRegression(max_iter=2000) on the CSVs as written.
     # Reference points on this split: most-common-class is 0.1429; this baseline
@@ -36,8 +36,8 @@ CONFIG = {
         "`fetch_covtype`): 2,500 rows of each of the seven cover types, split "
         "80/20 stratified. 54 cartographic features — ten quantitative, four "
         "wilderness-area indicators, forty soil-type indicators. The target is "
-        "the cover type, coded 1-7. X_train.csv + y_train.csv to fit on, "
-        "X_test.csv to predict. The test targets are held back."
+        "the cover type, coded 1-7. X.csv + y.csv to fit on, "
+        "X_submission.csv to predict. Its targets are held back."
     ),
     # Deterministic scorer: the same CSV always yields the same accuracy.
     "deployment_nb_constraint_run": 1,

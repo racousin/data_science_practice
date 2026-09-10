@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Build the MNIST warm-up split for the Session 4 competition.
 
-Public  -> data/X_test.csv          5,000 unlabelled images to predict
+Public  -> data/X_submission.csv          5,000 unlabelled images to predict
            data/sample_train.csv    2,000 labelled images, as a format reference
-Private -> data/y_test.csv          the held-back labels
+Private -> data/y_submission.csv          the held-back labels
 Benchmark -> data/benchmark_submission.csv   multinomial logistic regression on
              raw pixels, i.e. a bar an MLP should clear comfortably.
 
@@ -53,9 +53,9 @@ def main():
     test_ids = [f"te_{i:05d}" for i in range(N_TEST)]
     X_test = pd.DataFrame(X[test_idx], columns=PIXELS)
     X_test.insert(0, "id", test_ids)
-    X_test.to_csv(os.path.join(DATA, "X_test.csv"), index=False)
+    X_test.to_csv(os.path.join(DATA, "X_submission.csv"), index=False)
     pd.DataFrame({"id": test_ids, "label": y[test_idx]}).to_csv(
-        os.path.join(DATA, "y_test.csv"), index=False)
+        os.path.join(DATA, "y_submission.csv"), index=False)
 
     sample = pd.DataFrame(X[sample_idx], columns=PIXELS)
     sample.insert(0, "label", y[sample_idx])
@@ -75,7 +75,7 @@ def main():
     acc = float((preds == y[test_idx]).mean())
     print(f"  benchmark accuracy={acc:.6f}")
 
-    for name in ("X_test.csv", "y_test.csv", "sample_train.csv",
+    for name in ("X_submission.csv", "y_submission.csv", "sample_train.csv",
                  "benchmark_submission.csv"):
         size = os.path.getsize(os.path.join(DATA, name)) / 1e6
         print(f"  {name:28s} {size:7.2f} MB")

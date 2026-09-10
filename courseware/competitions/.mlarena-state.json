@@ -17,7 +17,7 @@
         "id": 181,
         "label": "Adult Census Income",
         "module_slug": "s3-models-and-tuning",
-        "name": "PAIE S3 — Adult Census Income"
+        "name": "AIE S3 — Adult Census Income"
       },
       "s3-credit-risk": {
         "id": 186,
@@ -47,7 +47,7 @@
         "id": 182,
         "label": "MNIST Warm-up",
         "module_slug": "s4-pytorch-nutshell",
-        "name": "PAIE S4 — MNIST Warm-up"
+        "name": "AIE S4 — MNIST Warm-up"
       }
     }
   }

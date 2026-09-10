@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Build the forest-cover split for the Session 4 classification challenge.
 
-Public  -> data/X_train.csv, data/y_train.csv, data/X_test.csv
-Private -> data/y_test.csv                  (uploaded to the ENV folder, never published)
+Public  -> data/X.csv, data/y.csv, data/X_submission.csv
+Private -> data/y_submission.csv                  (uploaded to the ENV folder, never published)
 Benchmark -> data/benchmark_submission.csv  (StandardScaler + LogisticRegression —
              the bar the MLP has to clear, NOT what any notebook produces)
 
@@ -25,7 +25,7 @@ predicts cottonwood loses almost nothing. Balanced, chance is exactly 1/7 =
 number on the leaderboard is honest. Cottonwood has 2,747 rows in the source,
 which is what caps the per-class count at 2,500.
 
-Class codes, as they appear in `y_train.csv` and as they must appear in a
+Class codes, as they appear in `y.csv` and as they must appear in a
 submission:
 
     1 Spruce/Fir        3 Ponderosa Pine     5 Aspen        7 Krummholz
@@ -141,19 +141,19 @@ def main():
     X_train.insert(0, "id", [f"tr_{i:05d}" for i in range(len(X_train))])
     X_test.insert(0, "id", [f"te_{i:05d}" for i in range(len(X_test))])
 
-    X_train.to_csv(os.path.join(DATA, "X_train.csv"), index=False)
+    X_train.to_csv(os.path.join(DATA, "X.csv"), index=False)
     pd.DataFrame({"id": X_train["id"], "prediction": y_train}).to_csv(
-        os.path.join(DATA, "y_train.csv"), index=False)
-    X_test.to_csv(os.path.join(DATA, "X_test.csv"), index=False)
+        os.path.join(DATA, "y.csv"), index=False)
+    X_test.to_csv(os.path.join(DATA, "X_submission.csv"), index=False)
     pd.DataFrame({"id": X_test["id"], "prediction": y_test}).to_csv(
-        os.path.join(DATA, "y_test.csv"), index=False)
+        os.path.join(DATA, "y_submission.csv"), index=False)
     print(f"  train {len(X_train)} rows / test {len(X_test)} rows")
 
     print("fitting the baseline (StandardScaler + LogisticRegression) on the CSVs …")
-    tr = pd.read_csv(os.path.join(DATA, "X_train.csv"))
-    te = pd.read_csv(os.path.join(DATA, "X_test.csv"))
-    ytr = pd.read_csv(os.path.join(DATA, "y_train.csv"))["prediction"]
-    yte = pd.read_csv(os.path.join(DATA, "y_test.csv"))["prediction"]
+    tr = pd.read_csv(os.path.join(DATA, "X.csv"))
+    te = pd.read_csv(os.path.join(DATA, "X_submission.csv"))
+    ytr = pd.read_csv(os.path.join(DATA, "y.csv"))["prediction"]
+    yte = pd.read_csv(os.path.join(DATA, "y_submission.csv"))["prediction"]
 
     scaler = StandardScaler().fit(tr.drop(columns=["id"]))
     model = LogisticRegression(max_iter=2000).fit(

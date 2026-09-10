@@ -20,9 +20,13 @@ which is the same protocol on a continuous target — split, cross-validate,
 
 | file | rows | contents |
 |---|---|---|
-| `X_train.csv` | 700 | `id` + the 20 attributes |
-| `y_train.csv` | 700 | `id,prediction` — 1 means bad credit risk |
-| `X_test.csv` | 300 | `id` + the same 20 attributes |
+| `X.csv` | 700 | `id` + the 20 attributes |
+| `y.csv` | 700 | `id,prediction` — 1 means bad credit risk |
+| `X_submission.csv` | 300 | `id` + the same 20 attributes |
+
+`X.csv` and `y.csv` are the labelled data — fit on them, and carve your own
+validation split out of them. `X_submission.csv` is what the leaderboard
+scores; its labels are held back, so it cannot serve as a validation set.
 
 A stratified 70/30 split of openml `credit-g` (version 1) at `random_state=42`.
 Thirteen attributes are categorical (`checking_status`, `credit_history`,
@@ -42,7 +46,7 @@ fairness material later in the year.
 
 ## What you submit
 
-`submission.csv` — one row per test id, in any order:
+`submission.csv` — one row per id in `X_submission.csv`, in any order:
 
 ```csv
 id,prediction

@@ -11,7 +11,7 @@ while that is still cheap to get wrong.
 
 | file | rows | contents |
 |---|---|---|
-| `X_test.csv` | 5,000 | `id` + `p0 … p783` — predict these |
+| `X_submission.csv` | 5,000 | `id` + `p0 … p783` — predict these |
 | `sample_train.csv` | 2,000 | `id,label` + `p0 … p783` — a format reference |
 
 **The pixel convention matters.** `p0 … p783` are the 28×28 image flattened
@@ -33,7 +33,7 @@ confidently wrong, which is worse.
 
 ## What you submit
 
-`submission.csv` — one row per test id, in any order:
+`submission.csv` — one row per id in `X_submission.csv`, in any order:
 
 ```csv
 id,label
@@ -42,8 +42,8 @@ te_00001,2
 ```
 
 `label` is the predicted digit, `0–9` — the class, not a probability and not a
-one-hot row. Every id in `X_test.csv` must appear exactly once; anything else is
-rejected with a message naming the line.
+one-hot row. Every id in `X_submission.csv` must appear exactly once; anything
+else is rejected with a message naming the line.
 
 ```python
 import mlarena

@@ -13,16 +13,20 @@ of the protocol is testable rather than merely asserted.
 
 | file | rows | contents |
 |---|---|---|
-| `X_train.csv` | 39,073 | `id` + the 14 features |
-| `y_train.csv` | 39,073 | `id,prediction` — 1 means >50K |
-| `X_test.csv` | 9,769 | `id` + the same 14 features |
+| `X.csv` | 39,073 | `id` + the 14 features |
+| `y.csv` | 39,073 | `id,prediction` — 1 means >50K |
+| `X_submission.csv` | 9,769 | `id` + the same 14 features |
+
+`X.csv` and `y.csv` are the labelled data — fit on them, and carve your own
+validation split out of them. `X_submission.csv` is what the leaderboard
+scores; its labels are held back, so it cannot serve as a validation set.
 
 A stratified 80/20 split of openml `adult` (version 2) at `random_state=42`.
 Ids are freshly assigned and the source ordering is discarded.
 
 ## What you submit
 
-`submission.csv` — one row per test id, in any order:
+`submission.csv` — one row per id in `X_submission.csv`, in any order:
 
 ```csv
 id,prediction
@@ -30,7 +34,7 @@ te_00000,0
 te_00001,1
 ```
 
-`prediction` is **1** for >50K and **0** otherwise. Every id in `X_test.csv`
+`prediction` is **1** for >50K and **0** otherwise. Every id in `X_submission.csv`
 must appear exactly once. Anything else — a missing id, an unknown id, a
 duplicate, a probability instead of a class — is rejected with a message naming
 the line, and scores 0. That is deliberate: a scorer that silently imputed your

@@ -35,7 +35,7 @@ VALID = set(CLASSES)
 class Env:
     def __init__(self, is_evaluation=True):
         self.is_evaluation = is_evaluation
-        path = os.path.join(os.path.dirname(__file__), "y_test.csv")
+        path = os.path.join(os.path.dirname(__file__), "y_submission.csv")
         self.ground_truth = {}
         with open(path, "r", newline="") as fh:
             for row in csv.DictReader(fh):
@@ -50,7 +50,7 @@ class Env:
         if missing:
             return self._error(
                 f"Submission is missing {len(missing)} of {len(self.ground_truth)} "
-                f"test ids (e.g. {missing[0]!r}). Every id in X_test.csv must "
+                f"test ids (e.g. {missing[0]!r}). Every id in X_submission.csv must "
                 f"appear exactly once."
             )
         extra = [k for k in predictions if k not in self.ground_truth]

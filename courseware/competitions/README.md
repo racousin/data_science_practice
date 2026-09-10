@@ -27,6 +27,23 @@ competitions/
 └── .mlarena-state.json  the id lockfile — committed, see "Publishing"
 ```
 
+### The handed-out files
+
+Sessions 3 and 4 ship **`X.csv` + `y.csv`** — the labelled data, which the
+student splits themselves — and **`X_submission.csv`**, the rows the leaderboard
+scores, whose labels stay behind in the private `y_submission.csv`.
+
+They used to be `X_train.csv` / `y_train.csv` / `X_test.csv` / `y_test.csv`, and
+were renamed on 2026-09-09 because `X_test` named two different things at once:
+the file you predict, and the half of a `train_test_split` you score on. Session
+3 is the session that teaches the split, and Session 4's notebook carves a
+validation set out of the same frame — the two sessions that could least afford
+the collision.
+
+**Session 2 keeps the old names.** It was taught on 2026-09-07/08 and its
+students have notebooks open against `X_train.csv`. `test_challenges.py` holds
+both conventions in `FILES` / `LEGACY_FILES` and addresses the files by role.
+
 Session 2 carries **two** challenges rather than one, because it teaches two
 model families and the point is that they are the same machinery with a
 different target type. `s2-bike-demand` is the regression half and ships a
@@ -233,7 +250,8 @@ grade fails the build instead of quietly mis-ranking a class.
 
 **file_v1** (Sessions 2, 3 & 4 — every package in this directory) — competitors
 upload one `submission.csv`; no competitor code runs. `env.py` reads it and
-scores against a private `y_test.csv` that is uploaded to the env folder and
+scores against a private label file (`y_submission.csv`, or `y_test.csv` in
+Session 2) that is uploaded to the env folder and
 never published. The scorers are **pure standard library**: the env image ships
 a full ML stack, but a scorer needing only `csv` and arithmetic has one less way
 to break. They reject a malformed submission with a message naming the line,
@@ -285,7 +303,7 @@ live leaderboard.
 
 `localtest.py` stages `env.py` plus its private files into a scratch directory
 exactly as the platform lays out the env folder — which is what catches "env.py
-reads `y_test.csv` from next to itself, but the file was never in
+reads its private label file from next to itself, but the file was never in
 `private_files`". For flex packages it reproduces the error latch, so env code
 that assumes it can keep calling after a crash fails locally. It also checks
 `metrics_detail` against the declared schema (the executor enforces

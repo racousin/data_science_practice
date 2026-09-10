@@ -96,15 +96,16 @@ told you.
 ## Part D — Submit to ML-Arena (10 min)
 
 **AIE S4 — MNIST Warm-up** (competition `182`) takes a single
-`submission.csv` of predictions on 5,000 held-out digits. Download `X_test.csv`
-from the competition's data tab; the columns `p0 … p783` are the image
-flattened row-major as `uint8` 0-255, i.e. what `datasets.MNIST` gives you
-before `ToTensor()`.
+`submission.csv` of predictions on 5,000 held-out digits. Download
+`X_submission.csv` from the competition's data tab; the columns `p0 … p783` are
+the image flattened row-major as `uint8` 0-255, i.e. what `datasets.MNIST`
+gives you before `ToTensor()`.
 
 **The submission schema is `id,label`** — not `id,prediction`. Lab 3 used
 `prediction`; this competition does not, and upload validation rejects the file
-before anything runs (`Column mismatch. Expected: ['id', 'label']`). Every test
-id must appear exactly once, and `label` is the predicted digit, 0-9.
+before anything runs (`Column mismatch. Expected: ['id', 'label']`). Every id in
+`X_submission.csv` must appear exactly once, and `label` is the predicted digit,
+0-9.
 
 ```python
 import pandas as pd

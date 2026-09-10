@@ -1,7 +1,7 @@
 # Session 3 of MS2A - AI Engineering ("Data Science in a Nutshell"). The Lab 3
 # pipeline, scored on a held-out split of UCI Adult.
 CONFIG = {
-    "name": "PAIE S3 — Adult Census Income",
+    "name": "AIE S3 — Adult Census Income",
     "kernel_version": "file_v1",
     # "Data Science in a Nutshell" (#16) was split; Lab 3, which submits here,
 # now lives in s3-models-and-tuning. course.yaml declares it there.
@@ -9,15 +9,15 @@ CONFIG = {
     "label": "Adult Census Income",
     "metric": "f1",
     "metric2": "accuracy",
-    "public_files": ["X_train.csv", "y_train.csv", "X_test.csv"],
-    "private_files": ["y_test.csv"],
+    "public_files": ["X.csv", "y.csv", "X_submission.csv"],
+    "private_files": ["y_submission.csv"],
     "benchmark_file": "data/benchmark_submission.csv",
     "benchmark_expected_score": 0.656175,
     "benchmark_score_tol": 1e-6,
     "dataset_label": "Adult Census Income",
     "dataset_description": (
         "Stratified 80/20 split of UCI Adult (openml `adult`, version 2). "
-        "X_train.csv + y_train.csv to fit on, X_test.csv to predict. The test "
+        "X.csv + y.csv to fit on, X_submission.csv to predict. Its "
         "labels are held back."
     ),
     # Deterministic scorer: the same CSV always yields the same F1.

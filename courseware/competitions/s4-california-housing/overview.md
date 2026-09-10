@@ -33,9 +33,13 @@ linked from the session's *Warm-up* lessons and need no account:
 
 | file | rows | contents |
 |---|---|---|
-| `X_train.csv` | 16,512 | `id` + the 8 features |
-| `y_train.csv` | 16,512 | `id,prediction` — the median house value |
-| `X_test.csv` | 4,128 | `id` + the same 8 features |
+| `X.csv` | 16,512 | `id` + the 8 features |
+| `y.csv` | 16,512 | `id,prediction` — the median house value |
+| `X_submission.csv` | 4,128 | `id` + the same 8 features |
+
+`X.csv` and `y.csv` are the labelled data — fit on them, and carve your own
+validation split out of them. `X_submission.csv` is what the leaderboard
+scores; its labels are held back, so it cannot serve as a validation set.
 
 A random 80/20 split of scikit-learn's `fetch_california_housing` at
 `random_state=42` — the 1990 US census, one row per block group. No missing
@@ -63,7 +67,7 @@ No straight line in the eight features can express that; a hidden layer can.
 
 ## What you submit
 
-`submission.csv` — one row per test id, in any order:
+`submission.csv` — one row per id in `X_submission.csv`, in any order:
 
 ```csv
 id,prediction
@@ -71,7 +75,7 @@ te_00000,1.943
 te_00001,3.108
 ```
 
-`prediction` is a real number in units of $100,000. Every id in `X_test.csv`
+`prediction` is a real number in units of $100,000. Every id in `X_submission.csv`
 must appear exactly once; a missing id, an unknown id, a duplicate, a
 non-numeric value or a `NaN` is rejected with a message naming the line, and
 scores 0.

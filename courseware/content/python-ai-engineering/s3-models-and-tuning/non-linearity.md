@@ -1,8 +1,7 @@
 # Non-Linearity
 
 Session 2 left you with two models, both of which draw straight lines. Most data
-is not on a straight line. This lesson is the cheapest fix — and the trap that
-comes with it.
+is not on a straight line.
 
 <!-- notes: 20 minutes. Opens the session. The recap at the top is deliberate:
 half the room will have forgotten the normal equation between sessions. -->
@@ -64,8 +63,7 @@ separates a circle from the ring around it.
 ![Concentric circles are not linearly separable](assets/s3-models-and-tuning/non-linearity/circles-lifted-3d.png)
 
 There is no such line — but there is a *plane*, once you add a third dimension.
-That observation is the whole idea behind this lesson and behind the kernel
-trick later in the session.
+That observation is the whole idea behind this lesson.
 
 ---
 
@@ -93,8 +91,6 @@ $$
 
 > **Non-linear in $x$, linear in $\theta$.**
 
-That is why the normal equation still applies unchanged. You did not build a new
-model; you built new columns and handed them to the old one.
 
 ---
 
@@ -103,24 +99,20 @@ model; you built new columns and handed them to the old one.
 ```python
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
-from sklearn.pipeline import Pipeline
 
-model = Pipeline([
-    ('poly', PolynomialFeatures(degree=3)),
-    ('reg',  LinearRegression()),
-])
-model.fit(X_train, y_train)
-y_pred = model.predict(X_test)
+poly = PolynomialFeatures(degree=3)
+X_train_poly = poly.fit_transform(X_train)
+X_test_poly  = poly.transform(X_test)
+
+reg = LinearRegression()
+reg.fit(X_train_poly, y_train)
+y_pred = reg.predict(X_test_poly)
 ```
 
-Wrapping it in a `Pipeline` is not cosmetic: it makes `PolynomialFeatures` fit
-inside each cross-validation fold, which is the leakage rule from the previous
-lesson enforced structurally.
+`fit_transform` on train, `transform` on test — the standard transformer pattern.
+Here `fit` only records the shape and the list of exponents, so nothing is learned
+from the data. But keep the habit: with a scaler or an imputer, calling
+`fit_transform` on the test set leaks.
 
----
-
-## The bill
-
-Raising $d$ raises capacity, and capacity is exactly what overfits. Degree
-$n - 1$ interpolates your training set perfectly and predicts nothing. The next
-lesson is how you keep the flexibility without paying that bill.
+`poly.get_feature_names_out()` shows what you actually built — 5 features at
+degree 3 becomes 56 columns.

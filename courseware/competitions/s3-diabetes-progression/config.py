@@ -19,8 +19,8 @@ CONFIG = {
     "label": "Diabetes Progression",
     "metric": "r2",
     "metric2": "rmse",
-    "public_files": ["X_train.csv", "y_train.csv", "X_test.csv"],
-    "private_files": ["y_test.csv"],
+    "public_files": ["X.csv", "y.csv", "X_submission.csv"],
+    "private_files": ["y_submission.csv"],
     "benchmark_file": "data/benchmark_submission.csv",
     # Plain LinearRegression on the CSVs as written. Reference points on this
     # split: predict-the-mean is R2 = 0.0 (RMSE 76.54); this baseline is
@@ -31,8 +31,8 @@ CONFIG = {
     "dataset_description": (
         "Random 60/40 split of sklearn's `load_diabetes` (raw, unscaled): 442 "
         "patients, ten baseline clinical measurements, and disease progression "
-        "one year later. X_train.csv + y_train.csv to fit on, X_test.csv to "
-        "predict. The test targets are held back."
+        "one year later. X.csv + y.csv to fit on, X_submission.csv to "
+        "predict. Its targets are held back."
     ),
     # Deterministic scorer: the same CSV always yields the same R2.
     "deployment_nb_constraint_run": 1,

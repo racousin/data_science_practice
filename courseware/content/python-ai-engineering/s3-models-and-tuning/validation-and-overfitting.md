@@ -1,6 +1,6 @@
 # Validation & Overfitting
 
-How to get a number you can trust ?
+Is the model learn and be able to generalize ? How to get a number you can trust ?
 
 ---
 
@@ -18,8 +18,7 @@ Symptom: training error keeps falling, validation error starts rising.
 
 Training error **0.0000**, test error **9,209,639**. Any model family rich enough
 to interpolate your training set will do so if you let it, and it will be
-worthless. Everything in this session — the split, regularisation, tree depth
-limits, early stopping — exists to stop that.
+worthless.
 
 ---
 
@@ -38,10 +37,10 @@ training, hyperparameter search, model comparison — happens inside the other
 from sklearn.model_selection import train_test_split
 
 X_train, X_temp, y_train, y_temp = train_test_split(
-    X, y, test_size=0.3, random_state=42, stratify=y
+    X, y, test_size=0.3, random_state=42
 )
 X_val, X_test, y_val, y_test = train_test_split(
-    X_temp, y_temp, test_size=0.5, random_state=42, stratify=y_temp
+    X_temp, y_temp, test_size=0.5, random_state=42
 )
 ```
 
@@ -55,10 +54,17 @@ X_val, X_test, y_val, y_test = train_test_split(
 | Validation | 15% | choosing hyperparameters, early stopping |
 | Test | 15% | one final, honest estimate |
 
-`stratify=` is not optional on a classification target. Without it, the 15% test
-slice of a 24%-positive dataset lands anywhere between 13% and 34% positive
-depending on the seed, and your test score then moves with the draw rather than
-with the model. Lab 3 fails an unstratified split for exactly this reason.
+```python
+model1.fit(X_train, y_train)                    # train: fit
+model2.fit(X_train, y_train)                   # train: fit
+f1_score(y_val,  model1.predict(X_val))        # validation: compare candidates
+f1_score(y_val,  model2.predict(X_val))
+
+f1_score(y_test, best_model.predict(X_test))        # test: report, once
+```
+
+The validation score is not the number you report — you picked the model with it,
+so it is optimistic. Only the test score is honest.
 
 ---
 
@@ -67,17 +73,22 @@ with the model. Lab 3 fails an unstratified split for exactly this reason.
 ![kfold.png](assets/s3-models-and-tuning/validation-and-overfitting/kfold.png)
 
 With little data, one split wastes most of it and the estimate is noisy.
-K-fold uses everything:
+K-fold uses everything.
 
 ```python
-from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import KFold
+from sklearn.metrics import f1_score
 
-scores = cross_val_score(model, X, y, cv=5, scoring="f1")
+cv = KFold(n_splits=5, shuffle=True, random_state=42)
+
+scores = []
+for train_idx, test_idx in cv.split(X):
+    m = clone(model)                       # a fresh, unfitted model each fold
+    m.fit(X[train_idx], y[train_idx])
+    scores.append(f1_score(y[test_idx], m.predict(X[test_idx])))
+
 print(f"{scores.mean():.3f} ± {scores.std():.3f}")
 ```
-
-Split into 5 folds; train on 4, validate on 1; rotate. Report the mean **and the
-spread** — a mean of 0.80 ± 0.02 and 0.80 ± 0.15 are very different results.
 
 ---
 
@@ -88,22 +99,22 @@ spread** — a mean of 0.80 ± 0.02 and 0.80 ± 0.15 are very different results.
 With imbalanced classes, a random fold might contain no positives at all.
 Stratification preserves the class ratio in every fold.
 
+`cross_val_score` runs exactly the loop above for you — pass it the splitter and
+get the array of fold scores back:
+
 ```python
-from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import StratifiedKFold, cross_val_score
 
 cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 scores = cross_val_score(model, X, y, cv=cv, scoring="f1")
+print(f"{scores.mean():.3f} ± {scores.std():.3f}")
 ```
-
-For classification, this should be your default rather than a special case.
 
 ---
 
 ## Time series — do not shuffle
 
-
 ![tskfold.png](assets/s3-models-and-tuning/validation-and-overfitting/tskfold.png)
-
 
 With temporal data, a random split trains on the future and tests on the past.
 The score is meaningless.
@@ -112,16 +123,12 @@ The score is meaningless.
 from sklearn.model_selection import TimeSeriesSplit
 
 cv = TimeSeriesSplit(n_splits=5)
+scores = cross_val_score(model, X, y, cv=cv, scoring="neg_mean_absolute_error")
 ```
 
-Each fold trains on everything before a cut point and validates on what comes
-after — which is the situation you will actually face.
-
-```text
-fold 1: train [....]              val [..]
-fold 2: train [......]            val [..]
-fold 3: train [........]          val [..]
-```
+Each fold trains on a prefix of the series and tests on the block that follows,
+so the training set grows at every split. Rows are assumed to be in chronological
+order — `TimeSeriesSplit` slices positionally and never looks at a date column.
 
 ---
 
@@ -184,25 +191,8 @@ the prediction?* If no, drop it.
 
 ---
 
-## Leak 3 — duplicates across the split
 
-The same row, or a near-duplicate, in both train and test. The model recalls
-rather than generalises.
-
-Common with: augmented images, multiple records per patient, near-identical
-text. Deduplicate — and split by **group** (patient, user, document) rather than
-by row:
-
-```python
-from sklearn.model_selection import GroupKFold
-
-cv = GroupKFold(n_splits=5)
-scores = cross_val_score(model, X, y, groups=patient_ids, cv=cv)
-```
-
----
-
-## Leak 4 — using the test set to choose
+## Leak 3 — using the test set to choose
 
 Trying twenty models and reporting the best test score is leakage through you.
 The reported number is the maximum of twenty noisy draws, not an estimate of
@@ -218,5 +208,3 @@ Choose on validation. Touch test once.
 - **Simpler model** — fewer parameters, shallower trees
 - **Early stopping** — stop when validation error turns up
 - **Data augmentation** — more effective variety from the same data
-
----

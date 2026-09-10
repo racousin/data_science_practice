@@ -22,9 +22,13 @@ output back into an answer.
 
 | file | rows | contents |
 |---|---|---|
-| `X_train.csv` | 14,000 | `id` + the 54 features |
-| `y_train.csv` | 14,000 | `id,prediction` — the cover type, 1–7 |
-| `X_test.csv` | 3,500 | `id` + the same 54 features |
+| `X.csv` | 14,000 | `id` + the 54 features |
+| `y.csv` | 14,000 | `id,prediction` — the cover type, 1–7 |
+| `X_submission.csv` | 3,500 | `id` + the same 54 features |
+
+`X.csv` and `y.csv` are the labelled data — fit on them, and carve your own
+validation split out of them. `X_submission.csv` is what the leaderboard
+scores; its labels are held back, so it cannot serve as a validation set.
 
 A balanced subsample of the UCI Covertype dataset (scikit-learn's
 `fetch_covtype`): **2,500 rows of each of the seven cover types**, split 80/20
@@ -65,7 +69,7 @@ zero with no error anywhere. The scorer rejects a `0` with a message saying so.
 
 ## What you submit
 
-`submission.csv` — one row per test id, in any order:
+`submission.csv` — one row per id in `X_submission.csv`, in any order:
 
 ```csv
 id,prediction
@@ -74,7 +78,7 @@ te_00001,7
 ```
 
 `prediction` is the integer cover type, 1–7. Not a probability, not a row of
-logits, not a one-hot vector. Every id in `X_test.csv` must appear exactly
+logits, not a one-hot vector. Every id in `X_submission.csv` must appear exactly
 once; a missing id, an unknown id, a duplicate or a value outside 1–7 is
 rejected with a message naming the line, and scores 0.
 

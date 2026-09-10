@@ -32,7 +32,7 @@ submits. Paste your `mlk_user_...` key into cell 2 and run all.
 
 ---
 
-## Section 1 — Run it, then read it
+## Challenge 1 — Run it, then read it
 
 Running it takes four minutes. Reading it is the lab.
 
@@ -52,7 +52,7 @@ or above **−138.88**, the notebook's benchmark.
 
 ---
 
-## Section 2 — Bank Term Deposit
+## Challenge 2 — Bank Term Deposit
 
 45,211 marketing calls; predict which clients subscribed. Binary target, **11.7%
 positive**, ranked on **F1**.
@@ -66,7 +66,7 @@ cell below it is empty. The steps are the ones you just watched; write them.
 
 ---
 
-## Section 2 — The bar, and the two traps
+## Challenge 2 — The bar, and the two traps
 
 | model | threshold | F1 |
 |---|---|---|
@@ -90,7 +90,7 @@ they bite:
 
 ---
 
-## Section 3 — Build your toolkit
+## Build your toolkit
 
 You have now written data import, summary statistics, and plots — twice each,
 in two notebooks. Go back through both, find every block you wrote a second

@@ -408,7 +408,6 @@ def test_notebook_code_cells_compile():
 
 
 @pytest.mark.parametrize("notebook", ["aie-s2-bank-marketing.ipynb",
-                                     "aie-s3-bank-marketing.ipynb",
                                      "aie-s3-credit-risk.ipynb",
                                      "aie-s4-forest-cover.ipynb"])
 def test_guide_notebook_has_no_code(notebook):
@@ -486,7 +485,7 @@ def test_preflight_notebook_runs_standalone(tmp_path):
 @pytest.mark.parametrize("pkg,notebook,expect_key,tol,floor", [
     ("s2-bike-demand", "aie-s2-bike-demand.ipynb", "neg_mae", 1e-6, None),
     # Same package, same leaderboard, a different notebook: Session 3 refits the
-    # Session 2 data with a searched RandomForest and measures -48.06. The
+    # Session 2 data with a searched RandomForest and measures -48.11. The
     # package's own floor (-105.0) is the Session 2 notebook's and would pass on
     # a run that had silently fallen back to a linear model, so this one carries
     # its own.
@@ -509,7 +508,7 @@ def test_worked_notebook_runs_and_scores_the_baseline(pkg, notebook, expect_key,
     against a floor of 0.72); s2-bike-demand needs it because its last two
     sections engineer features and submit again (measured -99.42 against a floor
     of -105.0). The Session 3 notebook on the same package carries an explicit
-    floor in the parametrize instead (-60.0 against a measured -48.06), because
+    floor in the parametrize instead (-60.0 against a measured -48.11), because
     the package's own floor was written for a different notebook."""
     nbformat = pytest.importorskip("nbformat")
     nbclient = pytest.importorskip("nbclient")

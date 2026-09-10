@@ -114,8 +114,8 @@ def main():
     print(f"== {cfg['name']}  [{kind}]  {pkg_dir.name}")
 
     # Stage env.py + its private files into a scratch dir, exactly as the
-    # platform lays out the env folder. This is what catches "env.py reads
-    # y_test.csv from next to itself but the file was never uploaded".
+    # platform lays out the env folder. This is what catches "env.py reads its
+    # private label file from next to itself but the file was never uploaded".
     stage = Path(tempfile.mkdtemp(prefix=f"envstage-{pkg_dir.name}-"))
     shutil.copy2(pkg_dir / "env.py", stage / "env.py")
     for rel in cfg.get("private_files", []):

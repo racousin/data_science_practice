@@ -21,9 +21,13 @@ argument rather than the text. Open it, paste your API key, run all.
 
 | file | rows | contents |
 |---|---|---|
-| `X_train.csv` | 265 | `id` + the 10 features |
-| `y_train.csv` | 265 | `id,prediction` — the progression score |
-| `X_test.csv` | 177 | `id` + the same 10 features |
+| `X.csv` | 265 | `id` + the 10 features |
+| `y.csv` | 265 | `id,prediction` — the progression score |
+| `X_submission.csv` | 177 | `id` + the same 10 features |
+
+`X.csv` and `y.csv` are the labelled data — fit on them, and carve your own
+validation split out of them. `X_submission.csv` is what the leaderboard
+scores; its labels are held back, so it cannot serve as a validation set.
 
 A random 60/40 split of scikit-learn's `load_diabetes` (raw, unscaled) at
 `random_state=42`. No missing values. The target runs from 25 to 346, mean 152.
@@ -44,7 +48,7 @@ model can memorise, and memorising is what you are here to catch.
 
 ## What you submit
 
-`submission.csv` — one row per test id, in any order:
+`submission.csv` — one row per id in `X_submission.csv`, in any order:
 
 ```csv
 id,prediction
@@ -52,7 +56,7 @@ te_00000,171.4
 te_00001,92.0
 ```
 
-`prediction` is a real number. Every id in `X_test.csv` must appear exactly
+`prediction` is a real number. Every id in `X_submission.csv` must appear exactly
 once; a missing id, an unknown id, a duplicate, a non-numeric value or a `NaN`
 is rejected with a message naming the line, and scores 0.
 

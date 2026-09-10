@@ -493,7 +493,10 @@ Within each pair the first challenge ships a **worked** notebook that runs top
 to bottom and the second ships a **guided** one — the same protocol in English
 with empty cells. `test_challenges.py` enforces both properties: the worked
 notebooks are executed and their submissions scored, and the guided ones are
-asserted to contain no code.
+asserted to contain no code. Session 3 is the exception: its bank challenge
+(184) has no notebook of its own — the steps are in
+`s3-models-and-tuning/lab-3.md`, and students continue in their Session 2
+notebook.
 
 `build_notebooks.py` also emits three notebooks that are not challenges and need
 no ML-Arena account — the pandas/seaborn pre-flight for Session 2 and the two

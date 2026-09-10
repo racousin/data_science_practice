@@ -1,7 +1,6 @@
 # Regularization
 
-Flexibility that you can turn down with a dial. One extra term in the loss, one
-hyperparameter, and three names you will see everywhere.
+One extra term in the loss, one hyperparameter, and simple way to avoid overfiting.
 
 <!-- notes: ~15 minutes per the deck plan. The KKT slide is optional depth — skip
 it if the room is struggling, but the constrained view is what makes the diamond
@@ -41,8 +40,6 @@ $$
 
 ![Unit balls for different norms](assets/s3-models-and-tuning/regularization/lp-norm-balls.png)
 
-The shape of the ball is not decoration — it is the whole explanation of what
-each penalty does.
 
 ---
 
@@ -66,8 +63,7 @@ $t$. The solution lands where the loss contours first touch that ball:
 
 The $L_1$ ball has **corners on the axes**. Contours touch corners, and a corner
 means some $\theta_j$ is exactly zero. The $L_2$ ball is round and has no
-corners, so it shrinks coefficients without ever zeroing them. That is the entire
-reason Lasso does feature selection and Ridge does not.
+corners, so it shrinks coefficients without ever zeroing them.
 
 ---
 

@@ -32,9 +32,9 @@ The analogy stops there. Do not over-read it.
 | | |
 |---|---|
 | **Input** | $X = (x_1, \ldots, x_{r_0})$ |
-| **Parameters** | $w = (b, w_1, \ldots, w_{r_0})$ — one per input dimension, plus a bias |
-| **Operation** | $z = \sum_i w_i x_i + b$ |
-| **Activation** | $o = \sigma(w \cdot X)$ |
+| **Parameters** | $w = (w_1, \ldots, w_{r_0})$ — one per input dimension — plus a bias $b$ |
+| **Pre-activation** | $z = \sum_i w_i x_i + b = w \cdot X + b$ |
+| **Activation** | $a = \sigma(z)$ |
 | **Output** | dimension 1 |
 
 > With an identity activation, a neuron **is** a linear regression.
@@ -66,21 +66,17 @@ not vanish for positive inputs.
 Stack neurons into layers, and layers into a network:
 
 $$
-o = \big(\sigma(w_1 \cdot X), \; \sigma(w_2 \cdot X)\big) = \sigma(WX)
+a = \big(\sigma(w_1 \cdot X + b_1), \; \sigma(w_2 \cdot X + b_2)\big) = \sigma(WX + b)
 $$
 
 | | |
 |---|---|
 | **Input** | $X = (x_1, \ldots, x_{r_0})$ |
-| **Parameters** | $W^1, \ldots, W^l$ with $W^k \in \mathbb{R}^{r_{k-1} \times r_k}$, and biases $b^k \in \mathbb{R}^{r_k}$ |
-| **Operation** | $f_\theta(X) = W^l \sigma\big(W^{l-1} \sigma(\ldots \sigma(W^1 X))\big)$ |
-| **Output** | $r_l$ — the number of neurons in the last layer |
-
-$l$ layers, $r_k$ neurons per layer. The parameter count is
-
+| **Parameters** | $W^1, \ldots, W^L$ with $W^k \in \mathbb{R}^{r_k \times r_{k-1}}$, and biases $b^k \in \mathbb{R}^{r_k}$ |
+| **Operation** | $f_\theta(X) = \sigma\big(W^L \sigma(\ldots \sigma(W^1 X + b^1) \ldots) + b^L\big)$ |
+| **Output** | $r_L$ — the number of neurons in the last layer |
 
 ![mlp.jpeg](assets/s3-models-and-tuning/neural-networks/mlp.jpeg)
-
 
 ---
 
@@ -96,13 +92,13 @@ $l$ layers, $r_k$ neurons per layer. The parameter count is
 
 ### Answers
 
-**1.** The layer widths are $r_0 = 3 \rightarrow r_1 = 5 \rightarrow r_2 = 3 \rightarrow r_3 = 1$.
+**1.** $L = 3$ layers, with widths $r_0 = 3 \rightarrow r_1 = 5 \rightarrow r_2 = 3 \rightarrow r_3 = 1$.
 
 $$
 r_1(r_0 + 1) + r_2(r_1 + 1) + r_3(r_2 + 1) = 5 \times 4 + 3 \times 6 + 1 \times 4 = 20 + 18 + 4 = 42
 $$
 
-**2.** Weights $W^k \in \mathbb{R}^{r_{k-1} \times r_k} \rightarrow r_{k-1} \cdot r_k$;
+**2.** Weights $W^k \in \mathbb{R}^{r_k \times r_{k-1}} \rightarrow r_k \cdot r_{k-1}$;
 biases $b^k \in \mathbb{R}^{r_k} \rightarrow r_k$; so $r_k(r_{k-1} + 1)$ per
 layer, summed over layers.
 
@@ -141,9 +137,9 @@ $$
 Computing $\nabla \ell$ directly for a network looks intractable:
 
 $$
-\nabla \ell\big(Y, f_\theta(X)\big) = \frac{\partial \ell(Y, f(X))}{\partial w_i^k} = \;?
+\nabla \ell\big(Y, f_\theta(X)\big) = \frac{\partial \ell\big(Y, f(X)\big)}{\partial W^k} = \;?
 \qquad
-\forall k \in [0, l], \; \forall i \in [0, r_k]
+\forall k \in [1, L]
 $$
 
 The chain rule makes it cheap — at the cost of memory.
@@ -167,10 +163,41 @@ Every derivative reduces to a product of simple local terms.
 
 ---
 
-## Then apply gradient descent
+## Start at the last layer
 
-Backpropagation returns $\nabla_\theta \ell$. Then Update the parameters (with gradient descent optimizer)
+Write $z^k = W^k a^{k-1} + b^k$ and $a^k = \sigma(z^k)$, with $a^0 = X$ and
+$a^L = f_\theta(X)$.
+
+The loss $\ell$ appears in one place only — the output. So the last layer is the
+one term we can write down directly:
 
 $$
-\theta_{t+1} = \theta_t - \eta \, \nabla_\theta \ell(Y, f_{\theta_t}(X))
+\delta^L = \frac{\partial \ell}{\partial z^L} = \nabla_{a^L} \ell \;\odot\; \sigma'(z^L)
+\qquad\Longrightarrow\qquad
+\frac{\partial \ell}{\partial W^L} = \delta^L (a^{L-1})^\top,
+\quad
+\frac{\partial \ell}{\partial b^L} = \delta^L
+$$
+
+Everything else follows from it. The chain rule moves the signal back one layer:
+
+$$
+\delta^{k} = \big((W^{k+1})^\top \delta^{k+1}\big) \odot \sigma'(z^k)
+$$
+
+and the two gradient formulas above hold at every $k$. One explicit term at the
+end, one recursion for the rest — that is the whole algorithm.
+
+The recursion needs $a^{k-1}$ and $z^k$ from the forward pass: that is the memory
+cost announced earlier.
+
+---
+
+## Then apply gradient descent
+
+Backpropagation returns $\nabla_\theta \ell$. Update the parameters with a
+gradient descent optimizer:
+
+$$
+\theta_{t+1} = \theta_t - \eta \, \nabla_\theta \ell\big(Y, f_{\theta_t}(X)\big)
 $$

@@ -26,8 +26,8 @@ CONFIG = {
     "label": "California Housing",
     "metric": "r2",
     "metric2": "rmse",
-    "public_files": ["X_train.csv", "y_train.csv", "X_test.csv"],
-    "private_files": ["y_test.csv"],
+    "public_files": ["X.csv", "y.csv", "X_submission.csv"],
+    "private_files": ["y_submission.csv"],
     "benchmark_file": "data/benchmark_submission.csv",
     # Plain LinearRegression on the CSVs as written — what Session 2 could do.
     # Reference points on this split: predict-the-mean is R2 = 0.0
@@ -46,8 +46,8 @@ CONFIG = {
         "Random 80/20 split of sklearn's `fetch_california_housing`: 20,640 "
         "California census districts from the 1990 census, eight numeric "
         "features, and the district's median house value in units of $100,000 "
-        "(capped at 5.0). X_train.csv + y_train.csv to fit on, X_test.csv to "
-        "predict. The test targets are held back."
+        "(capped at 5.0). X.csv + y.csv to fit on, X_submission.csv to "
+        "predict. Its targets are held back."
     ),
     # Deterministic scorer: the same CSV always yields the same R2.
     "deployment_nb_constraint_run": 1,
