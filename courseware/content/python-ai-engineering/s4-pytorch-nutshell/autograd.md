@@ -23,7 +23,9 @@ MLPs of 4 to 50 million parameters. -->
 
 ## What autograd does
 
-![The forward pass recorded as a graph, and the gradients flowing back through it](assets/s4-pytorch-nutshell/autograd/autograd-graph.png)
+
+![augmented_computational_graph.png](assets/s4-pytorch-nutshell/autograd/augmented_computational_graph.png)
+
 
 1. While the code runs, PyTorch **records** each operation on a tensor that
    needs gradients: the computation graph.
@@ -122,21 +124,6 @@ pred.requires_grad, pred.grad_fn     # (False, None)
 
 ---
 
-## Getting the values out
-
-```python
-loss.detach().numpy()                # array(9., dtype=float32)
-loss.item()                          # 9.0
-```
-
-- `.detach()`: the same values with no history. `.numpy()` refuses any tensor
-  that requires grad, `w` included, so detach first; from a GPU, also copy
-  back: `.detach().cpu().numpy()`.
-- `.item()` returns a Python number, the value to print or log, and needs no
-  detach.
-
----
-
 ## One step by hand
 
 ```python
@@ -151,41 +138,3 @@ $\eta = 0.1$; `w` is now `tensor(2.2000, requires_grad=True)`. The update runs
 under `no_grad` because it is not part of the model, and PyTorch refuses an
 in-place change (`-=` overwrites `w` itself) to a leaf that requires grad while
 it records. The next lesson packages the update and the reset as an optimizer.
-
----
-
-## When autograd complains
-
-| The error starts with | Cause | Fix |
-|---|---|---|
-| `grad can be implicitly created only for scalar outputs` | the loss is not one number | `.mean()` |
-| `Can't call numpy() on Tensor that requires grad` | the tensor is tracked for gradients | `.detach().numpy()` |
-| `a leaf Variable that requires grad is being used in an in-place operation` | a parameter updated while recording | `torch.no_grad()` |
-| `Trying to backward through the graph a second time` | `backward()` twice on one forward pass | recompute the forward pass |
-
----
-
-## Check yourself
-
-1. From a fresh `w = 1` with `x = 2`, `((w * x - 5.0) ** 2).backward()` runs
-   three times with no reset. What do `w.grad` and `w` hold?
-
-   **Answer.** `w.grad` is `tensor(-36.)`: three gradients of −12, summed. `w`
-   is still 1: `backward()` computes gradients; it does not update anything.
-
-2. Run this. What does it print?
-
-   ```python
-   w = torch.tensor(3.0, requires_grad=True)
-   loss = (w * 2.0 - 5.0) ** 2
-   loss.backward()
-   print(w.grad)
-   ```
-
-   **Answer.** `tensor(4.)`: $2(wx - y)\,x = 2(6 - 5)(2) = 4$. It is positive,
-   so decreasing $w$ decreases the loss, down to its minimum at $w = 2.5$.
-
-3. Why does validation run under `torch.no_grad()`?
-
-   **Answer.** Nothing will be differentiated, so recording the graph would only
-   cost memory: intermediate values kept for a backward pass that never runs.

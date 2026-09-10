@@ -27,13 +27,7 @@ The challenge you already submitted to. Continuous target, ranked on **−MAE**.
 
 **This notebook is worked.** It runs top to bottom. Paste your `mlk_user_...`
 key into cell 2 and run all; the grid search in section 6 takes a few minutes
-and everything else is seconds.
-
-It does four things in an order that is itself the lesson: **split first**
-(chronologically — this data is a forecast), **transform second** with every
-statistic learned on the training rows only, **compare candidates** on training
-*and* validation, then **search** with `GridSearchCV` and spend the test set
-once.
+and everything else is seconds. It will provide you an inital wokflow to evaluation and train models. Then you can test it your own. Try to get the best score.
 
 
 ## Challenge 2 — Bank Term Deposit

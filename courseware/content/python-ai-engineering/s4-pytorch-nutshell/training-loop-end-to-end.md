@@ -20,7 +20,7 @@ overfit slide. The lab asks the students to write the loop themselves. -->
 
 ## Mini-batch gradient descent
 
-Session 2 computed the loss and its gradient on all $n$ rows at every step.
+Session 2-3 computed the loss and its gradient on all $n$ rows at every step.
 Mini-batch gradient descent takes each step on a random subset $\mathcal{B}$ of
 $B$ rows, a **batch**, and descends on its mean loss:
 
@@ -46,16 +46,6 @@ $$
 - **Epoch**: one pass over all $n$ training rows, $\lceil n / B \rceil$
   iterations: 131 for the lab's 33,475 rows at $B = 256$, as in the figure.
 
-The code of this lesson runs on random stand-ins with the lab's shapes: 33,475
-training and 8,369 validation rows of 12 raw features between 0 and 50, and
-noise as the target.
-
-```python
-torch.manual_seed(0)
-X_tr, y_tr = torch.rand(33475, 12) * 50, torch.randn(33475, 1)
-X_val, y_val = torch.rand(8369, 12) * 50, torch.randn(8369, 1)
-B = 256
-```
 
 ---
 
@@ -73,17 +63,11 @@ X_tr = (X_tr - mean) / std
 X_val = (X_val - mean) / std            # the same mean and std
 ```
 
-- Session 2's `StandardScaler` does the same. Fitting it on every row is
-  Session 3's Leak 1.
-- Keep `mean` and `std` with the weights: new rows need the same
-  transformation ([lesson 8](/courses/python-ai-engineering/s4-pytorch-nutshell/course/save-and-load)).
 
 ---
 
 ## One epoch, by hand
 
-No `Dataset` class and no `DataLoader` are needed: an epoch is a random order
-of the rows, cut into slices of $B$.
 
 ```python
 perm = torch.randperm(len(X_tr))        # a new random order each epoch
@@ -114,8 +98,6 @@ len(loader)                             # 131, as by hand
   epoch. This is the form most PyTorch code uses.
 - `TensorDataset` keeps the tensors it was given: standardise before building
   it. Shuffle the training set only.
-- A custom `Dataset` class is for data that does not fit in memory, such as
-  images or text: *MS2A Machine Learning Practice*, Session 4.
 
 ---
 
@@ -138,18 +120,15 @@ opt = torch.optim.Adam(model.parameters(), lr=1e-3)
 
 ```python
 for xb, yb in loader:                   # one epoch: every batch once
-    opt.zero_grad()                     # lesson 4
-    loss_fn(model(xb), yb).backward()   # lessons 5, 6 and 3
-    opt.step()                          # lesson 4
+    opt.zero_grad()
+    loss_fn(model(xb), yb).backward()
+    opt.step()
 ```
 
 - Call `model.train()` before it. Some layers act differently in training and
-  in evaluation, such as dropout (Session 3), which switches off random neurons
+  in evaluation, such as dropout , which switches off random neurons
   during training only. Forgetting the switch raises no error.
 - On a GPU, move each batch first: `xb, yb = xb.to(device), yb.to(device)`
-  ([lesson 1](/courses/python-ai-engineering/s4-pytorch-nutshell/course/why-tensors)).
-- One run of this loop is one epoch, 131 updates, in under 0.1 s on an Apple M4
-  CPU. The picture's outer loop repeats it once per epoch.
 
 ---
 
@@ -162,78 +141,48 @@ with torch.no_grad():                   # no graph: nothing to update
 ```
 
 - Once per epoch, after the training step, on rows the model never trains on:
-  Session 3's validation split, in time order when the future is what gets
-  predicted. All 8,369 rows go through at once, with no loader.
-- `.item()` gives a Python float, to print or log. Here it is about 1.0, the
-  variance of the noise: nothing in the features predicts the target.
+  validation split, in time order when the future is what gets
+  predicted.
+- `.item()` gives a Python float, to print or log.
 - Log the epoch, the training loss and `val_loss`. If training falls while
-  validation rises, the network overfits (Session 3): keep the epoch with the
+  validation rises, the network overfits : keep the epoch with the
   lowest `val_loss` (lesson 8).
 
+
+![early-stopping.png](assets/s4-pytorch-nutshell/training-loop-end-to-end/early-stopping.png)
+
 ---
 
-## First, check it can learn: overfit one batch
-
-Before a long run, train a fresh model with a fresh optimizer on one fixed
-batch:
+## The `state_dict`: every parameter, by name
 
 ```python
-model = nn.Sequential(nn.Linear(12, 64), nn.ReLU(), nn.Linear(64, 1))
-opt = torch.optim.Adam(model.parameters(), lr=1e-2)
+sd = model.state_dict()          # an ordered dict: name -> tensor
+list(sd)[:3]                     # ['0.weight', '0.bias', '2.weight']
+sd["0.weight"].shape             # torch.Size([64, 12])
 ```
+
+- A key is the layer's position in the `nn.Sequential`, then the parameter's
+  name: `0.weight`, `0.bias`, `2.weight`, `2.bias`, `4.weight`, `4.bias`. The
+  ReLUs, at positions 1 and 3, hold no parameters and have no key.
+- In a subclassed module (lesson 5) the key is the attribute's name:
+  `fc1.weight`, `fc1.bias`, …
+- Each value is a tensor; together they hold the 5,057 numbers.
+
+---
+
+## Save the numbers, rebuild the code
 
 ```python
-for step in range(500):                 # the same 64 rows, 500 times
-    opt.zero_grad()
-    loss_fn(model(X_tr[:64]), y_tr[:64]).backward()
-    opt.step()
+torch.save(model.state_dict(), "weights.pt")
 ```
 
-The loss on those 64 rows falls from about 1 to below $10^{-4}$, in under
-0.1 s on an Apple M4 CPU. A working network memorises 64 rows, even of noise;
-the result is no model (its validation loss is now about 2), only proof that
-the loop drives a loss down. If the loss does not fall, the bug is in the
-model, the loss or the three lines: look there before tuning anything.
+Later
+```python
+model2 = model.copy()                # same code, new random weights
+model2.load_state_dict(torch.load("weights.pt"))
+torch.equal(model2[0].weight, model[0].weight)      # True
+```
+
+You can continue training from this point..
 
 ---
-
-## Reading the symptoms
-
-| Symptom | Likely cause | First thing to try |
-|---|---|---|
-| the loss explodes or turns `nan` | `lr` too high, or unscaled inputs | divide `lr` by 10; standardise |
-| the loss does not move | `opt.step()` missing, or `lr` far too small | overfit one batch |
-| the loss falls, then climbs and swings | `opt.zero_grad()` missing | the three lines, in order (lesson 4) |
-| every prediction is the same | target $(B,)$ against output $(B, 1)$ | equal shapes (lesson 2) |
-| training falls, validation rises | overfitting | keep the best epoch (lesson 8) |
-
-None of these raises an error; `nn.MSELoss` only warns about the shapes, and a
-hand-written loss does not. The logged losses are the only witness.
-
----
-
-## Check yourself
-
-1. A training set has 41,844 rows. With a batch size of 512, how many updates
-   make one epoch?
-
-   **Answer.** $\lceil 41844 / 512 \rceil = 82$: 81 full batches and a last one
-   of 372 rows.
-
-2. Run this. What does it print, and which batch is the short one?
-
-   ```python
-   from torch.utils.data import TensorDataset, DataLoader
-   ds = TensorDataset(torch.zeros(25, 3), torch.zeros(25, 1))
-   dl = DataLoader(ds, batch_size=10, shuffle=True)
-   print(len(dl), [len(xb) for xb, yb in dl])
-   ```
-
-   **Answer.** `3 [10, 10, 5]`. Shuffling reorders the rows, not the cut: the
-   last batch is always the short one.
-
-3. Why does the validation step run under `model.eval()` and `torch.no_grad()`,
-   and never call `opt.step()`?
-
-   **Answer.** It measures the model and must not change it: no update, no
-   graph to record, and every layer in its evaluation behaviour.

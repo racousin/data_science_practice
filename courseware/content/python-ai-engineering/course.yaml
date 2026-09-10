@@ -508,6 +508,10 @@ modules:
   # training-loop-end-to-end, which absorbs the website's `todo` draft.
   # `optimizers`, `losses`, `save-and-load` and `weights-and-biases` are new.
   #
+  # 2026-09-11, on the website: `save-and-load` (lesson 190) was deleted and
+  # its state_dict and save/rebuild slides folded into training-loop-end-to-end,
+  # whose validation step now shows the early-stopping still in its place.
+  #
   # Lab 1 (slug lab-4) has the student write the training loop on a new
   # tabular challenge, 189 (package competitions/s4-taxi-eta): NYC green-taxi
   # trip durations scored on the pinball loss at tau = 0.9, "promise an
@@ -556,11 +560,6 @@ modules:
         file: s4-pytorch-nutshell/training-loop-end-to-end.md
         estimated_minutes: 13
         is_published: true
-      - title: "Saving and Loading"
-        slug: save-and-load
-        file: s4-pytorch-nutshell/save-and-load.md
-        estimated_minutes: 9
-        is_published: true
       - title: "Tracking with Weights & Biases"
         slug: weights-and-biases
         file: s4-pytorch-nutshell/weights-and-biases.md
@@ -577,41 +576,24 @@ modules:
         file: s4-pytorch-nutshell/lab-4.md
         estimated_minutes: 85
         is_published: true
-      # Retired by the rebuild, and kept here UNPUBLISHED rather than deleted
-      # until the owner has reviewed the new lessons: unpublishing is
-      # reversible and `delete_lesson` is not, and `reorder_lessons` needs the
-      # module's exact server set either way. Once the review is done, run
-      # delete_lesson on 171, 172, 142 and 185 BEFORE the next publish, then
-      # drop these four entries and their files.
+      # Retired by the rebuild and kept unpublished pending the owner's review
+      # of the new lessons. The review, done on the website on 2026-09-11,
+      # kept the two warm-ups (171, 172) as published self-study exercises
+      # and deleted the other two: autograd-mathematics (142) and the `todo`
+      # draft (185), whose material training-loop-end-to-end had absorbed.
       - title: "Warm-up 1 — Optimization & Training"
         slug: warmup-1-optimization
         kind: exercise
         file: s4-pytorch-nutshell/warmup-1-optimization.md
         estimated_minutes: 45
-        is_published: false
+        is_published: true
         in_deck: false
       - title: "Warm-up 2 — CPU vs GPU"
         slug: warmup-2-cpu-gpu
         kind: exercise
         file: s4-pytorch-nutshell/warmup-2-cpu-gpu.md
         estimated_minutes: 20
-        is_published: false
-        in_deck: false
-      - title: "Reference — Autograd, the Mathematics"
-        slug: autograd-mathematics
-        file: s4-pytorch-nutshell/autograd-mathematics.md
-        estimated_minutes: 25
-        is_published: false
-        in_deck: false
-      # `todo` (server lesson 185) was created in the course editor on
-      # 2026-09-09: a copy of Session 3's retired `training-neural-networks`,
-      # parked as material for this rebuild. training-loop-end-to-end absorbs
-      # it; its images point at the committed files under
-      # assets/s3-models-and-tuning/training-neural-networks/.
-      - title: "todo"
-        slug: todo
-        file: s4-pytorch-nutshell/todo.md
-        is_published: false
+        is_published: true
         in_deck: false
     # One challenge: 189, the lab's. 187 (California Housing), 188 (Forest
     # Cover Type) and 182 (MNIST Warm-up) were removed from this module on

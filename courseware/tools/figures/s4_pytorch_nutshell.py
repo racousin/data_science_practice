@@ -730,7 +730,6 @@ def training_loop() -> None:
     lesson = "training-loop-end-to-end"
     fig, ax = canvas(4.4)
     code = {"fontsize": 14, "family": MONO}
-    ref = {"fontsize": 13, "color": MUTED}
 
     # Dashed: once per epoch.  Blue: once per batch.  Below both: once.
     ep_y0, ep_y1 = 0.62, 4.35
@@ -744,20 +743,20 @@ def training_loop() -> None:
     ax.text(bx0 + 0.2, by1 - 0.3, "train  ·  model.train()  ·  for xb, yb in loader:",
             va="center", fontsize=14.5, color=ACCENT, weight="bold")
 
-    # Each step names the lesson that taught it, inside its own box.
-    steps = [("zero_grad()", "lesson 4"), ("model(xb)", "lesson 5"),
-             ("loss_fn", "lesson 6"), ("backward()", "lesson 3")]
+    # No lesson numbers in the boxes: the course reorders its lessons on the
+    # website, and a number drawn into a PNG goes stale without anyone noticing.
+    steps = ["zero_grad()", "model(xb)", "loss_fn", "backward()"]
     sw, sh, sgap, sy = 1.45, 0.82, 0.22, 2.58
     first = bx0 + ((bx1 - bx0) - (4 * sw + 3 * sgap)) / 2 + sw / 2
     xs = [first + i * (sw + sgap) for i in range(len(steps))]
-    for x, (text, where) in zip(xs, steps):
+    for x, text in zip(xs, steps):
         box(ax, x, sy, sw, sh, fc=PAPER, ec=ACCENT)
-        lines(ax, x, sy, [(text, code), (where, ref)], spacing=1.25)
+        lines(ax, x, sy, [(text, code)])
     for a, b in itertools.pairwise(xs):
         arrow(ax, (a + sw / 2, sy), (b - sw / 2, sy), color=ACCENT)
     step_y = 1.4
     box(ax, xs[-1], step_y, sw, sh, fc=PAPER, ec=ACCENT)
-    lines(ax, xs[-1], step_y, [("step()", code), ("lesson 4", ref)], spacing=1.25)
+    lines(ax, xs[-1], step_y, [("step()", code)])
     arrow(ax, (xs[-1], sy - sh / 2), (xs[-1], step_y + sh / 2), color=ACCENT)
     arrow(ax, (xs[-1] - sw / 2, step_y), (xs[0], sy - sh / 2), color=ACCENT, rad=-0.18)
     ax.text(2.1, 1.12, "next batch", fontsize=14.5, color=ACCENT, va="center")
@@ -772,9 +771,9 @@ def training_loop() -> None:
         (WARM_BG, WARM, [("validate", {"fontsize": 15, "weight": "bold"}),
                          ("model.eval()", code), ("torch.no_grad()", code),
                          ("→ val_loss", code)]),
-        (GREY_BG, INK, [("best so far? keep a", {"fontsize": 14.5}),
-                        ("deep copy  (lesson 8)", {"fontsize": 14.5})]),
-        (GREY_BG, INK, [("log both losses", {"fontsize": 14.5}), ("(lesson 9)", ref)]),
+        (GREY_BG, INK, [("best so far?", {"fontsize": 14.5}),
+                        ("keep a deep copy", {"fontsize": 14.5})]),
+        (GREY_BG, INK, [("log both losses", {"fontsize": 14.5})]),
     ]
     for cy, h, (fc, ec, items) in zip(centres, heights, contents):
         box(ax, rx, cy, rw, h, fc=fc, ec=ec)

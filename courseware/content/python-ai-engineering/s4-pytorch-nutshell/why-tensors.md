@@ -1,9 +1,8 @@
 # What PyTorch Is, and Why
 
 PyTorch is an open-source Python library that does two jobs: it runs
-arithmetic on large arrays fast, on whatever hardware is present, and it
-computes the gradients that training needs. This lesson gives the reason for
-both; the API starts in the next one.
+arithmetic on large arrays fast, on whatever hardware (cpu/gpu), and it
+computes the gradients that training needs.
 
 <!-- notes: 12 minutes. The argument, not the API: the workload is matrix
 multiplication, it is parallel, the hardware that exploits it has its own
@@ -17,12 +16,14 @@ other jobs running: the ranges are the spread over repeated runs. The four
 values of the device-time figure are the figure's own, made on the same machine
 by tools/figures/s4_pytorch_nutshell.py (device_time). -->
 
+![Pytorch_logo.png](assets/s4-pytorch-nutshell/why-tensors/Pytorch_logo.png)
+
 ---
 
 ## The workload
 
 A layer of an MLP multiplies its input by $W^k$, adds $b^k$ and applies
-$\sigma$ (Session 3). For many inputs at once, that multiplication is a product
+$\sigma$. For many inputs at once, that multiplication is a product
 of two matrices, so training is, almost entirely, repeated matrix
 multiplication:
 
@@ -56,6 +57,9 @@ It was trained in months, on up to 16,000 GPUs, because the work splits.
 
 ## Why Python alone cannot do it
 
+
+![speed.png](assets/s4-pytorch-nutshell/why-tensors/speed.png)
+
 ```python
 n = 200
 A_t = torch.randn(n, n)            # a tensor: 200 x 200 random values
@@ -78,16 +82,17 @@ for `A_t @ B_t`: 16,000 to 20,000 times faster (eighteen runs).
   linear-algebra routines that runs on several cores at once and uses the CPU's
   vector instructions (several numbers per instruction).
 
+
+
+
+
 ---
+
 
 ## What a tensor is
 
 A **block of memory holding numbers of one type (the dtype, e.g. 32-bit
 floats), with a shape** such as (200, 200).
-
-Type and layout are known in advance, so one operation on a whole tensor runs
-as one **kernel**, a compiled routine (BLAS on a CPU, cuBLAS on an NVIDIA GPU),
-instead of a million steps through Python.
 
 | | Python list | Tensor |
 |---|---|---|
@@ -95,6 +100,10 @@ instead of a million steps through Python.
 | Memory | scattered objects | one contiguous block |
 | Operations | interpreted, per element | one compiled kernel |
 | Runs on a GPU | no | yes |
+
+
+![tensor_layout.jpeg](assets/s4-pytorch-nutshell/why-tensors/tensor_layout.jpeg)
+
 
 ---
 
@@ -117,33 +126,7 @@ instead of a million steps through Python.
 A GPU computes only on data in **its own memory** (VRAM), 16–80 GB. Data gets
 there over the PCIe link, **~30 GB/s**: often the slowest step.
 
----
 
-## What fills the memory
-
-- **Bytes per value**: 4 in float32, 2 in float16. A million float32 values
-  take 4 MB; in float16, 2 MB.
-- **The model.** 7 billion parameters are 28 GB in float32. Training with
-  Adam, an optimizer that keeps two running averages per weight
-  ([lesson 4](/courses/python-ai-engineering/s4-pytorch-nutshell/course/optimizers)),
-  holds four copies (weights, gradients, the two averages): 112 GB.
-- **The batch**: the rows processed together in one training step
-  ([lesson 7](/courses/python-ai-engineering/s4-pytorch-nutshell/course/training-loop-end-to-end)),
-  and everything computed from them.
-- Weights, gradients, optimizer state and the batch must all fit in VRAM at
-  once: that is what caps the batch size.
-
----
-
-## Measured, not promised
-
-![Matrix multiplication time against matrix size on the CPU and the GPU of an Apple M4, log scale](assets/s4-pytorch-nutshell/why-tensors/device-time.png)
-
-A GPU wins only when the work outweighs the copy and the kernel launch (starting
-a kernel on the GPU). On the Apple M4 of the figure, the GPU takes 0.2 ms for a
-$100 \times 100$ product the CPU does in 0.003 ms, and 46 ms for a
-$4000 \times 4000$ product that takes the CPU 85 ms.
-[Measure it yourself in Colab](https://colab.research.google.com/github/racousin/data_science_practice/blob/main/website/public/modules/python-ai-engineering/challenges/aie-s4-cpu-gpu-benchmark.ipynb).
 
 ---
 
@@ -155,39 +138,43 @@ device = ("cuda" if torch.cuda.is_available()
 x = torch.randn(1000, 1000, device=device)    # created on that device
 ```
 
-- `cuda`: NVIDIA GPUs, including Colab's GPU runtime. `mps`: the GPU of Apple
-  silicon; it shares the CPU's memory, but PyTorch still treats it as a
-  separate device. `cpu`: everywhere, including Colab's default runtime.
-- Choose once, at the top, and pass `device` everywhere. Hard-coding `"cuda"`
-  is how a script fails on half the room's laptops.
-
----
-
-## The same-device rule
 
 ```python
 a = torch.randn(3)              # in CPU memory
-b = a.to(device)                # a copy on the GPU, if there is one
+b = a.to(device)                # a copy on the GPU
 print(a.device, b.device)
 ```
 
-- On a GPU machine this prints `cpu mps:0` on the M4 (`cpu cuda:0` with an
-  NVIDIA GPU), and `a + b` raises a `RuntimeError`: "Expected all tensors to be
-  on the same device, but found at least two devices, mps:0 and cpu!". PyTorch
-  never copies behind your back: the copy is the expensive part.
-- On a CPU-only runtime `device` is `"cpu"`: `b` is `a`, no copy is made, the
-  line prints `cpu cpu`, and `a + b` runs.
-- `tensor.to(device)` returns a **new** tensor: reassign it. A model
-  ([lesson 5](/courses/python-ai-engineering/s4-pytorch-nutshell/course/modules-and-optimizers))
-  is the exception: `model.to(device)` moves it in place.
-- GPU calls return before the work is done. Time them after
-  `torch.cuda.synchronize()` (`torch.mps.synchronize()` on a Mac), or you time
-  the queueing: on the M4, a $1000 \times 1000$ product "takes" 0.03–0.18 ms
-  without the call and 1.0–3.3 ms with it.
 
 ---
 
-## Why PyTorch
+
+## CPU vs GPU
+
+```python
+import time
+
+# Without synchronization - misleading timing
+start = time.time()
+gpu_result = gpu_tensor @ gpu_tensor  # Returns immediately
+print(f"Time: {time.time() - start:.6f}s")  # Too fast! Operation still running
+
+# With synchronization - accurate timing
+start = time.time()
+gpu_result = gpu_tensor @ gpu_tensor
+torch.cuda.synchronize()  # Wait for GPU to finish
+print(f"Actual time: {time.time() - start:.6f}s")
+```
+
+
+
+![device-time2.png](assets/s4-pytorch-nutshell/why-tensors/device-time2.png)
+
+
+
+---
+
+## The main other reason for PyTorch
 
 Training updates every parameter by gradient descent (Session 2):
 
@@ -196,44 +183,10 @@ $$
 $$
 
 - **Gradients, computed for you.** Every step needs $\partial \ell / \partial \theta$
-  for every parameter: 235,146 of them in a 784-256-128-10 MLP. PyTorch records
-  the operations that produced $\ell$ and runs Session 3's backpropagation in one
-  call ([lesson 3](/courses/python-ai-engineering/s4-pytorch-nutshell/course/autograd)),
-  without the bookkeeping.
-- **Tensors on any hardware.** A Python front end over compiled C++ and CUDA
-  kernels; the `device` argument moves the work.
-- **Ordinary Python.** Code runs line by line, so `print`, `if` and a debugger
-  all work.
+  for every parameter of a complex deep neural network architecure. PyTorch records
+  the operations that produced $\ell$ and runs backpropagation in one
+  call  without the bookkeeping.
+
+
 - **The ecosystem.** Most research code uses it; JAX and TensorFlow do the same
   job with other trade-offs.
-
----
-
-## Check yourself
-
-1. How many FLOP is one product of two $1000 \times 1000$ matrices? Why can a
-   GPU run it in parallel, and why does the M4's GPU lose to its CPU at
-   $100 \times 100$?
-
-   **Answer.** $2n^3 = 2 \times 10^{9}$. Every entry $C_{ij}$ is an independent
-   dot product. At $100 \times 100$ the work, $2 \times 10^{6}$ FLOP, is too
-   small to pay for the kernel launch.
-
-2. Run this. What does it print?
-
-   ```python
-   w = torch.zeros(1_000_000)                  # float32
-   h = torch.zeros(1_000_000, dtype=torch.float16)
-   print(w.element_size(), h.element_size())   # bytes per value
-   print(w.numel() * w.element_size())         # values x bytes
-   ```
-
-   **Answer.** `4 2`, then `4000000`: 4 bytes per float32 value, 2 per float16
-   value, so a million float32 values take 4 MB.
-
-3. On a GPU machine, `x = torch.rand(3)` is followed by `x.to(device)`. Where
-   is `x`, and what happens when it is added to a tensor created with
-   `device=device`?
-
-   **Answer.** Still on the CPU: nothing kept the copy `.to()` returned, so the
-   addition raises the same-device `RuntimeError`. Write `x = x.to(device)`.
