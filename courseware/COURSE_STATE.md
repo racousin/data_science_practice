@@ -649,6 +649,15 @@ solution scoring -0.940711 on the live board.
 then `delete_lesson` them BEFORE the next publish and drop their entries.
 182, 187 and 188 are detached but still public and started. The packages for
 them and their notebooks were deleted from this repo (the §1d precedent).
+
+**Correction, 2026-09-11:** `warmup-1-optimization` (171) was *not*
+unpublished — `content/python-ai-engineering/.mlarena-state.json` still has it
+`is_published: true` and in module 17's lesson order — so deleting
+`aie-s4-optimization-warmup.ipynb` broke its Open-in-Colab link for students.
+The notebook and its builder (`build_optimization_warmup`) are restored, and so
+are its entries in the warm-up tests. Its closing still points at the retired
+*California Housing* challenge. Delete the notebook again only together with the
+lesson.
 Session 3 is frozen and was not touched.
 
 ---

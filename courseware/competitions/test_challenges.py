@@ -96,6 +96,7 @@ def data_files(pkg: str) -> dict:
 # Notebooks a student can open before they have an ML-Arena account. They must
 # not mention the SDK or a key.
 CREDENTIAL_FREE = ["aie-s0-pandas-seaborn.ipynb",
+                   "aie-s4-optimization-warmup.ipynb",
                    "aie-s4-cpu-gpu-benchmark.ipynb"]
 
 # Session 4's lab: one builder writes the starter and its solution. The starter
@@ -540,11 +541,12 @@ def test_credential_free_notebooks_need_no_credentials(notebook):
 
 
 def test_warmup_notebooks_do_not_install_from_git():
-    """The Session 4 CPU/GPU benchmark is readapted from a workshop whose
-    notebooks open with `pip install git+https://github.com/...`. That
-    dependency is the thing the readaptation removed — the helpers are inlined
-    instead — and it must not creep back."""
-    for notebook in ("aie-s4-cpu-gpu-benchmark.ipynb",):
+    """The Session 4 warm-up and CPU/GPU benchmark are readapted from a
+    workshop whose notebooks open with `pip install git+https://github.com/...`.
+    That dependency is the thing the readaptation removed — the helpers are
+    inlined instead — and it must not creep back."""
+    for notebook in ("aie-s4-optimization-warmup.ipynb",
+                     "aie-s4-cpu-gpu-benchmark.ipynb"):
         nb = json.loads((NOTEBOOKS / notebook).read_text())
         src = "".join("".join(c["source"]) for c in nb["cells"])
         assert "git+http" not in src, f"{notebook} installs from a git URL"
@@ -552,7 +554,8 @@ def test_warmup_notebooks_do_not_install_from_git():
             f"{notebook} imports the workshop package; inline the helper instead")
 
 
-@pytest.mark.parametrize("notebook", ["aie-s4-cpu-gpu-benchmark.ipynb"])
+@pytest.mark.parametrize("notebook", ["aie-s4-optimization-warmup.ipynb",
+                                      "aie-s4-cpu-gpu-benchmark.ipynb"])
 def test_warmup_notebooks_run(notebook, tmp_path):
     """Executed with no key and no network. The CPU/GPU one must also survive
     having no GPU, which is the case on every machine that runs this suite."""
