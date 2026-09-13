@@ -3,13 +3,13 @@
 Every image this script writes is committed under
 `content/ms2a-machine-learning-practice/assets/preprocessing/`. Re-run with:
 
-    uv run --with matplotlib --with numpy \
+    uv run --with matplotlib --with numpy --with pandas \
         python courseware/tools/figures/s2_data_preprocessing.py
 
 The session's other figures are not produced here: seven are copies of
-`python-ai-engineering` data-preparation figures, six are plot outputs lifted
+`python-ai-engineering` data-preparation figures, five are plot outputs lifted
 from the module5 example notebooks. This script owns only the figures authored
-for this session.
+or redrawn for this session.
 """
 
 from __future__ import annotations
@@ -144,9 +144,75 @@ def fit_on_train_vs_leak() -> None:
     save(fig, "fit-on-train-vs-leak.png")
 
 
+# --------------------------------------------------------------------------- #
+# duplicates-inconsistencies-outliers — redrawn from the module5 notebook data
+# --------------------------------------------------------------------------- #
+# The restaurant table behind handling_outliers.ipynb. It left the working tree
+# in d8ceb11, so it is read from the commit before that one rather than copied
+# back in; `git show` raises if the path ever stops resolving.
+OUTLIERS_CSV = "d8ceb11^:website/public/modules/module5/course/module5_course_handling_outliers_train.csv"
+
+
+def iqr_fences(values, k: float = 1.5) -> tuple[float, float]:
+    q1, q3 = np.percentile(values, [25, 75])
+    return q1 - k * (q3 - q1), q3 + k * (q3 - q1)
+
+
+def seating_vs_revenue_joint_outliers() -> None:
+    """The notebook's Seating Capacity vs Revenue scatter, whose legend carried
+    a stray `False` (the IQR style mask was all False: no seating value is
+    outside its fences). Redrawn to show what the slide claims: the highlighted
+    restaurants are inside both columns' fences and unusual only as a pair."""
+    import io
+    import subprocess
+
+    import pandas as pd
+
+    raw = subprocess.check_output(["git", "show", OUTLIERS_CSV],
+                                  cwd=pathlib.Path(__file__).resolve().parent)
+    df = pd.read_csv(io.BytesIO(raw))
+    seats, revenue = df["Seating Capacity"], df["Revenue"]
+
+    s_lo, s_hi = iqr_fences(seats)
+    r_lo, r_hi = iqr_fences(revenue)
+    # Precondition of the caption: nothing highlighted is a one-column outlier.
+    low_revenue = revenue < 170_000                     # the notebook's threshold
+    small_but_rich = (seats < 40) & (revenue > 1.0e6)   # the 36-seat restaurant
+    pair = low_revenue | small_but_rich
+    assert ((seats[pair] >= s_lo) & (seats[pair] <= s_hi)).all()
+    assert ((revenue[pair] >= r_lo) & (revenue[pair] <= r_hi)).all()
+
+    fig, ax = plt.subplots(figsize=(10, 5.6))
+    ax.scatter(seats[~pair], revenue[~pair] / 1e6, s=12, color=ACCENT,
+               alpha=0.35, linewidths=0, label="restaurants")
+    ax.scatter(seats[pair], revenue[pair] / 1e6, s=46, color=WARM,
+               edgecolors="white", linewidths=0.8, zorder=3,
+               label=f"unusual only as a pair ({int(pair.sum())})")
+    ax.axhline(r_hi / 1e6, color=INK, linestyle="--", linewidth=1.2,
+               label="Revenue 1.5 × IQR fence")
+    ax.set_xlabel("Seating Capacity")
+    ax.set_ylabel("Revenue (millions)")
+    ax.set_ylim(0, 1.6)
+    ax.grid(color="#dfe3e8", linewidth=0.8)
+    ax.set_axisbelow(True)
+    for side in ("top", "right"):
+        ax.spines[side].set_visible(False)
+    ax.legend(loc="upper left", frameon=False, fontsize=10.5)
+    # Top centre is the one empty region: the bottom right holds five of the
+    # low-revenue restaurants.
+    ax.text(0.55, 0.985,
+            f"lower Revenue fence: {r_lo / 1e3:,.0f}k (below the axis)\n"
+            f"Seating Capacity fences: {s_lo:g} and {s_hi:g} (off the axis)",
+            transform=ax.transAxes, ha="center", va="top", fontsize=10,
+            color=INK, bbox=dict(facecolor="white", edgecolor="#dfe3e8"))
+    fig.tight_layout()
+    save(fig, "seating-capacity-vs-revenue-joint-outliers.png")
+
+
 def main() -> None:
     print("generating Session 2 figures ->", ASSETS)
     fit_on_train_vs_leak()
+    seating_vs_revenue_joint_outliers()
     print("done.")
 
 
