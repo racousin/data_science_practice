@@ -175,6 +175,15 @@ second-largest leak in this course, and it buys several points of imaginary AUC.
 
 ---
 
+## Selection methods disagree
+
+![Feature scores from four selection methods](assets/preprocessing/feature-selection-methods-heatmap.png)
+
+Breast-cancer data: the 15 of 30 features with the highest average score, each
+method's scores min-max scaled.
+
+---
+
 ## Correlation and VIF
 
 ```python
@@ -237,6 +246,14 @@ target.
 
 > Prefer selection to projection whenever anyone will ask why the model made a
 > decision.
+
+---
+
+## Explained variance
+
+![PCA cumulative explained variance](assets/preprocessing/pca-cumulative-explained-variance.png)
+
+Scaled breast-cancer features: ten components reach the 95% threshold.
 
 ---
 

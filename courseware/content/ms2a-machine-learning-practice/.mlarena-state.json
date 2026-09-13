@@ -90,6 +90,106 @@
       "s7-nlp-1": 25,
       "s8-nlp-2": 26,
       "s9-reinforcement-learning-1": 27
+    },
+    "published": {
+      "course": {
+        "code": "MS2A-MLP-2026",
+        "description": "A 30-hour applied machine learning course in ten 3-hour sessions, taken\nafter *Python AI Engineering*. It walks the full arc of a modern ML system:\ncollecting and preparing data, tabular models, deep networks in PyTorch,\ncomputer vision, natural language processing and large language models, and\nreinforcement learning.\n\nEvery session is half lecture, half lab. Half the grade is a project\nsubmitted to ML-Arena; the other half is continuous assessment across the\nten labs. You are expected to arrive with the engineering floor from the\n12-hour module: git, a packaged environment, tests, and a coding agent you\nknow how to supervise.",
+        "end_date": "2026-11-27",
+        "instructor_name": "Raphael Cousin",
+        "name": "MS2A - Machine Learning Practice",
+        "start_date": "2026-09-14",
+        "visibility": "public"
+      },
+      "lessons": {
+        "s1-data-collection/apis": {
+          "body": "eda4e85ae53551f6a88f0b5e575eb66e6d7e78831a8f2bf8f5cfd6db30254a6f"
+        },
+        "s1-data-collection/collection-strategy-and-quality": {
+          "body": "8a20d1de1f6a6d1935ecc7399baea29e8b1918c3f2e4ab6d0d26b036ebb43d2a"
+        },
+        "s1-data-collection/data-and-its-shapes": {
+          "body": "33d3f850164051777465086d4526fd059a28dd88a43f79603fa33511a6e63032"
+        },
+        "s1-data-collection/databases": {
+          "body": "f31ce128d8750c03f5d057018a5dd14954e58c453702bc971c46f1f2f3e2416c"
+        },
+        "s1-data-collection/files-and-formats": {
+          "body": "dd5368b854593c2f192d3ed6e83749749370ce2e88be25fc5b5e2d0ac3e8a63a"
+        },
+        "s1-data-collection/lab-1": {
+          "body": "725c3252cffbb7940ee5cdec88adbc0de1eda672df01b0d21a4dbef7d9d243be"
+        },
+        "s1-data-collection/web-scraping": {
+          "body": "d6d9f652dcfbf59c89f0b6ecbbc2c917036f26e009a25c64ca9523dfd2f36f7a"
+        },
+        "s2-data-preprocessing/categorical-encoding": {
+          "body": "2f14f61ebae0188fd231b5603dc822e7367ecdd962a8d10d4807255c3331e96f",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Categorical Encoding"
+        },
+        "s2-data-preprocessing/duplicates-inconsistencies-outliers": {
+          "body": "ca97027e0f7210d36c7a8043c9aff2a78944515aaf1b64db43dee6116e70b435",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Duplicates, Inconsistencies, Outliers"
+        },
+        "s2-data-preprocessing/feature-engineering-and-selection": {
+          "body": "ded4fd3b9afb500991222ecceee5c1766da5eceb66a7abdda2540b5c0f20e8e8",
+          "estimated_minutes": 40,
+          "gated": false,
+          "is_published": true,
+          "title": "Feature Engineering and Selection"
+        },
+        "s2-data-preprocessing/lab-2": {
+          "body": "628f750973d5ce43b5515f7ac7b4cf4794ebc4eea3ebbd19db039a018623e9b5",
+          "estimated_minutes": 45,
+          "gated": false,
+          "is_published": true,
+          "title": "Lab 2 \u2014 A Leak-Free Pipeline"
+        },
+        "s2-data-preprocessing/missing-values": {
+          "body": "8dfd7fc6e359acfa434349c580550f213919803fc0389a6e95258506e54e9a76",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Missing Values"
+        },
+        "s2-data-preprocessing/scaling-and-normalization": {
+          "body": "dad889cf470c465a289b87d30f15f9720daea707f5d79f1bcf572688924a7015",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Scaling and Normalization"
+        },
+        "s2-data-preprocessing/the-preprocessing-contract": {
+          "body": "94a0a637d14096a5889ac4552cb08e344c789e711733135ac42cba0fc8886ea9",
+          "estimated_minutes": 20,
+          "gated": false,
+          "is_published": true,
+          "title": "The Preprocessing Contract"
+        }
+      },
+      "module_order": [],
+      "modules": {
+        "s2-data-preprocessing": {
+          "icon": "filter",
+          "lessons": [
+            "the-preprocessing-contract",
+            "missing-values",
+            "duplicates-inconsistencies-outliers",
+            "categorical-encoding",
+            "scaling-and-normalization",
+            "feature-engineering-and-selection",
+            "lab-2"
+          ],
+          "summary": "Turning a collected table into a matrix a model can learn from: missing values, duplicates, outliers, encodings, scaling, engineered features \u2014 each one fitted on train and applied to test, never the reverse.",
+          "title": "Session 2 \u2014 Data Preprocessing"
+        }
+      }
     }
   }
 }

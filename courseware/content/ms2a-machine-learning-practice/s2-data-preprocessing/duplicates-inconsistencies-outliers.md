@@ -104,6 +104,15 @@ give you three columns where the world has one thing.
 
 ---
 
+## One country, many strings
+
+![Country counts before cleaning](assets/preprocessing/country-casing-whitespace-variants.png)
+
+The 20 most frequent of 26 distinct `Country` strings; repeated labels differ only
+by surrounding whitespace, and stripping it and normalising case leaves 5.
+
+---
+
 ## Standardising
 
 ```python
@@ -134,6 +143,8 @@ next to a test that asserts every raw value maps to something.
 - **Contextual** — normal in general, impossible here: 25 °C in Oslo in January
 - **Collective** — no single point is extreme, the *pattern* is
 
+![A point outlier in a scatter plot](assets/preprocessing/point-outlier-scatter.png)
+
 The first is what the standard detectors find. The second and third need domain
 knowledge, and a detector that flags them is usually flagging the wrong rows.
 
@@ -163,6 +174,14 @@ mask = df["revenue"].between(q1 - 1.5 * iqr, q3 + 1.5 * iqr)
 
 ---
 
+## IQR fences and σ
+
+![IQR on a boxplot](assets/preprocessing/iqr-fences-on-normal-distribution.png)
+
+On normal data the 1.5 × IQR fences fall at ±2.698σ, just inside the |z| > 3 cut-off.
+
+---
+
 ## Multivariate outliers
 
 ```python
@@ -176,6 +195,15 @@ is not, and no single-column rule sees it. Isolation Forest isolates points with
 random splits and scores how few splits it takes. `contamination` is an
 assumption you are making, not one the algorithm discovers — state it, and check
 what it flagged.
+
+---
+
+## Outliers only as a pair
+
+![Seating capacity against revenue](assets/preprocessing/seating-capacity-vs-revenue-joint-outliers.png)
+
+The low-revenue cluster and the 36-seat restaurant near 1.2M sit inside the IQR
+fences of both columns; only the combination is unusual.
 
 ---
 

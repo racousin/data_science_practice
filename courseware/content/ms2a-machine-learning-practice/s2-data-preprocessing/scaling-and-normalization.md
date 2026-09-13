@@ -27,6 +27,15 @@ magnitude, and "nearest" comes to mean "similar income".
 
 ---
 
+## Scaling and k-NN
+
+![k-NN regression error by scaler](assets/preprocessing/knn-mse-by-scaler.png)
+
+k-NN regressor, 5-fold cross-validation, each scaler fitted on the training
+folds only; L2 is the row-wise `Normalizer`.
+
+---
+
 ## StandardScaler
 
 $$
@@ -103,6 +112,16 @@ after the previous lesson, is a decision you made on purpose.
 `Normalizer` is the odd one out: it rescales each **row** to unit norm, which is
 what cosine similarity wants and almost never what a tabular feature wants.
 Confusing it with the column scalers is a common and silent error.
+
+---
+
+## Column scalers versus Normalizer
+
+![Population against MedInc under each scaler](assets/preprocessing/scalers-medinc-vs-population.png)
+
+Min-Max (top right), Standard and MaxAbs (middle) keep the shape of the raw
+cloud (top left) and change only the axes; the row-wise L2 `Normalizer`
+(bottom) changes the shape.
 
 ---
 

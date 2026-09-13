@@ -22,6 +22,8 @@ how many fields each is missing. A flat scatter of single gaps and a spike at
 "eleven fields missing" are different problems: the spike is a failed batch, an
 unjoined source or a schema change, none of which imputation fixes.
 
+![Missingness in the penguins table](assets/preprocessing/penguins-missingness-map.png)
+
 ---
 
 ## Missing does not always look missing
@@ -88,6 +90,8 @@ Dropping a *column* is the right call above roughly 60–70% missing, unless the
 missingness itself is predictive. Dropping *rows* on a feature is rarely right:
 at 5% missing in ten columns you can lose 40% of the table.
 
+![Missing values per column and per row](assets/preprocessing/missing-values-per-column-and-row.png)
+
 ---
 
 ## Central tendency, and a more honest constant
@@ -139,6 +143,8 @@ X_tr = imp.fit_transform(X_tr)
 
 Each gap is filled with the weighted mean of the `k` most similar rows over the
 other columns. It exploits MAR structure that a column median throws away.
+
+![KNN imputation from the nearest rows](assets/preprocessing/knn-imputation.png)
 
 Two costs: it needs scaled features, or the column with the largest units
 defines "similar"; and it stores the training set, so inference is expensive.

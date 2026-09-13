@@ -9,7 +9,7 @@
 
 course:
   name: "MS2A - Machine Learning Practice"
-  code: "MS2A-MLP"
+  code: "MS2A-MLP-2026"
   slug: ms2a-machine-learning-practice
   visibility: public
   instructor_name: "Raphael Cousin"

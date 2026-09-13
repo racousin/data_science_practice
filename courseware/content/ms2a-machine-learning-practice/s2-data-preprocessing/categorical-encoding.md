@@ -26,6 +26,12 @@ Ordinality is a property of the world, not of the data. Only you know whether
 
 ---
 
+## Nominal and ordinal
+
+![Nominal versus ordinal](assets/preprocessing/nominal-vs-ordinal.png)
+
+---
+
 ## One-hot: the default for nominal
 
 ```python
@@ -41,6 +47,15 @@ network or distance-based method.
 
 `min_frequency=10` collapses everything rarer than ten occurrences into a single
 `infrequent` column — high-cardinality control with one argument.
+
+---
+
+## One-hot in a linear model
+
+![hour as a number versus hour as 24 categories](assets/preprocessing/hour-integer-vs-onehot-linear-fit.png)
+
+A linear regression on bike rentals, with `hour` as one integer column and as 24
+one-hot columns.
 
 ---
 
