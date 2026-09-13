@@ -59,6 +59,15 @@ X_te = scaler.transform(X_te)                      # transform, never fit
 
 ---
 
+## The same scaler, fitted twice
+
+![Fit before the split versus fit on train](assets/preprocessing/fit-on-train-vs-leak.png)
+
+Ten rows `0 … 9`, the last two held out. Fitted before the split, the scaler's
+mean is 4.5; fitted on train, it is 3.5.
+
+---
+
 ## What the leak costs
 
 A scaler leaks little. The steps that leak a lot share one property: they touch
