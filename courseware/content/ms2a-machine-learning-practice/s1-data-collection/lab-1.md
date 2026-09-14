@@ -3,18 +3,21 @@
 Assemble a small dataset from **two different source types**, with the
 provenance, the checks and the documentation that make it usable by someone else.
 
-**Time:** 45 minutes. **Deliverable:** a merged PR in your project repository,
-and one scored run on the session's competition (Part F).
+**Time:** 70 minutes. **Deliverable:** a merged PR in your project repository,
+and a submission to the challenge *Multi-Source Store Sales* that scores −20 or
+higher (Part F).
 
-<!-- notes: They work in their project repo from the 12h module — this is the
-first commit of the project, not a throwaway. Circulate: the "what is one row"
-question is where most of them are stuck. -->
+<!-- notes: They work in their project repository — this is the first commit
+of the project, not a throwaway. Circulate: the "what is one row" question is
+where most of them are stuck. Paste the "Today's sandbox" block (make info in
+sql_api_sandbox writes LAB.local.md) into this page before the session: Part F
+needs DATABASE_URL and WRITER_URL. -->
 
 ---
 
 ## Setup
 
-Work in the repository you packaged in the 12h module, on a branch.
+Work in your project repository, on a branch.
 
 ```text
 src/collect/
@@ -44,12 +47,12 @@ Write down, in `DATASET.md`, the answer to: **what is one row of the final
 table?** Do this before writing code.
 
 Then write down **what you will predict from it** — one column, present for every
-row. Labs 3 and 4 fit supervised models on this table, so it needs a target and
-at least ~2,000 rows. A classification target (two or more classes) is the path
-the rest of the course is written for; a regression target works, but you will
-substitute `KFold` for `StratifiedKFold` and `neg_root_mean_squared_error` for
-`roc_auc` throughout. If your two sources cannot give you that, say so now, not
-in week three.
+row. A supervised model will be fitted on this table, so it needs a target and
+at least ~2,000 rows. A classification target (two or more classes) is the
+simpler path; a regression target works too, with `KFold` in place of
+`StratifiedKFold` and `neg_root_mean_squared_error` in place of `roc_auc`. If
+your two sources cannot give you that, say so now, not once modelling has
+started.
 
 ---
 
@@ -130,70 +133,80 @@ The second is the one that matters: a check that never fails is not a check.
 
 ---
 
-## Part F — Put it on the board (5 min)
+## Part F — Multi-Source Store Sales (30 min)
 
-The session's competition is **Global Weather Forecast** (id `177`): a source
-that never stops. Every six hours it hands an agent 48 hours of observations for
-120 cities and records what that agent predicts for +6h, +12h and +24h. Nobody
-can look the answer up, because the hours have not happened yet.
+A retail chain runs five stores. **Neighborhood_Market** did not record its
+sales: predict `quantity_sold` for its 409 items from the four other stores,
+whose data is spread over four sources.
 
-You are not forecasting today — that is Session 3. You are collecting from a live
-feed and getting on the board. Write `agent.py`:
-
-```python
-import numpy as np
-
-class Agent:
-    def predict(self, request):
-        history = np.asarray(request["history"])       # (120, 48, 8)
-        f = request["feature_names"]
-        t, w = f.index("temperature"), f.index("wind_speed")
-        n_h = len(request["horizons"])
-        # The collection window IS the feature: average the last 24 hours.
-        temp = history[:, -24:, t].mean(axis=1, keepdims=True)
-        wind = history[:, -24:, w].mean(axis=1, keepdims=True)
-        return {
-            "temperature": np.repeat(temp, n_h, 1).tolist(),
-            "wind_speed":  np.repeat(wind, n_h, 1).tolist(),
-            "rain_prob":   np.full((history.shape[0], n_h), 0.04).tolist(),
-        }
-```
-
-```bash
-uv pip install mlarena-sdk        # the package is mlarena-sdk; it imports as mlarena
-```
-
-```python
-import mlarena
-
-client = mlarena.connect(api_key="mlk_user_...")   # Profile -> API Keys
-client.submit(competition_id=177, files=["agent.py"])
-print(client.leaderboard(177).head())
-```
-
-**The numbers.** The metric is a skill score against persistence — carrying the
-last observation forward — averaged over temperature, wind and rain. **Higher is
-better.** Measured by replaying 339 real 6-hourly runs over June–August 2026
-(119,520 scored samples) and published on the competition page:
-
-| Agent | Skill |
+| Source | What it provides |
 |---|---|
-| Always predict 0 | −0.998 |
-| Persistence — the reference the metric is defined against | −0.007 |
-| **Trailing 24h mean — the agent above** | **0.097** |
-| The starter agent shipped with the competition | 0.217 |
+| files: CSV, Excel, JSON | item features and `quantity_sold` |
+| an API behind a password | `unit_cost` |
+| a page rendered by JavaScript | `customer_score`, `total_reviews` |
+| the course PostgreSQL database | `weekly_footfall` of each store |
 
-Those are replay numbers: the live board scores a different stretch of weather,
-so the same agent will not match them to the third decimal. Two agents within
-about **0.006** of each other are not distinguishable in the first place.
+**Challenge:** <https://ml-arena.com/viewchallenge/190>
 
-The bar for this lab is the reference: **skill > 0.000**. The agent above clears
-it by a wide margin; beating 0.217 needs a model, and that is Session 3's
-problem.
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/data_science_practice/blob/main/website/public/modules/ms2a-machine-learning-practice/challenges/mlp-s1-store-sales.ipynb)
 
-**Your first run produces no score, and that is correct.** The forecast is
-recorded now and scored later, once the hours it covers have actually happened —
-about six hours. Submit before you write the PR, not after.
+<!-- notes: The same four source types as the lessons, on one prediction task.
+The first push comes before any source work: it proves the key, the download
+and the submission format in the first ten minutes. Most students will not
+reach the database section in the lab; they finish after the session. -->
+
+---
+
+## Part F — Setup and your first push (10 min)
+
+1. Open the notebook with the Colab badge.
+2. In Colab's *Secrets* panel, add `MLARENA_API_KEY` (ML-Arena, Profile →
+   API Keys), and `DATABASE_URL` and `WRITER_URL` from the *Today's sandbox*
+   section of this page. Never paste a value into a cell.
+3. Write your name as `STUDENT` in the Setup cell.
+4. Run *Your first push*. It downloads the five files, predicts CityMart's
+   mean for every item, submits `submission.csv` and prints its score.
+
+The constant does not clear the bar, and it is not meant to. It proves the
+download, the file format and your key before any modelling.
+
+---
+
+## Part F — One source at a time (20 min)
+
+One notebook section per source. Each **TODO** cell has a hint; the cell
+after it checks your result and prints the cross-validated MAE of the same
+baseline model, so each source's effect is visible.
+
+- **Files:** the separator, header row, column names and sheet layout differ
+  per store. Look at the raw lines before calling pandas.
+- **API:** request the password at run time, then the prices.
+- **Scraping:** headless Chrome renders the page; pick the table by its headers.
+- **Database:** join `weekly_footfall` from `retail.stores` on `store_name`.
+
+Then predict Neighborhood_Market, write `submission.csv` and submit it.
+
+**The bar is a score of −20 or higher.** The score is −MAE, so the bar is an
+MAE of at most 20 units per item.
+
+---
+
+## Part F — Bonus: the database board
+
+The course database scores predictions too:
+
+```python
+submission.to_sql(f"{STUDENT}_predictions", writer, schema="playground",
+                  if_exists="replace", index=False)
+pd.read_sql("SELECT * FROM retail.leaderboard ORDER BY mae", engine)
+```
+
+`writer` connects with `WRITER_URL`, which can create tables in `playground`
+only; `engine` with the read-only `DATABASE_URL`. Your row appears 10 to 20
+seconds after the write. This board scores only the even-numbered items, so
+its MAE differs from your challenge score, and only the challenge counts.
+
+The playground is shared by the class: drop your table when you are done.
 
 ---
 
@@ -218,7 +231,7 @@ The description states:
 | Four meaningful checks incl. a join invariant | 20% |
 | Three tests passing on fixtures | 15% |
 | `DATASET.md` complete, target column named | 10% |
-| A scored run on competition 177 | 10% |
+| A submission to Multi-Source Store Sales scoring −20 or higher | 10% |
 
 ---
 
@@ -234,14 +247,14 @@ The description states:
 
 ## Carry it forward
 
-This dataset is the input to Lab 2, where you will preprocess it without leaking,
-and it is a plausible starting point for the project.
+This dataset is the one you will preprocess and model next, and it is a
+plausible starting point for the project.
 
-Collect something you are willing to look at for ten weeks.
+Collect something you are willing to look at for weeks.
 
 ---
 
-## Did you validate this session?
+## Did you finish the lab?
 
 - [ ] `uv sync && uv run pytest` is green on a fresh clone
 - [ ] Part A: `DATASET.md` answers "what is one row?" and names the target column
@@ -252,10 +265,10 @@ Collect something you are willing to look at for ten weeks.
 - [ ] Part D: `uv run pytest -q` reports 3 passed, and `test_check_rejects_duplicate_keys` goes red when I comment out the uniqueness assertion
 - [ ] Part E: `DATASET.md` has one line per column and a licence line per source
 - [ ] `git status` is clean and nothing under `data/` is tracked
-- [ ] Part F: my agent is on the leaderboard of Global Weather Forecast (#177)
-- [ ] Part F: my score beats the baseline: **skill > 0.000** — above persistence, the reference floor
+- [ ] Part F: my first push, the constant prediction, is on the leaderboard of Multi-Source Store Sales
+- [ ] Part F: my best submission scores **−20 or higher** (MAE ≤ 20 units)
 
 If the last two are not ticked you have not finished the lab, however good the
-code is. The competition scores a forecast only once the hours it covers have
-happened, so the last box goes from *submitted* to *scored* about six hours after
-you deploy: submit in the lab, tick it the same evening.
+code is. A submission is scored within a minute, so the first box is ticked in
+the lab; if the time runs out before the last source, finish the notebook after
+the session.

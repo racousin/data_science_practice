@@ -1,6 +1,12 @@
 {
   "https://ml-arena.com": {
     "competitions": {
+      "mlp-s1-store-sales": {
+        "id": 190,
+        "label": "Multi-Source Store Sales",
+        "module_slug": "s1-data-collection",
+        "name": "MLP S1 \u2014 Multi-Source Store Sales"
+      },
       "s2-bank-marketing": {
         "id": 184,
         "label": "Bank Term Deposit",

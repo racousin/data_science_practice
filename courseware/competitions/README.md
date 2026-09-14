@@ -19,9 +19,11 @@ competitions/
 ├── s3-diabetes-progression/ file_v1  Session 3 regression — the overfitting demo
 ├── s3-credit-risk/      file_v1   Session 3 classification — the same, guided
 ├── s4-taxi-eta/         file_v1   Session 4's Lab 1 — an MLP on the pinball loss
+├── mlp-s1-store-sales/  file_v1   MS2A-MLP Session 1 — sales from four sources
 ├── _dataset_ids.py      salted row ids — see "Why the ids are salted"
 ├── localtest.py         run an env.py locally, the way the worker would
 ├── test_challenges.py   pytest — scorers, splits, and the notebooks
+├── test_mlp_s1_store_sales.py  pytest — mlp-s1-store-sales, without notebooks
 └── .mlarena-state.json  the id lockfile — committed, see "Publishing"
 ```
 
@@ -153,6 +155,57 @@ therefore safe under any metric, and all six packages do it.
 The `Reference — …` lessons at the end of sessions 1 and 4 have no competition:
 self-study material, never lectured, with nothing to score.
 
+## `mlp-s1-store-sales` — MS2A - Machine Learning Practice, Session 1
+
+A package of the other course, `ms2a-machine-learning-practice` (build it with
+`--course ms2a-machine-learning-practice`). It is the Data Science Practice
+module 4 exercise, unchanged: predict `quantity_sold` for the 409
+Neighborhood_Market items from four stores spread over files (CSV,
+pipe-separated CSV, XLSX, JSON), an API (`unit_cost`), a scraped page
+(`customer_score`, `total_reviews`) and the course SQL sandbox
+(`retail.stores.weekly_footfall`). Ranked on −MAE.
+
+**Provenance.** The target was never published. `prepare_data.py` recovers it by
+replaying the public, seeded generator notebook (`module4_gen-exo.ipynb`) and
+refuses to write unless the replay reproduces the five downloads (sha256-pinned),
+the live API and the scraped page for all 2000 items, and the numbers the
+original notebooks printed. The ids are the original `P0001…P2000` and cannot be
+salted, so the target is reproducible by anyone who re-runs that notebook; the
+overview says so. `reference_solution.py` then writes the benchmark, the "first
+push" constant and a malformed file, offline. `y_test.csv` is a byte copy of
+`neighborhood_market_target.csv`, for the platform's start and upload checks.
+
+**The ladder** (the exercise's `get_simple_baseline`: fillna −1, StandardScaler,
+LinearRegression; MAE on the 409 items, 5-fold CV on the training stores):
+
+| submission | MAE | CV |
+|---|---|---|
+| CityMart's mean — the overview's first push | 26.37 | |
+| mean of the four stores | 23.18 | |
+| files | 19.89 | 45.04 |
+| + `unit_cost` | 17.05 | 44.10 |
+| **+ `customer_score`, `total_reviews` — the benchmark** | **3.51** | 40.03 |
+| + `weekly_footfall` (the course database) as a feature | 2.15 | 15.97 |
+| footfall as a multiplier | 2.11 | |
+
+**The bar is −20** (`pass_threshold`): MAE ≤ 20, the `ERROR_THRESHOLD` of the
+original grader, `tests/data-science-practice/module4/exercise1.sh`. It is not
+the benchmark score, which is far above it, and it is loose: the files alone
+clear it. Only the two constants miss it.
+
+**Why Neighborhood_Market's footfall is 13,400.** The generator did not make
+its target with the store formula at effect 1.0: it fitted one regression on the
+four stores pooled (average effect 1.10) and shifted every prediction by +3.76,
+so the store's sales behave like an effect of about 1.117. `retail.stores`
+states that, as 13,400. With 12,000 there, footfall lowered the CV error and
+raised the test MAE to 21.35 — a trap rather than a source. The benchmark
+stays at the original exercise's three sources, whose CV score it can assert.
+
+```bash
+uv run --with pytest --with pandas --with scikit-learn --with openpyxl \
+    pytest competitions/test_mlp_s1_store_sales.py -q
+```
+
 ## Why the ids are salted
 
 Every dataset here is a split of a **public** source, and every `prepare_data.py`
@@ -205,6 +258,11 @@ changed metric from R² to -MAE on 2026-09-08 its bar stayed behind at the old R
 (0.399304). Nothing under -MAE reaches 0.4, so the card read `-138.88 · NEEDS ≥
 0.40` and no submission could ever validate it. A number that has to agree with
 another number should not be stored twice; now it is not.
+
+A package for a course that states its own bar declares **`pass_threshold`** in
+`config.py`, and `attach` writes that instead. `mlp-s1-store-sales` is the one
+that does (−20.0; see its section below). `load_config` refuses a bar above the
+package's own benchmark score.
 
 ```bash
 make competitions-attach          # idempotent: prints only what it changes
@@ -418,3 +476,30 @@ scored on deployment and then stops; there is no ongoing matchmaking. That is
 what makes a single-submission-per-student competition work — the periodic
 matchmaker drops groups smaller than the engine's `number_of_agents`, and never
 sees these.
+
+Three optional `config.py` keys, all applied before the benchmark. A package
+without them is built exactly as before they existed:
+
+- `submission_filename` — the file a participant uploads, and the name the
+  benchmark is stored under. Absent means the platform default,
+  `submission.csv`. A name that does not end in `.csv` (`s2-dpe-energy-label`
+  uses `submission.csv.gz`) skips the platform's exact-column check and its
+  `y_test.csv` start requirement, and its benchmark is uploaded as bytes
+  (`upload_benchmark_file(..., filename=...)`), not as text.
+- `max_upload_size_bytes` — the participant upload cap (default 100 MB).
+- `engine_id` — pin the challenge to an engine, e.g. one whose
+  `env_memory_limit` fits the scorer. Absent or `None` keeps the engine the
+  platform picks for the kind. Pinning is the admin configuration route, so
+  the creator key must belong to an admin account; the build stops if the
+  server refuses or reports another engine.
+
+Public and private files are looked up in `data/`, then in the package
+directory, so a hand-written `EXPERTISE.md` need not be copied into `data/`.
+
+**Packages belong to a course.** `PACKAGES_BY_COURSE` in
+`tools/build_competitions.py` lists them, and every mode works on `--course`'s
+packages only. `s2-dpe-energy-label` belongs to `ms2a-machine-learning-practice`:
+
+```bash
+make competitions COURSE=ms2a-machine-learning-practice ONLY=s2-dpe-energy-label
+```

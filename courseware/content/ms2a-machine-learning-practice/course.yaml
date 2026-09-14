@@ -41,9 +41,15 @@ modules:
       Where data comes from and what it costs to get it: files, databases,
       APIs, scraping — and the quality checks that belong at the point of
       collection rather than three weeks later.
+    # 190 is the website's module4 exercise 1 (competitions/mlp-s1-store-sales),
+    # built 2026-09-14. Its bar, MAE <= 20 (pass_threshold -20.0), is written
+    # onto the module link by `build_competitions.py attach` from the package's
+    # config.py: publish_mlarena.py only attaches with a label, never a bar.
     competitions:
       - competition_id: 177
         label: "Global Weather Forecast — a source that never stops: observations arrive daily and the forecast is scored once the weather has happened"
+      - competition_id: 190
+        label: "Multi-Source Store Sales"
     lessons:
       - title: "Data and Its Shapes"
         slug: data-and-its-shapes
@@ -60,10 +66,27 @@ modules:
         file: s1-data-collection/databases.md
         estimated_minutes: 25
         is_published: true
+      # The two exercises below are the SQL sandbox's walkthroughs
+      # (tests-dummy/catalog/sql_api_sandbox/course/sql.md and api.md, in the
+      # platform repo), with a reference slide set from its COURSE.md on top.
+      # `make docs-test` there checks the originals' printed numbers against the
+      # live sandbox, not these copies: a change to either side goes to both.
+      - title: "Exercise — Query a Shared Database"
+        slug: exercise-sql-sandbox
+        kind: exercise
+        file: s1-data-collection/exercise-sql-sandbox.md
+        estimated_minutes: 45
+        is_published: true
       - title: "APIs"
         slug: apis
         file: s1-data-collection/apis.md
         estimated_minutes: 30
+        is_published: true
+      - title: "Exercise — A Client That Survives the API"
+        slug: exercise-api-sandbox
+        kind: exercise
+        file: s1-data-collection/exercise-api-sandbox.md
+        estimated_minutes: 45
         is_published: true
       - title: "Web Scraping"
         slug: web-scraping
@@ -79,7 +102,7 @@ modules:
         slug: lab-1
         kind: exercise
         file: s1-data-collection/lab-1.md
-        estimated_minutes: 45
+        estimated_minutes: 70
         is_published: true
 
   # ---------------------------------------------------------------- session 2

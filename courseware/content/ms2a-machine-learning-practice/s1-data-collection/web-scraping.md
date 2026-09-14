@@ -10,6 +10,19 @@ because it constrains the design. The selectors-break point matters: scrapers ro
 
 ---
 
+## What a scraper is made of
+
+| Part | Role | Python |
+|---|---|---|
+| HTTP client | fetches the page | `requests` |
+| HTML parser | turns the markup into a tree | `BeautifulSoup`, `lxml` |
+| Selectors | point at the elements you want | CSS selectors or XPath |
+
+Typical uses: monitoring prices, collecting research data that is published
+only as web pages, aggregating content from several sites.
+
+---
+
 ## Before anything else
 
 ```text
@@ -22,6 +35,28 @@ choice you own.
 
 Read the Terms of Service too. "Automated access is prohibited" is a common
 clause and it is binding on you.
+
+---
+
+## Reading robots.txt in code
+
+```text
+User-agent: *
+Disallow: /checkout/
+Crawl-delay: 5
+```
+
+```python
+from urllib.robotparser import RobotFileParser
+
+rp = RobotFileParser("https://example.com/robots.txt")
+rp.read()
+rp.can_fetch("course-bot", "https://example.com/products/42")  # True
+rp.crawl_delay("course-bot")                                    # 5
+```
+
+Check every URL before fetching it, and use the site's `Crawl-delay` when it
+is longer than your own.
 
 ---
 
@@ -41,7 +76,9 @@ clause and it is binding on you.
 ## A polite client
 
 ```python
-headers = {"User-Agent": "ENSAE course project (raphael.cousin@example.com)"}
+headers = {
+    "User-Agent": "ENSAE course project (raphael.cousin@example.com)",
+}
 r = requests.get(url, headers=headers, timeout=10)
 time.sleep(2)
 ```
@@ -66,6 +103,38 @@ the browser's inspector. `lxml` is a faster parser if volume grows.
 
 ---
 
+## XPath, the other selector language
+
+```python
+from lxml import html
+
+tree = html.fromstring(r.text)
+prices = tree.xpath("//span[@class='price']/text()")
+```
+
+CSS selectors cover most pages. XPath also selects by text content and walks
+*up* the tree — "the row that contains the cell reading *Stock*" — in a single
+expression, and it is the selector language of `lxml` and Selenium alike.
+
+---
+
+## Scraping a table
+
+```python
+rows = [[td.text.strip() for td in tr.select("td")]
+        for tr in soup.select("table tbody tr")]
+df = pd.DataFrame(rows, columns=["product_id", "rating", "n_reviews"])
+```
+
+Every cell comes out as a string, so the types are yours to set, and the column
+order is whatever the page shows today — assert the header row before
+trusting the positions.
+
+For a well-formed `<table>`, `pd.read_html(io.StringIO(r.text))` returns one
+dataframe per table on the page.
+
+---
+
 ## Selectors break
 
 ```python
@@ -76,7 +145,7 @@ if el is None:
 
 A site redesign changes `span.price` to `span.price-tag` and your scraper starts
 producing `None` for every row. Without the check it writes 50,000 empty rows and
-you find out in Session 2.
+you find out weeks later, when a model trains on them.
 
 Fail on the missing selector. A crashed scraper is a scraper you fix; a silent
 one is a dataset you have to throw away.
@@ -87,11 +156,12 @@ one is a dataset you have to throw away.
 
 ```python
 def to_float(text):
-    cleaned = (text.replace("\u00a0", "")   # non-breaking space, the one you cannot see
+    # "\u00a0" is the non-breaking space, the one you cannot see
+    cleaned = (text.replace("\u00a0", "")
                    .replace(" ", "")
                    .replace("€", "")
                    .replace(",", "."))
-    return float(cleaned)                    # to_float("1\u00a0234,50 €") -> 1234.5
+    return float(cleaned)      # to_float("1\u00a0234,50 €") -> 1234.5
 ```
 
 HTML is presentation. `"1 234,50 €"` is a string containing a non-breaking space,
@@ -101,8 +171,27 @@ the space is still sitting in the middle of the number. That is why the test
 comes first.
 
 Write the cleaner as a named function and unit-test it on the ugly cases you have
-actually seen. That is one of the tests from Session 1 of the 12h module doing
-real work.
+actually seen. This is where a unit test does real work.
+
+---
+
+## A page shows only the present
+
+```python
+record = {
+    "url": url,
+    "price": to_float(price_el.text),
+    "scraped_at": pd.Timestamp.now(tz="UTC").isoformat(),
+}
+```
+
+A product page displays today's price and nothing else. Scraping it every hour
+builds a price history that exists nowhere else — but only if every record
+carries the time it was fetched. Without `scraped_at`, two runs are
+indistinguishable.
+
+Schedule the run with cron or a workflow scheduler rather than a
+`while True: sleep(3600)` loop: a crashed loop stops collecting silently.
 
 ---
 
@@ -118,6 +207,28 @@ Options, in order of preference:
 2. **Playwright / Selenium.** A real browser, 50× slower and far heavier.
 3. **Reconsider.** If it needs a headless browser and a login, ask whether the
    data is worth it.
+
+---
+
+## Driving a browser
+
+```python
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
+driver = webdriver.Chrome()
+driver.get(url)
+WebDriverWait(driver, 10).until(EC.presence_of_element_located(
+    (By.CSS_SELECTOR, "table tbody tr")))
+page = driver.page_source          # the DOM after JavaScript ran
+driver.quit()
+```
+
+Wait for the element you need, not for a fixed `time.sleep(5)`: a fixed sleep
+is too long on a fast day and too short on a slow one. From `page_source` on,
+parsing is the same BeautifulSoup code as before.
 
 ---
 
@@ -186,7 +297,7 @@ scraper.
    What should your code do, and what happens if it does not?
 
    **Answer.** Raise, naming the URL. A scraper that does not check writes 50,000
-   empty rows and you discover it in Session 2. A crashed scraper is a scraper
+   empty rows and you discover it weeks later. A crashed scraper is a scraper
    you fix; a silent one is a dataset you throw away.
 
 3. The page you want is built in the browser by JavaScript, so `requests` gets

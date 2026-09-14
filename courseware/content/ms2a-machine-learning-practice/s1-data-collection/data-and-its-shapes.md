@@ -3,10 +3,9 @@
 Before you can model anything you have to get the data, and the shape it
 arrives in decides most of what happens next.
 
-<!-- notes: 20 minutes, opening lesson of the 30h module. Set the frame: the
-rest of the year assumes a dataset exists; this session is where it comes from.
-Ask the room what data they will use for their project — most have not thought
-about it. -->
+<!-- notes: 20 minutes. Set the frame: every model assumes a dataset exists;
+this lesson is about where it comes from. Ask the room what data they will use
+for their project — most have not thought about it. -->
 
 ---
 
@@ -16,6 +15,8 @@ about it. -->
 
 Answer it out loud before you write any code. One customer? One customer-month?
 One click? One sensor reading? One image?
+
+![A CUSTOMER table in which one row is one customer and each column one attribute](assets/collect/structured.jpg)
 
 Everything downstream — the split, the metric, the leakage risk — follows from
 that answer, and getting it wrong is not a bug you find in a unit test.
@@ -30,15 +31,27 @@ that answer, and getting it wrong is not a bug you find in a unit test.
 | **Semi-structured** | Self-describing, nested, no fixed schema | JSON, XML, logs |
 | **Unstructured** | No schema at all | text, images, audio, video |
 
-![Types of data](assets/collect/structured.jpg)
+Structured data is the easiest to search and aggregate. Semi-structured data
+trades that for flexibility: each record carries its own field names.
+Unstructured data is by far the most abundant — and the most work to use.
+
+---
+
+## The same facts, three shapes
+
+![The same student records as free text, as XML elements, and as a table with ID, Name, Age and Degree columns](assets/collect/data.png)
+
+Three students, written three ways. The table can be filtered immediately. The
+XML has to be parsed, but its tags name every field. From the free text, a
+program has to *extract* the age and the degree — and extraction makes errors.
 
 ---
 
 ## Why the shape matters
 
 Structured data is ready for a model after cleaning. Unstructured data needs a
-*representation* step first — a CNN, a tokenizer, an embedding model — which is
-half of what the next nine sessions are about.
+*representation* step first — a CNN, a tokenizer, an embedding model — and
+building that representation is a modelling problem in its own right.
 
 Semi-structured is the trap in the middle: it looks tabular in the first hundred
 records and stops being tabular at record 4,000, when a field that was a string
@@ -48,11 +61,11 @@ turns into a list.
 
 ## Modalities you will actually meet
 
-- **Tabular** — the default, and still where gradient boosting wins (Session 3)
-- **Text** — free-form, needs tokenization (Sessions 7–8)
-- **Images** — tensors of pixels (Sessions 5–6)
-- **Time series** — rows are *ordered*, which breaks the usual split (Session 3)
-- **Interaction traces** — states, actions, rewards (Sessions 9–10)
+- **Tabular** — the default, and still where gradient-boosted trees win
+- **Text** — free-form, needs tokenization before any model sees it
+- **Images** — tensors of pixels, height × width × channels
+- **Time series** — rows are *ordered*, which breaks the usual random split
+- **Interaction traces** — states, actions, rewards, logged by an agent
 
 ---
 
@@ -76,7 +89,7 @@ do not need*.
 
 ## Where data comes from
 
-Four sources, four lessons, in rough order of how much you should like them:
+Four sources, in rough order of how much you should like them:
 
 1. **Files** — someone already exported it
 2. **Databases** — the source of truth, queryable
@@ -114,20 +127,21 @@ data/
 A model is a week of work. A dataset is a month.
 
 Every hour spent on collection design — the right grain, the right keys, a
-recorded provenance — is repaid three times over in Sessions 2 and 3, when you
-discover that the join you did silently duplicated 12% of your rows.
+recorded provenance — is repaid three times over during preprocessing and
+modelling, when you discover that the join you did silently duplicated 12% of
+your rows.
 
 ---
 
-## What this session covers
+## One question per source
 
-| Lesson | Question it answers |
+| Source | Question to answer |
 |---|---|
-| Files and Formats | It is already a file. How do I read it correctly? |
+| Files | It is already a file. How do I read it correctly? |
 | Databases | It is in a database. How do I query it without melting it? |
 | APIs | Someone exposes it. How do I pull it reliably? |
-| Web Scraping | Nobody exposes it. What are my options and my obligations? |
-| Collection Strategy | Batch or stream, and what do I check before I trust it? |
+| Web scraping | Nobody exposes it. What are my options and my obligations? |
+| Any source | Batch or stream, and what do I check before I trust it? |
 
 ---
 

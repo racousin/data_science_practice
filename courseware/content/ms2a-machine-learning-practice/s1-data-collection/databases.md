@@ -14,12 +14,30 @@ that filtering and aggregation belong in SQL, not in pandas after the fact. -->
 |---|---|---|
 | Model | tables, fixed schema | documents, key-value, graph |
 | Schema | declared up front | implicit, per record |
-| Joins | built in | done in your code |
+| Relationships | foreign keys and JOINs | denormalised, or joined in your code |
 | Scaling | vertical, mostly | horizontal |
-| Guarantees | ACID transactions | usually eventual consistency |
+| Guarantees | ACID transactions | usually eventual consistency (BASE) |
+| Suited to | complex queries, transactions | high throughput, evolving records |
+| Examples | PostgreSQL, MySQL, SQLite | MongoDB, Redis, Neo4j |
 
 For data science work you will meet PostgreSQL far more often than anything else.
 Learn SQL properly; treat the rest as it comes.
+
+---
+
+## ACID and BASE
+
+A relational database runs changes inside **transactions**, which are ACID:
+
+- **Atomic** — every statement in the transaction applies, or none does
+- **Consistent** — constraints (keys, types, `NOT NULL`) hold before and after
+- **Isolated** — concurrent transactions do not see each other's half-work
+- **Durable** — once committed, the change survives a crash
+
+Distributed NoSQL stores usually relax this to **BASE** — *basically
+available, soft state, eventually consistent*. Two reads a second apart can
+disagree until the replicas converge. For collection, that means a count taken
+from a replica is an estimate of the moment, not a fixed fact.
 
 ---
 
@@ -34,6 +52,10 @@ df = pd.read_sql("SELECT * FROM orders LIMIT 5", engine)
 
 SQLAlchemy gives one interface over Postgres, MySQL, SQLite and others, and
 pandas speaks to it directly.
+
+SQLite has no server at all: the database is one file, opened with
+`create_engine("sqlite:///shop.db")`. It is the quickest way to get a real SQL
+database for a project.
 
 ---
 
@@ -141,6 +163,30 @@ Assert the row count across every join. Every time.
 
 ---
 
+## Writing: the rest of CRUD
+
+`SELECT` is the *Read* of CRUD. `INSERT`, `UPDATE` and `DELETE` are the others,
+and each belongs in a transaction:
+
+```python
+with engine.begin() as conn:     # commits on exit, rolls back on error
+    conn.execute(text("UPDATE accounts SET balance = balance - 100"
+                      " WHERE id = :a"), {"a": 1})
+    conn.execute(text("UPDATE accounts SET balance = balance + 100"
+                      " WHERE id = :b"), {"b": 2})
+```
+
+If the second statement fails, the first is undone: no money disappears.
+
+```python
+df.to_sql("predictions", engine, if_exists="replace", index=False)
+```
+
+`to_sql` writes a whole dataframe as a table. `if_exists` is `"fail"` by
+default — say explicitly whether you mean to replace or to append.
+
+---
+
 ## NoSQL, briefly
 
 ```python
@@ -153,6 +199,39 @@ df = pd.json_normalize(docs)
 Same discipline, different syntax: filter in the query, project only the fields
 you need, and expect the schema to vary between documents — because nothing
 enforced it.
+
+---
+
+## Three NoSQL families
+
+| Family | Stores | Example | Typical use |
+|---|---|---|---|
+| Document | JSON-like documents, nested | MongoDB | user profiles, product catalogues |
+| Key-value | a value per key, often in memory | Redis | caches, sessions, counters |
+| Graph | nodes and the edges between them | Neo4j | social networks, recommendations |
+
+The family decides the query: a key-value store answers "give me key *k*" and
+nothing else, a graph database answers "who is two hops from this node", a
+document store answers queries on the fields inside each document.
+
+---
+
+## Querying documents
+
+```python
+col.find({"preferences.theme": "dark", "age": {"$gt": 25}})
+
+col.aggregate([
+    {"$match": {"status": "active"}},
+    {"$group": {"_id": "$country", "n_users": {"$sum": 1}}},
+])
+```
+
+Dot notation reaches into nested fields; `$gt`, `$in` and `$exists` are
+query operators.
+
+The aggregation pipeline is MongoDB's `WHERE ... GROUP BY`: `$match` filters,
+`$group` aggregates, both on the server. Pushing the work down applies here too.
 
 ---
 
@@ -172,6 +251,23 @@ not.
 
 ---
 
+## Try it on the course database
+
+```python
+engine = create_engine(os.environ["DATABASE_URL"])
+stores = pd.read_sql("SELECT * FROM retail.stores", engine)
+print(stores[["store_name", "city", "weekly_footfall"]])
+```
+
+Five rows, one per store of the Lab 1 challenge. `DATABASE_URL` is in the
+*Today's sandbox* section the teacher posts on the Lab 1 page: put it in Colab's
+*Secrets* panel or a gitignored `.env`, never in the code.
+
+`retail.data_dictionary` describes every column of that challenge and the
+source it comes from: read it before joining anything.
+
+---
+
 ## Checklist
 
 - credentials from the environment, never in the file
@@ -188,36 +284,29 @@ not.
 
    ```python
    import sqlite3, pandas as pd
-
    con = sqlite3.connect(":memory:")
-   con.execute("CREATE TABLE orders (customer_id TEXT, amount REAL, created_at TEXT)")
+   con.execute("CREATE TABLE orders (customer_id, amount, created_at)")
    con.executemany("INSERT INTO orders VALUES (?,?,?)", [
        ("c1", 10.0, "2025-03-01"), ("c1", 20.0, "2025-04-01"),
        ("c2", 45.0, "2025-05-01"), ("c3",  5.0, "2024-12-01")])
-
-   print(pd.read_sql("""
-       SELECT customer_id, COUNT(*) AS n_orders, SUM(amount) AS total
-       FROM orders WHERE created_at >= '2025-01-01'
-       GROUP BY customer_id
-   """, con).to_string(index=False))
+   q = """SELECT customer_id, COUNT(*) AS n_orders, SUM(amount) AS total
+          FROM orders WHERE created_at >= '2025-01-01'
+          GROUP BY customer_id"""
+   print(pd.read_sql(q, con).to_string(index=False))
+   # customer_id  n_orders  total
+   #          c1         2   30.0
+   #          c2         1   45.0
    ```
 
-   ```text
-   customer_id  n_orders  total
-            c1         2   30.0
-            c2         1   45.0
-   ```
-
-   **Answer.** Four order rows went in and two customer rows came out: the filter
-   and the aggregation both ran in the database. If your grain is "one customer",
-   that is already the dataframe you wanted.
+   **Answer.** Four order rows went in, two customer rows came out: the filter
+   and the aggregation both ran in the database. For a grain of "one customer",
+   that is the dataframe you wanted.
 
 2. Why `os.environ["DATABASE_URL"]` and never
    `os.getenv("DATABASE_URL", "postgresql://localhost/db")`?
 
    **Answer.** The default silently connects you to an empty local database, and
-   you report that the table is missing. `os.environ[...]` raises `KeyError` at
-   the boundary instead.
+   you report a missing table. `os.environ[...]` raises `KeyError` instead.
 
 3. After a `JOIN` on `customers`, your order table has 12% more rows than before.
    What happened, and which single line would have caught it?
