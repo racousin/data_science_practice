@@ -26,7 +26,11 @@
 CONFIG = {
     "name": "MLP S2 — DPE Energy Label",
     "kernel_version": "file_v1",
-    "module_slug": "s2-data-preprocessing",
+    # Detached from module 20 (s2-data-preprocessing) on 2026-09-15: Session 2
+    # keeps Critical Care Survival (192) as its only challenge. None means
+    # `make competitions-attach` leaves this one off every module; the
+    # challenge itself stays live and public.
+    "module_slug": None,
     "label": "DPE Energy Label",
     "metric": "auc",
     "metric2": "auc_train",

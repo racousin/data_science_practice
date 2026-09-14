@@ -693,7 +693,7 @@ def do_status(args):
         detail = mine.get(entry["id"], {})
         print(f"  {pkg:18s} id={entry['id']:<5} "
               f"started={detail.get('is_started')} public={detail.get('is_public')} "
-              f"-> module {entry['module_slug']}")
+              f"-> module {entry['module_slug'] or '(none)'}")
         print(f"  {'':18s} {args.base_url}/viewcompetition/{entry['id']}")
 
 
@@ -780,6 +780,13 @@ def do_attach(args):
         entry = (state.get("competitions") or {}).get(pkg)
         if not entry:
             print(f"  {pkg}: not built, skipping")
+            continue
+        if not entry.get("module_slug"):
+            # A built challenge that no session attaches (config.py says
+            # `"module_slug": None`): it stays live for anyone who has the
+            # link, but this run must not put it back on a module it was
+            # detached from by hand.
+            print(f"  {pkg}: no module_slug, not attached to any module")
             continue
         module_id = modules.get(entry["module_slug"])
         if module_id is None:

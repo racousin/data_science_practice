@@ -203,7 +203,7 @@ pre = ColumnTransformer([("num", num_pipe, NUM_COLS),
 ```
 
 That is the whole object, both branches, and it is the one to copy: `cat_pipe`
-appears again in the encoding lesson and in Lab 2 and it always means these two
+appears again in the encoding lesson and it always means these two
 steps. Print `pre.fit_transform(X_tr).shape` the first time you build one — a
 shape you cannot account for column by column is a column that fell into neither
 list.

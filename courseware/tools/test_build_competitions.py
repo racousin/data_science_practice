@@ -428,6 +428,38 @@ def test_attach_writes_the_declared_bar_not_the_benchmark(packages, monkeypatch,
     assert written == [(20, 191, 0.85)]
 
 
+def test_attach_skips_a_package_that_declares_no_module(packages, monkeypatch, tmp_path):
+    """`"module_slug": None` (s2-dpe-energy-label since 2026-09-15) means the
+    challenge is live but attached nowhere: attach must neither look the
+    module up nor touch any link, so a hand detach is not undone."""
+    dpe_package(packages, pass_threshold=0.85, expert_expected_score=0.92705)
+    bc.write_state("http://test", {"competitions": {
+        "dpe": {"id": 191, "module_slug": None, "label": "Test"}}})
+    course_dir = tmp_path / "content" / "c"
+    course_dir.mkdir(parents=True)
+    (course_dir / ".mlarena-state.json").write_text('{"http://test": {"modules": {"s2-x": 20}}}')
+    monkeypatch.setattr(bc, "COURSEWARE", tmp_path)
+
+    class Teacher:
+        def get_module(self, module_id):
+            raise AssertionError("a package without a module must not be looked up")
+
+        def attach_competition(self, *a, **k):
+            raise AssertionError("must not attach")
+
+        def update_challenge_link(self, *a, **k):
+            raise AssertionError("must not touch the link")
+
+    monkeypatch.setattr(bc, "connect", lambda scope, base_url: Teacher())
+
+    class Args:
+        base_url = "http://test"
+        course = "c"
+        packages = ["dpe"]
+
+    bc.do_attach(Args)
+
+
 def test_packages_are_selected_per_course():
     assert bc.select_packages("python-ai-engineering", None) == \
         bc.PACKAGES_BY_COURSE["python-ai-engineering"]

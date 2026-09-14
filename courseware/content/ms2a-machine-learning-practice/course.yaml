@@ -120,10 +120,6 @@ modules:
     competitions:
       - competition_id: 192
         label: "Critical Care Survival — a fixed LogisticRegression on a five-hospital ICU cohort: every point of AUC comes from your preprocessing"
-      - competition_id: 191
-        label: "DPE Energy Label — a fixed LogisticRegression on ADEME's raw open data: every point of AUC comes from your preprocessing"
-      - competition_id: 176
-        label: "Allergen Chip Challenge — real clinical open data: missing values, mixed types, an encoding contract fitted on train only"
     lessons:
       - title: "The Preprocessing Contract"
         slug: the-preprocessing-contract
@@ -135,10 +131,15 @@ modules:
         file: s2-data-preprocessing/missing-values.md
         estimated_minutes: 35
         is_published: true
-      - title: "Duplicates, Inconsistencies, Outliers"
-        slug: duplicates-inconsistencies-outliers
-        file: s2-data-preprocessing/duplicates-inconsistencies-outliers.md
-        estimated_minutes: 30
+      - title: "Duplicates and Inconsistencies"
+        slug: duplicates-and-inconsistencies
+        file: s2-data-preprocessing/duplicates-and-inconsistencies.md
+        estimated_minutes: 15
+        is_published: true
+      - title: "Outliers"
+        slug: outliers
+        file: s2-data-preprocessing/outliers.md
+        estimated_minutes: 15
         is_published: true
       - title: "Categorical Encoding"
         slug: categorical-encoding
@@ -150,12 +151,17 @@ modules:
         file: s2-data-preprocessing/scaling-and-normalization.md
         estimated_minutes: 25
         is_published: true
-      - title: "Feature Engineering and Selection"
-        slug: feature-engineering-and-selection
-        file: s2-data-preprocessing/feature-engineering-and-selection.md
-        estimated_minutes: 40
+      - title: "Feature Engineering"
+        slug: feature-engineering
+        file: s2-data-preprocessing/feature-engineering.md
+        estimated_minutes: 20
         is_published: true
-      - title: "Lab 2 — A Leak-Free Pipeline"
+      - title: "Feature Selection"
+        slug: feature-selection
+        file: s2-data-preprocessing/feature-selection.md
+        estimated_minutes: 20
+        is_published: true
+      - title: "Lab 2 — Preprocessing Notebook"
         slug: lab-2
         kind: exercise
         file: s2-data-preprocessing/lab-2.md

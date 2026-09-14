@@ -1,281 +1,113 @@
-# Lab 2 — A Leak-Free Pipeline
+# Lab 2 — Preprocessing Notebook
 
-Take the dataset you built in Lab 1.3 and turn it into a model-ready matrix
-through a single fitted object, with tests that prove nothing leaked.
+Five years of a region's daily electricity demand: 1,909 training days with the
+weather of the day (humidity, wind, ten temperature stations, a weather
+condition), an oil-price indicator and the target `electricity_demand`. The
+notebook is the complete, worked run of this session's checklist on that table:
+seven functions, one per step, each measured with the same `LinearRegression` on
+a 5-fold time-series split. Run it, explain every step, then change one step.
 
-**Time:** 45 minutes. **Deliverable:** a merged PR in your project repository,
-and one scored submission on the session's challenge (Part F).
+**Time:** 45 minutes. **Deliverable:** your copy of the notebook, run end to
+end, with a one-sentence text cell under each of the seven steps and one extra
+row in the final ladder that you added yourself.
 
-<!-- notes: 45 minutes. Part C is the one that runs over — tell them at minute
-20 that a naive target encoder plus a failing test is worth more than a correct
-encoder with no test. Circulate for the split: several will still split after
-imputing. -->
+<!-- notes: 45 minutes. Say at the start that the notebook is a solution, not a
+skeleton: the work is the sentences and the extra ladder row, not the code.
+Where they stall is section 3 — why some steps run before the split and others
+inside the fold; send them to the docstring of `evaluate_pipeline`. Part D runs
+over when they change the model: the model is fixed, one choice changes. -->
 
 ---
 
 ## Setup
 
-Same repository, new branch. Lab 1.3's Parquet file is the input.
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/data_science_practice/blob/main/website/public/modules/ms2a-machine-learning-practice/challenges/mlp-s2-case-study.ipynb)
 
-```text
-src/preprocess/
-    __init__.py
-    pipeline.py     <- build_pipeline() -> unfitted Pipeline
-    features.py     <- custom transformers
-tests/test_pipeline.py
-models/pipeline_<date>.joblib
-PREPROCESSING.md
-```
-
-`build_pipeline()` takes the column lists and returns an **unfitted** object.
-Nothing in `src/` may call `fit` on anything at import time.
+To run it locally, download the `.ipynb` from the same GitHub path and open it
+in Jupyter (pandas, scikit-learn, matplotlib, requests). The first code cell
+downloads the two CSV files.
 
 ---
 
-## Part A — Split first (4 min)
+## Part A — Explore the data (10 min)
 
-```python
-X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, random_state=0)
-```
+Run sections 1 and 2 (*Data collection*, *Data analysis*). The train file is
+1,909 rows by 16 columns, the test file 365 by 15: it has no target and the
+notebook never uses it again; the time-series split on the training rows replaces it.
 
-Before any imputation, encoding or scaling. If your rows are ordered in time,
-split by time instead — the test set is the tail, not a random sample. If one
-entity spans several rows, use `GroupShuffleSplit` on that entity.
+Before reading the notebook's own commentary, write down for each checklist
+item what the printed output shows: the `km/h` and `m/s` mixed inside
+`wind_speed`, the 90 duplicated dates, the 15% gaps in every temperature
+station, the two categorical columns (one unordered, one ordered), the humidity
+of 50,000 and the demand of −223,289. Then compare with the notebook's paragraph.
 
-Write the three column lists — numeric, categorical, dropped — as module
-constants. A column in none of them must raise, not disappear.
-
----
-
-## Part B — The ColumnTransformer (12 min)
-
-```python
-pre = ColumnTransformer([
-    ("num", num_pipe, NUM_COLS),
-    ("cat", cat_pipe, CAT_COLS),
-], remainder="drop")
-```
-
-Requirements:
-
-- numeric branch: imputer with `add_indicator=True`, then a scaler you justify
-- categorical branch: imputer, then `OneHotEncoder(handle_unknown="ignore")`
-- at least two engineered features from Session 2 — a ratio, a datetime
-  decomposition, a cyclical pair or a group aggregate
-- custom steps subclass `BaseEstimator, TransformerMixin` and live in
-  `features.py`; they may not read the target in `transform`
-
-`fit` is called exactly once in your training script, on `X_tr`.
+The rule: every number in this part is computed on the training rows. The test
+file is opened once, to check that its wind units match, and closed.
 
 ---
 
-## Part C — Target encoding, out of fold (8 min)
+## Part B — The evaluation protocol (8 min)
 
-Pick your highest-cardinality categorical column — `HIGH_CARD` below, another
-module constant — and encode it twice: the naive
-way, with a `groupby` mean over the whole training set, and with sklearn's
-`TargetEncoder(cv=5)` inside the pipeline.
+Read section 3 and the code of `evaluate_pipeline` until you can say, without
+looking, which steps go in `steps_before` and which in `steps_in_fold`, and why.
 
-```python
-naive_map = y_tr.groupby(X_tr[HIGH_CARD]).mean()      # the target lives in y_tr,
-naive_tr  = X_tr[HIGH_CARD].map(naive_map).fillna(y_tr.mean())   # not in X_tr
-naive_te  = X_te[HIGH_CARD].map(naive_map).fillna(y_tr.mean())
-```
+- A step with **no learned parameter** (a unit conversion, a fixed category
+  list, a rule on impossible values, a date feature) runs once, before the split.
+- A step that **learns a statistic** (the medians that fill the gaps) runs inside
+  each fold, fitted on that fold's training rows and applied to its validation
+  rows.
 
-Score each encoding **on `X_te`** — not with `cross_val_score` on the
-pre-computed column. A column that was already fitted on all of `X_tr` is inside
-every fold, so cross-validation cannot see the leak that produced it and will
-rank the naive encoder *higher*.
-
-Seeing that inversion is the point. It is the same mistake
-*The Preprocessing Contract* warns about, arriving one lesson later in your own
-code, and it is the whole reason the encoder has to live inside the Pipeline
-rather than in a column you computed first.
-
-Report in the PR: each encoding's correlation with the target, its
-cross-validated score, and its held-out score on `X_te`. The gap between the
-last two is the deliverable.
+The split is `TimeSeriesSplit(n_splits=5)` on the rows in date order: each fold
+validates on days that come after the days it trained on. A random split would
+let the model see the day after the one it predicts.
 
 ---
 
-## Part D — Tests (8 min)
+## Part C — The seven steps (20 min)
 
-In `tests/test_pipeline.py`, on a small committed fixture:
+Run section 4, step 0 to step 7, and watch the ladder grow. Under each step add
+a text cell of one sentence in your own words: what the data showed, what the
+notebook chose, what the validation MSE did.
 
-```python
-def test_transformer_uses_only_training_statistics():
-    """Fitting on train, then transforming one held-out row, yields the value
-    predicted from the train median — not from the row itself."""
+Steps 1 to 4 do not move the score. The single −223,289 demand sits in one
+validation fold and its square is worth more than every other row together;
+nothing is measurable until step 5 removes it (31,502,301.8 to 1,103.1). The
+re-measured ladder just after step 5 shows what each step was really worth.
 
-def test_unseen_category_does_not_crash_inference():
-    """A category absent from train transforms to an all-zero block."""
-
-def test_target_encoding_is_out_of_fold():
-    """For a category appearing once, the out-of-fold code differs from the
-    naive group mean."""
-
-def test_fitted_pipeline_round_trips():
-    """joblib.load(joblib.dump(pipe)) transforms a row identically."""
-```
-
-The third test is the one that matters. Make it fail against the naive encoder
-before you make it pass.
+Step 7 barely changes the MSE (331.4 to 329.9) but changes the model: with ten
+stations the temperature coefficient is split ten ways; with one column it is
+readable. Selection is about a model you can explain, not the score.
 
 ---
 
-## Part E — Serialise and document (4 min)
+## Part D — Change one step and measure (7 min)
 
-```python
-joblib.dump(pipe, f"models/pipeline_{date.today()}.joblib")
-```
+Copy one of the seven functions, change **one** choice, and add the result to
+the ladder with `record("8 my variant: ...", res)`. Some options, easiest first:
 
-Dump the **fitted** pipeline, dated, and gitignore `models/`. In half a page,
-`PREPROCESSING.md` records:
+- step 3: fill a missing station with the column median instead of the same
+  day's other stations
+- step 6: move the degree-day thresholds from 18 / 24 °C to 15 / 22 °C
+- step 3: compute the medians on the validation rows too, and watch the
+  validation MSE *improve*: that is the leak of *The Preprocessing Contract*
+  made visible
 
-- every column: kept, dropped or engineered, and why
-- the imputation strategy per column type and the missing rate before it
-- the encoding per categorical column, with its cardinality
-- rows removed as duplicates or impossible values, with counts
-- the sklearn and pandas versions the artefact was produced with
-
----
-
-## Part F — Put it on the board (5 min)
-
-The session's challenge is **Critical Care Survival** (id `192`): predict
-whether a seriously ill hospital patient is alive or dead 60 days after study
-entry, from the clinical data recorded on day 3 of the admission. 6,373 training
-and 2,732 test patients from a five-hospital critical-care cohort, 31 columns:
-five sites with their own units and spellings, ages of 999, a sodium of 1,370, a
-glucose column that pandas reads as text, and a billing column that is empty in
-the test file.
-
-**The model is fixed, so this is Parts A–E graded on real clinical data.** The
-scorer always fits scikit-learn's default `LogisticRegression()` on the numbers
-you send and ranks the test rows by ROC AUC. You do not submit predictions: you
-submit the **matrix your pipeline produces**, and every point of AUC comes from
-the preprocessing. Fit `build_pipeline()` on the train rows, `transform` train
-and test with the same fitted object, and write `submission.csv.gz`:
-
-- an `id` column and **1 to 300** numeric, finite feature columns;
-- **every** test id, and the train ids — all of them, or any subset of at least
-  **4,000** (dropping rows you do not trust is a preprocessing decision too);
-- no target column: the scorer has its own labels.
-
-```bash
-uv pip install mlarena-sdk scikit-learn==1.8.0   # the package is mlarena-sdk; it imports as mlarena
-```
-
-```python
-import mlarena
-
-client = mlarena.connect(api_key="mlk_user_...")   # Profile -> API Keys
-client.download_dataset(192, dest_dir="data/raw")  # train, test, EXPERTISE.pdf, DICTIONARY.pdf
-submission.to_csv("submission.csv.gz", index=False) # the file must have exactly this name
-client.submit(challenge_id=192, files=["submission.csv.gz"])
-```
-
-Read **`EXPERTISE.pdf`** before you choose an imputation or an encoding. It is
-the clinical brief: which value a lab takes when it was not ordered (the cohort
-median is not a normal value), which absences say something about the patient,
-which sites chart creatinine in µmol/L and temperature in °F, which quantities a
-clinician computes at the bedside from these very columns, and why a number
-billed at discharge cannot be a feature. The starter notebook linked from the
-challenge page does the download-to-submit plumbing, plots the data, and gives
-you a 3-fold cross-validation helper with the scorer's exact model; the
-decisions in between are your pipeline.
-
-**The numbers.** Higher is better; 0.500 is chance. Same `LogisticRegression()`,
-same split, only the features change:
-
-| Features | ROC AUC |
-|---|---|
-| a constant column ("always alive") | 0.500 |
-| numeric columns as read, empty cells set to 0 (does not converge) | 0.757 |
-| **benchmark — the same columns, median-imputed and standardised** | **0.850** |
-| + repaired values, units harmonised per site, the post-outcome column dropped | 0.876 |
-| + labs imputed as the investigators did, absences kept as information | 0.900 |
-| + categories encoded as categories, orders as orders | 0.916 |
-| + the bedside formulas | 0.937 |
-
-**The bar is ROC AUC ≥ 0.905**, above the benchmark on purpose: a median imputer
-and a scaler do not reach it, and neither does cleaning alone; the documented
-clinical steps do. With 2,732 test rows the sampling noise is about ±0.006, so a
-gap of 0.02 is real.
-
-Two warnings can come back with your score. **"lbfgs did not converge"** means
-columns on very different scales — the scaler in your numeric branch. **"train
-AUC is … above test AUC"** means a feature carries the target on the train rows:
-the naive target encoder of Part C, or a column that exists only for the
-training patients. The benchmark itself trips this warning; find out why. A
-rejected file (a NaN, a missing test id, a text column) names the first offender
-and still uses one of your submissions of the day, so run the starter's checks
-first.
-
-Challenges 191 (DPE energy label) and 176 (allergy IgE profiles) stay attached
-to this module as extra practice on the same skills.
-
----
-
-## Pull request (4 min)
-
-The description states:
-
-- how you split, and why that split and not a random one
-- the naive versus out-of-fold target-encoding numbers from Part C
-- one leak you found in your own code while writing the tests
-- the shape of the matrix before and after the pipeline
-
----
-
-## Grading
-
-| Criterion | Weight |
-|---|---|
-| Split happens before any fitted transformation | 15% |
-| `ColumnTransformer` with both branches, `remainder="drop"` | 20% |
-| Two engineered features, implemented as transformers | 10% |
-| Out-of-fold target encoding, with the naive comparison reported | 15% |
-| Four tests passing, incl. the leak test and the unseen category | 20% |
-| Fitted pipeline serialised + `PREPROCESSING.md` complete | 10% |
-| A scored submission on challenge 192, ROC AUC ≥ 0.905 | 10% |
-
----
-
-## Automatic deductions
-
-- any `fit` or `fit_transform` called on test data
-- a statistic computed over the full dataframe before the split
-- `remainder="passthrough"` with unlisted columns
-- an imputation or encoding done in a notebook and not in `pipeline.py`
-- `errors="coerce"` or a bare `except` in the cleaning code
-- the serialised artefact committed to git
-
----
-
-## Carry it forward
-
-Lab 3 fits models on this matrix and compares them honestly. Every score it
-produces is exactly as trustworthy as the object you built today.
-
-> If you cannot point at the line that fits a transformer, you do not know
-> whether your model works.
+The model stays `LinearRegression()` and the split stays the five time-series
+folds, or the row is not comparable. State the difference to 329.9 in one sentence.
 
 ---
 
 ## Did you validate this session?
 
-- [ ] `uv sync && uv run pytest` is green on a fresh clone
-- [ ] Part A: `grep -rn "\.fit(\|fit_transform(" src/` shows no call whose argument is `X_te`
-- [ ] Part B: `build_pipeline().transform(X_tr)` raises `NotFittedError` — the object it returns is unfitted
-- [ ] Part B: both branches present, `remainder="drop"` set, and I can account for every column of `pre.fit_transform(X_tr).shape`
-- [ ] Part C: the PR reports three numbers per encoding — correlation, cross-validated score, held-out score on `X_te`
-- [ ] Part D: `uv run pytest -q` reports 4 passed, and `test_target_encoding_is_out_of_fold` goes red against the naive column
-- [ ] Part E: `models/pipeline_<date>.joblib` exists, is gitignored, and reloads to transform one row identically
-- [ ] Part E: `PREPROCESSING.md` names every column as kept, dropped or engineered
-- [ ] Part F: my `submission.csv.gz`, built by my fitted pipeline, is on the leaderboard of Critical Care Survival (#192)
-- [ ] Part F: my score reaches the bar: **ROC AUC ≥ 0.905**
+- [ ] Section 1 prints `train: (1909, 16)   test: (365, 15)`
+- [ ] Section 2 prints `duplicated rows: 90` and lists two humidity rows at 50,000
+- [ ] Part B: for each of the seven functions I can say whether it runs before the split or inside the fold, and my answer matches the `steps_before` / `steps_in_fold` lists of step 7
+- [ ] Part C: the ladder printed after step 7 has 8 rows; step 0 reads 31,502,301.8 and step 7 reads 329.9 with 20 features
+- [ ] Part C: each of the seven steps has my one-sentence text cell under it
+- [ ] Part D: re-running the section 5 cell prints a ninth row named after my change, with its own validation MSE, and one sentence compares it with 329.9
 
-If the last two are not ticked you have not finished the lab, however good the
-code is. Submissions to #192 are scored within minutes, so there is no excuse for
-leaving the last box empty at the end of the session.
+The same seven steps, fitted on the training rows only, are what the module's
+challenge scores on real clinical data.
+
+- [ ] My submission is on the leaderboard of Critical Care Survival (#192)
+- [ ] My score beats the bar: **AUC ≥ 0.905**
