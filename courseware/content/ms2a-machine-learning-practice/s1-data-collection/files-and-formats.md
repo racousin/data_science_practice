@@ -105,6 +105,8 @@ Do not "fix" this with `errors="ignore"`. That deletes the characters and you
 lose the information silently — exactly the failure mode this course argues
 against.
 
+![encoding.png](assets/collect/encoding.png)
+
 ---
 
 ## Excel — data with formatting attached
@@ -174,14 +176,6 @@ back as a `category`.
 
 ---
 
-## The rule
-
-> CSV to exchange with humans. Parquet for everything your pipeline touches.
-
-The first thing your ingestion step should do is convert. From then on, reads are
-five times faster and the schema stops being a guess.
-
----
 
 ## JSON — nested and self-describing
 
@@ -300,53 +294,3 @@ next to it. Never put images in a dataframe cell.
 | Institutional / government feeds | XML |
 | Someone sent a spreadsheet | XLSX → convert immediately |
 | Media | files on disk + a manifest |
-
----
-
-## Verify at the boundary
-
-```python
-df = pd.read_parquet("data.parquet")
-assert df["user_id"].dtype == object
-assert df["ts"].is_monotonic_increasing
-assert df["amount"].notna().all()
-```
-
-Three assertions at load time cost thirty seconds to write and save the
-afternoon you would otherwise spend explaining a negative revenue figure.
-
-This is the fail-fast principle applied to data: crash at the boundary, not deep
-in a training loop at epoch 40.
-
----
-
-## Check yourself
-
-1. Run this. You should get exactly the output shown.
-
-   ```python
-   import io, pandas as pd
-
-   csv = "zipcode,city\n07001,Bobigny\n"
-   print(pd.read_csv(io.StringIO(csv))["zipcode"][0])                       # -> 7001
-   print(pd.read_csv(io.StringIO(csv),
-                     dtype={"zipcode": str})["zipcode"][0])                 # -> 07001
-   ```
-
-   **Answer.** CSV carries no type information, so pandas guessed `int` and ate
-   the leading zero. `dtype=` is the argument that prevents it.
-
-2. You write a dataframe with a `datetime` column to CSV and to Parquet, and read
-   both back. Which one gives you a `datetime` again, and what is the rule the
-   lesson draws from that?
-
-   **Answer.** Parquet — it stores the schema, so a `datetime` written is a
-   `datetime` read; the CSV round-trip returns a string. The rule: CSV to
-   exchange with humans, Parquet for everything your pipeline touches.
-
-3. A CSV exported from Excel raises `UnicodeDecodeError`. Why is
-   `errors="ignore"` the wrong repair?
-
-   **Answer.** It deletes the characters it cannot decode, so the information is
-   lost silently. Find the real encoding instead — a French Windows export is
-   very often `cp1252`/`latin1`, not UTF-8.

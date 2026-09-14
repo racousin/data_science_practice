@@ -1,6 +1,6 @@
 # Lab 2 — A Leak-Free Pipeline
 
-Take the dataset you built in Lab 1 and turn it into a model-ready matrix
+Take the dataset you built in Lab 1.3 and turn it into a model-ready matrix
 through a single fitted object, with tests that prove nothing leaked.
 
 **Time:** 45 minutes. **Deliverable:** a merged PR in your project repository,
@@ -15,7 +15,7 @@ imputing. -->
 
 ## Setup
 
-Same repository, new branch. Lab 1's Parquet file is the input.
+Same repository, new branch. Lab 1.3's Parquet file is the input.
 
 ```text
 src/preprocess/

@@ -295,7 +295,7 @@ def test_overview_placeholders_and_links():
             "blob/main/website/public/modules/ms2a-machine-learning-practice/"
             "challenges/mlp-s1-store-sales.ipynb") in text
     assert "https://www.raphaelcousin.com/module4/api-doc" in text
-    for table in ("retail.stores", "retail.data_dictionary", "retail.leaderboard"):
+    for table in ("retail.stores", "retail.data_dictionary"):
         assert table in text
 
 

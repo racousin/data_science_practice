@@ -32,6 +32,7 @@ permuted_mnist/
 poetry.lock
 pyproject.toml
 notebooks/
+!courseware/tools/notebooks/
 scripts/aws.sh
 results.xml
 *.json

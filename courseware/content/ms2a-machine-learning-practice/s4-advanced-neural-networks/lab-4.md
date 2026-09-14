@@ -36,7 +36,7 @@ uv add torch tensorboard
 committed event files.
 
 Lab 2 persisted a fitted `Pipeline`, not a transformed matrix — you apply it to
-Lab 1's Parquet here. Its Lab 3 gradient-boosting score is your baseline;
+Lab 1.3's Parquet here. Its Lab 3 gradient-boosting score is your baseline;
 beating it is not required, reporting the comparison honestly is.
 
 ---
@@ -44,7 +44,7 @@ beating it is not required, reporting the comparison honestly is.
 ## Part A — Dataset and target (5 min)
 
 Lab 2's artefact is `models/pipeline_<date>.joblib`, a **fitted `Pipeline`** —
-not a matrix. Load it, apply it to Lab 1's Parquet, and wire a
+not a matrix. Load it, apply it to Lab 1.3's Parquet, and wire a
 `torch.utils.data.Dataset` over the result.
 
 ```python

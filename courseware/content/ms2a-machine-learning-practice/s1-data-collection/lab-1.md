@@ -1,4 +1,4 @@
-# Lab 1 — Build a Dataset
+# Lab 1.3 — Build a Dataset
 
 Assemble a small dataset from **two different source types**, with the
 provenance, the checks and the documentation that make it usable by someone else.
@@ -9,9 +9,10 @@ higher (Part F).
 
 <!-- notes: They work in their project repository — this is the first commit
 of the project, not a throwaway. Circulate: the "what is one row" question is
-where most of them are stuck. Paste the "Today's sandbox" block (make info in
-sql_api_sandbox writes LAB.local.md) into this page before the session: Part F
-needs DATABASE_URL and WRITER_URL. -->
+where most of them are stuck. Part F's optional database section needs
+DATABASE_URL, which the *Access — today's sandbox* section of Lab 1.1 hands out
+(make info in sql_api_sandbox writes LAB.local.md): refresh it there before
+the session. -->
 
 ---
 
@@ -137,14 +138,14 @@ The second is the one that matters: a check that never fails is not a check.
 
 A retail chain runs five stores. **Neighborhood_Market** did not record its
 sales: predict `quantity_sold` for its 409 items from the four other stores,
-whose data is spread over four sources.
+whose data is spread over three sources, and a fourth to go further.
 
 | Source | What it provides |
 |---|---|
 | files: CSV, Excel, JSON | item features and `quantity_sold` |
 | an API behind a password | `unit_cost` |
 | a page rendered by JavaScript | `customer_score`, `total_reviews` |
-| the course PostgreSQL database | `weekly_footfall` of each store |
+| going further: the course PostgreSQL database | `weekly_footfall` of each store |
 
 **Challenge:** <https://ml-arena.com/viewchallenge/190>
 
@@ -152,8 +153,9 @@ whose data is spread over four sources.
 
 <!-- notes: The same four source types as the lessons, on one prediction task.
 The first push comes before any source work: it proves the key, the download
-and the submission format in the first ten minutes. Most students will not
-reach the database section in the lab; they finish after the session. -->
+and the submission format in the first ten minutes. The three sources clear
+the bar; the database section is optional, and most students who try it
+finish after the session. -->
 
 ---
 
@@ -161,10 +163,8 @@ reach the database section in the lab; they finish after the session. -->
 
 1. Open the notebook with the Colab badge.
 2. In Colab's *Secrets* panel, add `MLARENA_API_KEY` (ML-Arena, Profile →
-   API Keys), and `DATABASE_URL` and `WRITER_URL` from the *Today's sandbox*
-   section of this page. Never paste a value into a cell.
-3. Write your name as `STUDENT` in the Setup cell.
-4. Run *Your first push*. It downloads the five files, predicts CityMart's
+   API Keys). Never paste its value into a cell.
+3. Run *Your first push*. It downloads the five files, predicts CityMart's
    mean for every item, submits `submission.csv` and prints its score.
 
 The constant does not clear the bar, and it is not meant to. It proves the
@@ -182,7 +182,6 @@ baseline model, so each source's effect is visible.
   per store. Look at the raw lines before calling pandas.
 - **API:** request the password at run time, then the prices.
 - **Scraping:** headless Chrome renders the page; pick the table by its headers.
-- **Database:** join `weekly_footfall` from `retail.stores` on `store_name`.
 
 Then predict Neighborhood_Market, write `submission.csv` and submit it.
 
@@ -191,22 +190,14 @@ MAE of at most 20 units per item.
 
 ---
 
-## Part F — Bonus: the database board
+## Part F — Going further: the database
 
-The course database scores predictions too:
-
-```python
-submission.to_sql(f"{STUDENT}_predictions", writer, schema="playground",
-                  if_exists="replace", index=False)
-pd.read_sql("SELECT * FROM retail.leaderboard ORDER BY mae", engine)
-```
-
-`writer` connects with `WRITER_URL`, which can create tables in `playground`
-only; `engine` with the read-only `DATABASE_URL`. Your row appears 10 to 20
-seconds after the write. This board scores only the even-numbered items, so
-its MAE differs from your challenge score, and only the challenge counts.
-
-The playground is shared by the class: drop your table when you are done.
+The notebook's last section adds a fourth source with SQL: `weekly_footfall`
+per store, from `retail.stores` in the course PostgreSQL database. Add
+`DATABASE_URL`, from the *Access — today's sandbox* section of Lab 1.1, as a
+second Colab secret. Join the column on `store_name`, to the training stores
+and to Neighborhood_Market, then submit again and compare the two scores on
+the leaderboard.
 
 ---
 

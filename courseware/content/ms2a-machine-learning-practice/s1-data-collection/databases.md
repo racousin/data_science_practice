@@ -95,20 +95,6 @@ Filter, join and aggregate there.
 
 ---
 
-## Parameters, not f-strings
-
-```python
-from sqlalchemy import text
-
-q = text("SELECT * FROM orders WHERE country = :c AND amount > :a")
-df = pd.read_sql(q, engine, params={"c": "FR", "a": 100})
-```
-
-String interpolation into SQL is an injection bug even when the input "comes from
-a config file". It also breaks on any value containing a quote.
-
----
-
 ## Aggregate server-side
 
 ```sql
@@ -202,20 +188,6 @@ enforced it.
 
 ---
 
-## Three NoSQL families
-
-| Family | Stores | Example | Typical use |
-|---|---|---|---|
-| Document | JSON-like documents, nested | MongoDB | user profiles, product catalogues |
-| Key-value | a value per key, often in memory | Redis | caches, sessions, counters |
-| Graph | nodes and the edges between them | Neo4j | social networks, recommendations |
-
-The family decides the query: a key-value store answers "give me key *k*" and
-nothing else, a graph database answers "who is two hops from this node", a
-document store answers queries on the fields inside each document.
-
----
-
 ## Querying documents
 
 ```python
@@ -259,57 +231,9 @@ stores = pd.read_sql("SELECT * FROM retail.stores", engine)
 print(stores[["store_name", "city", "weekly_footfall"]])
 ```
 
-Five rows, one per store of the Lab 1 challenge. `DATABASE_URL` is in the
-*Today's sandbox* section the teacher posts on the Lab 1 page: put it in Colab's
+Five rows, one per store of the Lab 1.3 challenge. `DATABASE_URL` is in the
+*Access — today's sandbox* section of the Lab 1.1 page: put it in Colab's
 *Secrets* panel or a gitignored `.env`, never in the code.
 
 `retail.data_dictionary` describes every column of that challenge and the
 source it comes from: read it before joining anything.
-
----
-
-## Checklist
-
-- credentials from the environment, never in the file
-- filter, join and aggregate in SQL
-- parameters, never f-strings
-- assert the row count after every join
-- write the result to Parquet once, then work from that
-
----
-
-## Check yourself
-
-1. Run this. You should get exactly the output shown.
-
-   ```python
-   import sqlite3, pandas as pd
-   con = sqlite3.connect(":memory:")
-   con.execute("CREATE TABLE orders (customer_id, amount, created_at)")
-   con.executemany("INSERT INTO orders VALUES (?,?,?)", [
-       ("c1", 10.0, "2025-03-01"), ("c1", 20.0, "2025-04-01"),
-       ("c2", 45.0, "2025-05-01"), ("c3",  5.0, "2024-12-01")])
-   q = """SELECT customer_id, COUNT(*) AS n_orders, SUM(amount) AS total
-          FROM orders WHERE created_at >= '2025-01-01'
-          GROUP BY customer_id"""
-   print(pd.read_sql(q, con).to_string(index=False))
-   # customer_id  n_orders  total
-   #          c1         2   30.0
-   #          c2         1   45.0
-   ```
-
-   **Answer.** Four order rows went in, two customer rows came out: the filter
-   and the aggregation both ran in the database. For a grain of "one customer",
-   that is the dataframe you wanted.
-
-2. Why `os.environ["DATABASE_URL"]` and never
-   `os.getenv("DATABASE_URL", "postgresql://localhost/db")`?
-
-   **Answer.** The default silently connects you to an empty local database, and
-   you report a missing table. `os.environ[...]` raises `KeyError` instead.
-
-3. After a `JOIN` on `customers`, your order table has 12% more rows than before.
-   What happened, and which single line would have caught it?
-
-   **Answer.** `customers.id` is not unique, so the join multiplied rows.
-   `assert len(df) == n_orders_before_join`, after every join, every time.

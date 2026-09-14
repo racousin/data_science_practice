@@ -135,7 +135,7 @@
           "title": "Tracks"
         },
         "s1-data-collection/apis": {
-          "body": "eb03ade9f4a3f37f6f2ee7e28e1f508767b859a68e6b504a8affb351a8e8986a",
+          "body": "527d67cf03d2bdd266a4d820d96dd0a29f46909be7f7731bb2387fbb0eca7241",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
@@ -149,14 +149,14 @@
           "title": "Collection Strategy and Data Quality"
         },
         "s1-data-collection/data-and-its-shapes": {
-          "body": "b80bd44201e6ef4e8a9c5cf89ac044d00169ee53f568e18ca1f15461b5ecd371",
+          "body": "efedc12e5678660f8ad8f562800d168abcb449ca023c90b30ed4d4bba9a9b93c",
           "estimated_minutes": 20,
           "gated": false,
           "is_published": true,
           "title": "Data and Its Shapes"
         },
         "s1-data-collection/databases": {
-          "body": "d19fb06823beba5ecf1a28a9fd1a6c210b8e97e1892f2e14c193ce9612dbf6ef",
+          "body": "f99ce50c028b6e431c0a7a0925b7a864a7e4f27a671b2f3982499c55b0db5c94",
           "estimated_minutes": 25,
           "gated": false,
           "is_published": true,
@@ -170,14 +170,14 @@
           "title": "Exercise \u2014 A Client That Survives the API"
         },
         "s1-data-collection/exercise-sql-sandbox": {
-          "body": "6fd7cb891f65b8db40520080a15c9c230362115f1357e8c2e7de56eb7ea5516f",
+          "body": "c2e680033d7bb1b12a11ae5ebbbe773fb3ef030d6949b41693478b4796ae79bb",
           "estimated_minutes": 45,
           "gated": false,
           "is_published": true,
           "title": "Exercise \u2014 Query a Shared Database"
         },
         "s1-data-collection/files-and-formats": {
-          "body": "f120f3741e48a31140504afc611ac2c8093ebfa2e0d51fa78ab5c06a3a5fa585",
+          "body": "9ba6bbe180d546e420bd6185c79b17e1157bca2b901de135e6106e0a9f4e516f",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
