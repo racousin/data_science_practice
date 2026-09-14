@@ -1,4 +1,4 @@
-# MS2A - Machine Learning Practice — 30h (10 × 3h)
+# MS2A - Machine Learning Practice — 33h (11 × 3h)
 #
 # Single source of truth for this module. Drives two outputs:
 #   * PPTX decks      -> tools/build_slides.py    (one deck per module below)
@@ -18,15 +18,16 @@ course:
   start_date: "2026-09-14"
   end_date: "2026-11-27"
   description: |
-    A 30-hour applied machine learning course in ten 3-hour sessions, taken
+    A 33-hour applied machine learning course in eleven 3-hour sessions, taken
     after *Python AI Engineering*. It walks the full arc of a modern ML system:
     collecting and preparing data, tabular models, deep networks in PyTorch,
-    computer vision, natural language processing and large language models, and
-    reinforcement learning.
+    computer vision, natural language processing and large language models,
+    reinforcement learning, and deploying a trained model as a Docker image
+    served by an API.
 
     Every session is half lecture, half lab. Half the grade is a project
     submitted to ML-Arena; the other half is continuous assessment across the
-    ten labs. You are expected to arrive with the engineering floor from the
+    eleven labs. You are expected to arrive with the engineering floor from the
     12-hour module: git, a packaged environment, tests, and a coding agent you
     know how to supervise.
 
@@ -508,6 +509,75 @@ modules:
         kind: exercise
         file: s10-reinforcement-learning-2/lab-10.md
         estimated_minutes: 45
+        is_published: true
+
+  # --------------------------------------------------------------- session 11
+  #
+  # Added 2026-09-14. Taught to a room that has never used an API or Docker:
+  # why a model leaves the notebook (model file, API, environment), Docker's
+  # four nouns, install and the everyday commands, a Docker Compose workshop on
+  # CVAT (the annotation platform, 18 containers from one command), HTTP, a
+  # FastAPI model server, and the Dockerfile that packs it. The lab ships a
+  # penguin classifier as an image. Every command and output was run on
+  # 2026-09-14 (docker 29.4.0, fastapi 0.141.1, scikit-learn 1.9.1, CVAT
+  # v2.75.0); figures come from tools/figures/s11_docker_and_deployment.py.
+  #
+  # No competition is attached: ML-Arena does not accept image submissions yet.
+  # Lab 11 Part E states the contract that submission is to be built against
+  # (linux/amd64, 0.0.0.0:8000, GET /health, POST /predict -> {"species": ...}).
+  # Attach the penguins challenge here once it exists, and update Part E.
+  - title: "Session 11 — Docker and Model Deployment"
+    slug: s11-docker-and-deployment
+    icon: container
+    visibility: unlisted
+    summary: >
+      Take a trained model out of the notebook: save it, serve it behind an
+      HTTP API with FastAPI, and pack the API into a Docker image that runs
+      the same on any machine. Includes a Docker Compose workshop that starts
+      CVAT, a complete image-annotation platform, with one command. Before the
+      session: install Docker Desktop and check that `docker run hello-world`
+      works.
+    lessons:
+      - title: "From a Notebook to a Service"
+        slug: why-deploy
+        file: s11-docker-and-deployment/why-deploy.md
+        estimated_minutes: 12
+        is_published: true
+      - title: "Docker: Images, Containers, Registries"
+        slug: docker-concepts
+        file: s11-docker-and-deployment/docker-concepts.md
+        estimated_minutes: 12
+        is_published: true
+      - title: "Installing and Running Docker"
+        slug: docker-install-and-run
+        file: s11-docker-and-deployment/docker-install-and-run.md
+        estimated_minutes: 14
+        is_published: true
+      - title: "Workshop — Label Images with CVAT and Docker Compose"
+        slug: docker-compose-cvat
+        file: s11-docker-and-deployment/docker-compose-cvat.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "APIs and HTTP"
+        slug: apis-and-http
+        file: s11-docker-and-deployment/apis-and-http.md
+        estimated_minutes: 12
+        is_published: true
+      - title: "Serving a Model with FastAPI"
+        slug: serving-a-model-with-fastapi
+        file: s11-docker-and-deployment/serving-a-model-with-fastapi.md
+        estimated_minutes: 20
+        is_published: true
+      - title: "Writing a Dockerfile"
+        slug: writing-a-dockerfile
+        file: s11-docker-and-deployment/writing-a-dockerfile.md
+        estimated_minutes: 15
+        is_published: true
+      - title: "Lab 11 — Ship a Penguin Classifier"
+        slug: lab-11
+        kind: exercise
+        file: s11-docker-and-deployment/lab-11.md
+        estimated_minutes: 65
         is_published: true
 
   # ----------------------------------------------------------------- project

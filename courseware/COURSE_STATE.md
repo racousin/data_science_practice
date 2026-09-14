@@ -25,8 +25,8 @@ Companion documents:
 |---|---|---|
 | Name | MS2A - AI Engineering | MS2A - Machine Learning Practice |
 | Slug | `python-ai-engineering` | `ms2a-machine-learning-practice` |
-| Volume | 12h — 4 × 3h, one week | 30h — 10 × 3h, ten weeks |
-| Modules / lessons | 4 / 45 | 12 / 74 |
+| Volume | 12h — 4 × 3h, one week | 33h — 11 × 3h (Session 11 added 2026-09-14, §1j) |
+| Modules / lessons | 4 / 45 | 13 / 82 |
 | Competitions attached | 9 (65, 181-188) | 17 |
 | Dates | **2026-09-07 → 2026-09-11** | **2026-09-14 → 2026-11-27** |
 | Join code | `GR1WFC63` | `N1DX2QA4` |
@@ -659,6 +659,61 @@ are its entries in the warm-up tests. Its closing still points at the retired
 *California Housing* challenge. Delete the notebook again only together with the
 lesson.
 Session 3 is frozen and was not touched.
+
+---
+
+### 1j. Course 15 gains Session 11 — Docker and Model Deployment, 2026-09-14
+
+A new module `s11-docker-and-deployment` (#35, lessons **192-199**) sits
+between Session 10 and Project: why a model leaves the notebook (model file,
+API, environment), Docker's four nouns, install and the everyday commands, a
+Docker Compose workshop on **CVAT**, HTTP, a FastAPI model server, and the
+Dockerfile that packs it. **Lab 11** ships a penguin classifier (Palmer
+penguins, 4 numeric features) as an image pushed to Docker Hub and run by a
+classmate. 8 lessons, 180 authored minutes, 106 slides, 0 overflowing, 0
+over-wide code lines.
+
+Everything was executed on 2026-09-14 on an Apple M4 (OrbStack, docker
+29.4.0): the Iris demo (fastapi 0.141.1, uvicorn 0.52.4, scikit-learn 1.9.1,
+python:3.13-slim; image 603 MB on disk / 131 MB compressed, first build 28.5 s,
+cached rebuild 2.8 s), every quoted error (`port is already allocated`,
+`Empty reply from server` for a 127.0.0.1 bind, `InconsistentVersionWarning`,
+numpy `int64` → 500, `Could not import module "main"`), and CVAT v2.75.0 end to
+end (1.44 GB download, 5.74 GB of images, 18 containers, 4.0 GiB idle RAM,
+`up -d` 2 min 03 s cold + 39 s to login; boxes drawn in the UI; COCO 1.0 and
+YOLO 1.1 exports; `stop` / `down` keep data, `down -v` deletes it). Lab 11's
+reference: majority baseline 0.4419, StandardScaler + LogisticRegression
+0.9884 (85/86), correct on the three reference birds from its linux/amd64
+image. Both reference projects, and the screenshot script, are in
+`labs/s11-docker-and-deployment/` (gitignored, like the other labs).
+
+Figures: `tools/figures/s11_docker_and_deployment.py` (8 diagrams); the 10
+screenshots (FastAPI `/docs` via Playwright, CVAT via Playwright) are stills
+listed in that script's docstring.
+
+**No competition is attached: ML-Arena does not accept image submissions
+yet.** Lab 11 Part E says so and states the contract the feature is to be built
+against: `linux/amd64`; server on `0.0.0.0:8000`; `GET /health` → 200 within
+60 s; `POST /predict` with the four features → `{"species": ...}`; no network
+at run time; scored by accuracy. Open for the platform design: all 344 Palmer
+penguins are in the public CSV the lab trains from, so a hidden test set needs
+other data. When the feature lands: attach the challenge in `course.yaml`,
+rewrite Part E, and turn the last checklist row into the usual two.
+
+Published with `make publish MODULE=s11-docker-and-deployment`, then
+`MODULE=s10-reinforcement-learning-2 FORCE=1` and `MODULE=mlp-project FORCE=1`
+for the two consequential edits (Lab 10 no longer says "the last lab"; the
+brief says "eleven labs"), whose only drift was those edits (`check-sync
+DIFF=1`). The course description now says 33 hours and eleven sessions.
+
+**Publisher gotcha found:** a `MODULE=` run links a *new* module near the top
+of the course (it passes its position within the filtered list, 0) and skips
+`reorder_modules`. Fixed by hand with one `reorder_modules` call to the
+manifest order. Any future new module published with `MODULE=` needs the same.
+
+Verified: `check-sync` 0 differences on the three modules; the student token
+sees the module in place with 8 lessons; all 18 image references return 200;
+`student_walk.py check` reports nothing beyond the known speaker-notes item.
 
 ---
 

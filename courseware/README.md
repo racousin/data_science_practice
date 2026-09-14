@@ -20,7 +20,7 @@ competition ids its modules link to, so the attachment is declared in the same
 manifest as everything else.
 
 **Status:** both modules are written — `python-ai-engineering` (12h) and
-`ms2a-machine-learning-practice` (30h). See `../CURRICULUM_PLAN.md` for the restructure that
+`ms2a-machine-learning-practice` (33h). See `../CURRICULUM_PLAN.md` for the restructure that
 produced them.
 
 ---
@@ -39,10 +39,10 @@ courseware/
 │   │   ├── s3-data-science-nutshell/
 │   │   ├── s4-pytorch-nutshell/      # self-study lessons live in the session
 │   │   └── .mlarena-state.json       #   they belong to, marked `in_deck: false`
-│   └── ms2a-machine-learning-practice/               # 30h — 10 sessions
+│   └── ms2a-machine-learning-practice/               # 33h — 11 sessions
 │       ├── course.yaml
-│       ├── assets/{collect,tabular,nn,cv,nlp,rl}/
-│       ├── s1-data-collection/ … s10-reinforcement-learning-2/
+│       ├── assets/{collect,tabular,nn,cv,nlp,rl,deploy}/
+│       ├── s1-data-collection/ … s11-docker-and-deployment/
 │       ├── project/                  # the ML-Arena project brief (50% of the grade)
 │       ├── reference/
 │       └── .mlarena-state.json

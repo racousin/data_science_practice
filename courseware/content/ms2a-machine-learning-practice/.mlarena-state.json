@@ -15,6 +15,8 @@
       "s1-data-collection/collection-strategy-and-quality": 62,
       "s1-data-collection/data-and-its-shapes": 57,
       "s1-data-collection/databases": 59,
+      "s1-data-collection/exercise-api-sandbox": 201,
+      "s1-data-collection/exercise-sql-sandbox": 200,
       "s1-data-collection/files-and-formats": 58,
       "s1-data-collection/lab-1": 63,
       "s1-data-collection/web-scraping": 61,
@@ -24,6 +26,14 @@
       "s10-reinforcement-learning-2/making-deep-rl-work": 119,
       "s10-reinforcement-learning-2/multi-agent-rl": 120,
       "s10-reinforcement-learning-2/policy-gradients": 117,
+      "s11-docker-and-deployment/apis-and-http": 196,
+      "s11-docker-and-deployment/docker-compose-cvat": 195,
+      "s11-docker-and-deployment/docker-concepts": 193,
+      "s11-docker-and-deployment/docker-install-and-run": 194,
+      "s11-docker-and-deployment/lab-11": 199,
+      "s11-docker-and-deployment/serving-a-model-with-fastapi": 197,
+      "s11-docker-and-deployment/why-deploy": 192,
+      "s11-docker-and-deployment/writing-a-dockerfile": 198,
       "s2-data-preprocessing/categorical-encoding": 67,
       "s2-data-preprocessing/duplicates-inconsistencies-outliers": 66,
       "s2-data-preprocessing/feature-engineering-and-selection": 69,
@@ -82,6 +92,7 @@
       "mlp-reference": 30,
       "s1-data-collection": 19,
       "s10-reinforcement-learning-2": 28,
+      "s11-docker-and-deployment": 35,
       "s2-data-preprocessing": 20,
       "s3-tabular-models": 21,
       "s4-advanced-neural-networks": 22,
@@ -94,7 +105,7 @@
     "published": {
       "course": {
         "code": "MS2A-MLP-2026",
-        "description": "A 30-hour applied machine learning course in ten 3-hour sessions, taken\nafter *Python AI Engineering*. It walks the full arc of a modern ML system:\ncollecting and preparing data, tabular models, deep networks in PyTorch,\ncomputer vision, natural language processing and large language models, and\nreinforcement learning.\n\nEvery session is half lecture, half lab. Half the grade is a project\nsubmitted to ML-Arena; the other half is continuous assessment across the\nten labs. You are expected to arrive with the engineering floor from the\n12-hour module: git, a packaged environment, tests, and a coding agent you\nknow how to supervise.",
+        "description": "A 33-hour applied machine learning course in eleven 3-hour sessions, taken\nafter *Python AI Engineering*. It walks the full arc of a modern ML system:\ncollecting and preparing data, tabular models, deep networks in PyTorch,\ncomputer vision, natural language processing and large language models,\nreinforcement learning, and deploying a trained model as a Docker image\nserved by an API.\n\nEvery session is half lecture, half lab. Half the grade is a project\nsubmitted to ML-Arena; the other half is continuous assessment across the\neleven labs. You are expected to arrive with the engineering floor from the\n12-hour module: git, a packaged environment, tests, and a coding agent you\nknow how to supervise.",
         "end_date": "2026-11-27",
         "instructor_name": "Raphael Cousin",
         "name": "MS2A - Machine Learning Practice",
@@ -102,26 +113,187 @@
         "visibility": "public"
       },
       "lessons": {
+        "mlp-project/project-brief": {
+          "body": "a6f5d283f92133dec3ab8d4ffdf369269ee68622b37a28a156ed809260be57db",
+          "estimated_minutes": 20,
+          "gated": false,
+          "is_published": true,
+          "title": "The Brief"
+        },
+        "mlp-project/project-grading": {
+          "body": "d08e484bd16e668840b8464a43ebf4c9f247bba6bc6877ae65e6266b07af9b5f",
+          "estimated_minutes": 20,
+          "gated": false,
+          "is_published": true,
+          "title": "Deliverables and Grading"
+        },
+        "mlp-project/project-tracks": {
+          "body": "49a8b6f375e113921d68eccc5919b2c9a7054d0a897d6bb8b19c49ff7164cc83",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Tracks"
+        },
         "s1-data-collection/apis": {
-          "body": "eda4e85ae53551f6a88f0b5e575eb66e6d7e78831a8f2bf8f5cfd6db30254a6f"
+          "body": "eb03ade9f4a3f37f6f2ee7e28e1f508767b859a68e6b504a8affb351a8e8986a",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "APIs"
         },
         "s1-data-collection/collection-strategy-and-quality": {
-          "body": "8a20d1de1f6a6d1935ecc7399baea29e8b1918c3f2e4ab6d0d26b036ebb43d2a"
+          "body": "9811c487443f6606fa2375428c5fc0c93a7862ec3fe3afdd9c21ee98668c7f4f",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Collection Strategy and Data Quality"
         },
         "s1-data-collection/data-and-its-shapes": {
-          "body": "33d3f850164051777465086d4526fd059a28dd88a43f79603fa33511a6e63032"
+          "body": "b80bd44201e6ef4e8a9c5cf89ac044d00169ee53f568e18ca1f15461b5ecd371",
+          "estimated_minutes": 20,
+          "gated": false,
+          "is_published": true,
+          "title": "Data and Its Shapes"
         },
         "s1-data-collection/databases": {
-          "body": "f31ce128d8750c03f5d057018a5dd14954e58c453702bc971c46f1f2f3e2416c"
+          "body": "d19fb06823beba5ecf1a28a9fd1a6c210b8e97e1892f2e14c193ce9612dbf6ef",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Databases"
+        },
+        "s1-data-collection/exercise-api-sandbox": {
+          "body": "abd2a66ce58472a8cdcb8a7a0a96a231f51d6f8b2c0d9827cca7f97bf7f05294",
+          "estimated_minutes": 45,
+          "gated": false,
+          "is_published": true,
+          "title": "Exercise \u2014 A Client That Survives the API"
+        },
+        "s1-data-collection/exercise-sql-sandbox": {
+          "body": "6fd7cb891f65b8db40520080a15c9c230362115f1357e8c2e7de56eb7ea5516f",
+          "estimated_minutes": 45,
+          "gated": false,
+          "is_published": true,
+          "title": "Exercise \u2014 Query a Shared Database"
         },
         "s1-data-collection/files-and-formats": {
-          "body": "dd5368b854593c2f192d3ed6e83749749370ce2e88be25fc5b5e2d0ac3e8a63a"
+          "body": "f120f3741e48a31140504afc611ac2c8093ebfa2e0d51fa78ab5c06a3a5fa585",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Files and Formats"
         },
         "s1-data-collection/lab-1": {
-          "body": "725c3252cffbb7940ee5cdec88adbc0de1eda672df01b0d21a4dbef7d9d243be"
+          "body": "c7a6339787ff1b54ae1d9f52057df8be83adc6a5d96cf2cbdc894d8e5cb3aa97",
+          "estimated_minutes": 70,
+          "gated": false,
+          "is_published": true,
+          "title": "Lab 1 \u2014 Build a Dataset"
         },
         "s1-data-collection/web-scraping": {
-          "body": "d6d9f652dcfbf59c89f0b6ecbbc2c917036f26e009a25c64ca9523dfd2f36f7a"
+          "body": "be6cb7240bd2dd3fab462f13114569532b8658ce12b2450facd3454965d5c3ed",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Web Scraping"
+        },
+        "s10-reinforcement-learning-2/actor-critic-and-ppo": {
+          "body": "2a3fdca0ed0a874466339b6eedbe2294dde9895ab9c53074aaaf2390e036f125",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Actor-Critic and PPO"
+        },
+        "s10-reinforcement-learning-2/from-tables-to-networks": {
+          "body": "7c3e76c1defe2b9e2f725d643b89da9007820463477e57a7567a433df2862b6d",
+          "estimated_minutes": 40,
+          "gated": false,
+          "is_published": true,
+          "title": "From Tables to Networks"
+        },
+        "s10-reinforcement-learning-2/lab-10": {
+          "body": "020e441e904e4739e9c9c57760c07353b11cf777133857c861f161c81c3354bd",
+          "estimated_minutes": 45,
+          "gated": false,
+          "is_published": true,
+          "title": "Lab 10 \u2014 Ship an Agent to ML-Arena"
+        },
+        "s10-reinforcement-learning-2/making-deep-rl-work": {
+          "body": "6672bc2842059befd62044b565278a2f484ca387fcf17fe25707ca9ff48c06c7",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Making Deep RL Work"
+        },
+        "s10-reinforcement-learning-2/multi-agent-rl": {
+          "body": "04417b9ee62fa6746a2a97e645229b50d9d60b31c9a24805080cc25ceee850fc",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Multi-Agent RL"
+        },
+        "s10-reinforcement-learning-2/policy-gradients": {
+          "body": "1b907e7c41b50cf34d443c37a2546df21283b0deee17a89cbadd21dda329b74b",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Policy Gradients"
+        },
+        "s11-docker-and-deployment/apis-and-http": {
+          "body": "f83b410b02ba98251d30550c1dcbf2d64412ee1a7b4b4f3345a7dbd5cb558fcb",
+          "estimated_minutes": 12,
+          "gated": false,
+          "is_published": true,
+          "title": "APIs and HTTP"
+        },
+        "s11-docker-and-deployment/docker-compose-cvat": {
+          "body": "8c9b0c936a2f1b29d46cbd54c490ca49e60cba28e4e2495d833e36ba5195fc4f",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Workshop \u2014 Label Images with CVAT and Docker Compose"
+        },
+        "s11-docker-and-deployment/docker-concepts": {
+          "body": "d7f07030dc1313fe002298f52b255012361b3bba8c349f34f6a8ccf36923ce5d",
+          "estimated_minutes": 12,
+          "gated": false,
+          "is_published": true,
+          "title": "Docker: Images, Containers, Registries"
+        },
+        "s11-docker-and-deployment/docker-install-and-run": {
+          "body": "287ba32caf32b36aa974376857ced0567518bde3df2804b3a003627aebb6f2e1",
+          "estimated_minutes": 14,
+          "gated": false,
+          "is_published": true,
+          "title": "Installing and Running Docker"
+        },
+        "s11-docker-and-deployment/lab-11": {
+          "body": "6b61f92842a4261675bffcf8f6c80e626f1b35b66d321b2c91aecee1f427910d",
+          "estimated_minutes": 65,
+          "gated": false,
+          "is_published": true,
+          "title": "Lab 11 \u2014 Ship a Penguin Classifier"
+        },
+        "s11-docker-and-deployment/serving-a-model-with-fastapi": {
+          "body": "188f657aad3cf509e0d38c8d0e8169b3cacfa0293d5cfb2276525e1448dd967d",
+          "estimated_minutes": 20,
+          "gated": false,
+          "is_published": true,
+          "title": "Serving a Model with FastAPI"
+        },
+        "s11-docker-and-deployment/why-deploy": {
+          "body": "3a48e9f53566a27b51c76e966c7958cf5ce0c8f75b4c48753645e1c3f1e69f70",
+          "estimated_minutes": 12,
+          "gated": false,
+          "is_published": true,
+          "title": "From a Notebook to a Service"
+        },
+        "s11-docker-and-deployment/writing-a-dockerfile": {
+          "body": "044ab14e41a232ed5de99ef4bb76f8453e25eb47e24779e79d670721a64fab36",
+          "estimated_minutes": 15,
+          "gated": false,
+          "is_published": true,
+          "title": "Writing a Dockerfile"
         },
         "s2-data-preprocessing/categorical-encoding": {
           "body": "2f14f61ebae0188fd231b5603dc822e7367ecdd962a8d10d4807255c3331e96f",
@@ -175,6 +347,60 @@
       },
       "module_order": [],
       "modules": {
+        "mlp-project": {
+          "icon": "trophy",
+          "lessons": [
+            "project-brief",
+            "project-tracks",
+            "project-grading"
+          ],
+          "summary": "Half the grade. One ML-Arena competition track of your choosing, plus the repository that produced the submission.",
+          "title": "Project"
+        },
+        "s1-data-collection": {
+          "icon": "database",
+          "lessons": [
+            "data-and-its-shapes",
+            "files-and-formats",
+            "databases",
+            "exercise-sql-sandbox",
+            "apis",
+            "exercise-api-sandbox",
+            "web-scraping",
+            "collection-strategy-and-quality",
+            "lab-1"
+          ],
+          "summary": "Where data comes from and what it costs to get it: files, databases, APIs, scraping \u2014 and the quality checks that belong at the point of collection rather than three weeks later.",
+          "title": "Session 1 \u2014 Data Collection"
+        },
+        "s10-reinforcement-learning-2": {
+          "icon": "cpu",
+          "lessons": [
+            "from-tables-to-networks",
+            "policy-gradients",
+            "actor-critic-and-ppo",
+            "making-deep-rl-work",
+            "multi-agent-rl",
+            "lab-10"
+          ],
+          "summary": "Deep RL: function approximation and DQN, policy gradients, actor-critic and PPO, the practical machinery that makes runs reproducible, and multi-agent environments on ML-Arena.",
+          "title": "Session 10 \u2014 Reinforcement Learning 2"
+        },
+        "s11-docker-and-deployment": {
+          "icon": "container",
+          "lessons": [
+            "why-deploy",
+            "docker-concepts",
+            "docker-install-and-run",
+            "docker-compose-cvat",
+            "apis-and-http",
+            "serving-a-model-with-fastapi",
+            "writing-a-dockerfile",
+            "lab-11"
+          ],
+          "summary": "Take a trained model out of the notebook: save it, serve it behind an HTTP API with FastAPI, and pack the API into a Docker image that runs the same on any machine. Includes a Docker Compose workshop that starts CVAT, a complete image-annotation platform, with one command. Before the session: install Docker Desktop and check that `docker run hello-world` works.",
+          "title": "Session 11 \u2014 Docker and Model Deployment"
+        },
         "s2-data-preprocessing": {
           "icon": "filter",
           "lessons": [

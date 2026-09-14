@@ -1,8 +1,8 @@
 # Lab 10 — Ship an Agent to ML-Arena
 
 Train a deep RL agent, evaluate it honestly, package it to the platform's
-contract, and submit it to a live competition. The last lab of the course, and
-the first time your code runs on someone else's infrastructure.
+contract, and submit it to a live competition. The first time your code runs
+on someone else's infrastructure.
 
 **Time:** 45 minutes. **Deliverable:** a merged PR, and an accepted submission
 on an ML-Arena leaderboard.
@@ -315,7 +315,9 @@ project is half the grade.
 
 Ten labs: a dataset, a leak-free pipeline, a tuned baseline, a trained network,
 two vision models, a fine-tuned classifier, a judged RAG system, a tabular
-agent, and this. Pick the track where you have the most left to say.
+agent, and this. Session 11 turns the other way round: you pack a model into
+an image that you ship yourself. Pick the track where you have the most left
+to say.
 
 ---
 

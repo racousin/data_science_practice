@@ -29,7 +29,7 @@ A number nobody can reproduce is not a result, it is a claim.
 
 | Component | Share |
 |---|---|
-| Continuous assessment — the ten labs | 50% of the course |
+| Continuous assessment — the eleven labs | 50% of the course |
 | Project | 50% of the course |
 | — leaderboard performance | half the project |
 | — repository quality | half the project |
