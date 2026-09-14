@@ -222,8 +222,8 @@ new.
 
 `charges` is the total hospital bill for the stay. It is computed at discharge, and it grows
 with the length of the stay and the intensity of care, so it also reflects how the stay
-ended. For a patient still in the ward there is no bill yet. In `train.csv.gz` the column is
-filled for 98 % of the patients; in `test.csv.gz` it is empty for every patient.
+ended. For a patient still in the ward there is no bill yet. In `train.csv` the column is
+filled for 98 % of the patients; in `test.csv` it is empty for every patient.
 
 **What it justifies.** A model cannot use at prediction time what does not exist at
 prediction time. A column that is strong on the training rows and absent on the test rows

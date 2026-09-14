@@ -38,9 +38,9 @@ public file is on hbiostat.org and the UCI repository.
 
 | file | rows | contents |
 |---|---|---|
-| `train.csv.gz` | 6,373 | `id`, the 31 columns, and the target `dead` |
-| `test.csv.gz` | 2,732 | `id` and the same 31 columns |
-| `sample_submission.csv.gz` | one row per train and test id | the benchmark's submission: the format to follow |
+| `train.csv` | 6,373 | `id`, the 31 columns, and the target `dead` |
+| `test.csv` | 2,732 | `id` and the same 31 columns |
+| `sample_submission.csv` | one row per train and test id | the benchmark's submission, uncompressed: the format to follow |
 | `EXPERTISE.pdf` | | what clinicians know about the columns |
 | `DICTIONARY.pdf` | | each column: meaning, unit, fill rate, examples |
 
@@ -73,8 +73,8 @@ te_8d01c4e97a55,1.02,0.00,...
 
 - an `id` column, plus **1 to 300** feature columns, all **numeric** and
   **finite** (no text, no NaN, no inf);
-- **every id of `test.csv.gz`**;
-- ids of `train.csv.gz`: **all of them, or any subset of at least 4,000**.
+- **every id of `test.csv`**;
+- ids of `train.csv`: **all of them, or any subset of at least 4,000**.
   Which rows the model learns from is a preprocessing decision too: you may
   leave out rows you do not trust;
 - no labels: the scorer has its own.

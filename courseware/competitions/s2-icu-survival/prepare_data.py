@@ -14,10 +14,10 @@ that only exists for discharged patients. So the public source cannot be
 joined to recover the label, and each preprocessing step in EXPERTISE.md is
 worth a measurable, controlled amount of AUC.
 
-Public    -> data/train.csv.gz, data/test.csv.gz, data/sample_submission.csv.gz,
+Public    -> data/train.csv, data/test.csv, data/sample_submission.csv,
              data/EXPERTISE.pdf, data/DICTIONARY.pdf (rendered from the package's .md)
 Private   -> data/labels_train.csv, data/labels_test.csv   (ENV folder only)
-Benchmark -> data/benchmark_submission.csv.gz (== sample_submission.csv.gz)
+Benchmark -> data/benchmark_submission.csv.gz (sample_submission.csv, uncompressed)
 
 Steps, each of which fails the build rather than degrade:
 
@@ -206,12 +206,12 @@ def main():
     print("4. write + assertions …")
     train = X_tr.assign(**{TARGET: y_tr.to_numpy()})
     test = X_te
-    train.to_csv(DATA / "train.csv.gz", index=False, compression=GZ)
-    test.to_csv(DATA / "test.csv.gz", index=False, compression=GZ)
+    train.to_csv(DATA / "train.csv", index=False)
+    test.to_csv(DATA / "test.csv", index=False)
     pd.DataFrame({ID_COLUMN: X_tr[ID_COLUMN], TARGET: y_tr}).to_csv(DATA / "labels_train.csv", index=False)
     pd.DataFrame({ID_COLUMN: X_te[ID_COLUMN], TARGET: y_te}).to_csv(DATA / "labels_test.csv", index=False)
-    train = pd.read_csv(DATA / "train.csv.gz", low_memory=False)
-    test = pd.read_csv(DATA / "test.csv.gz", low_memory=False)
+    train = pd.read_csv(DATA / "train.csv", low_memory=False)
+    test = pd.read_csv(DATA / "test.csv", low_memory=False)
     if list(train.columns) != [ID_COLUMN, *SERVED, TARGET] or list(test.columns) != [ID_COLUMN, *SERVED]:
         raise SystemExit("shipped headers differ from id + SERVED (+ target)")
     leaked = (set(train.columns) | set(test.columns)) & set(DROPPED)
@@ -235,11 +235,12 @@ def main():
     print(f"  train {len(train)} rows, dead {rate_tr:.4f} | test {len(test)} rows, dead {rate_te:.4f}")
 
     print("5. benchmark …")
-    for name in ("sample_submission.csv.gz", "benchmark_submission.csv.gz"):
+    for name in ("sample_submission.csv", "benchmark_submission.csv.gz"):
         (DATA / name).unlink(missing_ok=True)
     bench, numeric = benchmark_features(train, test)
     bench.to_csv(DATA / "benchmark_submission.csv.gz", index=False, float_format="%.6f", compression=GZ)
-    shutil.copy2(DATA / "benchmark_submission.csv.gz", DATA / "sample_submission.csv.gz")
+    # The same content uncompressed: the format to follow, readable as it is.
+    bench.to_csv(DATA / "sample_submission.csv", index=False, float_format="%.6f")
     result = load_env().evaluate(str(DATA / "benchmark_submission.csv.gz"))["agent_results"][0]
     if result.get("is_agent_code_error"):
         raise SystemExit(f"env.py rejected the benchmark: {result['agent_code_error_message']}")

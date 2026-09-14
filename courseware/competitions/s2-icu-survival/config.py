@@ -54,7 +54,7 @@ CONFIG = {
     # against, never something a student sees.
     "expert_expected_score": 0.936766,
     "public_files": [
-        "train.csv.gz", "test.csv.gz", "sample_submission.csv.gz",
+        "train.csv", "test.csv", "sample_submission.csv",
         "EXPERTISE.pdf", "DICTIONARY.pdf",
     ],
     # Uploaded to the ENV folder next to env.py (build_competitions.py uploads
@@ -80,9 +80,9 @@ CONFIG = {
         "The SUPPORT cohort: 9,105 seriously ill adults admitted to 5 US "
         "hospitals, 1989-1994: site, demographics, diagnosis, day-3 vital signs "
         "and labs, functional status, charges (31 columns). "
-        "train.csv.gz carries the target dead (died within 60 days of study "
-        "entry); test.csv.gz does not. EXPERTISE.pdf explains the clinical "
-        "knowledge, DICTIONARY.pdf each column, sample_submission.csv.gz the "
+        "train.csv carries the target dead (died within 60 days of study "
+        "entry); test.csv does not. EXPERTISE.pdf explains the clinical "
+        "knowledge, DICTIONARY.pdf each column, sample_submission.csv the "
         "format."
     ),
     # Deterministic scorer: the same file always yields the same AUC.

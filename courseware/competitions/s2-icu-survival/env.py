@@ -215,17 +215,17 @@ class Env:
         if unknown.any():
             first = int(np.flatnonzero(unknown)[0])
             return None, (f"Unknown id {ids.iloc[first]!r} (line {first + 2}): it is in neither "
-                          f"train.csv.gz nor test.csv.gz. {int(unknown.sum())} unknown id(s).")
-        # in test.csv.gz order (labels_test.csv is written in that order), so the
+                          f"train.csv nor test.csv. {int(unknown.sum())} unknown id(s).")
+        # in test.csv order (labels_test.csv is written in that order), so the
         # id named is the first missing row of the file the student has
         missing = self.y_test.index[~self.y_test.index.isin(ids[is_test])]
         if len(missing):
-            return None, (f"Test id {missing[0]!r} is missing: every id of test.csv.gz must be "
+            return None, (f"Test id {missing[0]!r} is missing: every id of test.csv must be "
                           f"present ({len(missing)} of {len(self.y_test)} missing).")
         n_train = int(is_train.sum())
         if n_train < MIN_TRAIN_ROWS:
             return None, (f"Only {n_train} train rows; submit at least {MIN_TRAIN_ROWS} of the "
-                          f"{len(self.y_train)} ids of train.csv.gz (you may drop the others).")
+                          f"{len(self.y_train)} ids of train.csv (you may drop the others).")
 
         features = [c for c in df.columns if c != ID_COLUMN]
         for col in features:
@@ -244,7 +244,7 @@ class Env:
         if not finite.all():
             rows, cols = np.nonzero(~finite)
             column = features[int(cols[0])]
-            hint = (" That is the target column of train.csv.gz, which the test rows do not have."
+            hint = (" That is the target column of train.csv, which the test rows do not have."
                     if column == TARGET_COLUMN else "")
             return None, (f"Column {column!r} is {values[rows[0], cols[0]]} for id "
                           f"{ids.iloc[int(rows[0])]!r}: LogisticRegression cannot take NaN or inf, "

@@ -1,6 +1,6 @@
-# DICTIONARY — the columns of `train.csv.gz` and `test.csv.gz`
+# DICTIONARY — the columns of `train.csv` and `test.csv`
 
-Both files carry `id` and the 31 columns below, in this order; `train.csv.gz`
+Both files carry `id` and the 31 columns below, in this order; `train.csv`
 adds the target `dead` (1 if the patient died within 60 days of study entry,
 else 0).
 
@@ -13,7 +13,7 @@ them. `EXPERTISE.pdf` gives the clinical reasons behind each column.
   and the charting conventions of the five sites.
 - **Read as:** the dtype `pd.read_csv` gives the column. `number` columns can
   still be codes or flags; `text` columns can still hold an order, or numbers.
-- **Filled:** share of the 6,373 rows of `train.csv.gz` with a value.
+- **Filled:** share of the 6,373 rows of `train.csv` with a value.
 - **Distinct:** number of distinct values among the filled rows.
 - **Examples:** for text, the distinct spellings actually present (all of them
   when there are few, else the most frequent) with their share of the filled
@@ -86,7 +86,7 @@ them. `EXPERTISE.pdf` gives the clinical reasons behind each column.
 |---|---|---|---|---|---|---|
 | `charges` | Total hospital charges for the stay, billed at discharge; empty for patients not yet discharged. | USD | number | 98.1% | 6,083 | min 2,238 · median 42,748 · max 1,845,060 |
 
-## Target (`train.csv.gz` only)
+## Target (`train.csv` only)
 
 | column | meaning | unit | read as | filled | distinct | examples |
 |---|---|---|---|---|---|---|

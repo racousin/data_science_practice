@@ -4,13 +4,13 @@ distinct count and example values.
 Meanings come from the SUPPORT documentation (Harrell, hbiostat.org/data/repo/
 supportdesc; Knaus et al., Ann Intern Med 1995) and from the charting
 conventions of the five sites. The fill rates, distinct counts
-and examples are computed from the shipped `train.csv.gz`, so they describe
+and examples are computed from the shipped `train.csv`, so they describe
 exactly the file a student downloads: dirty spellings, text tokens and
 placeholders included.
 
 `SERVED` is the list of feature columns, in the shipped order, without the
 `id` and the target. `python dictionary.py` renders `DICTIONARY.md` next to
-this file from `data/train.csv.gz`, and fails if that file does not exist.
+this file from `data/train.csv`, and fails if that file does not exist.
 """
 from __future__ import annotations
 
@@ -104,9 +104,9 @@ MEANINGS: dict[str, tuple[str, str]] = {
                 "patients not yet discharged.", "USD"),
 }
 
-_HEADER = """# DICTIONARY — the columns of `train.csv.gz` and `test.csv.gz`
+_HEADER = """# DICTIONARY — the columns of `train.csv` and `test.csv`
 
-Both files carry `id` and the {n} columns below, in this order; `train.csv.gz`
+Both files carry `id` and the {n} columns below, in this order; `train.csv`
 adds the target `dead` (1 if the patient died within 60 days of study entry,
 else 0).
 
@@ -119,7 +119,7 @@ them. `EXPERTISE.pdf` gives the clinical reasons behind each column.
   and the charting conventions of the five sites.
 - **Read as:** the dtype `pd.read_csv` gives the column. `number` columns can
   still be codes or flags; `text` columns can still hold an order, or numbers.
-- **Filled:** share of the {rows:,} rows of `train.csv.gz` with a value.
+- **Filled:** share of the {rows:,} rows of `train.csv` with a value.
 - **Distinct:** number of distinct values among the filled rows.
 - **Examples:** for text, the distinct spellings actually present (all of them
   when there are few, else the most frequent) with their share of the filled
@@ -186,7 +186,7 @@ def render(train: pd.DataFrame, path: Path) -> None:
             kind = "number" if pd.api.types.is_numeric_dtype(s) else "text"
             lines.append(f"| `{col}` | {meaning} | {unit} | {kind} | "
                          f"{s.notna().mean():.1%} | {s.nunique():,} | {_examples(s)} |")
-    lines.append("\n## Target (`train.csv.gz` only)\n")
+    lines.append("\n## Target (`train.csv` only)\n")
     lines.append("| column | meaning | unit | read as | filled | distinct | examples |")
     lines.append("|---|---|---|---|---|---|---|")
     y = train[TARGET]
@@ -198,7 +198,7 @@ def render(train: pd.DataFrame, path: Path) -> None:
 
 if __name__ == "__main__":
     here = Path(__file__).resolve().parent
-    src = here / "data" / "train.csv.gz"
+    src = here / "data" / "train.csv"
     if not src.is_file():
         raise SystemExit(f"{src} does not exist: run prepare_data.py first")
     out = here / "DICTIONARY.md"

@@ -121,10 +121,10 @@ def labels():
 @pytest.fixture(scope="module")
 def shipped():
     """(train, test) exactly as a student reads them: pandas' own dtypes."""
-    if not (DATA / "train.csv.gz").exists():
+    if not (DATA / "train.csv").exists():
         pytest.fail("data/ is missing: run prepare_data.py first")
-    return (pd.read_csv(DATA / "train.csv.gz", low_memory=False, dtype={ID_COLUMN: str}),
-            pd.read_csv(DATA / "test.csv.gz", low_memory=False, dtype={ID_COLUMN: str}))
+    return (pd.read_csv(DATA / "train.csv", low_memory=False, dtype={ID_COLUMN: str}),
+            pd.read_csv(DATA / "test.csv", low_memory=False, dtype={ID_COLUMN: str}))
 
 
 @pytest.fixture(scope="module")
@@ -157,8 +157,11 @@ def test_package_files_present(cfg):
         assert (DATA / rel).is_file() or (PKG / rel).is_file(), \
             f"{rel} missing — run prepare_data.py"
     assert (PKG / cfg["benchmark_file"]).is_file()
-    assert (DATA / "sample_submission.csv.gz").read_bytes() == \
-        (PKG / cfg["benchmark_file"]).read_bytes(), "sample_submission is the benchmark's file"
+    # sample_submission is the benchmark's file, uncompressed: same rows, same numbers
+    pd.testing.assert_frame_equal(
+        pd.read_csv(DATA / "sample_submission.csv", dtype={ID_COLUMN: str}),
+        pd.read_csv(PKG / cfg["benchmark_file"], dtype={ID_COLUMN: str}),
+    )
 
 
 def test_config_contract(cfg):
@@ -173,7 +176,7 @@ def test_config_contract(cfg):
     assert (cfg["deployment_nb_constraint_run"], cfg["deployment_nb_initial_score_run"]) == (1, 1)
     assert cfg["is_public_initial"] is False
     assert len(cfg["dataset_description"]) <= 500
-    assert cfg["public_files"] == ["train.csv.gz", "test.csv.gz", "sample_submission.csv.gz",
+    assert cfg["public_files"] == ["train.csv", "test.csv", "sample_submission.csv",
                                    "EXPERTISE.pdf", "DICTIONARY.pdf"]
     assert cfg["private_files"] == ["labels_train.csv", "labels_test.csv"]
     # pinned after prepare_data.py / the ladder; None reads as absent for the builder
@@ -277,7 +280,7 @@ def test_charges_are_empty_in_test_and_filled_in_train(shipped):
     """Billed at discharge: known for the historical cohort, unknown for the
     patients still admitted — the post-outcome column a model must not use."""
     train, test = shipped
-    assert test["charges"].isna().all(), "charges must be 100% NaN in test.csv.gz"
+    assert test["charges"].isna().all(), "charges must be 100% NaN in test.csv"
     assert train["charges"].notna().mean() > 0.9, (
         f"charges filled for only {train['charges'].notna().mean():.1%} of train rows")
 
@@ -401,13 +404,13 @@ def test_rejects_non_finite(env, bench, tmp_path, bad):
 
 
 def test_target_column_left_in_names_train_csv(env, bench, labels, tmp_path):
-    """The classic slip: train.csv.gz's `dead` kept as a feature is NaN on the
+    """The classic slip: train.csv's `dead` kept as a feature is NaN on the
     test rows, and the message says which file it came from."""
     y = labels[0].set_index(ID_COLUMN)[TARGET]
     frame = bench.copy()
     frame[TARGET] = frame[ID_COLUMN].map(y)          # NaN on every test row
     assert_rejected(evaluate(env, frame, tmp_path / "s.csv.gz"), repr(TARGET),
-                    "target column of train.csv.gz")
+                    "target column of train.csv")
 
 
 def test_rejects_too_few_train_rows_and_accepts_the_minimum(env, bench, labels, tmp_path):
@@ -552,7 +555,7 @@ def test_starter_notebook_runs_offline_and_is_accepted(env, tmp_path):
     assert 'files=["submission.csv.gz"]' in code
     assert "mlk_user_..." in code and "mlk_user_4" not in code
 
-    for name in ("train.csv.gz", "test.csv.gz", "sample_submission.csv.gz",
+    for name in ("train.csv", "test.csv", "sample_submission.csv",
                  "EXPERTISE.pdf", "DICTIONARY.pdf"):
         src = DATA / name if (DATA / name).is_file() else PKG / name
         shutil.copy2(src, tmp_path / name)
