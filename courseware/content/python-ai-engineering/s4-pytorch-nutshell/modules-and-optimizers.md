@@ -44,7 +44,7 @@ $$
 ---
 
 ## Activation Functions
-
+```python
 # Common activation functions
 relu = nn.ReLU()        # f(x) = max(0, x)
 sigmoid = nn.Sigmoid()   # f(x) = 1/(1+e^(-x))
@@ -54,7 +54,7 @@ tanh = nn.Tanh()        # f(x) = (e^x - e^(-x))/(e^x + e^(-x))
 x = torch.randn(2, 5)
 output = relu(x)        # Negative values become 0
 
-
+```
 ---
 
 

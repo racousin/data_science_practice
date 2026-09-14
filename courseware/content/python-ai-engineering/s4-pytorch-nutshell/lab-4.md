@@ -39,19 +39,6 @@ is linked after the session. -->
 
 ---
 
-## Setup, the first five minutes
-
-1. Open the notebook with the Colab badge and paste your ML-Arena key
-   (`mlk_user_...`, the one from Sessions 2 and 3) into `API_KEY`.
-2. In the notebook's W&B cell, choose one line to uncomment. With a free
-   account (wandb.ai, GitHub sign-in works): `wandb.login()`, then paste the
-   key from wandb.ai/authorize.
-3. No account: the `WANDB_MODE = "offline"` line. The run stays on disk, and
-   the notebook's own plot draws the curves.
-4. Run the given cells down to Step 1: download, split, standardisation,
-   tensors.
-
----
 
 ## The objective
 
@@ -71,35 +58,3 @@ $$
 - A real app would base the promise on the length of the planned route; this
   data stands in with the metered `trip_distance`, known only once the ride is
   over.
-
----
-
-## The ladder
-
-| Submission | −Pinball | Promise kept |
-|---|---|---|
-| Always 24.7 min, the 90th percentile of `y.csv` | −2.233 | 89.4% |
-| `LinearRegression` on MSE | −2.087 | 55.7% |
-| The lab's MLP, trained on MSE | ≈ −1.74 | ≈ 54% |
-| **`QuantileRegressor(quantile=0.9)`: the pass bar** | **−1.0429** | 88.4% |
-| The lab's MLP, trained on pinball (the solution) | −0.941 | 87.7% |
-
-The two MLP rows are the same network and the same 30 epochs; only the loss
-changes. The bar checks the promises, not how they were made: an MSE network
-multiplied by one factor fitted on the training rows also clears it (about
-−0.93 to −0.96). What shows that you wrote the loop is the notebook's check
-cells.
-
----
-
-## If you finish early
-
-Compare each variant on the validation part with `evaluate` or
-`leaderboard_score`, not by submitting: every submission uses one of your two
-daily slots.
-
-- Train the same network on `nn.MSELoss()` and compare its **Promise kept**
-  with the pinball network's.
-- Train with `tau=0.5`. Which of the two numbers moves, and why?
-- Try a wider or deeper network, or another learning rate. Log each run to W&B
-  with its `config`, compare the validation curves, and keep the best.

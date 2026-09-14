@@ -119,6 +119,34 @@ floats), with a shape** such as (200, 200).
 
 ---
 
+
+## CPU vs GPU
+
+```python
+import time
+
+# Without synchronization - misleading timing
+start = time.time()
+gpu_result = gpu_tensor @ gpu_tensor  # Returns immediately
+print(f"Time: {time.time() - start:.6f}s")  # Too fast! Operation still running
+
+# With synchronization - accurate timing
+start = time.time()
+gpu_result = gpu_tensor @ gpu_tensor
+torch.cuda.synchronize()  # Wait for GPU to finish
+print(f"Actual time: {time.time() - start:.6f}s")
+```
+
+
+
+![device-time2.png](assets/s4-pytorch-nutshell/why-tensors/device-time2.png)
+
+
+
+---
+
+
+
 ## Two memories, one narrow bridge
 
 ![Data goes from disk to CPU memory, is copied to GPU memory, computed on, and copied back](assets/s4-pytorch-nutshell/why-tensors/gpu-workflow.jpg)
@@ -145,30 +173,6 @@ b = a.to(device)                # a copy on the GPU
 print(a.device, b.device)
 ```
 
-
----
-
-
-## CPU vs GPU
-
-```python
-import time
-
-# Without synchronization - misleading timing
-start = time.time()
-gpu_result = gpu_tensor @ gpu_tensor  # Returns immediately
-print(f"Time: {time.time() - start:.6f}s")  # Too fast! Operation still running
-
-# With synchronization - accurate timing
-start = time.time()
-gpu_result = gpu_tensor @ gpu_tensor
-torch.cuda.synchronize()  # Wait for GPU to finish
-print(f"Actual time: {time.time() - start:.6f}s")
-```
-
-
-
-![device-time2.png](assets/s4-pytorch-nutshell/why-tensors/device-time2.png)
 
 
 

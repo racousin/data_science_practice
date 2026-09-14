@@ -317,7 +317,7 @@
           "title": "Autograd"
         },
         "s4-pytorch-nutshell/lab-4": {
-          "body": "b18b3ea802357b039f3cf109839487550370f04bcf2c139a0390d6591185ee7b",
+          "body": "d3373b1370380050c7ffeda8ab21def110bb32248dcc18fc84b8da0cc779d0eb",
           "estimated_minutes": 85,
           "gated": false,
           "is_published": true,
@@ -331,7 +331,7 @@
           "title": "Losses"
         },
         "s4-pytorch-nutshell/modules-and-optimizers": {
-          "body": "18872e510f16b48fec4a49b630490ddac776ff2e1f1142c50009f298d175d913",
+          "body": "8933ef51dc2bb1ff8c2c47d784b193072f413794425537269a8f674a6c80dbf1",
           "estimated_minutes": 8,
           "gated": false,
           "is_published": true,
@@ -380,7 +380,7 @@
           "title": "Tracking with Weights & Biases"
         },
         "s4-pytorch-nutshell/why-tensors": {
-          "body": "15eb4860a079a38fe812f5c44283582730ef600e0cc970e6c9045bd6fb87787d",
+          "body": "10ecd578a671f87011874e9d2daa2cd9108cf1fe45724498b9c6a83337162ec0",
           "estimated_minutes": 12,
           "gated": false,
           "is_published": true,
