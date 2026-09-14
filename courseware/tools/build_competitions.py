@@ -600,8 +600,13 @@ def refresh_one(client, user_client, cfg: dict, base_url: str,
         )
     stale = [] if keep_agents else [r for r in rows if r.get("AgentName") != "__benchmark__"]
 
-    client.stop_competition(cid)
-    print(f"    stopped id={cid}")
+    # Idempotent: a refresh interrupted after its stop leaves the challenge
+    # stopped, and the platform refuses to stop it twice.
+    if existing.get("is_started"):
+        client.stop_competition(cid)
+        print(f"    stopped id={cid}")
+    else:
+        print(f"    id={cid} is already stopped (an earlier refresh was interrupted?)")
     if keep_agents:
         kept = [r for r in rows if r.get("AgentName") != "__benchmark__"]
         print(f"    keeping {len(kept)} agent(s) on the board "

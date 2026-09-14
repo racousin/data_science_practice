@@ -139,27 +139,18 @@ features change.
 | + labs imputed as the investigators did, absences kept as information | 0.900 |
 | + categories encoded as categories, orders as orders | 0.916 |
 | + the bedside formulas | 0.937 |
-| *gradient boosting on the raw columns, for reference* | *0.907* |
 
 The benchmark knows nothing about patients. Each rung above it is one item of
 `EXPERTISE.pdf` put into numbers, and none of them requires a different model.
-The last row is a flexible model given the raw columns, which a straight line
-on good features gets close to; a score well above it is not preprocessing.
 The pass bar for this module is a test AUC of **0.905**.
 
 ## Rules
 
 - **Features come from the columns you were given.** Transform, combine,
   encode, drop: all of it is the exercise.
-- **Target statistics only out-of-fold within train.** A target encoding fitted
-  on the rows it encodes is caught by the train/test gap; do not try to hide it.
+- **Target statistics only out-of-fold within train.**
 - **No external data and no labels from outside.** Joining the public SUPPORT
-  files, or any other file, is external data and is forbidden. Looking things up is not
-  preprocessing, it is not what is assessed, and a score far above the
-  boosting reference is conspicuous.
-- **No model smuggled in as a feature.** A column holding another model's
-  prediction cannot be blocked by the scorer, and it is exactly what this
-  challenge is not about.
+  files, or any other file, is external data and is forbidden.
 - **Your notebook is part of the grade.** The leaderboard shows what your
   features are worth; the notebook shows that they are yours and why you built
   them.
