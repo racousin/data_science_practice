@@ -21,12 +21,18 @@ is covered, and why each one exists:
   build rather than letting the benchmark fail one step later;
 * a missing file stops `refresh` before it stops the live challenge;
 * a package can only be selected under its own course, so `publish` on one
-  course never reaches another's challenge.
+  course never reaches another's challenge;
+* the course bar: a `pass_threshold` above the benchmark is a typo unless the
+  package declares `expert_expected_score` (what its own reference solution
+  reaches) at or above it — DPE's 0.85 bar over a 0.7606 benchmark is the
+  case — and a None in either key reads as absent, so `attach` falls back to
+  the benchmark score.
 """
 from __future__ import annotations
 
 import gzip
 import os
+import shutil
 import sys
 
 import pytest
@@ -323,6 +329,10 @@ def test_refresh_checks_files_before_stopping_the_challenge(packages):
     ({"max_upload_size_bytes": "200MB"}, "max_upload_size_bytes"),
     ({"engine_id": True}, "engine_id"),
     ({"engine_id": "42"}, "engine_id"),
+    ({"pass_threshold": "0.8"}, "pass_threshold must be a number"),
+    ({"pass_threshold": True}, "pass_threshold must be a number"),
+    ({"expert_expected_score": "0.9"}, "expert_expected_score must be a number"),
+    ({"expert_expected_score": True}, "expert_expected_score must be a number"),
 ])
 def test_malformed_optional_keys_are_refused(packages, overrides, message):
     dpe_package(packages, **overrides)
@@ -334,6 +344,88 @@ def test_submission_filename_on_a_flex_package_is_refused(packages):
     dpe_package(packages, kernel_version="flex_v1")
     with pytest.raises(SystemExit, match="file_v1 setting"):
         bc.load_config("dpe")
+
+
+# --------------------------------------------------------------------------- #
+# the course bar (`attach`)
+# --------------------------------------------------------------------------- #
+def bar_of(packages, **overrides) -> float:
+    """The bar `attach` would write for a dpe package with these keys."""
+    shutil.rmtree(packages / "dpe", ignore_errors=True)
+    dpe_package(packages, **overrides)
+    return bc.pass_threshold(bc.load_config("dpe"))
+
+
+def test_bar_at_or_below_the_benchmark_needs_no_expert_score(packages):
+    assert bar_of(packages, pass_threshold=0.7) == 0.7
+    assert bar_of(packages, pass_threshold=0.75) == 0.75
+
+
+def test_bar_above_the_benchmark_is_refused_without_an_expert_score(packages):
+    """DPE's case before expert_expected_score existed: 0.85 over 0.7606 had to
+    be typed on the link by hand, and `attach` would have reverted it."""
+    dpe_package(packages, pass_threshold=0.85)
+    with pytest.raises(SystemExit, match=r"pass_threshold 0.85 is above the benchmark's "
+                                         r"own score 0.75; declare expert_expected_score"):
+        bc.load_config("dpe")
+
+
+def test_bar_above_the_benchmark_is_accepted_up_to_the_expert_score(packages):
+    assert bar_of(packages, pass_threshold=0.85, expert_expected_score=0.92705) == 0.85
+    # the bar may equal what the reference solution reaches, not exceed it
+    assert bar_of(packages, pass_threshold=0.92705, expert_expected_score=0.92705) == 0.92705
+
+
+def test_bar_above_the_expert_score_is_refused_naming_both(packages):
+    dpe_package(packages, pass_threshold=0.95, expert_expected_score=0.92705)
+    with pytest.raises(SystemExit, match=r"pass_threshold 0.95 is above expert_expected_score "
+                                         r"0.92705"):
+        bc.load_config("dpe")
+
+
+def test_none_bar_and_expert_score_read_as_absent(packages):
+    """A package pins both after its ladder is measured; until then the keys
+    are present as None and `attach` must fall back to the benchmark."""
+    dpe_package(packages, pass_threshold=None, expert_expected_score=None)
+    cfg = bc.load_config("dpe")
+    assert "pass_threshold" in cfg and cfg["pass_threshold"] is None
+    assert bc.pass_threshold(cfg) == 0.75
+    # ...and an unpinned benchmark still has no bar at all
+    with pytest.raises(SystemExit, match="no bar to attach"):
+        bar_of(packages, pass_threshold=None, expert_expected_score=None,
+               benchmark_expected_score=None)
+
+
+def test_attach_writes_the_declared_bar_not_the_benchmark(packages, monkeypatch, tmp_path):
+    """The reconciliation in do_attach compares the live link with
+    pass_threshold(); a declared bar above the benchmark must be what it
+    writes, not what it reverts."""
+    dpe_package(packages, pass_threshold=0.85, expert_expected_score=0.92705)
+    bc.write_state("http://test", {"competitions": {
+        "dpe": {"id": 191, "module_slug": "s2-x", "label": "Test"}}})
+    course_dir = tmp_path / "content" / "c"
+    course_dir.mkdir(parents=True)
+    (course_dir / ".mlarena-state.json").write_text('{"http://test": {"modules": {"s2-x": 20}}}')
+    monkeypatch.setattr(bc, "COURSEWARE", tmp_path)
+
+    written = []
+
+    class Teacher:
+        def get_module(self, module_id):
+            return {"competitions": [{"competition_id": 191, "pass_threshold": 0.75}]}
+
+        def update_challenge_link(self, module_id, cid, pass_threshold):
+            written.append((module_id, cid, pass_threshold))
+
+    monkeypatch.setattr(bc, "connect", lambda scope, base_url: Teacher())
+
+    class Args:
+        base_url = "http://test"
+        course = "c"
+        packages = ["dpe"]
+
+    bc.do_attach(Args)
+    assert written == [(20, 191, 0.85)]
 
 
 def test_packages_are_selected_per_course():

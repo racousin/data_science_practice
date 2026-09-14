@@ -142,22 +142,24 @@ Dump the **fitted** pipeline, dated, and gitignore `models/`. In half a page,
 
 ## Part F — Put it on the board (5 min)
 
-The session's challenge is **DPE Energy Label** (id `191`): predict whether a
-French dwelling's energy label is **E, F or G**, from what the diagnostician
-recorded during the visit. 69,854 training and 30,146 test dwellings from
-ADEME's open data, 99 columns exactly as published: French labels, codes stored
-as numbers, empty cells that mean *not applicable*, a construction year of 1300.
+The session's challenge is **Critical Care Survival** (id `192`): predict
+whether a seriously ill hospital patient is alive or dead 60 days after study
+entry, from the clinical data recorded on day 3 of the admission. 6,373 training
+and 2,732 test patients from a five-hospital critical-care cohort, 31 columns the
+way a hospital export looks: five sites with their own units and spellings, a
+placeholder age of 999, a sodium of 1,370, a glucose column that pandas reads as
+text, and a billing column that only exists for discharged patients.
 
-**The model is fixed, so this is Parts A–E graded on real data.** The scorer
-always fits scikit-learn's default `LogisticRegression()` on the numbers you
-send and ranks the test rows by ROC AUC. You do not submit predictions: you
+**The model is fixed, so this is Parts A–E graded on real clinical data.** The
+scorer always fits scikit-learn's default `LogisticRegression()` on the numbers
+you send and ranks the test rows by ROC AUC. You do not submit predictions: you
 submit the **matrix your pipeline produces**, and every point of AUC comes from
 the preprocessing. Fit `build_pipeline()` on the train rows, `transform` train
 and test with the same fitted object, and write `submission.csv.gz`:
 
 - an `id` column and **1 to 300** numeric, finite feature columns;
 - **every** test id, and the train ids — all of them, or any subset of at least
-  **20,000** (dropping rows you do not trust is a preprocessing decision too);
+  **4,000** (dropping rows you do not trust is a preprocessing decision too);
 - no target column: the scorer has its own labels.
 
 ```bash
@@ -168,43 +170,50 @@ uv pip install mlarena-sdk scikit-learn==1.8.0   # the package is mlarena-sdk; i
 import mlarena
 
 client = mlarena.connect(api_key="mlk_user_...")   # Profile -> API Keys
-client.download_dataset(191, dest_dir="data/raw")  # train, test, EXPERTISE.md, DICTIONNAIRE.md
+client.download_dataset(192, dest_dir="data/raw")  # train, test, EXPERTISE.md, DICTIONARY.md
 submission.to_csv("submission.csv.gz", index=False) # the file must have exactly this name
-client.submit(challenge_id=191, files=["submission.csv.gz"])
+client.submit(challenge_id=192, files=["submission.csv.gz"])
 ```
 
-Read **`EXPERTISE.md`** before you choose an imputation or an encoding. The DPE
-is a regulated calculation, and it says why a missing construction year is
-recoverable from its period, why an insulation quality is an order, and why a
-département number is not a quantity. The starter notebook linked from the
-challenge page does the download-to-submit plumbing with the most naive
-features; everything in between is your pipeline.
+Read **`EXPERTISE.md`** before you choose an imputation or an encoding. It is
+the clinical brief: which value a lab takes when it was not ordered (the cohort
+median is not a normal value), which absences say something about the patient,
+which sites chart creatinine in µmol/L and temperature in °F, which quantities a
+clinician computes at the bedside from these very columns, and why a number
+billed at discharge cannot be a feature. The starter notebook linked from the
+challenge page does the download-to-submit plumbing, plots the data, and gives
+you a 3-fold cross-validation helper with the scorer's exact model; the
+decisions in between are your pipeline.
 
 **The numbers.** Higher is better; 0.500 is chance. Same `LogisticRegression()`,
 same split, only the features change:
 
 | Features | ROC AUC |
 |---|---|
-| numeric columns as read, empty cells set to 0 | 0.641 |
-| **benchmark — the same columns, median-imputed and standardised** | **0.761** |
-| + domain cleaning: construction years, implausible values, structural gaps | 0.821 |
-| + codes one-hot encoded as categories | 0.888 |
-| + insulation qualities as an order | 0.924 |
-| + features built from the regulation | 0.927 |
+| a constant column ("always alive") | 0.500 |
+| numeric columns as read, empty cells set to 0 (does not converge) | 0.757 |
+| **benchmark — the same columns, median-imputed and standardised** | **0.850** |
+| + repaired values, units harmonised per site, the post-outcome column dropped | 0.876 |
+| + labs imputed as the investigators did, absences kept as information | 0.900 |
+| + categories encoded as categories, orders as orders | 0.916 |
+| + the bedside formulas | 0.937 |
 
-**The bar is ROC AUC ≥ 0.85**, above the benchmark on purpose: a median imputer
-and a scaler do not reach it; the documented domain steps do. With 30,146 test
-rows the sampling noise is about ±0.003, so a gap of 0.01 is real.
+**The bar is ROC AUC ≥ 0.905**, above the benchmark on purpose: a median imputer
+and a scaler do not reach it, and neither does cleaning alone; the documented
+clinical steps do. With 2,732 test rows the sampling noise is about ±0.006, so a
+gap of 0.02 is real.
 
 Two warnings can come back with your score. **"lbfgs did not converge"** means
 columns on very different scales — the scaler in your numeric branch. **"train
 AUC is … above test AUC"** means a feature carries the target on the train rows:
-the naive target encoder of Part C, caught by the scorer. A rejected file (a
-NaN, a missing test id, a text column) names the first offender and still uses
-one of your submissions of the day, so run the starter's checks first.
+the naive target encoder of Part C, or a column that exists only for the
+training patients. The benchmark itself trips this warning; find out why. A
+rejected file (a NaN, a missing test id, a text column) names the first offender
+and still uses one of your submissions of the day, so run the starter's checks
+first.
 
-Challenge 176 (allergy IgE profiles) stays attached to this module as extra
-practice on the same skills.
+Challenges 191 (DPE energy label) and 176 (allergy IgE profiles) stay attached
+to this module as extra practice on the same skills.
 
 ---
 
@@ -229,7 +238,7 @@ The description states:
 | Out-of-fold target encoding, with the naive comparison reported | 15% |
 | Four tests passing, incl. the leak test and the unseen category | 20% |
 | Fitted pipeline serialised + `PREPROCESSING.md` complete | 10% |
-| A scored submission on challenge 191, ROC AUC ≥ 0.85 | 10% |
+| A scored submission on challenge 192, ROC AUC ≥ 0.905 | 10% |
 
 ---
 
@@ -264,9 +273,9 @@ produces is exactly as trustworthy as the object you built today.
 - [ ] Part D: `uv run pytest -q` reports 4 passed, and `test_target_encoding_is_out_of_fold` goes red against the naive column
 - [ ] Part E: `models/pipeline_<date>.joblib` exists, is gitignored, and reloads to transform one row identically
 - [ ] Part E: `PREPROCESSING.md` names every column as kept, dropped or engineered
-- [ ] Part F: my `submission.csv.gz`, built by my fitted pipeline, is on the leaderboard of DPE Energy Label (#191)
-- [ ] Part F: my score reaches the bar: **ROC AUC ≥ 0.85**
+- [ ] Part F: my `submission.csv.gz`, built by my fitted pipeline, is on the leaderboard of Critical Care Survival (#192)
+- [ ] Part F: my score reaches the bar: **ROC AUC ≥ 0.905**
 
 If the last two are not ticked you have not finished the lab, however good the
-code is. Submissions to #191 are scored within minutes, so there is no excuse for
+code is. Submissions to #192 are scored within minutes, so there is no excuse for
 leaving the last box empty at the end of the session.

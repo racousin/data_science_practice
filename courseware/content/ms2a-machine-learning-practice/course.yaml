@@ -18,7 +18,7 @@ course:
   start_date: "2026-09-14"
   end_date: "2026-11-27"
   description: |
-    A 33-hour applied machine learning course in eleven 3-hour sessions, taken
+    A 30-hour applied machine learning course in eleven 3-hour sessions, taken
     after *Python AI Engineering*. It walks the full arc of a modern ML system:
     collecting and preparing data, tabular models, deep networks in PyTorch,
     computer vision, natural language processing and large language models,
@@ -118,6 +118,8 @@ modules:
       values, duplicates, outliers, encodings, scaling, engineered features —
       each one fitted on train and applied to test, never the reverse.
     competitions:
+      - competition_id: 192
+        label: "Critical Care Survival — a fixed LogisticRegression on a five-hospital ICU cohort: every point of AUC comes from your preprocessing"
       - competition_id: 191
         label: "DPE Energy Label — a fixed LogisticRegression on ADEME's raw open data: every point of AUC comes from your preprocessing"
       - competition_id: 176

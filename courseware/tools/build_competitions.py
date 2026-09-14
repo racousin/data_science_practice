@@ -72,11 +72,21 @@ Optional config.py keys, applied before the benchmark (settings lock at start):
                              kind's default engine. Pinning goes through the
                              admin configuration route, so the creator key must
                              belong to an admin account.
-Optional config.py key read by `attach` only:
+Optional config.py keys read by `attach` only:
     pass_threshold           the score a student must reach for the module to
                              count the challenge validated, for a course that
-                             states its own bar. Absent means the bar is
-                             benchmark_expected_score.
+                             states its own bar. Absent or None means the bar
+                             is benchmark_expected_score. A bar above the
+                             benchmark is accepted only when the package also
+                             declares expert_expected_score and the bar is at
+                             most that value; otherwise it is refused as a
+                             typo, since nothing proves it reachable.
+    expert_expected_score    the score the package's own reference solution
+                             (its teacher pipeline) reaches on the shipped
+                             split — the ceiling a pass_threshold above the
+                             benchmark is checked against. Absent or None
+                             means no such claim, and the bar may not exceed
+                             the benchmark.
 Public and private files are looked up in `data/` and then in the package
 directory, so a hand-written file (EXPERTISE.md) need not be copied into data/.
 
@@ -121,7 +131,8 @@ PACKAGES_BY_COURSE = {
                               "s3-adult-income", "s3-diabetes-progression",
                               "s3-credit-risk", "s4-taxi-eta"],
     "ms2a-machine-learning-practice": ["mlp-s1-store-sales",
-                                       "s2-dpe-energy-label"],
+                                       "s2-dpe-energy-label",
+                                       "s2-icu-survival"],
 }
 PACKAGES = [p for pkgs in PACKAGES_BY_COURSE.values() for p in pkgs]
 
@@ -138,6 +149,11 @@ SUBMISSION_FILENAME_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*")
 # --------------------------------------------------------------------------- #
 def _is_int(value) -> bool:
     return isinstance(value, int) and not isinstance(value, bool)
+
+
+def _is_number(value) -> bool:
+    return (isinstance(value, (int, float)) and not isinstance(value, bool)
+            and value == value)                                 # not NaN
 
 
 def validate_config(cfg: dict) -> None:
@@ -176,18 +192,34 @@ def validate_config(cfg: dict) -> None:
     if engine_id is not None and (not _is_int(engine_id) or engine_id < 1):
         raise SystemExit(f"{pkg}: engine_id must be a positive int or None, "
                          f"got {engine_id!r}")
-    if "pass_threshold" in cfg:
-        bar = cfg["pass_threshold"]
-        if (isinstance(bar, bool) or not isinstance(bar, (int, float))
-                or bar != bar):
+    # Both keys may be present as None ("to be pinned"), which reads as absent.
+    expert = cfg.get("expert_expected_score")
+    if expert is not None and not _is_number(expert):
+        raise SystemExit(f"{pkg}: expert_expected_score must be a number or "
+                         f"None, got {expert!r}")
+    bar = cfg.get("pass_threshold")
+    if bar is not None:
+        if not _is_number(bar):
             raise SystemExit(f"{pkg}: pass_threshold must be a number, "
                              f"got {bar!r}")
-        # A bar the package's own reference solution misses is a typo or a
-        # stale number, not a course decision.
+        # A bar nothing in the package reaches is a typo or a stale number,
+        # not a course decision. The benchmark is the floor every package
+        # proves; a bar above it is a course asking for the domain steps
+        # (s2-dpe-energy-label: 0.85 over a 0.7606 benchmark), and is only
+        # accepted up to the score the package's own reference solution
+        # reaches, declared as expert_expected_score.
         bench = cfg.get("benchmark_expected_score")
-        if bench is not None and bar > bench:
+        if expert is not None:
+            if bar > expert:
+                raise SystemExit(f"{pkg}: pass_threshold {bar} is above "
+                                 f"expert_expected_score {expert} — the "
+                                 f"package's own reference solution would "
+                                 f"not validate")
+        elif bench is not None and bar > bench:
             raise SystemExit(f"{pkg}: pass_threshold {bar} is above the "
-                             f"benchmark's own score {bench}")
+                             f"benchmark's own score {bench}; declare "
+                             f"expert_expected_score to allow a bar above "
+                             f"the benchmark")
 
 
 def load_config(pkg: str) -> dict:
@@ -203,8 +235,9 @@ def load_config(pkg: str) -> dict:
 
 def pass_threshold(cfg: dict) -> float:
     """The bar `attach` writes onto the module link: the package's own
-    `pass_threshold` when it declares one, else its benchmark score."""
-    if "pass_threshold" in cfg:
+    `pass_threshold` when it declares one (a None reads as absent), else its
+    benchmark score."""
+    if cfg.get("pass_threshold") is not None:
         return cfg["pass_threshold"]
     if cfg["benchmark_expected_score"] is None:
         raise SystemExit(f"{cfg['_pkg']}: benchmark_expected_score is not pinned, "
@@ -725,7 +758,11 @@ def do_attach(args):
     A course that states its own bar declares `pass_threshold` in config.py,
     and that value is written instead (mlp-s1-store-sales: -20.0, the MAE <= 20
     of the original exercise). It is still read from the package, so it cannot
-    drift from the metric the way a hand-typed value did.
+    drift from the metric the way a hand-typed value did. A bar above the
+    benchmark (s2-dpe-energy-label: 0.85, "do the domain steps") is allowed
+    when the package declares `expert_expected_score` at or above it — see
+    `validate_config`; before that rule the DPE bar had to be typed on the
+    link by hand, and this reconciliation would have reverted it.
     """
     teacher = connect("MLARENA_TEACHER_API_KEY", args.base_url)
     state = read_state(args.base_url)

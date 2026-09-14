@@ -25,6 +25,12 @@
         "module_slug": "s2-data-preprocessing",
         "name": "MLP S2 \u2014 DPE Energy Label"
       },
+      "s2-icu-survival": {
+        "id": 192,
+        "label": "Critical Care Survival",
+        "module_slug": "s2-data-preprocessing",
+        "name": "MLP S2 \u2014 Critical Care Survival"
+      },
       "s3-adult-income": {
         "id": 181,
         "label": "Adult Census Income",

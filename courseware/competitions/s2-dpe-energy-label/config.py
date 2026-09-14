@@ -36,10 +36,13 @@ CONFIG = {
     # default file_v1 engine (12) caps env memory at 1024Mi, and the scorer
     # peaks at ~1.0 GB on a dense 100k x 250 submission.
     "engine_id": 27,
-    # Course bar on module 20 is 0.85, set on the link directly (SDK
-    # update_challenge_link), not via "pass_threshold": the builder refuses a
-    # bar above the benchmark (0.7606), and here that gap is the point —
-    # 0.85 takes the documented domain steps (cleaning, one-hot codes: 0.888).
+    # Course bar on module 20: above the benchmark (0.7606) on purpose — that
+    # gap is the point, 0.85 takes the documented domain steps (cleaning,
+    # one-hot codes: 0.888). The builder accepts a bar above the benchmark
+    # only up to expert_expected_score, the test AUC of the package's own
+    # reference solution (teacher_expert_pipeline.py on the shipped split).
+    "pass_threshold": 0.85,
+    "expert_expected_score": 0.92705,
     "public_files": [
         "train.csv.gz", "test.csv.gz", "sample_submission.csv.gz",
         "EXPERTISE.md", "DICTIONNAIRE.md",
