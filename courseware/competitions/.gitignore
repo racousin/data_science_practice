@@ -6,3 +6,7 @@ __pycache__/
 
 # The dataset id salt — see _dataset_ids.py. Never commit.
 .id-salt
+
+# Teacher-only expert pipelines: the answer to a challenge. The repository is
+# public, so they stay local. See s2-dpe-energy-label/teacher_expert_pipeline.py.
+*/teacher_*

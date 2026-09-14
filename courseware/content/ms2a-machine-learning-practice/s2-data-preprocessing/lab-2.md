@@ -4,7 +4,7 @@ Take the dataset you built in Lab 1 and turn it into a model-ready matrix
 through a single fitted object, with tests that prove nothing leaked.
 
 **Time:** 45 minutes. **Deliverable:** a merged PR in your project repository,
-and one scored submission on the session's competition (Part F).
+and one scored submission on the session's challenge (Part F).
 
 <!-- notes: 45 minutes. Part C is the one that runs over — tell them at minute
 20 that a naive target encoder plus a failing test is worth more than a correct
@@ -142,72 +142,69 @@ Dump the **fitted** pipeline, dated, and gitignore `models/`. In half a page,
 
 ## Part F — Put it on the board (5 min)
 
-The session's competition is **Allergies : profils IgE et symptômes cutanés**
-(id `176`) — the same problem shape as your lab, on real clinical open data from
-the Société Française d'Allergologie: 1,187 training patients, 241 IgE columns
-where an empty cell means *not measured* rather than *negative*, 7 demographic
-columns, and a binary target.
+The session's challenge is **DPE Energy Label** (id `191`): predict whether a
+French dwelling's energy label is **E, F or G**, from what the diagnostician
+recorded during the visit. 69,854 training and 30,146 test dwellings from
+ADEME's open data, 99 columns exactly as published: French labels, codes stored
+as numbers, empty cells that mean *not applicable*, a construction year of 1300.
 
-**The competition page is in French. Here is the whole of what you need.**
-Predict, for each of the 639 test patients, the probability that they show skin
-symptoms. `train.csv` carries the target in its `skin_symptoms` column — split it
-out first, which is Part A again on somebody else's table. Then feed the features
-through your `build_pipeline()`, fit a `LogisticRegression`, and write
-`submission.csv` with exactly two columns — `patient_id,skin_symptoms` — one row
-per test id, the second column a probability.
+**The model is fixed, so this is Parts A–E graded on real data.** The scorer
+always fits scikit-learn's default `LogisticRegression()` on the numbers you
+send and ranks the test rows by ROC AUC. You do not submit predictions: you
+submit the **matrix your pipeline produces**, and every point of AUC comes from
+the preprocessing. Fit `build_pipeline()` on the train rows, `transform` train
+and test with the same fitted object, and write `submission.csv.gz`:
+
+- an `id` column and **1 to 300** numeric, finite feature columns;
+- **every** test id, and the train ids — all of them, or any subset of at least
+  **20,000** (dropping rows you do not trust is a preprocessing decision too);
+- no target column: the scorer has its own labels.
 
 ```bash
-uv pip install mlarena-sdk        # the package is mlarena-sdk; it imports as mlarena
+uv pip install mlarena-sdk scikit-learn==1.8.0   # the package is mlarena-sdk; it imports as mlarena
 ```
 
 ```python
 import mlarena
 
 client = mlarena.connect(api_key="mlk_user_...")   # Profile -> API Keys
-client.download_dataset(176, dest_dir="data/raw")
-client.submit(competition_id=176, files=["submission.csv"])
-print(client.leaderboard(176).head())
+client.download_dataset(191, dest_dir="data/raw")  # train, test, EXPERTISE.md, DICTIONNAIRE.md
+submission.to_csv("submission.csv.gz", index=False) # the file must have exactly this name
+client.submit(challenge_id=191, files=["submission.csv.gz"])
 ```
 
-**The numbers.** The metric is **ROC AUC** and **higher is better**: 0.500 is
-chance, 1.000 is perfect. Measured on this exact split and published on the
-competition page:
+Read **`EXPERTISE.md`** before you choose an imputation or an encoding. The DPE
+is a regulated calculation, and it says why a missing construction year is
+recoverable from its period, why an insulation quality is an order, and why a
+département number is not a quantity. The starter notebook linked from the
+challenge page does the download-to-submit plumbing with the most naive
+features; everything in between is your pipeline.
 
-| Approach | ROC AUC |
+**The numbers.** Higher is better; 0.500 is chance. Same `LogisticRegression()`,
+same split, only the features change:
+
+| Features | ROC AUC |
 |---|---|
-| Constant submission | 0.500 |
-| **Benchmark — a calibrated count of positive IgE** | **0.644** |
-| Regularised logistic regression | 0.785 |
-| Gradient boosting | 0.795 |
-| Random forest, 500 trees | 0.813 |
+| numeric columns as read, empty cells set to 0 | 0.641 |
+| **benchmark — the same columns, median-imputed and standardised** | **0.761** |
+| + domain cleaning: construction years, implausible values, structural gaps | 0.821 |
+| + codes one-hot encoded as categories | 0.888 |
+| + insulation qualities as an order | 0.924 |
+| + features built from the regulation | 0.927 |
 
-The bar is the benchmark: **ROC AUC > 0.644**, and you can read it straight off
-the leaderboard — the row named `__benchmark__` is that reference solution, run
-by the competition itself. Sampling noise on 639 patients is about **±0.016**, so
-two scores less than 0.03 apart are not distinguishable: aim for a clear gap, not
-a third decimal.
+**The bar is ROC AUC ≥ 0.85**, above the benchmark on purpose: a median imputer
+and a scaler do not reach it; the documented domain steps do. With 30,146 test
+rows the sampling noise is about ±0.003, so a gap of 0.01 is real.
 
-A regularised logistic regression on these columns scores 0.785, so a leak-free
-pipeline that lands *under* 0.644 is a wiring problem rather than a modelling
-one: check `handle_unknown="ignore"` on the encoder, check that the "not
-measured" cells did not become zeros, and check that `fit` was called on `X_tr`
-alone.
+Two warnings can come back with your score. **"lbfgs did not converge"** means
+columns on very different scales — the scaler in your numeric branch. **"train
+AUC is … above test AUC"** means a feature carries the target on the train rows:
+the naive target encoder of Part C, caught by the scorer. A rejected file (a
+NaN, a missing test id, a text column) names the first offender and still uses
+one of your submissions of the day, so run the starter's checks first.
 
-**One warning about the starter notebook** shipped with the competition. Its
-stronger model does this:
-
-```python
-X_all = pd.concat([train.drop(columns=[TARGET]), test], keys=["train", "test"])
-cat = pd.get_dummies(X_all[CATEG].astype(str), dummy_na=True)   # do not copy this
-```
-
-The encoding vocabulary is therefore fitted on the test rows: some of its dummy
-columns exist only because test patients were in the frame. On this competition
-it costs nothing, because the test *labels* are never touched — but in your own
-repository it is the second line of the *Automatic deductions* list below, "a
-statistic computed over the full dataframe before the split". Fit the encoder on
-`train`, `transform` `test`, and you get the same score with a pipeline you can
-defend.
+Challenge 176 (allergy IgE profiles) stays attached to this module as extra
+practice on the same skills.
 
 ---
 
@@ -232,7 +229,7 @@ The description states:
 | Out-of-fold target encoding, with the naive comparison reported | 15% |
 | Four tests passing, incl. the leak test and the unseen category | 20% |
 | Fitted pipeline serialised + `PREPROCESSING.md` complete | 10% |
-| A scored submission on competition 176 | 10% |
+| A scored submission on challenge 191, ROC AUC ≥ 0.85 | 10% |
 
 ---
 
@@ -267,9 +264,9 @@ produces is exactly as trustworthy as the object you built today.
 - [ ] Part D: `uv run pytest -q` reports 4 passed, and `test_target_encoding_is_out_of_fold` goes red against the naive column
 - [ ] Part E: `models/pipeline_<date>.joblib` exists, is gitignored, and reloads to transform one row identically
 - [ ] Part E: `PREPROCESSING.md` names every column as kept, dropped or engineered
-- [ ] Part F: my submission is on the leaderboard of Allergies : profils IgE et symptômes cutanés (#176)
-- [ ] Part F: my score beats the baseline: **ROC AUC > 0.644** — the benchmark shipped with the competition
+- [ ] Part F: my `submission.csv.gz`, built by my fitted pipeline, is on the leaderboard of DPE Energy Label (#191)
+- [ ] Part F: my score reaches the bar: **ROC AUC ≥ 0.85**
 
 If the last two are not ticked you have not finished the lab, however good the
-code is. Submissions to #176 are scored immediately, so there is no excuse for
+code is. Submissions to #191 are scored within minutes, so there is no excuse for
 leaving the last box empty at the end of the session.

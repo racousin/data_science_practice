@@ -19,6 +19,12 @@
         "module_slug": "s2-ml-foundations",
         "name": "AIE S2 \u2014 Bike Sharing Demand"
       },
+      "s2-dpe-energy-label": {
+        "id": 191,
+        "label": "DPE Energy Label",
+        "module_slug": "s2-data-preprocessing",
+        "name": "MLP S2 \u2014 DPE Energy Label"
+      },
       "s3-adult-income": {
         "id": 181,
         "label": "Adult Census Income",

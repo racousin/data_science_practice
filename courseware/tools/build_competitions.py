@@ -166,6 +166,12 @@ def validate_config(cfg: dict) -> None:
         if not _is_int(size) or size < 1:
             raise SystemExit(f"{pkg}: max_upload_size_bytes must be a positive "
                              f"int, got {size!r}")
+    # The platform's dataset columns are varchar(200) / varchar(500); a longer
+    # value fails at create_dataset, after the challenge already exists.
+    for key, limit in (("dataset_label", 200), ("dataset_description", 500)):
+        if len(cfg.get(key) or "") > limit:
+            raise SystemExit(f"{pkg}: {key} is {len(cfg[key])} characters, "
+                             f"the platform stores at most {limit}")
     engine_id = cfg.get("engine_id")
     if engine_id is not None and (not _is_int(engine_id) or engine_id < 1):
         raise SystemExit(f"{pkg}: engine_id must be a positive int or None, "

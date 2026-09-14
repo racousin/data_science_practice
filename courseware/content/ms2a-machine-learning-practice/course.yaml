@@ -115,6 +115,8 @@ modules:
       values, duplicates, outliers, encodings, scaling, engineered features —
       each one fitted on train and applied to test, never the reverse.
     competitions:
+      - competition_id: 191
+        label: "DPE Energy Label — a fixed LogisticRegression on ADEME's raw open data: every point of AUC comes from your preprocessing"
       - competition_id: 176
         label: "Allergen Chip Challenge — real clinical open data: missing values, mixed types, an encoding contract fitted on train only"
     lessons:

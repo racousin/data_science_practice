@@ -179,9 +179,11 @@ competitions-attach:
 		echo "MLARENA_TEACHER_API_KEY is not set (needs a mlk_teacher_... key)."; exit 1; }
 	MLARENA_SDK_PATH=$(SDK_PATH) $(PY_COMPS) tools/build_competitions.py attach $(COMP_ARGS)
 
-# The guard's unit tests — no network, no SDK.
+# The guard's and the competition builder's unit tests — no network. The
+# builder's tests read the SDK checkout only to check its method signatures.
 test-tools:
-	uv run --quiet --with pytest pytest tools/test_lesson_sync.py -q
+	MLARENA_SDK_PATH=$(SDK_PATH) uv run --quiet --with pytest --with requests \
+		pytest tools/test_lesson_sync.py tools/test_build_competitions.py -q
 
 # --------------------------------------------------------------------------- #
 # Migration aid
