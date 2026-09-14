@@ -20,12 +20,12 @@ matrix there is, checks it with the scorer's own model, writes a valid
 `submission.csv.gz` and submits it. It is plumbing, not a solution: everything
 between reading the data and writing the file is yours.
 
-Then read **`EXPERTISE.md`**, which comes with the data. SUPPORT was a
+Then read **`EXPERTISE.pdf`**, which comes with the data. SUPPORT was a
 prognostic study, and its investigators wrote down what they measured, what a
 normal value is, and what they did when a lab was missing: why an empty
 albumin is not "unknown", why a creatinine of 700 can be an ordinary value,
 why a diagnosis is not a scale. Each preprocessing decision worth making here
-has a clinical reason. `DICTIONARY.md` describes every column.
+has a clinical reason. `DICTIONARY.pdf` describes every column.
 
 ## The data
 
@@ -41,32 +41,24 @@ public file is on hbiostat.org and the UCI repository.
 | `train.csv.gz` | 6,373 | `id`, the 31 columns, and the target `dead` |
 | `test.csv.gz` | 2,732 | `id` and the same 31 columns |
 | `sample_submission.csv.gz` | one row per train and test id | the benchmark's submission: the format to follow |
-| `EXPERTISE.md` | | what clinicians know about the columns |
-| `DICTIONARY.md` | | each column: meaning, unit, fill rate, examples |
+| `EXPERTISE.pdf` | | what clinicians know about the columns |
+| `DICTIONARY.pdf` | | each column: meaning, unit, fill rate, examples |
 
 `dead` is **1** when the patient died within 60 days of study entry, and 0
 otherwise: 46.2% of the training rows (46.2% of the test
-rows). The outcome is modelled from the cohort's clinical picture; it is not a
-column of the public file.
+rows).
 
-**The values are as a hospital export would look.** Five sites, each charting
-in its own units. Free-text spellings of sex and race. An age of 999. A
-sodium of 1370. A glucose column that reads as text because one site writes
-"not done" in it. Labs that are empty because nobody ordered them, and a
-functional-status questionnaire that is empty because the patient could not
-answer. Nothing has been cleaned: that is the exercise.
+**What the columns hold.** Every column is what the chart held on day 3 of the
+study, plus the bill. Five sites, each charting in its own units.
+Several spellings of sex and race. Ages of 999. Sodium values above 1,000. A
+glucose column that pandas reads as text because one site writes "not done"
+in it. Labs that are empty because nobody ordered them, and a
+functional-status questionnaire that is empty when the patient could not
+answer.
 
-**What is not in the data, and why.** Everything recorded after day 3, or
-that is itself a prognosis, is removed: the date and place of death, the
-length of stay, the in-hospital outcome, the SUPPORT and APACHE physiology
-scores, the model's and the physicians' survival estimates, do-not-resuscitate
-orders, the cost estimates, the two-month functional status. What remains is
-what the chart contained on day 3, plus one column that a hospital export
-would carry and a bedside model cannot use: the bill.
-
-**The split is by patient.** The training rows are a historical cohort,
-discharged and billed. The test rows are patients still admitted at the time
-of extraction: identical columns, but no bill yet.
+**Train and test.** Each row is one patient, and the two files have the same
+31 columns. `charges`, the hospital bill, is filled for 98% of the training
+patients and empty for every test patient.
 
 ## What you submit
 
@@ -150,7 +142,7 @@ features change.
 | *gradient boosting on the raw columns, for reference* | *0.907* |
 
 The benchmark knows nothing about patients. Each rung above it is one item of
-`EXPERTISE.md` put into numbers, and none of them requires a different model.
+`EXPERTISE.pdf` put into numbers, and none of them requires a different model.
 The last row is a flexible model given the raw columns, which a straight line
 on good features gets close to; a score well above it is not preprocessing.
 The pass bar for this module is a test AUC of **0.905**.
@@ -161,9 +153,8 @@ The pass bar for this module is a test AUC of **0.905**.
   encode, drop: all of it is the exercise.
 - **Target statistics only out-of-fold within train.** A target encoding fitted
   on the rows it encodes is caught by the train/test gap; do not try to hide it.
-- **No external data and no labels from outside.** The source cohort is public,
-  but the label is modelled and is not in it. Joining the public file, or any
-  other, is external data and is forbidden. Looking things up is not
+- **No external data and no labels from outside.** Joining the public SUPPORT
+  files, or any other file, is external data and is forbidden. Looking things up is not
   preprocessing, it is not what is assessed, and a score far above the
   boosting reference is conspicuous.
 - **No model smuggled in as a feature.** A column holding another model's

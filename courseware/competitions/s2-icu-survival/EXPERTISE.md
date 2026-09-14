@@ -9,7 +9,7 @@ what they did when a value was missing.
 
 This brief collects the twelve facts that matter most for preprocessing, with the choice
 each one justifies. It does not rank them: measuring them is your job. Column meanings are
-in `DICTIONARY.md`.
+in `DICTIONARY.pdf`.
 
 ---
 
@@ -21,8 +21,7 @@ followed 9,105 seriously ill adults admitted to five US academic medical centres
 diagnoses was met (fact 6). The physiology you receive is the **worst value recorded on the
 third day after study entry**, as the investigators collected it for their prognostic model.
 The label is the patient's vital status two months (60 days) after entry: `dead = 1` if the
-patient died within that window. The outcome here is modelled from the cohort's clinical
-picture rather than copied from the public file, so it cannot be looked up there.
+patient died within that window.
 
 **What it justifies.** Every column is something known at the bedside on day 3, with one
 exception (fact 10). Each row is one patient; the site is a hospital, not a quantity.
@@ -113,7 +112,7 @@ Edition, "Normal laboratory values".*
 
 ## 5. Sites chart in different units
 
-The five hospitals exported their charts in their own conventions, and the file keeps them.
+The five hospitals chart in their own conventions.
 
 - **Creatinine**: sites A, B and C report mg/dL; **sites D and E report µmol/L**. 1 mg/dL =
   88.4 µmol/L. A normal creatinine reads 1.0 at site A and 88 at site D.
@@ -125,7 +124,7 @@ the units agree; the SIRS cut-offs and the BUN/creatinine ratio of fact 7 assume
 mg/dL. Harmonise first, then look for extremes: a creatinine of 700 is an impossible mg/dL
 value and an ordinary µmol/L one.
 
-*Source: site conventions in `DICTIONARY.md`; conversion factors, MSD Manual.*
+*Source: site conventions in `DICTIONARY.pdf`; conversion factors, MSD Manual.*
 
 ## 6. Diagnoses are categories, severities are orders, sex and race are neither
 
@@ -223,9 +222,8 @@ new.
 
 `charges` is the total hospital bill for the stay. It is computed at discharge, and it grows
 with the length of the stay and the intensity of care, so it also reflects how the stay
-ended. For a patient still in the ward there is no bill yet. The training cohort is
-historical and fully billed; the test patients are still admitted at the time of extraction,
-so their `charges` cell is empty for every one of them.
+ended. For a patient still in the ward there is no bill yet. In `train.csv.gz` the column is
+filled for 98 % of the patients; in `test.csv.gz` it is empty for every patient.
 
 **What it justifies.** A model cannot use at prediction time what does not exist at
 prediction time. A column that is strong on the training rows and absent on the test rows

@@ -55,7 +55,7 @@ CONFIG = {
     "expert_expected_score": 0.936766,
     "public_files": [
         "train.csv.gz", "test.csv.gz", "sample_submission.csv.gz",
-        "EXPERTISE.md", "DICTIONARY.md",
+        "EXPERTISE.pdf", "DICTIONARY.pdf",
     ],
     # Uploaded to the ENV folder next to env.py (build_competitions.py uploads
     # env.py itself separately, from the package root), never to the dataset.
@@ -78,11 +78,11 @@ CONFIG = {
     # dataset.description is varchar(500) on the platform.
     "dataset_description": (
         "The SUPPORT cohort: 9,105 seriously ill adults admitted to 5 US "
-        "hospitals, 1989-1994, in 32 columns as a hospital export would look "
-        "(site, demographics, diagnosis, day-3 physiology, charges). "
+        "hospitals, 1989-1994: site, demographics, diagnosis, day-3 vital signs "
+        "and labs, functional status, charges (31 columns). "
         "train.csv.gz carries the target dead (died within 60 days of study "
-        "entry); test.csv.gz does not. EXPERTISE.md explains the clinical "
-        "knowledge, DICTIONARY.md each column, sample_submission.csv.gz the "
+        "entry); test.csv.gz does not. EXPERTISE.pdf explains the clinical "
+        "knowledge, DICTIONARY.pdf each column, sample_submission.csv.gz the "
         "format."
     ),
     # Deterministic scorer: the same file always yields the same AUC.

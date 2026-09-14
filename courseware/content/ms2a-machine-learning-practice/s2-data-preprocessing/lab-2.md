@@ -145,10 +145,10 @@ Dump the **fitted** pipeline, dated, and gitignore `models/`. In half a page,
 The session's challenge is **Critical Care Survival** (id `192`): predict
 whether a seriously ill hospital patient is alive or dead 60 days after study
 entry, from the clinical data recorded on day 3 of the admission. 6,373 training
-and 2,732 test patients from a five-hospital critical-care cohort, 31 columns the
-way a hospital export looks: five sites with their own units and spellings, a
-placeholder age of 999, a sodium of 1,370, a glucose column that pandas reads as
-text, and a billing column that only exists for discharged patients.
+and 2,732 test patients from a five-hospital critical-care cohort, 31 columns:
+five sites with their own units and spellings, ages of 999, a sodium of 1,370, a
+glucose column that pandas reads as text, and a billing column that is empty in
+the test file.
 
 **The model is fixed, so this is Parts A–E graded on real clinical data.** The
 scorer always fits scikit-learn's default `LogisticRegression()` on the numbers
@@ -170,12 +170,12 @@ uv pip install mlarena-sdk scikit-learn==1.8.0   # the package is mlarena-sdk; i
 import mlarena
 
 client = mlarena.connect(api_key="mlk_user_...")   # Profile -> API Keys
-client.download_dataset(192, dest_dir="data/raw")  # train, test, EXPERTISE.md, DICTIONARY.md
+client.download_dataset(192, dest_dir="data/raw")  # train, test, EXPERTISE.pdf, DICTIONARY.pdf
 submission.to_csv("submission.csv.gz", index=False) # the file must have exactly this name
 client.submit(challenge_id=192, files=["submission.csv.gz"])
 ```
 
-Read **`EXPERTISE.md`** before you choose an imputation or an encoding. It is
+Read **`EXPERTISE.pdf`** before you choose an imputation or an encoding. It is
 the clinical brief: which value a lab takes when it was not ordered (the cohort
 median is not a normal value), which absences say something about the patient,
 which sites chart creatinine in µmol/L and temperature in °F, which quantities a

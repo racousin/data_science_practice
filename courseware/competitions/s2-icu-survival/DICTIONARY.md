@@ -4,11 +4,9 @@ Both files carry `id` and the 31 columns below, in this order; `train.csv.gz`
 adds the target `dead` (1 if the patient died within 60 days of study entry,
 else 0).
 
-The values are **as a hospital export would look**: units that differ by
-site, free-text spellings, placeholders, a text token in a numeric column,
-labs that are empty because nobody ordered them. Nothing has been cleaned or
-recoded. Deciding what each column needs is the exercise; `EXPERTISE.md` gives
-the reasons.
+Units differ by site, spellings vary, a few cells hold placeholders, one
+numeric column holds a text token, and labs are empty when nobody ordered
+them. `EXPERTISE.pdf` gives the clinical reasons behind each column.
 
 - **Meaning:** from the SUPPORT documentation
   ([hbiostat.org/data/repo/supportdesc](https://hbiostat.org/data/repo/supportdesc))
@@ -26,7 +24,7 @@ the reasons.
 
 | column | meaning | unit | read as | filled | distinct | examples |
 |---|---|---|---|---|---|---|
-| `site` | Hospital site, A to E. SUPPORT ran in five US academic medical centres; each site exported its chart in its own units (see `crea`, `temp`). | code | text | 100.0% | 5 | `A` (29%) · `B` (26%) · `D` (18%) · `C` (15%) · `E` (12%) |
+| `site` | Hospital site, A to E. SUPPORT ran in five US academic medical centres; each site charts in its own units (see `crea`, `temp`). | code | text | 100.0% | 5 | `A` (29%) · `B` (26%) · `D` (18%) · `C` (15%) · `E` (12%) |
 | `hday` | Hospital day on which the patient entered the study (1 = the day of admission). | days | number | 100.0% | 80 | min 1 · median 1 · max 148 |
 
 ## Demographics & social

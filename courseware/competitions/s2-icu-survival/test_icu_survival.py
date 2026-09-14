@@ -174,7 +174,7 @@ def test_config_contract(cfg):
     assert cfg["is_public_initial"] is False
     assert len(cfg["dataset_description"]) <= 500
     assert cfg["public_files"] == ["train.csv.gz", "test.csv.gz", "sample_submission.csv.gz",
-                                   "EXPERTISE.md", "DICTIONARY.md"]
+                                   "EXPERTISE.pdf", "DICTIONARY.pdf"]
     assert cfg["private_files"] == ["labels_train.csv", "labels_test.csv"]
     # pinned after prepare_data.py / the ladder; None reads as absent for the builder
     for key in ("benchmark_expected_score", "pass_threshold", "expert_expected_score"):
@@ -553,7 +553,7 @@ def test_starter_notebook_runs_offline_and_is_accepted(env, tmp_path):
     assert "mlk_user_..." in code and "mlk_user_4" not in code
 
     for name in ("train.csv.gz", "test.csv.gz", "sample_submission.csv.gz",
-                 "EXPERTISE.md", "DICTIONARY.md"):
+                 "EXPERTISE.pdf", "DICTIONARY.pdf"):
         src = DATA / name if (DATA / name).is_file() else PKG / name
         shutil.copy2(src, tmp_path / name)
     neutralised = 0

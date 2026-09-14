@@ -3,7 +3,7 @@ distinct count and example values.
 
 Meanings come from the SUPPORT documentation (Harrell, hbiostat.org/data/repo/
 supportdesc; Knaus et al., Ann Intern Med 1995) and from the charting
-conventions of the five sites of this export. The fill rates, distinct counts
+conventions of the five sites. The fill rates, distinct counts
 and examples are computed from the shipped `train.csv.gz`, so they describe
 exactly the file a student downloads: dirty spellings, text tokens and
 placeholders included.
@@ -49,7 +49,7 @@ GROUPS: list[tuple[str, list[str]]] = [
 
 MEANINGS: dict[str, tuple[str, str]] = {
     "site": ("Hospital site, A to E. SUPPORT ran in five US academic medical centres; "
-             "each site exported its chart in its own units (see `crea`, `temp`).", "code"),
+             "each site charts in its own units (see `crea`, `temp`).", "code"),
     "age": ("Age at study entry. Some sites record 999 when the age is unknown.", "years"),
     "sex": ("Sex of the patient. Free-text entry: the spellings differ by site and by "
             "clerk (full word or initial, upper or lower case).", _TEXT),
@@ -110,11 +110,9 @@ Both files carry `id` and the {n} columns below, in this order; `train.csv.gz`
 adds the target `dead` (1 if the patient died within 60 days of study entry,
 else 0).
 
-The values are **as a hospital export would look**: units that differ by
-site, free-text spellings, placeholders, a text token in a numeric column,
-labs that are empty because nobody ordered them. Nothing has been cleaned or
-recoded. Deciding what each column needs is the exercise; `EXPERTISE.md` gives
-the reasons.
+Units differ by site, spellings vary, a few cells hold placeholders, one
+numeric column holds a text token, and labs are empty when nobody ordered
+them. `EXPERTISE.pdf` gives the clinical reasons behind each column.
 
 - **Meaning:** from the SUPPORT documentation
   ([hbiostat.org/data/repo/supportdesc](https://hbiostat.org/data/repo/supportdesc))

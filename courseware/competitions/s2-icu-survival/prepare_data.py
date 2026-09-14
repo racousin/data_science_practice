@@ -15,7 +15,7 @@ joined to recover the label, and each preprocessing step in EXPERTISE.md is
 worth a measurable, controlled amount of AUC.
 
 Public    -> data/train.csv.gz, data/test.csv.gz, data/sample_submission.csv.gz,
-             data/EXPERTISE.md, data/DICTIONARY.md (copies of the package's)
+             data/EXPERTISE.pdf, data/DICTIONARY.pdf (rendered from the package's .md)
 Private   -> data/labels_train.csv, data/labels_test.csv   (ENV folder only)
 Benchmark -> data/benchmark_submission.csv.gz (== sample_submission.csv.gz)
 
@@ -31,13 +31,14 @@ Steps, each of which fails the build rather than degrade:
 5. **Benchmark**: the numeric columns as pandas reads them, median-imputed and
    standardised, all rows; scored by `env.py` itself. Its score is what
    `config.py` pins as `benchmark_expected_score`.
-6. **Dictionary** rendered from the shipped train file; docs copied to data/.
+6. **Documents**: DICTIONARY.md rendered from the shipped train file, then
+   EXPERTISE.md and DICTIONARY.md rendered to PDF (tools/md_to_pdf.py) into data/.
 7. **Leak canary**: LightGBM on the raw shipped columns. Far above the expert
    line means a label leaked.
 
     export MLARENA_ID_SALT=$(cat ../.id-salt)   # competitions/.id-salt, never committed
     uv run --with scikit-learn==1.8.0 --with pandas --with lightgbm \\
-        python prepare_data.py [--skip-canary]
+        --with weasyprint --with markdown python prepare_data.py [--skip-canary]
 """
 from __future__ import annotations
 
@@ -61,7 +62,9 @@ HERE = Path(__file__).resolve().parent
 DATA = HERE / "data"
 sys.path.insert(0, str(HERE.parent))
 sys.path.insert(0, str(HERE))
+sys.path.insert(0, str(HERE.parent.parent / "tools"))
 from _dataset_ids import shuffle_and_label  # noqa: E402
+from md_to_pdf import convert as md_to_pdf  # noqa: E402  (needs weasyprint + markdown)
 
 try:
     import teacher_secret as secret  # noqa: E402
@@ -242,10 +245,12 @@ def main():
         raise SystemExit(f"env.py rejected the benchmark: {result['agent_code_error_message']}")
     print(f"  benchmark ({len(numeric)} numeric columns as read): {result['info_message']}")
 
-    print("6. dictionary …")
+    print("6. documents …")
     render_dictionary(train, HERE / "DICTIONARY.md")
-    for doc in ("EXPERTISE.md", "DICTIONARY.md"):
-        shutil.copy2(HERE / doc, DATA / doc)
+    for doc in ("EXPERTISE", "DICTIONARY"):
+        (DATA / f"{doc}.md").unlink(missing_ok=True)          # the dataset ships PDFs only
+        md_to_pdf(HERE / f"{doc}.md", DATA / f"{doc}.pdf", title=doc)
+        print(f"  {doc}.pdf: {(DATA / f'{doc}.pdf').stat().st_size / 1024:.0f} kB")
 
     from sklearn.metrics import roc_auc_score
     oracle = float(roc_auc_score(y_te.to_numpy(), p_te))
