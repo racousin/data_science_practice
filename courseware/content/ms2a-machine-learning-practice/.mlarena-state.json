@@ -105,7 +105,7 @@
     "published": {
       "course": {
         "code": "MS2A-MLP-2026",
-        "description": "A 33-hour applied machine learning course in eleven 3-hour sessions, taken\nafter *Python AI Engineering*. It walks the full arc of a modern ML system:\ncollecting and preparing data, tabular models, deep networks in PyTorch,\ncomputer vision, natural language processing and large language models,\nreinforcement learning, and deploying a trained model as a Docker image\nserved by an API.\n\nEvery session is half lecture, half lab. Half the grade is a project\nsubmitted to ML-Arena; the other half is continuous assessment across the\neleven labs. You are expected to arrive with the engineering floor from the\n12-hour module: git, a packaged environment, tests, and a coding agent you\nknow how to supervise.",
+        "description": "A 30-hour applied machine learning course in eleven 3-hour sessions, taken\nafter *Python AI Engineering*. It walks the full arc of a modern ML system:\ncollecting and preparing data, tabular models, deep networks in PyTorch,\ncomputer vision, natural language processing and large language models,\nreinforcement learning, and deploying a trained model as a Docker image\nserved by an API.\n\nEvery session is half lecture, half lab. Half the grade is a project\nsubmitted to ML-Arena; the other half is continuous assessment across the\neleven labs. You are expected to arrive with the engineering floor from the\n12-hour module: git, a packaged environment, tests, and a coding agent you\nknow how to supervise.",
         "end_date": "2026-11-27",
         "instructor_name": "Raphael Cousin",
         "name": "MS2A - Machine Learning Practice",
@@ -317,7 +317,7 @@
           "title": "Feature Engineering and Selection"
         },
         "s2-data-preprocessing/lab-2": {
-          "body": "0ccf2661451d50908654a7dccc0e4fcd4cfd49483640da805a778c64509f76bd",
+          "body": "d967a5621031825c58a8c6c9871196e9a5ee76ee332a08f15b49c278654ae346",
           "estimated_minutes": 45,
           "gated": false,
           "is_published": true,
