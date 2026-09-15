@@ -35,10 +35,12 @@
       "s11-docker-and-deployment/why-deploy": 192,
       "s11-docker-and-deployment/writing-a-dockerfile": 198,
       "s2-data-preprocessing/categorical-encoding": 67,
-      "s2-data-preprocessing/duplicates-inconsistencies-outliers": 66,
-      "s2-data-preprocessing/feature-engineering-and-selection": 69,
+      "s2-data-preprocessing/duplicates-and-inconsistencies": 204,
+      "s2-data-preprocessing/feature-engineering": 205,
+      "s2-data-preprocessing/feature-selection": 203,
       "s2-data-preprocessing/lab-2": 70,
       "s2-data-preprocessing/missing-values": 65,
+      "s2-data-preprocessing/outliers": 202,
       "s2-data-preprocessing/scaling-and-normalization": 68,
       "s2-data-preprocessing/the-preprocessing-contract": 64,
       "s3-tabular-models/gradient-boosting-in-practice": 73,
@@ -302,33 +304,47 @@
           "is_published": true,
           "title": "Categorical Encoding"
         },
-        "s2-data-preprocessing/duplicates-inconsistencies-outliers": {
-          "body": "ca97027e0f7210d36c7a8043c9aff2a78944515aaf1b64db43dee6116e70b435",
-          "estimated_minutes": 30,
+        "s2-data-preprocessing/duplicates-and-inconsistencies": {
+          "body": "4a50d28b3f2984d15efe6690a4b75026cee3596b6e55067a7cd6c58219542966",
+          "estimated_minutes": 15,
           "gated": false,
           "is_published": true,
-          "title": "Duplicates, Inconsistencies, Outliers"
+          "title": "Duplicates and Inconsistencies"
         },
-        "s2-data-preprocessing/feature-engineering-and-selection": {
-          "body": "ded4fd3b9afb500991222ecceee5c1766da5eceb66a7abdda2540b5c0f20e8e8",
-          "estimated_minutes": 40,
+        "s2-data-preprocessing/feature-engineering": {
+          "body": "5052f467811f5e3a6a5742569eb74c072ea33ca9e2daa075cc8f7fa60b247116",
+          "estimated_minutes": 20,
           "gated": false,
           "is_published": true,
-          "title": "Feature Engineering and Selection"
+          "title": "Feature Engineering"
+        },
+        "s2-data-preprocessing/feature-selection": {
+          "body": "cb20dd3556c3c24832202691cc2e7156836054e7979f673f907b74090a7ea8e2",
+          "estimated_minutes": 20,
+          "gated": false,
+          "is_published": true,
+          "title": "Feature Selection"
         },
         "s2-data-preprocessing/lab-2": {
-          "body": "d779e9b5c07de6967fbbcd5a58f94be4303df23607edc2b791250b6bd9df7e3a",
+          "body": "fcda9e2d38d1370f90c47dee1afbae47ef27764490fed7d8264ad1ad31196710",
           "estimated_minutes": 45,
           "gated": false,
           "is_published": true,
-          "title": "Lab 2 \u2014 A Leak-Free Pipeline"
+          "title": "Lab 2 \u2014 Preprocessing Notebook"
         },
         "s2-data-preprocessing/missing-values": {
-          "body": "cef0ba47adf12ef200f4ce750a4c7d95e7dc8c5a937c9ea063180c07ff6b0162",
+          "body": "40f4e1b0d1e49232e2b832bf7a66065aff171c9351befc7020c06d3342c7b040",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
           "title": "Missing Values"
+        },
+        "s2-data-preprocessing/outliers": {
+          "body": "13522767f244179d953f8fc46337be79f641f9e323865adeaab91e89c70cbc7d",
+          "estimated_minutes": 15,
+          "gated": false,
+          "is_published": true,
+          "title": "Outliers"
         },
         "s2-data-preprocessing/scaling-and-normalization": {
           "body": "dad889cf470c465a289b87d30f15f9720daea707f5d79f1bcf572688924a7015",
@@ -406,10 +422,12 @@
           "lessons": [
             "the-preprocessing-contract",
             "missing-values",
-            "duplicates-inconsistencies-outliers",
+            "duplicates-and-inconsistencies",
+            "outliers",
             "categorical-encoding",
             "scaling-and-normalization",
-            "feature-engineering-and-selection",
+            "feature-engineering",
+            "feature-selection",
             "lab-2"
           ],
           "summary": "Turning a collected table into a matrix a model can learn from: missing values, duplicates, outliers, encodings, scaling, engineered features \u2014 each one fitted on train and applied to test, never the reverse.",
