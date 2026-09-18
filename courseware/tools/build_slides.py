@@ -25,6 +25,7 @@ Usage::
 from __future__ import annotations
 
 import argparse
+import io
 import os
 import re
 import sys
@@ -732,7 +733,7 @@ class DeckBuilder:
             self.missing_assets.append(block.src)
             return self._quote(slide, f"[missing image: {block.src}]", y, 14)
         h = min(Inches(height_in), BODY_BOTTOM - y)
-        pic = slide.shapes.add_picture(path, MARGIN, y, height=h)
+        pic = slide.shapes.add_picture(embeddable(path), MARGIN, y, height=h)
         if pic.width > CONTENT_W:  # guard; the plan already caps on width
             ratio = CONTENT_W / pic.width
             pic.width = int(pic.width * ratio)
@@ -761,6 +762,26 @@ def load_manifest(base: str) -> dict:
                     return json.load(fh)
                 return yaml.safe_load(fh)
     raise SystemExit(f"no course.yaml in {base}")
+
+
+# What python-pptx embeds as is. Anything else Pillow reads — a WEBP uploaded
+# in the ML-Arena course editor and brought down by `make pull` — goes into the
+# deck as a PNG, converted in memory, so the Markdown keeps the reference the
+# website serves.
+PPTX_FORMATS = {"BMP", "GIF", "JPEG", "PNG", "TIFF", "WMF"}
+
+
+def embeddable(path: str):
+    """`path`, or a PNG copy of it that python-pptx can embed."""
+    from PIL import Image as PILImage
+
+    with PILImage.open(path) as im:
+        if im.format in PPTX_FORMATS:
+            return path
+        png = io.BytesIO()
+        im.save(png, format="PNG")
+    png.seek(0)
+    return png
 
 
 def build_module(base: str, course: dict, module: dict, out_dir: str,

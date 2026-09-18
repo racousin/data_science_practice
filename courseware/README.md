@@ -65,7 +65,8 @@ courseware/
 │   ├── test_lesson_sync.py           # its tests — no network (`make test-tools`)
 │   ├── mathrender.py                 # LaTeX -> Unicode / PNG
 │   ├── publish_mlarena.py            # Markdown -> ML-Arena (idempotent, guarded)
-│   ├── pull_mlarena.py               # ML-Arena -> Markdown (bodies only)
+│   ├── pull_mlarena.py               # ML-Arena -> Markdown + course.yaml + images
+│   ├── course_yaml.py                # course.yaml edits that keep its comments
 │   ├── build_competitions.py         # competition packages -> ML-Arena
 │   └── harvest_website.py            # one-off: React JSX -> Markdown
 └── build/                            # generated, gitignored
@@ -245,6 +246,24 @@ inside a session on the web without being lectured from its deck.
 
 ---
 
+## Syncing from the website
+
+The course is edited on ML-Arena while it is being taught, so before any work
+here — and always before a publish — bring the repo up to the website:
+
+```bash
+make pull-all        # every course: pull, then check-sync (fails if anything is left)
+git add -A content && git commit -m "Pull the website" && git push
+```
+
+`pull-all` needs nothing but `MLARENA_API_KEY` in `.env`. It rewrites lesson
+bodies, downloads images uploaded in the course editor, edits `course.yaml`
+(comments kept), records the publish baseline, and ends on a `check-sync` of
+every course, so a green run *is* the proof that repo and website agree. What
+it cannot do alone is a module added, removed or reordered on the website: it
+prints that as the edit to make, and `check-sync` stays red until it is made.
+`make pull-dry COURSE=… DIFF=1` shows one course's changes without writing.
+
 ## Publishing to ML-Arena
 
 ```bash
@@ -390,7 +409,7 @@ make check-sync MODULE=s2-ml-foundations
 
 | Tier | Cost | Catches |
 |---|---|---|
-| `QUICK=1` | one request | a lesson added, deleted, renamed, reordered, unpublished, or re-timed on the site |
+| `QUICK=1` | one request | a lesson added, deleted, renamed, reordered, unpublished, gated or re-timed on the site; a module renamed or its summary/icon changed; a challenge attached, detached or relabelled; a course field changed; a module added, removed or reordered |
 | default | one request per lesson | all of the above, **plus any edit to a lesson body** |
 
 Both compare against `course.yaml` and the markdown, not against the baseline,
@@ -408,60 +427,74 @@ comments included.
 ### Pulling a website edit back
 
 `make pull` is the other direction, and the answer to what `check-sync` finds.
-It rewrites the source markdown from the live bodies, so the edit made on the
-website survives the next publish instead of being overwritten by it.
+It makes the repo match the website, so an edit made there survives the next
+publish instead of being overwritten by it. `make pull-all` runs it for every
+course and then verifies; the per-course form takes `MODULE=`:
 
 ```bash
-make pull-dry MODULE=s1-git-and-packaging          # what it would rewrite
-make pull-dry MODULE=s1-git-and-packaging DIFF=1   # ... line by line
+make pull-dry MODULE=s1-git-and-packaging          # what it would change
+make pull-dry MODULE=s1-git-and-packaging DIFF=1   # ... line by line, course.yaml too
 make pull MODULE=s1-git-and-packaging              # write the files
 ```
 
-A pull also **records the baseline** for every body it compared: once the repo
-holds the live text, that text is ours, and the next publish can prove the
-server was untouched since. Bodies only, and that limit is load bearing — the
-titles and orders a pull merely *reports* are not absorbed, so baselining them
-would tell the next publish it was free to overwrite the very edit it had just
-printed as a to-do. It is also how a repo with no baseline gets one without
-publishing: with the repo and the site already in sync, `make pull` rewrites
-nothing and records all of it.
+It writes three things:
 
-It pulls **lesson bodies only.** A body is a file the tool owns end to end, so
-overwriting it is safe and `git diff` shows exactly what arrived. Everything
-else — a title, a lesson deleted on the website, a reordering — lives in
-`course.yaml`, whose comments carry the reasoning behind every structural
-decision in the course and would not survive a YAML round-trip. So structural
-drift is **reported as the edits to make by hand** and the tool touches nothing:
+| | |
+|---|---|
+| lesson bodies | each Markdown file, from the live body |
+| `course.yaml` | every lesson's title, kind, published / gated flags and minutes; the lesson order; lessons added (a new file next to its siblings) or deleted (entry and file removed) on the website; each module's title, icon, summary and challenge links (id, label); the course fields |
+| images | an image uploaded in the course editor, downloaded into the directory the lesson's — or its module's — images already use |
+
+`course.yaml` is **edited a line at a time** (`tools/course_yaml.py`), never
+round-tripped through a YAML library: its comments carry the reasoning behind
+every structural decision in the course, and a PyYAML dump deletes them while
+ruamel moves each one onto the wrong item when lessons are reordered. A value
+is rewritten in place (an inline `# core` survives), a lesson moves with the
+comment run directly above it, and a removed item leaves its comment in place
+for you to read in the diff. The result is re-parsed and compared with the live
+course before anything is written; an edit that did not land is a crash, not a
+quietly wrong manifest.
+
+It does **not** add, remove or reorder a **module**. Those are restructures —
+module slugs are immutable server-side, and a new module brings a directory,
+lessons and attachments — so they are printed as the edit to make by hand:
 
 ```
-3 change(s) this tool does not make — edit course.yaml by hand:
-  * reorder s1-git-and-packaging — put the lessons in the server's order: …
-  * delete s1-git-and-packaging/session-map — deleted on the website; …
-  * s1-git-and-packaging/accounts-and-tools (#174) — set title: 'X' -> 'Y'
+1 change(s) this tool does not make — restructure course.yaml by hand:
+  ORPHAN   module s12-extra (#41) — on the server, not in course.yaml
 ```
 
 Served image URLs are rewritten back to repo-relative paths on the way down,
-matched by basename against the paths the local body already used and then
-against `assets/<module>/<lesson>/`. Genuinely external images — a CI badge —
-are left alone, because only the media route is matched. An uploaded image with
-no local file behind it is reported rather than guessed at: `make slides` runs
-with `--strict-assets` and a wrong path would fail it.
+matched by basename against the paths the local body already used, then
+against `assets/<module>/<lesson>/`, then anywhere under `assets/` when the
+name is unique. Only the media route is matched, so a genuinely external image
+— a CI badge — is left alone. The deck builder embeds any format Pillow reads,
+converting what python-pptx cannot (a WEBP from the editor) to PNG in memory,
+so the Markdown can keep the website's file as it is.
+
+A pull also **records the baseline** — for every field where the repo and the
+server now agree (`lesson_sync.adopt`). Once the repo holds the live state,
+that state is ours, and the next publish can prove the server was untouched
+since. A field they still disagree on, such as a module reorder the pull only
+reported, keeps its old baseline, so the publish still refuses over it. It is
+also how a repo with no baseline gets one without publishing.
 
 After a pull, rebuild what reads those files: `make check-slides`, then
 `make slides`.
 
-The four verdicts:
+The verdicts `check-sync` prints:
 
 | | Means |
 |---|---|
 | `BODY` | the lesson text differs — someone edited it on the website |
-| `META` | title, kind, published flag or estimated minutes differ |
-| `ORDER` | the server's lesson order is not the manifest's |
+| `META` | a lesson's title, kind, published / gated flag or minutes, or a module's title / icon / summary |
+| `LINK` | a module's challenges differ — attached, detached, relabelled or reordered |
+| `COURSE` | a course field (name, dates, description, …) |
+| `ORDER` | the server's lesson (or module) order is not the manifest's |
 | `MISSING` / `ORPHAN` | declared but absent / present but undeclared — the residue of a move (see §1c of `COURSE_STATE.md`) |
 
-**When it reports `BODY`, decide which side wins before publishing.** Copy the
-change into the markdown, or accept that the publish will overwrite it. There is
-no merge.
+**When it reports `BODY`, decide which side wins before publishing.** `make
+pull` takes the website's; a publish takes the repo's. There is no merge.
 
 ### Idempotency
 

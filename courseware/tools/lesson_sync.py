@@ -154,6 +154,64 @@ def absorb(baseline: dict, fresh: dict, modules: list[str] | None,
     return out
 
 
+def adopt(baseline: dict, live: dict, plan: dict, modules: list[str] | None,
+          course_meta: bool, module_order: bool) -> dict:
+    """Baseline what the repo and the server now agree on — the pull's side of
+    the ledger.
+
+    Once `make pull` has written the live text into the repo, that text is
+    ours, and the next publish should be able to prove the server was not
+    touched since. So every field whose `plan` (what a publish would send from
+    the repo as it now stands) equals `live` is recorded, field by field. A
+    field they still disagree on — a module reorder the pull only reported —
+    keeps its old baseline, so the next publish still refuses over it.
+
+    Scoped like `absorb`, for the same reason. A lesson gone from both sides
+    (deleted on the website, then pulled) leaves the baseline too.
+    """
+    out = {
+        "course": dict(baseline.get("course") or {}),
+        "modules": dict(baseline.get("modules") or {}),
+        "lessons": dict(baseline.get("lessons") or {}),
+        "module_order": list(baseline.get("module_order") or []),
+    }
+
+    def agreed(fields, have: dict, want: dict, into: dict) -> dict:
+        into = dict(into)
+        for field in fields:
+            if field in want and field in have and _loose(have[field], want[field]):
+                into[field] = have[field]
+        return into
+
+    def in_scope(mslug: str) -> bool:
+        return modules is None or mslug in modules
+
+    if course_meta:
+        out["course"] = agreed(COURSE_FIELDS, live.get("course") or {},
+                               plan.get("course") or {}, out["course"])
+    if module_order and plan.get("module_order") == live.get("module_order"):
+        out["module_order"] = list(live["module_order"])
+    for mslug, have in (live.get("modules") or {}).items():
+        want = (plan.get("modules") or {}).get(mslug)
+        if want is None or not in_scope(mslug):
+            continue
+        entry = agreed(MODULE_FIELDS, have, want, out["modules"].get(mslug) or {})
+        if want.get("lessons") == have.get("lessons"):
+            entry["lessons"] = list(have["lessons"])
+        out["modules"][mslug] = entry
+    for key, have in (live.get("lessons") or {}).items():
+        want = (plan.get("lessons") or {}).get(key)
+        if want is None or not in_scope(key.split("/", 1)[0]):
+            continue
+        out["lessons"][key] = agreed((*LESSON_FIELDS, "body"), have, want,
+                                     out["lessons"].get(key) or {})
+    for key in list(out["lessons"]):
+        if (in_scope(key.split("/", 1)[0]) and key not in (live.get("lessons") or {})
+                and key not in (plan.get("lessons") or {})):
+            del out["lessons"][key]
+    return out
+
+
 # --------------------------------------------------------------------------- #
 # The guard
 # --------------------------------------------------------------------------- #
@@ -309,13 +367,13 @@ def report(found: list[Drift]) -> str:
     lines += [
         "",
         "  make check-sync DIFF=1        read them without writing anything",
-        "  make pull MODULE=<slug>       bring the lesson bodies back into the repo",
+        "  make pull                     make the repo match the website: bodies,",
+        "                                images and course.yaml (make pull-dry first)",
         "  make publish FORCE=1          overwrite them deliberately",
         "",
-        "Structural drift — a title, an order, a lesson added on the website — is",
-        "not something `pull` writes: it lives in course.yaml, whose comments are",
-        "the record of why the course is shaped the way it is. `make pull-dry`",
-        "prints those as the edits to make by hand.",
+        "A pull edits course.yaml a line at a time, so its comments survive. The",
+        "one thing it leaves to you is a module added, removed or reordered on the",
+        "website, which it prints as the edit to make by hand.",
     ]
     if unverified:
         lines += [

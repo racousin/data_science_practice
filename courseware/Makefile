@@ -28,7 +28,7 @@ SDK_PATH    ?= ../../../mlarena-sdk
 PY_SLIDES   := uv run --quiet --with python-pptx --with pyyaml --with matplotlib python
 PY_PUBLISH  := uv run --quiet --with pyyaml --with requests python
 
-.PHONY: help slides check-slides check-sync pdf publish publish-dry pull pull-dry \
+.PHONY: help slides check-slides check-sync pdf publish publish-dry pull pull-dry pull-all \
         harvest clean test-tools \
         competitions competitions-status competitions-publish competitions-attach
 
@@ -36,9 +36,11 @@ help:
 	@echo "make slides       — build one PPTX per session into $(OUT)/slides"
 	@echo "make check-slides — list slides whose content overflows the slide"
 	@echo "make pdf          — slides, then convert to PDF (needs LibreOffice)"
-	@echo "make check-sync   — has anyone edited a lesson on the website?"
-	@echo "make pull-dry     — show which lesson bodies the website has changed"
-	@echo "make pull         — rewrite the Markdown from the live bodies"
+	@echo "make pull-all     — make the repo match the website, every course, then"
+	@echo "                    verify (website is the truth; commit and push after)"
+	@echo "make check-sync   — has anyone edited the course on the website?"
+	@echo "make pull-dry     — show what a pull would change here (DIFF=1: the text)"
+	@echo "make pull         — rewrite the Markdown and course.yaml from the website"
 	@echo "make publish-dry  — show what would change on $(BASE_URL), and what"
 	@echo "                    publishing would overwrite there"
 	@echo "make publish      — sync content to ML-Arena (needs MLARENA_API_KEY)"
@@ -97,10 +99,11 @@ check-sync:
 	$(PY_PUBLISH) tools/check_sync.py $(CONTENT) --base-url $(BASE_URL) \
 		$(if $(MODULE),--module $(MODULE)) $(if $(QUICK),--quick) $(if $(DIFF),--diff)
 
-# The other direction, and the answer to what check-sync finds: rewrite the
-# Markdown from the live bodies, so the website edit survives the next publish.
-# Bodies only — a title, a deleted lesson or a reorder is reported as an edit to
-# make by hand in course.yaml, whose comments would not survive a YAML rewrite.
+# The other direction, and the answer to what check-sync finds: make the repo
+# match the website, so a website edit survives the next publish. Lesson bodies,
+# images uploaded in the editor, and everything course.yaml declares, edited a
+# line at a time so its comments survive; a module added, removed or reordered
+# on the website is reported, not made. See tools/pull_mlarena.py.
 pull-dry:
 	@test -n "$$MLARENA_API_KEY" || { \
 		echo "MLARENA_API_KEY is not set (needs a mlk_teacher_... key)."; exit 1; }
@@ -112,6 +115,25 @@ pull:
 		echo "MLARENA_API_KEY is not set (needs a mlk_teacher_... key)."; exit 1; }
 	$(PY_PUBLISH) tools/pull_mlarena.py $(CONTENT) --base-url $(BASE_URL) \
 		$(if $(MODULE),--module $(MODULE)) $(if $(DIFF),--diff)
+
+# The whole round trip, website -> repo, for every course under content/: pull
+# each one, then check-sync each one, which fails if anything is still apart
+# (only a module-level restructure can be). What is left is git:
+#   git add -A content && git commit -m "Pull the website" && git push
+COURSES := $(patsubst content/%/course.yaml,%,$(wildcard content/*/course.yaml))
+
+pull-all:
+	@test -n "$$MLARENA_API_KEY" || { \
+		echo "MLARENA_API_KEY is not set (needs a mlk_teacher_... key)."; exit 1; }
+	@set -e; for c in $(COURSES); do \
+		echo "== pull $$c"; \
+		$(PY_PUBLISH) tools/pull_mlarena.py content/$$c --base-url $(BASE_URL); \
+	done; \
+	for c in $(COURSES); do \
+		echo "== check-sync $$c"; \
+		$(PY_PUBLISH) tools/check_sync.py content/$$c --base-url $(BASE_URL); \
+	done
+	@git status --short -- content
 
 # Both targets read the live course before they plan anything: publishing
 # overwrites it, so the run refuses unless the server still holds what this repo
@@ -182,8 +204,9 @@ competitions-attach:
 # The guard's and the competition builder's unit tests — no network. The
 # builder's tests read the SDK checkout only to check its method signatures.
 test-tools:
-	MLARENA_SDK_PATH=$(SDK_PATH) uv run --quiet --with pytest --with requests \
-		pytest tools/test_lesson_sync.py tools/test_build_competitions.py -q
+	MLARENA_SDK_PATH=$(SDK_PATH) uv run --quiet --with pytest --with requests --with pyyaml \
+		pytest tools/test_lesson_sync.py tools/test_course_yaml.py \
+		tools/test_build_competitions.py -q
 
 # --------------------------------------------------------------------------- #
 # Migration aid

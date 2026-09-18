@@ -412,7 +412,9 @@ def test_attach_writes_the_declared_bar_not_the_benchmark(packages, monkeypatch,
 
     class Teacher:
         def get_module(self, module_id):
-            return {"competitions": [{"competition_id": 191, "pass_threshold": 0.75}]}
+            # The shape `GET /api/teacher/modules/{id}` serves (backend
+            # teacher/modules.py `_serialize_module`).
+            return {"challenges": [{"challenge_id": 191, "pass_threshold": 0.75}]}
 
         def update_challenge_link(self, module_id, cid, pass_threshold):
             written.append((module_id, cid, pass_threshold))
@@ -444,7 +446,7 @@ def test_attach_skips_a_package_that_declares_no_module(packages, monkeypatch, t
         def get_module(self, module_id):
             raise AssertionError("a package without a module must not be looked up")
 
-        def attach_competition(self, *a, **k):
+        def attach_challenge(self, *a, **k):
             raise AssertionError("must not attach")
 
         def update_challenge_link(self, *a, **k):

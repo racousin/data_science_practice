@@ -439,16 +439,21 @@ class Syncer:
 
     # -- competitions ------------------------------------------------------ #
     def sync_competitions(self, module_id: int, detail: dict | None, specs: list) -> None:
+        # `get_module` lists a module's links under `challenges` since the
+        # platform's challenge rename. Reading the old `competitions` key found
+        # none, so every run re-attached every declared challenge — a 409 on
+        # one already attached, and a silent re-attach of one detached on the
+        # website.
         attached = set()
         if detail:
-            attached = {c["competition_id"] for c in (detail.get("competitions") or [])}
+            attached = {c["challenge_id"] for c in detail["challenges"]}
         for comp in specs:
             cid = comp["competition_id"]
             if cid in attached:
                 continue
-            self.log("attach", f"competition #{cid} -> module #{module_id}")
+            self.log("attach", f"challenge #{cid} -> module #{module_id}")
             if not self.dry_run:
-                self.c.attach_competition(module_id, cid, label=comp.get("label"))
+                self.c.attach_challenge(module_id, cid, label=comp.get("label"))
 
 
 def main() -> int:
