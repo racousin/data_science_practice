@@ -1,8 +1,7 @@
 # APIs
 
-An API is a contract for getting data over HTTP. The contract covers the shape of
-the response; it does not cover the network, the rate limit, or the day the
-provider changes a field name.
+An API (Application Programming Interface) is a contract for getting data over HTTP. The contract covers the shape of
+the response.
 
 <!-- notes: 30 minutes. Pagination and retries are the parts students skip and
 then rediscover at 3 am with a half-written file. Do the retry code live. -->
@@ -20,6 +19,10 @@ sends a request to it and gets a response back.
 | **URL** — the endpoint, plus query parameters | **headers** — metadata, rate-limit budget |
 | **headers** — credentials, content type | **body** — the data, usually JSON |
 | **body** — data sent with POST or PUT | **error** — a message saying what failed |
+
+
+![rest-api.width-702.format-webp.webp](assets/collect/rest-api.width-702.format-webp.webp)
+
 
 ---
 
@@ -223,23 +226,3 @@ step.
 Then a parsing bug costs a re-run of the parser, not a re-run of six hours of
 API calls — and you keep the evidence of what the API actually returned on the
 day you called it.
-
----
-
-## From payload to dataframe
-
-Check the shape of the body before converting it. Two shapes are common:
-
-```python
-# a list of records: [{"id": "P1", "volume": 12.5}, ...]
-df = pd.json_normalize(body["data"])
-```
-
-```python
-# a mapping keyed by id: {"P1": 12.5, "P2": 3.0}
-df = pd.DataFrame.from_dict(body["data"], orient="index",
-                            columns=["volume"])
-```
-
-In the second shape the id becomes the index, not a column. Name it —
-`df.index.name = "id"` — before you join on it.

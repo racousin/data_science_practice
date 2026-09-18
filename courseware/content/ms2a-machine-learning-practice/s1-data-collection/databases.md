@@ -23,6 +23,9 @@ that filtering and aggregation belong in SQL, not in pandas after the fact. -->
 For data science work you will meet PostgreSQL far more often than anything else.
 Learn SQL properly; treat the rest as it comes.
 
+![a81088b7-a188-4089-845a-63936e930a71_1632x1076.jpg](assets/collect/a81088b7-a188-4089-845a-63936e930a71_1632x1076.jpg)
+
+
 ---
 
 ## ACID and BASE
@@ -231,9 +234,15 @@ stores = pd.read_sql("SELECT * FROM retail.stores", engine)
 print(stores[["store_name", "city", "weekly_footfall"]])
 ```
 
-Five rows, one per store of the Lab 1.3 challenge. `DATABASE_URL` is in the
-*Access — today's sandbox* section of the Lab 1.1 page: put it in Colab's
+Five rows, one per store of the Lab 1 challenge. `DATABASE_URL` is in the
+*Today's sandbox* section the teacher posts on the Lab 1 page: put it in Colab's
 *Secrets* panel or a gitignored `.env`, never in the code.
 
 `retail.data_dictionary` describes every column of that challenge and the
 source it comes from: read it before joining anything.
+
+--
+
+## Learn doing
+
+[SQL practice](https://www.sql-practice.online/?mode=scenario&category=select-statements&engine=core-sql)

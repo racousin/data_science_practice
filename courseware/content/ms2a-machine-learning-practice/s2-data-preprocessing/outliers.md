@@ -26,6 +26,15 @@ knowledge, and a detector that flags them is usually flagging the wrong rows.
 
 ---
 
+## Same statistics, four datasets
+
+![Anscombe's quartet: four scatter plots with identical summary statistics and the same fitted line](assets/preprocessing/anscombes-quartet.png)
+
+Same mean, variance, correlation and fitted line in all four. Bottom left, one
+point tilts the line; bottom right, one point *is* the line.
+
+---
+
 ## Detecting point outliers
 
 Z-score, for roughly symmetric data:
@@ -57,6 +66,14 @@ mask = df["revenue"].between(q1 - 1.5 * iqr, q3 + 1.5 * iqr)
 On normal data the 1.5 × IQR fences fall at ±2.698σ, just inside the |z| > 3 cut-off.
 
 ---
+## Outliers only as a pair
+
+![Seating capacity against revenue](assets/preprocessing/seating-capacity-vs-revenue-joint-outliers.png)
+
+The low-revenue cluster and the 36-seat restaurant near 1.2M sit inside the IQR
+fences of both columns; only the combination is unusual.
+
+---
 
 ## Multivariate outliers
 
@@ -82,23 +99,9 @@ making, not one the algorithm discovers — state it, and check what it flagged.
 
 ---
 
-## Outliers only as a pair
 
-![Seating capacity against revenue](assets/preprocessing/seating-capacity-vs-revenue-joint-outliers.png)
 
-The low-revenue cluster and the 36-seat restaurant near 1.2M sit inside the IQR
-fences of both columns; only the combination is unusual.
 
----
-
-## Same statistics, four datasets
-
-![Anscombe's quartet: four scatter plots with identical summary statistics and the same fitted line](assets/preprocessing/anscombes-quartet.png)
-
-Same mean, variance, correlation and fitted line in all four. Bottom left, one
-point tilts the line; bottom right, one point *is* the line.
-
----
 
 ## Remove, clip, or keep
 
@@ -117,49 +120,3 @@ df["revenue"] = df["revenue"].clip(lo, hi)
 
 Clipping bounds the influence without inventing a value. Compute `lo` and `hi`
 on the training rows only — they are fitted parameters like any other.
-
----
-
-## The rule
-
-> An outlier is a claim about the data-generating process, not a property of a
-> number. Removing one you cannot explain is deleting evidence.
-
-Log every row you drop, with the reason, in a counter the pipeline prints. A
-cleaning step that silently removes 4% of the table is the failure mode of this
-lesson, and nothing downstream will ever tell you it happened.
-
----
-
-## Check yourself
-
-1. Run this. You should get exactly the output shown.
-
-   ```python
-   import pandas as pd
-   s = pd.Series([10, 11, 12, 12, 13, 14, 15, 200])
-   z = (s - s.mean()) / s.std()
-   q1, q3 = s.quantile([0.25, 0.75])
-   lo, hi = q1 - 1.5 * (q3 - q1), q3 + 1.5 * (q3 - q1)
-   print((z.abs() > 3).sum())          # -> 0
-   print((~s.between(lo, hi)).sum())   # -> 1
-   ```
-
-   **Answer.** The 200 pulled the mean to 35.9 and the standard deviation to
-   66.3, so its own z-score is 2.5 — the outlier hid itself. The quartiles did
-   not move: the fences sit at 8 and 18, and the 200 is the one value outside.
-
-2. `lo, hi = df["revenue"].quantile([0.01, 0.99])` before the `clip` — on which
-   rows do you compute it, and what goes wrong on the wrong ones?
-
-   **Answer.** On the training rows only: `lo` and `hi` are fitted parameters.
-   Computed on train and test together, an extreme test row moves `hi` and
-   shapes its own bound — the leak from The Preprocessing Contract, on a clip.
-
-3. A 40-year-old with 45 years of professional experience passes the IQR check
-   on both columns. Which kind of outlier is this, and which detector in this
-   lesson sees it?
-
-   **Answer.** A multivariate one — each value sits inside its own fences, only
-   the combination is impossible. `IsolationForest` on the numeric columns,
-   with `contamination` stated as an assumption and its flags inspected by hand.

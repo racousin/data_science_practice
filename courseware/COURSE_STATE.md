@@ -715,6 +715,42 @@ Verified: `check-sync` 0 differences on the three modules; the student token
 sees the module in place with 8 lessons; all 18 image references return 200;
 `student_walk.py check` reports nothing beyond the known speaker-notes item.
 
+### 1k. Course 15's first two sessions pulled back from the website, 2026-09-18
+
+The website had been edited while Sessions 1 and 2 were taught; the repo took
+all of it (`make pull-all`, website as the source of truth). Course 14 was
+already in sync.
+
+- **Session 1:** four lesson bodies trimmed or extended on the website
+  (`web-scraping` −147 lines, `collection-strategy-and-quality` −58, `apis`,
+  `files-and-formats`), one image added to `databases` with a "Learn doing"
+  link; `exercise-sql-sandbox`, `exercise-api-sandbox` and `lab-1` are
+  **unpublished**; challenge **177** is detached from the module.
+- **Session 2:** all nine bodies cut down (842 lines removed, 60 added), lessons
+  reordered (duplicates before missing values, feature engineering before
+  scaling), Lab 2 retitled *Lab — Preprocessing Notebook*, challenge 192's
+  link label shortened to *Critical Care Survival*.
+- **Reverted here, never published:** commit 31c2513's rework of the three
+  Session 1 labs into *Lab 1.1 / 1.2 / 1.3* (a brief in front of a Colab
+  notebook) and its "Lab 1.3" references in `lab-4` and `project-grading`.
+  The website kept the full walkthroughs. `git show 31c2513` has it; the
+  notebooks it generated stay in the repo, linked from no lesson.
+- 7 images uploaded in the editor were downloaded into `assets/collect/` and
+  `assets/preprocessing/`.
+
+Before this, `make pull` rewrote bodies only and left 8 course.yaml edits and 7
+image downloads to do by hand; it now makes all of them (README, *Syncing from
+the website*). Two latent bugs were found on the way: `publish_mlarena.py` and
+`build_competitions.py attach` read a module's links from `competitions`, a key
+`get_module` stopped serving with the platform's challenge rename, so every
+publish re-attached every declared challenge (409 on one already attached;
+would have silently re-attached 177); and the deck builder could not embed the
+WEBP the website uses in `apis`.
+
+Verified: `check-sync` 0 differences on both courses (structure + 130 bodies);
+`publish-dry` "in sync with the last publish" on both, with the baseline now
+covering all 86 lessons of course 15 (it had 35); all 17 decks build.
+
 ---
 
 ## 2. What a student hits

@@ -22,9 +22,8 @@ A file's metadata tells you how to read it:
 ```python
 from pathlib import Path
 
-p = Path("sales.csv")
-print(p.stat().st_size)          # bytes: decides pandas or chunks
-with p.open("rb") as f:
+p = Path("data.special_format")
+with p.open("rb") as f:          # rb: bytes "r" : text
     print(f.read(120))           # delimiter, header, BOM, line endings
 ```
 

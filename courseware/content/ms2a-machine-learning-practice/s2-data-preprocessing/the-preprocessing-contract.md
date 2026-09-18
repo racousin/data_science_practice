@@ -12,10 +12,10 @@ that makes the mistake impossible to write. -->
 
 ## What preprocessing has to produce
 
-Session 1 ended with a table you can defend. A model needs something narrower:
+Session data collection ended with a table you can defend. A model needs something narrower:
 
 - every cell numeric — no strings, no dates, no lists
-- no missing values, unless the model declares that it handles them
+- no missing values, (unless the model declares that it handles them)
 - comparable scales, for anything that measures a distance or takes a gradient
 - a fixed, ordered set of columns, identical at training and at inference
 
@@ -115,10 +115,19 @@ need imputing and encoding.
 ```python
 from sklearn.compose import ColumnTransformer
 
+num_pipe = Pipeline([("impute", SimpleImputer(strategy="median")),
+                     ("scale",  StandardScaler())])
+
+cat_pipe = Pipeline([("impute", SimpleImputer(strategy="most_frequent")),
+                     ("ohe",    OneHotEncoder(handle_unknown="ignore"))])
+
 pre = ColumnTransformer([
     ("num", num_pipe, ["age", "income"]),
     ("cat", cat_pipe, ["city", "plan"]),
 ], remainder="drop")
+
+pipe = Pipeline([("pre", pre), ("model", Ridge())])
+pipe.fit(X_tr, y_tr)
 ```
 
 `remainder="drop"` is the fail-fast setting: a column you did not name never
@@ -127,14 +136,7 @@ ends up crashing the estimator three steps later — or worse, not crashing.
 
 ---
 
-## Cross-validation only means something inside a Pipeline
-
-> **Borrowed from Session 3.** `cross_val_score(pipe, X, y, cv=5)` splits the
-> training rows into five parts, fits on four and scores on the fifth, five
-> times, and returns the five scores. `scoring="roc_auc"` is the ranking quality
-> of a binary classifier: 0.5 is a coin flip, 1.0 is perfect, higher is better.
-> You do not need more than that today — Session 3 does it properly. Read the
-> number here as *a score that should go down when you stop leaking*.
+## Cross-validationinside a Pipeline
 
 ```python
 from sklearn.model_selection import cross_val_score
@@ -146,75 +148,3 @@ Passing the *pipeline* re-fits every transformer on each training fold. Passing
 an already-transformed `X` leaks the fold you are about to score into the
 transformer that produced it — the score comes out optimistic and no line of
 code looks wrong.
-
----
-
-## Where it lives in the repository
-
-```text
-src/preprocess/
-    __init__.py
-    pipeline.py     <- build_pipeline() -> an unfitted sklearn Pipeline
-    features.py     <- custom transformers
-tests/test_pipeline.py
-models/pipeline_2026-09-21.joblib
-```
-
-`build_pipeline()` returns an unfitted object; training fits and serialises it,
-inference loads it and calls `transform`. Nothing is re-derived at inference,
-because anything re-derived at inference is a bug waiting for a distribution
-shift.
-
----
-
-## The order of operations
-
-1. **split** — before anything else, and by time if the rows are ordered
-2. **clean what needs no fitting** — duplicates, unit fixes, type casts
-3. **build the pipeline** — impute, encode, scale, engineer
-4. **fit on train**, transform train and test
-5. **serialise** the fitted pipeline next to the model
-
-Steps 2 and 3 differ in exactly one respect: step 2 has no learned parameter, so
-it cannot leak. Everything with a parameter belongs in step 3.
-
-> Every statistic used to transform a row must come from rows the model was
-> allowed to see.
-
-The rest of the session is that sentence applied to missing values, duplicates,
-outliers, categories, scales and engineered features — in that order.
-
----
-
-## Check yourself
-
-1. Run this. You should get exactly the output shown.
-
-   ```python
-   import numpy as np
-   from sklearn.model_selection import train_test_split
-   from sklearn.preprocessing import StandardScaler
-
-   X = np.arange(10, dtype=float).reshape(-1, 1)
-   X_tr, X_te = train_test_split(X, test_size=0.2, shuffle=False)
-
-   print(StandardScaler().fit(X).mean_)      # -> [4.5]   fitted before the split
-   print(StandardScaler().fit(X_tr).mean_)   # -> [3.5]   fitted on train only
-   ```
-
-   **Answer.** 4.5 is a number the test rows helped produce; 3.5 is not. That
-   difference is the whole leak, on the smallest transformer there is.
-
-2. What does `remainder="drop"` buy you in a `ColumnTransformer`, and what is the
-   failure it prevents?
-
-   **Answer.** It is the fail-fast setting: a column you did not name never
-   silently reaches the model. With `remainder="passthrough"` a raw string column
-   crashes the estimator three steps later — or worse, does not crash.
-
-3. Two rows of the leak-cost table are marked *large*. Which are they, what do
-   they have in common, and what symptom do they produce?
-
-   **Answer.** Target encoding and feature selection performed on the full
-   dataset. Both use the label. The symptom is a cross-validated 0.94 that
-   becomes 0.71 in production.

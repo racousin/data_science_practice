@@ -39,7 +39,6 @@
       "s3-models-and-tuning/non-linearity": 155,
       "s3-models-and-tuning/regularization": 156,
       "s3-models-and-tuning/support-vector-machines": 159,
-      "s3-models-and-tuning/training-neural-networks": 186,
       "s3-models-and-tuning/validation-and-overfitting": 154,
       "s4-pytorch-nutshell/autograd": 47,
       "s4-pytorch-nutshell/lab-4": 50,
@@ -294,13 +293,6 @@
           "gated": false,
           "is_published": true,
           "title": "Support Vector Machines"
-        },
-        "s3-models-and-tuning/training-neural-networks": {
-          "body": "1f6780de60cccb40d37072d5f08b2de3ac8c274ba03cdf1023b77d391f618f7d",
-          "estimated_minutes": 20,
-          "gated": false,
-          "is_published": true,
-          "title": "Training Neural Networks"
         },
         "s3-models-and-tuning/validation-and-overfitting": {
           "body": "f9dad970a28e10b2b8206a5ac545f92d559e04177f8fa52dc6a8c12b6a16c757",

@@ -53,26 +53,10 @@ three hundred `-999` rows is a mean age of nothing.
 
 The consequences are not symmetric:
 
-- MCAR — dropping is unbiased, merely wasteful
-- MAR — imputable from the columns that explain it
-- MNAR — every imputation biases the result, and so does dropping
+- Missing Completely At Random — dropping is unbiased, merely wasteful
+- Missing At Random — imputable from the columns that explain it
+- Missing Not At Random — every imputation biases the result, and so does dropping
 
----
-
-## Diagnosing the mechanism
-
-You cannot test for MNAR — the evidence is the data you do not have. You can
-test for MAR:
-
-```python
-flag = df["income"].isna()
-df.groupby(flag)[["age", "tenure", "n_visits"]].mean()
-```
-
-If the two groups differ, the missingness is explained by observed columns and
-an imputer that uses them beats a column mean. If they do not differ, you are
-looking at MCAR or MNAR, and only domain knowledge separates the two — ask
-whoever collected the data.
 
 ---
 
@@ -130,6 +114,10 @@ will produce a beautiful backtest.
 `limit=3` is the honesty parameter: a sensor silent for two days should read
 missing, not "the same as Monday".
 
+
+![ts2_11.jpg](assets/preprocessing/ts2_11.jpg)
+
+
 ---
 
 ## KNN imputation
@@ -155,10 +143,10 @@ defines "similar"; and it stores the training set, so inference is expensive.
 ## Iterative imputation
 
 ```python
-from sklearn.experimental import enable_iterative_imputer  # noqa: F401
+from sklearn.experimental import enable_iterative_imputer
 from sklearn.impute import IterativeImputer
 
-imp = IterativeImputer(random_state=0, max_iter=10)
+imp = IterativeImputer(random_state=0, max_iter=10) # BayesianRidge default estimator
 ```
 
 Each column with gaps is regressed on the others, round-robin, until the
@@ -168,6 +156,10 @@ attached, and any model downstream treats them as measured.
 
 Use it when the gaps are genuinely predictable from the other columns.
 Otherwise the median plus an indicator is more honest and ten times faster.
+
+
+![799631_m_z8E4HrFtCnHBoDANauTQ.png](assets/preprocessing/799631_m_z8E4HrFtCnHBoDANauTQ.png)
+
 
 ---
 
@@ -184,50 +176,3 @@ This is the highest-value line in the lesson. For MNAR data the indicator is
 often a better predictor than the column it accompanies — "declined to state
 income" is itself a signal — and it lets a tree route imputed rows separately
 instead of trusting the median.
-
----
-
-## In the pipeline, not in the dataframe
-
-```python
-num_pipe = Pipeline([
-    ("impute", SimpleImputer(strategy="median", add_indicator=True)),
-    ("scale", StandardScaler()),
-])
-cat_pipe = Pipeline([
-    ("impute", SimpleImputer(strategy="constant", fill_value="MISSING")),
-    ("encode", OneHotEncoder(handle_unknown="ignore")),
-])
-pre = ColumnTransformer([("num", num_pipe, NUM_COLS),
-                         ("cat", cat_pipe, CAT_COLS)], remainder="drop")
-```
-
-That is the whole object, both branches, and it is the one to copy: `cat_pipe`
-appears again in the encoding lesson and it always means these two
-steps. Print `pre.fit_transform(X_tr).shape` the first time you build one — a
-shape you cannot account for column by column is a column that fell into neither
-list.
-
-`df.fillna(df.median())` computed on the full frame is a leak, computed on the
-train frame is code you have to remember to repeat at inference, and computed in
-a notebook is code that does not exist.
-
-Inside the pipeline the median is fitted once, stored, serialised with the model
-and applied identically to a million-row batch or to one row arriving over HTTP.
-
----
-
-## Choosing
-
-| Situation | Do this |
-|---|---|
-| Target is missing | drop the row |
-| Column > 70% empty | drop the column, keep an indicator |
-| Numeric, MCAR, few gaps | median + indicator |
-| Categorical | constant `"MISSING"` |
-| Ordered by time | `ffill` with a `limit`, or `interpolate` |
-| MAR, columns clearly related | KNN or iterative, inside the pipeline |
-| Model is LightGBM / XGBoost / HistGB | leave the `NaN` — they split on it |
-
-> Impute with the simplest method you can defend, and always keep the indicator.
-> A model that is beaten by a better imputer will tell you so in cross-validation.

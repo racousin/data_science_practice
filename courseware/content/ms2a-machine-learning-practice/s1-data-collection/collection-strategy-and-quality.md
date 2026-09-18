@@ -175,19 +175,6 @@ than on the day you present.
 
 ---
 
-## Missing is not one thing
-
-| Pattern | Meaning | Consequence |
-|---|---|---|
-| MCAR | missing for no reason related to the data | dropping is safe, just wasteful |
-| MAR | missingness explained by other columns | imputable from them |
-| MNAR | missingness depends on the missing value itself | dropping introduces bias |
-
-Income missing because high earners decline to answer is MNAR. Dropping those
-rows biases every conclusion you draw. Imputation handles the mechanics; the
-*diagnosis* belongs at collection, while you can still ask the source.
-
----
 
 ## Align types before combining
 
@@ -209,7 +196,7 @@ you needed to see. Check the result with `df.dtypes`.
 ## Stacking sources
 
 ```python
-frames = [pd.read_csv(p).assign(store=p.stem)
+frames = [pd.read_csv(p)
           for p in sorted(Path("data/raw").glob("store_*.csv"))]
 df = pd.concat(frames, ignore_index=True)
 ```
@@ -273,50 +260,6 @@ grader, and by you in six weeks.
 
 ---
 
-## In one line
-
-> Collect deliberately, store the raw response, check at the boundary, and write
-> down where it came from.
-
-A model is only as defensible as the dataset under it.
-
----
-
-## Check yourself
-
-1. Run this. You should get exactly the output shown.
-
-   ```python
-   import pandas as pd
-
-   orders    = pd.DataFrame({"customer_id": [1, 1, 2], "amount": [10, 20, 30]})
-   customers = pd.DataFrame({"customer_id": [1, 1, 2],       # 1 is duplicated
-                             "segment": ["A", "A", "B"]})
-
-   print(len(orders.merge(customers, on="customer_id", how="left")))   # -> 5
-   orders.merge(customers, on="customer_id", how="left", validate="m:1")
-   # -> pandas.errors.MergeError: Merge keys are not unique in right dataset;
-   #    not a many-to-one merge
-   ```
-
-   **Answer.** Three rows became five and nothing complained. `validate="m:1"`
-   turns that silent duplication into an exception at the line that caused it.
-
-2. You have no stated latency requirement. Batch or streaming, and what does the
-   other one cost you?
-
-   **Answer.** Batch. Streaming buys latency and costs reproducibility: you
-   cannot re-run last Tuesday, so any bug you fix is a bug you cannot repair
-   retroactively.
-
-3. Income is missing because high earners decline to answer. Which of MCAR, MAR
-   and MNAR is that, and why is dropping those rows not a safe default?
-
-   **Answer.** MNAR — the absence depends on the missing value itself. Dropping
-   the rows removes exactly the high earners, so it biases every conclusion you
-   draw; unlike MCAR, where dropping is merely wasteful.
-
----
 
 ## Worked case study
 

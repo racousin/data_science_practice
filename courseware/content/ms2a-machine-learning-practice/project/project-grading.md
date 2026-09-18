@@ -49,7 +49,7 @@ Three commands, not "run the cells in order, except cell 14".
 
 | Track | The file, and what it has to answer |
 |---|---|
-| Prediction | `DATASET.md` as in Lab 1.3 — one row, columns, source, licence, split |
+| Prediction | `DATASET.md` as in Lab 1 — one row, columns, source, licence, split |
 | Agent | observation and action spaces, reward, termination, training seeds |
 | Generative | model and revision, decoding parameters, prompt file, local judge |
 

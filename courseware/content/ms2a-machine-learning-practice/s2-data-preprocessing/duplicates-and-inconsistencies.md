@@ -56,21 +56,6 @@ a business rule. Sort explicitly on the column that encodes recency, then keep
 
 ---
 
-## The duplicate that costs you the most
-
-A row present in both the training and the test split is a free correct
-prediction. Near-duplicates do the same thing more quietly: two records of the
-same customer, one on each side of the split.
-
-```python
-assert set(train["customer_id"]) & set(test["customer_id"]) == set()
-```
-
-De-duplicate **before** splitting, and split on the entity, not on the row —
-`GroupShuffleSplit` in sklearn. A model that scores 0.97 on a leaky split and
-0.78 on a grouped one was never a 0.97 model.
-
----
 
 ## Approximate duplicates
 
@@ -90,14 +75,6 @@ ignore, in between build a review list — and record the threshold you used.
 
 ---
 
-## Same tokens, different order
-
-![Three product descriptions with the same words in a different order, matching words joined by colour](assets/preprocessing/fuzzy-matching-token-order.png)
-
-One product, three descriptions, the same tokens in three orders. `token_sort_ratio`
-sorts the tokens before comparing, so all three score as one entity.
-
----
 
 ## Inconsistencies
 
@@ -155,54 +132,3 @@ assert df["temp_c"].between(-60, 60).all(), "temperature out of range"
 
 The mapping dictionaries and the bounds belong in the repository, versioned,
 next to a test that asserts every raw value maps to something.
-
----
-
-## The rule
-
-> A duplicate is a decision about what one row is; an inconsistency is a
-> decision about what one value is. Neither decision belongs in a notebook cell.
-
-Count every row you drop and every string you rewrite, and make the pipeline
-print the counts. A step that silently removes 4% of the table, or silently
-merges two categories into one, is the failure mode of this lesson — and the
-next lesson applies the same rule to outliers.
-
----
-
-## Check yourself
-
-1. Run this. You should get exactly the output shown.
-
-   ```python
-   import pandas as pd
-   d = pd.DataFrame({"station_id":  ["s1", "s1", "s2"],
-                     "date":        ["2026-01-01"] * 3,
-                     "temp_c":      [3.0, 4.5, 9.0],
-                     "ingested_at": ["2026-01-02", "2026-01-03", "2026-01-02"]})
-   kept = (d.sort_values("ingested_at")
-             .drop_duplicates(subset=["station_id", "date"], keep="last")
-             .set_index("station_id"))
-   print(kept.loc["s1", "temp_c"])   # -> 4.5
-   print(len(kept))                  # -> 2
-   ```
-
-   **Answer.** 4.5 is the later ingestion. Drop the `sort_values` and `"first"`
-   or `"last"` returns whichever row the ingestion job happened to write first —
-   a coin flip promoted to a business rule.
-
-2. Why must de-duplication happen *before* the train/test split, and what does
-   splitting on the row rather than the entity cost you?
-
-   **Answer.** A row present in both splits is a free correct prediction. Split
-   on the entity — `GroupShuffleSplit` — because two records of the same customer
-   land on either side otherwise. A model scoring 0.97 on a leaky split and 0.78
-   on a grouped one was never a 0.97 model.
-
-3. `pd.to_datetime(s, format="%Y-%m-%d", errors="coerce")` runs clean on a column
-   where 8% of the strings are unparseable. When do you find out, and what does
-   `errors="raise"` do instead?
-
-   **Answer.** With `coerce` you find out in Session 3, when 8% of your rows have
-   a `NaT` timestamp and no traceback points at the cause. `errors="raise"`
-   raises a `ValueError` today, with the offending string in it.

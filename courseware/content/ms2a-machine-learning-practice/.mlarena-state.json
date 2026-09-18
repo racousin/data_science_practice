@@ -136,15 +136,57 @@
           "is_published": true,
           "title": "Tracks"
         },
+        "mlp-reference/automl-and-custom-objectives": {
+          "body": "06f5d06b5d7d5e5b7283b08915325d5a4da83656c2c8fa4274544677cfa9d01c",
+          "estimated_minutes": 20,
+          "gated": false,
+          "is_published": true,
+          "title": "AutoML and Custom Objectives"
+        },
+        "mlp-reference/cnn-backpropagation": {
+          "body": "a0d3426ab84d90a50d12bb2b37d4844be5ff7786d174bddb62c9125d1fbbcb88",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "CNN Backpropagation \u2014 the Mathematics"
+        },
+        "mlp-reference/image-enhancement": {
+          "body": "930d96c5b53c72ce2556f90452eb8b980097fb0f7f0aa8b032f5ae3b4a677434",
+          "estimated_minutes": 15,
+          "gated": false,
+          "is_published": true,
+          "title": "Image Enhancement"
+        },
+        "mlp-reference/multi-gpu-scaling": {
+          "body": "28c0c8cedf2eaea1dd35dce300f58a5a08ad5e5a60221d532422f1dbeba74423",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Multi-GPU Scaling"
+        },
+        "mlp-reference/reference-playgrounds": {
+          "body": "6a0332752957d3f4fbfbc79491167fc554cdd3635b7e51704677d3b77ca7ecef",
+          "estimated_minutes": 15,
+          "gated": false,
+          "is_published": true,
+          "title": "Reference Playgrounds \u2014 AquaControl and Bitcoin Intraday"
+        },
+        "mlp-reference/three-d-cnns": {
+          "body": "5805de4984b5cdfa437c8e4672375935e1329d22b35ac5f66ecf6ea00210a1fb",
+          "estimated_minutes": 20,
+          "gated": false,
+          "is_published": true,
+          "title": "3D CNNs"
+        },
         "s1-data-collection/apis": {
-          "body": "527d67cf03d2bdd266a4d820d96dd0a29f46909be7f7731bb2387fbb0eca7241",
+          "body": "81162ddb9eaa2a4b697d2e6ffc210ca7de0c343f52ebd41904641d4697e163dd",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
           "title": "APIs"
         },
         "s1-data-collection/collection-strategy-and-quality": {
-          "body": "9811c487443f6606fa2375428c5fc0c93a7862ec3fe3afdd9c21ee98668c7f4f",
+          "body": "c63a9470a3a66017bfee8eab880a6b15996e061ac47928508921f4eff30ddb64",
           "estimated_minutes": 25,
           "gated": false,
           "is_published": true,
@@ -158,7 +200,7 @@
           "title": "Data and Its Shapes"
         },
         "s1-data-collection/databases": {
-          "body": "f99ce50c028b6e431c0a7a0925b7a864a7e4f27a671b2f3982499c55b0db5c94",
+          "body": "3a3da95d4755fc4de9e9e66a8025a8f5356bcf8c91cb84f8f69c58b9cf4d7a90",
           "estimated_minutes": 25,
           "gated": false,
           "is_published": true,
@@ -168,18 +210,18 @@
           "body": "abd2a66ce58472a8cdcb8a7a0a96a231f51d6f8b2c0d9827cca7f97bf7f05294",
           "estimated_minutes": 45,
           "gated": false,
-          "is_published": true,
+          "is_published": false,
           "title": "Exercise \u2014 A Client That Survives the API"
         },
         "s1-data-collection/exercise-sql-sandbox": {
           "body": "c2e680033d7bb1b12a11ae5ebbbe773fb3ef030d6949b41693478b4796ae79bb",
           "estimated_minutes": 45,
           "gated": false,
-          "is_published": true,
+          "is_published": false,
           "title": "Exercise \u2014 Query a Shared Database"
         },
         "s1-data-collection/files-and-formats": {
-          "body": "9ba6bbe180d546e420bd6185c79b17e1157bca2b901de135e6106e0a9f4e516f",
+          "body": "c785c188b96518fa8780dc604620ca469e08d4b917ca2f206e08f1f974d99d15",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
@@ -189,11 +231,11 @@
           "body": "c7a6339787ff1b54ae1d9f52057df8be83adc6a5d96cf2cbdc894d8e5cb3aa97",
           "estimated_minutes": 70,
           "gated": false,
-          "is_published": true,
+          "is_published": false,
           "title": "Lab 1 \u2014 Build a Dataset"
         },
         "s1-data-collection/web-scraping": {
-          "body": "be6cb7240bd2dd3fab462f13114569532b8658ce12b2450facd3454965d5c3ed",
+          "body": "ded1255bd7a17ea16f875d795d62e6178a3f51c05803beb8b8e79233ddd79b3b",
           "estimated_minutes": 25,
           "gated": false,
           "is_published": true,
@@ -298,70 +340,399 @@
           "title": "Writing a Dockerfile"
         },
         "s2-data-preprocessing/categorical-encoding": {
-          "body": "2f14f61ebae0188fd231b5603dc822e7367ecdd962a8d10d4807255c3331e96f",
+          "body": "41c76b5fba81509a9abb5246273c017b2fb88bb08952a2431af43b2b4dbb27f3",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
           "title": "Categorical Encoding"
         },
         "s2-data-preprocessing/duplicates-and-inconsistencies": {
-          "body": "4a50d28b3f2984d15efe6690a4b75026cee3596b6e55067a7cd6c58219542966",
+          "body": "87867acf1f41aad52721ae9ff3571327c37c1b20bf3b2a420a992bd0538ff3e7",
           "estimated_minutes": 15,
           "gated": false,
           "is_published": true,
           "title": "Duplicates and Inconsistencies"
         },
         "s2-data-preprocessing/feature-engineering": {
-          "body": "5052f467811f5e3a6a5742569eb74c072ea33ca9e2daa075cc8f7fa60b247116",
+          "body": "d4a8c9b9be5dc50eda1acac654079abe3d5d508aa09f5698d579297ea4abeb40",
           "estimated_minutes": 20,
           "gated": false,
           "is_published": true,
           "title": "Feature Engineering"
         },
         "s2-data-preprocessing/feature-selection": {
-          "body": "cb20dd3556c3c24832202691cc2e7156836054e7979f673f907b74090a7ea8e2",
+          "body": "044e244ed042f82fce728d6a8de46a0f6fd3e07352e8d1ef9274eaaf8f9390f1",
           "estimated_minutes": 20,
           "gated": false,
           "is_published": true,
           "title": "Feature Selection"
         },
         "s2-data-preprocessing/lab-2": {
-          "body": "fcda9e2d38d1370f90c47dee1afbae47ef27764490fed7d8264ad1ad31196710",
+          "body": "449b897eedd3c181ef34b4ba4e757cfd8d1b1f5a0c4a35e99eaf372054cdcba2",
           "estimated_minutes": 45,
           "gated": false,
           "is_published": true,
-          "title": "Lab 2 \u2014 Preprocessing Notebook"
+          "title": "Lab \u2014 Preprocessing Notebook"
         },
         "s2-data-preprocessing/missing-values": {
-          "body": "40f4e1b0d1e49232e2b832bf7a66065aff171c9351befc7020c06d3342c7b040",
+          "body": "a8491a18f0a586034ed2b2168aeb897944ab9b76d5074d5ec6b89c547573cfdc",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
           "title": "Missing Values"
         },
         "s2-data-preprocessing/outliers": {
-          "body": "13522767f244179d953f8fc46337be79f641f9e323865adeaab91e89c70cbc7d",
+          "body": "9542b5c593771e4f0202e42adf7dd34de032a5bdac7fa252d0aaabdbb297b8e9",
           "estimated_minutes": 15,
           "gated": false,
           "is_published": true,
           "title": "Outliers"
         },
         "s2-data-preprocessing/scaling-and-normalization": {
-          "body": "dad889cf470c465a289b87d30f15f9720daea707f5d79f1bcf572688924a7015",
+          "body": "919bcfee4a206b7a44ab7675651edf08256681a329ad27324d20f1dc9916852f",
           "estimated_minutes": 25,
           "gated": false,
           "is_published": true,
           "title": "Scaling and Normalization"
         },
         "s2-data-preprocessing/the-preprocessing-contract": {
-          "body": "620696946fb10594b1cd85ad3a267f2c8628eacd42bfe078e0c8c0ae5563e595",
+          "body": "634bfcf5973eebac008be1c3068aeb5b2e223fc25ce488404bf9e4426d4b219d",
           "estimated_minutes": 20,
           "gated": false,
           "is_published": true,
           "title": "The Preprocessing Contract"
+        },
+        "s3-tabular-models/gradient-boosting-in-practice": {
+          "body": "5e8b09a6b8ce1a0453c66c975e7d6b27acd9dbb72641b6c1a5adcf11d9b1b130",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Gradient Boosting in Practice"
+        },
+        "s3-tabular-models/hyperparameter-optimization": {
+          "body": "27f1209ccb364080bf20dc7d9d580974cf0f92a1ef340717c2d195f88c160cb2",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Hyperparameter Optimization"
+        },
+        "s3-tabular-models/lab-3": {
+          "body": "f16402df2a2b1569e8887cf1ecc5007d9cddc5357e26788965edd17f4feafa4e",
+          "estimated_minutes": 45,
+          "gated": false,
+          "is_published": true,
+          "title": "Lab 3 \u2014 Beat the Baseline"
+        },
+        "s3-tabular-models/model-selection-and-validation": {
+          "body": "49260adf2c8dcb1325c0b7407325e51015c0393ff7a8d347a120150dbab58a1c",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Model Selection and Validation"
+        },
+        "s3-tabular-models/the-tabular-landscape": {
+          "body": "5981e26af4aeaf5f02b8ce1db4a788ad5c4bc6ef8293e506e31865a8a9598760",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "The Tabular Landscape"
+        },
+        "s3-tabular-models/time-series-models": {
+          "body": "1dfecba743022abb7921e8946b81340a2e89d675f1c649453a7ba42bf7298c02",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Time Series Models"
+        },
+        "s3-tabular-models/trees-and-ensembles": {
+          "body": "10959ef5560bd511886eebccbfe060da8add4dcc95b30ed043137998c3a86ece",
+          "estimated_minutes": 40,
+          "gated": false,
+          "is_published": true,
+          "title": "Trees and Ensembles"
+        },
+        "s4-advanced-neural-networks/data-pipelines-and-training-loop": {
+          "body": "1f5a725278bfa22a2d05d1a9e8cde429359f456c3bc1734ef8ced2602a45f3c4",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Data Pipelines and the Training Loop"
+        },
+        "s4-advanced-neural-networks/essential-layers": {
+          "body": "594af706b3ed0d275ab5fa6493015a5c7f5f32ef586e24fcb9eaa8ae675c0205",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Essential Layers"
+        },
+        "s4-advanced-neural-networks/lab-4": {
+          "body": "9a3e14cec326930acbb8ee3fc0c76b1bf8ad10d3fde423b9dd231aae22e48661",
+          "estimated_minutes": 45,
+          "gated": false,
+          "is_published": true,
+          "title": "Lab 4 \u2014 Train Something Deep"
+        },
+        "s4-advanced-neural-networks/making-training-work": {
+          "body": "170a3e81191d1c566e0ccf670d581bb17427c0574122737bfc35b4459a3d03de",
+          "estimated_minutes": 40,
+          "gated": false,
+          "is_published": true,
+          "title": "Making Training Work"
+        },
+        "s4-advanced-neural-networks/monitoring-and-debugging": {
+          "body": "702488852843af3e73d728a32260fade38837ba02bd212eb950261e14cd36b55",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Monitoring and Debugging"
+        },
+        "s4-advanced-neural-networks/optimization-and-schedules": {
+          "body": "44890640837ffa789fbed64cd44727e0516146426c15e9833dd460eb5ed86776",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Optimization and Schedules"
+        },
+        "s4-advanced-neural-networks/performance-and-profiling": {
+          "body": "72c7f11e0f13dcf2fe38eb82e82e488f7939d71aba03f9e67c1d1bf25e7f11b2",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Performance and Profiling"
+        },
+        "s5-computer-vision-1/convolution": {
+          "body": "ff6cf6c5f50ff019686fad511dd872726d98c36274468a13612d3cad0ef92bda",
+          "estimated_minutes": 40,
+          "gated": false,
+          "is_published": true,
+          "title": "Convolution"
+        },
+        "s5-computer-vision-1/images-as-tensors": {
+          "body": "14b5d03b99392299cf8af4abaa74abe4d6e4fd1428ce8e94c0d8ed09e93d547a",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Images as Tensors"
+        },
+        "s5-computer-vision-1/lab-5": {
+          "body": "903f66e6c161875a5252e22b1ad7420f965a27e4fa1cccc96fe58be2db7113fd",
+          "estimated_minutes": 45,
+          "gated": false,
+          "is_published": true,
+          "title": "Lab 5 \u2014 Classify with a Pretrained Backbone"
+        },
+        "s5-computer-vision-1/pooling-and-architectures": {
+          "body": "3e0a049197cd050a45613c66b8ea0c3ac8cfa7131ca323dc8f6fe6675f870c2d",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Pooling and CNN Architectures"
+        },
+        "s5-computer-vision-1/training-cnns": {
+          "body": "fc44e57845c0f56843b3bb7053992b0cc0afe446f8f07a251eba55ee021ad62d",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Training CNNs"
+        },
+        "s5-computer-vision-1/transfer-learning": {
+          "body": "38845b25e4fe86450cd09fc201324cc37be04b9f5e3fb9ec2295b5b7be0770f7",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Transfer Learning"
+        },
+        "s6-computer-vision-2/autoencoders-and-vaes": {
+          "body": "bc2fdcd809d0ff93a0c77e1436e0824f1021400e8bafb864cc8fca82fe458018",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Autoencoders and VAEs"
+        },
+        "s6-computer-vision-2/diffusion-models": {
+          "body": "241c75dd5cbd4edb88b7db7c956afbee3607456df8c5282660255736545553c9",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Diffusion Models"
+        },
+        "s6-computer-vision-2/gans": {
+          "body": "017911b363bea9304e55b64c52f0e0ec4b8c09036d5fc8da694f0adbb3c12f3c",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "GANs"
+        },
+        "s6-computer-vision-2/lab-6": {
+          "body": "f0437402e919bd8004fb7d0dfa570e10347188e1aec2b58dcf7f115e3605a84e",
+          "estimated_minutes": 45,
+          "gated": false,
+          "is_published": true,
+          "title": "Lab 6 \u2014 Detect or Generate"
+        },
+        "s6-computer-vision-2/object-detection": {
+          "body": "8bdf6c0d576d5af712dded6712e72f64656f7a244a3fc064a71129cbff4f00ef",
+          "estimated_minutes": 40,
+          "gated": false,
+          "is_published": true,
+          "title": "Object Detection"
+        },
+        "s6-computer-vision-2/segmentation": {
+          "body": "fdf954919849835a01e67536b29d842e7750b58b79bb579ab6c92abedef8ea41",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Segmentation"
+        },
+        "s7-nlp-1/attention": {
+          "body": "e73c1c9ecbf90ad44564961fe86869476a6271f8b3b3be5b1951e008dcd4cf21",
+          "estimated_minutes": 40,
+          "gated": false,
+          "is_published": true,
+          "title": "Attention"
+        },
+        "s7-nlp-1/embeddings": {
+          "body": "fc7bf51714d93794e8a3d46b4e7969faa49bfa5d040cfe3e86e06c0ee68c2c05",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Embeddings"
+        },
+        "s7-nlp-1/lab-7": {
+          "body": "98357c7fa90b03e6ecedf3ea01ab96f69d61cced95d111a17f24601c2415fee2",
+          "estimated_minutes": 45,
+          "gated": false,
+          "is_published": true,
+          "title": "Lab 7 \u2014 Fine-Tune a Text Classifier"
+        },
+        "s7-nlp-1/recurrent-models": {
+          "body": "c87fad7890e1ed76f96bbf8ee0f9fb6dc46633518b006737515960f8b37d9f9b",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Recurrent Models and Their Limits"
+        },
+        "s7-nlp-1/text-as-data-and-tokenization": {
+          "body": "f56c2aa7a320e30e24e07a870ecf9ba2768acac9bf065b45b7b1997129fefe63",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Text as Data and Tokenization"
+        },
+        "s7-nlp-1/the-transformer": {
+          "body": "37196b7632c2b86b4ce96480aa1bc21a46063713d3f3e5ba9aab536f98b51f57",
+          "estimated_minutes": 40,
+          "gated": false,
+          "is_published": true,
+          "title": "The Transformer"
+        },
+        "s8-nlp-2/agents": {
+          "body": "76638a989e8d93afbd6313db4e16a7beea2c04e1b907e3ad06b9a465ab6c176b",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Agents"
+        },
+        "s8-nlp-2/evaluating-generation": {
+          "body": "ec5e25b63582e7e29b8a2c1fafa773cf7f667032de35b6ea08b13e1e0d9e82fb",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Evaluating Generation"
+        },
+        "s8-nlp-2/generation-and-decoding": {
+          "body": "376e26967a687b05d4ff9a550fd9db6e2ac13a68d33290f27b772f764d60b1e2",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Generation and Decoding"
+        },
+        "s8-nlp-2/instruction-tuning-and-peft": {
+          "body": "c3b66649e2d5eb33516c539a7a80e9c5b401c4ac8374fa91b8b1c9d95d89be2f",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Instruction Tuning and PEFT"
+        },
+        "s8-nlp-2/lab-8": {
+          "body": "54cddab22dfd66a9f80a7e41774c951abaed795204c4a53abf73a191a557c71d",
+          "estimated_minutes": 45,
+          "gated": false,
+          "is_published": true,
+          "title": "Lab 8 \u2014 Build and Judge a RAG Pipeline"
+        },
+        "s8-nlp-2/rag": {
+          "body": "7a3368456df81a92f698d3d63cc39d11b0501824e2d5766b952c9cb3d7a7c9c3",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "RAG"
+        },
+        "s8-nlp-2/training-and-scaling-llms": {
+          "body": "4b196f3026544ac041b9c76aa4bccc1b521d081c9d39f553670d6915fe95f227",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Training and Scaling LLMs"
+        },
+        "s9-reinforcement-learning-1/dynamic-programming": {
+          "body": "2f7e336de179af4bf2474d94b3984615a0b3a2d6f2191f13ae6cf85dc243b8a9",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Dynamic Programming"
+        },
+        "s9-reinforcement-learning-1/gymnasium": {
+          "body": "a64aa152ec929b29c1e0851c1d2f32c0030bca2de81868c8ae4a4013ee69461f",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Gymnasium"
+        },
+        "s9-reinforcement-learning-1/lab-9": {
+          "body": "804ebbb0ccf67783962f11f49d463989318f95ea6447bf32994455a0118a436b",
+          "estimated_minutes": 45,
+          "gated": false,
+          "is_published": true,
+          "title": "Lab 9 \u2014 Tabular Agent on Frozen Lake"
+        },
+        "s9-reinforcement-learning-1/learning-from-interaction": {
+          "body": "a7995ab120c45ac46b78d39c0e0d421db8b580f69b7257f884c068bb09153d95",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Learning from Interaction"
+        },
+        "s9-reinforcement-learning-1/markov-decision-processes": {
+          "body": "c3f5ddd7a682b4a12c846e3f23e351837554f75b796a35ec6c8e779fac3ff14b",
+          "estimated_minutes": 40,
+          "gated": false,
+          "is_published": true,
+          "title": "Markov Decision Processes"
+        },
+        "s9-reinforcement-learning-1/model-free-prediction-and-control": {
+          "body": "9f37aa501106a63c1d0ac8246bc39b438906369c11d3a369e812d792438b1010",
+          "estimated_minutes": 45,
+          "gated": false,
+          "is_published": true,
+          "title": "Model-Free Prediction and Control"
         }
       },
-      "module_order": [],
+      "module_order": [
+        "s1-data-collection",
+        "s2-data-preprocessing",
+        "s3-tabular-models",
+        "s4-advanced-neural-networks",
+        "s5-computer-vision-1",
+        "s6-computer-vision-2",
+        "s7-nlp-1",
+        "s8-nlp-2",
+        "s9-reinforcement-learning-1",
+        "s10-reinforcement-learning-2",
+        "s11-docker-and-deployment",
+        "mlp-project",
+        "mlp-reference"
+      ],
       "modules": {
         "mlp-project": {
           "icon": "trophy",
@@ -372,6 +743,19 @@
           ],
           "summary": "Half the grade. One ML-Arena competition track of your choosing, plus the repository that produced the submission.",
           "title": "Project"
+        },
+        "mlp-reference": {
+          "icon": "book",
+          "lessons": [
+            "multi-gpu-scaling",
+            "cnn-backpropagation",
+            "three-d-cnns",
+            "image-enhancement",
+            "automl-and-custom-objectives",
+            "reference-playgrounds"
+          ],
+          "summary": "Material demoted out of class time. Self-study, linked from the sessions, never lectured.",
+          "title": "Reference"
         },
         "s1-data-collection": {
           "icon": "database",
@@ -421,17 +805,111 @@
           "icon": "filter",
           "lessons": [
             "the-preprocessing-contract",
-            "missing-values",
             "duplicates-and-inconsistencies",
+            "missing-values",
             "outliers",
             "categorical-encoding",
-            "scaling-and-normalization",
             "feature-engineering",
+            "scaling-and-normalization",
             "feature-selection",
             "lab-2"
           ],
           "summary": "Turning a collected table into a matrix a model can learn from: missing values, duplicates, outliers, encodings, scaling, engineered features \u2014 each one fitted on train and applied to test, never the reverse.",
           "title": "Session 2 \u2014 Data Preprocessing"
+        },
+        "s3-tabular-models": {
+          "icon": "table",
+          "lessons": [
+            "the-tabular-landscape",
+            "trees-and-ensembles",
+            "gradient-boosting-in-practice",
+            "model-selection-and-validation",
+            "hyperparameter-optimization",
+            "time-series-models",
+            "lab-3"
+          ],
+          "summary": "The models that still win on tabular data, the validation that tells you whether they do, and the search that tunes them \u2014 gradient boosting, cross-validation schemes, and hyperparameter optimisation.",
+          "title": "Session 3 \u2014 Tabular Models"
+        },
+        "s4-advanced-neural-networks": {
+          "icon": "layers",
+          "lessons": [
+            "essential-layers",
+            "making-training-work",
+            "optimization-and-schedules",
+            "data-pipelines-and-training-loop",
+            "monitoring-and-debugging",
+            "performance-and-profiling",
+            "lab-4"
+          ],
+          "summary": "From a training loop that runs to a training loop that works: layers, initialisation, normalisation, regularisation, schedules, monitoring, and the profiling that tells you where the time actually goes.",
+          "title": "Session 4 \u2014 Advanced Neural Networks with PyTorch"
+        },
+        "s5-computer-vision-1": {
+          "icon": "image",
+          "lessons": [
+            "images-as-tensors",
+            "convolution",
+            "pooling-and-architectures",
+            "training-cnns",
+            "transfer-learning",
+            "lab-5"
+          ],
+          "summary": "Images as tensors, convolution as the right inductive bias, and transfer learning \u2014 the path from pixels to a classifier that works on a few thousand labelled examples.",
+          "title": "Session 5 \u2014 Computer Vision 1"
+        },
+        "s6-computer-vision-2": {
+          "icon": "scan",
+          "lessons": [
+            "object-detection",
+            "segmentation",
+            "autoencoders-and-vaes",
+            "gans",
+            "diffusion-models",
+            "lab-6"
+          ],
+          "summary": "Beyond one label per image: detection, segmentation, and the generative family \u2014 autoencoders, VAEs, GANs and diffusion.",
+          "title": "Session 6 \u2014 Computer Vision 2"
+        },
+        "s7-nlp-1": {
+          "icon": "text",
+          "lessons": [
+            "text-as-data-and-tokenization",
+            "embeddings",
+            "recurrent-models",
+            "attention",
+            "the-transformer",
+            "lab-7"
+          ],
+          "summary": "Text into vectors and vectors into meaning: tokenization, embeddings, recurrent models, attention, and the transformer block that replaced them.",
+          "title": "Session 7 \u2014 NLP 1"
+        },
+        "s8-nlp-2": {
+          "icon": "message-square",
+          "lessons": [
+            "training-and-scaling-llms",
+            "generation-and-decoding",
+            "instruction-tuning-and-peft",
+            "evaluating-generation",
+            "rag",
+            "agents",
+            "lab-8"
+          ],
+          "summary": "Large language models as engineering objects: how they are trained, how they generate, how you adapt them cheaply, how you ground them in your own data, and how you evaluate any of it.",
+          "title": "Session 8 \u2014 NLP 2"
+        },
+        "s9-reinforcement-learning-1": {
+          "icon": "target",
+          "lessons": [
+            "learning-from-interaction",
+            "markov-decision-processes",
+            "dynamic-programming",
+            "model-free-prediction-and-control",
+            "gymnasium",
+            "lab-9"
+          ],
+          "summary": "Learning from interaction: the MDP, value functions and the Bellman equations, dynamic programming when you have the model, and Monte-Carlo / temporal-difference control when you do not.",
+          "title": "Session 9 \u2014 Reinforcement Learning 1"
         }
       }
     }

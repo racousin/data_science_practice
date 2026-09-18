@@ -15,7 +15,7 @@ euros versus income in thousands, same data, different neighbours. -->
 | Model | Scaling | Why |
 |---|---|---|
 | Decision tree, random forest, gradient boosting | **no** | splits are order-based; a monotone map changes nothing |
-| Linear / logistic regression, unregularised | no effect on fit | coefficients absorb the scale |
+| Linear / logistic regression, unregularised | low | coefficients absorb the scale |
 | Ridge, Lasso, elastic net | **yes** | the penalty is applied to raw coefficients |
 | k-NN, k-means, SVM with RBF | **yes** | they compute distances |
 | Neural networks | **yes** | gradient magnitudes and initialisation assume it |
@@ -26,6 +26,8 @@ costs the model: a column in euros dominates a column in years by four orders of
 magnitude, and "nearest" comes to mean "similar income".
 
 ---
+
+
 
 ## Scaling and k-NN
 
@@ -99,31 +101,7 @@ after the previous lesson, is a decision you made on purpose.
 
 ---
 
-## Choosing
 
-| Situation | Scaler |
-|---|---|
-| Default, any gradient or distance method | `StandardScaler` |
-| A bounded range is required | `MinMaxScaler` |
-| Heavy tails, outliers kept | `RobustScaler` |
-| Sparse matrix, zeros must stay zero | `MaxAbsScaler` |
-| Row vectors compared by direction | `Normalizer` (per row, not per column) |
-
-`Normalizer` is the odd one out: it rescales each **row** to unit norm, which is
-what cosine similarity wants and almost never what a tabular feature wants.
-Confusing it with the column scalers is a common and silent error.
-
----
-
-## Column scalers versus Normalizer
-
-![Population against MedInc under each scaler](assets/preprocessing/scalers-medinc-vs-population.png)
-
-Min-Max (top right), Standard and MaxAbs (middle) keep the shape of the raw
-cloud (top left) and change only the axes; the row-wise L2 `Normalizer`
-(bottom) changes the shape.
-
----
 
 ## Skew is a different problem
 
@@ -138,28 +116,23 @@ df["revenue_log"] = np.log1p(df["revenue"])
 containing zeros produces `-inf`, which fails silently in some estimators and
 loudly in others.
 
----
 
-## Box-Cox and Yeo-Johnson
+![0_--L5CABcACqMNTH0.png](assets/preprocessing/0_--L5CABcACqMNTH0.png)
 
-$$
-x^{(\lambda)} = \frac{x^{\lambda} - 1}{\lambda}
-$$
-
-```python
-from sklearn.preprocessing import PowerTransformer
-
-pt = PowerTransformer(method="yeo-johnson", standardize=True)
-X_tr = pt.fit_transform(X_tr)
-```
-
-Both fit the exponent $\lambda$ by maximum likelihood, to bring the column as
-close to normal as it can get. Box-Cox requires strictly positive values;
-Yeo-Johnson handles zeros and negatives, which is why it is the default.
-
-$\lambda$ is a fitted parameter. Fitted on train.
 
 ---
+
+## Column scalers 
+
+![Population against MedInc under each scaler](assets/preprocessing/scalers-medinc-vs-population.png)
+
+Min-Max (top right), Standard and MaxAbs (middle) keep the shape of the raw
+cloud (top left) and change only the axes; the row-wise L2 `Normalizer`
+(bottom) changes the shape.
+
+---
+
+
 
 ## Scaling the target
 
@@ -177,58 +150,3 @@ comparable to anything.
 
 `TransformedTargetRegressor` applies the inverse before `predict` returns, so
 the score is in the original units and no bookkeeping is left to a human.
-
----
-
-## What not to scale, and the rule again
-
-- **one-hot columns** — indicators, not magnitudes; scaling turns 0/1 into two
-  meaningless real numbers and makes the coefficients unreadable
-- **already-bounded features** — a proportion in $[0, 1]$ is fine
-- **the inputs of a tree model** — no benefit, and it hides the raw thresholds
-  from anyone reading the model
-
-In a `ColumnTransformer` this is free: the scaler sits on the numeric branch and
-never sees the encoder's output. `fit` on train, `transform` on test — a scaler
-is two numbers per column, so the leak is small, but it is the same leak and the
-fix costs nothing.
-
-> Scale for the model, not for the data. If the model computes no distance and
-> no gradient, the scaler is decoration.
-
----
-
-## Check yourself
-
-1. Of a random forest, a Ridge regression and a k-NN classifier, which one is
-   unaffected by scaling — and what property decides it?
-
-   **Answer.** The random forest. What decides it is whether the model consults
-   *order* or *magnitude*: a tree splits on order and scaling is a monotone map,
-   so every split it could have made it can still make. Ridge is affected because
-   the penalty applies to the raw coefficients, k-NN because it computes
-   distances. Scaling before a tree costs only time; skipping it before the other
-   two costs the model.
-
-2. Run this. You should get exactly the output shown.
-
-   ```python
-   from sklearn.preprocessing import MinMaxScaler
-
-   mm = MinMaxScaler().fit([[0.0], [10.0]])            # train range 0-10
-   print(mm.transform([[5.0], [10.0], [15.0]]).ravel().tolist())
-   # -> [0.5, 1.0, 1.5]
-   ```
-
-   **Answer.** 1.5 is outside $[0, 1]$ and that is correct, not a bug: both
-   bounds came from the training set, so a larger test value maps above 1.
-   Clipping it would hide the fact that production is outside the range you
-   trained on.
-
-3. Your revenue column contains zeros. What does `np.log(0)` return, and what
-   does `np.log1p(0)` return?
-
-   **Answer.** `np.log(0)` returns `-inf`, which fails silently in some
-   estimators and loudly in others. `np.log1p(0)` returns `0.0`, because it
-   computes $\log(1 + x)$ — which is why it is the transform to reach for on a
-   count or a revenue column.
