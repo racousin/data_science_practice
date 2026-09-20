@@ -1,6 +1,6 @@
 # Audit findings — ms2a-project
 
-32 findings
+31 findings
 
 ## 1. [blocker / content / fix in courseware] competitions 169 (SuperTuxKart Grand Prix) and 170 (Bitcoin Intraday Trading)
 
@@ -134,14 +134,14 @@ Leaderboard row fields, student token: 48 (CartPole) `Metric: "accuracy"` with M
 
 ## 11. [major / platform / fix in platform] mlarena-sdk/mlarena/client.py:161, :170, :192, :1338
 
-**Problem.** competition(), competitions() and leaderboard() send no Authorization header, so an enrolled student using the SDK or MCP is treated as anonymous and cannot open any non-public course competition — the exact class that 179-182 belong to.
+**Problem.** competition(), competitions() and leaderboard() send no Authorization header, so an enrolled student using the SDK is treated as anonymous and cannot open any non-public course competition — the exact class that 179-182 belong to.
 
 **Evidence.**
 ```
 client.py:192 `resp = self._request("GET", self._url(f"/competitions/{competition_id}"), timeout=30)` — no `headers=self._headers()`, unlike every scoped call (e.g. :225 datasets passes it). Same at :161/:170 (competitions) and :1338 (leaderboard). Observed effect: `mlarena.connect(CREATOR).competition(179)` raises CompetitionNotFoundError, while the same creator token via raw requests with a bearer header returns 200 — the owner is being told their own competition does not exist. The backend's visibility_filter (_helpers.py:229-233) grants access on `is_public OR owned OR assistant`, and the enrolled-student side-channel in competitions.py:213-217 is likewise keyed on `current_user.is_authenticated`.
 ```
 
-**Proposed fix.** Add `headers=self._headers()` to the four calls. These routes accept an anonymous caller, so the change is backward-compatible and only widens what an authenticated caller can see. Without it, publishing 179-182 still leaves them invisible to any SDK/MCP student even after enrollment is fixed.
+**Proposed fix.** Add `headers=self._headers()` to the four calls. These routes accept an anonymous caller, so the change is backward-compatible and only widens what an authenticated caller can see. Without it, publishing 179-182 still leaves them invisible to any SDK student even after enrollment is fixed.
 
 ---
 
@@ -301,20 +301,7 @@ directiveCards.tsx:162-167: `if (args.id != null) { const byId = sameType.find((
 
 ---
 
-## 24. [major / platform / fix in platform] EXTENSION of findings 128 and 169 — mlarena-mcp/mlarena_mcp/server.py:110-320
-
-**Problem.** The audit reports that MCP cannot read a competition overview. It also cannot obtain the competition's data. An MCP-first student can join a course, read every lesson and submit an agent, but can neither read the assignment nor download the dataset it is about.
-
-**Evidence.**
-```
-Full tool list from server.py: join_course, list_my_courses, set_active_course, get_course, get_module, get_lesson, next_lesson, my_progress, mark_lesson_complete, list_attached_competitions, submit_agent, agent_status, leaderboard. There is no overview tool and no datasets/download tool. list_attached_competitions (:242-264) returns only competition_id, name, label, module_slug, module_title. The SDK has both `datasets()` and `download_dataset()` and neither is surfaced.
-```
-
-**Proposed fix.** Add two MCP tools backed by existing SDK/REST calls: one reading GET /api/competition_asset/<id>/markdown/overview, one wrapping client.datasets(<id>) to return labels plus signed URLs. Both are pure compositions of public routes, so neither breaks the parity rule.
-
----
-
-## 25. [minor / structure / fix in courseware] content/python-ai-engineering/course.yaml (module s1-git-and-packaging)
+## 24. [minor / structure / fix in courseware] content/python-ai-engineering/course.yaml (module s1-git-and-packaging)
 
 **Problem.** Session 1 is budgeted at 230 minutes inside a 3-hour (180-minute) session, and the split is 170 minutes of lecture to 60 of lab — not the "half lecture, half lab" the course description promises. Either the lab or ~50 minutes of lecture will be cut live, and the lab is the part that is graded, so students will most likely be sent home to do Parts D and E unsupervised, which is where the pair-review and conflict-resolution learning actually is.
 
@@ -329,7 +316,7 @@ course.yaml:23-24 course description: "A 12-hour mise à niveau in four 3-hour s
 
 ---
 
-## 26. [minor / content / fix in both] competitions 65 (Connect-Four) and 169 (SuperTuxKart) — ELO-ranked
+## 25. [minor / content / fix in both] competitions 65 (Connect-Four) and 169 (SuperTuxKart) — ELO-ranked
 
 **Problem.** Both are ranked by ELO and neither page says so; the board shows a reward column that contradicts the rank, which makes any absolute baseline meaningless for these two.
 
@@ -342,7 +329,7 @@ Leaderboard payload: 65 `IsEloRanked: true`, rows ordered 1248/1200/1184/1184 El
 
 ---
 
-## 27. [minor / content / fix in both] competition 170 (Bitcoin Intraday Trading) — leaderboard display
+## 26. [minor / content / fix in both] competition 170 (Bitcoin Intraday Trading) — leaderboard display
 
 **Problem.** Even once an overview is written, the board cannot show a baseline: every score rounds to 0.00 at the configured precision.
 
@@ -355,7 +342,7 @@ Leaderboard rows for 170: `carry-test` = 4.686e-4, `__benchmark__` = -2.439e-5, 
 
 ---
 
-## 28. [minor / content / fix in courseware] mlp-project/project-brief (Milestone 3)
+## 27. [minor / content / fix in courseware] mlp-project/project-brief (Milestone 3)
 
 **Problem.** The only runnable snippet in the whole Project module is correct for one of the three tracks. A student on the Generative or Agent track who copies it gets a validation failure or uploads the wrong artefact — on the very milestone whose stated purpose is "to prove the pipeline".
 
@@ -368,7 +355,7 @@ project-brief.md: "```python\nclient.submit(competition_id=COMP_ID, files=[\"sub
 
 ---
 
-## 29. [minor / structure / fix in courseware] mlp-project (competition 172, Prediction track)
+## 28. [minor / structure / fix in courseware] mlp-project (competition 172, Prediction track)
 
 **Problem.** The Prediction track's leaderboard is already populated by a different cohort, so "Rank in the cohort at the freeze" — 25% of the project grade — will be computed against 82 entries that are not the cohort.
 
@@ -381,7 +368,7 @@ project-brief.md: "```python\nclient.submit(competition_id=COMP_ID, files=[\"sub
 
 ---
 
-## 30. [minor / content / fix in courseware] mlp-reference (module summary)
+## 29. [minor / content / fix in courseware] mlp-reference (module summary)
 
 **Problem.** The module's own summary says its lessons are "linked from the sessions", but two of the five are referenced from nowhere in the course, and no cross-reference anywhere in the course is an actual clickable link — they are all prose mentions, so a student has to already know the Reference module exists and navigate to it manually.
 
@@ -394,7 +381,7 @@ course.yaml mlp-reference summary: "Self-study, linked from the sessions, never 
 
 ---
 
-## 31. [minor / structure / fix in courseware] course.yaml (s9-reinforcement-learning-1, s10-reinforcement-learning-2)
+## 30. [minor / structure / fix in courseware] course.yaml (s9-reinforcement-learning-1, s10-reinforcement-learning-2)
 
 **Problem.** Both sessions budget more lecture time than the whole session has. The course description promises "ten 3-hour sessions" that are "half lecture, half lab"; s9 is 175 minutes of lecture plus a 45-minute lab and s10 is 170 + 45, so the lab starts 5 to 10 minutes before the session ends. The author's own speaker notes already concede this.
 
@@ -407,7 +394,7 @@ Summing `estimated_minutes` from course.yaml: s9 lecture=175 lab=45 total=220; s
 
 ---
 
-## 32. [minor / content / fix in courseware] ms2a-machine-learning-practice/mlp-project (competitions 172, 169, 171)
+## 31. [minor / content / fix in courseware] ms2a-machine-learning-practice/mlp-project (competitions 172, 169, 171)
 
 **Problem.** The project module reuses competition 172 as its prediction track — the same competition already attached to s3-tabular-models. A student who did Lab 3 has already submitted to it, so the project's prediction track is pre-solved for them and unranked against classmates who arrive fresh.
 

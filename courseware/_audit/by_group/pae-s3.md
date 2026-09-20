@@ -134,7 +134,7 @@ Compare 177 ("## Baselines — Measured, not asserted — 339 real 6-hourly runs
 
 ## 11. [minor / content / fix in courseware] python-ai-engineering/s3-data-science-nutshell/the-ml-pipeline and models-and-objectives
 
-**Problem.** Two references point at things a PAIE student does not have: "your project" (PAIE is a 12-hour mise à niveau with four labs and no project) and "these slides" (the lesson is published as a web page; an SDK or MCP reader has no slides at all). The opening line of models-and-objectives also frames the entire lesson as prerequisite material for a different course.
+**Problem.** Two references point at things a PAIE student does not have: "your project" (PAIE is a 12-hour mise à niveau with four labs and no project) and "these slides" (the lesson is published as a web page; an SDK reader has no slides at all). The opening line of models-and-objectives also frames the entire lesson as prerequisite material for a different course.
 
 **Evidence.**
 ```

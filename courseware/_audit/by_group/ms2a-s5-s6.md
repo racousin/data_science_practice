@@ -173,14 +173,14 @@ course.yaml:243-245 attaches 173 as the sole S5 competition. Its overview: "**Me
 
 ## 14. [major / content / fix in courseware] 92 of 102 lesson bodies across both courses (e.g. s5-computer-vision-1/training-cnns, s7-nlp-1/lab-7)
 
-**Problem.** Teacher speaker notes are embedded as HTML comments in the published lesson bodies. The web renderer hides them, but the SDK and MCP hand students the raw markdown, so students read the instructor's private classroom management notes about them.
+**Problem.** Teacher speaker notes are embedded as HTML comments in the published lesson bodies. The web renderer hides them, but the SDK hands students the raw markdown, so students read the instructor's private classroom management notes about them.
 
 **Evidence.**
 ```
 `grep -rl '<!-- notes:' --include='*.md' student_view/ | wc -l` -> 92 of 102 lessons. s5-computer-vision-1/training-cnns.md:8 served to a student token: "<!-- notes: 30 minutes. Show a batch of augmented images on screen before explaining any of it — half the room will spot an augmentation that destroys their own label. -->". s7-nlp-1/lab-7.md:9: "<!-- notes: They will want to start with the transformer. Do not let them ... -->".
 ```
 
-**Proposed fix.** Strip `<!-- notes: ... -->` blocks in courseware/tools/publish_mlarena.py before the body is sent to the server (the deck builder already consumes them for the PPTX notes pane, so nothing is lost), then republish both courses. Do not rely on the web renderer hiding them — SDK and MCP consumers are first-class per the parity rule.
+**Proposed fix.** Strip `<!-- notes: ... -->` blocks in courseware/tools/publish_mlarena.py before the body is sent to the server (the deck builder already consumes them for the PPTX notes pane, so nothing is lost), then republish both courses. Do not rely on the web renderer hiding them — SDK consumers are first-class per the parity rule.
 
 ---
 

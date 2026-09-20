@@ -259,14 +259,14 @@ build_competitions.py:123-126: `expected = cfg.get("benchmark_expected_score")` 
 
 ## 14. [major / platform / fix in platform] mlarena-sdk/mlarena/client.py:161, :170, :192, :1338
 
-**Problem.** competition(), competitions() and leaderboard() send no Authorization header, so an enrolled student using the SDK or MCP is treated as anonymous and cannot open any non-public course competition — the exact class that 179-182 belong to.
+**Problem.** competition(), competitions() and leaderboard() send no Authorization header, so an enrolled student using the SDK is treated as anonymous and cannot open any non-public course competition — the exact class that 179-182 belong to.
 
 **Evidence.**
 ```
 client.py:192 `resp = self._request("GET", self._url(f"/competitions/{competition_id}"), timeout=30)` — no `headers=self._headers()`, unlike every scoped call (e.g. :225 datasets passes it). Same at :161/:170 (competitions) and :1338 (leaderboard). Observed effect: `mlarena.connect(CREATOR).competition(179)` raises CompetitionNotFoundError, while the same creator token via raw requests with a bearer header returns 200 — the owner is being told their own competition does not exist. The backend's visibility_filter (_helpers.py:229-233) grants access on `is_public OR owned OR assistant`, and the enrolled-student side-channel in competitions.py:213-217 is likewise keyed on `current_user.is_authenticated`.
 ```
 
-**Proposed fix.** Add `headers=self._headers()` to the four calls. These routes accept an anonymous caller, so the change is backward-compatible and only widens what an authenticated caller can see. Without it, publishing 179-182 still leaves them invisible to any SDK/MCP student even after enrollment is fixed.
+**Proposed fix.** Add `headers=self._headers()` to the four calls. These routes accept an anonymous caller, so the change is backward-compatible and only widens what an authenticated caller can see. Without it, publishing 179-182 still leaves them invisible to any SDK student even after enrollment is fixed.
 
 ---
 

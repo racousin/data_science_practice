@@ -172,7 +172,7 @@ Mapping onto the ML-Arena course-content layer:
 
 Authoring goes through `/course-editor` (`frontend/src/pages/CourseAuthoring/`),
 backed by `backend/app/views/teacher/`. Students consume via
-`frontend/src/pages/CourseLearner/`, the SDK, or the course-scoped MCP server.
+`frontend/src/pages/CourseLearner/` or the SDK.
 
 **Sequence:** settle the structure below → do the trims and the Claude Code build
 on the current website → then migrate. Migrating first would mean porting content

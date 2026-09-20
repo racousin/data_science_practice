@@ -88,14 +88,14 @@ This lets 404/403 propagate as themselves and keeps the 500 for genuine failures
 
 ---
 
-## [major/platform/platform] mlarena-sdk/mlarena/client.py — no overview reader; mlarena-mcp/mlarena_mcp/server.py:242 list_attached_competitions
-The competition overview — the only place any baseline is published — is unreachable from the SDK and from MCP. A student consuming the course through an AI editor can list competitions and submit to them but can never read what the target is. This violates the frontend/SDK parity rule in CLAUDE.md.
+## [major/platform/platform] mlarena-sdk/mlarena/client.py — no overview reader
+The competition overview — the only place any baseline is published — is unreachable from the SDK. A student consuming the course through the SDK can list competitions and submit to them but can never read what the target is. This violates the frontend/SDK parity rule in CLAUDE.md.
 
 EVIDENCE:
 ```
-`grep -n markdown mlarena/client.py` returns only `set_competition_markdown` (:592, a creator-scope PUT). There is no getter for GET /api/competition_asset/{id}/markdown/overview, which exists and is student-readable (I fetched all 21 overviews with raw requests + the student bearer token). In MCP, `list_attached_competitions` (server.py:242-264) returns only `competition_id`, `name`, `label`, `module_slug`, `module_title`; the `whats_next` prompt (server.py:392) tells the agent to "call list_attached_competitions() and suggest a competition to work on" with no way to read the task.
+`grep -n markdown mlarena/client.py` returns only `set_competition_markdown` (:592, a creator-scope PUT). There is no getter for GET /api/competition_asset/{id}/markdown/overview, which exists and is student-readable (I fetched all 21 overviews with raw requests + the student bearer token).
 ```
-FIX: Add `def competition_overview(self, competition_id: int) -> str` to client.py mirroring GET /api/competition_asset/{id}/markdown/overview with `headers=self._headers()`, and expose it as an MCP tool `get_competition_overview(competition_id)` next to `leaderboard` in server.py. Both are pure additions over an existing route, so no new endpoint is needed and the parity rule is satisfied.
+FIX: Add `def competition_overview(self, competition_id: int) -> str` to client.py mirroring GET /api/competition_asset/{id}/markdown/overview with `headers=self._headers()`. It is a pure addition over an existing route, so no new endpoint is needed and the parity rule is satisfied.
 
 ---
 
@@ -117,7 +117,7 @@ EVIDENCE:
 ```
 module_competition_link.py:18 `label = db.Column(db.String(200), nullable=True)  # optional display label` — and to_dict() (:31-37) returns id/module_id/competition_id/position/label only. The student-facing module payload confirms it: module_overview("ms2a-machine-learning-practice","s3-tabular-models") returns `"competitions": [{"competition_id": 172, "label": "2-Month Survival Prediction — tabular binary classification: gradient boosting judged against a baseline you can defend", "name": "..."}]` — the word "baseline" is there, the number is not. courseware course.yaml has the same shape: `competitions: - competition_id: 172 / label: "..."`.
 ```
-FIX: Add nullable `baseline_score`, `target_score` (Numeric) and `metric_direction` (String(6), 'higher'/'lower') to ModuleCompetitionLink, expose them in to_dict(), accept them in POST /api/teacher/modules/{id}/competitions and in the SDK's attach_competition(), add the matching keys to course.yaml's competitions block, and surface them in the student module_overview payload. That gives a teacher a per-cohort bar without touching a competition they do not own, and gives SDK/MCP students the target without needing the markdown route at all.
+FIX: Add nullable `baseline_score`, `target_score` (Numeric) and `metric_direction` (String(6), 'higher'/'lower') to ModuleCompetitionLink, expose them in to_dict(), accept them in POST /api/teacher/modules/{id}/competitions and in the SDK's attach_competition(), add the matching keys to course.yaml's competitions block, and surface them in the student module_overview payload. That gives a teacher a per-cohort bar without touching a competition they do not own, and gives SDK students the target without needing the markdown route at all.
 
 ---
 
@@ -161,7 +161,7 @@ EVIDENCE:
 ```
 `c.course("python-ai-engineering")` key set is ['can_manage','code','competition_ids','cover_url','description','end_date','id','instructor_name','is_enrolled','modules','name','progress','slug','start_date','visibility'] — no join_code, no enrollment_link. `GET /api/academic_courses/14/progress/me` -> 403 {"error":"Not enrolled in this course"}. `find_course_by_link_or_code` (_helpers.py:23-30) matches only enrollment_link or join_code, never slug. CourseLanding.tsx:201 renders `<JoinCodeForm label="Join code" />` with an empty field on a course whose code is nowhere on the page.
 ```
-FIX: Backend: add `POST /api/academic_courses/<string:slug>/enroll` in legacy.py that resolves by slug and enrols when `course.visibility in (Visibility.PUBLIC.value, Visibility.UNLISTED.value)`, reusing the body of enroll_in_course (identity checks, end_date check, 409 on duplicate); keep the code path for private courses. Frontend: in CourseLanding.tsx:196-211 render a primary `Join this course` button calling that route when `!course.is_enrolled && course.visibility !== 'private'`, and keep JoinCodeForm only for private. SDK: `enroll_in_course(..., slug=None)` in mlarena-sdk/mlarena/client.py:1497. MCP: accept `slug` in `join_course` (mlarena-mcp/mlarena_mcp/server.py:110-128).
+FIX: Backend: add `POST /api/academic_courses/<string:slug>/enroll` in legacy.py that resolves by slug and enrols when `course.visibility in (Visibility.PUBLIC.value, Visibility.UNLISTED.value)`, reusing the body of enroll_in_course (identity checks, end_date check, 409 on duplicate); keep the code path for private courses. Frontend: in CourseLanding.tsx:196-211 render a primary `Join this course` button calling that route when `!course.is_enrolled && course.visibility !== 'private'`, and keep JoinCodeForm only for private. SDK: `enroll_in_course(..., slug=None)` in mlarena-sdk/mlarena/client.py:1497.
 
 ---
 
@@ -177,7 +177,7 @@ FIX: Move the `get_visible_competition_or_404(competition_id)` call above the `t
 ---
 
 ## [major/platform/platform] modelmanager/modelmanager/lesson.py:74-75 -> backend/app/views/academic_courses/consumption.py:272-281
-Lesson.to_dict returns body_md verbatim and consumption.lesson_body ships it unchanged, so the teacher's HTML-comment speaker notes reach every SDK and MCP consumer raw. The web renderer only appears to hide them: CourseMarkdown uses rehype-raw, so the comments are emitted into the DOM and are visible in view-source.
+Lesson.to_dict returns body_md verbatim and consumption.lesson_body ships it unchanged, so the teacher's HTML-comment speaker notes reach every SDK consumer raw. The web renderer only appears to hide them: CourseMarkdown uses rehype-raw, so the comments are emitted into the DOM and are visible in view-source.
 
 EVIDENCE:
 ```
@@ -194,7 +194,7 @@ EVIDENCE:
 ```
 `grep -rn ProgressCompetitionCell frontend/src` returns only coursesApi.ts:169, :187, :774. `GET /api/academic_courses/11/progress/me` returns a populated `competitions` array ([{competition_id:172, name:'2-Month Survival Prediction', ranked_by:'accuracy', value:null, n_runs:0, best_agent_name:null, last_run:null}, ...]) computed by _competition_results at backend/app/views/teacher/course_content.py:314-380. CourseLanding.tsx:143 uses only `progress?.next_lesson`; ModuleOverview.tsx:95 uses only `completedSet`.
 ```
-FIX: In ModuleOverview.tsx, extend the CompetitionItem card (line 65-90) to take the matching ProgressCompetitionCell from useMyProgress and render `n_runs === 0 ? 'Not submitted' : `${ranked_by} ${value}` (n_runs runs, last <last_run>)`. In CourseLanding.tsx add a per-module competition status chip next to the lesson/minutes badges (line 91-119). Mirror the same rollup as an SDK convenience on my_progress and as an MCP `my_progress` field so all four consumers show it.
+FIX: In ModuleOverview.tsx, extend the CompetitionItem card (line 65-90) to take the matching ProgressCompetitionCell from useMyProgress and render `n_runs === 0 ? 'Not submitted' : `${ranked_by} ${value}` (n_runs runs, last <last_run>)`. In CourseLanding.tsx add a per-module competition status chip next to the lesson/minutes badges (line 91-119). Mirror the same rollup as an SDK convenience on my_progress so both consumers show it.
 
 ---
 
@@ -231,14 +231,14 @@ FIX: Add a fourth clause to user_can_see_competition (_helpers.py:205): the comp
 
 ---
 
-## [major/platform/platform] backend/app/views/competition_asset.py:19; mlarena-sdk/mlarena/client.py:592 (write-only); mlarena-mcp/mlarena_mcp/server.py:242-264
-Parity break: the competition overview markdown — the document that carries the task description, the data contract and the baseline — is readable over REST but has no SDK method and no MCP tool. The SDK has set_competition_markdown (write) with no getter. An MCP-first student can list a course's attached competitions and get id/name/label and nothing else, so the AI editor the platform advertises cannot see the assignment.
+## [major/platform/platform] backend/app/views/competition_asset.py:19; mlarena-sdk/mlarena/client.py:592 (write-only)
+Parity break: the competition overview markdown — the document that carries the task description, the data contract and the baseline — is readable over REST but has no SDK method. The SDK has set_competition_markdown (write) with no getter.
 
 EVIDENCE:
 ```
-`grep -n 'markdown/overview\|def get_competition_markdown' mlarena-sdk/mlarena/client.py mlarena-mcp/mlarena_mcp/server.py` -> no matches. mlarena-sdk/mlarena/client.py:592 defines set_competition_markdown only. mlarena-mcp/mlarena_mcp/server.py:250-263 builds each entry from competition_id/name/label/module_slug/module_title. Manual REST call to /api/competition_asset/172/markdown/overview with the student token returns the full 4218-byte brief.
+`grep -n 'markdown/overview\|def get_competition_markdown' mlarena-sdk/mlarena/client.py` -> no matches. mlarena-sdk/mlarena/client.py:592 defines set_competition_markdown only. Manual REST call to /api/competition_asset/172/markdown/overview with the student token returns the full 4218-byte brief.
 ```
-FIX: Add `def competition_overview(self, competition_id: int) -> str` to mlarena-sdk/mlarena/client.py (GET /api/competition_asset/<id>/markdown/overview, return resp.json()['content']) next to competition() at line 179, document it in mlarena-sdk/README.md. Add an MCP tool `get_competition_overview(competition_id)` and an MCP resource `competition://{id}/overview` in mlarena-mcp/mlarena_mcp/server.py alongside lesson_resource (line 348-366), and register it in read_tools.
+FIX: Add `def competition_overview(self, competition_id: int) -> str` to mlarena-sdk/mlarena/client.py (GET /api/competition_asset/<id>/markdown/overview, return resp.json()['content']) next to competition() at line 179, document it in mlarena-sdk/README.md.
 
 ---
 
@@ -393,7 +393,7 @@ RECOMMENDED DESIGN (primary, option b — the lesson directive). The three optio
 
 EVIDENCE:
 ```
-The machinery is already built and unused. `_HANDLERS` at lesson_directives.py:202 is 3 entries {competition, leaderboard, submit} with the comment "Adding a type is a one-line change here"; strict mode already refuses to publish a broken directive (teacher/lessons.py:257) and non-strict already drops-with-warning for readers (consumption.py:272). `lesson()` already returns `directives` + `directive_warnings` to the SDK (confirmed live: lesson keys include both) and MCP `get_lesson` (mlarena-mcp/mlarena_mcp/server.py:199-208) passes them straight through. Zero lessons in either course use any directive today: `grep -rn '```mlarena:' --include='*.md' student_view/` -> 0 hits.
+The machinery is already built and unused. `_HANDLERS` at lesson_directives.py:202 is 3 entries {competition, leaderboard, submit} with the comment "Adding a type is a one-line change here"; strict mode already refuses to publish a broken directive (teacher/lessons.py:257) and non-strict already drops-with-warning for readers (consumption.py:272). `lesson()` already returns `directives` + `directive_warnings` to the SDK (confirmed live: lesson keys include both). Zero lessons in either course use any directive today: `grep -rn '```mlarena:' --include='*.md' student_view/` -> 0 hits.
 ```
 FIX: Ship two handlers plus one column.
 
@@ -401,9 +401,9 @@ SERVER. (1) `_resolve_checkpoint(args, body)` in _HANDLERS: parse the fence body
 
 STATE. One nullable JSON column `lesson_progress.checkpoints` = {"<checkpoint id>": true|false}. Add `checkpoints: Optional[dict[str, bool]]` to LessonProgressContext (_schemas.py:72) — note it is `extra='forbid'`, so a client sending the field today gets a 400; the field must be declared. `POST /lessons/<id>/complete` merges it. In `_content_progress` (teacher/course_content.py:255) each per_module row gains `checkpoints: {passed, total}`, and `my_progress` gains `targets: [...]`. A module is green only when every published lesson is complete AND every target in it is met — that is option (c)'s semantics with the number authored in markdown instead of in a new table.
 
-STUDENT SEES. Web: a card at the end of the lesson — prompt, a Reveal that shows `expect` + `why`, and Got it / Not yet writing into progress; the target card is a meter ("your best 0.907 / target 0.913 — not yet") with the submit CTA. SDK: directives already arrive; `my_progress()` gains the counts. MCP: an AI tutor can now say "3 unchecked checkpoints in Session 4, and your MNIST submission is under the line".
+STUDENT SEES. Web: a card at the end of the lesson — prompt, a Reveal that shows `expect` + `why`, and Got it / Not yet writing into progress; the target card is a meter ("your best 0.907 / target 0.913 — not yet") with the submit CTA. SDK: directives already arrive; `my_progress()` gains the counts.
 
-COST. backend ~140 LOC + 1 alembic rev (one nullable JSON column). frontend ~160 LOC: 2 cards in directiveCards.tsx + 2 cases at CourseMarkdown.tsx:64-72. SDK 2 lines (a `checkpoints=` kwarg on mark_lesson_complete, client.py:1627). MCP 1 tool arg. courseware: 2 regexes in build_slides.py + 1 assertion in student_walk.py.
+COST. backend ~140 LOC + 1 alembic rev (one nullable JSON column). frontend ~160 LOC: 2 cards in directiveCards.tsx + 2 cases at CourseMarkdown.tsx:64-72. SDK 2 lines (a `checkpoints=` kwarg on mark_lesson_complete, client.py:1627). courseware: 2 regexes in build_slides.py + 1 assertion in student_walk.py.
 
 WORKED EXAMPLE — python-ai-engineering/s4-pytorch-nutshell/lab-4.md. BEFORE (lines 96-102 and the rubric at 120-129): "client = mlarena.connect(api_key=\"mlk_user_...\") / client.submit(competition_id=<id>, path=\"submission.csv\") / print(client.leaderboard(<id>).head())" then "Getting on the board matters; your position does not." and "| ML-Arena submission accepted | 10% |". AFTER: fix the call to `client.submit(competition_id=182, files=[\"submission.csv\"])`, then add the measured line that already exists in competitions/s4-mnist-warmup/overview.md — "Multinomial logistic regression on raw pixels scores 91.3%. A correctly wired MLP clears 97%." — followed by:
 
@@ -541,7 +541,7 @@ FIX: Convert each checklist to a single `mlarena:checkpoint kind=mcq` or `kind=r
 ---
 
 ## [minor/content/both] 92 of 102 lessons
-Teacher speaker notes ship raw to SDK and MCP consumers. Relevant to this design because it settles a question about it: body_md is served verbatim, so a checkpoint's expected answer cannot be hidden from an SDK student — which is fine (checkpoints are diagnostic), but it must be a deliberate choice, not a discovery made later.
+Teacher speaker notes ship raw to SDK consumers. Relevant to this design because it settles a question about it: body_md is served verbatim, so a checkpoint's expected answer cannot be hidden from an SDK student — which is fine (checkpoints are diagnostic), but it must be a deliberate choice, not a discovery made later.
 
 EVIDENCE:
 ```
@@ -552,13 +552,13 @@ FIX: Strip `<!-- notes: ... -->` in publish_mlarena.py before upload and keep th
 ---
 
 ## [minor/platform/platform] backend/app/views/academic_courses/_schemas.py:72-83
-LessonProgressContext is `extra='forbid'`, so any client that starts sending checkpoint results before the server declares the field gets a 400 rather than a tolerated no-op. This is correct Fail-Fast behaviour but it fixes the rollout order: server first, then SDK/MCP/frontend.
+LessonProgressContext is `extra='forbid'`, so any client that starts sending checkpoint results before the server declares the field gets a 400 rather than a tolerated no-op. This is correct Fail-Fast behaviour but it fixes the rollout order: server first, then SDK/frontend.
 
 EVIDENCE:
 ```
 `model_config = ConfigDict(extra="forbid")` at _schemas.py:81, with `course_id: Optional[int] = None` as the only field. `mark_lesson_complete` (consumption.py:376) validates the body through it before touching progress.
 ```
-FIX: Add `checkpoints: Optional[dict[str, bool]] = None` to LessonProgressContext in the same change that adds the `lesson_progress.checkpoints` column, and deploy the backend before shipping the SDK kwarg (client.py:1627) and the MCP tool arg. Neither the frontend nor the SDK should send the field until `GET /lessons/.../` payloads show a checkpoint directive resolving.
+FIX: Add `checkpoints: Optional[dict[str, bool]] = None` to LessonProgressContext in the same change that adds the `lesson_progress.checkpoints` column, and deploy the backend before shipping the SDK kwarg (client.py:1627). Neither the frontend nor the SDK should send the field until `GET /lessons/.../` payloads show a checkpoint directive resolving.
 
 ---
 
