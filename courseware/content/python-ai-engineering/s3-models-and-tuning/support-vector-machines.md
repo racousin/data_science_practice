@@ -118,7 +118,7 @@ and never compute $\phi(x)$ at all.
 |---|---|
 | Linear | $K(x, x') = x^T x'$ |
 | Polynomial | $K(x, x') = (x^T x' + c)^d$ |
-| RBF (Gaussian) | $K(x, x') = \exp(-\gamma \|x - x'\|^2)$ |
+| RBF (Gaussian) | $K(x, x') = \exp(-\gamma \Vert x - x'\Vert^2)$ |
 
 The RBF kernel corresponds to an *infinite-dimensional* $\phi$, which you could
 never compute directly and never need to.

@@ -182,7 +182,8 @@ def parse_blocks(text: str) -> tuple[str | None, list[Block]]:
             while i < len(lines) and lines[i].strip().startswith("|"):
                 row = lines[i].strip()
                 if not TABLE_SEP_RE.match(row):
-                    rows.append([c.strip() for c in row.strip("|").split("|")])
+                    cells = re.split(r"(?<!\\)\|", row.strip("|"))
+                    rows.append([c.strip().replace("\\|", "|") for c in cells])
                 i += 1
             if rows:
                 blocks.append(Block("table", rows=rows))

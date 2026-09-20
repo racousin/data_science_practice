@@ -1,6 +1,7 @@
 # Regularization
 
-One extra term in the loss, one hyperparameter, and simple way to avoid overfiting.
+One extra term in the loss, one hyperparameter, and a simple way to avoid
+overfitting.
 
 <!-- notes: ~15 minutes per the deck plan. The KKT slide is optional depth — skip
 it if the room is struggling, but the constrained view is what makes the diamond
@@ -90,7 +91,9 @@ model.fit(X_train, y_train)
 y_pred = model.predict(X_test)
 ```
 
-> **Note:** `alpha` in sklearn is $\lambda$ in the formulas.
+> **Note:** `alpha` plays the role of $\lambda$ — exactly for `Ridge`; `Lasso`
+> and `ElasticNet` divide the data term by $2n$, so their `alpha` sits on a
+> different scale.
 
 ---
 
@@ -114,9 +117,10 @@ $$
 
 ```python
 from sklearn.linear_model import LogisticRegression
-ridge   = LogisticRegression(penalty='l2', C=1.0)
-lasso   = LogisticRegression(penalty='l1', C=10, solver='saga')
-elastic = LogisticRegression(penalty='elasticnet', C=10, l1_ratio=0.5, solver='saga')
+# scikit-learn >= 1.8: l1_ratio picks the penalty; penalty= is deprecated
+ridge   = LogisticRegression(C=1.0)                             # L2 default
+lasso   = LogisticRegression(l1_ratio=1.0, C=10, solver='saga')  # L1
+elastic = LogisticRegression(l1_ratio=0.5, C=10, solver='saga')  # both
 ```
 
 > **Note:** in sklearn, $C = 1/\lambda$. It runs the other way — **larger `C`

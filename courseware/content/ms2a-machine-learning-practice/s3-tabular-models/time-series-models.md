@@ -1,8 +1,9 @@
 # Time Series Models
 
-When rows are ordered, every technique in the previous lesson breaks. Shuffling
-the folds trains on the future, and the score you get is a measurement of a
-model you cannot deploy.
+When rows are ordered, the cross-validation schemes of *Model Selection and
+Validation* — k-fold, stratified, grouped — all break. Shuffling the folds
+trains on the future, and the score you get is a measurement of a model you
+cannot deploy.
 
 <!-- notes: 25 minutes. Start with the shuffled-split demo: fit on shuffled folds,
 report a beautiful score, then re-fit with TimeSeriesSplit and watch it collapse.
@@ -29,22 +30,27 @@ useless model into an excellent-looking one.
 
 ## Forward chaining
 
-![Expanding-window time series folds](assets/tabular/tsfold.png)
-
-Train on the past, validate on the future, then move forward and repeat. Each
-fold's training set ends before its validation set begins.
+*Model Selection and Validation* introduced `TimeSeriesSplit`: each fold trains
+on a prefix of the time-sorted rows and validates on the block that follows. A
+real forecast needs the `test_size` and `gap` that lesson left to this one, and
+`max_train_size` if the window should slide:
 
 ```python
 from sklearn.model_selection import TimeSeriesSplit
 cv = TimeSeriesSplit(n_splits=5, test_size=30, gap=7)
-scores = cross_val_score(pipe, X, y, cv=cv, scoring="neg_mean_absolute_error")
+scores = cross_val_score(pipe, X, y, cv=cv,
+                         scoring="neg_mean_absolute_error")
 ```
 
-Expanding window keeps all history; sliding keeps a fixed length and forgets.
-Use sliding when the process is clearly non-stationary, expanding otherwise.
+| Argument | Default | Sets |
+|---|---|---|
+| `test_size` | `n_samples // (n_splits + 1)` | rows per validation block: one deployment cycle |
+| `gap` | `0` | rows skipped between train and validation — next slide |
+| `max_train_size` | `None` | a ceiling on training rows: a sliding window |
 
-Sort by time first: `TimeSeriesSplit` splits on position, not on the timestamp
-column, and will silently do the wrong thing on unsorted rows.
+The expanding window keeps all history; the sliding one keeps a fixed length
+and forgets. Use sliding when the process is clearly non-stationary, expanding
+otherwise. The rows are sorted by time first, as before.
 
 ---
 
@@ -84,8 +90,8 @@ several series, or the tail of one series lands in the head of the next.
 
 ```python
 g = df.groupby("series_id")["y"]
-df["y_roll_mean_7"] = g.shift(1).rolling(7).mean()
-df["y_roll_std_28"] = g.shift(1).rolling(28).std()
+df["y_roll_mean_7"] = g.transform(lambda s: s.shift(1).rolling(7).mean())
+df["y_roll_std_28"] = g.transform(lambda s: s.shift(1).rolling(28).std())
 ```
 
 Rolling means, deviations and extremes carry level and volatility raw lags miss.
@@ -94,6 +100,11 @@ The `shift(1)` before `rolling` is the whole correctness argument: without it th
 window includes the current row and the feature contains the target. It is the
 most common leak in time-series feature engineering, and it produces a model that
 scores superbly and predicts nothing.
+
+The rolling window is grouped too, or it runs across series: `g.shift(1)` alone
+returns a plain column, and a `.rolling(7)` on it straddles the boundary between
+two series — hidden only by the NaN the shift leaves on each first row, which
+`min_periods=1` would remove.
 
 Add calendar features too, and encode strong cycles as sine and cosine pairs.
 
@@ -179,7 +190,7 @@ gets in through a missing `shift`.
 ## Check yourself
 
 1. What breaks if you drop the `shift(1)` from
-   `g.shift(1).rolling(7).mean()`?
+   `s.shift(1).rolling(7).mean()`?
 
    **Answer.** The window then includes the current row, so the feature
    contains the target. The model scores superbly and predicts nothing — the
@@ -190,8 +201,10 @@ gets in through a missing `shift`.
    ```python
    import pandas as pd
    s = pd.Series([1, 2, 3, 4, 5])
-   print(s.rolling(2).mean().tolist())            # -> [nan, 1.5, 2.5, 3.5, 4.5]
-   print(s.shift(1).rolling(2).mean().tolist())   # -> [nan, nan, 1.5, 2.5, 3.5]
+   print(s.rolling(2).mean().tolist())
+   # [nan, 1.5, 2.5, 3.5, 4.5]
+   print(s.shift(1).rolling(2).mean().tolist())
+   # [nan, nan, 1.5, 2.5, 3.5]
    ```
 
    Row 2 of the first line already knows `y_2`. Row 2 of the second does not.

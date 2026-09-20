@@ -27,8 +27,10 @@ The challenge you already submitted to. Continuous target, ranked on **−MAE**.
 
 **This notebook is worked.** It runs top to bottom. Paste your `mlk_user_...`
 key into cell 2 and run all; the grid search in section 6 takes a few minutes
-and everything else is seconds. It will provide you an inital wokflow to evaluation and train models. Then you can test it your own. Try to get the best score.
+and everything else is seconds. It gives you an initial workflow for evaluating
+and training models; then make it your own and try to get the best score.
 
+---
 
 ## Challenge 2 — Bank Term Deposit
 
@@ -75,7 +77,8 @@ They hold exactly the code you have now written twice:
 - `ordered_split(X, y, test_size=0.2)` — the last fraction, in place, no
   shuffle. What the bike notebook needed.
 - `stratified_split(X, y, test_size=0.2, random_state=0)` — a thin wrapper that
-  makes `stratify=y` impossible to forget. What the bank notebook needed.
+  makes `stratify=y` impossible to forget. What the bank challenge needs
+  (11.7% positives).
 - `search(model, grid, X, y, cv, scoring)` — `GridSearchCV`, returning the
   fitted search *and* `cv_results_` as a tidy frame sorted by rank, because the
   spread across folds is the half everybody drops.
@@ -84,8 +87,8 @@ They hold exactly the code you have now written twice:
 
 - `compare(candidates, X_train, y_train, X_val, y_val, metric)` — one row per
   candidate, a train column and a validation column. This is the table from
-  section 5 of both notebooks, and it is the single most reused thing in the
-  session.
+  section 5 of the bike notebook; build the same one for the bank data. It is
+  the single most reused thing in the session.
 - `best_threshold(y_true, proba, metric=f1_score)` — sweep, argmax, return the
   threshold and its score.
 

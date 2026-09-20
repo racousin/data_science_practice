@@ -44,7 +44,7 @@ $$
 **2c.** Compute the learner's weight — a good learner gets a high $\alpha_t$:
 
 $$
-\alpha_t = \frac{1}{2} \ln \frac{1 - \epsilon_t}{\epsilon_t}
+\alpha_t = \ln \frac{1 - \epsilon_t}{\epsilon_t}
 $$
 
 ---
@@ -78,13 +78,18 @@ $$
 A learner that is no better than a coin gets exactly zero weight, because
 $\ln(1) = 0$. The formula throws away useless models for free.
 
+Textbooks that write $\frac{1}{2} \ln$ pair it with the signed update
+$\exp(-\alpha_t \, y_i \, h_t(x_i))$, $y_i, h_t \in \{-1, +1\}$: same weights,
+same vote. The indicator form above with the full $\ln$ is what
+scikit-learn's `AdaBoostClassifier` stores in `estimator_weights_`.
+
 ---
 
 ## Gradient boosting
 
 Same sequential idea, but each new tree is fitted to the **residuals** — the
-gradient of the loss — rather than to reweighted points. That generalises
-boosting to any differentiable loss.
+negative gradient of the loss — rather than to reweighted points. That
+generalises boosting to any differentiable loss.
 
 | Parameter | Name | Effect |
 |---|---|---|
@@ -105,7 +110,8 @@ bias and leaves the ensemble nothing to correct.
 from sklearn.ensemble import GradientBoostingClassifier
 from xgboost import XGBClassifier
 
-gb  = GradientBoostingClassifier(n_estimators=200, learning_rate=0.1, max_depth=4)
+gb  = GradientBoostingClassifier(n_estimators=200, learning_rate=0.1,
+                                 max_depth=4)
 xgb = XGBClassifier(n_estimators=200, learning_rate=0.1, max_depth=4)
 gb.fit(X_train, y_train)
 ```
@@ -114,7 +120,8 @@ gb.fit(X_train, y_train)
 from sklearn.ensemble import GradientBoostingRegressor
 from xgboost import XGBRegressor
 
-gb  = GradientBoostingRegressor(n_estimators=200, learning_rate=0.1, max_depth=4)
+gb  = GradientBoostingRegressor(n_estimators=200, learning_rate=0.1,
+                                max_depth=4)
 xgb = XGBRegressor(n_estimators=200, learning_rate=0.1, max_depth=4)
 ```
 

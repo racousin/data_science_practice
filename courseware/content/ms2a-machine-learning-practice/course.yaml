@@ -171,53 +171,78 @@ modules:
         is_published: true
 
   # ---------------------------------------------------------------- session 3
+  # 2026-09-18: merged in everything python-ai-engineering/s3-models-and-tuning
+  # teaches (non-linearity, regularisation, kNN, SVM, trees, ensembles, MLPs,
+  # validation, search) plus an Optuna deep-dive and a probabilistic-prediction
+  # lesson. The lab and the challenge moved from 172 (still linked from the
+  # project module) to 177, European Rain Forecast: rain at +6 h / +48 h for 45
+  # European cities, members scored with CRPS. Its package lives in the platform
+  # repo (tests-dummy/catalog/global_weather), not under competitions/.
   - title: "Session 3 — Tabular Models"
     slug: s3-tabular-models
     icon: table
     visibility: unlisted
     summary: >
-      The models that still win on tabular data, the validation that tells you
-      whether they do, and the search that tunes them — gradient boosting,
-      cross-validation schemes, and hyperparameter optimisation.
+      From regularised linear models through kNN, SVMs, trees, random forests
+      and boosting to MLPs: the models that still win on tabular data, the
+      validation and leakage discipline that tell you whether they do, the
+      search that tunes them (Optuna), and the probabilities and distributions
+      that make a prediction usable — calibration, quantiles and CRPS, with
+      time-series validation for the rain challenge.
     competitions:
-      - competition_id: 172
-        label: "2-Month Survival Prediction — tabular binary classification: gradient boosting judged against a baseline you can defend"
+      - competition_id: 177
+        label: "European Rain Forecast — rain at +6 h and +48 h for 45 European cities: a distribution, scored with CRPS once the rain has fallen"
     lessons:
       - title: "The Tabular Landscape"
         slug: the-tabular-landscape
         file: s3-tabular-models/the-tabular-landscape.md
+        estimated_minutes: 40
+        is_published: true
+      - title: "k-Nearest Neighbours and Support Vector Machines"
+        slug: knn-and-svm
+        file: s3-tabular-models/knn-and-svm.md
         estimated_minutes: 30
         is_published: true
       - title: "Trees and Ensembles"
         slug: trees-and-ensembles
         file: s3-tabular-models/trees-and-ensembles.md
-        estimated_minutes: 40
+        estimated_minutes: 65
         is_published: true
       - title: "Gradient Boosting in Practice"
         slug: gradient-boosting-in-practice
         file: s3-tabular-models/gradient-boosting-in-practice.md
         estimated_minutes: 30
         is_published: true
+      - title: "Multi-Layer Perceptrons"
+        slug: neural-networks
+        file: s3-tabular-models/neural-networks.md
+        estimated_minutes: 40
+        is_published: true
       - title: "Model Selection and Validation"
         slug: model-selection-and-validation
         file: s3-tabular-models/model-selection-and-validation.md
-        estimated_minutes: 35
+        estimated_minutes: 50
         is_published: true
-      - title: "Hyperparameter Optimization"
+      - title: "Hyperparameter Optimisation"
         slug: hyperparameter-optimization
         file: s3-tabular-models/hyperparameter-optimization.md
-        estimated_minutes: 35
+        estimated_minutes: 80
+        is_published: true
+      - title: "Probabilistic Prediction"
+        slug: probabilistic-prediction
+        file: s3-tabular-models/probabilistic-prediction.md
+        estimated_minutes: 80
         is_published: true
       - title: "Time Series Models"
         slug: time-series-models
         file: s3-tabular-models/time-series-models.md
         estimated_minutes: 25
         is_published: true
-      - title: "Lab 3 — Beat the Baseline"
+      - title: "Lab 3 — Rain Over Europe"
         slug: lab-3
         kind: exercise
         file: s3-tabular-models/lab-3.md
-        estimated_minutes: 45
+        estimated_minutes: 90
         is_published: true
 
   # ---------------------------------------------------------------- session 4

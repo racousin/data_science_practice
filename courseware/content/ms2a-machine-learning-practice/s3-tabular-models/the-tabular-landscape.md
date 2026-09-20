@@ -4,10 +4,13 @@ Deep learning took vision and text. It did not take tables. On a few thousand
 rows of mixed numeric and categorical columns, a tree ensemble still wins — and
 the models in this lesson are the ones it has to beat.
 
-<!-- notes: 30 minutes. Ask the room who expects a neural network to win on their
-project data; most say yes. Correct that early. Keep kNN and SVM short — they are
-reference points, not candidates. Spend the time on the tree, because everything
-in the next two lessons is built out of it. -->
+<!-- notes: 40 minutes. Ask the room who expects a neural network to win on their
+project data; most say yes. Correct that early. The recap of linear and logistic
+regression is deliberate: half the room will have forgotten the normal equation
+since Python AI Engineering. Then ten minutes on non-linearity and fifteen on
+regularisation. The KKT slide is optional depth — skip it if the room is
+struggling, but the constrained view is what makes the diamond picture make
+sense. -->
 
 ---
 
@@ -28,14 +31,46 @@ Three structural reasons:
 
 ---
 
+## The setup
+
+Every model in this session answers the same question. Given $n$ labelled rows
+with $p$ features, pick from a family $\mathcal{F}$ of functions the one with
+the smallest loss $\ell$:
+
+$$
+D = (X, Y) = (x_i, y_i)_{i=1}^{n}
+\qquad
+f : \mathbb{R}^p \rightarrow \mathbb{R}
+\qquad
+\hat{f} = \arg\min_{f \in \mathcal{F}} \ell\big(Y, f(X)\big)
+$$
+
+A model is a choice of $\mathcal{F}$ and of $\ell$. Fitting is the minimisation.
+
+---
+
 ## Linear regression
 
+A hyperplane:
+
 $$
-\hat{y} = \beta_0 + \sum_{j=1}^p \beta_j x_j
+\hat{y} = \beta_0 + \sum_{j=1}^p \beta_j x_j = X\beta
 $$
 
-Fitted by minimising the residual sum of squares — in closed form when $p$ is
-small, by gradient descent when it is not.
+with a column of ones in $X$ for the intercept. Minimising the residual sum of
+squares has a closed form, the normal equation:
+
+$$
+\min_\beta \|y - X\beta\|^2 \;\Rightarrow\; \hat{\beta} = (X^T X)^{-1} X^T y
+$$
+
+Closed form when $p$ is small, gradient descent when it is not. scikit-learn
+calls a least-squares solver (`scipy.linalg.lstsq`) rather than inverting
+$X^T X$.
+
+---
+
+## Linear regression in scikit-learn
 
 ```python
 from sklearn.linear_model import LinearRegression
@@ -49,21 +84,350 @@ prediction by $\beta_j$, all else equal". No other model gives that for free.
 
 ## Logistic regression
 
-The same linear score, squashed to a probability and fitted by maximum
-likelihood:
+The same linear score, squashed to a probability by the sigmoid $\sigma$:
 
 $$
-P(y = 1 \mid x) = \frac{1}{1 + e^{-(\beta_0 + \beta^T x)}}
+P(y = 1 \mid x) = \sigma(\beta_0 + \beta^T x) = \frac{1}{1 + e^{-(\beta_0 + \beta^T x)}}
 $$
+
+and fitted by maximum likelihood, which is minimising the log-loss:
+
+$$
+\ell(\beta) = -\sum_{i=1}^{n} \big[ y_i \log \hat{p}_i + (1 - y_i)\log(1 - \hat{p}_i) \big]
+$$
+
+There is no closed form this time. The minimum is found iteratively.
+
+---
+
+## Logistic regression in scikit-learn
 
 ```python
 from sklearn.linear_model import LogisticRegression
 clf = LogisticRegression(C=1.0, max_iter=1000).fit(X_train, y_train)
 ```
 
-`C` is the *inverse* regularisation strength, which trips up everyone once.
-Small `C` means a strongly regularised model. Search it on a log scale from
-$10^{-3}$ to $10^{3}$.
+`LogisticRegression` is penalised by default: an L2 penalty whose strength is
+set by `C`. The "plain" logistic regression you fit is already the regularised
+model of the second half of this lesson, and `C` gets its own slide there.
+
+---
+
+## A linear boundary
+
+![A logistic-regression boundary: the line x2 = -x1 + 4 separates the two classes](assets/tabular/linear-decision-boundary.png)
+
+Predicting class 1 when $\hat{p} \geq 0.5$ is predicting it when
+$\beta_0 + \beta^T x \geq 0$. The boundary is a hyperplane: in two dimensions, a
+straight line.
+
+---
+
+## The same hyperplane, twice
+
+![Linear versus logistic regression](assets/tabular/linear-vs-logistic.png)
+
+Left, the hyperplane *is* the prediction. Right, it is squashed into a
+probability and then thresholded.
+
+---
+
+## Where they fail
+
+![Three non-linear datasets, each with its best straight line](assets/tabular/non-linear-datasets.png)
+
+Both models draw straight lines, and most data is not on a straight line. The
+best straight line through a sine or a V misses the shape. And in
+classification, no straight line separates a circle from the ring around it.
+
+---
+
+## Lift it, and a plane will do
+
+![Concentric circles are not linearly separable; lifted into 3D, they are](assets/tabular/circles-lifted-3d.png)
+
+There is no such line — but there is a *plane*, once you add a third dimension.
+One extra feature is enough: $x_3 = x_1^2 + x_2^2$, the squared distance to the
+centre, is small on the inner circle and large on the ring. That observation is
+the whole idea behind the next four slides, and behind the kernel trick of the
+next lesson.
+
+---
+
+## Polynomial regression
+
+Same linear regression. New features.
+
+$$
+x \mapsto \phi(x) = (1, \, x, \, x^2, \, x^3, \, \ldots, \, x^d)
+$$
+
+$$
+\hat{y} = \beta_0 + \beta_1 x + \beta_2 x^2 + \ldots + \beta_d x^d = \phi(x)^T \beta
+$$
+
+With $\Phi$ the matrix whose rows are the $\phi(x_i)$, the normal equation is
+unchanged:
+
+$$
+\min_\beta \|y - \Phi\beta\|^2 \;\Rightarrow\; \hat{\beta} = (\Phi^T \Phi)^{-1} \Phi^T y
+$$
+
+---
+
+## Non-linear in $x$, linear in $\beta$
+
+![Polynomials of degree 0 to 5](assets/tabular/polynomial-degrees.png)
+
+> **Non-linear in $x$, linear in $\beta$.**
+
+Everything built for linear models carries over: the normal equation, the
+log-loss, and every penalty in the second half of this lesson. The degree $d$ is
+the capacity knob — a polynomial of degree $d$ can turn $d - 1$ times, and at
+$d = n - 1$ it passes through every one of the $n$ training points exactly:
+interpolation, not learning.
+
+---
+
+## Polynomial features in scikit-learn
+
+```python
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+
+poly = PolynomialFeatures(degree=3)
+X_train_poly = poly.fit_transform(X_train)
+X_test_poly  = poly.transform(X_test)
+
+reg = LinearRegression()
+reg.fit(X_train_poly, y_train)
+y_pred = reg.predict(X_test_poly)
+```
+
+`fit_transform` on train, `transform` on test — the standard transformer
+pattern. Here `fit` only records the number of input columns and the list of
+exponents, so nothing is learned from the data. But keep the habit: with a
+scaler or an imputer, calling `fit_transform` on the test set leaks.
+
+---
+
+## How many columns you built
+
+`poly.get_feature_names_out()` shows what you actually built. With $p$ input
+columns at degree $d$, the bias column included, the number of columns is
+
+$$
+\binom{p + d}{d}, \qquad \mathrm{e.g.} \quad \binom{5 + 3}{3} = 56
+$$
+
+Five features at degree 3 become 56 columns. That growth is why Session 2
+applied `PolynomialFeatures` to a handful of chosen columns, never the whole
+matrix — and why a high-degree fit needs the penalty that comes next.
+
+---
+
+## Regularisation
+
+![The same points fitted without regularisation (overfit) and with it (good fit)](assets/tabular/regularization-effect.png)
+
+> Penalising large parameters forces the model to find simpler solutions that
+> generalise better.
+
+Unpenalised least squares with correlated features — or with high-degree
+polynomial features — gives huge coefficients that cancel each other out.
+Penalising their size fixes it.
+
+---
+
+## One extra term, one hyperparameter
+
+The simplest guard against overfitting: one extra term in the loss.
+
+$$
+\hat{\beta} = \arg\min_\beta \sum_{i=1}^n (y_i - x_i^T \beta)^2 + \lambda R(\beta)
+$$
+
+$\lambda$ controls the strength of the regularisation. It is a hyperparameter:
+
+| $\lambda$ | Effect |
+|---|---|
+| $\lambda = 0$ | no penalty → the standard loss, back to square one |
+| $\lambda \rightarrow \infty$ | all coefficients driven to 0 → the model predicts a constant (the intercept is not penalised) |
+
+Everything useful is in between, and you find it on the validation set.
+
+---
+
+## Two penalties
+
+$$
+\|\beta\|_1 = |\beta_1| + |\beta_2| + \ldots + |\beta_p|
+\qquad
+\|\beta\|_2^2 = \beta_1^2 + \beta_2^2 + \ldots + \beta_p^2
+$$
+
+![Unit balls of the L1, L2 and L-infinity norms](assets/tabular/lp-norm-balls.png)
+
+The unit balls — every $\beta$ of norm at most 1 — for L1 (a diamond), L2 (a
+disc) and, for comparison, L∞, $\max_j |\beta_j|$ (a square).
+
+---
+
+## The constrained view (KKT)
+
+$$
+\min_\beta \|y - X\beta\|^2 + \lambda\|\beta\|
+\qquad \Longleftrightarrow \qquad
+\min_\beta \|y - X\beta\|^2 \quad \text{s.t.} \quad \|\beta\| \leq t
+$$
+
+For every $\lambda \geq 0$ there is a $t \geq 0$ such that both problems have
+the same solution — the Karush–Kuhn–Tucker (KKT) conditions.
+
+So regularisation is the same thing as confining $\beta$ to a ball of radius
+$t$. Larger $\lambda$, smaller ball. The solution lands where the loss contours
+first touch the ball.
+
+---
+
+## Why lasso zeroes coefficients
+
+![Ridge, lasso and elastic-net constraint regions touched by the loss contours](assets/tabular/ridge-lasso-elasticnet-regions.png)
+
+The $L_1$ ball has **corners on the axes**. Contours touch corners, and a corner
+means some $\beta_j$ is exactly zero. The $L_2$ ball is round and has no
+corners, so it shrinks coefficients without ever zeroing them.
+
+---
+
+## Ridge, lasso, elastic net
+
+$$
+\mathrm{Ridge:} \quad \min_\beta \|y - X\beta\|^2 + \lambda\|\beta\|_2^2
+$$
+
+$$
+\mathrm{Lasso:} \quad \min_\beta \|y - X\beta\|^2 + \lambda\|\beta\|_1
+$$
+
+$$
+\mathrm{Elastic\ net:} \quad \min_\beta \|y - X\beta\|^2 + \lambda_1\|\beta\|_1 + \lambda_2\|\beta\|_2^2
+$$
+
+| Penalty | Effect |
+|---|---|
+| Ridge (L2) | shrinks together, keeps all features |
+| Lasso (L1) | drives coefficients to exactly zero |
+| Elastic net | sparse, but stable under collinearity |
+
+---
+
+## Ridge, lasso, elastic net in scikit-learn
+
+```python
+from sklearn.linear_model import Ridge, Lasso, ElasticNet
+ridge   = Ridge(alpha=1.0)
+lasso   = Lasso(alpha=0.1)
+elastic = ElasticNet(alpha=0.1, l1_ratio=0.5)
+
+model = elastic                     # any of the three
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+```
+
+> **Note:** `alpha` in scikit-learn is $\lambda$ in the formulas — up to a
+> scale, next slide.
+
+---
+
+## What alpha means exactly
+
+`Ridge` minimises exactly the formula above. `Lasso` and `ElasticNet` divide
+the squared error by $2n$, and `ElasticNet` splits `alpha` with
+$\rho$ = `l1_ratio`:
+
+$$
+\frac{1}{2n}\|y - X\beta\|^2 + \alpha\rho\|\beta\|_1 + \frac{\alpha(1 - \rho)}{2}\|\beta\|_2^2
+$$
+
+So the same `alpha` is not the same strength in `Ridge` and in `Lasso`.
+`l1_ratio=1` is the lasso; `Lasso` is exactly that case.
+
+---
+
+## Which penalty
+
+```python
+from sklearn.linear_model import ElasticNetCV
+model = ElasticNetCV(l1_ratio=[0.1, 0.5, 0.9, 1.0], cv=5)
+model.fit(X_train, y_train)     # model.alpha_, model.l1_ratio_
+```
+
+It searches 100 values of `alpha` for each `l1_ratio`. Ridge when features are
+correlated and you want all of them, lasso when you want the model to choose a
+subset, elastic net when both — which, on real data with groups of correlated
+columns, is usually. Scale first: the penalty is on the coefficient, and an
+unscaled coefficient carries whatever unit its column uses.
+
+Lasso on correlated features picks one of the group arbitrarily and zeroes the
+rest. Do not read that choice as a statement about importance.
+
+---
+
+## The same thing for classification
+
+Swap the squared error for the log-loss $\ell(\beta)$ of logistic regression,
+with $\hat{p}_i = \sigma(x_i^T\beta)$. The penalties do not change.
+
+$$
+\mathrm{Ridge\ (L2):} \quad \min_\beta \; \ell(\beta) + \lambda\|\beta\|_2^2
+$$
+
+$$
+\mathrm{Lasso\ (L1):} \quad \min_\beta \; \ell(\beta) + \lambda\|\beta\|_1
+$$
+
+$$
+\mathrm{Elastic\ net:} \quad \min_\beta \; \ell(\beta) + \lambda_1\|\beta\|_1 + \lambda_2\|\beta\|_2^2
+$$
+
+$$
+\ell(\beta) = -\sum_{i=1}^{n}\big[y_i\log\hat{p}_i + (1-y_i)\log(1-\hat{p}_i)\big],
+\qquad
+\hat{p}_i = \frac{1}{1 + e^{-x_i^T\beta}}
+$$
+
+---
+
+## Penalised logistic regression in scikit-learn
+
+```python
+from sklearn.linear_model import LogisticRegression
+ridge   = LogisticRegression(C=1.0)                 # l1_ratio=0
+lasso   = LogisticRegression(C=10, l1_ratio=1, solver="saga",
+                             max_iter=1000)
+elastic = LogisticRegression(C=10, l1_ratio=0.5, solver="saga",
+                             max_iter=1000)
+```
+
+Since scikit-learn 1.8 the penalty is set by `l1_ratio` alone: 0 is L2 (the
+default), 1 is L1, anything in between is elastic net. `penalty=` is deprecated
+and goes in 1.10. The default solver, `lbfgs`, handles L2 only: `saga` handles
+all three (`liblinear` also does pure L1), and converges fast only on scaled
+features — even then, raise `max_iter` from its default of 100 or it stops
+early with a `ConvergenceWarning`.
+
+---
+
+## C runs the other way
+
+scikit-learn puts `C` on the loss instead of $\lambda$ on the penalty — it
+minimises $C \cdot \ell(\beta) + R(\beta)$ — so $C$ plays the role of
+$1/\lambda$. **Larger `C` means less regularisation**; small `C` means a
+strongly regularised model.
+
+This inversion trips up everyone once. `SVC`, in the next lesson, uses the same
+convention. Search `C` on a log scale from $10^{-3}$ to $10^{3}$.
 
 ---
 
@@ -78,159 +442,35 @@ a floor any later model must clear, and an early warning. A linear model scoring
 
 ---
 
-## Regularization
-
-Unpenalised least squares with correlated features gives huge coefficients that
-cancel each other out. Penalising their size fixes it.
-
-$$
-\hat{\beta} = \arg\min_\beta \sum_{i=1}^n (y_i - x_i^T \beta)^2 + \lambda R(\beta)
-$$
-
-| Penalty | $R(\beta)$ | Effect |
-|---|---|---|
-| Ridge (L2) | sum of squared coefficients | shrinks together, keeps all features |
-| Lasso (L1) | sum of absolute coefficients | drives coefficients to exactly zero |
-| Elastic net | a mix of the two | sparse, but stable under collinearity |
-
----
-
-## Which penalty
-
-```python
-from sklearn.linear_model import ElasticNetCV
-model = ElasticNetCV(l1_ratio=[0.1, 0.5, 0.9, 1.0], cv=5).fit(X_train, y_train)
-```
-
-Ridge when features are correlated and you want all of them, lasso when you want
-the model to choose a subset, elastic net when both — which, on real data with
-groups of correlated columns, is usually. Scale first: the penalty is on the
-coefficient, and an unscaled coefficient carries whatever unit its column uses.
-
-Lasso on correlated features picks one of the group arbitrarily and zeroes the
-rest. Do not read that choice as a statement about importance.
-
----
-
-## k-nearest neighbours
-
-![k-nearest neighbours](assets/tabular/knn.png)
-
-$$
-\hat{y}(x) = \frac{1}{k} \sum_{i \in N_k(x)} y_i
-$$
-
-```python
-from sklearn.neighbors import KNeighborsClassifier
-clf = KNeighborsClassifier(n_neighbors=15, weights="distance").fit(X_tr, y_tr)
-```
-
-Small $k$ overfits, large $k$ underfits, and the method degrades above roughly
-twenty dimensions, where every point is about equally far from every other. Keep
-it as a sanity check, not a submission.
-
----
-
-## Support vector machines
-
-![Maximum-margin separator](assets/tabular/svm.png)
-
-An SVM finds the separating hyperplane with the widest margin, allowing
-violations at a cost `C`:
-
-$$
-\min_{w, b} \frac{1}{2} |w|^2 + C \sum_{i=1}^n \xi_i
-$$
-
-The kernel trick replaces every inner product with $K(x_i, x_j)$, giving a
-non-linear boundary without ever building the high-dimensional features.
-
-```python
-from sklearn.svm import SVC
-clf = SVC(kernel="rbf", C=1.0, gamma="scale").fit(X_train, y_train)
-```
-
-Training is quadratic to cubic in rows, so above roughly 50,000 it stops being
-practical. That, not accuracy, is why it lost the tabular crown.
-
----
-
-## The decision tree
-
-![A decision tree](assets/tabular/tree.png)
-
-A tree recursively splits the feature space on one column at a time, greedily
-choosing the split that most reduces impurity in the children. Prediction walks
-from the root to a leaf and returns the leaf's mean or majority class.
-
-```python
-from sklearn.tree import DecisionTreeClassifier
-tree = DecisionTreeClassifier(max_depth=4, min_samples_leaf=20).fit(X_tr, y_tr)
-```
-
-No scaling, no encoding of ordinals, invariance to monotone transformations, and
-a boundary you can print and read. That combination is why trees survive.
-
----
-
-## Impurity
-
-![Choosing a split by weighted Gini impurity](assets/tabular/gini.png)
-
-Two measures of how mixed a node is, over class proportions $p_i$:
-
-$$
-G = 1 - \sum_{i=1}^C p_i^2, \qquad H = - \sum_{i=1}^C p_i \log_2 p_i
-$$
-
-The split chosen is the one with the largest drop from the parent's impurity to
-the weighted average of its children's — the information gain.
-
-Gini and entropy almost always pick the same split. Gini is cheaper. Use it and
-stop tuning `criterion` — the depth parameters matter a hundred times more.
-
----
-
-## Why one tree is not enough
-
-Grown without limit, a tree splits until every leaf is pure — one training row
-per leaf, training error zero, test error terrible.
-
-The failure mode is **variance**: refit on a 90% resample and the top split can
-change, taking the whole structure with it. A model whose shape depends on which
-rows you happened to draw is not describing the population.
-
-Pruning with `max_depth` and `min_samples_leaf` trades that variance for bias.
-Averaging many trees, the next lesson, trades it for almost nothing.
-
----
-
 ## Where this leaves you
 
 | Situation | Reach for |
 |---|---|
 | First model, always | regularised linear / logistic |
 | Coefficients must be defended to a regulator | linear, and stop there |
-| Fewer than ~1,000 rows | regularised linear, or a small SVM |
-| Anything else, tabular | gradient boosting (next two lessons) |
-| Fewer than 20 features, low dimension, quick check | kNN |
+| A clear curve in a few known columns | polynomial features on those, with a penalty |
+| Many correlated columns | ridge or elastic net, on scaled features |
+| Fewer than ~1,000 rows | regularised linear, or a small SVM (next lesson) |
+| Fewer than 20 features, low dimension, quick check | kNN (next lesson) |
+| Anything else, tabular | gradient boosting (after the trees) |
 
-The rest of this session assumes gradient boosting and spends its time on what
-decides whether yours is any good: the validation protocol and the search.
+Next come kNN and the SVM, then the decision tree and the ensembles built from
+it, and the multi-layer perceptron as the last family. From there the session
+assumes gradient boosting and spends its time on what decides whether yours is
+any good: the validation protocol, the search, turning a point prediction into
+a distribution, and the rules time imposes on a split — everything the rain
+challenge of Lab 3 needs.
 
 ---
 
 ## Check yourself
 
-1. Name two of the three structural reasons tree ensembles still beat tuned
-   neural networks on medium-sized tables.
+1. Lasso sets some coefficients to exactly zero; ridge only shrinks them. Why?
 
-   **Answer.** Any two of: columns have no translation invariance and no
-   ordering, so convolution's inductive bias has no analogue; features are
-   heterogeneous in scale, type and meaning — a tree splits each on its own
-   terms while a dense layer mixes them all in the first matmul; real tables
-   are small, and five thousand rows starves a network while being plenty for
-   boosting.
+   **Answer.** In the constrained view (KKT), the penalty confines $\beta$ to a
+   ball, and the solution sits where the loss contours first touch it. The L1
+   ball is a diamond with corners on the axes, and at a corner some $\beta_j$
+   is exactly zero. The L2 ball is round, with no corners to land on.
 
 2. Run this. You should get exactly the output shown.
 

@@ -1,6 +1,7 @@
 # Validation & Overfitting
 
-Is the model learn and be able to generalize ? How to get a number you can trust ?
+Did the model learn something that generalises? And how do you get a number you
+can trust?
 
 ---
 
@@ -12,9 +13,16 @@ The model has learned the training set, including its noise.
 
 Symptom: training error keeps falling, validation error starts rising.
 
+---
+
+## It is available on demand
+
+Overfitting is not an accident you can avoid by being careful:
 
 > **Theorem.** For $n$ data points with distinct $x$ values, a polynomial of
 > degree $d = n - 1$ fits all of them exactly.
+
+![A degree-9 polynomial through 10 points](assets/s3-models-and-tuning/validation-and-overfitting/overfit-polynomial.png)
 
 Training error **0.0000**, test error **9,209,639**. Any model family rich enough
 to interpolate your training set will do so if you let it, and it will be
@@ -55,12 +63,12 @@ X_val, X_test, y_val, y_test = train_test_split(
 | Test | 15% | one final, honest estimate |
 
 ```python
-model1.fit(X_train, y_train)                    # train: fit
+model1.fit(X_train, y_train)                   # train: fit
 model2.fit(X_train, y_train)                   # train: fit
-f1_score(y_val,  model1.predict(X_val))        # validation: compare candidates
+f1_score(y_val,  model1.predict(X_val))        # validation: compare
 f1_score(y_val,  model2.predict(X_val))
 
-f1_score(y_test, best_model.predict(X_test))        # test: report, once
+f1_score(y_test, best_model.predict(X_test))   # test: report, once
 ```
 
 The validation score is not the number you report — you picked the model with it,
@@ -75,7 +83,13 @@ so it is optimistic. Only the test score is honest.
 With little data, one split wastes most of it and the estimate is noisy.
 K-fold uses everything.
 
+---
+
+## K-fold, by hand
+
 ```python
+import numpy as np
+from sklearn.base import clone
 from sklearn.model_selection import KFold
 from sklearn.metrics import f1_score
 
@@ -83,12 +97,15 @@ cv = KFold(n_splits=5, shuffle=True, random_state=42)
 
 scores = []
 for train_idx, test_idx in cv.split(X):
-    m = clone(model)                       # a fresh, unfitted model each fold
+    m = clone(model)                       # fresh, unfitted model each fold
     m.fit(X[train_idx], y[train_idx])
     scores.append(f1_score(y[test_idx], m.predict(X[test_idx])))
 
+scores = np.array(scores)
 print(f"{scores.mean():.3f} ± {scores.std():.3f}")
 ```
+
+`X[train_idx]` indexes NumPy arrays; for a DataFrame use `X.iloc[train_idx]`.
 
 ---
 
@@ -120,10 +137,11 @@ With temporal data, a random split trains on the future and tests on the past.
 The score is meaningless.
 
 ```python
-from sklearn.model_selection import TimeSeriesSplit
+from sklearn.model_selection import TimeSeriesSplit, cross_val_score
 
 cv = TimeSeriesSplit(n_splits=5)
-scores = cross_val_score(model, X, y, cv=cv, scoring="neg_mean_absolute_error")
+scores = cross_val_score(model, X, y, cv=cv,
+                         scoring="neg_mean_absolute_error")
 ```
 
 Each fold trains on a prefix of the series and tests on the block that follows,

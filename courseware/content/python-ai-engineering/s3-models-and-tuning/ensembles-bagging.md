@@ -68,7 +68,8 @@ Diversity from **resampling the data** instead:
 ![Bootstrap samples](assets/s3-models-and-tuning/ensembles-bagging/bootstrap-samples.png)
 
 > Bagging **reduces variance**. It stabilises unstable models — which is exactly
-> the weakness in the decision-tree cons table.
+> the decision tree's weakness: grown to purity, a tree changes completely when
+> a few rows change.
 
 It does essentially nothing for bias. Averaging many underfit models gives you
 one underfit model.
@@ -109,7 +110,8 @@ importances = rf.feature_importances_
 ```python
 from sklearn.ensemble import RandomForestRegressor
 rf = RandomForestRegressor(n_estimators=100, max_depth=10,
-                           max_features='sqrt', random_state=42)
+                           max_features=1/3,   # a float is a fraction: p/3
+                           random_state=42)
 ```
 
 `feature_importances_` recovers part of the interpretability that was lost when

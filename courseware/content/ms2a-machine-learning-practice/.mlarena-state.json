@@ -45,8 +45,11 @@
       "s2-data-preprocessing/the-preprocessing-contract": 64,
       "s3-tabular-models/gradient-boosting-in-practice": 73,
       "s3-tabular-models/hyperparameter-optimization": 75,
+      "s3-tabular-models/knn-and-svm": 207,
       "s3-tabular-models/lab-3": 77,
       "s3-tabular-models/model-selection-and-validation": 74,
+      "s3-tabular-models/neural-networks": 208,
+      "s3-tabular-models/probabilistic-prediction": 209,
       "s3-tabular-models/the-tabular-landscape": 71,
       "s3-tabular-models/time-series-models": 76,
       "s3-tabular-models/trees-and-ensembles": 72,
@@ -410,29 +413,50 @@
           "title": "Gradient Boosting in Practice"
         },
         "s3-tabular-models/hyperparameter-optimization": {
-          "body": "27f1209ccb364080bf20dc7d9d580974cf0f92a1ef340717c2d195f88c160cb2",
-          "estimated_minutes": 35,
+          "body": "8150a35767ee8e6ddec1250daebcbc915088d8df15c3a8f91d2da6834b8f6a7d",
+          "estimated_minutes": 75,
           "gated": false,
           "is_published": true,
           "title": "Hyperparameter Optimization"
         },
-        "s3-tabular-models/lab-3": {
-          "body": "f16402df2a2b1569e8887cf1ecc5007d9cddc5357e26788965edd17f4feafa4e",
-          "estimated_minutes": 45,
+        "s3-tabular-models/knn-and-svm": {
+          "body": "3d2ec466555a9ecf0035c42643d7f23fc0c62b1d12c951d11fe286bc20fd9c55",
+          "estimated_minutes": 20,
           "gated": false,
           "is_published": true,
-          "title": "Lab 3 \u2014 Beat the Baseline"
+          "title": "k-Nearest Neighbours and Support Vector Machines"
+        },
+        "s3-tabular-models/lab-3": {
+          "body": "c989b33855e4a4304466cee47f612d82a7b930a937e46d1c7f2fda3e35d8b0bb",
+          "estimated_minutes": 90,
+          "gated": false,
+          "is_published": true,
+          "title": "Lab 3 \u2014 Rain Over Europe"
         },
         "s3-tabular-models/model-selection-and-validation": {
-          "body": "49260adf2c8dcb1325c0b7407325e51015c0393ff7a8d347a120150dbab58a1c",
-          "estimated_minutes": 35,
+          "body": "14b8228fe2a1f7d53958758025bfa0ba314d0a5dfb0052a0b257922292f8e00c",
+          "estimated_minutes": 55,
           "gated": false,
           "is_published": true,
           "title": "Model Selection and Validation"
         },
+        "s3-tabular-models/neural-networks": {
+          "body": "4216f87b98470c532cf635abc5a88549027255b843fb8ae89031bdceaec26716",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Multi-Layer Perceptrons"
+        },
+        "s3-tabular-models/probabilistic-prediction": {
+          "body": "dabec265f4b0fa48d032bd955ee07d0fba65ffe2132218c2f3a66180597bdbbb",
+          "estimated_minutes": 50,
+          "gated": false,
+          "is_published": true,
+          "title": "Probabilistic Prediction"
+        },
         "s3-tabular-models/the-tabular-landscape": {
-          "body": "5981e26af4aeaf5f02b8ce1db4a788ad5c4bc6ef8293e506e31865a8a9598760",
-          "estimated_minutes": 30,
+          "body": "1622e4af50b828bad16cb6f19709574af4318ddaed0ec9d9960be1b5c89438bc",
+          "estimated_minutes": 40,
           "gated": false,
           "is_published": true,
           "title": "The Tabular Landscape"
@@ -445,8 +469,8 @@
           "title": "Time Series Models"
         },
         "s3-tabular-models/trees-and-ensembles": {
-          "body": "10959ef5560bd511886eebccbfe060da8add4dcc95b30ed043137998c3a86ece",
-          "estimated_minutes": 40,
+          "body": "7611335c2f54d5c2d3d2d626b901ec3089c0822a1c7d9b626b056fb43ee1254f",
+          "estimated_minutes": 65,
           "gated": false,
           "is_published": true,
           "title": "Trees and Ensembles"
@@ -821,14 +845,17 @@
           "icon": "table",
           "lessons": [
             "the-tabular-landscape",
+            "knn-and-svm",
             "trees-and-ensembles",
             "gradient-boosting-in-practice",
+            "neural-networks",
             "model-selection-and-validation",
             "hyperparameter-optimization",
+            "probabilistic-prediction",
             "time-series-models",
             "lab-3"
           ],
-          "summary": "The models that still win on tabular data, the validation that tells you whether they do, and the search that tunes them \u2014 gradient boosting, cross-validation schemes, and hyperparameter optimisation.",
+          "summary": "The models that still win on tabular data, the validation that tells you whether they do, the search that tunes them, and the probabilities that make a prediction usable \u2014 gradient boosting, cross-validation schemes, Optuna, calibration and CRPS.",
           "title": "Session 3 \u2014 Tabular Models"
         },
         "s4-advanced-neural-networks": {

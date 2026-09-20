@@ -130,5 +130,6 @@ As dimensions increase, data becomes exponentially sparse. KNN's neighbours
 become far away and meaningless — every point is roughly equidistant from every
 other, and "nearest" stops carrying information.
 
-This is the single reason KNN is a poor default on wide data, and it is why the
-500-column one-hot encoding from Session 2 was flagged as a problem.
+This is the single reason KNN is a poor default on wide data — a
+high-cardinality one-hot encoding (hundreds of 0/1 columns) is exactly the case
+where it stops working.

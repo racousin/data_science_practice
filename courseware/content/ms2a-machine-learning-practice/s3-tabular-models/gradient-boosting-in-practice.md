@@ -77,14 +77,17 @@ compute budget on this algorithm.
 
 ```python
 import lightgbm as lgb
+X_fit, X_es, y_fit, y_es = train_test_split(X_tr, y_tr, test_size=0.2)
 model = lgb.LGBMRegressor(n_estimators=10000, learning_rate=0.03)
-model.fit(X_tr, y_tr, eval_set=[(X_val, y_val)], eval_metric="rmse",
+model.fit(X_fit, y_fit, eval_set=[(X_es, y_es)], eval_metric="rmse",
           callbacks=[lgb.early_stopping(100), lgb.log_evaluation(0)])
 print(model.best_iteration_)
 ```
 
-Set `n_estimators` far higher than you need and stop when the validation metric
-has not improved for `early_stopping_rounds` iterations.
+Set `n_estimators` far higher than you need and stop when the metric on `X_es`
+has not improved for `stopping_rounds` iterations — the callback's argument,
+100 above. `X_es` is carved out of the training part, the same split the
+Optuna recipe of *Hyperparameter Optimisation* makes inside every fold.
 
 > The evaluation set used for early stopping is part of training. It is not a
 > validation set any more, and it is certainly not a test set.
@@ -178,7 +181,8 @@ Gain importance answers "what did this model split on", not "what matters".
 
 ```python
 from sklearn.inspection import permutation_importance
-r = permutation_importance(model, X_val, y_val, n_repeats=10, random_state=0)
+r = permutation_importance(model, X_val, y_val,
+                           n_repeats=10, random_state=0)
 ```
 
 Shuffle one column in the validation set and measure how much the score drops. A
@@ -210,8 +214,9 @@ first (`num_leaves`, `min_child_samples`), then sampling, then regularisation,
 then drop the learning rate for the final fit.
 
 Automated pipeline search is a real tool and a poor teacher — it is in the
-Reference module, not in this session. The two lessons that follow decide whether
-the score you just recorded means anything.
+Reference module, not in this session. After the detour through the multi-layer
+perceptron, *Model Selection and Validation* and *Hyperparameter Optimisation*
+decide whether the score you just recorded means anything.
 
 ---
 

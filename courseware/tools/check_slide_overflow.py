@@ -56,6 +56,33 @@ def describe(block) -> str:
     return str(getattr(block, "text", ""))[:60]
 
 
+def _strings(value):
+    if isinstance(value, str):
+        yield value
+    elif isinstance(value, (list, tuple)):
+        for item in value:
+            yield from _strings(item)
+
+
+def inline_math(blocks):
+    """Every `$…$` span on a slide, in the order the renderer meets them.
+
+    `build_slides` transliterates inline math only while it writes runs, so an
+    unsupported macro surfaces as a build crash long after this gate has passed.
+    Running the same transliteration here is what makes the gate honest.
+    """
+    for block in blocks:
+        if block.kind in ("code", "math", "image"):
+            continue
+        for name, value in vars(block).items():
+            if name == "kind":
+                continue
+            for text in _strings(value):
+                for m in bs.INLINE_RE.finditer(text):
+                    if m.lastgroup == "math":
+                        yield m.group()
+
+
 def code_overruns(blocks, size: int):
     """Each code line wider than its panel on a slide set at `size`.
 
@@ -100,6 +127,7 @@ def main() -> int:
 
     problems = 0
     too_wide = 0
+    bad_math = 0
     for module in course["modules"]:
         slug = module.get("slug") or bs._slug(module["title"])
         if args.module and slug not in args.module:
@@ -127,6 +155,13 @@ def main() -> int:
                                  else measure.block_height(b, smallest))
                             print(f"    {b.kind:8} {h:5.2f}  {describe(b)}")
 
+                for span in inline_math(blocks):
+                    try:
+                        bs.latex_to_unicode(span[1:-1])
+                    except Exception as exc:
+                        bad_math += 1
+                        print(f"{where}: inline math {span} — {exc}")
+
                 if not any(b.kind == "code" for b in blocks):
                     continue
                 size, _, _ = measure.fit(blocks, avail)
@@ -141,7 +176,8 @@ def main() -> int:
 
     print(f"{problems} overflowing slide(s)")
     print(f"{too_wide} code line(s) wider than their panel")
-    return 1 if problems or too_wide else 0
+    print(f"{bad_math} inline math span(s) the deck builder cannot render")
+    return 1 if problems or too_wide or bad_math else 0
 
 
 if __name__ == "__main__":

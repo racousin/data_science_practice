@@ -46,6 +46,7 @@ SYMBOLS = {
     r"\left": "", r"\right": "", r"\big": "", r"\Big": "",
     # Delimiters and set/logic operators.
     r"\mid": "|", r"\vert": "|", r"\Vert": "‖", r"\langle": "⟨",
+    r"\lVert": "‖", r"\rVert": "‖", r"\lvert": "|", r"\rvert": "|",
     # Norm delimiters: \|w\| is the common spelling of \Vert w \Vert.
     r"\|": "‖",
     r"\rangle": "⟩", r"\lfloor": "⌊", r"\rfloor": "⌋", r"\lceil": "⌈",
@@ -139,8 +140,9 @@ def latex_to_unicode(expr: str) -> str:
 
     out, i = [], 0
     while i < len(s):
-        if s.startswith(r"\frac", i) or s.startswith(r"\dfrac", i):
-            i += 6 if s.startswith(r"\dfrac", i) else 5
+        if (s.startswith(r"\frac", i) or s.startswith(r"\dfrac", i)
+                or s.startswith(r"\tfrac", i)):
+            i += 5 if s.startswith(r"\frac", i) else 6
             piece, i = frac(i, s)
             out.append(piece)
             continue
@@ -216,7 +218,7 @@ _MATHTEXT_FIXES = [
     (re.compile(r"\\le(?![a-zA-Z])"), r"\\leq"),
     (re.compile(r"\\ge(?![a-zA-Z])"), r"\\geq"),
     (re.compile(r"\\ne(?![a-zA-Z])"), r"\\neq"),
-    (re.compile(r"\\dfrac"), r"\\frac"),
+    (re.compile(r"\\dfrac|\\tfrac"), r"\\frac"),
     (re.compile(r"\\big|\\Big|\\bigg|\\Bigg"), ""),
     (re.compile(r"\\!"), ""),
 ]
