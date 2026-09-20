@@ -406,70 +406,70 @@
           "title": "The Preprocessing Contract"
         },
         "s3-tabular-models/gradient-boosting-in-practice": {
-          "body": "5e8b09a6b8ce1a0453c66c975e7d6b27acd9dbb72641b6c1a5adcf11d9b1b130",
+          "body": "51e65b63712f8c55056bdae279ec2502aa20784fc16d166649f44861effdaaed",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
           "title": "Gradient Boosting in Practice"
         },
         "s3-tabular-models/hyperparameter-optimization": {
-          "body": "8150a35767ee8e6ddec1250daebcbc915088d8df15c3a8f91d2da6834b8f6a7d",
-          "estimated_minutes": 75,
+          "body": "e4349354bdd35998670fc7b456c9690093df4dda4ff1d97636884521c9cd0c59",
+          "estimated_minutes": 80,
           "gated": false,
           "is_published": true,
-          "title": "Hyperparameter Optimization"
+          "title": "Hyperparameter Optimisation"
         },
         "s3-tabular-models/knn-and-svm": {
-          "body": "3d2ec466555a9ecf0035c42643d7f23fc0c62b1d12c951d11fe286bc20fd9c55",
-          "estimated_minutes": 20,
+          "body": "528b349b574ec062217ac714491ff406dc75b1c57b2090485bd5ff6298ff4dab",
+          "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
           "title": "k-Nearest Neighbours and Support Vector Machines"
         },
         "s3-tabular-models/lab-3": {
-          "body": "c989b33855e4a4304466cee47f612d82a7b930a937e46d1c7f2fda3e35d8b0bb",
+          "body": "1b117f2f6b2b5828a00e29a4343997cdf41c6ec4004ca40b6beb4516525e690a",
           "estimated_minutes": 90,
           "gated": false,
           "is_published": true,
           "title": "Lab 3 \u2014 Rain Over Europe"
         },
         "s3-tabular-models/model-selection-and-validation": {
-          "body": "14b8228fe2a1f7d53958758025bfa0ba314d0a5dfb0052a0b257922292f8e00c",
-          "estimated_minutes": 55,
+          "body": "db281728f22c77df839dc0f6a70ce193d4c4328a8d991edc85683e60e0372d6f",
+          "estimated_minutes": 50,
           "gated": false,
           "is_published": true,
           "title": "Model Selection and Validation"
         },
         "s3-tabular-models/neural-networks": {
-          "body": "4216f87b98470c532cf635abc5a88549027255b843fb8ae89031bdceaec26716",
-          "estimated_minutes": 35,
+          "body": "be9e18438bdbd15372273334ed29e7f218d0d3fdf006169b76f8cd9838421c4f",
+          "estimated_minutes": 40,
           "gated": false,
           "is_published": true,
           "title": "Multi-Layer Perceptrons"
         },
         "s3-tabular-models/probabilistic-prediction": {
-          "body": "dabec265f4b0fa48d032bd955ee07d0fba65ffe2132218c2f3a66180597bdbbb",
-          "estimated_minutes": 50,
+          "body": "4c2cf08ff9f2105ece54662b015982df0766fdc208f21e9bd45f19fa36acf271",
+          "estimated_minutes": 80,
           "gated": false,
           "is_published": true,
           "title": "Probabilistic Prediction"
         },
         "s3-tabular-models/the-tabular-landscape": {
-          "body": "1622e4af50b828bad16cb6f19709574af4318ddaed0ec9d9960be1b5c89438bc",
+          "body": "a8a184a58bf7edad919263b3a0a2d55ad0a88f9b753ecc78ec25a707fd55ea82",
           "estimated_minutes": 40,
           "gated": false,
           "is_published": true,
           "title": "The Tabular Landscape"
         },
         "s3-tabular-models/time-series-models": {
-          "body": "1dfecba743022abb7921e8946b81340a2e89d675f1c649453a7ba42bf7298c02",
+          "body": "91dfbd0075c1fb750d52cc39af2be6c6aaaa98fd229446d3bab3e1eb9fae8165",
           "estimated_minutes": 25,
           "gated": false,
           "is_published": true,
           "title": "Time Series Models"
         },
         "s3-tabular-models/trees-and-ensembles": {
-          "body": "7611335c2f54d5c2d3d2d626b901ec3089c0822a1c7d9b626b056fb43ee1254f",
+          "body": "29e2c84536751958b5fb251e4fb956216521eee5360dd49594f8090c3fe2e710",
           "estimated_minutes": 65,
           "gated": false,
           "is_published": true,
@@ -855,7 +855,7 @@
             "time-series-models",
             "lab-3"
           ],
-          "summary": "The models that still win on tabular data, the validation that tells you whether they do, the search that tunes them, and the probabilities that make a prediction usable \u2014 gradient boosting, cross-validation schemes, Optuna, calibration and CRPS.",
+          "summary": "From regularised linear models through kNN, SVMs, trees, random forests and boosting to MLPs: the models that still win on tabular data, the validation and leakage discipline that tell you whether they do, the search that tunes them (Optuna), and the probabilities and distributions that make a prediction usable \u2014 calibration, quantiles and CRPS, with time-series validation for the rain challenge.",
           "title": "Session 3 \u2014 Tabular Models"
         },
         "s4-advanced-neural-networks": {

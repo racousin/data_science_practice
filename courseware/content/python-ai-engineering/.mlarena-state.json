@@ -232,14 +232,14 @@
           "title": "Decision Trees"
         },
         "s3-models-and-tuning/ensembles-bagging": {
-          "body": "bbc93dc0865eccbb44dfbc24cd8270af8856527007b7cbb470062d175ceb6e2d",
+          "body": "50316e7ece41970d3da3d26f798b13061f66c90274d24ecdc2f9900c8069b165",
           "estimated_minutes": 20,
           "gated": false,
           "is_published": true,
           "title": "Ensembles: Bagging"
         },
         "s3-models-and-tuning/ensembles-boosting": {
-          "body": "d5c41390d7025d82f16b224632a87882757c6c74f44a2b004cd0127941016b4f",
+          "body": "7380d147320790a5587b27baa3f524fdddd43f83de32ac01ef57c0f62b32ea4b",
           "estimated_minutes": 20,
           "gated": false,
           "is_published": true,
@@ -253,14 +253,14 @@
           "title": "Hyperparameter Optimization"
         },
         "s3-models-and-tuning/k-nearest-neighbours": {
-          "body": "35ce6ba067a1ae34b915d7a566840aa9d834c177e4f23f9cb8f33f77ebda0e3e",
+          "body": "0674b0be1b5bae6ff6bdd815b095cfbbe85f6715dc731812c91f1994d46cd98a",
           "estimated_minutes": 20,
           "gated": false,
           "is_published": true,
           "title": "K-Nearest Neighbours"
         },
         "s3-models-and-tuning/lab-3": {
-          "body": "95f262ec7f6e4da1c5379337ba6bae5907cc82c28118efe56fbfbfe87cf60580",
+          "body": "61538209aab9df63860aeec04ff0f6c022178a77f3ab91ee8cceb1aace3570d1",
           "estimated_minutes": 75,
           "gated": false,
           "is_published": true,
@@ -281,21 +281,21 @@
           "title": "Non-Linearity"
         },
         "s3-models-and-tuning/regularization": {
-          "body": "6bf1fa6b6b395401bc2d3c534db04c343f661e04cc5edf6892f87626b002a2ea",
+          "body": "dc72f0f9336e6aeb0846c9a520efb8b5571dfade964c66cef1078e0701f1d510",
           "estimated_minutes": 25,
           "gated": false,
           "is_published": true,
           "title": "Regularization"
         },
         "s3-models-and-tuning/support-vector-machines": {
-          "body": "36f5a8f1e6b4dc7322df5b7378ed25543fa76ee9c736a444345ee365ccff01a7",
+          "body": "08728624bb8d98ce8170be0614091c608e49150728bad6bf17df0272c9b402e5",
           "estimated_minutes": 20,
           "gated": false,
           "is_published": true,
           "title": "Support Vector Machines"
         },
         "s3-models-and-tuning/validation-and-overfitting": {
-          "body": "f9dad970a28e10b2b8206a5ac545f92d559e04177f8fa52dc6a8c12b6a16c757",
+          "body": "c5a26d6c72b7f58f290de9020ca8d88b4680053a12a088febd57ac9bc789bd56",
           "estimated_minutes": 40,
           "gated": false,
           "is_published": true,
