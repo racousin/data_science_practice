@@ -752,42 +752,19 @@ twenty minutes; boosting is what you run to win.
 
 ---
 
-## Blending and stacking
+## Beyond bagging and boosting
 
-![Stacking](assets/tabular/stacking.jpg)
+Both combine one family of model under a rule fixed by the algorithm — a plain
+mean, or a weighted sum of stumps. The rule can also be **fitted**: train
+several different models, then train a second model on their predictions.
 
-**Blending** splits the training data once: base models fit on one part, predict
-the rest, and a meta-model trains on those predictions. Simple, fast, wasteful.
+That is blending and stacking, and it has a lesson of its own later in this
+session, because everything difficult about it follows from one constraint —
+the rows the rule is fitted on must be rows no base model was trained on.
 
-**Stacking** does the same with k-fold, so every row gets an **out-of-fold**
-prediction from a model that never saw it. The meta-model trains on those.
-
-```python
-from lightgbm import LGBMClassifier
-from sklearn.ensemble import StackingClassifier
-stack = StackingClassifier(
-    [("gb", LGBMClassifier()), ("rf", RandomForestClassifier())],
-    final_estimator=LogisticRegression(), cv=5)
-```
-
-Keep the meta-model boring — regularised logistic or ridge. A gradient-boosted
-meta-model on five correlated columns overfits the out-of-fold predictions and
-throws away the gain you just bought.
-
----
-
-## The failure mode: leaking into the meta-model
-
-> If a base model ever predicts a row it was trained on, its prediction on that
-> row is too good, and the meta-model learns to trust it. Validation looks
-> excellent; the leaderboard does not.
-
-This is the same mistake as fitting a scaler before splitting, one level up. Use
-`StackingClassifier` rather than assembling it by hand; if you build it yourself,
-assert that no base model saw the rows it predicted.
-
-Expect one to three percent, after everything else is done. A tuned single
-gradient-boosting model gets you most of the way.
+Expect one to three percent from it, after everything else is done, and only
+when the models are genuinely complementary. A tuned single gradient-boosting
+model gets you most of the way.
 
 ---
 

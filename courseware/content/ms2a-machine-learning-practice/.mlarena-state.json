@@ -50,6 +50,7 @@
       "s3-tabular-models/model-selection-and-validation": 74,
       "s3-tabular-models/neural-networks": 208,
       "s3-tabular-models/probabilistic-prediction": 209,
+      "s3-tabular-models/stacking-and-blending": 210,
       "s3-tabular-models/the-tabular-landscape": 71,
       "s3-tabular-models/time-series-models": 76,
       "s3-tabular-models/trees-and-ensembles": 72,
@@ -454,6 +455,13 @@
           "is_published": true,
           "title": "Probabilistic Prediction"
         },
+        "s3-tabular-models/stacking-and-blending": {
+          "body": "5f36bd80c7dacb09722d6459de19d32fbe8a44feb31cc1fec7b6be942ba73648",
+          "estimated_minutes": 50,
+          "gated": false,
+          "is_published": true,
+          "title": "Stacking and Blending"
+        },
         "s3-tabular-models/the-tabular-landscape": {
           "body": "a8a184a58bf7edad919263b3a0a2d55ad0a88f9b753ecc78ec25a707fd55ea82",
           "estimated_minutes": 40,
@@ -469,7 +477,7 @@
           "title": "Time Series Models"
         },
         "s3-tabular-models/trees-and-ensembles": {
-          "body": "29e2c84536751958b5fb251e4fb956216521eee5360dd49594f8090c3fe2e710",
+          "body": "b641c38e0a274451e8e9efedb1d228c3698a9476cffe1c90e49d79cab8a2f1c6",
           "estimated_minutes": 65,
           "gated": false,
           "is_published": true,
@@ -853,9 +861,10 @@
             "hyperparameter-optimization",
             "probabilistic-prediction",
             "time-series-models",
+            "stacking-and-blending",
             "lab-3"
           ],
-          "summary": "From regularised linear models through kNN, SVMs, trees, random forests and boosting to MLPs: the models that still win on tabular data, the validation and leakage discipline that tell you whether they do, the search that tunes them (Optuna), and the probabilities and distributions that make a prediction usable \u2014 calibration, quantiles and CRPS, with time-series validation for the rain challenge.",
+          "summary": "From regularised linear models through kNN, SVMs, trees, random forests and boosting to MLPs: the models that still win on tabular data, the validation and leakage discipline that tell you whether they do, the search that tunes them (Optuna), the probabilities and distributions that make a prediction usable \u2014 calibration, quantiles and CRPS \u2014 and the stacking and blending that combine them, with time-series validation for the rain challenge.",
           "title": "Session 3 \u2014 Tabular Models"
         },
         "s4-advanced-neural-networks": {
