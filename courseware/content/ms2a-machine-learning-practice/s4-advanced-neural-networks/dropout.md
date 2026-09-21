@@ -5,15 +5,14 @@ on every training step, and switches them all back on to predict. It was
 invented for neural networks, it is two lines of PyTorch, and it is easy to use
 in the wrong place.
 
-[Regularization](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/regularization)
-measured it against everything else on the same 2,000 images: 1.1 points, behind
-every regularizer that changes the data. This lesson is why it works, how much of
+Measured against the other regularizers on the same 2,000 images, it gained 1.1
+points, behind every regularizer that changes the data. This lesson is why it works, how much of
 it to use and where, the bug that makes it silently wrong, the placement that
 can, and the one thing it gives you that no other regularizer does — an estimate
 of its own uncertainty.
 
 Every figure marked *measured* comes from a run made while writing this lesson,
-on MNIST, in torch 2.x on a laptop CPU, in the setting of Regularization: two
+on MNIST, in torch 2.x on a laptop CPU, in one setting: two
 hidden ReLU layers, 2,000 training images, AdamW at 1e-3, three seeds.
 
 <!-- notes: 30 minutes. Draw the thinned network on the board before the
@@ -109,8 +108,8 @@ someone reads the probabilities rather than the argmax.
 Two hidden layers at three widths, six rates, 2,000 images, three seeds, chosen
 on validation. Every width gains from some dropout, and none gains much: the best
 rate is worth 1.0 point at width 64 ($p = 0.2$), 1.7 at width 256 ($p = 0.5$) and
-1.3 at width 1024 ($p = 0.3$) — against the 4 points augmentation bought in
-[Regularization](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/regularization).
+1.3 at width 1024 ($p = 0.3$), against the 4 points data augmentation bought on
+the same images.
 
 The widths disagree about *how much*. The narrow network is best at 0.2 and at
 0.7 falls below no dropout at all, 90.1% against 90.9%; the two wider ones still

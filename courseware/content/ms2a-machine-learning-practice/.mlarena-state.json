@@ -501,7 +501,7 @@
           "title": "Data Pipelines and the Training Loop"
         },
         "s4-advanced-neural-networks/dropout": {
-          "body": "84b7f458a3617dc1d7c330fc18f92e4f947ee5063a019c83d9af119e5579ddc5",
+          "body": "61c6d94d1486b8ea1667d4c64d97de10dd3171a8c5138c8086936f22c1de1e92",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
@@ -550,7 +550,7 @@
           "title": "Normalization"
         },
         "s4-advanced-neural-networks/optimization-and-schedules": {
-          "body": "c284d52b2b49787f789af15e0eb44665b4a57c8b6699de04a6dc910fa204833d",
+          "body": "4f06090ee680129f79c4030afe5e5e07f2dbcdffd9d82e60019844655abf3ba9",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
