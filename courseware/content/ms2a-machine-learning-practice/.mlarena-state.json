@@ -60,7 +60,6 @@
       "s4-advanced-neural-networks/essential-layers": 78,
       "s4-advanced-neural-networks/initialization": 216,
       "s4-advanced-neural-networks/lab-4": 84,
-      "s4-advanced-neural-networks/making-training-work": 215,
       "s4-advanced-neural-networks/monitoring-and-debugging": 82,
       "s4-advanced-neural-networks/multi-layer-perceptrons": 214,
       "s4-advanced-neural-networks/normalization": 220,
@@ -530,13 +529,6 @@
           "is_published": true,
           "title": "Lab 4 \u2014 Building Blocks, Measured"
         },
-        "s4-advanced-neural-networks/making-training-work": {
-          "body": "281cec36c4d8687b2d3a13a7a56c89d66482807cb7db27aa95453dbcca434e80",
-          "estimated_minutes": 30,
-          "gated": false,
-          "is_published": true,
-          "title": "Making Training Work"
-        },
         "s4-advanced-neural-networks/monitoring-and-debugging": {
           "body": "1525cadf65aece1b41b93a86608e9e1895f9c36efcc5ecb9cf86f6187eee309e",
           "estimated_minutes": 35,
@@ -546,6 +538,7 @@
         },
         "s4-advanced-neural-networks/multi-layer-perceptrons": {
           "body": "201d7670f1645ce76264a19ebc7c5e158ba68881d867d86d9a5202ab39d609fe",
+          "estimated_minutes": null,
           "gated": false,
           "is_published": true,
           "title": "Multi-Layer Perceptrons"
@@ -926,8 +919,8 @@
           "lessons": [
             "multi-layer-perceptrons",
             "essential-layers",
-            "making-training-work",
             "initialization",
+            "normalization",
             "skip-connections",
             "optimization-and-schedules",
             "regularization",
