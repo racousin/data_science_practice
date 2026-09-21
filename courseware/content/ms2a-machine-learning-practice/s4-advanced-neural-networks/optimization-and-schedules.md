@@ -147,7 +147,9 @@ apart, decided by a quantity you did not choose. Right, `AdamW`: **0.379** and
 **Use `AdamW`.** There is no situation in this course where `Adam` with a non-zero
 `weight_decay` is the right call. Note the consequence of decoupling, too: in
 `AdamW` the decay is multiplied by the learning rate, so a schedule that anneals
-$\eta$ to zero also anneals the regularization away.
+$\eta$ to zero also anneals the regularization away. How much decay, measured
+against every other regularizer, is
+[Regularization](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/regularization).
 
 ---
 
@@ -390,6 +392,10 @@ drive the mean loss up while the `argmax` — all that accuracy sees — keeps
 improving on everything else.
 
 > Early-stop on the metric you are graded on. For challenge 8 that is accuracy.
+
+How much early stopping buys as a *regularizer*, next to weight decay, dropout
+and augmentation on the same data, is measured in
+[Regularization](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/regularization).
 
 Two more rules. `patience` must be **larger** than any scheduler's, or you stop
 before the rate drop that would have rescued the run: `ReduceLROnPlateau(patience=3)`

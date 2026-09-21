@@ -279,9 +279,41 @@ modules:
         file: s4-advanced-neural-networks/essential-layers.md
         estimated_minutes: 30
         is_published: true
+      # 2026-09-21: initialization, residual connections and dropout moved out
+      # of Making Training Work into lessons of their own, and Regularization
+      # was added; their figures come from tools/figures/ms2a_s4_*.py, and the
+      # d2l-*.png diagrams from Dive into Deep Learning (CC BY-SA 4.0, credited
+      # under each image, fetched by tools/figures/ms2a_s4_d2l.py).
+      # 2026-09-22: Making Training Work had been deleted on the website; it is
+      # restored because normalization lives only there.
+      - title: "Making Training Work"
+        slug: making-training-work
+        file: s4-advanced-neural-networks/making-training-work.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Parameter Initialization"
+        slug: initialization
+        file: s4-advanced-neural-networks/initialization.md
+        estimated_minutes: 25
+        is_published: true
+      - title: "Skip Connections"
+        slug: skip-connections
+        file: s4-advanced-neural-networks/skip-connections.md
+        estimated_minutes: 35
+        is_published: true
       - title: "Optimization and Schedules"
         slug: optimization-and-schedules
         file: s4-advanced-neural-networks/optimization-and-schedules.md
+        estimated_minutes: 30
+        is_published: true
+      - title: "Regularization"
+        slug: regularization
+        file: s4-advanced-neural-networks/regularization.md
+        estimated_minutes: 35
+        is_published: true
+      - title: "Dropout"
+        slug: dropout
+        file: s4-advanced-neural-networks/dropout.md
         estimated_minutes: 30
         is_published: true
       - title: "Data Pipelines and the Training Loop"

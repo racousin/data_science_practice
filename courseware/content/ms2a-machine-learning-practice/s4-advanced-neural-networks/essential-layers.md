@@ -7,9 +7,11 @@ when a tensor lines up for the wrong reason.
 
 This lesson is the catalogue a practitioner actually assembles — `Linear`,
 `Embedding`, `Conv2d`, pooling, recurrent — and the shape each one accepts and
-returns. What goes *between* layers (activations, normalisation, dropout,
-initialization, clipping) is
-[Making Training Work](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/making-training-work);
+returns. What goes *between* layers (activations, normalisation, clipping) is
+[Making Training Work](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/making-training-work),
+with [Parameter Initialization](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/initialization),
+[Skip Connections](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/skip-connections) and
+[Dropout](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/dropout) in lessons of their own;
 what drives them is
 [Optimization and Schedules](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/optimization-and-schedules);
 how the tensors arrive is
@@ -127,7 +129,8 @@ model = nn.Sequential(
 ```
 
 `Sequential` is right for a straight line and wrong for everything else. The moment
-you need two inputs, a skip connection or a branch, write `forward`. The mixed
+you need two inputs, a
+[skip connection](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/skip-connections) or a branch, write `forward`. The mixed
 tabular model below — continuous columns straight through, categorical columns via an
 embedding, concatenated — has no `Sequential` form at all:
 

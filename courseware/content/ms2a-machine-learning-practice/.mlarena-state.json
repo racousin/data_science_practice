@@ -56,12 +56,17 @@
       "s3-tabular-models/the-tabular-landscape": 71,
       "s3-tabular-models/trees-and-ensembles": 72,
       "s4-advanced-neural-networks/data-pipelines-and-training-loop": 81,
+      "s4-advanced-neural-networks/dropout": 219,
       "s4-advanced-neural-networks/essential-layers": 78,
+      "s4-advanced-neural-networks/initialization": 216,
       "s4-advanced-neural-networks/lab-4": 84,
+      "s4-advanced-neural-networks/making-training-work": 215,
       "s4-advanced-neural-networks/monitoring-and-debugging": 82,
       "s4-advanced-neural-networks/multi-layer-perceptrons": 214,
       "s4-advanced-neural-networks/optimization-and-schedules": 80,
       "s4-advanced-neural-networks/performance-and-profiling": 83,
+      "s4-advanced-neural-networks/regularization": 218,
+      "s4-advanced-neural-networks/skip-connections": 217,
       "s5-computer-vision-1/convolution": 86,
       "s5-computer-vision-1/images-as-tensors": 85,
       "s5-computer-vision-1/lab-5": 90,
@@ -496,12 +501,26 @@
           "is_published": true,
           "title": "Data Pipelines and the Training Loop"
         },
+        "s4-advanced-neural-networks/dropout": {
+          "body": "96e82bca7166dd7759bc5c2aa01bc08a92d2f7803cbdecaa0c0bb3acf25f6186",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Dropout"
+        },
         "s4-advanced-neural-networks/essential-layers": {
-          "body": "c5de7b731f7fbb459de1c987012f61def1f19fff46b2f886db239442a836eb48",
+          "body": "48b93566af1d98496c16c2bb253ef07ce521376a5ff75788bc1f89d795375383",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
           "title": "Essential Layers"
+        },
+        "s4-advanced-neural-networks/initialization": {
+          "body": "4584177a0e470001d2eb9ea63bd92ccb4ff8c3c282fb80a9e5bec313796b3bf8",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Parameter Initialization"
         },
         "s4-advanced-neural-networks/lab-4": {
           "body": "2d2eef7f30a07c86efb6e24d7e429852f613f6aae3297c8eaa49f82bbeb9944b",
@@ -509,6 +528,13 @@
           "gated": false,
           "is_published": true,
           "title": "Lab 4 \u2014 Building Blocks, Measured"
+        },
+        "s4-advanced-neural-networks/making-training-work": {
+          "body": "281cec36c4d8687b2d3a13a7a56c89d66482807cb7db27aa95453dbcca434e80",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Making Training Work"
         },
         "s4-advanced-neural-networks/monitoring-and-debugging": {
           "body": "557136de8afeb64b750b631280835e9ace6a1d9b939ae8bd6518a3e95a60af7f",
@@ -519,12 +545,13 @@
         },
         "s4-advanced-neural-networks/multi-layer-perceptrons": {
           "body": "201d7670f1645ce76264a19ebc7c5e158ba68881d867d86d9a5202ab39d609fe",
+          "estimated_minutes": null,
           "gated": false,
           "is_published": true,
           "title": "Multi-Layer Perceptrons"
         },
         "s4-advanced-neural-networks/optimization-and-schedules": {
-          "body": "3fb8c24aa8fe2e53c855eb70cc9c96bd17e41b31bffdfe233009d7245018a5f3",
+          "body": "2d56738a24148c09236ff12700e85211cb78ab831f74fb1bc8250df4af93fd2f",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
@@ -536,6 +563,20 @@
           "gated": false,
           "is_published": true,
           "title": "Performance and Profiling"
+        },
+        "s4-advanced-neural-networks/regularization": {
+          "body": "b69f7255ee725c109ecc2d2effc8a57780caeda410ccb189193d3872e159d766",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Regularization"
+        },
+        "s4-advanced-neural-networks/skip-connections": {
+          "body": "e795c2445cdb8da48556722962f241e3a00cb05f7dd79230b2b7d5c2c5df2539",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Skip Connections"
         },
         "s5-computer-vision-1/convolution": {
           "body": "ff6cf6c5f50ff019686fad511dd872726d98c36274468a13612d3cad0ef92bda",
@@ -878,7 +919,12 @@
           "lessons": [
             "multi-layer-perceptrons",
             "essential-layers",
+            "making-training-work",
+            "initialization",
+            "skip-connections",
             "optimization-and-schedules",
+            "regularization",
+            "dropout",
             "data-pipelines-and-training-loop",
             "monitoring-and-debugging",
             "performance-and-profiling",
