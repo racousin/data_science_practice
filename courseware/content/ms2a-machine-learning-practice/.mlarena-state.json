@@ -484,49 +484,49 @@
           "title": "Trees and Ensembles"
         },
         "s4-advanced-neural-networks/data-pipelines-and-training-loop": {
-          "body": "1f5a725278bfa22a2d05d1a9e8cde429359f456c3bc1734ef8ced2602a45f3c4",
+          "body": "28f6f7a93821dfcbfdc55bcae6f3b1e170fca4f4251ad6a1bfdfd86cc95242a1",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
           "title": "Data Pipelines and the Training Loop"
         },
         "s4-advanced-neural-networks/essential-layers": {
-          "body": "594af706b3ed0d275ab5fa6493015a5c7f5f32ef586e24fcb9eaa8ae675c0205",
+          "body": "db46a031cb6918ebd06610df691933906c01774c4402d65d8e3e501f3b8b3e21",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
           "title": "Essential Layers"
         },
         "s4-advanced-neural-networks/lab-4": {
-          "body": "9a3e14cec326930acbb8ee3fc0c76b1bf8ad10d3fde423b9dd231aae22e48661",
-          "estimated_minutes": 45,
+          "body": "2d2eef7f30a07c86efb6e24d7e429852f613f6aae3297c8eaa49f82bbeb9944b",
+          "estimated_minutes": 60,
           "gated": false,
           "is_published": true,
-          "title": "Lab 4 \u2014 Train Something Deep"
+          "title": "Lab 4 \u2014 Building Blocks, Measured"
         },
         "s4-advanced-neural-networks/making-training-work": {
-          "body": "170a3e81191d1c566e0ccf670d581bb17427c0574122737bfc35b4459a3d03de",
+          "body": "2e175369f8021741ec14b9297f2aa7d58c0f7c5f38fe918cef31a9613ccecb2c",
           "estimated_minutes": 40,
           "gated": false,
           "is_published": true,
           "title": "Making Training Work"
         },
         "s4-advanced-neural-networks/monitoring-and-debugging": {
-          "body": "702488852843af3e73d728a32260fade38837ba02bd212eb950261e14cd36b55",
-          "estimated_minutes": 25,
+          "body": "557136de8afeb64b750b631280835e9ace6a1d9b939ae8bd6518a3e95a60af7f",
+          "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
           "title": "Monitoring and Debugging"
         },
         "s4-advanced-neural-networks/optimization-and-schedules": {
-          "body": "44890640837ffa789fbed64cd44727e0516146426c15e9833dd460eb5ed86776",
+          "body": "3fb8c24aa8fe2e53c855eb70cc9c96bd17e41b31bffdfe233009d7245018a5f3",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
           "title": "Optimization and Schedules"
         },
         "s4-advanced-neural-networks/performance-and-profiling": {
-          "body": "72c7f11e0f13dcf2fe38eb82e82e488f7939d71aba03f9e67c1d1bf25e7f11b2",
+          "body": "2111bae99547f6d0471126189a25a2bfd8df7dd0eb86d4b0a90792dae0c44c4f",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,

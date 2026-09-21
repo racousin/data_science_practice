@@ -287,18 +287,18 @@ modules:
       - title: "Monitoring and Debugging"
         slug: monitoring-and-debugging
         file: s4-advanced-neural-networks/monitoring-and-debugging.md
-        estimated_minutes: 25
+        estimated_minutes: 35
         is_published: true
       - title: "Performance and Profiling"
         slug: performance-and-profiling
         file: s4-advanced-neural-networks/performance-and-profiling.md
         estimated_minutes: 30
         is_published: true
-      - title: "Lab 4 — Train Something Deep"
+      - title: "Lab 4 — Building Blocks, Measured"
         slug: lab-4
         kind: exercise
         file: s4-advanced-neural-networks/lab-4.md
-        estimated_minutes: 45
+        estimated_minutes: 60
         is_published: true
 
   # ---------------------------------------------------------------- session 5
