@@ -13,9 +13,7 @@ matters. The mechanics live elsewhere and are linked, not repeated: AdamW's
 decoupled decay and the early-stopping restore in
 [Optimization and Schedules](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/optimization-and-schedules),
 augmentation in
-[Data Pipelines and the Training Loop](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/data-pipelines-and-training-loop),
-label smoothing in
-[Making Training Work](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/making-training-work).
+[Data Pipelines and the Training Loop](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/data-pipelines-and-training-loop).
 [Dropout](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/dropout)
 has the next lesson to itself.
 
@@ -207,8 +205,9 @@ Three regularizers act on what the network sees rather than on its parameters:
   For small $\sigma$ this is approximately a penalty on the network's gradient
   with respect to its input (Bishop, 1995): it rewards a function that is flat
   around each training point.
-- **Label smoothing** — noise on the target
-  ([Making Training Work](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/making-training-work)).
+- **Label smoothing** — noise on the target: the one-hot target becomes
+  $(1-\epsilon)$ on the true class and $\epsilon/K$ on each of the others, so
+  the optimum no longer needs an infinite logit.
 
 ```python
 xb = xb + sigma * torch.randn_like(xb)                  # training only

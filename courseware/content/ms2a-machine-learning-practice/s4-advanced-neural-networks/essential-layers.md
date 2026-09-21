@@ -5,13 +5,13 @@ gets taught; the shape half is what costs you the afternoon. PyTorch tells you
 immediately when a matrix multiplication does not line up, and says nothing at all
 when a tensor lines up for the wrong reason.
 
-This lesson is the catalogue a practitioner actually assembles — `Linear`,
-`Embedding`, `Conv2d`, pooling, recurrent — and the shape each one accepts and
-returns. What goes *between* layers (activations, normalisation, clipping) is
-[Making Training Work](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/making-training-work),
-with [Parameter Initialization](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/initialization),
+This lesson is the two layers a practitioner assembles first — `Linear` and
+`Embedding` — the shape each one accepts and returns, and the two ways of
+putting them together. What goes *between* layers has lessons of its own:
+[Parameter Initialization](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/initialization),
+[Normalization](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/normalization),
 [Skip Connections](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/skip-connections) and
-[Dropout](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/dropout) in lessons of their own;
+[Dropout](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/dropout);
 what drives them is
 [Optimization and Schedules](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/optimization-and-schedules);
 how the tensors arrive is

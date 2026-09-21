@@ -186,9 +186,9 @@ the axis: $10^{-7}$, four orders of magnitude smaller, and not changing. That
 network sat at chance — 10 to 11% accuracy — for all twelve epochs; the histogram
 said why before the accuracy did. A distribution that collapses to a spike at exactly zero is a dead
 layer (ReLU units that never fire again); one that widens without bound is heading
-for `nan`. See
-[Making Training Work](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/making-training-work)
-for what to do about each.
+for `nan`. The first calls for a lower learning rate, then a `LeakyReLU` or
+`GELU`, which keep a gradient on the negative side; the second for a lower
+learning rate and `clip_grad_norm_`, as in the loop above.
 
 ---
 

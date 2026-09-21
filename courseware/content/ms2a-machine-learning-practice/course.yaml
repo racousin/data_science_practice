@@ -284,17 +284,17 @@ modules:
       # was added; their figures come from tools/figures/ms2a_s4_*.py, and the
       # d2l-*.png diagrams from Dive into Deep Learning (CC BY-SA 4.0, credited
       # under each image, fetched by tools/figures/ms2a_s4_d2l.py).
-      # 2026-09-22: Making Training Work had been deleted on the website; it is
-      # restored because normalization lives only there.
-      - title: "Making Training Work"
-        slug: making-training-work
-        file: s4-advanced-neural-networks/making-training-work.md
-        estimated_minutes: 30
-        is_published: true
+      # 2026-09-22: Making Training Work (deleted on the website) is retired;
+      # its normalization sections became the Normalization lesson.
       - title: "Parameter Initialization"
         slug: initialization
         file: s4-advanced-neural-networks/initialization.md
         estimated_minutes: 25
+        is_published: true
+      - title: "Normalization"
+        slug: normalization
+        file: s4-advanced-neural-networks/normalization.md
+        estimated_minutes: 20
         is_published: true
       - title: "Skip Connections"
         slug: skip-connections

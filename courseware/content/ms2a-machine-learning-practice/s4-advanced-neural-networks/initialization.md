@@ -9,9 +9,11 @@ session can recover it.
 
 This lesson covers both jobs, what PyTorch does when you say nothing, when to
 override it, and the handful of layers that are deliberately *not* initialized at
-random. Where it sits in the session: the product of Jacobians of
-[Making Training Work](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/making-training-work)
-is what initialization controls at step 0, and
+random. Where it sits in the session: the gradient that reaches the first layer
+is a product of one Jacobian per layer; initialization sets that product at
+step 0,
+[Normalization](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/normalization)
+holds it during training, and
 [Skip Connections](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/skip-connections)
 is what you add when initialization alone is no longer enough.
 

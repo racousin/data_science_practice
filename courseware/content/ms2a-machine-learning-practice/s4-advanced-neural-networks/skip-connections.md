@@ -2,9 +2,9 @@
 
 The gradient that reaches the first layer of a deep network is a product of one
 Jacobian per layer, and
-[Making Training Work](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/making-training-work)
-and
 [Parameter Initialization](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/initialization)
+and
+[Normalization](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/normalization)
 spend their length holding each factor near 1. Past a certain depth that is not
 enough. A skip connection changes the product itself: it hands a block's input
 past the block, so the signal and the gradient have a path that no layer

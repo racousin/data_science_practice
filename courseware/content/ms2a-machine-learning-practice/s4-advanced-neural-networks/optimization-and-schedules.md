@@ -6,8 +6,10 @@ architecture change you will make this session, and one of the numbers they
 expose — the learning rate — is worth more than everything else on the page.
 
 This lesson is about choosing those numbers from evidence instead of habit.
-[Making Training Work](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/making-training-work)
-owns what happens inside the network — activations, normalization, clipping;
+What happens inside the network has lessons of its own —
+[Parameter Initialization](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/initialization),
+[Normalization](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/normalization),
+[Dropout](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/dropout);
 [Data Pipelines and the Training Loop](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/data-pipelines-and-training-loop)
 owns the loader and the shape of the loop. Here the loop is given, and we decide
 what the update rule does with each batch it produces.
@@ -170,7 +172,7 @@ Weight decay encodes a prior: "smaller weights generalize better". That is true 
 a weight matrix and false of a bias or a normalization parameter. Pulling a
 BatchNorm $\gamma$ toward zero scales the layer's whole output toward zero, which
 is damage, not regularization — see
-[Making Training Work](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/making-training-work)
+[Normalization](https://ml-arena.com/courses/ms2a-machine-learning-practice/s4-advanced-neural-networks/normalization)
 for what $\gamma$ and $\beta$ do. The convenient part is that the parameters you
 want to exclude are exactly the one-dimensional ones, so `p.ndim > 1` is the whole
 rule, no name matching required.
