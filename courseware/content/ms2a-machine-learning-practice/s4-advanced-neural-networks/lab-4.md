@@ -1,28 +1,25 @@
-# Lab 4 — Building Blocks, Measured
+# Lab — Building Blocks, Measured
 
-One network, one training function, one Weights & Biases project. The notebook of
-this lab changes one building block at a time — activation, normalisation, dropout
-and weight decay, optimiser and schedule, loss, an embedding — trains, and sends you
-to the W&B workspace to read the difference. The data is MNIST with the pixel
-positions and the label meanings permuted, which is what challenge 8, *1 Minute
-Permuted MNIST*, hands your agent. The last three parts turn what you measured into
-an `agent.py` that trains and predicts inside two 60-second deadlines, test it with
-the challenge's own harness, and put it on the board.
+Challenge 8, *1 Minute Permuted MNIST*, gives your agent 60 seconds to train and 60
+more to predict, on 3 CPU cores, on MNIST with the pixel positions and the label
+meanings permuted. The notebook explains the problem, trains a baseline (logistic
+regression in PyTorch), evaluates it as the challenge does (accuracy, and the time
+of each call), and submits it. The rest is yours: the building blocks of this
+session (architecture, optimizer and schedule, normalization, dropout, data
+augmentation, early stopping) are the levers, and the notebook's last section says
+how to test each one against the clock.
 
-**Time:** 60 minutes in the room — about 15 of compute on a Colab CPU, the rest
-reading your runs. **Deliverable:** your copy of the notebook run end to end with
-`QUICK = False`, a one-sentence answer under each of its nine questions, the link to
-your W&B project, and your `agent.py` on the leaderboard of challenge 8.
+**Time:** 60 minutes. **Deliverable:** your agent on the leaderboard of challenge 8,
+above the logistic-regression baseline, and the notebook's results table: one row
+per change you tested.
 
-<!-- notes: The notebook is a solution, not a skeleton: the work is the nine
-sentences, each with a number from the workspace, and the agent. Students need two
-Colab secrets before the session: WANDB_API_KEY (a free account; the old anonymous
-mode is a no-op in current wandb, so without a key the prompt's third choice is
-offline logging) and MLARENA_API_KEY. Have them run once with QUICK = True to see
-the end before the 15-minute full run. Where they stall: Part 3's train()-mode
-BatchNorm cell (they think it is a bug), and Part 9 when they rename a parameter and
-the upload is rejected. A submission takes a few minutes to settle; start Part 10
-before the debrief, not after. -->
+<!-- notes: The notebook is a starting point, not a solution: the baseline scores
+0.92 in about a second, a BatchNorm MLP with AdamW and a cosine schedule reaches
+0.987 in 37 s. Have everyone submit the baseline in the first ten minutes, since a
+submission takes a few minutes to settle. Where they stall: BatchNorm without
+model.eval() in predict, a fixed epoch count that overruns the deadline on the
+grading machine, and a renamed parameter that makes the upload validator reject
+the file. -->
 
 ---
 
@@ -30,19 +27,11 @@ before the debrief, not after. -->
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/data_science_practice/blob/main/website/public/modules/ms2a-machine-learning-practice/challenges/mlp-s4-building-blocks.ipynb)
 
-- **Two secrets** in Colab's *Secrets* panel, both granted to the notebook:
-  `WANDB_API_KEY` (W&B, free account → *User settings* → *API keys*) and
+- **One secret** in Colab's *Secrets* panel, granted to the notebook:
   `MLARENA_API_KEY` (ML-Arena, Profile → API Keys, starts with `mlk_user_`). Never
   in a cell.
-- **No W&B key?** `wandb.login()` asks once; *don't visualise* writes the runs to
-  `./wandb/` in offline mode, and `wandb sync wandb/offline-run-*` uploads them once
-  you have an account. The comparisons below need the workspace, so get the account.
 - **Locally:** download the `.ipynb` from the GitHub path of the badge and
-  `uv add torch torchvision wandb mlarena-sdk`. The first run downloads MNIST (and
-  Fashion-MNIST for the canary) into `./data/`.
-- **`QUICK`.** The third cell holds one flag. Run once with `QUICK = True` (a few
-  minutes) to see the whole notebook work, then set it back to `False` for every
-  number you report.
+  `uv add torch torchvision mlarena-sdk`. The first run downloads MNIST into `./data/`.
 
 The notebook trains on a Colab CPU on purpose: the challenge's agent runs on **3 CPU
-cores**.
+cores**, and the notebook sets `torch.set_num_threads(3)` to measure like it.
