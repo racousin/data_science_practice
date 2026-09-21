@@ -188,13 +188,11 @@ modules:
     icon: table
     visibility: unlisted
     summary: >
-      From regularised linear models through kNN, SVMs, trees, random forests
-      and boosting: the models that still win on tabular data, the validation
-      and leakage discipline that tell you whether they do, the search that
-      tunes them (Optuna), the probabilities and distributions that make a
-      prediction usable — calibration, quantiles and CRPS — the stacking and
-      blending that combine them, with time-series validation for the rain
-      challenge, and the saved pipeline an agent loads to serve them.
+      Tabular ML end to end: fit the models that win (regularised linear, kNN,
+      SVMs, trees, random forests, boosting), validate them without leakage
+      (including time-series), tune them with Optuna and combine them by
+      stacking and blending, and ship the saved pipeline an agent loads to serve
+      them.
     competitions:
       - competition_id: 177
         label: "European Rain Forecast — rain at +6 h and +48 h for 45 European cities: a distribution, scored with CRPS once the rain has fallen"
@@ -204,17 +202,25 @@ modules:
         file: s3-tabular-models/the-tabular-landscape.md
         estimated_minutes: 40
         is_published: true
-      - title: "k-Nearest Neighbours and Support Vector Machines"
+      - title: "k-Nearest Neighbours"
         slug: knn-and-svm
         file: s3-tabular-models/knn-and-svm.md
         estimated_minutes: 30
         is_published: true
-      - title: "Trees and Ensembles"
+      - title: "Support Vector Machines"
+        slug: support-vector-machines
+        file: s3-tabular-models/support-vector-machines.md
+        is_published: true
+      - title: "Trees"
         slug: trees-and-ensembles
         file: s3-tabular-models/trees-and-ensembles.md
         estimated_minutes: 65
         is_published: true
-      - title: "Gradient Boosting in Practice"
+      - title: "Bagging and Random Forest"
+        slug: bagging-and-random-forest
+        file: s3-tabular-models/bagging-and-random-forest.md
+        is_published: true
+      - title: "Boosting"
         slug: gradient-boosting-in-practice
         file: s3-tabular-models/gradient-boosting-in-practice.md
         estimated_minutes: 30
@@ -222,6 +228,11 @@ modules:
       - title: "Model Selection and Validation"
         slug: model-selection-and-validation
         file: s3-tabular-models/model-selection-and-validation.md
+        estimated_minutes: 50
+        is_published: true
+      - title: "Stacking and Blending"
+        slug: stacking-and-blending
+        file: s3-tabular-models/stacking-and-blending.md
         estimated_minutes: 50
         is_published: true
       - title: "Hyperparameter Optimisation"
@@ -234,22 +245,12 @@ modules:
         file: s3-tabular-models/probabilistic-prediction.md
         estimated_minutes: 80
         is_published: true
-      - title: "Time Series Models"
-        slug: time-series-models
-        file: s3-tabular-models/time-series-models.md
-        estimated_minutes: 25
-        is_published: true
-      - title: "Stacking and Blending"
-        slug: stacking-and-blending
-        file: s3-tabular-models/stacking-and-blending.md
-        estimated_minutes: 50
-        is_published: true
       - title: "Saving and Loading Models and Pipelines"
         slug: saving-and-loading-models
         file: s3-tabular-models/saving-and-loading-models.md
         estimated_minutes: 40
         is_published: true
-      - title: "Lab 3 — Rain Over Europe"
+      - title: "Lab — Rain Over Europe"
         slug: lab-3
         kind: exercise
         file: s3-tabular-models/lab-3.md

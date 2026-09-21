@@ -11,7 +11,144 @@ warning is the one they will otherwise get wrong in the project report. -->
 
 ---
 
-## Three implementations of one algorithm
+
+## AdaBoost
+
+![AdaBoost reweighting: each round focuses on the last round's mistakes](assets/tabular/adaboost.jpg)
+
+Each round trains a weak learner on weighted data, then upweights the examples
+it got wrong. The final model is a weighted vote of all the rounds.
+
+---
+
+## AdaBoost, step by step
+
+Labels and learner outputs are coded $\pm 1$: $y_i, h_t(x_i) \in \{-1, +1\}$.
+
+**Step 1 — initialise** uniform sample weights:
+
+$$
+w_i = \frac{1}{n} \qquad \forall i \in 1, \ldots, n
+$$
+
+**Step 2 — for each round** $t = 1, \ldots, T$:
+
+**2a.** Train a weak learner $h_t$ on the weighted data.
+
+---
+
+## AdaBoost, the error and the vote weight
+
+**2b.** Compute the weighted error:
+
+$$
+\epsilon_t = \sum_{i=1}^{n} w_i \, \mathbb{1}\big(h_t(x_i) \neq y_i\big)
+$$
+
+**2c.** Compute the learner's weight; a good learner gets a high $\alpha_t$:
+
+$$
+\alpha_t = \frac{1}{2} \ln \frac{1 - \epsilon_t}{\epsilon_t}
+$$
+
+---
+
+## AdaBoost, the weight update
+
+**2d.** Update the sample weights, so that misclassified points get heavier, then
+normalise:
+
+$$
+w_i \leftarrow w_i \, e^{-\alpha_t y_i h_t(x_i)}
+\qquad\text{then}\qquad
+w_i \leftarrow \frac{w_i}{\sum_j w_j}
+$$
+
+$y_i h_t(x_i)$ is $+1$ on a correct row and $-1$ on a wrong one, so:
+
+$$
+w_i \leftarrow w_i \, e^{-\alpha_t} \quad \mathrm{if\ correct}, \qquad w_i \leftarrow w_i \, e^{\alpha_t} \quad \mathrm{if\ wrong}
+$$
+
+After the update, $h_t$ scores exactly 50% on the new weights, so the next
+learner has to find something new.
+
+---
+
+## AdaBoost, the final vote
+
+**Step 3 — final prediction**, a weighted vote:
+
+$$
+H(x) = \text{sign}\Big( \sum_{t=1}^{T} \alpha_t h_t(x) \Big)
+$$
+
+A learner with weighted error $\epsilon_t$ votes with weight $\alpha_t$. The
+exponential loss behind the update makes AdaBoost brittle under label noise: a
+mislabelled row is upweighted forever.
+
+---
+
+## AdaBoost in scikit-learn
+
+```python
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.tree import DecisionTreeClassifier
+ada = AdaBoostClassifier(
+    DecisionTreeClassifier(max_depth=1), n_estimators=200,
+    learning_rate=0.5)
+```
+
+
+---
+
+## Gradient boosting
+
+Generalise: instead of reweighting, fit each new tree to the **negative gradient
+of the loss** at the current predictions. For squared loss that gradient is the
+residual, so each tree predicts what the ensemble still gets wrong.
+
+$$
+r_i^{(m)} = - \left[ \frac{\partial \ell(y_i, F(x_i))}{\partial F(x_i)} \right]_{F = F_{m-1}}
+$$
+
+$$
+F_m(x) = F_{m-1}(x) + \nu h_m(x)
+$$
+
+The shrinkage $\nu$ scales each correction down. The libraries call it
+`learning_rate` — the same name a neural network's step size $\eta$ goes by, a
+different quantity. Any differentiable loss works, which is why one algorithm
+covers regression, classification and ranking.
+
+---
+
+## Gradient boosting's three dials
+
+| Parameter | Name | Role |
+|---|---|---|
+| `n_estimators` ($T$) | boosting rounds | how many corrections are added |
+| `learning_rate` ($\nu$) | shrinkage | how much of each correction is kept |
+| `max_depth` | tree depth | how much each tree can correct: shallow, 4–8 |
+
+`max_depth` stays shallow because boosting wants *weak* learners: a deep tree
+already has low bias and leaves the ensemble nothing to correct. How $\nu$ and
+$T$ trade against each other, and why early stopping picks $T$, is the next
+lesson.
+
+
+
+---
+
+## Which implementation in sklearn
+
+`GradientBoostingClassifier` and `GradientBoostingRegressor` are the textbook
+implementation: exact splits, one core, slow beyond about 10,000 rows.
+`HistGradientBoostingClassifier` and `HistGradientBoostingRegressor` are
+scikit-learn's fast, binned version of the same algorithm.
+
+
+## To go beyond : Three implementations of one algorithm
 
 | | XGBoost | LightGBM | CatBoost |
 |---|---|---|---|
@@ -58,189 +195,23 @@ not measure on your data.
 
 ---
 
-## Learning rate and number of trees are one parameter
-
-They trade against each other almost exactly: halving `learning_rate` doubles the
-trees needed for the same fit, at slightly better generalisation and twice the
-cost.
-
-The practical consequence: **do not tune them jointly.** Fix the learning rate
-by budget (0.05 while searching, 0.01–0.02 for the final fit) and let early
-stopping pick the number of trees for you at each setting.
-
-Tuning `n_estimators` in a grid search is the most common way to waste a
-compute budget on this algorithm.
-
----
-
-## Early stopping
+## Gradient boosting in code
 
 ```python
-import lightgbm as lgb
-X_fit, X_es, y_fit, y_es = train_test_split(X_tr, y_tr, test_size=0.2)
-model = lgb.LGBMRegressor(n_estimators=10000, learning_rate=0.03)
-model.fit(X_fit, y_fit, eval_set=[(X_es, y_es)], eval_metric="rmse",
-          callbacks=[lgb.early_stopping(100), lgb.log_evaluation(0)])
-print(model.best_iteration_)
+from sklearn.ensemble import GradientBoostingClassifier
+from xgboost import XGBClassifier
+
+gb = GradientBoostingClassifier(
+    n_estimators=200, learning_rate=0.1, max_depth=4)
+xgb = XGBClassifier(n_estimators=200, learning_rate=0.1, max_depth=4)
+gb.fit(X_train, y_train)
 ```
-
-Set `n_estimators` far higher than you need and stop when the metric on `X_es`
-has not improved for `stopping_rounds` iterations — the callback's argument,
-100 above. `X_es` is carved out of the training part, the same split the
-Optuna recipe of *Hyperparameter Optimisation* makes inside every fold.
-
-> The evaluation set used for early stopping is part of training. It is not a
-> validation set any more, and it is certainly not a test set.
-
-Inside cross-validation, the eval set must come from the training folds. Passing
-your outer test set as `eval_set` is leakage with a progress bar.
-
----
-
-## Early stopping inside a Pipeline
-
-`eval_set` is handed straight to the final estimator, so it never passes through
-`prep`. Transposing the block above into a `Pipeline` raises before a tree grows:
 
 ```python
-boosted.fit(X_a, y_a, model__eval_set=[(X_b, y_b)])
-# ValueError: pandas dtypes must be int, float or bool.
-# Fields with bad pandas dtypes: sex: str, race: str, ...
+from sklearn.ensemble import GradientBoostingRegressor
+from xgboost import XGBRegressor
+
+gb = GradientBoostingRegressor(
+    n_estimators=200, learning_rate=0.1, max_depth=4)
+xgb = XGBRegressor(n_estimators=200, learning_rate=0.1, max_depth=4)
 ```
-
-Fit the preprocessor on the training part, then transform both sides yourself:
-
-```python
-from sklearn.base import clone
-prep = clone(preprocessor).fit(X_a)
-model = lgb.LGBMClassifier(n_estimators=2000, learning_rate=0.05)
-model.fit(prep.transform(X_a), y_a,
-          eval_set=[(prep.transform(X_b), y_b)],
-          callbacks=[lgb.early_stopping(100), lgb.log_evaluation(0)])
-```
-
-`cross_val_score` gives you no hook for this: split each training fold by hand,
-or run `lgb.cv` with the preprocessing applied per fold.
-
----
-
-## Native categorical handling
-
-```python
-X["city"] = X["city"].astype("category")
-model = lgb.LGBMClassifier().fit(X_tr, y_tr, categorical_feature=["city"])
-```
-
-LightGBM sorts a categorical feature's levels by gradient statistics and splits
-the sorted order, which finds subsets one-hot encoding cannot reach in a shallow
-tree. CatBoost goes further with ordered target statistics: the encoding for a
-row uses only rows that came before it in a random permutation, which is
-target encoding without the leakage.
-
-Native handling beats one-hot when cardinality is high; below ten levels the
-difference is noise. Session 2 covers the encoding alternatives — the point here
-is that you often do not need them.
-
----
-
-## Monotonic constraints
-
-```python
-model = lgb.LGBMRegressor(monotone_constraints=[1, 0, -1])
-```
-
-Force the prediction to be non-decreasing in feature 1 and non-increasing in
-feature 3, whatever the data says locally. One entry per feature: `1`, `0`, `-1`.
-
-It costs a little accuracy and buys a model that cannot embarrass you: a price
-that never falls with quantity, a risk score that never falls with debt. Use it
-where an expert will read the model, or where training data is sparse in a region
-you still have to behave sensibly in.
-
----
-
-## Feature importance misleads
-
-`model.feature_importances_` reports **gain** — the total loss reduction
-attributed to splits on each feature — or, worse, **split count**, which is
-LightGBM's default. Both are biased:
-
-- toward high-cardinality features, which offer more places to split
-- toward continuous over binary features, for the same reason
-- arbitrarily among correlated features: one absorbs the credit, the others read
-  as unimportant
-
-It is also computed on the training data. A feature the model overfits scores
-highly precisely because it overfits.
-
-Gain importance answers "what did this model split on", not "what matters".
-
----
-
-## Measure importance on held-out data
-
-```python
-from sklearn.inspection import permutation_importance
-r = permutation_importance(model, X_val, y_val,
-                           n_repeats=10, random_state=0)
-```
-
-Shuffle one column in the validation set and measure how much the score drops. A
-feature carrying no information drops nothing. It is model-agnostic and uses data
-the model did not train on. Correlated features still confuse it — both members
-of a pair look unimportant, because either can substitute for the other.
-
-SHAP decomposes one prediction into per-feature contributions with a consistency
-guarantee gain importance lacks. Use permutation importance to decide what to
-drop, SHAP to explain a single case:
-
-```python
-import shap
-values = shap.TreeExplainer(model).shap_values(X_val)
-```
-
----
-
-## A starting configuration
-
-```python
-params = dict(n_estimators=10000, learning_rate=0.03, num_leaves=63,
-              min_child_samples=50, subsample=0.8, subsample_freq=1,
-              colsample_bytree=0.8, reg_lambda=1.0)
-```
-
-Fit that with early stopping, record the score, and only then search: capacity
-first (`num_leaves`, `min_child_samples`), then sampling, then regularisation,
-then drop the learning rate for the final fit.
-
-Automated pipeline search is a real tool and a poor teacher — it is in the
-Reference module, not in this session. Next, *Model Selection and Validation*
-and *Hyperparameter Optimisation* decide whether the score you just recorded
-means anything.
-
----
-
-## Check yourself
-
-1. Why is `n_estimators` the one parameter you never put in a grid search?
-
-   **Answer.** It trades against `learning_rate` almost exactly — halving the
-   rate doubles the trees needed for the same fit — so fix the rate by budget
-   and let early stopping choose the tree count at each setting.
-
-2. Run this. You should get exactly the output shown.
-
-   ```python
-   from lightgbm import LGBMClassifier
-   print(LGBMClassifier().importance_type)   # -> split
-   ```
-
-   That is the default this lesson warns about: LightGBM ranks features by how
-   often they were split on, not by how much loss they removed.
-
-3. `boosted.fit(X_a, y_a, model__eval_set=[(X_b, y_b)])` raises
-   `ValueError: pandas dtypes must be int, float or bool`. Why?
-
-   **Answer.** `eval_set` is forwarded to the estimator untouched, so it never
-   passes through the `prep` step and LightGBM receives the raw string columns.
-   Fit the preprocessor yourself and transform both sides before the call.

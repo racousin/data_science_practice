@@ -96,7 +96,7 @@ $$
 \ell(\beta) = -\sum_{i=1}^{n} \big[ y_i \log \hat{p}_i + (1 - y_i)\log(1 - \hat{p}_i) \big]
 $$
 
-There is no closed form this time. The minimum is found iteratively.
+There is no closed form this time. The minimum is found iteratively (gradient descent).
 
 ---
 
@@ -173,19 +173,8 @@ $$
 \min_\beta \|y - \Phi\beta\|^2 \;\Rightarrow\; \hat{\beta} = (\Phi^T \Phi)^{-1} \Phi^T y
 $$
 
----
-
-## Non-linear in $x$, linear in $\beta$
-
 ![Polynomials of degree 0 to 5](assets/tabular/polynomial-degrees.png)
 
-> **Non-linear in $x$, linear in $\beta$.**
-
-Everything built for linear models carries over: the normal equation, the
-log-loss, and every penalty in the second half of this lesson. The degree $d$ is
-the capacity knob — a polynomial of degree $d$ can turn $d - 1$ times, and at
-$d = n - 1$ it passes through every one of the $n$ training points exactly:
-interpolation, not learning.
 
 ---
 
@@ -355,25 +344,6 @@ So the same `alpha` is not the same strength in `Ridge` and in `Lasso`.
 
 ---
 
-## Which penalty
-
-```python
-from sklearn.linear_model import ElasticNetCV
-model = ElasticNetCV(l1_ratio=[0.1, 0.5, 0.9, 1.0], cv=5)
-model.fit(X_train, y_train)     # model.alpha_, model.l1_ratio_
-```
-
-It searches 100 values of `alpha` for each `l1_ratio`. Ridge when features are
-correlated and you want all of them, lasso when you want the model to choose a
-subset, elastic net when both — which, on real data with groups of correlated
-columns, is usually. Scale first: the penalty is on the coefficient, and an
-unscaled coefficient carries whatever unit its column uses.
-
-Lasso on correlated features picks one of the group arbitrarily and zeroes the
-rest. Do not read that choice as a statement about importance.
-
----
-
 ## The same thing for classification
 
 Swap the squared error for the log-loss $\ell(\beta)$ of logistic regression,
@@ -410,86 +380,19 @@ elastic = LogisticRegression(C=10, l1_ratio=0.5, solver="saga",
                              max_iter=1000)
 ```
 
-Since scikit-learn 1.8 the penalty is set by `l1_ratio` alone: 0 is L2 (the
-default), 1 is L1, anything in between is elastic net. `penalty=` is deprecated
-and goes in 1.10. The default solver, `lbfgs`, handles L2 only: `saga` handles
-all three (`liblinear` also does pure L1), and converges fast only on scaled
-features — even then, raise `max_iter` from its default of 100 or it stops
-early with a `ConvergenceWarning`.
-
----
-
-## C runs the other way
 
 scikit-learn puts `C` on the loss instead of $\lambda$ on the penalty — it
 minimises $C \cdot \ell(\beta) + R(\beta)$ — so $C$ plays the role of
 $1/\lambda$. **Larger `C` means less regularisation**; small `C` means a
 strongly regularised model.
 
-This inversion trips up everyone once. `SVC`, in the next lesson, uses the same
-convention. Search `C` on a log scale from $10^{-3}$ to $10^{3}$.
-
 ---
 
 ## The rule: fit the baseline first
 
-> Before any boosting, fit a regularised linear or logistic model on the same
+> Before any boosting or advanced methods, fit a regularised linear or logistic model on the same
 > split with the same metric, and write the number down.
 
 It costs two minutes and buys three things: proof the pipeline runs end to end,
 a floor any later model must clear, and an early warning. A linear model scoring
 0.99 AUC on a hard problem is not a triumph — it is leakage, found for free.
-
----
-
-## Where this leaves you
-
-| Situation | Reach for |
-|---|---|
-| First model, always | regularised linear / logistic |
-| Coefficients must be defended to a regulator | linear, and stop there |
-| A clear curve in a few known columns | polynomial features on those, with a penalty |
-| Many correlated columns | ridge or elastic net, on scaled features |
-| Fewer than ~1,000 rows | regularised linear, or a small SVM (next lesson) |
-| Fewer than 20 features, low dimension, quick check | kNN (next lesson) |
-| Anything else, tabular | gradient boosting (after the trees) |
-
-Next come kNN and the SVM, then the decision tree and the ensembles built from
-it. From there the session assumes gradient boosting and spends its time on
-what decides whether yours is any good: the validation protocol, the search,
-turning a point prediction into a distribution, and the rules time imposes on a
-split — then on saving the fitted pipeline so that an agent can load it.
-Everything the rain challenge of Lab 3 needs.
-
----
-
-## Check yourself
-
-1. Lasso sets some coefficients to exactly zero; ridge only shrinks them. Why?
-
-   **Answer.** In the constrained view (KKT), the penalty confines $\beta$ to a
-   ball, and the solution sits where the loss contours first touch it. The L1
-   ball is a diamond with corners on the axes, and at a corner some $\beta_j$
-   is exactly zero. The L2 ball is round, with no corners to land on.
-
-2. Run this. You should get exactly the output shown.
-
-   ```python
-   import numpy as np
-   from sklearn.linear_model import LogisticRegression
-   X = np.arange(20).reshape(-1, 1) / 10.0
-   y = (X.ravel() > 1.0).astype(int)
-   small = LogisticRegression(C=0.01).fit(X, y).coef_[0, 0]
-   large = LogisticRegression(C=100).fit(X, y).coef_[0, 0]
-   print(f"{small:.2f} {large:.2f}")        # -> 0.05 11.94
-   ```
-
-   `C` is the *inverse* regularisation strength: the small `C` is the strongly
-   regularised model, and its coefficient is the one that got shrunk.
-
-3. Your first model, a regularised logistic regression, scores 0.99 AUC on a
-   problem everyone told you was hard. What is the reading?
-
-   **Answer.** Leakage, found for free. That early warning is one of the three
-   things fitting the baseline first buys you — the other two being proof the
-   pipeline runs end to end and a floor any later model must clear.

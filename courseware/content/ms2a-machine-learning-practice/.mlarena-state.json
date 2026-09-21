@@ -43,6 +43,7 @@
       "s2-data-preprocessing/outliers": 202,
       "s2-data-preprocessing/scaling-and-normalization": 68,
       "s2-data-preprocessing/the-preprocessing-contract": 64,
+      "s3-tabular-models/bagging-and-random-forest": 213,
       "s3-tabular-models/gradient-boosting-in-practice": 73,
       "s3-tabular-models/hyperparameter-optimization": 75,
       "s3-tabular-models/knn-and-svm": 207,
@@ -51,8 +52,8 @@
       "s3-tabular-models/probabilistic-prediction": 209,
       "s3-tabular-models/saving-and-loading-models": 211,
       "s3-tabular-models/stacking-and-blending": 210,
+      "s3-tabular-models/support-vector-machines": 212,
       "s3-tabular-models/the-tabular-landscape": 71,
-      "s3-tabular-models/time-series-models": 76,
       "s3-tabular-models/trees-and-ensembles": 72,
       "s4-advanced-neural-networks/data-pipelines-and-training-loop": 81,
       "s4-advanced-neural-networks/essential-layers": 78,
@@ -406,82 +407,87 @@
           "is_published": true,
           "title": "The Preprocessing Contract"
         },
+        "s3-tabular-models/bagging-and-random-forest": {
+          "body": "cfbd2214e28f7bc7d4a8616de9f59063430afb97fa8fd66bc7d59327e7e183e0",
+          "gated": false,
+          "is_published": true,
+          "title": "Bagging and Random Forest"
+        },
         "s3-tabular-models/gradient-boosting-in-practice": {
-          "body": "045d7887ac7a59d783968ce238f4e6f35350e39ab9da90b80d886522481d4855",
+          "body": "482e215fc8b22294db0e7648bcaa2d71ec3c13f344d18fa76a7d6b6fb181f9fa",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
-          "title": "Gradient Boosting in Practice"
+          "title": "Boosting"
         },
         "s3-tabular-models/hyperparameter-optimization": {
-          "body": "e4349354bdd35998670fc7b456c9690093df4dda4ff1d97636884521c9cd0c59",
+          "body": "6e92235cb574805cb3dbe2946f3cd313215f4491a8e0a55226c5088b0e4fe2b2",
           "estimated_minutes": 80,
           "gated": false,
           "is_published": true,
           "title": "Hyperparameter Optimisation"
         },
         "s3-tabular-models/knn-and-svm": {
-          "body": "528b349b574ec062217ac714491ff406dc75b1c57b2090485bd5ff6298ff4dab",
+          "body": "e92725d866eb7ba9aa23ca9febf873c8dd009b1027ba3e009d9107581bbc7710",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
-          "title": "k-Nearest Neighbours and Support Vector Machines"
+          "title": "k-Nearest Neighbours"
         },
         "s3-tabular-models/lab-3": {
-          "body": "674a944e289da46f906b0831735dcc108f99db22ab10e620d3539963798788c5",
+          "body": "29f91b06ee01425e5c59ec7762c2581c6bcb3edffa1b96fdf8b47faa0aa0be9f",
           "estimated_minutes": 90,
           "gated": false,
           "is_published": true,
-          "title": "Lab 3 \u2014 Rain Over Europe"
+          "title": "Lab \u2014 Rain Over Europe"
         },
         "s3-tabular-models/model-selection-and-validation": {
-          "body": "db281728f22c77df839dc0f6a70ce193d4c4328a8d991edc85683e60e0372d6f",
+          "body": "f87cbbe9172ebb8def5764a8d64980a39e00867c22d3a98fb3f4bcacf4761a17",
           "estimated_minutes": 50,
           "gated": false,
           "is_published": true,
           "title": "Model Selection and Validation"
         },
         "s3-tabular-models/probabilistic-prediction": {
-          "body": "4c2cf08ff9f2105ece54662b015982df0766fdc208f21e9bd45f19fa36acf271",
+          "body": "783cf50cb6ed2a69b5d05af9b2283ce19c0e402964476f84bd513e6462d993e1",
           "estimated_minutes": 80,
           "gated": false,
           "is_published": true,
           "title": "Probabilistic Prediction"
         },
         "s3-tabular-models/saving-and-loading-models": {
-          "body": "7dd5303c534df6cbcdf646df59c1f43d09816e41e9c9c208d55362dd7c5afcdb",
+          "body": "75a9edba334e87595b87d99e06461b7bcdfd5bfeb65f5f8305bec78be2c45bb2",
           "estimated_minutes": 40,
           "gated": false,
           "is_published": true,
           "title": "Saving and Loading Models and Pipelines"
         },
         "s3-tabular-models/stacking-and-blending": {
-          "body": "9708aa8987e5495af634b46d415ebc3673f41d53f358ec513bf03b3c9bcb465f",
+          "body": "255e32eb3a97ae29acd286ed4f73358cef7fd020a404ce7be086b4dd115f6213",
           "estimated_minutes": 50,
           "gated": false,
           "is_published": true,
           "title": "Stacking and Blending"
         },
+        "s3-tabular-models/support-vector-machines": {
+          "body": "419e54cf7bc6c4bd71591686e19f57ca8dce01ea5c0a1f31092be31df8e91528",
+          "gated": false,
+          "is_published": true,
+          "title": "Support Vector Machines"
+        },
         "s3-tabular-models/the-tabular-landscape": {
-          "body": "df3e9c772bf5fafccf1514f2f372598bb1fc0a0f683aab6b77703e143c35b013",
+          "body": "5ba60bc0714cce96e33d6e94f2d9d566e9628beb6aae7a48bd1340d0acdd2fa8",
           "estimated_minutes": 40,
           "gated": false,
           "is_published": true,
           "title": "The Tabular Landscape"
         },
-        "s3-tabular-models/time-series-models": {
-          "body": "91dfbd0075c1fb750d52cc39af2be6c6aaaa98fd229446d3bab3e1eb9fae8165",
-          "estimated_minutes": 25,
-          "gated": false,
-          "is_published": true,
-          "title": "Time Series Models"
-        },
         "s3-tabular-models/trees-and-ensembles": {
-          "body": "d314959cc995257795de388234c6c5f6f4f9ed267ee9e3a4592f917a5af8f420",
+          "body": "5c494c4ec8b76ebd1cc4c07f5d840e78eaaeaa1e8b10f84cfeef8db18220c3fc",
           "estimated_minutes": 65,
           "gated": false,
           "is_published": true,
-          "title": "Trees and Ensembles"
+          "title": "Trees"
         },
         "s4-advanced-neural-networks/data-pipelines-and-training-loop": {
           "body": "28f6f7a93821dfcbfdc55bcae6f3b1e170fca4f4251ad6a1bfdfd86cc95242a1",
@@ -854,17 +860,18 @@
           "lessons": [
             "the-tabular-landscape",
             "knn-and-svm",
+            "support-vector-machines",
             "trees-and-ensembles",
+            "bagging-and-random-forest",
             "gradient-boosting-in-practice",
             "model-selection-and-validation",
+            "stacking-and-blending",
             "hyperparameter-optimization",
             "probabilistic-prediction",
-            "time-series-models",
-            "stacking-and-blending",
             "saving-and-loading-models",
             "lab-3"
           ],
-          "summary": "From regularised linear models through kNN, SVMs, trees, random forests and boosting: the models that still win on tabular data, the validation and leakage discipline that tell you whether they do, the search that tunes them (Optuna), the probabilities and distributions that make a prediction usable \u2014 calibration, quantiles and CRPS \u2014 the stacking and blending that combine them, with time-series validation for the rain challenge, and the saved pipeline an agent loads to serve them.",
+          "summary": "Tabular ML end to end: fit the models that win (regularised linear, kNN, SVMs, trees, random forests, boosting), validate them without leakage (including time-series), tune them with Optuna and combine them by stacking and blending, and ship the saved pipeline an agent loads to serve them.",
           "title": "Session 3 \u2014 Tabular Models"
         },
         "s4-advanced-neural-networks": {
