@@ -6,7 +6,7 @@ thing you know. This lesson is about using all of them at once: how the
 combination is fitted without leaking, and how much — often how little — it is
 worth.
 
-<!-- notes: 50 minutes, the last teaching lesson before Lab 3. Show the
+<!-- notes: 50 minutes, the last modelling lesson before Lab 3. Show the
 two-panel ladder early and let them read the left panel honestly: on California
 housing the stack buys nothing, because one booster dominates. Then the right
 panel, where the models are complementary and it buys three percent. The leak

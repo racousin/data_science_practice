@@ -178,18 +178,23 @@ modules:
   # project module) to 177, European Rain Forecast: rain at +6 h / +48 h for 45
   # European cities, members scored with CRPS. Its package lives in the platform
   # repo (tests-dummy/catalog/global_weather), not under competitions/.
+  #
+  # 2026-09-21: the Multi-Layer Perceptrons lesson (#208) was cut — networks
+  # start in Session 4 — and its 40 minutes went to Saving and Loading Models
+  # and Pipelines, the last lesson before Lab 3, whose agent loads the model
+  # that lab saves. Figures: tools/figures/ms2a_s3_persistence.py.
   - title: "Session 3 — Tabular Models"
     slug: s3-tabular-models
     icon: table
     visibility: unlisted
     summary: >
       From regularised linear models through kNN, SVMs, trees, random forests
-      and boosting to MLPs: the models that still win on tabular data, the
-      validation and leakage discipline that tell you whether they do, the
-      search that tunes them (Optuna), the probabilities and distributions
-      that make a prediction usable — calibration, quantiles and CRPS — and
-      the stacking and blending that combine them, with time-series validation
-      for the rain challenge.
+      and boosting: the models that still win on tabular data, the validation
+      and leakage discipline that tell you whether they do, the search that
+      tunes them (Optuna), the probabilities and distributions that make a
+      prediction usable — calibration, quantiles and CRPS — the stacking and
+      blending that combine them, with time-series validation for the rain
+      challenge, and the saved pipeline an agent loads to serve them.
     competitions:
       - competition_id: 177
         label: "European Rain Forecast — rain at +6 h and +48 h for 45 European cities: a distribution, scored with CRPS once the rain has fallen"
@@ -213,11 +218,6 @@ modules:
         slug: gradient-boosting-in-practice
         file: s3-tabular-models/gradient-boosting-in-practice.md
         estimated_minutes: 30
-        is_published: true
-      - title: "Multi-Layer Perceptrons"
-        slug: neural-networks
-        file: s3-tabular-models/neural-networks.md
-        estimated_minutes: 40
         is_published: true
       - title: "Model Selection and Validation"
         slug: model-selection-and-validation
@@ -243,6 +243,11 @@ modules:
         slug: stacking-and-blending
         file: s3-tabular-models/stacking-and-blending.md
         estimated_minutes: 50
+        is_published: true
+      - title: "Saving and Loading Models and Pipelines"
+        slug: saving-and-loading-models
+        file: s3-tabular-models/saving-and-loading-models.md
+        estimated_minutes: 40
         is_published: true
       - title: "Lab 3 — Rain Over Europe"
         slug: lab-3

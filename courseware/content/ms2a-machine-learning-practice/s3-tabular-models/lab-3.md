@@ -239,9 +239,11 @@ Write it next to the best trial's validation score and the median of the
 top five. A test score well below validation means the search overfitted
 the 2024 runs — a finding, not a failure.
 
-Then refit on every hour of the file, save the boosters next to `agent.py`
-(`booster_.save_model(...)`, reloaded with `lgb.Booster(model_file=...)`
-from the agent's own directory), and submit with `runtime_id=182`.
+Then refit on every hour of the file, save the models next to `agent.py`
+— the boosters with `booster_.save_model(...)`, reloaded with
+`lgb.Booster(model_file=...)`; the calibrated classifier with joblib — load
+them from the agent's own directory, pass the round-trip check of *Saving and
+Loading Models and Pipelines*, and submit with `runtime_id=182`.
 
 ---
 

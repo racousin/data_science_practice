@@ -214,9 +214,9 @@ first (`num_leaves`, `min_child_samples`), then sampling, then regularisation,
 then drop the learning rate for the final fit.
 
 Automated pipeline search is a real tool and a poor teacher — it is in the
-Reference module, not in this session. After the detour through the multi-layer
-perceptron, *Model Selection and Validation* and *Hyperparameter Optimisation*
-decide whether the score you just recorded means anything.
+Reference module, not in this session. Next, *Model Selection and Validation*
+and *Hyperparameter Optimisation* decide whether the score you just recorded
+means anything.
 
 ---
 

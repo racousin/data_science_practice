@@ -455,11 +455,11 @@ a floor any later model must clear, and an early warning. A linear model scoring
 | Anything else, tabular | gradient boosting (after the trees) |
 
 Next come kNN and the SVM, then the decision tree and the ensembles built from
-it, and the multi-layer perceptron as the last family. From there the session
-assumes gradient boosting and spends its time on what decides whether yours is
-any good: the validation protocol, the search, turning a point prediction into
-a distribution, and the rules time imposes on a split — everything the rain
-challenge of Lab 3 needs.
+it. From there the session assumes gradient boosting and spends its time on
+what decides whether yours is any good: the validation protocol, the search,
+turning a point prediction into a distribution, and the rules time imposes on a
+split — then on saving the fitted pipeline so that an agent can load it.
+Everything the rain challenge of Lab 3 needs.
 
 ---
 

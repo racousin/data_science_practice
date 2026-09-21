@@ -48,8 +48,8 @@
       "s3-tabular-models/knn-and-svm": 207,
       "s3-tabular-models/lab-3": 77,
       "s3-tabular-models/model-selection-and-validation": 74,
-      "s3-tabular-models/neural-networks": 208,
       "s3-tabular-models/probabilistic-prediction": 209,
+      "s3-tabular-models/saving-and-loading-models": 211,
       "s3-tabular-models/stacking-and-blending": 210,
       "s3-tabular-models/the-tabular-landscape": 71,
       "s3-tabular-models/time-series-models": 76,
@@ -407,7 +407,7 @@
           "title": "The Preprocessing Contract"
         },
         "s3-tabular-models/gradient-boosting-in-practice": {
-          "body": "51e65b63712f8c55056bdae279ec2502aa20784fc16d166649f44861effdaaed",
+          "body": "045d7887ac7a59d783968ce238f4e6f35350e39ab9da90b80d886522481d4855",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
@@ -428,7 +428,7 @@
           "title": "k-Nearest Neighbours and Support Vector Machines"
         },
         "s3-tabular-models/lab-3": {
-          "body": "1b117f2f6b2b5828a00e29a4343997cdf41c6ec4004ca40b6beb4516525e690a",
+          "body": "674a944e289da46f906b0831735dcc108f99db22ab10e620d3539963798788c5",
           "estimated_minutes": 90,
           "gated": false,
           "is_published": true,
@@ -441,13 +441,6 @@
           "is_published": true,
           "title": "Model Selection and Validation"
         },
-        "s3-tabular-models/neural-networks": {
-          "body": "be9e18438bdbd15372273334ed29e7f218d0d3fdf006169b76f8cd9838421c4f",
-          "estimated_minutes": 40,
-          "gated": false,
-          "is_published": true,
-          "title": "Multi-Layer Perceptrons"
-        },
         "s3-tabular-models/probabilistic-prediction": {
           "body": "4c2cf08ff9f2105ece54662b015982df0766fdc208f21e9bd45f19fa36acf271",
           "estimated_minutes": 80,
@@ -455,15 +448,22 @@
           "is_published": true,
           "title": "Probabilistic Prediction"
         },
+        "s3-tabular-models/saving-and-loading-models": {
+          "body": "7dd5303c534df6cbcdf646df59c1f43d09816e41e9c9c208d55362dd7c5afcdb",
+          "estimated_minutes": 40,
+          "gated": false,
+          "is_published": true,
+          "title": "Saving and Loading Models and Pipelines"
+        },
         "s3-tabular-models/stacking-and-blending": {
-          "body": "5f36bd80c7dacb09722d6459de19d32fbe8a44feb31cc1fec7b6be942ba73648",
+          "body": "9708aa8987e5495af634b46d415ebc3673f41d53f358ec513bf03b3c9bcb465f",
           "estimated_minutes": 50,
           "gated": false,
           "is_published": true,
           "title": "Stacking and Blending"
         },
         "s3-tabular-models/the-tabular-landscape": {
-          "body": "a8a184a58bf7edad919263b3a0a2d55ad0a88f9b753ecc78ec25a707fd55ea82",
+          "body": "df3e9c772bf5fafccf1514f2f372598bb1fc0a0f683aab6b77703e143c35b013",
           "estimated_minutes": 40,
           "gated": false,
           "is_published": true,
@@ -477,7 +477,7 @@
           "title": "Time Series Models"
         },
         "s3-tabular-models/trees-and-ensembles": {
-          "body": "b641c38e0a274451e8e9efedb1d228c3698a9476cffe1c90e49d79cab8a2f1c6",
+          "body": "d314959cc995257795de388234c6c5f6f4f9ed267ee9e3a4592f917a5af8f420",
           "estimated_minutes": 65,
           "gated": false,
           "is_published": true,
@@ -856,15 +856,15 @@
             "knn-and-svm",
             "trees-and-ensembles",
             "gradient-boosting-in-practice",
-            "neural-networks",
             "model-selection-and-validation",
             "hyperparameter-optimization",
             "probabilistic-prediction",
             "time-series-models",
             "stacking-and-blending",
+            "saving-and-loading-models",
             "lab-3"
           ],
-          "summary": "From regularised linear models through kNN, SVMs, trees, random forests and boosting to MLPs: the models that still win on tabular data, the validation and leakage discipline that tell you whether they do, the search that tunes them (Optuna), the probabilities and distributions that make a prediction usable \u2014 calibration, quantiles and CRPS \u2014 and the stacking and blending that combine them, with time-series validation for the rain challenge.",
+          "summary": "From regularised linear models through kNN, SVMs, trees, random forests and boosting: the models that still win on tabular data, the validation and leakage discipline that tell you whether they do, the search that tunes them (Optuna), the probabilities and distributions that make a prediction usable \u2014 calibration, quantiles and CRPS \u2014 the stacking and blending that combine them, with time-series validation for the rain challenge, and the saved pipeline an agent loads to serve them.",
           "title": "Session 3 \u2014 Tabular Models"
         },
         "s4-advanced-neural-networks": {

@@ -677,7 +677,7 @@ F_m(x) = F_{m-1}(x) + \nu h_m(x)
 $$
 
 The shrinkage $\nu$ scales each correction down. The libraries call it
-`learning_rate` — the same name the MLP lesson's step size $\eta$ goes by, a
+`learning_rate` — the same name a neural network's step size $\eta$ goes by, a
 different quantity. Any differentiable loss works, which is why one algorithm
 covers regression, classification and ranking.
 
