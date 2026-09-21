@@ -58,8 +58,8 @@
       "s4-advanced-neural-networks/data-pipelines-and-training-loop": 81,
       "s4-advanced-neural-networks/essential-layers": 78,
       "s4-advanced-neural-networks/lab-4": 84,
-      "s4-advanced-neural-networks/making-training-work": 79,
       "s4-advanced-neural-networks/monitoring-and-debugging": 82,
+      "s4-advanced-neural-networks/multi-layer-perceptrons": 214,
       "s4-advanced-neural-networks/optimization-and-schedules": 80,
       "s4-advanced-neural-networks/performance-and-profiling": 83,
       "s5-computer-vision-1/convolution": 86,
@@ -497,7 +497,7 @@
           "title": "Data Pipelines and the Training Loop"
         },
         "s4-advanced-neural-networks/essential-layers": {
-          "body": "db46a031cb6918ebd06610df691933906c01774c4402d65d8e3e501f3b8b3e21",
+          "body": "c5de7b731f7fbb459de1c987012f61def1f19fff46b2f886db239442a836eb48",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
@@ -510,19 +510,18 @@
           "is_published": true,
           "title": "Lab 4 \u2014 Building Blocks, Measured"
         },
-        "s4-advanced-neural-networks/making-training-work": {
-          "body": "2e175369f8021741ec14b9297f2aa7d58c0f7c5f38fe918cef31a9613ccecb2c",
-          "estimated_minutes": 40,
-          "gated": false,
-          "is_published": true,
-          "title": "Making Training Work"
-        },
         "s4-advanced-neural-networks/monitoring-and-debugging": {
           "body": "557136de8afeb64b750b631280835e9ace6a1d9b939ae8bd6518a3e95a60af7f",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
           "title": "Monitoring and Debugging"
+        },
+        "s4-advanced-neural-networks/multi-layer-perceptrons": {
+          "body": "201d7670f1645ce76264a19ebc7c5e158ba68881d867d86d9a5202ab39d609fe",
+          "gated": false,
+          "is_published": true,
+          "title": "Multi-Layer Perceptrons"
         },
         "s4-advanced-neural-networks/optimization-and-schedules": {
           "body": "3fb8c24aa8fe2e53c855eb70cc9c96bd17e41b31bffdfe233009d7245018a5f3",
@@ -877,8 +876,8 @@
         "s4-advanced-neural-networks": {
           "icon": "layers",
           "lessons": [
+            "multi-layer-perceptrons",
             "essential-layers",
-            "making-training-work",
             "optimization-and-schedules",
             "data-pipelines-and-training-loop",
             "monitoring-and-debugging",

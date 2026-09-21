@@ -270,15 +270,14 @@ modules:
       - competition_id: 8
         label: "1 Minute Permuted MNIST — a deep network under a 60-second budget: initialisation, schedules, throughput, profiling"
     lessons:
+      - title: "Multi-Layer Perceptrons"
+        slug: multi-layer-perceptrons
+        file: s4-advanced-neural-networks/multi-layer-perceptrons.md
+        is_published: true
       - title: "Essential Layers"
         slug: essential-layers
         file: s4-advanced-neural-networks/essential-layers.md
         estimated_minutes: 30
-        is_published: true
-      - title: "Making Training Work"
-        slug: making-training-work
-        file: s4-advanced-neural-networks/making-training-work.md
-        estimated_minutes: 40
         is_published: true
       - title: "Optimization and Schedules"
         slug: optimization-and-schedules
