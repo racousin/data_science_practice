@@ -65,7 +65,6 @@
       "s4-advanced-neural-networks/normalization": 220,
       "s4-advanced-neural-networks/optimization-and-schedules": 80,
       "s4-advanced-neural-networks/performance-and-profiling": 83,
-      "s4-advanced-neural-networks/regularization": 218,
       "s4-advanced-neural-networks/skip-connections": 217,
       "s5-computer-vision-1/convolution": 86,
       "s5-computer-vision-1/images-as-tensors": 85,
@@ -502,7 +501,7 @@
           "title": "Data Pipelines and the Training Loop"
         },
         "s4-advanced-neural-networks/dropout": {
-          "body": "96e82bca7166dd7759bc5c2aa01bc08a92d2f7803cbdecaa0c0bb3acf25f6186",
+          "body": "84b7f458a3617dc1d7c330fc18f92e4f947ee5063a019c83d9af119e5579ddc5",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
@@ -516,18 +515,18 @@
           "title": "Essential Layers"
         },
         "s4-advanced-neural-networks/initialization": {
-          "body": "d2dcef07a222ecfc7049fb1c1da1d4a036bfd17b606889cd152e3753f787d3e0",
+          "body": "411e2c42855f10c6e5e2f53b45995fca473d5bfdf7cb4a9c6b41d2624f589bc4",
           "estimated_minutes": 25,
           "gated": false,
           "is_published": true,
           "title": "Parameter Initialization"
         },
         "s4-advanced-neural-networks/lab-4": {
-          "body": "2d2eef7f30a07c86efb6e24d7e429852f613f6aae3297c8eaa49f82bbeb9944b",
+          "body": "8ffdf86aa8d8a186a2c70073c21fdcf885ce9aed251ce8e1a16742498afdecf4",
           "estimated_minutes": 60,
           "gated": false,
           "is_published": true,
-          "title": "Lab 4 \u2014 Building Blocks, Measured"
+          "title": "Lab \u2014 Building Blocks, Measured"
         },
         "s4-advanced-neural-networks/monitoring-and-debugging": {
           "body": "1525cadf65aece1b41b93a86608e9e1895f9c36efcc5ecb9cf86f6187eee309e",
@@ -544,7 +543,7 @@
           "title": "Multi-Layer Perceptrons"
         },
         "s4-advanced-neural-networks/normalization": {
-          "body": "1d16d5a1f7d9ab74c2a39d55e7dc2cb6a328bc0a4466df8669c346953eeac9ba",
+          "body": "55a767f977c05ff3fa050cbd1dbcd2c10bfea9532424f56c14ce5f98ae6206dd",
           "estimated_minutes": 20,
           "gated": false,
           "is_published": true,
@@ -558,21 +557,14 @@
           "title": "Optimization and Schedules"
         },
         "s4-advanced-neural-networks/performance-and-profiling": {
-          "body": "2111bae99547f6d0471126189a25a2bfd8df7dd0eb86d4b0a90792dae0c44c4f",
+          "body": "54102c64db510879e9d656fac992dc885634dbefc0aa678ed6e5ee5c3ac5f654",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
           "title": "Performance and Profiling"
         },
-        "s4-advanced-neural-networks/regularization": {
-          "body": "7f4c3a20f756a4b9bb3ceecc996aab2c735ccb6c9dd92672e228155effef17ed",
-          "estimated_minutes": 35,
-          "gated": false,
-          "is_published": true,
-          "title": "Regularization"
-        },
         "s4-advanced-neural-networks/skip-connections": {
-          "body": "ef04e597b77102b15313a7731a8f422543bb9c08c7af42db2f12dd7e063e5ec6",
+          "body": "95f162db63480e9b4c8cc9511f477677b48f36d32e3bb77e1c3800b0f41d41a4",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
@@ -923,7 +915,6 @@
             "normalization",
             "skip-connections",
             "optimization-and-schedules",
-            "regularization",
             "dropout",
             "data-pipelines-and-training-loop",
             "monitoring-and-debugging",

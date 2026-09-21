@@ -126,31 +126,3 @@ Lab 4 puts it against a deadline: on the
 pure-numpy softmax regression scores 0.9256, and a small ReLU MLP — He
 initialization, BatchNorm, no dropout, AdamW, gradient clipping — reaches 0.9834
 inside the same 60-second budget.
-
----
-
-## Check yourself
-
-1. Run this. You should get exactly the output shown.
-
-   ```python
-   import torch, torch.nn as nn
-   torch.manual_seed(0)
-   blk = nn.Sequential(nn.Linear(256, 256, bias=False), nn.BatchNorm1d(256), nn.ReLU())
-   print(sum(p.numel() for p in blk.parameters()))     # -> 66048
-   x = torch.randn(8, 256)
-   blk.train(); a = blk(x)
-   blk.eval();  b = blk(x)
-   print(torch.allclose(a, b))                         # -> False
-   ```
-
-   Where do the 66 048 parameters come from, why is the `Linear` bias absent on
-   purpose, and what would make `a` and `b` equal?
-
-2. You replace `BatchNorm1d` with `LayerNorm` in a model you evaluate one sample
-   at a time, and the accuracy gap between `train()` and `eval()` disappears.
-   Explain both halves of that sentence from the axis figure.
-
-3. A model trained at batch size 4 scores 2 points lower in `eval()` than the
-   same weights scored in `train()` mode. Which of the four cases above is it,
-   and name two fixes that do not involve evaluating in `train()` mode.

@@ -306,11 +306,6 @@ modules:
         file: s4-advanced-neural-networks/optimization-and-schedules.md
         estimated_minutes: 30
         is_published: true
-      - title: "Regularization"
-        slug: regularization
-        file: s4-advanced-neural-networks/regularization.md
-        estimated_minutes: 35
-        is_published: true
       - title: "Dropout"
         slug: dropout
         file: s4-advanced-neural-networks/dropout.md
@@ -331,7 +326,7 @@ modules:
         file: s4-advanced-neural-networks/performance-and-profiling.md
         estimated_minutes: 30
         is_published: true
-      - title: "Lab 4 — Building Blocks, Measured"
+      - title: "Lab — Building Blocks, Measured"
         slug: lab-4
         kind: exercise
         file: s4-advanced-neural-networks/lab-4.md
