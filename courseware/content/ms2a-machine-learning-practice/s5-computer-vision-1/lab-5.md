@@ -14,6 +14,18 @@ starts. -->
 
 ---
 
+## Starter notebook
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/data_science_practice/blob/main/website/public/modules/ms2a-machine-learning-practice/challenges/mlp-s5-blood-cells.ipynb)
+
+[Challenge 173](https://ml-arena.com/viewchallenge/173), *Blood Cell Classification*:
+8 cell types, 28×28 RGB images, scored by F1-macro. The notebook downloads the
+data, shows six images of each class, trains a random forest on the flattened
+pixels (validation F1-macro 0.74) and submits it. Paste your `mlk_user_` key from
+Profile → API Keys in its first code cell.
+
+---
+
 ## Setup
 
 ```text
