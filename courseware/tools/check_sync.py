@@ -93,7 +93,7 @@ def declared_links(module: dict) -> list[tuple[int, str | None]]:
 
 def live_links(module: dict) -> list[tuple[int, str | None]]:
     """The course payload serves a module's links in position order."""
-    return [(c["challenge_id"], c.get("label")) for c in module["challenges"]]
+    return [(c["challenge"]["id"], c.get("label")) for c in module["challenges"]]
 
 
 def _links(links: list) -> str:

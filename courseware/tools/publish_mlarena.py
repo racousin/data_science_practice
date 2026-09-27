@@ -446,7 +446,7 @@ class Syncer:
         # website.
         attached = set()
         if detail:
-            attached = {c["challenge_id"] for c in detail["challenges"]}
+            attached = {c["challenge"]["id"] for c in detail["challenges"]}
         for comp in specs:
             cid = comp["competition_id"]
             if cid in attached:
@@ -575,7 +575,7 @@ def main() -> int:
         # which would also swallow genuine link failures.
         already_linked: set[int] = set()
         if not args.dry_run:
-            already_linked = {m["module_id"]
+            already_linked = {m["id"]
                               for m in client.list_course_modules(course_id)}
 
         ordered_modules: list[int] = []

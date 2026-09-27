@@ -793,7 +793,7 @@ def do_attach(args):
             sys.exit(f"{pkg}: module {entry['module_slug']!r} is not in the lockfile")
         threshold = pass_threshold(load_config(pkg))
         detail = teacher.get_module(module_id)
-        already = {c["challenge_id"]: c for c in detail["challenges"]}
+        already = {c["challenge"]["id"]: c for c in detail["challenges"]}
         link = already.get(entry["id"])
         if link is None:
             teacher.attach_challenge(module_id, entry["id"], label=entry["label"],

@@ -414,7 +414,7 @@ def test_attach_writes_the_declared_bar_not_the_benchmark(packages, monkeypatch,
         def get_module(self, module_id):
             # The shape `GET /api/teacher/modules/{id}` serves (backend
             # teacher/modules.py `_serialize_module`).
-            return {"challenges": [{"challenge_id": 191, "pass_threshold": 0.75}]}
+            return {"challenges": [{"challenge": {"id": 191}, "pass_threshold": 0.75}]}
 
         def update_challenge_link(self, module_id, cid, pass_threshold):
             written.append((module_id, cid, pass_threshold))

@@ -332,7 +332,7 @@ def main() -> int:
     # lesson deleted on the website from one never published.
     for module in course["modules"]:
         if full_run or module["slug"] in scope:
-            state["modules"][module["slug"]] = module["module_id"]
+            state["modules"][module["slug"]] = module["id"]
             for key in [k for k in state["lessons"] if k.split("/", 1)[0] == module["slug"]]:
                 del state["lessons"][key]
             for lesson in module["lessons"]:
