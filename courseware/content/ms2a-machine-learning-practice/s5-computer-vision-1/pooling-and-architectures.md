@@ -131,6 +131,26 @@ CUDA.
 
 ---
 
+## First Deep Learning success
+
+
+![1586791179489.png](assets/cv/1586791179489.png)
+
+LeNet-5 (Yann LeCun 1998) deployed by the US Postal Service to automatically read handwritten ZIP codes on mail.
+
+
+---
+
+## History
+
+
+
+![4a821f3c-2e41-4718-a29e-89971228d4c1_1106x631.gif](assets/cv/4a821f3c-2e41-4718-a29e-89971228d4c1_1106x631.gif)
+
+
+
+---
+
 ## VGG (2014): depth from 3×3 stacks
 
 VGG replaced AlexNet's 11×11 and 5×5 kernels with nothing but 3×3, stacked.
@@ -227,52 +247,3 @@ Removing an inductive bias means the data has to supply it. The original ViT
 Later recipes — DeiT, distillation, masked pretraining — closed most of the gap.
 You will almost never train either from scratch, which makes the real question
 "which pretrained checkpoint", not "which architecture".
-
----
-
-## What to pick in 2026
-
-| Situation | Choice |
-|---|---|
-| Default, a few thousand labelled images | pretrained **ResNet-50** or **ConvNeXt-T** |
-| You need every point of accuracy and have a GPU | **ViT-B** or a self-supervised checkpoint |
-| Phone, embedded, latency budget | **EfficientNet-B0**, **MobileNetV3** |
-| Fewer than 500 images | frozen features + logistic regression |
-| Genuinely novel input (13-band satellite, 3D medical) | a small CNN from scratch |
-
-> Do not design an architecture. Pick a pretrained one, and spend your time on
-> the data.
-
-Architecture is the least valuable knob on the board for applied work. The next
-two lessons cover the ones that matter.
-
----
-
-## Check yourself
-
-1. A 224×224 map with 256 channels goes through three 2×2 max-pools at stride 2,
-   then `AdaptiveAvgPool2d(1)`. What is the spatial size after each pool, and
-   what is the final shape?
-
-   **Answer.** 112, then 56, then 28 — the pooling formula with `P = 0` halves
-   it each time — and the head returns `(B, 256, 1, 1)`, whatever the input size
-   was.
-
-2. Run this. You should get exactly the output shown.
-
-   ```python
-   import torch, torch.nn as nn
-   x = torch.randn(1, 256, 224, 224)
-   pool, sizes = nn.MaxPool2d(2), []
-   for _ in range(3):
-       x = pool(x)
-       sizes.append(x.shape[-1])
-   print(sizes)                              # -> [112, 56, 28]
-   print(nn.AdaptiveAvgPool2d(1)(x).shape)   # -> torch.Size([1, 256, 1, 1])
-   ```
-
-3. The original ViT lost to a ResNet on ImageNet-1k and overtook it only after
-   pretraining on 300 million images. What did it give up, and who paid for it?
-
-   **Answer.** Convolution's built-in priors: locality and translation
-   equivariance. Remove an inductive bias and the data has to supply it.

@@ -571,28 +571,28 @@
           "title": "Skip Connections"
         },
         "s5-computer-vision-1/convolution": {
-          "body": "ff6cf6c5f50ff019686fad511dd872726d98c36274468a13612d3cad0ef92bda",
+          "body": "6d374aefc175d5a51a91044f9b9e63ac5f1aa5a822e1a132746de9c3354d31f6",
           "estimated_minutes": 40,
           "gated": false,
           "is_published": true,
           "title": "Convolution"
         },
         "s5-computer-vision-1/images-as-tensors": {
-          "body": "14b5d03b99392299cf8af4abaa74abe4d6e4fd1428ce8e94c0d8ed09e93d547a",
+          "body": "0572070f603370fcadab53891c0deba0f623383c41d7eb7d54f4cd08d24fb209",
           "estimated_minutes": 25,
           "gated": false,
           "is_published": true,
           "title": "Images as Tensors"
         },
         "s5-computer-vision-1/lab-5": {
-          "body": "903f66e6c161875a5252e22b1ad7420f965a27e4fa1cccc96fe58be2db7113fd",
+          "body": "78414b4b629e2576976a5e9f090bd6b1ffa808b53612fe94c66f2257f901dbba",
           "estimated_minutes": 45,
           "gated": false,
           "is_published": true,
           "title": "Lab 5 \u2014 Classify with a Pretrained Backbone"
         },
         "s5-computer-vision-1/pooling-and-architectures": {
-          "body": "3e0a049197cd050a45613c66b8ea0c3ac8cfa7131ca323dc8f6fe6675f870c2d",
+          "body": "5e4281087ba353d611f1f5b90408fcb4c34c40c6b9fe539b9801129b39a09593",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
@@ -606,7 +606,7 @@
           "title": "Training CNNs"
         },
         "s5-computer-vision-1/transfer-learning": {
-          "body": "38845b25e4fe86450cd09fc201324cc37be04b9f5e3fb9ec2295b5b7be0770f7",
+          "body": "0429d82f27982f373a4c9465435bdeb61f342087035c87a4660ba230c2d41323",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,

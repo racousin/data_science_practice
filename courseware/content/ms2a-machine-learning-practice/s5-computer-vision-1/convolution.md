@@ -2,24 +2,26 @@
 
 Convolution is not a trick for making networks smaller. It is a statement about
 images: features are local, and a feature means the same thing wherever it
-appears. Everything else in this session follows from those two assumptions.
+appears.
 
 <!-- notes: 40 minutes, the core of the session. Do the 2x2 worked example on
 the board by hand before showing any PyTorch. Budget 10 minutes for the
 output-size formula and make them compute two cases out loud. -->
 
----
-
 ## An MLP is the wrong model for an image
 
-![Fully connected versus locally connected](assets/cv/mlpvscnn.png)
 
-A 1000×1000 image into one million fully connected hidden units is $10^{12}$
-weights. Restrict each unit to a 10×10 patch and it is $10^{8}$ — four orders of
-magnitude, before any weight sharing.
 
-Share the same 10×10 patch weights across all positions and it is 100 weights
-per filter. That is the whole argument, twice.
+![cnn.png](assets/cv/cnn.png)
+
+
+question: what the number of parameters needed by neurons in the first layer of an MLP
+for a color image of size 1000×1000 ?
+
+Estimate the number of parameter of a small mlp for this input.
+
+
+
 
 ---
 
@@ -34,6 +36,10 @@ pixels right and every input coordinate changes, so the MLP has to learn "the
 digit 7, at each of 50,000 offsets" separately. It needs the data to cover every
 offset. A convolution gets it for free — shift the input, and the output shifts
 with it.
+
+
+![img.png](assets/cv/img.png)
+
 
 ---
 
@@ -100,7 +106,11 @@ exactly when they differ.
 Twenty years of computer vision was spent designing these by hand and deciding
 which combination to use for which task.
 
+![sobel.png](assets/cv/sobel.png)
+
+
 ---
+
 
 ## Kernels that are learned instead
 
@@ -122,6 +132,20 @@ works.
 
 ---
 
+
+
+## An MLP is the wrong model for an image
+
+![Fully connected versus locally connected](assets/cv/mlpvscnn.png)
+
+A 1000×1000 image into one million fully connected hidden units is $10^{12}$
+weights. Restrict each unit to a 10×10 patch and it is $10^{8}$ — four orders of
+magnitude, before any weight sharing.
+
+Share the same 10×10 patch weights across all positions and it is 100 weights
+per filter. That is the whole argument, twice.
+
+---
 ## Stride
 
 ![2x2 kernel, stride 1, no padding](assets/cv/conv_kern1.png)
@@ -174,21 +198,6 @@ a bug.
 
 ---
 
-## Dilation
-
-Dilation spaces the kernel taps apart: a 3×3 kernel with `dilation=2` samples a
-5×5 region using the same nine weights. The effective kernel size is
-$D(K-1) + 1$.
-
-```python
-nn.Conv2d(64, 64, kernel_size=3, padding=2, dilation=2)
-```
-
-It buys receptive field without extra parameters and without downsampling, which
-matters for dense prediction. Session 6 uses it for segmentation.
-
----
-
 ## Channels
 
 A convolution kernel is not 2D. Its weight tensor has shape
@@ -209,6 +218,39 @@ architectures.
 
 ---
 
+## Complete conv - exemple 1
+
+
+![conv_c1.gif](assets/cv/conv_c1.gif)
+
+Parameter	Value
+Kernel Size	3 × 3
+Input Size	7 × 7
+Channels (in/out)	1/4
+Stride	1
+Padding	0
+Output Size	5 × 5 (⌊(7 - 3 + 0)/1⌋ + 1 = 5)
+Parameters	(9 weights × 4 filters) + 4 biases = 40 parameters
+nn.Conv2d(in_channels=1, out_channels=4, kernel_size=3, stride=1, padding=0)
+
+---
+
+## Complete conv - exemple 2
+
+![conv_c2.gif](assets/cv/conv_c2.gif)
+Kernel Size	3 × 3
+Input Size	7 × 7
+Channels (in/out)	3/4
+Stride	1
+Padding	0
+Output Size	5 × 5 (⌊(7 - 3 + 0)/1⌋ + 1 = 5)
+Parameters	(9 weights × 3 channels × 4 filters) + 4 biases = 112 parameters
+nn.Conv2d(in_channels=3, out_channels=4, kernel_size=3, stride=1, padding=0)
+
+---
+
+
+
 ## Counting parameters
 
 $$
@@ -227,25 +269,6 @@ The convolution is independent of the input resolution. The dense layer is
 proportional to it — which is why the same 224-pixel model applied to a 1024
 pixel image would need a hundred times more weights in that one layer.
 
----
-
-## Receptive field
-
-$$
-r_l = r_{l-1} + (K_l - 1) \prod_{i<l} S_i
-$$
-
-Stacking 3×3 convolutions at stride 1, the receptive field grows 3, 5, 7, 9 —
-two pixels per layer. Insert a stride-2 layer and everything after it grows
-twice as fast.
-
-Two stacked 3×3 layers see a 5×5 region with 18 weights per channel pair; one
-5×5 layer sees the same region with 25 and has one fewer nonlinearity. That is
-the entire content of VGG, and the reason nobody uses 7×7 kernels except in the
-first layer.
-
-If the receptive field of your last conv layer is smaller than the object you
-are classifying, the network physically cannot see it. Compute it.
 
 ---
 
@@ -260,35 +283,3 @@ print(conv.weight.shape)      # torch.Size([64, 3, 3, 3])
 
 `bias=False` whenever the next layer is a `BatchNorm2d` — the norm subtracts a
 learned mean, so the convolution's bias is redundant.
-
-> A model that trains but does not learn is, nine times out of ten, a shape or a
-> normalization problem — not a hyperparameter problem.
-
-Print `x.shape` after every block the first time you build a network, then
-replace the prints with one assertion on the output shape that stays in the test
-suite forever.
-
----
-
-## Check yourself
-
-1. A `Conv2d(3, 16, kernel_size=5, stride=2, padding=2)` reads a 64×64 input.
-   What is the output size, and how many parameters does the layer hold?
-
-   **Answer.** `(64 + 2*2 - 5) // 2 + 1 = 32`, so the output is
-   `(B, 16, 32, 32)`; and `16 * (3 * 5**2 + 1) = 1216` parameters.
-
-2. Run this. You should get exactly the output shown.
-
-   ```python
-   import torch, torch.nn as nn
-   conv = nn.Conv2d(3, 16, kernel_size=5, stride=2, padding=2)
-   print(conv(torch.randn(1, 3, 64, 64)).shape)      # -> torch.Size([1, 16, 32, 32])
-   print(sum(p.numel() for p in conv.parameters()))  # -> 1216
-   ```
-
-3. Two stacked 3×3 convolutions and one 5×5 convolution see the same 5×5 region.
-   Why does every architecture since VGG use the stack?
-
-   **Answer.** 18 weights per channel pair instead of 25, and one extra
-   nonlinearity between them. Strictly better on both axes.
