@@ -67,6 +67,7 @@
       "s4-advanced-neural-networks/performance-and-profiling": 83,
       "s4-advanced-neural-networks/skip-connections": 217,
       "s5-computer-vision-1/convolution": 86,
+      "s5-computer-vision-1/data-augmentation": 221,
       "s5-computer-vision-1/images-as-tensors": 85,
       "s5-computer-vision-1/lab-5": 90,
       "s5-computer-vision-1/pooling-and-architectures": 87,
@@ -577,6 +578,13 @@
           "is_published": true,
           "title": "Convolution"
         },
+        "s5-computer-vision-1/data-augmentation": {
+          "body": "ffc3988a3131a59b26d6d5ab0dd79bad6e545dc5fd41794f87e8e14e3a94ef13",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Data Augmentation"
+        },
         "s5-computer-vision-1/images-as-tensors": {
           "body": "0572070f603370fcadab53891c0deba0f623383c41d7eb7d54f4cd08d24fb209",
           "estimated_minutes": 25,
@@ -599,8 +607,8 @@
           "title": "Pooling and CNN Architectures"
         },
         "s5-computer-vision-1/training-cnns": {
-          "body": "fc44e57845c0f56843b3bb7053992b0cc0afe446f8f07a251eba55ee021ad62d",
-          "estimated_minutes": 30,
+          "body": "f8e71e549f8d1b54dd2d456a5a93a7ab517c525be5cc53561043254f3c0bd524",
+          "estimated_minutes": 20,
           "gated": false,
           "is_published": true,
           "title": "Training CNNs"
@@ -930,6 +938,7 @@
             "images-as-tensors",
             "convolution",
             "pooling-and-architectures",
+            "data-augmentation",
             "training-cnns",
             "transfer-learning",
             "lab-5"

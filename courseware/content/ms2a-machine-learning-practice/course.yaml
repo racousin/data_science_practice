@@ -361,10 +361,15 @@ modules:
         file: s5-computer-vision-1/pooling-and-architectures.md
         estimated_minutes: 30
         is_published: true
+      - title: "Data Augmentation"
+        slug: data-augmentation
+        file: s5-computer-vision-1/data-augmentation.md
+        estimated_minutes: 30
+        is_published: true
       - title: "Training CNNs"
         slug: training-cnns
         file: s5-computer-vision-1/training-cnns.md
-        estimated_minutes: 30
+        estimated_minutes: 20
         is_published: true
       - title: "Transfer Learning"
         slug: transfer-learning
