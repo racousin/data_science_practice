@@ -23,17 +23,16 @@ them.
 Augmentation supplies them. Choose a family $\mathcal{T}$ of transformations
 that preserve the label, and train on the expected loss over it:
 
-$$
-\min_\theta \; \mathbb{E}_{(x,y)} \; \mathbb{E}_{t \sim \mathcal{T}}
-\big[\, \ell\big(f_\theta(t(x)),\, y\big) \big]
-$$
-
 In practice each epoch draws a fresh $t$ for every image, so the network never
 sees exactly the same picture twice.
 
 Every augmentation is a claim: *this transformation does not change the label.*
 That claim is domain knowledge, and it is the cheapest domain knowledge you will
 ever inject into a model.
+
+
+![data-augmentation-image-augment.webp](assets/cv/data-augmentation-image-augment.webp)
+
 
 ---
 
@@ -145,43 +144,3 @@ different bulb, 0.5 is a different object.
 > label noise you paid compute to generate.
 
 Look at fifty augmented images from your own pipeline before you train on them.
-
----
-
-## Train and eval transforms
-
-```python
-train_tf = T.Compose([T.RandomResizedCrop(224, scale=(0.7, 1.0)),
-                      T.RandomHorizontalFlip(), T.ToTensor(), normalize])
-eval_tf  = T.Compose([T.Resize(256), T.CenterCrop(224),
-                      T.ToTensor(), normalize])
-```
-
-Augmentation is a **training-time** operation. Evaluation must be deterministic:
-the same image must give the same prediction on every run. Two dataset objects,
-two transforms, and nothing `Random` in the eval one. Reusing `train_tf` for
-validation does not crash; it makes validation noisy and pessimistic from the
-first epoch.
-
----
-
-## mixup and cutmix
-
-$$
-\tilde{x} = \lambda x_a + (1 - \lambda) x_b, \qquad
-\tilde{y} = \lambda y_a + (1 - \lambda) y_b, \qquad \lambda \sim \mathrm{Beta}(\alpha, \alpha)
-$$
-
-**mixup** blends two images and their labels with the same $\lambda$.
-**cutmix** pastes a rectangle of one image into another and sets $\lambda$ to
-the pixel fraction.
-
-```python
-lam = np.random.beta(0.2, 0.2)
-idx = torch.randperm(x.size(0))
-out = model(lam * x + (1 - lam) * x[idx])
-loss = lam * criterion(out, y) + (1 - lam) * criterion(out, y[idx])
-```
-
-Both reduce overconfidence and need long schedules to pay off; on a 20-epoch
-fine-tune they usually make things worse. Reach for them after the basics.

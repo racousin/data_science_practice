@@ -71,7 +71,6 @@
       "s5-computer-vision-1/images-as-tensors": 85,
       "s5-computer-vision-1/lab-5": 90,
       "s5-computer-vision-1/pooling-and-architectures": 87,
-      "s5-computer-vision-1/training-cnns": 88,
       "s5-computer-vision-1/transfer-learning": 89,
       "s6-computer-vision-2/autoencoders-and-vaes": 93,
       "s6-computer-vision-2/diffusion-models": 95,
@@ -579,7 +578,7 @@
           "title": "Convolution"
         },
         "s5-computer-vision-1/data-augmentation": {
-          "body": "ffc3988a3131a59b26d6d5ab0dd79bad6e545dc5fd41794f87e8e14e3a94ef13",
+          "body": "c3c26f6aca2059b498cd33ae924a4199387dc526292a41f810236b675a86d747",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
@@ -605,13 +604,6 @@
           "gated": false,
           "is_published": true,
           "title": "Pooling and CNN Architectures"
-        },
-        "s5-computer-vision-1/training-cnns": {
-          "body": "f8e71e549f8d1b54dd2d456a5a93a7ab517c525be5cc53561043254f3c0bd524",
-          "estimated_minutes": 20,
-          "gated": false,
-          "is_published": true,
-          "title": "Training CNNs"
         },
         "s5-computer-vision-1/transfer-learning": {
           "body": "0429d82f27982f373a4c9465435bdeb61f342087035c87a4660ba230c2d41323",
@@ -939,7 +931,6 @@
             "convolution",
             "pooling-and-architectures",
             "data-augmentation",
-            "training-cnns",
             "transfer-learning",
             "lab-5"
           ],
