@@ -2,7 +2,7 @@
 
 Attention removes the bottleneck by refusing to compress. Instead of one
 context vector, the model keeps every position and learns, for each output
-step, which inputs to read. It is the single mechanism the rest of modern NLP
+step, which inputs to read. It is the single mechanism the rest of modern NN
 is built from.
 
 <!-- notes: 40 minutes, the core of the session. Draw the QK^T matrix on the
@@ -26,23 +26,6 @@ Bahdanau et al. (2015) introduced this as an add-on to an RNN. Vaswani et al.
 
 ---
 
-## A soft dictionary lookup
-
-A Python dict is a hard lookup: one key matches exactly, you get one value.
-
-```python
-d = {"paris": v1, "rome": v2}
-d["paris"]        # exact match, all-or-nothing
-```
-
-Attention is the same operation made differentiable: compare the query against
-*every* key, turn the comparisons into weights that sum to 1, and return the
-weighted average of *all* values.
-
-A hard lookup has no gradient with respect to the key. A soft one does, which
-is why it can be learned.
-
----
 
 ## Queries, keys and values
 
@@ -60,6 +43,40 @@ $n \times d$:
 Splitting "what makes a match" ($K$) from "what gets returned" ($V$) is the
 design decision. A single projection would force the matching signal and the
 content to live in the same coordinates.
+
+---
+
+## Shapes and parameters
+
+
+![image53.png](assets/nlp/image53.png)
+
+
+<!-- placeholder: image to add (toy layer, n=2, d=4, d_k=3). Walk through it on
+the board before the formula slide. -->
+
+Input $X \in \mathbb{R}^{n \times d}$, with $n$ the sequence length (number of
+tokens) and $d$ the embedding dimension.
+
+| Weight | Shape | Parameters | Role |
+|---|---|---|---|
+| $W_Q$ | $d \times d_k$ | $d\,d_k$ | query projection |
+| $W_K$ | $d \times d_k$ | $d\,d_k$ | key projection |
+| $W_V$ | $d \times d_v$ | $d\,d_v$ | value projection |
+
+| Result | Shape |
+|---|---|
+| $Q = X W_Q$ | $n \times d_k$ |
+| $K = X W_K$ | $n \times d_k$ |
+| $V = X W_V$ | $n \times d_v$ |
+
+$Q$ and $K$ must share $d_k$ because they are compared by dot product; $V$ is
+free to have its own $d_v$. A single-head layer typically uses
+$d_k = d_v = d$; multi-head uses $d_k = d_v = d/h$.
+
+In the figure, $n = 2$, $d = 4$, $d_k = 3$: each $W$ holds 12 parameters and
+$Q, K, V$ are $2 \times 3$. No parameter count depends on $n$ — the same
+weights process a sequence of any length.
 
 ---
 
@@ -100,25 +117,129 @@ This is not a tuning constant. It is the fix for a saturation failure that
 scales with $d_k$, which is why the same $\sqrt{d_k}$ appears in every
 implementation.
 
+
+![image10.png](assets/nlp/image10.png)
+
+
 ---
 
-## In code
+
+## Reading an attention map
+
+
+![image44.png](assets/nlp/image44.png)
+
+---
+
+## Self-attention
+
+$Q$, $K$, $V$ all come from the same sequence $X \in \mathbb{R}^{n \times d}$.
+Every position mixes information from every other.
+
+$$
+S = Q K^T \in \mathbb{R}^{n \times n}, \qquad
+A = \mathrm{softmax}\left(\frac{S}{\sqrt{d_k}}\right) \in \mathbb{R}^{n \times n}, \qquad
+Z = A V \in \mathbb{R}^{n \times d_v}
+$$
+
+| Step | Shape | Meaning |
+|---|---|---|
+| $X$ | $n \times d$ | input tokens |
+| $Q, K$ | $n \times d_k$ | what each token seeks / offers |
+| $V$ | $n \times d_v$ | what each token carries |
+| $S_{ij} = q_i \cdot k_j$ | $n \times n$ | how much token $i$ wants to attend to token $j$ |
+| $A$ | $n \times n$ | same, normalised: each row sums to 1 |
+| $Z$ | $n \times d_v$ | one mixed vector per token |
+
+With $d_v = d$ the output has the input's shape. Each of the $n$ positions
+attends to all $n$ positions.
+
+---
+
+## Cross-attention
+
+![Cross-attention between two sequences](assets/nlp/cross_attention.png)
+
+Queries from sequence 1, keys and values from sequence 2:
+
+- $X_1 \in \mathbb{R}^{n_1 \times d}$ — the sequence asking (queries)
+- $X_2 \in \mathbb{R}^{n_2 \times d}$ — the sequence being read (keys, values)
+
+| Step | Definition | Shape |
+|---|---|---|
+| $Q$ | $X_1 W_Q$ | $n_1 \times d_k$ |
+| $K$ | $X_2 W_K$ | $n_2 \times d_k$ |
+| $V$ | $X_2 W_V$ | $n_2 \times d_v$ |
+| $S$ | $Q K^T$ | $n_1 \times n_2$ |
+| $A$ | $\mathrm{softmax}(S / \sqrt{d_k})$ | $n_1 \times n_2$ |
+| $Z$ | $A V$ | $n_1 \times d_v$ |
+
+The output length follows the queries: $n_2$ appears only inside $A$ and is
+summed out by $AV$. The two lengths are unrelated. If $X_2$ has its own width
+$d_2$, only $W_K, W_V$ change to $d_2 \times d_k$ and $d_2 \times d_v$.
+
+Cross-attention is exactly the seq2seq fix: the decoder queries the encoder's
+states at every step. It is also how a vision-language model lets text query
+image patches — Session 6's features on one side, tokens on the other.
+
+---
+
+## Multi-head attention
+
+![Heads run in parallel and are concatenated](assets/nlp/multihead.png)
+
+$$
+\mathrm{MultiHead}(X) = \mathrm{Concat}(\mathrm{head}_1, \dots, \mathrm{head}_h)\, W^O,
+\qquad
+\mathrm{head}_i = \mathrm{Attention}(X W_i^Q,\; X W_i^K,\; X W_i^V)
+$$
+
+- $W_i^Q, W_i^K, W_i^V \in \mathbb{R}^{d \times d/h}$ — projections for head $i$
+- $W^O \in \mathbb{R}^{d \times d}$ — output projection
+
+One head computes one weighted average per position, so it can express one
+relation. Eight heads express eight, and the layer's output is their
+concatenation. The heads are not assigned roles; they differentiate because
+their random initialisations diverge under the loss.
+
+---
+
+## Multi-head: dimensional flow
+
+| Step | Shape | $d = 512$, $h = 8$ |
+|---|---|---|
+| $X$ | $n \times d$ | $n \times 512$ |
+| $X W_i^Q,\ X W_i^K,\ X W_i^V$ | $n \times d/h$ | $n \times 64$ |
+| $S_i,\ A_i$ | $n \times n$ | $n \times n$ (one per head) |
+| $\mathrm{head}_i$ | $n \times d/h$ | $n \times 64$ |
+| $\mathrm{Concat}(\mathrm{head}_1, \dots, \mathrm{head}_h)$ | $n \times d$ | $n \times 512$ |
+| $\cdot\, W^O$ | $n \times d$ | $n \times 512$ |
+
+In practice the $h$ projections are one $d \times d$ matrix, reshaped:
 
 ```python
-import torch.nn.functional as F
-
-def attention(q, k, v, mask=None):
-    scores = q @ k.transpose(-2, -1) / q.size(-1) ** 0.5
-    if mask is not None:
-        scores = scores.masked_fill(mask == 0, float("-inf"))
-    return F.softmax(scores, dim=-1) @ v
+q = (x @ W_q).view(B, n, h, d // h).transpose(1, 2)   # (B, h, n, d/h)
 ```
 
-Four lines. In production call `F.scaled_dot_product_attention`, which fuses
-the same computation and never materialises the $n \times n$ matrix.
+Each head sees a 64-dimensional subspace. The heads split the width rather
+than adding to it — but each head gets its own $n \times n$ attention matrix.
 
-Mask **before** the softmax, with $-\infty$, not after with a multiply. Masking
-after leaves the masked mass redistributed and the rows no longer sum to 1.
+---
+
+## Multi-head: parameters
+
+| Weights | Count | $d = 512$, $h = 8$ |
+|---|---|---|
+| $W_i^Q, W_i^K, W_i^V$ over $h$ heads | $3 \cdot h \cdot d \cdot \frac{d}{h} = 3d^2$ | 786,432 |
+| $W^O$ | $d^2$ | 262,144 |
+| **Total** | $4d^2$ | **1,048,576** |
+
+Biases add $4d$ (2,048). The count depends on neither $h$ nor $n$: changing
+the number of heads reshapes the same parameters, and sequence length never
+enters.
+
+For scale: the feed-forward block that follows (hidden width $4d$) holds
+$8d^2$, so attention is about a third of a transformer layer's weights.
 
 ---
 
@@ -134,41 +255,6 @@ That last pattern is an **attention sink**, not a linguistic insight: when a
 head has nothing useful to attend to, it parks its probability mass on a
 constant position. Attention maps are evidence about the computation, not an
 explanation of the prediction. Say that out loud when you show one.
-
----
-
-## Multi-head attention
-
-![Heads run in parallel and are concatenated](assets/nlp/multihead.png)
-
-Run $h$ attention operations in parallel on $d/h$-dimensional projections,
-concatenate the outputs, and apply one more linear map $W^O$.
-
-For $d = 512$ and $h = 8$, each head works in 64 dimensions. Total parameters
-are unchanged — the heads split the width rather than adding to it.
-
-One head computes one weighted average per position, so it can express one
-relation. Eight heads express eight, and the layer's output is their
-concatenation. The heads are not assigned roles; they differentiate because
-their random initialisations diverge under the loss.
-
----
-
-## Self-attention and cross-attention
-
-![Cross-attention between two sequences](assets/nlp/cross_attention.png)
-
-**Self-attention:** $Q$, $K$, $V$ all come from the same sequence. Every
-position mixes information from every other. The attention matrix is
-$n \times n$.
-
-**Cross-attention:** $Q$ comes from sequence 1 (length $n_1$), $K$ and $V$ from
-sequence 2 (length $n_2$). The matrix is $n_1 \times n_2$ and the two lengths
-are unrelated.
-
-Cross-attention is exactly the seq2seq fix: the decoder queries the encoder's
-states at every step. It is also how a vision-language model lets text query
-image patches — Session 6's features on one side, tokens on the other.
 
 ---
 
@@ -197,15 +283,25 @@ you a training loss near zero and a useless model.
 
 ## The cost
 
+For sequence length $n$, width $d$, $h$ heads:
+
 | Step | Time | Memory |
 |---|---|---|
 | $Q, K, V$ projections | $O(n d^2)$ | $O(nd)$ |
-| Scores $Q K^T$ | $O(n^2 d)$ | $O(n^2)$ |
-| Weighted sum $AV$ | $O(n^2 d)$ | — |
+| Scores $Q K^T$ | $O(n^2 d)$ | $O(h\, n^2)$ |
+| Softmax | $O(h\, n^2)$ | $O(h\, n^2)$ |
+| Weighted sum $AV$ | $O(n^2 d)$ | $O(nd)$ |
+| Output projection $W^O$ | $O(n d^2)$ | $O(nd)$ |
+| **Total** | $O(n^2 d + n d^2)$ | $O(nd + h\, n^2)$ |
+
+Splitting into heads leaves time unchanged ($h \cdot n^2 \cdot d/h = n^2 d$)
+but stores $h$ attention matrices. Cross-attention costs $O(n_1 n_2 d)$.
 
 Quadratic in sequence length, in both time and memory. Doubling the context
-quadruples the attention cost. At $n = 512$ the $n^2$ term is minor next to
-$n d^2$; at $n = 32{,}000$ it dominates everything else.
+quadruples the attention cost. Counting constants, the two terms cross near
+$n \approx 2d$: at $n = d = 512$ they are comparable; at $n = 32{,}000$ the
+$n^2$ term is about 30× the projections. One fp16 attention matrix at that
+length is $32{,}000^2 \times 2$ bytes $\approx$ 2 GB — per head, per layer.
 
 This is why context windows were 512 tokens in 2018 and why extending them is
 an engineering programme — FlashAttention (never materialise $A$), sliding
@@ -214,74 +310,22 @@ mechanism above is unchanged in all of them.
 
 ---
 
-## What it bought
+## Parallelization
 
-- **Parallel over positions.** No recurrence, so a whole sequence trains in one
-  pass. This, not accuracy, is why transformers displaced RNNs.
-- **Constant path length.** Position 1 and position 500 are one hop apart, so
-  there is no product of Jacobians and no vanishing gradient over distance.
-- **Permutation invariance.** Attention treats its input as a *set*. Shuffle
-  the tokens and the output is shuffled identically.
+An RNN computes $h_t = f(h_{t-1}, x_t)$: step $t$ cannot start before step
+$t-1$ finishes. Attention has no such dependency — all $n$ outputs come from
+the same few matrix multiplications.
 
-That last one is a bug, not a feature. Fixing it is the first thing the next
-lesson does.
+| Layer | Time per layer | Sequential ops | Max path length |
+|---|---|---|---|
+| Self-attention | $O(n^2 d)$ | $O(1)$ | $O(1)$ |
+| Recurrent | $O(n d^2)$ | $O(n)$ | $O(n)$ |
 
----
+(Vaswani et al., 2017, Table 1.)
 
-## The rule
-
-> Mask with $-\infty$ before the softmax, and assert that every attention row
-> sums to 1.
-
-The failure mode is silent in both directions. A missing causal mask produces a
-suspiciously good validation loss; a missing padding mask produces a model
-whose output changes when you re-sort the batch. Neither raises. One assertion
-on the mask shape at the boundary catches both.
-
----
-
-## Check yourself
-
-1. Run this. You should get exactly the output shown.
-
-   ```python
-   import torch, torch.nn.functional as F
-   torch.manual_seed(0)
-   q = k = v = torch.randn(4, 8)
-   mask = torch.tril(torch.ones(4, 4))
-   scores = (q @ k.T / 8 ** 0.5).masked_fill(mask == 0, float("-inf"))
-   A = F.softmax(scores, dim=-1)
-   print(A.sum(-1))     # -> tensor([1.0000, 1.0000, 1.0000, 1.0000])
-   print(A[0])          # -> tensor([1., 0., 0., 0.])
-   print((A @ v).shape) # -> torch.Size([4, 8])
-   ```
-
-   **Answer.** Every row sums to 1, which is the assertion to keep in your code.
-   Row 0 is one-hot on position 0 because the causal mask leaves it nothing else
-   to attend to, and the output has the same shape as the input, which is what
-   lets these layers stack.
-
-2. Why is the $\sqrt{d_k}$ in the score a fix rather than a tuning constant?
-
-   **Answer.** For unit-variance $q$ and $k$ the dot product has variance $d_k$,
-   so at $d_k = 64$ scores routinely reach $\pm 25$. The softmax of such a vector
-   is one-hot and its Jacobian is approximately zero, so the gradient dies before
-   training starts. Dividing restores unit variance, and the problem it fixes
-   grows with $d_k$ — which is why the same term appears in every
-   implementation.
-
-3. You mask by multiplying the attention weights by 0 *after* the softmax. What
-   is now wrong, and what do you do instead?
-
-   **Answer.** The masked probability mass is not redistributed, so the rows no
-   longer sum to 1 and the remaining weights are all too small. Mask *before* the
-   softmax by setting the masked scores to $-\infty$.
-
-4. You have a padding mask and a causal mask. Which one is a property of the
-   batch, and what does dropping each of them look like?
-
-   **Answer.** Padding is a property of the batch — different per row, derived
-   from `attention_mask`; causal is a property of the task and identical for
-   every example. Dropping the causal mask leaks the label and gives a
-   suspiciously low training loss; dropping the padding mask makes a sequence's
-   output depend on whatever else shared its batch. Neither raises.
+- **Training:** a whole sequence in one pass, as dense matmuls — the workload
+  GPUs are built for. More FLOPs than an RNN, far less wall-clock time.
+- **Inference:** autoregressive generation is still one token at a time. A
+  **KV cache** keeps $K$ and $V$ of past tokens, so each new token computes a
+  single query row: $O(nd)$ per step instead of recomputing $O(n^2 d)$, at a
+  memory cost of $2nd$ values per layer.

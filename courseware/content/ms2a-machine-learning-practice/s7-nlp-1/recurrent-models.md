@@ -12,9 +12,19 @@ bottleneck. -->
 
 ---
 
+## MLP Fails with Token Sequences
+
+- **Fixed input size**: can't handle variable-length sequences
+- **No positional/context awareness**: treats all inputs as independent features
+- **Parameter explosion**: long sequences → massive parameter counts
+
+![slide15_image23.png](assets/nlp/slide15_image23.png)
+
+---
+
 ## One vector carries the past
 
-![Recurrent units unrolled over time](assets/nlp/rnns.png)
+![rnn.png](assets/nlp/rnn.png)
 
 A recurrent layer reads one token at a time and keeps a **hidden state** $h_t$
 that summarises everything seen so far. The same weights apply at every step —
@@ -31,6 +41,16 @@ one is what killed it.
 $$
 h_t = \tanh(W_{xh} x_t + W_{hh} h_{t-1} + b)
 $$
+
+At each time step $t$, the RNN:
+
+1. receives input $x_t$
+2. uses the previous hidden state $h_{t-1}$
+3. applies the same parameters to compute $h_t$
+4. produces output $y_t$
+
+This sequential dependency means information flows forward through time, any
+sequence length is accepted, and time steps **cannot** be processed in parallel.
 
 ```python
 rnn = nn.RNN(input_size=300, hidden_size=128, batch_first=True)
@@ -57,33 +77,23 @@ A product of $t-k$ matrices. If their typical scale is below 1 the gradient
 **vanishes** exponentially — the model cannot learn a dependency 100 steps
 back. Above 1 it **explodes** and the loss becomes `nan`.
 
-Exploding is the easy one: clip. Vanishing needs an architecture.
-
-```python
-torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
-```
-
 ---
 
-## LSTM: a path the gradient can survive
+## LSTM/GRU: a path the gradient can survive
 
-The LSTM adds a **cell state** that is updated additively rather than by a
-matrix multiply, so gradients can travel along it almost unchanged. Three
+![Recurrent units unrolled over time](assets/nlp/rnns.png)
+
+The LSTM adds a **cell state** $c_t$ that is updated additively rather than by
+a matrix multiply, so gradients can travel along it almost unchanged. Three
 learned gates, each a sigmoid producing values in $[0, 1]$, decide the traffic:
 
-| Gate | Question it answers |
-|---|---|
-| Forget | What in the cell state is no longer relevant? |
-| Input | What of the new step is worth writing? |
-| Output | What of the cell state is exposed as $h_t$? |
+- **forget** $f_t$ — how much of $c_{t-1}$ to keep
+- **input** $i_t$ — how much of the new candidate $\tilde c_t$ to write
+- **output** $o_t$ — how much of the cell to expose as $h_t$
 
-Four times the parameters of a plain RNN, and it learns dependencies a plain
-RNN cannot. The gates are learned, not scheduled — nothing tells the model what
-"relevant" means except the loss.
-
----
-
-## GRU, and how to choose
+$$
+c_t = f_t \odot c_{t-1} + i_t \odot \tilde c_t, \qquad h_t = o_t \odot \tanh(c_t)
+$$
 
 The GRU merges cell and hidden state and uses two gates — **reset** (how much
 past to ignore when proposing an update) and **update** (how much of the
@@ -95,113 +105,77 @@ proposal to accept).
 | GRU | 3× that | medium | good |
 | LSTM | 4× that | slower | best |
 
-For $d_x = 300$, $d_h = 128$: roughly 71k, 214k and 285k parameters. Default to
+For $d_x = 300$, $d_h = 128$: roughly 55k, 165k and 220k parameters. Default to
 GRU when you must use a recurrent model at all; the accuracy difference against
 LSTM is usually inside the noise, and it trains faster.
 
 ---
 
-## Bidirectional
+## Performance
 
-![Forward and backward passes concatenated](assets/nlp/birnn.png)
-
-```python
-bi = nn.LSTM(300, 128, bidirectional=True, batch_first=True)
-out, _ = bi(torch.randn(32, 20, 300))
-out.shape        # (32, 20, 256) — the two directions concatenated
-```
-
-Two independent passes, left-to-right and right-to-left, concatenated per
-position. Right context disambiguates: "the **bank** of the river" is only
-resolvable after the fifth word.
-
-Only legal when the whole sequence is available. Never for autoregressive
-generation, and never for streaming — you would be reading the future.
+![rnns-diff.png](assets/nlp/rnns-diff.png)
 
 ---
 
-## Sequence to sequence
+## Sequence to sequence: the length problem
+
+An RNN emits one state per input token, so its output length is tied to the
+input length $T$:
+
+| Task | Input | Output | What we take |
+|---|---|---|---|
+| Classification | $T$ tokens | 1 label | $h_T$ |
+| Tagging | $T$ tokens | $T$ labels | $h_1, \dots, h_T$ |
+| Translation | $T$ tokens | $T'$ tokens, $T' \neq T$ | ? |
+
+"Je suis étudiant" (3 tokens) → "I am a student" (4 tokens). $T'$ is unknown in
+advance, and output token $j$ is not aligned with input token $j$.
+
+We need a model of
+$$
+p(y_1, \dots, y_{T'} \mid x_1, \dots, x_T)
+$$
+where $T'$ is decided by the model itself.
+
+---
+
+## Encoder–decoder
 
 ![Encoder, context vector, decoder](assets/nlp/seq2seq.png)
 
-Translation, summarisation and question answering all have output length
-independent of input length. The encoder-decoder split handles that: an encoder
-consumes the source and produces a **context vector**; a decoder is initialised
-from it and emits tokens one at a time until it emits end-of-sequence.
+**Encoder** — read the whole source, keep the last state as the **context vector**:
+$$
+h_t = f_{\text{enc}}(x_t, h_{t-1}), \qquad c = h_T \in \mathbb{R}^{d_h}
+$$
 
-Trained with teacher forcing — the decoder receives the true previous token,
-not its own prediction. At inference it receives its own, which is why
-generation drifts.
+**Decoder** — a second RNN initialised from $c$, fed its own previous token:
+$$
+s_0 = c, \qquad s_j = f_{\text{dec}}(y_{j-1}, s_{j-1}), \qquad
+p(y_j \mid y_{<j}, x) = \mathrm{softmax}(W_o s_j + b_o)
+$$
 
----
+The output factorises token by token:
+$$
+p(y \mid x) = \prod_{j=1}^{T'} p(y_j \mid y_{<j}, c)
+$$
 
-## The bottleneck
-
-Everything the decoder will ever know about the source has to fit in that one
-fixed-size context vector. A 5-token sentence and a 200-token paragraph get the
-same 512 numbers.
-
-The measured symptom, from the 2014–2015 translation literature: BLEU is flat
-for short sentences and degrades steadily past roughly 30 source tokens.
-Doubling the hidden size moves the cliff; it does not remove it.
-
-> Compressing a variable-length input into a fixed-length vector destroys
-> information proportional to the input length.
-
-The fix is not a bigger vector. It is to stop compressing: let the decoder look
-back at *all* encoder states and choose which ones matter at each step. That is
-attention, and it is the next lesson.
+Decoding starts from `<s>` and stops when the model emits `</s>`. That is how
+$T'$ becomes independent of $T$: **the length is a prediction**.
 
 ---
 
-## What survives
+## Training vs inference
 
-Recurrence is not gone — it is niche. Reach for a GRU when the sequence is long
-and cheap per step (sensor streams, some time series from Session 3), when you
-need constant memory per step, or when you must run on a device where an
-$O(n^2)$ attention matrix does not fit.
+**Training** — cross-entropy on the reference $y^*$, with **teacher forcing**
+(the decoder receives the true previous token, not its own prediction):
+$$
+\mathcal{L} = -\sum_{j=1}^{T'} \log p(y^*_j \mid y^*_{<j}, c)
+$$
 
-For text, do not start here. A fine-tuned small transformer beats a
-from-scratch LSTM on almost any classification task you will meet, with less
-code and less tuning.
+**Inference** — no reference exists, so the decoder receives its own output:
+$$
+\hat y_j = \arg\max_{y}\, p(y \mid \hat y_{<j}, c) \quad \text{(greedy; beam search keeps the top } k\text{)}
+$$
 
----
-
-## Check yourself
-
-1. Run this. You should get exactly the output shown.
-
-   ```python
-   import torch
-   from torch import nn
-   rnn = nn.RNN(input_size=300, hidden_size=128, batch_first=True)
-   out, h_n = rnn(torch.randn(32, 20, 300))
-   print(out.shape, h_n.shape)
-   # -> torch.Size([32, 20, 128]) torch.Size([1, 32, 128])
-   bi = nn.LSTM(300, 128, bidirectional=True, batch_first=True)
-   print(bi(torch.randn(32, 20, 300))[0].shape)
-   # -> torch.Size([32, 20, 256])
-   ```
-
-   **Answer.** `out` is the state at every position — take it for tagging. `h_n`
-   is the last state only — take it for classification. The bidirectional layer
-   returns 256 because the two directions are concatenated per position.
-
-2. Your LSTM's loss becomes `nan` after a few hundred steps on long sequences.
-   Which of the two backpropagation-through-time failures is that, which is the
-   other one, and does the same fix work for both?
-
-   **Answer.** Exploding gradients — the product of Jacobians has typical scale
-   above 1. One line fixes it:
-   `torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)`. The other
-   failure is vanishing gradients, and clipping does nothing for it: that one
-   needs an architecture, which is what the LSTM cell state is.
-
-3. A seq2seq translation model is flat on short sentences and degrades steadily
-   past roughly 30 source tokens. Why does doubling the hidden size not fix it?
-
-   **Answer.** Everything the decoder will ever know about the source is
-   compressed into one fixed-size context vector, so the information destroyed
-   grows with input length. A bigger vector moves the cliff; it does not remove
-   it. The fix is to stop compressing — let the decoder look back at all encoder
-   states, which is attention.
+The mismatch between the two (*exposure bias*) is why generation drifts: one
+early mistake is fed back and compounds.

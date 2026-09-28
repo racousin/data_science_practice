@@ -387,7 +387,7 @@ modules:
         file: s7-nlp-1/text-as-data-and-tokenization.md
         estimated_minutes: 35
         is_published: true
-      - title: "Embeddings"
+      - title: "Embeddings and MLP objective"
         slug: embeddings
         file: s7-nlp-1/embeddings.md
         estimated_minutes: 35
