@@ -48,6 +48,10 @@ task-independent.
 They are the two ends of one axis, and the standard recipe is to do both: train
 the head with the backbone frozen, then unfreeze and continue at a lower rate.
 
+
+
+![14JZZ6Bh_pJRrYSaArGT1UQ.png](assets/cv/14JZZ6Bh_pJRrYSaArGT1UQ.png)
+
 ---
 
 ## Feature extraction
@@ -113,29 +117,6 @@ learned from nothing.
 
 Two groups — backbone and head, a factor of 10 apart — captures most of the
 benefit. Four is a refinement, not a requirement.
-
----
-
-## Freezing does not freeze BatchNorm
-
-```python
-def freeze_bn(module):
-    for m in module.modules():
-        if isinstance(m, nn.BatchNorm2d):
-            m.eval()                      # stop updating running_mean/var
-```
-
-`requires_grad = False` stops the *gradients*. BatchNorm's `running_mean` and
-`running_var` are buffers, not parameters — they are updated in the forward pass
-whenever the module is in training mode, frozen or not.
-
-So a "frozen" backbone in `model.train()` is quietly drifting its normalization
-statistics towards your small dataset, and the frozen weights no longer match
-them. Symptom: validation accuracy that is much worse than training accuracy
-from the very first epoch, with no other sign of overfitting.
-
-Call `freeze_bn(model)` after every `model.train()` while the backbone is
-frozen.
 
 ---
 
@@ -227,3 +208,77 @@ than a generic one.
 
 `timm.list_models(pretrained=True)` lists what is available;
 `model.forward_features(x)` returns the backbone output instead of logits.
+
+
+---
+
+## Question: How many parameters to train?
+
+Task: classify **10 plant diseases** from leaf photographs, **1,500 labelled
+images** (150 per class). Backbone: `resnet50(weights=IMAGENET1K_V2)`.
+
+Given:
+
+- ResNet-50 has **25,557,032** parameters in total.
+- The original head is `Linear(2048, 1000)`.
+- `layer4` contains **14,964,736** parameters.
+
+1. How many parameters belong to the original head? To the backbone?
+2. How many parameters are trained in **feature extraction** with a new
+   10-class head?
+3. How many in **partial fine-tuning** (`layer4` + head)? In **full
+   fine-tuning**?
+4. Which regime would you choose for this dataset, and why?
+
+<!-- notes: 10 minutes. Let them compute 1 and 2 by hand; 3 is subtraction.
+For 4, point back to the "How much data" table. -->
+
+---
+
+## Answer
+
+**1. Head vs backbone**
+
+- Original head: 2048 · 1000 + 1000 = **2,049,000**
+- Backbone: 25,557,032 − 2,049,000 = **23,508,032**
+
+**2–3. Trainable parameters per regime**
+
+| Regime | Computation | Trainable | Share of model |
+|---|---|---|---|
+| Feature extraction | 2048 · 10 + 10 | **20,490** | 0.09% |
+| `layer4` + head | 14,964,736 + 20,490 | **14,985,226** | 64% |
+| Full fine-tune | 23,508,032 + 20,490 | **23,528,522** | 100% |
+
+`layer4` alone holds nearly two thirds of the backbone: unfreezing "just the
+last block" is not a small step.
+
+**4. Choice**
+
+150 images per class falls in the 50–200 range: **freeze the backbone, train
+the head.**
+
+| Regime | Parameters per training image |
+|---|---|
+| Feature extraction | 20,490 / 1,500 ≈ **14** |
+| Full fine-tune | 23.5M / 1,500 ≈ **15,700** |
+
+With ~14 parameters per image the head cannot memorize much; with ~15,700 the
+full model can memorize the training set in a few epochs. If validation
+plateaus, try `layer4` + head at `lr=1e-4`, and keep it only if it beats the
+frozen baseline.
+
+**Check in code**
+
+```python
+model = resnet50(weights=ResNet50_Weights.IMAGENET1K_V2)
+for p in model.parameters():
+    p.requires_grad = False
+model.fc = nn.Linear(2048, 10)
+
+sum(p.numel() for p in model.parameters() if p.requires_grad)   # 20490
+```
+
+Frozen `requires_grad` does not freeze BatchNorm: in `model.train()` its
+running statistics still update. Keep the backbone in `eval()` mode during
+feature extraction.

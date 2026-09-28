@@ -8,20 +8,42 @@ appears.
 the board by hand before showing any PyTorch. Budget 10 minutes for the
 output-size formula and make them compute two cases out loud. -->
 
-## An MLP is the wrong model for an image
+---
 
-
+## Question: Is an MLP a good model for images?
 
 ![cnn.png](assets/cv/cnn.png)
 
+Consider a color image of size 1000×1000 fed to a fully connected network.
 
-question: what the number of parameters needed by neurons in the first layer of an MLP
-for a color image of size 1000×1000 ?
+1. How many parameters does **a single neuron** of the first layer need?
+2. Estimate the total number of parameters of a **small** MLP on this input:
+   one hidden layer of 1000 neurons, then 10 output classes.
+3. Beyond the count, what does an MLP ignore about the structure of an image?
 
-Estimate the number of parameter of a small mlp for this input.
+<!-- notes: let them compute before revealing. Ask for orders of magnitude,
+not exact numbers. -->
 
+---
 
+## Answer
 
+**1. One neuron of the first layer**
+
+- Input size: 1000 × 1000 × 3 channels = **3 × 10⁶ values**
+- Each neuron is connected to every input: 3 × 10⁶ weights + 1 bias
+- → **≈ 3 million parameters per neuron**
+
+**2. A small MLP (3M → 1000 → 10)**
+
+| Layer | Computation | Parameters |
+|---|---|---|
+| Input → hidden | 3 × 10⁶ × 1000 + 1000 | ≈ 3 × 10⁹ |
+| Hidden → output | 1000 × 10 + 10 | ≈ 10⁴ |
+| **Total** | | **≈ 3 billion** |
+
+In float32 (4 bytes), that is **≈ 12 GB just for the weights**, before
+gradients and optimizer state. Almost all of it sits in the first layer.
 
 ---
 
@@ -43,6 +65,18 @@ with it.
 
 ---
 
+
+
+## Convolution is all you need
+
+![Fully connected versus locally connected](assets/cv/mlpvscnn.png)
+
+Share the same 10×10 patch weights across all positions and it is 100 weights
+per filter.
+
+
+---
+
 ## The operation
 
 ![Sliding a 2x2 kernel over a 3x3 input](assets/cv/conv-worked-example.png)
@@ -54,27 +88,46 @@ specially, and the same weights are used at every position.
 
 ---
 
-## The worked example
+## Question: Compute the convolution
 
-Input, and a 2×2 kernel:
+Input image and 2×2 kernel:
 
 ```text
-4 7 1        1 -1
-2 6 9   *    0  2
+Input            Kernel
+4 7 1            1 -1
+2 6 9            0  2
 8 5 3
 ```
 
-Top-left position: `4·1 + 7·(-1) + 2·0 + 6·2 = 9`. Slide one column right:
-`7·1 + 1·(-1) + 6·0 + 9·2 = 24`. Second row: `2 - 6 + 0 + 10 = 6`, then
-`6 - 9 + 0 + 6 = 3`.
+1. Compute the output of this kernel on this image.
+2. What is the size of the output?
+
+<!-- notes: do it by hand on the board. Let them compute the first position,
+then check together before they do the remaining three. -->
+
+---
+
+## Solution
+
+**1. Slide the kernel over each 2×2 patch**
+
+| Position | Patch | Computation | Result |
+|---|---|---|---|
+| Top-left | `4 7 / 2 6` | 4·1 + 7·(−1) + 2·0 + 6·2 | **9** |
+| Top-right | `7 1 / 6 9` | 7·1 + 1·(−1) + 6·0 + 9·2 | **24** |
+| Bottom-left | `2 6 / 8 5` | 2·1 + 6·(−1) + 8·0 + 5·2 | **6** |
+| Bottom-right | `6 9 / 5 3` | 6·1 + 9·(−1) + 5·0 + 3·2 | **3** |
+
+Output feature map:
 
 ```text
  9  24
  6   3
 ```
 
-A 3×3 input and a 2×2 kernel give a 2×2 output — the kernel needs to fit
-entirely inside, so the output shrinks.
+**2. Output size**
+
+A 3×3 input and a 2×2 kernel give a **2×2 output**.
 
 ---
 
@@ -130,20 +183,6 @@ Layer 1 of a network trained on cats and layer 1 of a network trained on
 satellite tiles look nearly identical. That fact is the reason transfer learning
 works.
 
----
-
-
-
-## An MLP is the wrong model for an image
-
-![Fully connected versus locally connected](assets/cv/mlpvscnn.png)
-
-A 1000×1000 image into one million fully connected hidden units is $10^{12}$
-weights. Restrict each unit to a 10×10 patch and it is $10^{8}$ — four orders of
-magnitude, before any weight sharing.
-
-Share the same 10×10 patch weights across all positions and it is 100 weights
-per filter. That is the whole argument, twice.
 
 ---
 ## Stride
@@ -175,28 +214,6 @@ which is why it is the default convolution of the last decade.
 
 ---
 
-## The output-size formula
-
-$$
-O = \left\lfloor \frac{N + 2P - D(K-1) - 1}{S} \right\rfloor + 1
-$$
-
-$N$ input size, $K$ kernel size, $P$ padding, $S$ stride, $D$ dilation. With
-$D = 1$ this is the familiar $(N - K + 2P)/S + 1$.
-
-| $N$ | $K$ | $S$ | $P$ | $O$ |
-|---|---|---|---|---|
-| 6 | 2 | 1 | 0 | 5 |
-| 6 | 2 | 2 | 0 | 3 |
-| 6 | 2 | 2 | 1 | 4 |
-| 32 | 3 | 1 | 1 | 32 |
-| 224 | 7 | 2 | 3 | 112 |
-
-Compute this on paper before you write the model. A shape mismatch at the first
-linear layer is the most common error in this session, and it is arithmetic, not
-a bug.
-
----
 
 ## Channels
 
@@ -218,68 +235,182 @@ architectures.
 
 ---
 
-## Complete conv - exemple 1
-
+## Complete conv — example 1
 
 ![conv_c1.gif](assets/cv/conv_c1.gif)
 
-Parameter	Value
-Kernel Size	3 × 3
-Input Size	7 × 7
-Channels (in/out)	1/4
-Stride	1
-Padding	0
-Output Size	5 × 5 (⌊(7 - 3 + 0)/1⌋ + 1 = 5)
-Parameters	(9 weights × 4 filters) + 4 biases = 40 parameters
+```python
 nn.Conv2d(in_channels=1, out_channels=4, kernel_size=3, stride=1, padding=0)
+```
+
+| Parameter | Value |
+|---|---|
+| Kernel size | 3 × 3 |
+| Input size | 7 × 7 |
+| Channels (in / out) | 1 / 4 |
+| Stride | 1 |
+| Padding | 0 |
+| Output size | ⌊(7 − 3 + 0) / 1⌋ + 1 = **5 × 5** |
+| Parameters | 4 · (1 · 9 + 1) = **40** |
 
 ---
 
-## Complete conv - exemple 2
+## Complete conv — example 2
 
 ![conv_c2.gif](assets/cv/conv_c2.gif)
-Kernel Size	3 × 3
-Input Size	7 × 7
-Channels (in/out)	3/4
-Stride	1
-Padding	0
-Output Size	5 × 5 (⌊(7 - 3 + 0)/1⌋ + 1 = 5)
-Parameters	(9 weights × 3 channels × 4 filters) + 4 biases = 112 parameters
+
+```python
 nn.Conv2d(in_channels=3, out_channels=4, kernel_size=3, stride=1, padding=0)
+```
+
+| Parameter | Value |
+|---|---|
+| Kernel size | 3 × 3 |
+| Input size | 7 × 7 |
+| Channels (in / out) | 3 / 4 |
+| Stride | 1 |
+| Padding | 0 |
+| Output size | ⌊(7 − 3 + 0) / 1⌋ + 1 = **5 × 5** |
+| Parameters | 4 · (3 · 9 + 1) = **112** |
 
 ---
 
+## Question: Output size and number of parameters
 
+For each convolutional layer below (square inputs and kernels, $D = 1$, with
+bias), compute:
+
+1. the output size $O$
+2. the number of learnable parameters
+
+$C_{in}$ is the number of input channels, $C_{out}$ the number of filters.
+
+| $N$ | $K$ | $S$ | $P$ | $C_{in}$ | $C_{out}$ | $O$ | Parameters |
+|---|---|---|---|---|---|---|---|
+| 6 | 2 | 1 | 0 | 1 | 1 | ? | ? |
+| 6 | 2 | 2 | 0 | 3 | 8 | ? | ? |
+| 6 | 2 | 2 | 1 | 8 | 16 | ? | ? |
+| 32 | 3 | 1 | 1 | 3 | 64 | ? | ? |
+| 224 | 7 | 2 | 3 | 3 | 64 | ? | ? |
+
+3. Does the number of parameters depend on $N$? Compare with the MLP from
+   the first question.
+
+<!-- notes: 10 minutes. Make them compute two cases out loud (rows 2 and 5).
+Hint if stuck: one filter covers all input channels, and each filter has
+its own bias. -->
+
+---
+
+## The output-size formula
+
+$$
+O = \left\lfloor \frac{N + 2P - D(K-1) - 1}{S} \right\rfloor + 1
+$$
+
+$N$ input size, $K$ kernel size, $P$ padding, $S$ stride, $D$ dilation. With
+$D = 1$ this is the familiar $(N - K + 2P)/S + 1$.
+
+---
+
+## Solution
+
+**Parameter formula**
+
+Each filter has $K \times K \times C_{in}$ weights plus one bias, and there
+are $C_{out}$ filters:
+
+$$
+\text{params} = C_{out} \cdot (K^2 \cdot C_{in} + 1)
+$$
+
+**Results**
+
+| $N$ | $K$ | $S$ | $P$ | $C_{in}$ | $C_{out}$ | $O$ | Parameters |
+|---|---|---|---|---|---|---|---|
+| 6 | 2 | 1 | 0 | 1 | 1 | $(6-2)/1+1 = $ **5** | $1 \cdot (4 \cdot 1 + 1) = $ **5** |
+| 6 | 2 | 2 | 0 | 3 | 8 | $\lfloor 4/2 \rfloor+1 = $ **3** | $8 \cdot (4 \cdot 3 + 1) = $ **104** |
+| 6 | 2 | 2 | 1 | 8 | 16 | $\lfloor 6/2 \rfloor+1 = $ **4** | $16 \cdot (4 \cdot 8 + 1) = $ **528** |
+| 32 | 3 | 1 | 1 | 3 | 64 | $(32-3+2)/1+1 = $ **32** | $64 \cdot (9 \cdot 3 + 1) = $ **1 792** |
+| 224 | 7 | 2 | 3 | 3 | 64 | $\lfloor 223/2 \rfloor+1 = $ **112** | $64 \cdot (49 \cdot 3 + 1) = $ **9 472** |
+
+Notes:
+
+- Row 4: $K = 3, P = 1, S = 1$ preserves the size ("same" padding).
+- Row 5 is the first layer of ResNet: a 224×224 image becomes 112×112×64.
+  ResNet actually drops the bias here (followed by BatchNorm): 9 408 parameters.
+- The floor matters: in row 5, $223/2 = 111.5 \to 111$.
+
+
+---
+
+## CNN input in PyTorch
+
+A batch of images is a 4D tensor of shape **`(N, C, H, W)`**:
+
+| Dim | Meaning | Example |
+|---|---|---|
+| `N` | batch size | 8 |
+| `C` | channels | 3 (RGB), 1 (grayscale) |
+| `H` | height | 224 |
+| `W` | width | 224 |
+
+```python
+x = torch.randn(8, 3, 224, 224)       # 8 RGB images of 224×224
+```
+
+
+---
+
+## `nn.Conv2d` in PyTorch
+
+```python
+conv = nn.Conv2d(in_channels=3, out_channels=64,
+                 kernel_size=3, stride=1, padding=1)
+
+x = torch.randn(8, 3, 224, 224)
+print(conv(x).shape)        # torch.Size([8, 64, 224, 224])
+print(conv.weight.shape)    # torch.Size([64, 3, 3, 3])
+print(conv.bias.shape)      # torch.Size([64])
+```
+
+- Input `(N, C_in, H, W)` → output `(N, C_out, H_out, W_out)`.
+- `H_out`, `W_out` follow the output-size formula; here `padding=1` with a
+  3×3 kernel keeps 224.
+- `N` is untouched: the same filters are applied to every image of the batch.
+- The weight tensor is `(C_out, C_in, K, K)`: one 3D filter per output
+  channel, spanning **all** input channels.
+
+---
 
 ## Counting parameters
+
+Read directly from the weight and bias shapes:
 
 $$
 P_{conv} = C_{out} \left( C_{in} K^2 + 1 \right)
 $$
 
-One bias per output channel, added at every spatial position.
+One bias per output channel, shared across all spatial positions.
 
 | Layer | Parameters |
 |---|---|
 | `Conv2d(3, 64, 3)` | 64 · (3 · 9 + 1) = **1,792** |
 | `Conv2d(64, 128, 3)` | 128 · (64 · 9 + 1) = **73,856** |
-| `Linear(150528, 1000)` on a flat 224×224×3 | **150,529,000** |
-
-The convolution is independent of the input resolution. The dense layer is
-proportional to it — which is why the same 224-pixel model applied to a 1024
-pixel image would need a hundred times more weights in that one layer.
-
+| `Linear(150528, 1000)` on a flat 224×224×3 | 150,528 · 1000 + 1000 = **150,529,000** |
 
 ---
 
-## In PyTorch
 
-```python
-conv = nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False)
-x = torch.randn(8, 3, 224, 224)
-print(conv(x).shape)          # torch.Size([8, 64, 224, 224])
-print(conv.weight.shape)      # torch.Size([64, 3, 3, 3])
-```
+## Conv1d, Conv2d, Conv3d
 
-`bias=False` whenever the next layer is a `BatchNorm2d` — the norm subtracts a
-learned mean, so the convolution's bias is redundant.
+Same operation, the kernel slides along 1, 2 or 3 spatial dimensions.
+`N` and `C` are always the first two dims.
+
+| Layer | Input shape | Weight shape | Typical data |
+|---|---|---|---|
+| `nn.Conv1d` | `(N, C, L)` | `(C_out, C_in, K)` | audio, time series, sequences |
+| `nn.Conv2d` | `(N, C, H, W)` | `(C_out, C_in, K, K)` | images |
+| `nn.Conv3d` | `(N, C, D, H, W)` | `(C_out, C_in, K, K, K)` | video, MRI / CT volumes |
+
+![maxresdefault.jpg](assets/cv/maxresdefault.jpg)

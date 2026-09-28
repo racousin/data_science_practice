@@ -144,3 +144,100 @@ different bulb, 0.5 is a different object.
 > label noise you paid compute to generate.
 
 Look at fifty augmented images from your own pipeline before you train on them.
+Two sections to append after "When an augmentation is wrong":
+
+---
+
+## Augmentation in a training pipeline
+
+Transforms are applied **on the fly** by the `Dataset`, each time an image is
+loaded. Nothing is stored on disk: every epoch draws new random parameters.
+
+```python
+import torch
+import torchvision.transforms.v2 as T
+from torchvision.datasets import ImageFolder
+from torch.utils.data import DataLoader
+
+MEAN, STD = [0.485, 0.456, 0.406], [0.229, 0.224, 0.225]
+
+train_tf = T.Compose([
+    T.RandomResizedCrop(224, scale=(0.7, 1.0)),   # geometric, random
+    T.RandomHorizontalFlip(p=0.5),
+    T.ColorJitter(0.2, 0.2, 0.2, 0.05),            # photometric, random
+    T.ToImage(),
+    T.ToDtype(torch.float32, scale=True),          # uint8 [0,255] → float [0,1]
+    T.Normalize(MEAN, STD),
+])
+
+eval_tf = T.Compose([
+    T.Resize(256),
+    T.CenterCrop(224),                             # deterministic
+    T.ToImage(),
+    T.ToDtype(torch.float32, scale=True),
+    T.Normalize(MEAN, STD),                        # same stats as train
+])
+
+train_ds = ImageFolder("data/train", transform=train_tf)
+val_ds   = ImageFolder("data/val",   transform=eval_tf)
+
+train_loader = DataLoader(train_ds, batch_size=64, shuffle=True,  num_workers=4)
+val_loader   = DataLoader(val_ds,   batch_size=64, shuffle=False, num_workers=4)
+```
+
+| | Train | Validation / test / prediction |
+|---|---|---|
+| Random transforms | yes | **no** |
+| Resize / crop to model size | random crop | fixed resize + center crop |
+| `ToDtype` + `Normalize` | yes | yes, **identical** |
+
+Augmentation belongs to training only. Evaluating on augmented images measures
+the model on a noisier distribution than the one it will face, and makes the
+score change from run to run.
+
+---
+
+## Train vs eval: the split pitfall
+
+`random_split` returns subsets of **one** dataset, which has **one** transform.
+Split this way and the validation images are augmented too.
+
+```python
+# Wrong: val_ds inherits train_tf
+full = ImageFolder("data/all", transform=train_tf)
+train_ds, val_ds = torch.utils.data.random_split(full, [0.8, 0.2])
+```
+
+Build two datasets on the same files, each with its own transform, and split
+the **indices**:
+
+```python
+from torch.utils.data import Subset
+
+train_full = ImageFolder("data/all", transform=train_tf)
+eval_full  = ImageFolder("data/all", transform=eval_tf)
+
+idx = torch.randperm(len(train_full), generator=torch.Generator().manual_seed(0))
+n_train = int(0.8 * len(idx))
+
+train_ds = Subset(train_full, idx[:n_train])
+val_ds   = Subset(eval_full,  idx[n_train:])
+```
+
+The training loop itself does not change: augmentation happens inside the
+`DataLoader`, before the batch reaches the model.
+
+```python
+for epoch in range(n_epochs):
+    model.train()
+    for x, y in train_loader:          # new random augmentations every epoch
+        loss = criterion(model(x), y)
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+    model.eval()
+    with torch.no_grad():
+        for x, y in val_loader:        # clean, deterministic images
+            ...
+```

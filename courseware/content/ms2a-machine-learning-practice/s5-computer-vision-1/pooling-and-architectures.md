@@ -62,8 +62,6 @@ $$
 \hat{y}_c = \frac{1}{HW} \sum_{i,j} G[c,i,j]
 $$
 
-This is what killed the giant fully connected head.
-
 ---
 
 ## What it replaced
@@ -194,13 +192,6 @@ def forward(self, x):
     return F.relu(out + self.shortcut(x))
 ```
 
-`self.shortcut` is `nn.Identity()` when the shapes match, and a 1×1 stride-2
-convolution when the block changes resolution or channel count — the addition
-requires identical shapes, and that projection is the only reason the block is
-ever more than two convolutions.
-
-Skip connections appear again in U-Net (Session 6) and in every transformer
-block (Session 7).
 
 ---
 
@@ -218,32 +209,117 @@ versus attention, it was training recipes.
 
 ---
 
-## Vision Transformer (2020), part 1
-
-Cut the image into 16×16 patches, flatten each to a vector, project it linearly,
-add a position embedding, and feed the sequence to a standard transformer
-encoder. A 224×224 image becomes 196 tokens. Session 7 covers the encoder
-itself.
-
-No convolution, and therefore none of convolution's built-in assumptions: no
-locality, no translation equivariance. Every patch can attend to every other
-patch from layer 1.
+## Vision Transformer (2020)
+New state of the art. It will be discussed later.
 
 ---
 
-## Vision Transformer, part 2: the price
 
-Removing an inductive bias means the data has to supply it. The original ViT
-**underperformed** ResNet on ImageNet-1k and only overtook it when pretrained on
-300 million images.
+## A simple CNN in PyTorch
 
-| | CNN | ViT |
+CIFAR-10: 32×32 RGB images, 10 classes. Three conv blocks, then a small
+classifier.
+
+```python
+import torch
+import torch.nn as nn
+
+class SimpleCNN(nn.Module):
+    def __init__(self, num_classes=10):
+        super().__init__()
+        self.features = nn.Sequential(
+            nn.Conv2d(3, 32, kernel_size=3, padding=1),   # (32, 32, 32)
+            nn.ReLU(),
+            nn.MaxPool2d(2),                              # (32, 16, 16)
+
+            nn.Conv2d(32, 64, kernel_size=3, padding=1),  # (64, 16, 16)
+            nn.ReLU(),
+            nn.MaxPool2d(2),                              # (64, 8, 8)
+
+            nn.Conv2d(64, 128, kernel_size=3, padding=1), # (128, 8, 8)
+            nn.ReLU(),
+            nn.MaxPool2d(2),                              # (128, 4, 4)
+        )
+        self.classifier = nn.Sequential(
+            nn.Flatten(),                                 # 128·4·4 = 2048
+            nn.Linear(2048, 128),
+            nn.ReLU(),
+            nn.Linear(128, num_classes),                  # logits
+        )
+
+    def forward(self, x):
+        return self.classifier(self.features(x))
+
+model = SimpleCNN()
+x = torch.randn(8, 3, 32, 32)
+print(model(x).shape)        # torch.Size([8, 10])
+```
+
+Pattern: **spatial size goes down, channels go up**. Each block halves
+H and W and doubles C.
+
+---
+
+## Shapes and parameters
+
+| Layer | Output shape | Parameters |
 |---|---|---|
-| Built-in prior | locality, equivariance | none |
-| Data appetite | moderate | high, or heavy augmentation |
-| Receptive field at layer 1 | 3×3 | global |
-| Small-data behaviour | robust | needs a strong pretrained checkpoint |
+| Input | (3, 32, 32) | — |
+| `Conv2d(3, 32, 3)` + pool | (32, 16, 16) | 32 · (3·9 + 1) = 896 |
+| `Conv2d(32, 64, 3)` + pool | (64, 8, 8) | 64 · (32·9 + 1) = 18,496 |
+| `Conv2d(64, 128, 3)` + pool | (128, 4, 4) | 128 · (64·9 + 1) = 73,856 |
+| `Linear(2048, 128)` | (128,) | 2048 · 128 + 128 = 262,272 |
+| `Linear(128, 10)` | (10,) | 128 · 10 + 10 = 1,290 |
+| **Total** | | **356,810** |
 
-Later recipes — DeiT, distillation, masked pretraining — closed most of the gap.
-You will almost never train either from scratch, which makes the real question
-"which pretrained checkpoint", not "which architecture".
+```python
+sum(p.numel() for p in model.parameters())   # 356810
+```
+
+The three convolutions hold 26% of the parameters; the first dense layer
+alone holds 73%. The dense part is where the parameters are, the conv part
+is where the computation is.
+
+---
+
+## Training
+
+```python
+from torchvision.datasets import CIFAR10
+from torch.utils.data import DataLoader
+
+
+train_ds = CIFAR10("data", train=True,  download=True)
+test_ds  = CIFAR10("data", train=False, download=True)
+train_loader = DataLoader(train_ds, batch_size=128, shuffle=True,  num_workers=4)
+test_loader  = DataLoader(test_ds,  batch_size=256, shuffle=False, num_workers=4)
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+model = SimpleCNN().to(device)
+criterion = nn.CrossEntropyLoss()
+optimizer = torch.optim.AdamW(model.parameters(), lr=1e-3)
+
+for epoch in range(15):
+    # --- train ---
+    model.train()
+    total_loss = 0.0
+    for x, y in train_loader:
+        x, y = x.to(device), y.to(device)
+        loss = criterion(model(x), y)
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+        total_loss += loss.item() * x.size(0)
+
+    # --- evaluate ---
+    model.eval()
+    correct = 0
+    with torch.no_grad():
+        for x, y in test_loader:
+            x, y = x.to(device), y.to(device)
+            correct += (model(x).argmax(dim=1) == y).sum().item()
+
+    print(f"epoch {epoch+1:2d}  "
+          f"loss {total_loss / len(train_ds):.3f}  "
+          f"test acc {correct / len(test_ds):.3f}")
+```

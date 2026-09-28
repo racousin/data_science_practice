@@ -10,16 +10,6 @@ enough. A skip connection changes the product itself: it hands a block's input
 past the block, so the signal and the gradient have a path that no layer
 multiplies.
 
-This lesson is the mechanism, measured: why the path helps, how deep a network
-trains with and without it, what the addition does to the scale of the signal,
-where the normalization goes, what to do when the shape changes, and the
-concatenating variant of U-Net and DenseNet. The architectures built on it —
-ResNet in
-[Session 5](https://ml-arena.com/courses/ms2a-machine-learning-practice/s5-computer-vision-1/pooling-and-architectures),
-U-Net in Session 6, the transformer in Session 7 — take it as given.
-
-Every figure marked *measured* comes from a run made while writing this lesson,
-on MNIST, in torch 2.x on a laptop CPU.
 
 <!-- notes: 35 minutes. The two live demos: the 24-block pair (the plain one sits
 at 2.303 on screen and nobody forgets it) and deleting one block from each
@@ -88,31 +78,3 @@ changes the set without containing the old one, and the deeper network can end
 up *further* from $f^*$. On the right each set contains the previous one, so
 depth can only move you closer. A residual block is what makes the sets nested:
 a new block that sets $g = 0$ returns the previous network exactly.
-
-That is an argument about what is *representable*. Whether the optimizer finds
-it is the next two slides.
-
----
-
-## The gradient has a path that nothing multiplies
-
-$$
-y = x + g(x) \quad\Longrightarrow\quad \frac{\partial y}{\partial x} = I + \frac{\partial g}{\partial x}
-$$
-
-Unroll it over a stack of blocks and the output of block $L$ is
-$x_L = x_\ell + \sum_{i=\ell}^{L-1} g_i(x_i)$ — every block writes into one
-running sum, and the gradient of the loss reaches every earlier $x_\ell$ through
-the identity term without being multiplied by any weight.
-
-![Gradient reaching each block at initialization, and training loss, for a 24-block stack with and without the identity path, measured](assets/nn/residual-identity-path-gradient-and-loss.png)
-
-Two 24-block networks, identical weights, identical data, identical optimizer.
-Each block is `LayerNorm → Linear(128,128) → ReLU → Linear(128,128)`; the only
-difference is `x = block(x)` against `x = x + block(x)`. At initialization the
-gradient arriving at block 1 is $5.1 \times 10^{-5}$ in the plain stack and
-$5.2 \times 10^{-4}$ with the skip — ten times larger, and flat across depth
-instead of decaying toward the input. After 600 steps of AdamW the residual
-network is at a training loss of $2 \times 10^{-4}$ and 97.1–97.8% test accuracy
-over three seeds; the plain one sits at 2.30 — $\ln 10$, the loss of guessing —
-and 10% accuracy, on data a two-layer MLP solves to 97%.

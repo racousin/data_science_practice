@@ -250,3 +250,85 @@ for xb, yb in loader:                   # one epoch: every batch once
   in evaluation, such as dropout , which switches off random neurons
   during training only. Forgetting the switch raises no error.
 - On a GPU, move each batch first: `xb, yb = xb.to(device), yb.to(device)`
+
+---
+
+## Complete Example
+
+```python
+import torch
+import torch.nn as nn
+import matplotlib.pyplot as plt
+
+# Generate synthetic data
+X = torch.linspace(-5, 5, 100).reshape(-1, 1)
+y = 0.2 * X**2 + 0.5 * X + 2 + torch.randn_like(X) * 0.2
+
+# Define a simple network
+class SimpleNet(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(1, 16),
+            nn.ReLU(),
+            nn.Linear(16, 16),
+            nn.ReLU(),
+            nn.Linear(16, 1)
+        )
+    
+    def forward(self, x):
+        return self.net(x)
+
+# Initialize model and training parameters
+model = SimpleNet()
+criterion = nn.MSELoss()
+learning_rate = 0.01
+n_epochs = 100
+
+# Training loop
+losses = []
+for epoch in range(n_epochs):
+    # Forward pass
+    y_pred = model(X)
+    loss = criterion(y_pred, y)
+    losses.append(loss.item())
+    
+    # Zero gradients
+    model.zero_grad()
+    
+    # Backward pass
+    loss.backward()
+    
+    # Manual parameter update using gradients
+    with torch.no_grad():  # Disable gradient tracking for updates
+        for param in model.parameters():
+            param.data -= learning_rate * param.grad
+            
+    # Print progress
+    if (epoch + 1) % 10 == 0:
+        print(f'Epoch [{epoch+1}/{n_epochs}], Loss: {loss.item():.4f}')
+
+# Visualize results
+plt.figure(figsize=(12, 4))
+
+# Plot 1: Training Loss
+plt.subplot(1, 2, 1)
+plt.plot(losses)
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.title('Training Loss Over Time')
+
+# Plot 2: Predictions vs True Values
+plt.subplot(1, 2, 2)
+with torch.no_grad():
+    y_pred = model(X)
+plt.scatter(X.numpy(), y.numpy(), label='True Values', alpha=0.5)
+plt.scatter(X.numpy(), y_pred.numpy(), label='Predictions', alpha=0.5)
+plt.xlabel('X')
+plt.ylabel('y')
+plt.title('Predictions vs True Values')
+plt.legend()
+
+plt.tight_layout()
+plt.show()
+```

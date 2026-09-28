@@ -60,11 +60,9 @@
       "s4-advanced-neural-networks/essential-layers": 78,
       "s4-advanced-neural-networks/initialization": 216,
       "s4-advanced-neural-networks/lab-4": 84,
-      "s4-advanced-neural-networks/monitoring-and-debugging": 82,
       "s4-advanced-neural-networks/multi-layer-perceptrons": 214,
       "s4-advanced-neural-networks/normalization": 220,
       "s4-advanced-neural-networks/optimization-and-schedules": 80,
-      "s4-advanced-neural-networks/performance-and-profiling": 83,
       "s4-advanced-neural-networks/skip-connections": 217,
       "s5-computer-vision-1/convolution": 86,
       "s5-computer-vision-1/data-augmentation": 221,
@@ -494,91 +492,77 @@
           "title": "Trees"
         },
         "s4-advanced-neural-networks/data-pipelines-and-training-loop": {
-          "body": "28f6f7a93821dfcbfdc55bcae6f3b1e170fca4f4251ad6a1bfdfd86cc95242a1",
+          "body": "6fa2f902a215db771fc3f69070e0f849b4dcf0fa4312fbfde58d2b6e993cf520",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
           "title": "Data Pipelines and the Training Loop"
         },
         "s4-advanced-neural-networks/dropout": {
-          "body": "61c6d94d1486b8ea1667d4c64d97de10dd3171a8c5138c8086936f22c1de1e92",
+          "body": "1f63783f71c340853666e0ec687f1f5ad9e168769572a3f02da005186ca3b546",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
           "title": "Dropout"
         },
         "s4-advanced-neural-networks/essential-layers": {
-          "body": "12ddee8ce4dbb156a34a0b15183c58300079436e1debd0d38554c21dfbc08f90",
+          "body": "c5c3202ee4bc342f4372073162b326b79996feb0f25f725d2c9b4410ae923252",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
           "title": "Essential Layers"
         },
         "s4-advanced-neural-networks/initialization": {
-          "body": "411e2c42855f10c6e5e2f53b45995fca473d5bfdf7cb4a9c6b41d2624f589bc4",
+          "body": "4cddaa6f29d667cb960d59f306294bb927da40b5d11aa6f1196d2e22df0922a7",
           "estimated_minutes": 25,
           "gated": false,
           "is_published": true,
           "title": "Parameter Initialization"
         },
         "s4-advanced-neural-networks/lab-4": {
-          "body": "003c0fe47d2c09bc7cbf0c200fdf8e8b617309539db8c6f2f02d1ebed168f6dd",
+          "body": "2be92428d6b5c185c49d2620aaaf1d35a324df84e98ee137358cb5889fe1e9f8",
           "estimated_minutes": 60,
           "gated": false,
           "is_published": true,
           "title": "Lab \u2014 Building Blocks, Measured"
         },
-        "s4-advanced-neural-networks/monitoring-and-debugging": {
-          "body": "1525cadf65aece1b41b93a86608e9e1895f9c36efcc5ecb9cf86f6187eee309e",
-          "estimated_minutes": 35,
-          "gated": false,
-          "is_published": true,
-          "title": "Monitoring and Debugging"
-        },
         "s4-advanced-neural-networks/multi-layer-perceptrons": {
-          "body": "201d7670f1645ce76264a19ebc7c5e158ba68881d867d86d9a5202ab39d609fe",
+          "body": "3b6a43c02bc01ebb17472c2416b5907037791a76db1edadf41b1f20012832c77",
           "estimated_minutes": null,
           "gated": false,
           "is_published": true,
           "title": "Multi-Layer Perceptrons"
         },
         "s4-advanced-neural-networks/normalization": {
-          "body": "55a767f977c05ff3fa050cbd1dbcd2c10bfea9532424f56c14ce5f98ae6206dd",
+          "body": "54f4306e9e62708a90c329b55d02d85bfbcbfd623ccaa69170170c359eec247c",
           "estimated_minutes": 20,
           "gated": false,
           "is_published": true,
           "title": "Normalization"
         },
         "s4-advanced-neural-networks/optimization-and-schedules": {
-          "body": "4f06090ee680129f79c4030afe5e5e07f2dbcdffd9d82e60019844655abf3ba9",
+          "body": "2b12cb0359a17976620166f96e398f1ff8ecdce721e5bab42d81df46d9a69cd6",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
           "title": "Optimization and Schedules"
         },
-        "s4-advanced-neural-networks/performance-and-profiling": {
-          "body": "54102c64db510879e9d656fac992dc885634dbefc0aa678ed6e5ee5c3ac5f654",
-          "estimated_minutes": 30,
-          "gated": false,
-          "is_published": true,
-          "title": "Performance and Profiling"
-        },
         "s4-advanced-neural-networks/skip-connections": {
-          "body": "95f162db63480e9b4c8cc9511f477677b48f36d32e3bb77e1c3800b0f41d41a4",
+          "body": "76e76fe8c935ca66b819255a45ccda35ce5eb5b500a1f203086b4464937cecc4",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
           "title": "Skip Connections"
         },
         "s5-computer-vision-1/convolution": {
-          "body": "6d374aefc175d5a51a91044f9b9e63ac5f1aa5a822e1a132746de9c3354d31f6",
+          "body": "bd6dbec3a0df2395c4075fee0c35eb7d25ec805fd664700ce3d9134fc5dc6391",
           "estimated_minutes": 40,
           "gated": false,
           "is_published": true,
           "title": "Convolution"
         },
         "s5-computer-vision-1/data-augmentation": {
-          "body": "c3c26f6aca2059b498cd33ae924a4199387dc526292a41f810236b675a86d747",
+          "body": "b37e17854f291255e16b21929a429bc4fb85ef714eb7efe9fabaf70d7b6c64fa",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
@@ -592,21 +576,21 @@
           "title": "Images as Tensors"
         },
         "s5-computer-vision-1/lab-5": {
-          "body": "30196d625ab46da7a3ec407a3814f0b5a5c35df6fa283b1bee7eac81d7140781",
+          "body": "34ed1ab4d85cd95ef6d613abc7f90de261c49250c42e9180c2346eacce92256e",
           "estimated_minutes": 45,
           "gated": false,
           "is_published": true,
           "title": "Lab 5 \u2014 Classify with a Pretrained Backbone"
         },
         "s5-computer-vision-1/pooling-and-architectures": {
-          "body": "5e4281087ba353d611f1f5b90408fcb4c34c40c6b9fe539b9801129b39a09593",
+          "body": "fd2e0c8726aa819ae0f1a665173480d1fd84369a3b6ff8f2268f734756bbc835",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
           "title": "Pooling and CNN Architectures"
         },
         "s5-computer-vision-1/transfer-learning": {
-          "body": "0429d82f27982f373a4c9465435bdeb61f342087035c87a4660ba230c2d41323",
+          "body": "1fe2f4e2c1cc8669abf67980722a22a922fd2e6dbb7b9f518699e541f2394d3d",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
@@ -914,11 +898,9 @@
             "initialization",
             "normalization",
             "skip-connections",
-            "optimization-and-schedules",
             "dropout",
+            "optimization-and-schedules",
             "data-pipelines-and-training-loop",
-            "monitoring-and-debugging",
-            "performance-and-profiling",
             "lab-4"
           ],
           "summary": "From a training loop that runs to a training loop that works: layers, initialisation, normalisation, regularisation, schedules, monitoring, and the profiling that tells you where the time actually goes.",

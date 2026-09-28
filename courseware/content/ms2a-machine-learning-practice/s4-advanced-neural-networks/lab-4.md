@@ -28,8 +28,7 @@ the file. -->
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/data_science_practice/blob/main/website/public/modules/ms2a-machine-learning-practice/challenges/mlp-s4-building-blocks.ipynb)
 
 - **One secret** in Colab's *Secrets* panel, granted to the notebook:
-  `MLARENA_API_KEY` (ML-Arena, Profile → API Keys, starts with `mlk_user_`). Never
-  in a cell.
+  `MLARENA_API_KEY` (ML-Arena, Profile → API Keys, starts with `mlk_user_`). 
 - **Locally:** download the `.ipynb` from the GitHub path of the badge and
   `uv add torch torchvision mlarena-sdk`. The first run downloads MNIST into `./data/`.
 
