@@ -667,7 +667,7 @@
           "title": "Recurrent Models and Their Limits"
         },
         "s7-nlp-1/text-as-data-and-tokenization": {
-          "body": "f56c2aa7a320e30e24e07a870ecf9ba2768acac9bf065b45b7b1997129fefe63",
+          "body": "74beada3a83bcc79652db970cf96f7bac547472f0e564ff5c7d624848262dca3",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
@@ -778,8 +778,8 @@
         "s3-tabular-models",
         "s4-advanced-neural-networks",
         "s5-computer-vision-1",
-        "s6-computer-vision-2",
         "s7-nlp-1",
+        "s6-computer-vision-2",
         "s8-nlp-2",
         "s9-reinforcement-learning-1",
         "s10-reinforcement-learning-2",
