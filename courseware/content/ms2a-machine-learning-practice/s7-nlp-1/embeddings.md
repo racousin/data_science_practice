@@ -110,3 +110,98 @@ the ids in the batch, so rare tokens are updated rarely.
 
 That matrix is trained by ordinary backpropagation from the task loss. Nothing
 special about it: it is a `Linear` layer whose input happens to be one-hot.
+
+---
+
+## What we want from text
+
+
+![image41.png](assets/nlp/image41.png)
+
+
+<!-- placeholder: image to add (three columns: text -> label/number, text -> text, text -> next token) -->
+
+Let $\mathcal{S}$ be the set of token sequences. Almost every NLP task is a
+function out of it:
+
+| Family | Signature | Examples |
+|---|---|---|
+| Text → class | $f: \mathcal{S} \to \{1, \dots, K\}$ | sentiment, topic, spam |
+| Text → number | $f: \mathcal{S} \to \mathbb{R}^k$ | price, readability score |
+| Text → text | $f: \mathcal{S}_{L_1} \to \mathcal{S}_{L_2}$ | translation, summarisation |
+| Text → next token | $P(t_{i+1} \mid t_1, \dots, t_i)$ | generation, dialogue |
+
+All four need the same thing first: a vector for each token that reflects
+**the sentence it sits in**. Labels for the first three are scarce. Raw text
+is not. The question for the rest of the session is how to get those vectors
+without labels.
+
+---
+
+## One vector per word is not enough
+
+A static embedding gives `bank` a single row $E[\texttt{bank}]$:
+
+- *she sat on the **bank** of the river*
+- *he deposited cash at the **bank***
+
+Both sentences receive the same vector. Word2vec averages the senses into one
+point, weighted by corpus frequency.
+
+What we want is a vector per **occurrence**, computed from the whole sequence:
+
+$$
+H = f(t_1, \dots, t_n) \in \mathbb{R}^{n \times d}, \qquad
+h_i = \text{contextual vector of token } i
+$$
+
+$E[t_i]$ is where token $i$ starts. $h_i$ is what it means *here*. The
+transformer of the next lesson is this $f$. The objective below is how $f$
+gets trained.
+
+---
+
+## Make the text supervise itself
+
+Hide part of a sentence and ask the model to recover it. The target is already
+in the corpus, so no labelling is needed. This is the distributional
+hypothesis turned into a loss.
+
+**Causal language modelling (CLM):** predict each token from the ones before it.
+
+$$
+\mathcal{L}_{CLM} = -\frac{1}{n-1} \sum_{i=1}^{n-1} \log P(t_{i+1} \mid t_1, \dots, t_i)
+$$
+
+**Masked language modelling (MLM):** hide about 15% of the tokens, and
+predict each one from everything else, left and right.
+
+$$
+\mathcal{L}_{MLM} = -\frac{1}{|M|} \sum_{i \in M} \log P(t_i \mid \tilde{t}_1, \dots, \tilde{t}_n)
+$$
+
+Word2vec's CBOW was already a masked objective: predict the centre word from
+a window of $\pm c$ neighbours, averaged and order-free. MLM keeps the idea
+and lifts both limits. The context is the whole sequence, and word order is
+kept.
+
+---
+
+## Why a fill-in-the-blank loss builds representations
+
+> *she sat on the `[MASK]` of the river*
+
+To put probability on `bank` rather than `table`, the vector at the masked
+position must encode several things at once:
+
+- **syntax:** a noun after *the*
+- **semantics:** something one sits on
+- **long-range context:** *river*, four tokens later
+
+That vector is $h_i$. The only way to lower the loss across billions of
+sentences is to make every $h_i$ a compressed summary of what its context
+implies. Nobody asked for representations. They are the cheapest route to
+good predictions.
+
+The objective is a pretext. After pretraining, the prediction head is thrown
+away and $H$ is kept.

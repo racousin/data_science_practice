@@ -14,19 +14,153 @@ d=768 and let them check 110M against the BERT paper. -->
 
 ## The block
 
-Two sublayers, in this order, each wrapped in a residual connection:
+Core Components
+The Transformer architecture consists of several fundamental building blocks:
 
-1. **Multi-head self-attention** — the only place positions talk to each other
-2. **Position-wise feed-forward** — two linear layers with a non-linearity,
-   applied identically and independently at every position
-
-Everything else is plumbing that makes a deep stack of these trainable.
-
-The feed-forward expands the width to $4d$ and projects back. It holds two
-thirds of the block's parameters and is where most of the memorised knowledge
-turns out to live.
+Embedding
+Positional Encoding: Injects sequence order information
+Self-Attention Mechanism: Computes relationships between all positions in the sequence
+Multi-Head Attention: Parallel attention operations with different learned projections
+Feed-Forward Networks: Position-wise fully connected layers
+Layer Normalization: Stabilizes training
+Residual Connections: Enables gradient flow through deep networks
 
 ---
+
+## From tokens to vectors
+
+
+
+
+
+
+A tokenizer turns text into indices $t_1, \dots, t_n$ with
+$t_i \in \{0, \dots, |V|-1\}$. The embedding is a learned lookup table:
+
+$$
+E \in \mathbb{R}^{|V| \times d}, \qquad
+X = \begin{bmatrix} E[t_1] \\ \vdots \\ E[t_n] \end{bmatrix} \in \mathbb{R}^{n \times d}
+$$
+
+Mathematically $X = \mathrm{onehot}(t)\,E$, an $(n \times |V|)(|V| \times d)$
+product; in practice it is an index, never a matrix multiplication.
+
+| Vocabulary | $d$ | Parameters $V \cdot d$ |
+|---|---|---|
+| 30,000 | 512 | 15.36M |
+| 30,522 (BERT) | 768 | 23.4M — about a fifth of BERT-base |
+| 50,257 (GPT-2) | 768 | 38.6M — about a third of GPT-2 small |
+
+![embedding.png](assets/nlp/embedding.png)
+
+---
+
+
+## Attention has no sense of order
+
+
+
+Self-attention is permutation-equivariant: shuffle the input tokens and the
+outputs shuffle with them, unchanged. For any permutation matrix $P$:
+
+$$
+\mathrm{SelfAttn}(P X) = \mathrm{SelfAttn}(X)
+$$
+
+Without position information a transformer cannot distinguish "dog bites man"
+from "man bites dog" — the exact failure that ruled out bag-of-words.
+
+The fix is to inject position into the representation. The embedding for
+position $p$ is added to the token embedding before the first block:
+
+$$
+X_0 = E[t]  + PE \in \mathbb{R}^{n \times d}, \qquad PE \in \mathbb{R}^{n \times d}
+$$
+
+![image43.png](assets/nlp/image43.png)
+
+![RotaryPE2.png](assets/nlp/RotaryPE2.png)
+
+---
+
+## Sinusoidal encoding
+
+![Positional encoding added to token embeddings](assets/nlp/position.png)
+
+<!-- placeholder: image to add (heatmap, positions on y, dimensions on x) -->
+
+One frequency per pair of dimensions:
+
+$$
+PE_{p,\,2i} = \sin\left(\frac{p}{10000^{2i/d}}\right), \qquad
+PE_{p,\,2i+1} = \cos\left(\frac{p}{10000^{2i/d}}\right)
+$$
+
+Pair $i$ has wavelength $2\pi \cdot 10000^{2i/d}$, from $2\pi$ at $i = 0$ to
+about $2\pi \cdot 10^4$ at the last pair. Early dimensions oscillate fast and
+resolve neighbouring positions; late dimensions move slowly and encode coarse
+position — a clock with $d/2$ hands.
+
+Because each pair is a rotation, $PE_{p+k}$ is a fixed linear function of
+$PE_p$ for any offset $k$: relative position is linearly accessible to the
+attention projections.
+
+Zero parameters, deterministic, and extrapolates in principle to lengths never
+seen — in practice, poorly.
+
+
+---
+
+## The feed-forward network
+
+$$
+\mathrm{FFN}(X) = \phi(X W_1 + b_1)\, W_2 + b_2
+$$
+
+| Step | Shape | $d = 512$, $d_{ff} = 2048$ |
+|---|---|---|
+| $X$ | $n \times d$ | $n \times 512$ |
+| $W_1$, $b_1$ | $d \times d_{ff}$, $d_{ff}$ | $512 \times 2048$ |
+| $\phi(X W_1 + b_1)$ | $n \times d_{ff}$ | $n \times 2048$ |
+| $W_2$, $b_2$ | $d_{ff} \times d$, $d$ | $2048 \times 512$ |
+| $\mathrm{FFN}(X)$ | $n \times d$ | $n \times 512$ |
+
+**Position-wise** means row $i$ of the output depends only on row $i$ of the
+input: the same two matrices applied to $n$ vectors independently. Only
+attention moves information between rows.
+
+---
+
+
+
+## Layer normalisation, and where to put it
+
+$$
+LN(x) = \gamma \odot \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta
+$$
+
+Statistics are taken over the feature dimension of **one position**, not over
+the batch. That independence from batch composition is why transformers use
+layer norm and not batch norm: sequence models have variable length and small
+batches, and batch statistics over padding are meaningless.
+
+| Quantity | Shape | Computed over |
+|---|---|---|
+| input $X$ | $n \times d$ | — |
+| $\mu, \sigma^2$ | $n$ (one pair per position) | the $d$ features |
+| $\gamma, \beta$ | $d$ — learned, $2d$ parameters | — |
+| $LN(X)$ | $n \times d$ | — |
+
+| Placement | Form | Behaviour |
+|---|---|---|
+| Post-norm (2017) | $LN(x + f(x))$ | needs learning-rate warmup; unstable deep |
+| Pre-norm (modern) | $x + f(LN(x))$ | trains without warmup, scales to 100+ layers |
+
+
+
+---
+
+
 
 ## Residual connections
 
@@ -43,63 +177,47 @@ It also means a block can learn to do nothing. Initialised near zero, $f$ is a
 no-op and the stack starts as an identity function, which is a good place to
 start from.
 
----
-
-## Layer normalisation, and where to put it
-
-$$
-LN(x) = \gamma \odot \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta
-$$
-
-Statistics are taken over the feature dimension of **one position**, not over
-the batch. That independence from batch composition is why transformers use
-layer norm and not batch norm: sequence models have variable length and small
-batches, and batch statistics over padding are meaningless.
-
-| Placement | Form | Behaviour |
-|---|---|---|
-| Post-norm (2017) | $LN(x + f(x))$ | needs learning-rate warmup; unstable deep |
-| Pre-norm (modern) | $x + f(LN(x))$ | trains without warmup, scales to 100+ layers |
-
-Default to pre-norm. Post-norm exists in the paper and in BERT; you will read
-it, you should not write it.
 
 ---
+## The block: dimensional flow
 
-## Attention has no sense of order
+$X_b \in \mathbb{R}^{n \times d}$ is the sequence **entering** block $b$. For
+the first block, $X_0 = E[t] + PE$.
 
-![Positional encoding added to token embeddings](assets/nlp/position.png)
+**Step 1 — attention sublayer: tokens exchange information.**
 
-Self-attention is permutation-equivariant: shuffle the input tokens and the
-outputs shuffle with them, unchanged. Without position information a
-transformer cannot distinguish "dog bites man" from "man bites dog" — the exact
-failure that ruled out bag-of-words.
+$$
+H_b = X_b + \mathrm{MHA}\big(LN_1(X_b)\big)
+$$
 
-The fix is to inject position into the representation. The embedding for
-position $p$ is added to the token embedding before the first block.
+$H_b$ is the **intermediate state** of block $b$: each token's vector, updated
+with what it gathered from the other tokens. It is the output of the attention
+sublayer, residual included.
+
+**Step 2 — feed-forward sublayer: each token is transformed on its own.**
+
+$$
+X_{b+1} = H_b + \mathrm{FFN}\big(LN_2(H_b)\big)
+$$
+
+$X_{b+1}$ is the **output** of block $b$, which is also the input of block
+$b+1$.
+
+| # | Operation | Tensor | Shape |
+|---|---|---|---|
+| 1 | normalise | $LN_1(X_b)$ | $n \times d$ |
+| 2 | project, per head | $Q_i, K_i, V_i$ | $n \times d/h$ |
+| 3 | scores + softmax, per head | $A_i$ | $n \times n$ ($h$ of them) |
+| 4 | weighted sum, concat, $W^O$ | $\mathrm{MHA}(\cdot)$ | $n \times d$ |
+| 5 | add residual | $H_b$ | $n \times d$ |
+| 6 | normalise | $LN_2(H_b)$ | $n \times d$ |
+| 7 | expand + activation | $\phi(\cdot\, W_1 + b_1)$ | $n \times 4d$ |
+| 8 | project back | $\mathrm{FFN}(\cdot)$ | $n \times d$ |
+| 9 | add residual | $X_{b+1}$ | $n \times d$ |
+
 
 ---
 
-## Three ways to encode position
-
-**Sinusoidal** (original): fixed, not learned, one frequency per dimension pair.
-
-$$
-PE_{p, 2i} = \sin\left(\frac{p}{10000^{2i/d}}\right)
-$$
-
-Deterministic, needs no parameters, and extrapolates in principle to lengths
-never seen.
-
-**Learned absolute** (BERT, GPT-2): a plain `nn.Embedding(max_len, d)`. Simple,
-slightly better in-distribution, and hard-capped at `max_len`.
-
-**RoPE** (Llama, Mistral, Qwen — the current default): rotate $Q$ and $K$ by an
-angle proportional to position, so the dot product depends only on the
-*relative* offset. It is what makes context extension by interpolation
-possible.
-
----
 
 ## The full architecture
 
@@ -118,6 +236,69 @@ parallel pass. Inference is still one token at a time.
 
 ---
 
+## Encoder-decoder: dimensional flow
+
+Source of length $n$, target of length $m$, independent of each other. To keep
+the two sides apart, $X$ denotes the encoder and $Y$ the decoder.
+
+**Encoder** — run once per source:
+
+$$
+X_0 = E[\mathrm{src}] + PE \in \mathbb{R}^{n \times d}
+\;\xrightarrow{\;N \text{ encoder blocks}\;}\;
+\mathrm{enc} = X_N \in \mathbb{R}^{n \times d}
+$$
+
+**Decoder input:** $Y_0 = E[\mathrm{tgt}] + PE \in \mathbb{R}^{m \times d}$.
+This is the target shifted right by one token (teacher forcing).
+
+**Decoder block $b$** takes $Y_b \in \mathbb{R}^{m \times d}$ through three
+steps:
+
+$$
+\begin{aligned}
+S_b &= Y_b + \mathrm{MaskedMHA}\big(LN(Y_b)\big)
+  && \text{1. self: each target token reads earlier target tokens} \\
+C_b &= S_b + \mathrm{CrossMHA}\big(LN(S_b),\ \mathrm{enc}\big)
+  && \text{2. cross: each target token reads the source} \\
+Y_{b+1} &= C_b + \mathrm{FFN}\big(LN(C_b)\big)
+  && \text{3. transform each token on its own}
+\end{aligned}
+$$
+
+$S_b$ and $C_b$ are the intermediate states after steps 1 and 2. $Y_{b+1}$ is
+the output of decoder block $b$ and the input of block $b+1$. All are
+$m \times d$.
+
+| Attention | $Q$ from | $K, V$ from | Matrix | Mask |
+|---|---|---|---|---|
+| encoder self | source | source | $n \times n$ | padding |
+| decoder self | target | target | $m \times m$ | causal + padding |
+| cross | target | encoder output | $m \times n$ | source padding |
+
+**Output:** $\text{logits} = Y_N E^T \in \mathbb{R}^{m \times |V|}$. Row $i$
+predicts target token $i+1$.
+
+The same `enc` feeds all $N$ decoder blocks, each through its own $W_K, W_V$.
+At inference those cross-attention keys and values are computed once per
+source and cached.
+
+---
+
+## Back to the vocabulary
+
+The last hidden state $Z \in \mathbb{R}^{n \times d}$ becomes one distribution
+over the vocabulary per position:
+
+$$
+\text{logits} = Z\,E^T \in \mathbb{R}^{n \times |V|}, \qquad
+P(\text{token}_j \mid \text{position } i) = \frac{\exp(\text{logits}_{ij})}{\sum_{k=1}^{|V|} \exp(\text{logits}_{ik})}
+$$
+
+
+
+---
+
 ## Three families
 
 ![Encoder-only, decoder-only, encoder-decoder](assets/nlp/bertgpt.png)
@@ -133,217 +314,121 @@ the previous slides is shared.
 
 ---
 
-## Encoder-only: BERT
-
-![The CLS token as a sequence representation](assets/nlp/cls.png)
+### Encoder-only: BERT
 
 Pretraining masks 15% of tokens and predicts them from **both** sides. That
 bidirectionality is the point, and it is also why BERT cannot generate: there
 is no left-to-right factorisation to sample from.
 
-Fine-tuning puts a linear head on the final `[CLS]` state:
+Let $M$ be the set of selected positions ($|M| \approx 0.15\,n$) and
+$\tilde{t}$ the corrupted sequence. Of the selected tokens, 80% become
+`[MASK]`, 10% a random token, and 10% stay unchanged. The loss is:
 
-```python
-from transformers import AutoModelForSequenceClassification
-m = AutoModelForSequenceClassification.from_pretrained(
-    "distilbert-base-uncased", num_labels=2)
-```
+$$
+\mathcal{L}_{MLM} = -\frac{1}{|M|} \sum_{i \in M} \log P(t_i \mid \tilde{t}_1, \dots, \tilde{t}_n)
+$$
 
-BERT-base is 12 layers, $d = 768$, 12 heads, 110M parameters. For
-classification, retrieval or extraction on a fixed label set, this family is
-still the right default in 2026 — smaller, faster and usually more accurate
-than prompting a large decoder.
-
----
-
-## Fine-tuning with `Trainer`
-
-The head is one line; the loop is four more objects. A `Dataset` that tokenizes
-without padding, a collator that pads each batch to its own longest sequence, a
-metric function, and the `Trainer` that puts them together.
-
-```python
-class TextDataset(torch.utils.data.Dataset):
-    def __init__(self, texts, labels, max_length=256):
-        self.enc = tok(list(texts), truncation=True, max_length=max_length)
-        self.labels = list(labels)
-    def __len__(self):
-        return len(self.labels)
-    def __getitem__(self, i):
-        item = {k: v[i] for k, v in self.enc.items()}
-        item["labels"] = self.labels[i]
-        return item
-```
-
-Note what is *not* here: `padding`. Padding every document to `max_length` wastes
-compute on sequences that are mostly `[PAD]`; the collator does it per batch.
+Each prediction conditions on the whole corrupted sequence, left and right.
+The model outputs logits $\in \mathbb{R}^{n \times |V|}$, but only the $|M|$
+selected rows enter the loss. About 15% of positions give a training signal
+per pass.
 
 ---
 
-## The other three pieces
-
-```python
-from sklearn.metrics import f1_score
-from transformers import DataCollatorWithPadding, Trainer, TrainingArguments
-
-def compute_metrics(p):
-    return {"macro_f1": f1_score(p.label_ids, p.predictions.argmax(-1),
-                                 average="macro")}
-
-args = TrainingArguments(output_dir="runs", num_train_epochs=1,
-                         per_device_train_batch_size=16, learning_rate=2e-5,
-                         eval_strategy="epoch", seed=0, report_to="none")
-
-trainer = Trainer(model=model, args=args,
-                  train_dataset=train_ds, eval_dataset=val_ds,
-                  data_collator=DataCollatorWithPadding(tok),
-                  compute_metrics=compute_metrics)
-trainer.train()
-```
-
-`Trainer` needs `accelerate`, which arrives with the `[torch]` extra — install
-`"transformers[torch]"`, not bare `transformers`. Without it `TrainingArguments`
-raises an `ImportError` saying the Trainer requires `accelerate>=1.1.0`, before a
-single step runs.
-
----
-
-## Decoder-only: GPT
+### Decoder-only: GPT
 
 Causal mask, one objective: predict the next token. Every position in the
 sequence is a training example, which makes the objective extremely
 data-efficient and is most of why this family scaled.
 
-```python
-from transformers import AutoModelForCausalLM
-m = AutoModelForCausalLM.from_pretrained("gpt2")
-m(**tok("The capital of France is", return_tensors="pt")).logits.shape
-# (1, 6, 50257) — a distribution over the vocabulary at every position
-```
-
-Weight tying reuses the embedding matrix transposed as the output projection:
-$|V| \times d$ fewer parameters, and it forces input and output to share one
-semantic space. Session 8 takes this family and asks what happens at scale.
-
----
-
-## Encoder-decoder: T5
-
-Every task is cast as text in, text out:
-
-```text
-"translate English to German: Hello"  ->  "Hallo"
-"sentiment: I loved it"               ->  "positive"
-"summarize: <article>"                ->  "<summary>"
-```
-
-One model, one loss, one interface, and the encoder is bidirectional so the
-input is read in full before generation starts.
-
-Use this family when the input and output are both sequences and the input
-deserves bidirectional reading — translation, summarisation, speech recognition
-(Whisper is exactly this shape).
-
----
-
-## Counting parameters
-
-Per block, with a feed-forward width of $4d$ and biases ignored:
-
 $$
-P_{block} = 4 d^2 + 2 d\, d_{ff} = 12 d^2
+\mathcal{L} = -\frac{1}{n-1} \sum_{i=1}^{n-1} \log P(t_{i+1} \mid t_1, \dots, t_i)
 $$
 
-Four $d \times d$ matrices for $Q, K, V, W^O$; two $d \times 4d$ matrices for
-the feed-forward.
-
-For $d = 768$: 7.1M per block, 85M for 12 blocks. Add the embedding matrix,
-$30522 \times 768 = 23$M, and you are at the published 110M for BERT-base.
-
-Note what is absent: the number of heads and the sequence length. Heads split
-$d$; they do not add parameters. Nothing in the parameter count depends on $n$.
+One forward pass over $n$ tokens yields logits $\in \mathbb{R}^{n \times |V|}$,
+with row $i$ predicting token $i+1$. That gives $n-1$ training signals per
+pass against about $0.15\,n$ for BERT.
 
 ---
 
-## Counting FLOPs
+## Exercise: from hidden states to tokens (1/2)
 
-A forward pass costs about $2P$ multiply-accumulates per token — one multiply
-and one add per parameter. A training step adds the backward pass, roughly
-twice the forward, giving the standard estimate:
+A toy transformer:
 
-$$
-C \approx 6 P N
-$$
+- Vocabulary, $|V| = 10$: `[PAD] [MASK] the a cat dog sat on mat rug`
+- Width $d = 4$, tied embeddings $E \in \mathbb{R}^{10 \times 4}$
+- The last block returns $Z \in \mathbb{R}^{n \times d}$
 
-for $P$ parameters and $N$ training tokens. On top of that, attention adds
-$O(n^2 d)$ per block, which is negligible at $n = 512$ and dominant at
-$n = 32{,}000$.
+**A. GPT (next token)** on the sentence `the cat sat on the mat`
 
-Use this before you launch anything: 110M parameters over 1B tokens is about
-$6.6 \times 10^{17}$ FLOPs — hours on one GPU, not weeks. If your estimate says
-weeks, redesign rather than start.
+1. What is $n$? Shape of $Z$?
+2. Logits $= Z E^T$: shape? The softmax is taken over which axis?
+3. **Training:** which rows enter the loss, and what is the target of each?
+4. **Inference:** prompt `the cat sat`. Which row gives the next token?
+   Shape of what you actually use?
 
----
-
-## Loading one
-
-```python
-from transformers import AutoTokenizer, AutoModel
-tok = AutoTokenizer.from_pretrained("distilbert-base-uncased")
-model = AutoModel.from_pretrained("distilbert-base-uncased")
-out = model(**tok("attention is all you need", return_tensors="pt"))
-out.last_hidden_state.shape       # (1, 8, 768)
-```
-
-`AutoModel` gives the bare encoder stack. The `AutoModelFor...` variants add
-the task head and the matching loss. Pick the head, do not write it.
+<!-- notes: 15 minutes for both parts. The key question is A2: most students
+answer "softmax over the sequence". Let them argue before showing the
+solution. -->
 
 ---
 
-## The rule
+## Solution: GPT
 
-> Choose the family from the task, not from the leaderboard: bidirectional
-> encoder for understanding a fixed input, causal decoder for generating a
-> variable output.
+**A1.** $n = 6$, $Z \in \mathbb{R}^{6 \times 4}$.
 
-The failure mode is a 7B decoder deployed to do binary classification: 60×
-the cost of a fine-tuned DistilBERT, higher latency, and usually lower
-accuracy — because the small model was trained on your labels and the large one
-was not.
+**A2.** $(6 \times 4)(4 \times 10) = 6 \times 10$. Softmax over the
+**vocabulary**: each row is a distribution over 10 tokens.
+(Inside attention, the softmax is over the $n$ keys.)
+
+**A3.** Rows 1 to 5, target = the input shifted by one:
+
+| Row | Has seen | Target |
+|---|---|---|
+| 1 | `the` | `cat` |
+| 2 | `the cat` | `sat` |
+| 3 | `the cat sat` | `on` |
+| 4 | `… on` | `the` |
+| 5 | `… the` | `mat` |
+| 6 | `… mat` | — no target |
+
+One sentence, 5 training signals ($n - 1$), in one pass. The causal mask
+makes it legal: row 3 never sees `on`.
+
+**A4.** $n = 3$, logits $3 \times 10$, but only the **last row** is used:
+$1 \times 10$ → `on`. Append it, repeat.
 
 ---
 
-## Check yourself
+## Exercise: from hidden states to tokens (2/2)
 
-1. Run this. You should get exactly the output shown.
+**B. BERT (masked tokens)** on the input `the cat [MASK] on the [MASK]`
 
-   ```python
-   d, n_blocks, vocab = 768, 12, 30522
-   print(12 * d ** 2)                        # -> 7077888    one block
-   print(n_blocks * 12 * d ** 2)             # -> 84934656   the stack
-   print(vocab * d)                          # -> 23440896   the embeddings
-   print(n_blocks * 12 * d ** 2 + vocab * d) # -> 108375552  ~ BERT-base's 110M
-   ```
+1. What is $n$? Shape of $Z$? Shape of the logits?
+2. **Training:** which rows enter the loss, and what are their targets?
+   How many signals, against GPT on the same sentence?
+3. **Inference:** input `the dog sat on a [MASK]`. Which row do you read?
+   Shape of what you actually use?
 
-2. Nothing in that arithmetic mentions the number of heads or the sequence
-   length. Why not, and what *does* depend on the sequence length?
+---
 
-   **Answer.** Heads split $d$ into $h$ projections of width $d/h$ and are
-   concatenated back, so they add no parameters. Nothing in the parameter count
-   depends on $n$ at all. What depends on $n$ is compute and memory: attention
-   costs $O(n^2 d)$ per block, negligible at $n = 512$ and dominant at
-   $n = 32{,}000$.
+## Solution: BERT
 
-3. Encoder-only, decoder-only and encoder-decoder differ in exactly one
-   component. Which one?
+**B1.** $n = 6$, $Z \in \mathbb{R}^{6 \times 4}$, logits $6 \times 10$,
+softmax over the vocabulary — same head as GPT.
 
-   **Answer.** The mask. BERT attends bidirectionally and is pretrained by
-   masked language modelling; GPT uses a causal mask and predicts the next
-   token; T5 does both, encoder bidirectional and decoder causal with
-   cross-attention. Every other component in this lesson is shared.
+**B2.** Only rows 3 and 6:
 
-4. You fine-tune with `Trainer` and the run crashes on `TrainingArguments`
-   before any step. What did you install?
+| Row | Input | Target |
+|---|---|---|
+| 3 | `[MASK]` | `sat` |
+| 6 | `[MASK]` | `mat` |
+| 1, 2, 4, 5 | visible tokens | — discarded |
 
-   **Answer.** Bare `transformers`. `Trainer` needs `accelerate`, which comes
-   with the `[torch]` extra — install `"transformers[torch]"`.
+**2 signals** against 5 for GPT. Each mask sees the whole sentence, left
+and right.
+
+**B3.** Row 6, the `[MASK]` position: $1 \times 10$ → `rug` (or `mat`).
+
+**Takeaway.** Same head for both: $Z E^T$, softmax over the vocabulary,
+one distribution per

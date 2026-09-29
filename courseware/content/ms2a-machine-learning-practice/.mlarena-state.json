@@ -639,42 +639,42 @@
           "title": "Segmentation"
         },
         "s7-nlp-1/attention": {
-          "body": "e73c1c9ecbf90ad44564961fe86869476a6271f8b3b3be5b1951e008dcd4cf21",
+          "body": "8474b327e735834cec8c36d88efd364b61a18fbac427975228ce783c06aea017",
           "estimated_minutes": 40,
           "gated": false,
           "is_published": true,
           "title": "Attention"
         },
         "s7-nlp-1/embeddings": {
-          "body": "fc7bf51714d93794e8a3d46b4e7969faa49bfa5d040cfe3e86e06c0ee68c2c05",
+          "body": "68c06e0b79435cfc0741843618464ed78d7b6c6dcf73a2e7973e26463f3840e6",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
-          "title": "Embeddings"
+          "title": "Embeddings and MLP objectives"
         },
         "s7-nlp-1/lab-7": {
-          "body": "98357c7fa90b03e6ecedf3ea01ab96f69d61cced95d111a17f24601c2415fee2",
-          "estimated_minutes": 45,
+          "body": "b23935ed87db052d278d1551df35a81b0b11d804ee276211572b6bdda0a1f93f",
+          "estimated_minutes": 120,
           "gated": false,
           "is_published": true,
-          "title": "Lab 7 \u2014 Fine-Tune a Text Classifier"
+          "title": "Lab 7 \u2014 Transfer Learning a Text Classifier"
         },
         "s7-nlp-1/recurrent-models": {
-          "body": "c87fad7890e1ed76f96bbf8ee0f9fb6dc46633518b006737515960f8b37d9f9b",
+          "body": "292e063c532b4cc502e041ea319a863babfd95400f8bba4adfec5942e6b3766f",
           "estimated_minutes": 25,
           "gated": false,
           "is_published": true,
           "title": "Recurrent Models and Their Limits"
         },
         "s7-nlp-1/text-as-data-and-tokenization": {
-          "body": "74beada3a83bcc79652db970cf96f7bac547472f0e564ff5c7d624848262dca3",
+          "body": "0080200f916d1c6f4e824e43815c5a3a36bf29f18763c8128e96a434198249ea",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
           "title": "Text as Data and Tokenization"
         },
         "s7-nlp-1/the-transformer": {
-          "body": "37196b7632c2b86b4ce96480aa1bc21a46063713d3f3e5ba9aab536f98b51f57",
+          "body": "9a81a0174c6d516c91c1182a1a15f163ad550e82c7630100f935acbd97122e55",
           "estimated_minutes": 40,
           "gated": false,
           "is_published": true,

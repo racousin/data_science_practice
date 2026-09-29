@@ -329,3 +329,73 @@ the same few matrix multiplications.
   **KV cache** keeps $K$ and $V$ of past tokens, so each new token computes a
   single query row: $O(nd)$ per step instead of recomputing $O(n^2 d)$, at a
   memory cost of $2nd$ values per layer.
+
+---
+
+## Exercise: attention on DNA
+
+A model reads DNA with one token per nucleotide. It is trained as a **masked
+language model** on **batches of reads of variable length**.
+
+1. **Vocabulary.** What is the minimum vocabulary size? List the tokens.
+2. **Embeddings.** With embedding size $d = 8$:
+   - how many parameters in the token embedding table?
+3. **Attention layer.** Single head, $d_k = d_v = d$.
+   - shapes of $W_Q, W_K, W_V, W^O$?
+   - total parameters, without and with biases?
+4. **Forward pass.** Input read: `ACGTTGCAAT` (10 bases).
+   Give the shape of: token ids, $X$, $Q$, $K$, $V$, $S = QK^T$, $A$, $Z$,
+   and the output after $W^O$.
+
+<!-- notes: give 10 minutes in pairs. The trap is in question 4: the sequence
+the model sees is not 10 tokens long. -->
+
+---
+
+## Solution (1/2): vocabulary and parameters
+
+**1. Vocabulary: 7 tokens**
+
+| Token | Why it is required |
+|---|---|
+| `A` `C` `G` `T` | the data |
+| `[PAD]` | variable-length reads in a batch |
+| `[MASK]` | masked language modelling objective |
+| `[CLS]` | sequence-level representation |
+
+
+**2. Embeddings**
+
+| Table | Shape | Parameters |
+|---|---|---|
+| Token embedding | $7 \times 8$ | 56 |
+
+**3. Attention layer ($d = 8$)**
+
+| Weight | Shape | Parameters |
+|---|---|---|
+| $W_Q, W_K, W_V$ | $8 \times 8$ each | $3 \times 64 = 192$ |
+| $W^O$ | $8 \times 8$ | 64 |
+| **Total** | | $4d^2 = $ **256** |
+| + biases | $4d$ | **288** |
+
+
+
+---
+
+## Solution (2/2): forward pass on `ACGTTGCAAT`
+
+The model sees `[CLS] A C G T T G C A A T`: **$n = 11$**, not 10.
+
+| Step | Shape |
+|---|---|
+| Token ids | $11$ |
+| $X$ (token + position embedding) | $11 \times 8$ |
+| $Q, K, V$ | $11 \times 8$ |
+| $S = QK^T$ | $11 \times 11$ |
+| $A = \mathrm{softmax}(S / \sqrt{8})$ | $11 \times 11$, rows sum to 1 |
+| $Z = AV$ | $11 \times 8$ |
+| $Z W^O$ | $11 \times 8$ |
+
+
+Output shape equals input shape.
