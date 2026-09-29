@@ -417,26 +417,15 @@ modules:
     icon: scan
     visibility: unlisted
     summary: >
-      The transformer applied to images, then beyond one label per image:
-      detection (YOLO, DETR), segmentation, and the generative family —
-      autoencoders, VAEs, GANs and diffusion.
+      Beyond one label per image: detection, segmentation, and the generative
+      family — autoencoders, VAEs, GANs and diffusion.
     competitions:
       - competition_id: 47
         label: "CarRacing-v3 — vision with no label to predict: a convolutional encoder reading raw frames inside a control loop"
     lessons:
-      - title: "Vision Transformer"
-        slug: vision-transformer
-        file: s6-computer-vision-2/vision-transformer.md
-        estimated_minutes: 35
-        is_published: true
       - title: "Object Detection"
         slug: object-detection
         file: s6-computer-vision-2/object-detection.md
-        estimated_minutes: 50
-        is_published: true
-      - title: "DETR — Detection as Set Prediction"
-        slug: detr
-        file: s6-computer-vision-2/detr.md
         estimated_minutes: 40
         is_published: true
       - title: "Segmentation"

@@ -1,377 +1,310 @@
 # Segmentation
 
-A box says roughly where. A mask says exactly which pixels. Segmentation is
-classification run once per pixel: the output has the spatial size of the
-input, and the whole difficulty is producing it at full resolution.
+A box says roughly where. A mask says exactly which pixels. For a tumour, a
+road surface or a field boundary the difference is the whole point.
 
-<!-- notes: 50 minutes. Three things to land: (1) the output is a K×H×W
-tensor and the loss is cross-entropy per pixel, plus Dice for imbalance;
-(2) the encoder-decoder shape, with U-Net as the worked case — do the
-dimensional-flow table on the board; (3) instance segmentation is detection
-plus a mask head, and Mask2Former is DETR plus masks. The exercise takes
-15 minutes; part A is the one that convinces them pixel accuracy is useless. -->
+<!-- notes: 35 minutes. The two things to land are the encoder-decoder shape
+(why you must upsample, and why skip connections are needed to do it well) and
+Dice loss (why cross-entropy alone fails on 2%-foreground data). Show a
+prediction on an imbalanced medical image trained with plain CE: it predicts
+all background and reports 98% pixel accuracy. -->
 
 ---
 
-## Three tasks
+## The task
 
-![Semantic, instance and panoptic segmentation of the same image](assets/cv/segmentation-types-comparison.jpg)
+![Per-pixel labels](assets/cv/segmentation-intro.png)
 
-For an image $x \in \mathbb{R}^{3 \times H \times W}$ and $K$ classes:
+Segmentation is classification run once per pixel. The output has the spatial
+dimensions of the input and one channel per class.
 
-| Task | Output | Two touching people |
+```python
+logits = model(x)            # x: (B, 3, H, W)
+logits.shape                 # (B, K, H, W)
+pred = logits.argmax(1)      # (B, H, W), values in [0, K-1]
+```
+
+Nothing about the loss is new — it is cross-entropy over `H × W` positions
+instead of one. What is new is the architecture needed to produce a
+full-resolution output, and the metrics that judge it.
+
+---
+
+## Three tasks, not one
+
+![Semantic, instance, panoptic](assets/cv/segmentation-types-comparison.jpg)
+
+| Task | Output per pixel | Two touching cars |
 |---|---|---|
-| **Semantic** | $\hat{y} \in \{1, \dots, K\}^{H \times W}$, one class per pixel | one "person" region |
-| **Instance** | a set $\{(m_i, c_i)\}_{i=1}^{n}$, $m_i \in \{0,1\}^{H \times W}$, $c_i \in \{1,\dots,K\}$, countable objects only | two masks |
-| **Panoptic** | every pixel gets a class, and pixels of *things* also get an instance id | two masks, plus sky, sea and sand |
+| **Semantic** | class label | one "car" region |
+| **Instance** | instance id, for countable objects only | two separate cars |
+| **Panoptic** | class label *and* instance id, everywhere | two cars, plus road and sky |
 
-Semantic segmentation cannot count: adjacent objects of one class merge into a
-single region. Panoptic separates *things* (countable: person, car) from
-*stuff* (amorphous: sky, road), and is the union of the two other tasks.
-
----
-
-## Output tensor and loss
-
-The network returns one logit per class per pixel,
-$z \in \mathbb{R}^{K \times H \times W}$, and a softmax over the $K$ axis at
-each pixel $u \in \Omega$, $|\Omega| = HW$. The loss is cross-entropy,
-averaged over pixels:
-
-$$
-\mathcal{L}_{CE} = -\frac{1}{HW} \sum_{u \in \Omega} \log \frac{e^{z_{y_u,u}}}{\sum_{k=1}^{K} e^{z_{k,u}}}
-$$
-
-When the foreground is 2% of the pixels, predicting background everywhere
-already gives a low $\mathcal{L}_{CE}$. The **soft Dice loss** scores overlap
-per class, which does not depend on how large the class is. With
-$p_{k,u}$ the softmax probability and $g_{k,u}$ the one-hot target:
-
-$$
-\mathcal{L}_{Dice} = 1 - \frac{1}{K} \sum_{k=1}^{K}
-\frac{2 \sum_u p_{k,u}\, g_{k,u} + \epsilon}{\sum_u p_{k,u} + \sum_u g_{k,u} + \epsilon}
-$$
-
-It uses probabilities, not the argmax, so it is differentiable. Standard
-choice: $\mathcal{L} = \mathcal{L}_{CE} + \mathcal{L}_{Dice}$.
-
-The ground truth is an integer map $y \in \{0,\dots,K-1\}^{H \times W}$, never
-an RGB image, and it is resized with **nearest-neighbour** interpolation:
-bilinear averages class ids, and a boundary between class 3 and class 7 comes
-back containing 4 and 6.
+Semantic segmentation cannot count. If the deliverable is "how many cells are
+in this image", a semantic model is the wrong tool whatever its mIoU — two
+adjacent cells merge into one blob. Panoptic distinguishes *things*
+(countable: car, person) from *stuff* (uncountable: road, sky, grass).
 
 ---
 
-## Metrics
+## Ground truth is an index map
 
-![IoU and Dice](assets/cv/dicevsiou.png)
+A mask is a single-channel integer image, not an RGB picture.
 
-With $TP_k, FP_k, FN_k$ counted over pixels for class $k$:
+```python
+mask = np.array(Image.open("mask.png"))
+assert mask.ndim == 2 and mask.dtype == np.uint8
+assert set(np.unique(mask)) <= set(range(K))
+```
 
-$$
-\mathrm{PA} = \frac{1}{HW} \sum_{u} \mathbb{1}[\hat y_u = y_u], \qquad
-\mathrm{IoU}_k = \frac{TP_k}{TP_k + FP_k + FN_k}, \qquad
-\mathrm{mIoU} = \frac{1}{K} \sum_{k=1}^{K} \mathrm{IoU}_k
-$$
+Two traps. Palette PNGs: `Image.open` already hands you mode `P`, and
+`np.array` on it gives class indices — so the assert above passes as written.
+The bug is the `.convert("RGB")` you copied out of your *image* loader into your
+*mask* loader: it turns class 3 into a colour triplet and the assert fires on
+`ndim`. Masks are never converted. And resizing — a mask must be resized with
+**nearest-neighbour** interpolation, since bilinear averages neighbouring class
+ids: an edge between class 3 and class 7 comes back containing 4 and 6, labels
+that were never annotated.
 
-Pixel accuracy (PA) is dominated by the largest class: on data that is 98%
-background, a model that predicts background everywhere scores 98%, with
-$\mathrm{IoU}_{fg} = 0$. mIoU gives each class equal weight, and is the
-standard benchmark metric (counts accumulated over the whole test set).
-
-Dice, the medical-imaging convention, counts the intersection twice:
-
-$$
-\mathrm{Dice}_k = \frac{2\,TP_k}{2\,TP_k + FP_k + FN_k} = \frac{2\,\mathrm{IoU}_k}{1 + \mathrm{IoU}_k}
-$$
-
-Dice is a monotone function of IoU: the two rank models identically, Dice is
-always the larger number (IoU 0.5 is Dice 0.67). State which one you report.
+```python
+img  = TF.resize(img,  (512, 512))                       # bilinear, fine
+mask = TF.resize(mask, (512, 512), InterpolationMode.NEAREST)
+```
 
 ---
 
-## From classifier to dense prediction: FCN
+## The resolution problem
 
-![Fully convolutional network](assets/cv/d2l-fcn.png)
-*Figure: A. Zhang, Z. C. Lipton, M. Li, A. J. Smola, [Dive into Deep Learning](https://d2l.ai), [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).*
+A classification backbone downsamples aggressively: a 512×512 input leaves a
+16×16 feature map after five stride-2 stages — the right trade for a single
+label, useless for a dense one. Two ways out, combined in every architecture:
 
-A classification backbone divides the resolution by 32. The Fully
-Convolutional Network (Long et al., 2015) drops the pooling and the linear
-layer, and upsamples back. Pascal VOC, $K = 21$, input $3 \times 320 \times 480$:
-
-| Component | Input | Output | Learnt |
-|---|---|---|---|
-| ResNet-18 without GAP + FC | $3 \times 320 \times 480$ | $512 \times 10 \times 15$ | yes (pretrained) |
-| $1 \times 1$ conv | $512 \times 10 \times 15$ | $21 \times 10 \times 15$ | yes, $21 \cdot 513$ |
-| transposed conv, $k=64, s=32, p=16$ | $21 \times 10 \times 15$ | $21 \times 320 \times 480$ | yes (initialised bilinear) |
-
-Each $10 \times 15$ cell has to produce a $32 \times 32$ block of pixels on its
-own: boundaries come out blurred. This is the problem skip connections solve.
+1. **Downsample then upsample** — an encoder–decoder. Cheap, but the decoder
+   has to invent the detail the encoder threw away.
+2. **Do not downsample** — keep resolution and enlarge the receptive field
+   another way. Expensive in memory, but no detail is lost.
 
 ---
 
-## Transposed convolution
+## Upsampling
 
-![Transposed convolution, stride 2](assets/cv/d2l-transposed-conv-stride2.png)
-*Figure: A. Zhang, Z. C. Lipton, M. Li, A. J. Smola, [Dive into Deep Learning](https://d2l.ai), [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).*
+Three mechanisms, in increasing order of how much you should trust them.
 
-Each input value multiplies the whole kernel, the result is written into the
-output at a position shifted by the stride, and overlaps are summed. It is
-the transpose of the matrix of a convolution: it maps a small grid to a large one.
+```python
+nn.Upsample(scale_factor=2, mode="bilinear")           # no parameters
+nn.ConvTranspose2d(64, 32, kernel_size=2, stride=2)    # learned
+nn.Sequential(nn.Upsample(scale_factor=2), nn.Conv2d(64, 32, 3, padding=1))
+```
 
-$$
-H_{out} = (H_{in} - 1)\, s - 2p + k
-$$
-
-| Layer | $H_{in}$ | $H_{out}$ |
-|---|---|---|
-| figure above, $k=2, s=2, p=0$ | 2 | $1 \cdot 2 + 2 = 4$ |
-| U-Net up-conv, $k=2, s=2, p=0$ | $H$ | $2H$ |
-| FCN, $k=64, s=32, p=16$ | 10 | $9 \cdot 32 - 32 + 64 = 320$ |
-
-Learnt: a kernel of shape $C_{in} \times C_{out} \times k \times k$, same count
-as a convolution. When $k$ is not a multiple of $s$ the overlaps are uneven
-and produce checkerboard artefacts; bilinear upsampling followed by a
-$3 \times 3$ conv avoids them.
+Transposed convolution — insert zeros between input pixels, then convolve — is
+learned, and produces checkerboard artefacts whenever `kernel_size` is not
+divisible by `stride`. Use `4, stride=2` or `2, stride=2`, never `3, stride=2`.
+The third form avoids the artefact entirely at the same cost, and is the safer
+default.
 
 ---
 
 ## U-Net
 
-![U-Net architecture](assets/cv/unet-architecture.png)
+![U-Net](assets/cv/unet-architecture.png)
 
-U-Net (Ronneberger et al., 2015) is a symmetric encoder–decoder. The encoder
-applies (two $3 \times 3$ conv + ReLU, then $2 \times 2$ max-pool) four times;
-the decoder applies (up-conv $\times 2$, **concatenate** the encoder map of
-the same resolution, two $3 \times 3$ conv) four times.
+A symmetric encoder–decoder with **skip connections**: each decoder stage
+concatenates the encoder feature map of the same resolution before convolving.
 
-$$
-d_\ell = \mathrm{DoubleConv}\big(\,[\,\mathrm{UpConv}(d_{\ell+1})\ ;\; e_\ell\,]\,\big)
-$$
+```python
+d3 = up(bottleneck)
+d3 = conv_block(torch.cat([d3, e3], dim=1))   # skip from the encoder
+d2 = conv_block(torch.cat([up(d3), e2], dim=1))
+out = final_conv(d2)                          # (B, K, H, W)
+```
 
 The encoder knows *what* is in the image but has lost *where*; the skip
-$e_\ell$ gives the decoder back the high-resolution edges. Remove the skips
-and boundaries blur. U-Net trains from a few hundred annotated images, which
-is why it is the default in medical imaging.
+connection hands the decoder back the high-resolution edges. Remove the skips
+and the boundaries blur immediately — a one-line ablation worth running once so
+you believe it. U-Net trains on a few hundred annotated images, which is why it
+has owned medical imaging since 2015.
 
 ---
 
-## U-Net: dimensional flow
+## Atrous convolution
 
-Input $3 \times 256 \times 256$, padded convolutions (the 2015 paper used
-unpadded ones and a $572 \times 572$ input), $K$ classes.
+Dilate the kernel instead of shrinking the image: insert `r - 1` zeros between
+kernel taps. A 3×3 kernel at rate 6 sees a 13×13 region with nine weights and
+no loss of resolution.
 
-| # | Operation | Output shape | Parameters |
-|---|---|---|---|
-| e1 | DoubleConv $3 \to 64$ | $64 \times 256 \times 256$ | 38.7k |
-| e2 | pool, DoubleConv $64 \to 128$ | $128 \times 128 \times 128$ | 221k |
-| e3 | pool, DoubleConv $128 \to 256$ | $256 \times 64 \times 64$ | 885k |
-| e4 | pool, DoubleConv $256 \to 512$ | $512 \times 32 \times 32$ | 3.54M |
-| b | pool, DoubleConv $512 \to 1024$ | $1024 \times 16 \times 16$ | 14.16M |
-| d4 | up-conv $1024 \to 512$, concat e4, DoubleConv $1024 \to 512$ | $512 \times 32 \times 32$ | 2.10M + 7.08M |
-| d3 | up-conv, concat e3, DoubleConv $512 \to 256$ | $256 \times 64 \times 64$ | 0.52M + 1.77M |
-| d2 | up-conv, concat e2, DoubleConv $256 \to 128$ | $128 \times 128 \times 128$ | 131k + 443k |
-| d1 | up-conv, concat e1, DoubleConv $128 \to 64$ | $64 \times 256 \times 256$ | 33k + 111k |
-| out | $1 \times 1$ conv $64 \to K$ | $K \times 256 \times 256$ | $65K$ |
+```python
+nn.Conv2d(256, 256, 3, padding=6, dilation=6)
+```
 
-Total $\approx 31.0$M ($31{,}031{,}810$ for $K = 2$), with conv biases and no
-batch norm; the bottleneck alone is 46%. Max-pool and concatenation have no
-parameters. Four poolings: $H$ and $W$ must be divisible by $2^4 = 16$.
+This decouples receptive field from stride, exactly the constraint that forces
+encoder–decoders to exist.
+
+Failure mode: a stack of layers all at the same dilation rate samples the same
+lattice of pixels and ignores the rest — the *gridding* artefact. Vary the
+rates.
 
 ---
 
-## DeepLab: atrous convolution and ASPP
+## DeepLab and ASPP
 
-![Dilated convolution at rates 1, 2, 3](assets/cv/deeplab-aspp.png)
+![Atrous spatial pyramid pooling](assets/cv/deeplab-aspp.png)
 
-Instead of downsampling then upsampling, keep the resolution and enlarge the
-receptive field by spacing the kernel taps $r$ pixels apart:
+ASPP applies parallel atrous convolutions at several rates plus a global
+average pool, then concatenates. One module, several receptive-field sizes, so
+objects at different scales are all covered.
 
-$$
-y[u] = \sum_{t \in \{-1,0,1\}^2} w[t]\; x[u + r\,t], \qquad k_{\text{eff}} = k + (k-1)(r-1)
-$$
+```python
+feats = torch.cat([
+    conv1x1(x), atrous(x, 6), atrous(x, 12), atrous(x, 18),
+    global_pool_and_upsample(x),
+], dim=1)
+```
 
-A $3 \times 3$ kernel at $r = 6$ covers $13 \times 13$ pixels with 9 weights.
-DeepLabv3 replaces the strides of the last ResNet stages by dilation (output
-stride 16 instead of 32), then applies **ASPP**: five parallel branches on the
-same map — $1 \times 1$ conv, $3 \times 3$ at $r = 6, 12, 18$, global average
-pooling — each 256 channels, concatenated to 1280, projected to 256.
-
-For $3 \times 512 \times 512$: backbone $\to 2048 \times 32 \times 32$,
-ASPP $\to 256 \times 32 \times 32$, $1 \times 1$ conv $\to K \times 32 \times 32$,
-bilinear $\times 16 \to K \times 512 \times 512$. Learnt: all conv weights;
-fixed: the rates and the upsampling.
-
-<!-- placeholder: image to add (ASPP module diagram: parallel 1x1, 3x3 rate 6/12/18 and image pooling branches, concatenated — Chen et al., "Rethinking Atrous Convolution for Semantic Image Segmentation", 2017, Fig. 5) -->
+DeepLabv3+ adds a light decoder to recover boundary detail. It and U-Net are
+the two semantic baselines worth trying first; SegFormer is the transformer
+alternative, often better on large-scale natural imagery.
 
 ---
 
-## Instance segmentation: Mask R-CNN
+## Mask R-CNN
 
-![Mask R-CNN](assets/cv/d2l-mask-rcnn.png)
-*Figure: A. Zhang, Z. C. Lipton, M. Li, A. J. Smola, [Dive into Deep Learning](https://d2l.ai), [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).*
+![Mask R-CNN](assets/cv/mask-rcnn-architecture.png)
 
-Mask R-CNN (He et al., 2017) = Faster R-CNN + a small FCN that predicts a
-mask inside each proposal. ResNet-50-FPN, COCO $K = 80$:
+Instance segmentation is detection with a third head. Take Faster R-CNN, and
+alongside the class and box heads add a small FCN that predicts a binary mask
+inside each proposal.
 
-| Component | Input | Output | Learnt |
-|---|---|---|---|
-| backbone + FPN | $3 \times H \times W$ | $256 \times \frac{H}{s} \times \frac{W}{s}$, $s = 4, \dots, 32$ | yes |
-| RPN | feature maps | ~1000 proposal boxes | yes |
-| RoIAlign, box branch | features + box | $256 \times 7 \times 7$ per RoI | no |
-| class + box head | $256 \times 7 \times 7$ | $K{+}1$ scores, $4K$ offsets | yes |
-| RoIAlign, mask branch | features + box | $256 \times 14 \times 14$ per RoI | no |
-| mask head: 4 conv, up-conv, $1 \times 1$ | $256 \times 14 \times 14$ | $K \times 28 \times 28$ logits | yes |
+```python
+roi = roi_align(features, proposals)        # not roi_pool
+classes, boxes = detection_head(roi)
+masks = mask_head(roi)                      # (N, K, 28, 28)
+```
 
-**RoIAlign** samples the feature map by bilinear interpolation at real-valued
-positions; RoI pooling rounded the box to integer cells, a shift of up to 16
-pixels at stride 16 — acceptable for a box, not for a mask.
+The mask is predicted per class, low-resolution, then resized into the box. The
+detail that matters is `roi_align`: RoI *pooling* quantises proposal
+coordinates to integer feature-map cells, shifting masks by a few pixels —
+tolerable for a box, fatal for a mask.
 
-The mask loss is a per-pixel binary cross-entropy on the channel of the
-ground-truth class $k^*$ only, against the ground-truth mask cropped to the
-RoI and resized to $28 \times 28$:
-
-$$
-\mathcal{L}_{mask} = -\frac{1}{28^2} \sum_{u} \Big[ y_u \log \sigma(z_{k^*,u}) + (1 - y_u) \log\big(1 - \sigma(z_{k^*,u})\big) \Big]
-$$
-
-Classes do not compete for pixels; the class head decides which. Total loss
-$\mathcal{L}_{cls} + \mathcal{L}_{box} + \mathcal{L}_{mask}$. At inference the
-$28 \times 28$ mask of the predicted class is resized to the box and
-thresholded at 0.5.
+Everything that detection costs — annotation, NMS, mAP — instance segmentation
+costs too, plus polygon annotation instead of boxes.
 
 ---
 
-## Transformers: ViT with a linear decoder
+## SAM
 
-A ViT gives one token per $16 \times 16$ patch. Put them back on the grid and
-classify each one. Input $3 \times 512 \times 512$, $d = 768$:
+Segment Anything (Meta, 2023) is a promptable segmentation model trained on a
+billion masks. You give it a point, a box or a rough mask; it returns a
+high-quality mask. It has **no class labels** — it segments, it does not name.
 
-| Component | Input | Output | Learnt |
-|---|---|---|---|
-| patch embedding | $3 \times 512 \times 512$ | $1024 \times 768$ | yes, 590k |
-| $L$ transformer blocks | $1024 \times 768$ | $Z \in \mathbb{R}^{1024 \times 768}$ | yes |
-| linear head $W \in \mathbb{R}^{768 \times K}$ | $1024 \times 768$ | $1024 \times K$ | yes, $769K$ |
-| reshape | $1024 \times K$ | $K \times 32 \times 32$ | no |
-| bilinear upsampling $\times 16$ | $K \times 32 \times 32$ | $K \times 512 \times 512$ | no |
+```python
+predictor.set_image(image)
+masks, scores, _ = predictor.predict(box=np.array([x1, y1, x2, y2]))
+```
 
-Every token attends to every other from the first layer, so the receptive
-field is global without dilation or pooling. The cost is a coarse
-$32 \times 32$ grid. SegFormer (Xie et al., 2021) fixes it with a
-hierarchical transformer encoder (maps at $\frac{1}{4}$ to $\frac{1}{32}$)
-and a decoder made of MLPs that fuses the four scales.
+The practical use is as an annotation accelerator: a detector proposes boxes,
+SAM turns each into a mask, a human corrects. That converts a polygon budget
+into a box budget — roughly a five-fold saving.
 
 ---
 
-## Mask2Former and SAM
+## Metrics
 
-<!-- placeholder: image to add (Mask2Former architecture: backbone, pixel decoder, transformer decoder with masked attention, N queries producing class + mask — Cheng et al., "Masked-attention Mask Transformer for Universal Image Segmentation", CVPR 2022, Fig. 2) -->
+![Dice versus IoU](assets/cv/dicevsiou.png)
 
-Mask2Former (Cheng et al., 2022) is **DETR with masks**. A pixel decoder
-produces per-pixel embeddings
-$\mathcal{E}_{pixel} \in \mathbb{R}^{\frac{HW}{16} \times C}$ ($C = 256$).
-A transformer decoder turns $N = 100$ learnt queries into
-$q_1, \dots, q_N \in \mathbb{R}^{C}$. Each query yields a class and a mask:
+Pixel accuracy is worthless on imbalanced data — 98% on a dataset that is 98%
+background, from a model that predicts background everywhere. Use IoU per class
+and average it:
 
 $$
-p_i = \mathrm{softmax}(W_{cls}\, q_i) \in \Delta^{K+1}, \qquad
-m_i = \sigma\big(\mathcal{E}_{pixel}\; \mathrm{MLP}(q_i)\big) \in [0,1]^{\frac{H}{4} \times \frac{W}{4}}
+IoU_k = \frac{|P_k \cap G_k|}{|P_k \cup G_k|} \qquad mIoU = \frac{1}{K} \sum_{k=1}^K IoU_k
 $$
 
-The extra class is "no object". Training uses Hungarian matching exactly as in
-DETR, with a mask cost (BCE + Dice) added to the class cost. The same $N$
-pairs $(p_i, m_i)$ answer all three tasks; for semantic segmentation,
-$\hat y_u = \arg\max_k \sum_i p_i(k)\, m_i[u]$.
+Dice, the medical-imaging convention, weights the intersection twice:
 
-**SAM** (Kirillov et al., 2023) is promptable: a ViT image encoder run once, a
-prompt (point, box or mask) and a light decoder return a mask in about
-50 ms. Trained on 1.1 billion masks, it has no class labels: it segments, it
-does not name.
+$$
+Dice_k = \frac{2 |P_k \cap G_k|}{|P_k| + |G_k|}
+$$
 
-<!-- placeholder: image to add (SAM: one image with point / box prompts and the returned masks — Kirillov et al., "Segment Anything", ICCV 2023, Fig. 1 or the SAM demo) -->
+They rank models identically — Dice is monotone in IoU — but Dice is always
+the larger number. Report which one you used.
 
 ---
 
-## In practice
+## Losses
 
-`segmentation_models_pytorch` builds U-Net, FPN or DeepLabv3+ around any
-ImageNet-pretrained encoder:
+Cross-entropy over pixels is the starting point:
+
+$$
+L_{CE} = -\frac{1}{HW} \sum_{i,j} \sum_{k} y_{ijk} \log \hat{y}_{ijk}
+$$
+
+It optimises *per-pixel* correctness, so when the foreground is 2% of the image
+the fastest way to reduce it is to predict background everywhere. Dice loss
+optimises *overlap*, which is scale-free in the foreground size:
+
+$$
+L_{Dice} = 1 - \frac{2 \sum_{i,j} p_{ij} g_{ij}}{\sum_{i,j} p_{ij} + \sum_{i,j} g_{ij}}
+$$
+
+The sums run over soft probabilities, not the argmax, so it is differentiable.
+
+> Default to `CE + Dice`. Cross-entropy gives clean early gradients, Dice fixes
+> the imbalance. A pure Dice loss is unstable in the first epochs.
+
+Focal loss and class weights handle imbalance *between* classes rather than
+against the background.
+
+---
+
+## What to actually use
+
+| Situation | Choice |
+|---|---|
+| Medical, few hundred images | U-Net, `CE + Dice`, heavy augmentation |
+| Natural scenes, many classes | DeepLabv3+ or SegFormer, pretrained |
+| Need to count instances | Mask R-CNN or Mask2Former |
+| Everything at once, panoptic | Mask2Former |
+| Annotating a new dataset | SAM in the loop |
 
 ```python
 import segmentation_models_pytorch as smp
-model = smp.Unet("resnet34", encoder_weights="imagenet", in_channels=3, classes=K)
-dice = smp.losses.DiceLoss(mode="multiclass")
-logits = model(x)                                   # (B, K, H, W)
-loss = F.cross_entropy(logits, y) + dice(logits, y)  # y: (B, H, W), long
+model = smp.Unet("resnet34", encoder_weights="imagenet", classes=K)
 ```
 
-The ResNet encoder downsamples five times, so $H$ and $W$ must be divisible
-by 32. A pretrained encoder is the most effective single choice on a small
-dataset. For instance or panoptic outputs, use a pretrained Mask R-CNN
-(torchvision) or Mask2Former (Hugging Face `transformers`).
+A pretrained encoder in a U-Net is the highest-value default here: one
+argument, and typically 5–10 mIoU points on a small dataset.
 
 ---
 
-## Exercise
+## Check yourself
 
-**A. Metrics.** Ground truth $G$ and prediction $P$, foreground = 1:
+1. Your model reports 98% pixel accuracy and 0.49 mIoU on data whose foreground
+   is 2% of every image. What did it predict, and which loss do you reach for?
 
-```text
-G          P
-0 0 0 0    0 0 0 0
-0 1 1 0    0 1 1 1
-0 1 1 0    0 1 0 1
-0 0 0 0    0 0 0 0
-```
+   **Answer.** Background everywhere — which is exactly 98% of the pixels, and
+   the fastest way for per-pixel cross-entropy to fall. The mIoU gives it away:
+   0.98 on the background class, 0.00 on the foreground, averaging to 0.49 over
+   the two while accuracy still reads 98%. Switch to `CE + Dice`:
+   Dice scores overlap in the foreground, which a background-only prediction
+   cannot fake.
 
-1. $TP$, $FP$, $FN$, $TN$ for the foreground. Pixel accuracy?
-2. $\mathrm{IoU}_{fg}$, $\mathrm{IoU}_{bg}$, mIoU. $\mathrm{Dice}_{fg}$, and
-   check $\mathrm{Dice} = 2\,\mathrm{IoU}/(1 + \mathrm{IoU})$.
-3. Same metrics for a model that predicts background everywhere. What does
-   each metric say about the two models?
+2. Run this. You should get exactly the output shown.
 
-**B. Shapes.** The padded U-Net of the table, $K = 5$.
+   ```python
+   import numpy as np
+   from PIL import Image
+   mask = Image.fromarray(np.array([[3, 3, 7, 7]], dtype=np.uint8))
+   print(np.unique(np.array(mask.resize((8, 1), Image.BILINEAR))))   # -> [3 4 6 7]
+   print(np.unique(np.array(mask.resize((8, 1), Image.NEAREST))))    # -> [3 7]
+   ```
 
-1. Input $3 \times 320 \times 320$: shapes of e4, of the bottleneck, after the
-   first up-conv, after the first concatenation, and of the output.
-2. Why does a $3 \times 300 \times 300$ input crash?
-3. `ConvTranspose2d(k=3, s=2, p=1)` on a $20 \times 20$ map: output size?
-   Give $(k, s, p)$ that doubles it exactly.
+   **Answer.** Classes 4 and 6 were never annotated — bilinear resizing of a
+   label map manufactured them at the boundary. Nearest-neighbour cannot invent
+   a class, which is why masks are resized with it and images are not.
 
-<!-- notes: 15 minutes. In A3 most students expect accuracy to collapse;
-it barely moves (0.81 → 0.75) while mIoU drops from 0.63 to 0.38. B2 is the
-bug they will hit in the lab. -->
+3. The deliverable is "how many cells are in this image". Why is semantic
+   segmentation the wrong tool however high its mIoU?
 
----
-
-## Solution
-
-**A1.** $TP = 3$, $FP = 2$ (right column), $FN = 1$ (position (3,3)),
-$TN = 10$. $\mathrm{PA} = 13/16 = 0.81$.
-
-**A2.** $\mathrm{IoU}_{fg} = 3/6 = 0.50$.
-Background: $TP = 10$, $FP = 1$, $FN = 2$, $\mathrm{IoU}_{bg} = 10/13 = 0.77$.
-$\mathrm{mIoU} = 0.63$.
-$\mathrm{Dice}_{fg} = 6/9 = 0.67 = 2 \cdot 0.5 / 1.5$.
-
-**A3.**
-
-| Model | PA | $\mathrm{IoU}_{fg}$ | $\mathrm{IoU}_{bg}$ | mIoU | $\mathrm{Dice}_{fg}$ |
-|---|---|---|---|---|---|
-| $P$ | 0.81 | 0.50 | 0.77 | 0.63 | 0.67 |
-| all background | 0.75 | 0 | 0.75 | 0.38 | 0 |
-
-Pixel accuracy barely separates a model that finds the object from one that
-ignores it; mIoU and Dice do.
-
-**B1.** e4 $512 \times 40 \times 40$, bottleneck $1024 \times 20 \times 20$,
-up-conv $512 \times 40 \times 40$, concat $1024 \times 40 \times 40$,
-output $5 \times 320 \times 320$.
-
-**B2.** $300 \to 150 \to 75 \to 37 \to 18$ (floor). The up-conv gives
-$18 \to 36$, but e4 is $37 \times 37$: the concatenation fails. $H$ and $W$
-must be multiples of 16.
-
-**B3.** $(20 - 1) \cdot 2 - 2 + 3 = 39$, one pixel short (PyTorch adds
-`output_padding=1` for this). $k = 2, s = 2, p = 0$ or $k = 4, s = 2, p = 1$:
-$(H - 1) \cdot 2 - 2 + 4 = 2H$.
+   **Answer.** It labels pixels, not objects: two touching cells become one
+   region and cannot be counted. Counting needs instance segmentation — Mask
+   R-CNN or Mask2Former.

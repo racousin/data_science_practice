@@ -1,239 +1,223 @@
 # GANs
 
-The VAE writes down a likelihood and pays for it with blurry samples. A GAN
-writes down no likelihood at all. A second network, the discriminator, learns
-to tell real images from generated ones, and the generator is trained to fool
-it. The loss is learnt, and it does not average.
+A VAE learns a distribution by writing down a likelihood. A GAN never writes
+one down: it trains a generator against a critic that is itself learning, and
+takes sharp samples as the prize for a much harder optimisation.
 
-<!-- notes: 25 minutes. The optimal-discriminator derivation is short and is the
-only theory in the lesson; do it on the board. Then spend the time on the
-non-saturating loss and on the failure modes, which is what students hit first
-when they train one. FID is defined here once; the diffusion lesson reuses it. -->
+<!-- notes: 25 minutes. Do not derive the theory — spend the time on the
+failure modes, because that is what students hit within ten minutes of running
+one. If there is a GPU in the room, start a DCGAN on MNIST at the beginning of
+the lesson and look at the samples at the end. -->
 
 ---
 
-## Two networks
+## Two networks, opposed
 
 ![Generator and discriminator](assets/cv/gan-architecture.png)
 
-| Network | Input | Output | Learnt |
-|---|---|---|---|
-| generator $G_\theta$ | $z \in \mathbb{R}^{d}$, $z \sim \mathcal{N}(0, I)$ | $x \in \mathbb{R}^{3 \times H \times W}$ | $\theta$ |
-| discriminator $D_\psi$ | $x \in \mathbb{R}^{3 \times H \times W}$ | $D_\psi(x) \in [0, 1]$ | $\psi$ |
+- The **generator** $G$ maps noise $z$ to an image. It never sees real data.
+- The **discriminator** $D$ takes an image and outputs the probability it is
+  real. It sees both.
 
-$D_\psi(x)$ is the probability that $x$ is a real image. $D$ sees real and
-generated images; $G$ never sees a real image. The only information about the
-data that reaches $G$ is the gradient of $D$.
-
-The generator is the decoder of the VAE with no encoder: $z \sim p(z)$, one
-forward pass, an image. The generated images follow a distribution $p_g$,
-defined implicitly: it can be sampled, but $p_g(x)$ cannot be evaluated.
+$D$ is trained to be right, $G$ to make $D$ wrong. The only learning signal
+reaching the generator is the discriminator's gradient, which is why everything
+about GAN training is a question of keeping that signal alive.
 
 ---
 
-## The minimax objective
+## The objective
 
 $$
-\min_{G} \max_{D}\; V(D, G) = \mathbb{E}_{x \sim p_{data}}\big[\log D(x)\big] + \mathbb{E}_{z \sim p(z)}\big[\log\big(1 - D(G(z))\big)\big]
+\min_G \max_D \mathbb{E}_{x \sim p_{data}} [\log D(x)] + \mathbb{E}_{z \sim p_z} [\log (1 - D(G(z)))]
 $$
 
-$V$ is the negative binary cross-entropy of a classifier with real images
-labelled 1 and generated images labelled 0.
+$D$ maximises: push $D(x)$ toward 1 on real data and $D(G(z))$ toward 0 on
+fakes. $G$ minimises the second term: make $D(G(z))$ large.
 
-- $D$ **maximises** $V$: $D(x) \to 1$ on real images, $D(G(z)) \to 0$ on
-  generated ones.
-- $G$ **minimises** $V$, through the second term only: $D(G(z)) \to 1$.
-
-This is a two-player zero-sum game. The solution is a saddle point, not a
-minimum: gradient descent is not guaranteed to reach it.
-
----
-
-## The optimal discriminator
-
-Fix $G$. Write $V$ as one integral over $x$, with $p_g$ the distribution of
-$G(z)$:
-
-$$
-V(D, G) = \int \Big( p_{data}(x) \log D(x) + p_g(x) \log\big(1 - D(x)\big) \Big)\, dx
-$$
-
-For $a, b > 0$, $y \mapsto a \log y + b \log(1 - y)$ is maximal at
-$y = a / (a + b)$. Pointwise:
-
-$$
-D^*(x) = \frac{p_{data}(x)}{p_{data}(x) + p_g(x)}
-$$
-
-Substitute $D^*$, with $m = \tfrac{1}{2}(p_{data} + p_g)$:
-
-$$
-V(D^*, G) = \mathrm{KL}(p_{data} \,\Vert\, m) + \mathrm{KL}(p_g \,\Vert\, m) - \log 4 = 2\, \mathrm{JS}(p_{data} \,\Vert\, p_g) - \log 4
-$$
-
-With an optimal discriminator, the generator minimises the **Jensen-Shannon
-divergence** to the data. Its minimum, $-\log 4$, is reached only at
-$p_g = p_{data}$, where $D^* = \tfrac{1}{2}$ everywhere: the discriminator can
-do no better than chance.
-
----
-
-## The non-saturating generator loss
-
-Write $D(x) = \mathrm{sigmoid}(s(x))$, with $s$ the logit. Early in training
-$G$ is bad and $D$ rejects its samples easily: $D(G(z)) \approx 0.01$.
-
-| Generator loss | Gradient w.r.t. the logit $s$ | at $D = 0.01$ |
-|---|---|---|
-| $\log(1 - D(G(z)))$, minimised (minimax) | $-D$ | $-0.01$ |
-| $-\log D(G(z))$, minimised (non-saturating) | $-(1 - D)$ | $-0.99$ |
-
-The minimax loss saturates exactly when the generator most needs a signal. The
-non-saturating loss has the same fixed point, $D(G(z)) \to 1$, and a gradient
-99 times larger at the start. Every implementation uses it: train $G$ with the
-binary cross-entropy and the label "real".
+At the theoretical optimum $G$ reproduces the data distribution and
+$D(x) = 0.5$ everywhere — the discriminator can do no better than a coin flip.
+You will never observe this, but it is the target the dynamics move toward.
 
 ---
 
 ## The training loop
 
-![Data flow in a GAN](assets/cv/d2l-gan.png)
-*Figure: A. Zhang, Z. C. Lipton, M. Li, A. J. Smola, [Dive into Deep Learning](https://d2l.ai), [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).*
-
-Alternate one step on $D$ and one step on $G$, on each minibatch:
-
 ```python
-fake = G(torch.randn(B, 100))
-d_loss = bce(D(real), ones) + bce(D(fake.detach()), zeros)
+d_loss = bce(D(real), ones) + bce(D(G(z).detach()), zeros)
 opt_D.zero_grad(); d_loss.backward(); opt_D.step()
-g_loss = bce(D(fake), ones)                      # non-saturating
+
+g_loss = bce(D(G(z)), ones)          # non-saturating form
 opt_G.zero_grad(); g_loss.backward(); opt_G.step()
 ```
 
-`.detach()` stops the discriminator loss from updating $G$. The discriminator
-is **used** in the $G$ step, but only `opt_G` steps, so $\psi$ does not move.
-
-Neither loss is a measure of progress: each is measured against an opponent
-that changes every step. Progress is judged on samples from a fixed batch of
-$z$, and with FID (last slide).
+Two facts hide in four lines. The `.detach()` in the discriminator step stops
+the generator being updated by the discriminator's loss — forget it and the
+generator is trained to *help* the discriminator. And the generator's target is
+`ones`, not `1 - zeros`: minimising $\log(1 - D(G(z)))$ has vanishing gradient
+exactly when the generator is bad, so everyone maximises $\log D(G(z))$
+instead.
 
 ---
 
-## DCGAN: dimensional flow
+## There is no loss curve to read
 
-<!-- placeholder: image to add (DCGAN generator: z=100 projected to 4x4x1024, four fractionally-strided convolutions to 64x64x3; Radford, Metz, Chintala 2016, Fig. 1) -->
+In every other model in this course, a falling loss means progress. Here the
+two losses are measured against a moving opponent. `d_loss` going down can mean
+the discriminator is winning, which means the generator is about to stop
+learning.
 
-The generator is a stack of transposed convolutions, $4 \times 4$ kernels,
-stride 2, padding 1. Output size: $(H - 1) \cdot 2 - 2 + 4 = 2H$.
+> A GAN's loss curves are uninterpretable. Judge it by looking at samples on a
+> fixed noise vector every epoch, and by FID.
 
-| # | Layer | Output shape |
+Fix a batch of `z` at the start of training and decode it at every checkpoint.
+That filmstrip is the diagnostic.
+
+---
+
+## Mode collapse
+
+The generator finds one output that reliably fools the discriminator and
+produces it for every input. On MNIST: a thousand samples, all sevens.
+
+Nothing in the objective rewards diversity. $D$ only asks "is this real", never
+"have I seen this before". The generator has found a legitimate local optimum
+of the game.
+
+Symptoms: samples in a batch nearly identical; FID stuck high while `g_loss`
+looks healthy; latent interpolation that does not move.
+
+Mitigations: minibatch discrimination (let $D$ see a batch, not one image),
+unrolled or two-timescale updates, and switching to a Wasserstein objective.
+
+---
+
+## Non-convergence and imbalance
+
+| Failure | What you see | Fix |
 |---|---|---|
-| 1 | $z \sim \mathcal{N}(0, I)$ | $100$ |
-| 2 | linear, reshape, BN, ReLU | $1024 \times 4 \times 4$ |
-| 3 | transposed conv, BN, ReLU | $512 \times 8 \times 8$ |
-| 4 | transposed conv, BN, ReLU | $256 \times 16 \times 16$ |
-| 5 | transposed conv, BN, ReLU | $128 \times 32 \times 32$ |
-| 6 | transposed conv, $\tanh$ | $3 \times 64 \times 64$ |
+| Discriminator too strong | `d_loss` → 0, `g_loss` explodes, no gradient for $G$ | lower `lr_D`, label smoothing, noisy labels |
+| Generator too strong | `d_loss` high, samples still bad | more $D$ steps per $G$ step |
+| Oscillation | samples cycle between modes, never settle | TTUR, EMA of generator weights |
 
-About 12.7M generator weights. The discriminator is the mirror: strided
-convolutions $3 \times 64 \times 64 \to 128 \times 32 \times 32 \to \dots \to
-1024 \times 4 \times 4$, then one logit. No pooling and no fully connected
-hidden layers: resolution changes only through strides. Pixels are scaled to
-$[-1, 1]$ to match the $\tanh$.
+The equilibrium is a saddle point, not a minimum, and gradient descent has no
+convergence guarantee there — a GAN can circle forever without diverging *or*
+improving.
 
 ---
 
-## Mode collapse and instability
+## The fixes that actually work
 
-**Mode collapse.** The objective asks each sample to look real, never the set
-of samples to cover the data. If one output $x^\star$ fools $D$, $G$ can map
-every $z$ near $x^\star$: all generated digits are sevens. $D$ then learns to
-reject $x^\star$, $G$ jumps to another mode, and the pair can cycle.
+- **WGAN-GP.** Replace the classification objective with the Wasserstein
+  distance, and enforce the required Lipschitz constraint by penalising the
+  critic's gradient norm. The critic's output becomes a meaningful quality
+  score, and the vanishing-gradient failure disappears.
+- **Spectral normalization.** Divide each weight matrix by its largest singular
+  value. One line per layer, no extra loss term, and it bounds the
+  discriminator's Lipschitz constant directly.
 
-**Vanishing signal.** When $p_{data}$ and $p_g$ lie on disjoint
-low-dimensional sets, a perfect $D$ exists and the JS divergence is constant,
-$\log 2$: it gives no direction toward the data.
+```python
+D_layer = nn.utils.spectral_norm(nn.Conv2d(64, 128, 4, 2, 1))
+```
+
+- **TTUR.** Two time-scale update rule: a larger learning rate for $D$ than for
+  $G$ — typically `2e-4` and `1e-4`. Cheapest stabiliser on the list.
+- **EMA of generator weights** for sampling. Nearly free, and it removes most
+  of the epoch-to-epoch sample jitter.
+
+Start with spectral norm plus TTUR. Reach for WGAN-GP if it still oscillates.
+
+---
+
+## Conditional GANs
+
+Feed the condition to both networks — a class label, an embedding, a whole
+image.
+
+```python
+z_y = torch.cat([z, embed(y)], dim=1)                   # generator input, (B, dz + E)
+ymap = embed(y)[..., None, None].expand(-1, -1, x.size(2), x.size(3))   # (B, E, H, W)
+d_in = torch.cat([x, ymap], dim=1)                      # (B, 3 + E, H, W)
+```
+
+The embedding has to be broadcast to a spatial map before it can be
+concatenated with an image: `expand_as(x[:, :1])` cannot turn `(B, E)` into
+`(B, 1, H, W)` and raises.
+
+If only $G$ sees the label, nothing forces it to be used: the generator ignores
+`y` and produces unconditional samples. $D$ must be able to reject a correct
+image paired with the wrong label.
+
+**pix2pix** is a conditional GAN where the condition is the input image —
+sketch to photo, map to satellite — and it needs *paired* data. **CycleGAN**
+removes that requirement with two generators and a cycle-consistency loss:
+translate to the other domain and back, and demand you recover the original.
+Horses to zebras, summer to winter, no pairs.
+
+---
+
+## Evaluating a generator
+
+There is no held-out likelihood to report, so evaluation compares
+*distributions* of samples.
+
+**FID** embeds real and generated images with an Inception network and compares
+the two Gaussians fitted to those features:
 
 $$
-p_{data} \perp p_g \;\Rightarrow\; \mathrm{JS}(p_{data} \,\Vert\, p_g) = \log 2 \text{ for any } G
+FID = |\mu_r - \mu_g|^2 + Tr\left( \Sigma_r + \Sigma_g - 2 (\Sigma_r \Sigma_g)^{1/2} \right)
 $$
 
-**Non-convergence.** Alternating gradient steps on a saddle point can
-oscillate forever. The stabilisers that are used in practice all bound how
-fast $D$ can change: spectral normalisation of $D$'s weights, a gradient
-penalty on $D$ (WGAN-GP), and a smaller learning rate for $G$.
+Lower is better. It is sensitive to both quality and diversity, which is why it
+caught mode collapse when the Inception Score did not.
+
+Caveats worth stating whenever you report one: FID is biased by sample count
+(use ≥10k, always the same count when comparing), depends on the resizing and
+the Inception weights, and looks through a network trained on ImageNet — so it
+means much less on medical or satellite images. Report FID *and* show samples.
 
 ---
 
-## Conditioning, and StyleGAN
+## Where GANs stand now
 
-**Conditional GAN.** Give the condition $y$ to both networks: $G(z, y)$ and
-$D(x, y)$, so that $D$ rejects a realistic image paired with the wrong label.
+Diffusion beat them on image quality and on training stability, and took the
+text-to-image field. GANs remain the right tool when:
 
-**StyleGAN.** A mapping MLP turns $z$ into a style vector $w \in
-\mathbb{R}^{512}$, and $w$ sets the per-channel scale and shift of the
-normalisation in every generator layer. The same mechanism, a condition that
-modulates normalisation, conditions the Diffusion Transformer of the next
-lesson.
+- **inference must be one forward pass** — real-time video, super-resolution,
+  on-device generation
+- the domain is narrow and a StyleGAN-class model is already tuned for it
+  (faces, textures)
+- you need an adversarial *loss term* inside another model — the perceptual
+  discriminator in a VAE decoder or a neural codec is a GAN
 
-GANs sample in one forward pass and give sharp images. They lost image
-synthesis to diffusion on stability and on diversity, and survive as the
-adversarial **loss term** inside other models: the Stable Diffusion VAE
-decoder is trained with one.
-
----
-
-## Evaluating a generator: FID
-
-A GAN has no likelihood to report. The **Fréchet Inception Distance** compares
-the distribution of generated images with the distribution of real ones, in
-the 2048-dimensional feature space of a pretrained Inception-v3.
-
-Fit a Gaussian to each feature set, $(\mu_r, \Sigma_r)$ on real images,
-$(\mu_g, \Sigma_g)$ on generated ones, and take the Fréchet distance between
-the two Gaussians:
-
-$$
-\mathrm{FID} = \| \mu_r - \mu_g \|^2 + \mathrm{Tr}\left(\Sigma_r + \Sigma_g - 2\left(\Sigma_r \Sigma_g\right)^{1/2}\right)
-$$
-
-Lower is better; 0 for identical Gaussians. The mean term measures quality,
-the covariance term measures diversity: a collapsed generator has a small
-$\Sigma_g$ and a large FID even when every sample looks real. $\mu \in
-\mathbb{R}^{2048}$, $\Sigma \in \mathbb{R}^{2048 \times 2048}$, so FID needs
-many samples (typically 50k) and is biased at small sample sizes. It is the
-standard metric for GANs and diffusion models alike.
+Learn the adversarial loss as a component; as a standalone image generator,
+the next lesson has replaced it.
 
 ---
 
-## Exercise
+## Check yourself
 
-1. At a point $x$, $p_{data}(x) = 0.3$ and $p_g(x) = 0.1$. What is $D^*(x)$?
-   At a point where $p_g(x) > 0$ but $p_{data}(x) = 0$?
-2. The generator is perfect, $p_g = p_{data}$. Give $D^*$, $V(D^*, G)$ and the
-   binary cross-entropy of the discriminator (per example, averaged over real
-   and fake).
-3. At the start of training $D(G(z)) = 0.05$. Gradient with respect to the
-   logit for the minimax and for the non-saturating generator losses? Ratio?
-4. A DCGAN generator must output $3 \times 128 \times 128$ from $1024 \times 4
-   \times 4$ with the same transposed convolutions. How many layers?
+1. `d_loss` falls to nearly zero over a few hundred steps while `g_loss`
+   explodes. Who is winning, and what does this lesson tell you to change?
 
-<!-- notes: 10 minutes. Question 2: the discriminator loss converging to log 2
-= 0.693 per example is what a healthy GAN run shows. -->
+   **Answer.** The discriminator. It is right often enough that almost no
+   gradient reaches the generator. Lower `lr_D`, add label smoothing or noisy
+   labels — and reach for spectral normalization plus TTUR before anything more
+   elaborate.
 
----
+2. The generator's loss is `bce(D(G(z)), ones)` and not `bce(D(G(z)), zeros)`
+   negated. Why does everyone use that form?
 
-## Solution
+   **Answer.** Minimising $\log(1 - D(G(z)))$ has a vanishing gradient exactly
+   when the generator is bad, which is when it needs the signal most. Maximising
+   $\log D(G(z))$ — the non-saturating form — keeps the gradient alive early.
 
-**1.** $D^*(x) = 0.3 / (0.3 + 0.1) = 0.75$. Where $p_{data}(x) = 0$:
-$D^*(x) = 0$, the point is certainly fake.
+3. Run this. You should get exactly the output shown.
 
-**2.** $D^* = \tfrac{1}{2}$ everywhere. $V(D^*, G) = \log \tfrac12 + \log
-\tfrac12 = -\log 4 \approx -1.386$. The discriminator's BCE is $-V/2 = \log 2
-\approx 0.693$ per example: chance level. A discriminator loss that settles
-near 0.69 is a sign of a balanced game, not of a broken discriminator.
-
-**3.** Minimax: $-D = -0.05$. Non-saturating: $-(1 - D) = -0.95$. Ratio 19.
-
-**4.** Each layer doubles the side: $4 \to 8 \to 16 \to 32 \to 64 \to 128$,
-**5** transposed convolutions (one more than at $64 \times 64$).
+   ```python
+   import torch, torch.nn as nn
+   embed = nn.Embedding(10, 32)
+   x = torch.randn(16, 3, 64, 64)
+   y = torch.randint(0, 10, (16,))
+   ymap = embed(y)[..., None, None].expand(-1, -1, x.size(2), x.size(3))
+   print(torch.cat([x, ymap], dim=1).shape)   # -> torch.Size([16, 35, 64, 64])
+   ```
