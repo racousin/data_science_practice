@@ -1,255 +1,309 @@
 # Autoencoders and VAEs
 
-Every model so far learned $p(y|x)$ — a label given an image. A generative
-model learns $p(x)$ itself, and can therefore draw new samples from it.
+Every model so far learned $p(y \mid x)$, a label given an image. A generative
+model learns $p_\theta(x)$ itself, so that new images can be drawn from it. This
+lesson and the next two give three answers to the same question: VAEs, GANs
+and diffusion models.
 
-<!-- notes: 30 minutes. State the generative problem once, here, because the
-next two lessons assume it. The reparameterization trick is the slide to slow
-down on: students accept the formula and cannot say why the naive version has
-no gradient. Ask them. -->
-
----
-
-## The generative problem
-
-![Samples from VAE, GAN, flow and diffusion models](assets/cv/generative-models-examples.png)
-
-Given samples $x$ from an unknown distribution, learn a model you can **sample
-from**. Two requirements, and they pull in different directions:
-
-- the samples must look like the data (quality)
-- the samples must cover the data (diversity)
-
-A model that memorises one training image scores perfectly on the first and
-zero on the second. Every failure mode in this session is a collapse of one
-into the other.
+<!-- notes: 30 minutes. State the generative problem once, here: the next two
+lessons assume it. The ELBO derivation is three lines, do it on the board. The
+reparameterisation slide is the one to slow down on: ask why the naive version
+has no gradient before showing the answer. End on the Stable Diffusion slide,
+it is the bridge to the diffusion lesson. -->
 
 ---
 
-## Four families
+## The generative task
 
-| Family | Learns | Sampling | Weakness |
-|---|---|---|---|
-| Autoencoder / VAE | a latent code + decoder | one forward pass | blurry |
-| GAN | a generator, adversarially | one forward pass | unstable, mode collapse |
-| Normalizing flow | an invertible map, exact $p(x)$ | one forward pass | architecturally constrained |
-| Diffusion | a denoiser | many passes | slow |
+![Four families of generative models](assets/cv/generative-models-examples.png)
 
-All four are still in use. Diffusion dominates image synthesis; VAEs survive as
-components *inside* diffusion systems; GANs survive where latency matters.
+Data: images $x^{(1)}, \dots, x^{(N)}$ drawn from an unknown $p_{data}$, with
+$x \in \mathbb{R}^{3 \times H \times W}$. Goal: a model $p_\theta$ close to
+$p_{data}$ that we can **sample from**.
+
+A $64 \times 64$ RGB image lives in $\mathbb{R}^{12288}$, and natural images
+fill a vanishingly small part of it. Every family in the figure uses the same
+trick: draw a simple random variable $z$ (or $x_T$) from $\mathcal{N}(0, I)$
+and learn a network that maps it to that small part.
+
+| Model | What is learnt | Training signal |
+|---|---|---|
+| VAE | encoder + decoder | likelihood lower bound |
+| GAN | generator + discriminator | a learnt critic |
+| Diffusion | a denoiser | noise regression |
 
 ---
 
 ## The autoencoder
 
-Two networks trained to reproduce the input through a narrow bottleneck.
+Two networks and a bottleneck, $d \ll 3HW$:
+
+$$
+z = f_\phi(x) \in \mathbb{R}^d, \qquad \hat{x} = g_\theta(z) \in \mathbb{R}^{3 \times H \times W}, \qquad
+\mathcal{L}(\phi, \theta) = \frac{1}{N} \sum_{i} \| x^{(i)} - g_\theta(f_\phi(x^{(i)})) \|^2
+$$
+
+| Component | Input | Output | Learnt |
+|---|---|---|---|
+| encoder $f_\phi$ | $3 \times 64 \times 64$ | $d = 128$ | $\phi$ |
+| decoder $g_\theta$ | $128$ | $3 \times 64 \times 64$ | $\theta$ |
+
+No labels: the input is the target. The bottleneck is what forces learning.
+With $d \geq 3HW$ the identity map is a perfect solution and nothing is
+learnt. With $d = 128$ the network must keep the 128 directions that best
+explain the images: a non-linear PCA.
 
 ```python
-z = encoder(x)          # (B, 3, 64, 64) -> (B, 128)
-x_hat = decoder(z)      # (B, 128)       -> (B, 3, 64, 64)
+z = encoder(x)                 # (B, 3, 64, 64) -> (B, 128)
+x_hat = decoder(z)             # (B, 128) -> (B, 3, 64, 64)
 loss = F.mse_loss(x_hat, x)
 ```
 
-No labels are needed — the input is the target. The bottleneck is what forces
-learning: with `latent_dim` equal to the input size the network learns the
-identity and nothing else.
-
-The interesting object is not `x_hat`. It is `z`.
-
 ---
 
-## What the latent code is good for
+## Why the latent space cannot be sampled
 
-- **Compression.** A 12288-dimensional image becomes 128 numbers, lossily but
-  semantically.
-- **Denoising.** Train with corrupted inputs and clean targets — a denoising
-  autoencoder learns the data manifold rather than the identity.
-- **Anomaly detection.** Reconstruction error is high for inputs unlike
-  anything in training. Fit on normal production data, threshold the error,
-  flag the rest.
+To generate, draw $z$ and compute $g_\theta(z)$. But draw $z$ from **which
+distribution**?
 
-```python
-err = ((x - model(x)) ** 2).mean(dim=[1, 2, 3])
-anomalies = err > threshold          # threshold from a validation quantile
-```
-
-The anomaly-detection use is the one that pays for itself in industry, and it
-needs no labels at all.
-
----
-
-## Why a plain autoencoder is a bad generator
-
-Sample a random `z` and decode it. You get noise.
-
-Nothing in the objective constrains the *shape* of the latent space. The
-encoder is free to scatter training points anywhere — clusters far apart, vast
-empty regions between them. Reconstruction only cares that each training point
-maps somewhere it can be decoded from.
-
-> An autoencoder learns a code for the data it has seen. It does not learn a
-> distribution, so there is nothing to sample.
-
-Fixing that is the entire contribution of the VAE: force the latent space to
-match a distribution you *can* sample from.
-
----
-
-## The VAE
-
-![VAE architecture](assets/cv/vae-architecture.png)
-
-The encoder no longer outputs a point. It outputs the parameters of a Gaussian
-over latent codes:
-
-```python
-h = encoder(x)
-mu, logvar = self.fc_mu(h), self.fc_logvar(h)   # each (B, d)
-```
-
-Training pushes every such Gaussian toward the prior $\mathcal{N}(0, I)$ while
-still requiring the decoder to reconstruct. The two forces together fill the
-latent space — overlapping blobs covering the unit ball, no holes — so sampling
-becomes trivial: draw `z ~ N(0, I)`, decode.
-
----
-
-## The reparameterization trick
-
-The naive version — sample `z` from `N(mu, sigma)` and backpropagate — does not
-work. Sampling is not differentiable, so no gradient reaches `mu` or `logvar`.
-
-```python
-def reparameterize(mu, logvar):
-    std = torch.exp(0.5 * logvar)
-    eps = torch.randn_like(std)          # the randomness, detached from theta
-    return mu + eps * std                # differentiable in mu and std
-```
-
-Move the randomness into a constant `eps` drawn outside the computation graph,
-and make `z` a deterministic function of `mu`, `std` and `eps`. The gradient
-now flows through the arithmetic.
-
-This is the single idea that made VAEs trainable, and the same trick appears
-throughout stochastic optimisation.
-
----
-
-## The objective
-
-Maximise the evidence lower bound on $\log p(x)$:
+The loss only constrains the $N$ points $f_\phi(x^{(i)})$. Where they land, how
+spread they are, and what lies between them is left free. The encoder can
+place the training codes on a thin curved set with large empty regions, and
+the decoder is never trained on those regions.
 
 $$
-\mathcal{L} = \mathbb{E}_{q_\phi(z|x)} [\log p_\theta(x|z)] - D_{KL}(q_\phi(z|x) | p(z))
+z \sim \mathcal{N}(0, I) \;\Rightarrow\; z \text{ falls where no training code lies} \;\Rightarrow\; g_\theta(z) \text{ is not an image}
 $$
 
-The first term is reconstruction. The second is a regulariser pulling the
-encoder's Gaussian toward the prior. With a Gaussian encoder and an
-$\mathcal{N}(0, I)$ prior the KL term has a closed form and is three lines of
-code:
-
-$$
-D_{KL} = -\frac{1}{2} \sum_{j=1}^d \left( 1 + \log \sigma_j^2 - \mu_j^2 - \sigma_j^2 \right)
-$$
+The autoencoder learns a **code**, not a **distribution**. The VAE adds the
+missing constraint: the codes must follow a distribution fixed in advance,
+$p(z) = \mathcal{N}(0, I)$.
 
 ---
 
-## The loss in code
+## A latent variable model
+
+Declare how an image is generated: first a code, then an image given the code.
+
+$$
+z \sim p(z) = \mathcal{N}(0, I_d), \qquad x \sim p_\theta(x \mid z) = \mathcal{N}\big(g_\theta(z), \sigma^2 I\big)
+$$
+
+$$
+p_\theta(x) = \int p_\theta(x \mid z)\, p(z)\, dz
+$$
+
+Maximum likelihood on $p_\theta(x)$ would train the decoder, and sampling is
+built in. The integral is the problem: over $\mathbb{R}^{128}$, almost every
+$z$ gives $p_\theta(x \mid z) \approx 0$, so Monte Carlo from $p(z)$ never hits
+the codes that explain $x$.
+
+The fix: a second network that proposes, for each $x$, the codes that are
+likely to have produced it.
+
+$$
+q_\phi(z \mid x) = \mathcal{N}\big(\mu_\phi(x),\; \mathrm{diag}\, \sigma^2_\phi(x)\big), \qquad
+\mu_\phi(x),\; \log \sigma^2_\phi(x) \in \mathbb{R}^d
+$$
+
+The encoder no longer outputs a point: it outputs $2d$ numbers, a mean and a
+variance per latent dimension.
+
+---
+
+## The evidence lower bound
+
+Multiply and divide by $q_\phi$, then apply Jensen ($\log$ is concave):
+
+$$
+\log p_\theta(x) = \log \mathbb{E}_{q_\phi(z|x)}\left[\frac{p_\theta(x \mid z)\, p(z)}{q_\phi(z \mid x)}\right]
+\;\geq\; \mathbb{E}_{q_\phi(z|x)}\big[\log p_\theta(x \mid z)\big] - \mathrm{KL}\big(q_\phi(z \mid x)\,\Vert\, p(z)\big)
+$$
+
+The right-hand side is the **ELBO**. The gap is exactly
+$\mathrm{KL}\big(q_\phi(z \mid x) \,\Vert\, p_\theta(z \mid x)\big) \geq 0$: the
+bound is tight when the encoder matches the true posterior.
+
+Both terms are computable:
+
+- **reconstruction.** With the Gaussian decoder,
+  $-\log p_\theta(x \mid z) = \frac{1}{2\sigma^2}\| x - g_\theta(z)\|^2 + \text{const}$:
+  the autoencoder's squared error.
+- **regularisation.** The KL pulls each $q_\phi(z \mid x)$ toward
+  $\mathcal{N}(0, I)$. This is the constraint the autoencoder was missing.
+
+Training maximises the ELBO in $\phi$ and $\theta$ jointly.
+
+---
+
+## The KL in closed form
+
+Between two Gaussians the KL has a closed form. For
+$q = \mathcal{N}(\mu, \mathrm{diag}\,\sigma^2)$ and $p = \mathcal{N}(0, I_d)$:
+
+$$
+\mathrm{KL}(q \,\Vert\, p) = \frac{1}{2} \sum_{j=1}^{d} \left( \mu_j^2 + \sigma_j^2 - 1 - \log \sigma_j^2 \right)
+$$
+
+Each term is zero only at $\mu_j = 0$, $\sigma_j = 1$. The $\mu_j^2$ term pulls
+codes toward the origin; the $\sigma_j^2 - \log\sigma_j^2$ term forbids
+$\sigma_j \to 0$, so each image occupies a **region** of latent space, not a
+point. Neighbouring images get overlapping regions, and the holes of the
+autoencoder are filled.
+
+The loss, per image, summed over pixels and latent dimensions:
 
 ```python
 recon = F.mse_loss(x_hat, x, reduction="sum") / x.size(0)
-kl = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp()) / x.size(0)
+kl = 0.5 * torch.sum(mu**2 + logvar.exp() - 1 - logvar) / x.size(0)
 loss = recon + beta * kl
 ```
 
-`reduction="sum"` then divide by the batch, not `reduction="mean"` — otherwise
-the reconstruction term is scaled by `1/(C·H·W)` relative to the KL and the
-balance is silently wrong by four orders of magnitude. This is the most common
-VAE bug.
-
-`beta` sets the trade-off. Too low and the KL is ignored: you have an
-autoencoder again, sharp reconstructions and unusable samples. Too high and the
-posterior collapses to the prior: the decoder ignores `z` and emits the dataset
-mean. Anneal `beta` from 0 over the first few epochs.
+The encoder predicts $\log\sigma^2$, not $\sigma$: it is unconstrained in sign.
+$\beta = 1$ is the ELBO; $\beta$ trades reconstruction against a smooth latent
+space.
 
 ---
 
-## Blurriness
+## The reparameterisation trick
 
-VAE samples are recognisable and soft. Two reasons compound:
+![VAE with reparameterised sampling](assets/cv/vae-architecture.png)
 
-- The Gaussian likelihood makes the reconstruction term an L2 loss, and L2 is
-  minimised by the *average* of the plausible outputs. Averaging sharp edges
-  produces a blurred one.
-- The KL term deliberately smooths the latent space, so nearby codes decode to
-  similar images.
+The reconstruction term is an expectation over $z \sim q_\phi(z \mid x)$,
+estimated with one sample. But a sampling step has no derivative with respect
+to $\mu_\phi$ and $\sigma_\phi$, so the gradient stops at the draw.
 
-This is a property of the objective, not a training failure — you do not tune
-it away. If sharpness is the requirement the answer is a GAN or diffusion, or a
-VQ-VAE, which replaces the Gaussian latent with a discrete codebook.
+Move the randomness out of the graph:
 
----
+$$
+z = \mu_\phi(x) + \sigma_\phi(x) \odot \epsilon, \qquad \epsilon \sim \mathcal{N}(0, I_d)
+$$
 
-## Latent interpolation
-
-The test that tells you whether the latent space is actually structured:
+$z$ has the same distribution, and is now a deterministic, differentiable
+function of $\mu_\phi$ and $\sigma_\phi$, with $\epsilon$ a constant input:
+$\partial z_j / \partial \mu_j = 1$, $\partial z_j / \partial \sigma_j = \epsilon_j$.
 
 ```python
-z1, z2 = encode(x1), encode(x2)
-frames = [decode(z1 + t * (z2 - z1)) for t in torch.linspace(0, 1, 10)]
+std = torch.exp(0.5 * logvar)
+eps = torch.randn_like(std)       # drawn outside the graph
+z = mu + eps * std                # gradients reach mu and logvar
 ```
 
-A good latent space gives a smooth semantic morph — the digit 3 bending into an
-8, a face slowly turning. A bad one gives a crossfade: two ghosts, one fading
-out and one fading in.
+---
 
-Interpolate in a VAE and it morphs; in a plain autoencoder it crossfades. That
-figure is worth more than a page of loss curves.
+## A convolutional VAE: dimensional flow
+
+Input $3 \times 64 \times 64$, latent $d = 128$. Every conv is $4 \times 4$,
+stride 2, padding 1: it halves $H$ and $W$. Every transposed conv doubles them.
+
+| # | Layer | Output shape |
+|---|---|---|
+| 1 | input $x$ | $3 \times 64 \times 64$ |
+| 2 | conv, conv, conv, conv | $32{\times}32{\times}32 \to 64{\times}16{\times}16 \to 128{\times}8{\times}8 \to 256{\times}4{\times}4$ |
+| 3 | flatten | $4096$ |
+| 4 | two linear heads: $\mu_\phi$, $\log\sigma^2_\phi$ | $128$ each |
+| 5 | $z = \mu + \sigma \odot \epsilon$ | $128$ |
+| 6 | linear, reshape | $256 \times 4 \times 4$ |
+| 7 | four transposed convs | $128{\times}8{\times}8 \to 64{\times}16{\times}16 \to 32{\times}32{\times}32 \to 3{\times}64{\times}64$ |
+| 8 | sigmoid, $\hat{x}$ | $3 \times 64 \times 64$ |
+
+About 3.0M parameters in total. The decoder mirrors the encoder, as in the
+U-Net of the segmentation lesson, but **without skip connections**: every bit
+of information must pass through the 128 numbers of row 5. Compression:
+$12288 / 128 = 96\times$.
+
+**Generation** uses rows 6 to 8 only: $z \sim \mathcal{N}(0, I_{128})$, decode.
 
 ---
 
-## Where VAEs actually live now
+## Why the samples are blurry
 
-Nobody ships a VAE as an image generator. They ship as **compressors inside
-other systems**:
+For a fixed $z$, the Gaussian decoder minimises the expected squared error over
+all images the encoder may have mapped near $z$. The minimiser of a squared
+error is a **mean**:
 
-- Stable Diffusion runs its diffusion process in a VAE latent space at 1/8
-  resolution — the next lesson.
-- VQ-VAE tokenises images into discrete codes so a transformer can model them.
-- Anomaly detection and representation learning, where the latent *is* the
-  deliverable.
+$$
+g_\theta^*(z) = \mathbb{E}\big[x \mid z\big]
+$$
 
-Learn the VAE for the encoder–latent–decoder pattern and the
-reparameterization trick. Both reappear immediately.
+Because the KL forces $\sigma_\phi(x) > 0$, the regions of different images
+overlap, and several images share each $z$. Their mean is an image where the
+edges and textures that disagree between them have been averaged out.
+
+This is a property of the objective, not a training failure: more epochs do
+not remove it. Removing it requires a loss that does not average, which is the
+adversarial loss of the next lesson.
 
 ---
 
-## Check yourself
+## The VAE inside Stable Diffusion
 
-1. You change the reconstruction term from `reduction="sum"` divided by the
-   batch to `reduction="mean"`, and your samples turn into the dataset mean. On
-   3×64×64 inputs, by what factor did the KL term's weight change relative to
-   reconstruction?
+Stable Diffusion does not generate pixels. It generates in the latent space of
+a pretrained convolutional VAE with downsampling factor $f = 8$:
 
-   **Answer.** 12,288 — that is C·H·W. `reduction="mean"` divides by the number
-   of elements as well as by the batch, so the KL now outweighs reconstruction
-   by four orders of magnitude and the posterior collapses to the prior.
+$$
+x \in \mathbb{R}^{3 \times 512 \times 512}, \qquad
+z = \mathcal{E}(x) \in \mathbb{R}^{4 \times 64 \times 64}, \qquad
+\hat{x} = \mathcal{D}(z) \in \mathbb{R}^{3 \times 512 \times 512}
+$$
 
-2. Run this. You should get exactly the output shown.
+$786{,}432$ values become $16{,}384$: a factor of 48. The latent keeps a
+spatial layout: it is a $64 \times 64$ image with 4 channels.
 
-   ```python
-   import torch, torch.nn.functional as F
-   x = torch.rand(16, 3, 64, 64)
-   x_hat = torch.rand_like(x)
-   per_batch = F.mse_loss(x_hat, x, reduction="sum") / x.size(0)
-   per_element = F.mse_loss(x_hat, x, reduction="mean")
-   print(round((per_batch / per_element).item()))   # -> 12288
-   ```
+Two changes to the loss of this lesson make the reconstructions sharp:
 
-3. Why does sampling `z` straight from `N(mu, sigma)` leave `mu` and `logvar`
-   with no gradient, and what exactly does reparameterization change?
+- the KL weight is tiny ($\beta = 10^{-6}$): the latent only needs to be
+  well-behaved, not exactly $\mathcal{N}(0, I)$;
+- the squared error is replaced by a perceptual loss plus an **adversarial**
+  loss from a patch discriminator, the GAN of the next lesson.
 
-   **Answer.** Drawing a sample is not a differentiable function of the
-   parameters, so backpropagation stops at the draw. The trick moves the
-   randomness into `eps`, drawn outside the graph, which makes
-   `z = mu + eps * std` an ordinary differentiable expression in `mu` and `std`.
+The VAE is trained once and frozen. The diffusion model of the last lesson then
+learns $p(z)$ in this 48× smaller space.
+
+---
+
+## Exercise
+
+A VAE has a 2-dimensional latent space. For one image $x$ the encoder returns
+
+$$
+\mu_\phi(x) = (1,\; 0), \qquad \sigma_\phi(x) = (1,\; 0.5)
+$$
+
+1. Write $q_\phi(z \mid x)$. Give one sample $z$ for $\epsilon = (0.2, -2)$.
+2. Compute $\mathrm{KL}\big(q_\phi(z \mid x) \,\Vert\, \mathcal{N}(0, I_2)\big)$
+   in nats. Which dimension contributes more, and why?
+3. For which $\mu, \sigma$ is the KL zero? What would the decoder receive then,
+   whatever the image?
+4. Compression ratios. (a) the conv VAE of this lesson, $3 \times 64 \times 64
+   \to 128$; (b) the Stable Diffusion VAE, $3 \times 512 \times 512 \to 4 \times
+   64 \times 64$.
+
+<!-- notes: 10 minutes. Question 3 is posterior collapse: if the KL wins, the
+code carries no information about x and the decoder outputs the dataset mean. -->
+
+---
+
+## Solution
+
+**1.** $q_\phi(z \mid x) = \mathcal{N}\big((1, 0),\; \mathrm{diag}(1, 0.25)\big)$.
+$z = \mu + \sigma \odot \epsilon = (1 + 0.2,\; 0 + 0.5 \cdot (-2)) = (1.2,\; -1)$.
+
+**2.**
+
+| $j$ | $\mu_j^2$ | $\sigma_j^2$ | $-1 - \log\sigma_j^2$ | sum |
+|---|---|---|---|---|
+| 1 | 1 | 1 | $-1 - 0 = -1$ | 1 |
+| 2 | 0 | 0.25 | $-1 + 1.386 = 0.386$ | 0.636 |
+
+$\mathrm{KL} = \frac{1}{2}(1 + 0.636) = 0.818$ nats. Dimension 1 contributes
+more: its mean is off the origin. Dimension 2 pays for being too narrow.
+
+**3.** $\mu = 0$, $\sigma = 1$ for every image. Then $q_\phi(z \mid x) = p(z)$:
+$z$ carries no information about $x$, and the best the decoder can do is output
+the average image. This is **posterior collapse**, the failure of a too large
+$\beta$.
+
+**4.** (a) $12288 / 128 = 96$. (b) $786432 / 16384 = 48$. The Stable Diffusion
+latent compresses less, and keeps a $64 \times 64$ spatial grid instead of a
+flat vector.

@@ -51,7 +51,7 @@ SYMBOLS = {
     r"\|": "‖",
     r"\rangle": "⟩", r"\lfloor": "⌊", r"\rfloor": "⌋", r"\lceil": "⌈",
     r"\rceil": "⌉", r"\cup": "∪", r"\cap": "∩", r"\subseteq": "⊆",
-    r"\supset": "⊃", r"\emptyset": "∅", r"\setminus": "\\",
+    r"\supset": "⊃", r"\emptyset": "∅", r"\varnothing": "∅", r"\setminus": "\\",
     r"\propto": "∝", r"\equiv": "≡", r"\sim": "~", r"\simeq": "≃",
     r"\perp": "⊥", r"\top": "⊤", r"\bot": "⊥", r"\otimes": "⊗",
     r"\oplus": "⊕", r"\ast": "*", r"\star": "*", r"\colon": ":",
@@ -93,6 +93,7 @@ class UnknownMacro(ValueError):
 
 COMBINING_HAT = "\u0302"
 COMBINING_BAR = "\u0304"
+COMBINING_TILDE = "\u0303"
 
 
 def _brace_group(text: str, start: int) -> tuple[str, int]:
@@ -146,9 +147,11 @@ def latex_to_unicode(expr: str) -> str:
             piece, i = frac(i, s)
             out.append(piece)
             continue
-        if s.startswith(r"\hat", i) or s.startswith(r"\bar", i):
-            combining = COMBINING_HAT if s.startswith(r"\hat", i) else COMBINING_BAR
-            inner, i = _brace_group(s, i + 4)
+        if s.startswith((r"\hat", r"\bar", r"\tilde"), i):
+            macro = next(m for m in (r"\hat", r"\bar", r"\tilde") if s.startswith(m, i))
+            combining = {r"\hat": COMBINING_HAT, r"\bar": COMBINING_BAR,
+                         r"\tilde": COMBINING_TILDE}[macro]
+            inner, i = _brace_group(s, i + len(macro))
             out.append(latex_to_unicode(inner) + combining)
             continue
         # A specific entry like \mathbb{R} wins over the \mathbb wrapper.
