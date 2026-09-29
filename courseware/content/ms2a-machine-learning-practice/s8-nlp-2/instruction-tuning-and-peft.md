@@ -1,9 +1,9 @@
 # Instruction Tuning and PEFT
 
-A pretrained model completes text. It does not answer questions, follow
-instructions or refuse anything. Turning a completion engine into an assistant
-is a second training stage — and adapting that assistant to your domain is a
-third, which you can actually afford.
+A pretrained model completes text. The previous lesson showed how labs turn it
+into an assistant with SFT, preference training and RL. This lesson is the part
+you can afford: using the instruct checkpoint correctly, and adapting it to your
+domain with a few thousand examples on one GPU.
 
 <!-- notes: 35 minutes. Open by prompting a base checkpoint with a question and
 letting the room watch it generate more questions. The adaptation-ladder slide
@@ -61,28 +61,8 @@ labels[: len(prompt_ids)] = -100     # do not train on the instruction
 - The `-100` mask is the forgotten step. Without it the model learns to generate
   instructions as readily as answers.
 
----
-
-## Preference training: what it optimizes
-
-SFT teaches one acceptable response per prompt. Preference training teaches a
-*ranking* over responses, which is closer to what "helpful" means.
-
-**RLHF**: humans mark A better than B; a reward model learns to predict that;
-the policy maximises the reward under a KL penalty holding it near the SFT
-model. The KL term is load-bearing — without it the policy finds text that
-scores well and reads as nonsense: reward hacking, as in Sessions 9 and 10.
-
-**DPO** removes the reward model and the RL loop, rewriting the same target as a
-classification loss on preference pairs:
-
-$$
-\mathbb{E}_{(x,y_w,y_l)} \left[ \log \sigma \left( \beta \log \frac{\pi(y_w \mid x)}{\pi_{ref}(y_w \mid x)} - \beta \log \frac{\pi(y_l \mid x)}{\pi_{ref}(y_l \mid x)} \right) \right]
-$$
-
-Raise the winning response $y_w$, lower the losing one $y_l$, both relative to a
-frozen reference. One model, one loss, ordinary supervised tooling — DPO is what
-you would run; RLHF is what your downloaded checkpoint was trained with.
+The preference stage that follows SFT (RLHF, DPO) is covered in the
+post-training lesson; `trl` runs both SFT and DPO with the same tooling.
 
 ---
 

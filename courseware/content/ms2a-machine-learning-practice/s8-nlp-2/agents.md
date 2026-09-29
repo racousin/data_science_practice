@@ -49,11 +49,10 @@ at the wrong time, and it is a prompt engineering bug, not a code bug.
 Validate arguments at the boundary: the model produces text, so treat every tool
 call as untrusted input and let a Pydantic model raise on anything malformed.
 
-**MCP** — the Model Context Protocol — is the standard for publishing this
-contract. A server declares its tools once and any compatible client can call
-them, which is how your coding agent reaches a database or a ticket tracker. It
-solves distribution, not judgement: a badly described tool stays badly described
-over MCP.
+**MCP**, the Model Context Protocol, is the standard for publishing this
+contract to any application. It solves distribution, not judgement: a badly
+described tool stays badly described over MCP. The Agent Tooling lesson covers
+it in detail.
 
 ---
 

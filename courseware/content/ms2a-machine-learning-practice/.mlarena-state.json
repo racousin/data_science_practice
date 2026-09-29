@@ -82,11 +82,13 @@
       "s7-nlp-1/recurrent-models": 99,
       "s7-nlp-1/text-as-data-and-tokenization": 97,
       "s7-nlp-1/the-transformer": 101,
+      "s8-nlp-2/agent-tooling-and-mcp": 224,
       "s8-nlp-2/agents": 108,
       "s8-nlp-2/evaluating-generation": 106,
       "s8-nlp-2/generation-and-decoding": 104,
       "s8-nlp-2/instruction-tuning-and-peft": 105,
       "s8-nlp-2/lab-8": 109,
+      "s8-nlp-2/post-training": 223,
       "s8-nlp-2/rag": 107,
       "s8-nlp-2/training-and-scaling-llms": 103,
       "s9-reinforcement-learning-1/dynamic-programming": 112,
@@ -680,8 +682,15 @@
           "is_published": true,
           "title": "The Transformer"
         },
+        "s8-nlp-2/agent-tooling-and-mcp": {
+          "body": "164d934b1ecd07f809d01049958110476502140818e195386c70a7f90f2eca01",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Agent Tooling and MCP"
+        },
         "s8-nlp-2/agents": {
-          "body": "76638a989e8d93afbd6313db4e16a7beea2c04e1b907e3ad06b9a465ab6c176b",
+          "body": "0404e7b046348e55ca759b6f83df58cf469c2e35dcb627e053985b1d9afc593b",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
@@ -702,7 +711,7 @@
           "title": "Generation and Decoding"
         },
         "s8-nlp-2/instruction-tuning-and-peft": {
-          "body": "c3b66649e2d5eb33516c539a7a80e9c5b401c4ac8374fa91b8b1c9d95d89be2f",
+          "body": "199cc13645e2886ed28b97cb442654b9845b36c26fed72cbc05a5fa3e1d15249",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
@@ -714,6 +723,13 @@
           "gated": false,
           "is_published": true,
           "title": "Lab 8 \u2014 Build and Judge a RAG Pipeline"
+        },
+        "s8-nlp-2/post-training": {
+          "body": "7fbff6d10c63a0a9dbfee4a931f349074229363cbded94742156d9a1b944c67b",
+          "estimated_minutes": 40,
+          "gated": false,
+          "is_published": true,
+          "title": "Post-Training: From Next Token to Reasoning"
         },
         "s8-nlp-2/rag": {
           "body": "7a3368456df81a92f698d3d63cc39d11b0501824e2d5766b952c9cb3d7a7c9c3",
@@ -950,13 +966,15 @@
           "lessons": [
             "training-and-scaling-llms",
             "generation-and-decoding",
+            "post-training",
             "instruction-tuning-and-peft",
             "evaluating-generation",
             "rag",
             "agents",
+            "agent-tooling-and-mcp",
             "lab-8"
           ],
-          "summary": "Large language models as engineering objects: how they are trained, how they generate, how you adapt them cheaply, how you ground them in your own data, and how you evaluate any of it.",
+          "summary": "Large language models as engineering objects: how they are pretrained, how they generate, how post-training turns them into assistants and reasoners (SFT, RLHF, DPO, GRPO, distillation), how you adapt them cheaply, ground them in your own data, give them tools over MCP, and evaluate any of it.",
           "title": "Session 8 \u2014 NLP 2"
         },
         "s9-reinforcement-learning-1": {

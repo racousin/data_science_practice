@@ -462,9 +462,11 @@ modules:
     icon: message-square
     visibility: unlisted
     summary: >
-      Large language models as engineering objects: how they are trained,
-      how they generate, how you adapt them cheaply, how you ground them in your
-      own data, and how you evaluate any of it.
+      Large language models as engineering objects: how they are pretrained,
+      how they generate, how post-training turns them into assistants and
+      reasoners (SFT, RLHF, DPO, GRPO, distillation), how you adapt them
+      cheaply, ground them in your own data, give them tools over MCP, and
+      evaluate any of it.
     competitions:
       - competition_id: 165
         label: "GSM8k — grade-school math word problems on a private test set: prompting, decoding, and evaluating generation"
@@ -478,6 +480,11 @@ modules:
         slug: generation-and-decoding
         file: s8-nlp-2/generation-and-decoding.md
         estimated_minutes: 25
+        is_published: true
+      - title: "Post-Training: From Next Token to Reasoning"
+        slug: post-training
+        file: s8-nlp-2/post-training.md
+        estimated_minutes: 40
         is_published: true
       - title: "Instruction Tuning and PEFT"
         slug: instruction-tuning-and-peft
@@ -498,6 +505,11 @@ modules:
         slug: agents
         file: s8-nlp-2/agents.md
         estimated_minutes: 30
+        is_published: true
+      - title: "Agent Tooling and MCP"
+        slug: agent-tooling-and-mcp
+        file: s8-nlp-2/agent-tooling-and-mcp.md
+        estimated_minutes: 35
         is_published: true
       - title: "Lab 8 — Build and Judge a RAG Pipeline"
         slug: lab-8
