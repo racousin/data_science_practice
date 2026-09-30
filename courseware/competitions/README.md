@@ -206,6 +206,38 @@ uv run --with pytest --with pandas --with scikit-learn --with openpyxl \
     pytest competitions/test_mlp_s1_store_sales.py -q
 ```
 
+## `mlp-s6-aquarium-detection` — MS2A - Machine Learning Practice, Session 6
+
+Challenge **195**, attached to `s6-computer-vision-2` in place of Gymnasium ·
+CarRacing-v3 (47, detached on 2026-09-30: a control task whose prerequisites
+are Sessions 9-10). Object detection after Day 3 TP2 of `ai_for_sciences`: the
+Roboflow Aquarium dataset (CC BY 4.0), 7 classes. The source `train` split
+(448 images, 3,324 boxes) ships with YOLO labels; its `valid` + `test` (190
+images, 1,491 boxes) are the private test set. Images are resized to 640 px
+and renamed to salted ids; two zero-area test labels are dropped.
+
+**The submission** is one row per test image, `image_id,prediction_string`,
+six numbers per box (`class conf xc yc w h`, normalised). One row per image
+rather than per box, so the platform's `y_test.csv` upload gate (header + id
+set) works unchanged: `y_test.csv` is the ground truth in the same layout.
+
+**The metric** is mAP50-95 in `detection_metric.py`, which is also a public
+file, so a student's validation number is the leaderboard's. It reproduces
+Ultralytics 8.4 (`match_predictions` + `ap_per_class`, including the sentinel
+that gives no credit past the last recall reached): on the same predictions
+both give 0.3683. A perfect submission scores 0.995, the 101-point ceiling.
+
+**The benchmark** is the starter notebook's recipe (`reference_solution.py`:
+YOLOv8n, 30 epochs, seed 0, on 381 of the 448 images): **0.3346**, mAP50
+0.604. It was trained on the M4 GPU but predicted on CPU: on MPS, Ultralytics
+scored the same weights 0.29 on the held-out images where CPU scored 0.37. The
+pass bar is 0.30, below the benchmark, because the training run is not
+reproducible and a student's rerun lands around it, not on it.
+
+```bash
+uv run --with numpy --with pytest pytest mlp-s6-aquarium-detection/test_aquarium_detection.py -q
+```
+
 ## Why the ids are salted
 
 Every dataset here is a split of a **public** source, and every `prepare_data.py`
@@ -405,6 +437,17 @@ reference solution scores exactly `benchmark_expected_score`**. That benchmark
 is a real run of the real pipeline — JobPod, executor, and for flex_v1 an agent
 container — so a green build is evidence the competition works, not just that
 the upload succeeded.
+
+**Build against the SDK prod runs, not the checkout.** On 2026-09-30 the
+`../../../mlarena-sdk` checkout was 4.1.0, whose `update_settings` takes one
+`metrics=[...]` list; prod still rejected that (`metrics: Extra inputs are
+not permitted`) and accepted the 3.0.0 keywords this builder sends. Install
+the released SDK and point the Makefile at it:
+
+```bash
+uv pip install --target /tmp/sdk3 "mlarena-sdk==3.0.0"
+make competitions COURSE=... ONLY=... SDK_PATH=/tmp/sdk3
+```
 
 Competitions are created **hidden** (`is_public=False`) and started. Flip them
 public when the course is ready:

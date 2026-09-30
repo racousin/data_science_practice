@@ -13,6 +13,17 @@ model from scratch will have nothing to show. -->
 
 ---
 
+## Starter notebook
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/data_science_practice/blob/main/website/public/modules/ms2a-machine-learning-practice/challenges/mlp-s6-aquarium-detection.ipynb)
+
+[Challenge 195](https://ml-arena.com/viewchallenge/195), *Aquarium Detection*:
+7 marine species in 190 test images, boxes and classes, scored by mAP50-95.
+The notebook fine-tunes YOLOv8n and submits; start it on a T4 at the
+beginning of the lab so it trains while you work (Part F).
+
+---
+
 ## Setup
 
 Branch off `main`. Session 5's transforms and training loop are reused, not
@@ -158,39 +169,28 @@ meaningless, `mAP@0.5 on 40 held-out images, seed 0` is a claim.
 
 ## Part F — Put it on the board (5 min)
 
-This module's attached competition is **Gymnasium · CarRacing-v3**,
-`competition_id=47`: a 96×96×3 RGB frame in, a 3-vector `(steer, gas, brake)`
-out, scored as the **mean episode return** — higher is better. The environment's
-own reward rule is -0.1 per frame and +1000/N per track tile, so a lap finished
-in 732 frames scores 926.8.
+This module's attached competition is **Aquarium Detection**,
+`challenge_id=195`: 448 labelled aquarium photos, 7 classes (fish,
+jellyfish, penguin, puffin, shark, starfish, stingray), and 190 test images
+whose boxes you submit. It is ranked on **mAP50-95**, the metric of Part C
+averaged over IoU thresholds 0.50 to 0.95, computed by `detection_metric.py`,
+which ships with the data so your validation number is the leaderboard's.
 
-Read the board before you touch it. It carries exactly one row today:
-`__benchmark__`, the random-action template, at **-33.9** mean return over two
-runs, with no confidence interval. That is the only measured reference this
-competition has.
-
-```bash
-uv pip install mlarena-sdk
-```
+The [starter notebook](https://colab.research.google.com/github/racousin/data_science_practice/blob/main/website/public/modules/ms2a-machine-learning-practice/challenges/mlp-s6-aquarium-detection.ipynb)
+fine-tunes YOLOv8n for 30 epochs on a T4 and submits. Start it at the
+beginning of the lab, so it trains while you work on your branch.
 
 ```python
-import mlarena, pathlib
+import mlarena
 
 client = mlarena.connect(api_key="mlk_user_...")      # from your Profile page
-print(client.leaderboard(47))                          # who is on the board, and at what
-pathlib.Path("agent.py").write_text(client.competition(47)["agent_template"])
-client.submit(competition_id=47, files=["agent.py"])
+print(client.leaderboard(195))                        # the benchmark and who beat it
 ```
 
-Deploy the template as it stands — `choose_action` returning
-`self.action_space.sample()` — so that the submission path is proven and you
-have your own number beside the reference. Record it in `RESULTS.md`.
-
-**Be honest about what this is.** CarRacing is a control task. Nothing in
-Session 6 teaches a policy, an episode or a reward, and neither branch of this
-lab produces a Gymnasium `agent.py` — the machinery for actually clearing -33.9
-is Sessions 9 and 10. Today the deliverable is a submitted run and a number to
-come back to.
+The benchmark row is the notebook's own recipe. Record your validation
+mAP50-95, your leaderboard score and the benchmark's in `RESULTS.md`. Branch A
+students may use this dataset for the whole lab: `train.zip` is already in
+YOLO format.
 
 ---
 
@@ -246,10 +246,8 @@ Session 7 changes the modality to text; the discipline is identical.
 - [ ] Branch A: the worst-five figure is committed with one sentence per image. Branch B: the ten-frame interpolation and the sample grid are committed, and `RESULTS.md` says morph or crossfade (Part C)
 - [ ] All three tests of Part D pass, the metric test on an identical and a disjoint pair included
 - [ ] `RESULTS.md` states the number with its split, threshold and seed (Part E)
-- [ ] My run is on the leaderboard of Gymnasium · CarRacing-v3 (#47) — `client.leaderboard(47)` lists my agent name (Part F)
-- [ ] My mean episode return is written in `RESULTS.md` next to the only measured reference on that board, the random-action template at **-33.9**
+- [ ] My submission is on the leaderboard of Aquarium Detection (#195) — `client.leaderboard(195)` lists it (Part F)
+- [ ] My validation mAP50-95 and my leaderboard score are written in `RESULTS.md` next to the benchmark's (Part F)
 
-The last row says *recorded*, not *beaten*, and that is deliberate: this session
-teaches no reinforcement learning, so nothing in it gives you a method for
-clearing -33.9. Sessions 9 and 10 do. Every other row is a fact about your
-repository that you can settle yourself, without asking anyone.
+Every row is a fact about your repository or the board that you can settle
+yourself, without asking anyone.

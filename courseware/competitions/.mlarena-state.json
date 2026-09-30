@@ -7,6 +7,12 @@
         "module_slug": "s1-data-collection",
         "name": "MLP S1 \u2014 Multi-Source Store Sales"
       },
+      "mlp-s6-aquarium-detection": {
+        "id": 195,
+        "label": "Aquarium Detection \u2014 seven marine species, boxes and classes: fine-tune a pretrained YOLO, scored with mAP50-95",
+        "module_slug": "s6-computer-vision-2",
+        "name": "MLP S6 \u2014 Aquarium Detection"
+      },
       "s2-bank-marketing": {
         "id": 184,
         "label": "Bank Term Deposit",

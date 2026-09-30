@@ -52,7 +52,8 @@ class FakeClient:
         self.engine_echo = engine_echo
         self.stored_name = stored_name
         self.settings = {"submission_filename": "submission.csv",
-                         "max_upload_size_bytes": 100 * 1024 * 1024}
+                         "max_upload_size_bytes": 100 * 1024 * 1024,
+                         "simulation_timeout_sec": 360.0}
         self.benchmark_bytes = {}
 
     def _log(self, _method, *args, **kwargs):
@@ -70,7 +71,7 @@ class FakeClient:
 
     def create_competition(self, **kwargs):
         self._log("create_competition", **kwargs)
-        return {"competition_id": 7}
+        return {"challenge_id": 7}
 
     def update_challenge_configuration(self, cid, **fields):
         self._log("update_challenge_configuration", cid, **fields)
@@ -82,13 +83,14 @@ class FakeClient:
 
     def update_settings(self, cid, **settings):
         self._log("update_settings", cid, **settings)
-        for key in ("submission_filename", "max_upload_size_bytes"):
+        for key in ("submission_filename", "max_upload_size_bytes", "simulation_timeout_sec"):
             if key in settings:
                 self.settings[key] = settings[key]
         stored = dict(self.settings)
         if self.stored_name is not None:
             stored["submission_filename"] = self.stored_name
-        return stored
+        # SDK 3.0: the two stored rows, each under its own column names.
+        return {"configuration": stored, "evaluation": {}}
 
     def update_env_file_content(self, cid, name, content):
         self._log("update_env_file_content", cid, name)
@@ -124,8 +126,9 @@ class FakeClient:
         self._log("run_benchmark", cid)
 
     def benchmark_status(self, cid):
-        return {"status": "completed", "success": True,
-                "agent_results": [{"score": 0.75}]}
+        return {"job_status": "completed", "env_error_type": None,
+                "submission_results": [{"submission_reward": 0.75,
+                                         "agent_error_type": None}]}
 
     def start_competition(self, cid):
         self._log("start_competition", cid)
@@ -493,7 +496,9 @@ def test_fake_client_matches_the_sdk():
         # Methods are wrapped by functools.wraps; signature() follows __wrapped__.
         return inspect.signature(getattr(MLArenaClient, method)).parameters
 
-    assert {"submission_filename", "max_upload_size_bytes"} <= set(params("update_settings"))
+    assert {"submission_filename", "max_upload_size_bytes", "simulation_timeout_sec",
+            "metric", "metric2", "metrics_schema", "deployment_nb_constraint_run",
+            "deployment_nb_initial_score_run"} <= set(params("update_settings"))
     assert "filename" in params("upload_benchmark_file")
     assert any(p.kind is inspect.Parameter.VAR_KEYWORD
                for p in params("update_challenge_configuration").values())

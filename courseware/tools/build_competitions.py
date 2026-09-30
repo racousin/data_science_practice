@@ -67,11 +67,20 @@ Optional config.py keys, applied before the benchmark (settings lock at start):
                              skips the platform's CSV column check, and its
                              benchmark is uploaded as bytes, not as text.
     max_upload_size_bytes    the participant upload cap (platform default 100 MB).
+    simulation_timeout_sec   the per-run budget in seconds (platform default
+                             360, maximum 600). The JobPod's deadline derives
+                             from it, and a run killed there records no score.
     engine_id                pin the challenge to this engine (e.g. one with the
                              memory the scorer needs). Absent or None keeps the
                              kind's default engine. Pinning goes through the
                              admin configuration route, so the creator key must
                              belong to an admin account.
+    agent_max_time_per_step_second
+                             flex_v1: the default per-call deadline; Agent()
+                             gets min(60, max(5, 10 x it)) s to load. An admin
+                             setting, like engine_id.
+    benchmark_extra_files    flex_v1: files uploaded next to the benchmark
+                             agent.py (e.g. a module it imports).
 Optional config.py keys read by `attach` only:
     pass_threshold           the score a student must reach for the module to
                              count the challenge validated, for a course that
@@ -132,7 +141,8 @@ PACKAGES_BY_COURSE = {
                               "s3-credit-risk", "s4-taxi-eta"],
     "ms2a-machine-learning-practice": ["mlp-s1-store-sales",
                                        "s2-dpe-energy-label",
-                                       "s2-icu-survival"],
+                                       "s2-icu-survival",
+                                       "mlp-s6-aquarium-detection"],
 }
 PACKAGES = [p for pkgs in PACKAGES_BY_COURSE.values() for p in pkgs]
 
@@ -142,6 +152,7 @@ PACKAGES = [p for pkgs in PACKAGES_BY_COURSE.values() for p in pkgs]
 DEFAULT_SUBMISSION_FILENAME = "submission.csv"
 MAX_SUBMISSION_FILENAME_LEN = 128   # backend settings schema bound
 SUBMISSION_FILENAME_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*")
+MAX_TIMEOUT_SEC = 600               # backend settings schema bound
 
 
 # --------------------------------------------------------------------------- #
@@ -182,6 +193,12 @@ def validate_config(cfg: dict) -> None:
         if not _is_int(size) or size < 1:
             raise SystemExit(f"{pkg}: max_upload_size_bytes must be a positive "
                              f"int, got {size!r}")
+    if "simulation_timeout_sec" in cfg:
+        timeout = cfg["simulation_timeout_sec"]
+        # The backend settings schema bound (MAX_TIMEOUT_SEC).
+        if not _is_int(timeout) or not 1 <= timeout <= MAX_TIMEOUT_SEC:
+            raise SystemExit(f"{pkg}: simulation_timeout_sec must be an int in "
+                             f"[1, {MAX_TIMEOUT_SEC}], got {timeout!r}")
     # The platform's dataset columns are varchar(200) / varchar(500); a longer
     # value fails at create_dataset, after the challenge already exists.
     for key, limit in (("dataset_label", 200), ("dataset_description", 500)):
@@ -192,6 +209,15 @@ def validate_config(cfg: dict) -> None:
     if engine_id is not None and (not _is_int(engine_id) or engine_id < 1):
         raise SystemExit(f"{pkg}: engine_id must be a positive int or None, "
                          f"got {engine_id!r}")
+    for key in ("agent_max_time_per_step_second", "benchmark_extra_files"):
+        if key in cfg and cfg["kernel_version"] != "flex_v1":
+            raise SystemExit(f"{pkg}: {key} is a flex_v1 setting, "
+                             f"not {cfg['kernel_version']}")
+    if "agent_max_time_per_step_second" in cfg:
+        step = cfg["agent_max_time_per_step_second"]
+        if not _is_number(step) or step <= 0:
+            raise SystemExit(f"{pkg}: agent_max_time_per_step_second must be a "
+                             f"positive number, got {step!r}")
     # Both keys may be present as None ("to be pinned"), which reads as absent.
     expert = cfg.get("expert_expected_score")
     if expert is not None and not _is_number(expert):
@@ -292,6 +318,9 @@ def preflight(cfg: dict) -> None:
     if not bench.is_file():
         raise SystemExit(f"missing benchmark file {cfg['benchmark_file']} — "
                          f"run {cfg['_pkg']}/prepare_data.py")
+    for rel in cfg.get("benchmark_extra_files", []):
+        if not (pkg_dir / rel).is_file():
+            raise SystemExit(f"{cfg['_pkg']}: missing benchmark file {rel}")
     name = submission_filename(cfg) if cfg["kernel_version"] == "file_v1" else None
     if name and name.lower().endswith(".gz"):
         with bench.open("rb") as fh:
@@ -326,9 +355,12 @@ def connect(scope_env: str, base_url: str):
 # --------------------------------------------------------------------------- #
 # benchmark = the end-to-end test
 # --------------------------------------------------------------------------- #
+# The server's benchmark_status reply: `job_status` and one
+# `submission_results` row per seat, which carries `submission_reward` and the
+# run-failure cause `agent_error_type` / `agent_error_message`.
 def _benchmark_score(status: dict):
-    results = status.get("agent_results") or []
-    return results[0].get("score") if results else None
+    results = status.get("submission_results") or []
+    return results[0].get("submission_reward") if results else None
 
 
 def wait_for_benchmark(client, cid: int, timeout_s: int = 1800) -> dict:
@@ -336,13 +368,14 @@ def wait_for_benchmark(client, cid: int, timeout_s: int = 1800) -> dict:
     last = None
     while time.monotonic() < deadline:
         st = client.benchmark_status(cid)
-        state = st.get("status")
+        state = st.get("job_status")
         if state != last:
             print(f"      benchmark: {state} score={_benchmark_score(st)}")
             last = state
         if state == "completed":
-            if st.get("success") is False:
-                raise RuntimeError(f"benchmark ran but reported failure: {st}")
+            if st.get("env_error_type"):
+                raise RuntimeError(f"benchmark ran but the env failed: "
+                                   f"{st['env_error_type']}: {st.get('env_error_message')}")
             return st
         if state == "failed":
             raise RuntimeError(f"benchmark failed: {st}")
@@ -362,11 +395,11 @@ def verify_benchmark(cfg: dict, status: dict) -> None:
             f"{cfg['name']}: benchmark scored {got}, expected {expected} "
             f"(tol {tol}). The env does not grade what the package claims."
         )
-    results = status.get("agent_results") or [{}]
-    if results[0].get("is_agent_code_error"):
+    results = status.get("submission_results") or [{}]
+    if results[0].get("agent_error_type"):
         raise RuntimeError(
-            f"{cfg['name']}: benchmark flagged is_agent_code_error: "
-            f"{results[0].get('agent_code_error_message')}"
+            f"{cfg['name']}: benchmark flagged {results[0]['agent_error_type']}: "
+            f"{results[0].get('agent_error_message')}"
         )
     print(f"      benchmark verified: score={got} == expected {expected}")
 
@@ -392,19 +425,22 @@ def pin_engine(client, cid: int, cfg: dict) -> None:
 
 
 def apply_settings(client, cid: int, cfg: dict) -> None:
+    # SDK 3.0 keywords are the columns' own names (no `evaluation_` prefix).
     settings = {
-        "evaluation_metric": cfg["metric"],
-        "evaluation_deployment_nb_constraint_run": cfg["deployment_nb_constraint_run"],
-        "evaluation_deployment_nb_initial_score_run": cfg["deployment_nb_initial_score_run"],
-        "evaluation_metrics_schema": cfg["metrics_schema"],
+        "metric": cfg["metric"],
+        "deployment_nb_constraint_run": cfg["deployment_nb_constraint_run"],
+        "deployment_nb_initial_score_run": cfg["deployment_nb_initial_score_run"],
+        "metrics_schema": cfg["metrics_schema"],
     }
     if cfg.get("metric2"):
-        settings["evaluation_metric2"] = cfg["metric2"]
+        settings["metric2"] = cfg["metric2"]
     # Sent only when declared, so a package without them changes nothing.
-    for key in ("submission_filename", "max_upload_size_bytes"):
+    for key in ("submission_filename", "max_upload_size_bytes", "simulation_timeout_sec",
+                "agent_max_time_per_step_second"):
         if key in cfg:
             settings[key] = cfg[key]
-    resp = client.update_settings(cid, **settings)
+    # The response carries the stored rows: {"configuration": ..., "evaluation": ...}.
+    resp = client.update_settings(cid, **settings)["configuration"]
 
     # The response is the stored configuration. Checked because the benchmark
     # is uploaded under the name computed here, and `run_benchmark` looks for
@@ -418,12 +454,25 @@ def apply_settings(client, cid: int, cfg: dict) -> None:
         raise RuntimeError(f"{cfg['name']}: the server's upload cap is "
                            f"{resp['max_upload_size_bytes']}, the package declares "
                            f"{cfg['max_upload_size_bytes']}")
+    if "simulation_timeout_sec" in cfg and resp["simulation_timeout_sec"] != cfg["simulation_timeout_sec"]:
+        raise RuntimeError(f"{cfg['name']}: the server's run timeout is "
+                           f"{resp['simulation_timeout_sec']} s, the package declares "
+                           f"{cfg['simulation_timeout_sec']} s")
+    step = cfg.get("agent_max_time_per_step_second")
+    if step is not None and resp["agent_max_time_per_step_second"] != step:
+        raise RuntimeError(f"{cfg['name']}: the server's per-call deadline is "
+                           f"{resp['agent_max_time_per_step_second']} s, the package "
+                           f"declares {step} s")
 
     extra = ""
     if cfg["kernel_version"] == "file_v1":
         extra += f" submission={submission_filename(cfg)}"
     if "max_upload_size_bytes" in cfg:
         extra += f" max_upload={cfg['max_upload_size_bytes'] / 1024 / 1024:.0f} MiB"
+    if "simulation_timeout_sec" in cfg:
+        extra += f" timeout={cfg['simulation_timeout_sec']}s"
+    if step is not None:
+        extra += f" agent_step={step}s"
     print(f"    settings: metric={cfg['metric']} "
           f"runs={cfg['deployment_nb_constraint_run']}+"
           f"{cfg['deployment_nb_initial_score_run']} "
@@ -442,6 +491,10 @@ def upload_benchmark(client, cid: int, cfg: dict) -> None:
     if cfg["kernel_version"] != "file_v1":
         client.update_benchmark_file_content(cid, "agent.py", bench.read_text())
         print(f"    benchmark file: {cfg['benchmark_file']} -> agent.py")
+        for rel in cfg.get("benchmark_extra_files", []):
+            client.update_benchmark_file_content(cid, Path(rel).name,
+                                                 (cfg["_dir"] / rel).read_text())
+            print(f"    benchmark file: {rel}")
         return
 
     name = submission_filename(cfg)
@@ -485,7 +538,7 @@ def build_one(client, cfg: dict, state: dict, base_url: str) -> int:
             description=cfg.get("label", name),
             is_public=cfg.get("is_public_initial", False),
         )
-        cid = comp["competition_id"]
+        cid = comp["challenge_id"]   # SDK >= 2.0 reply key
         print(f"    created id={cid} (is_public={cfg.get('is_public_initial', False)})")
 
     pin_engine(client, cid, cfg)

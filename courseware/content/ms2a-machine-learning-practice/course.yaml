@@ -420,8 +420,8 @@ modules:
       Beyond one label per image: detection, segmentation, and the generative
       family — autoencoders, VAEs, GANs and diffusion.
     competitions:
-      - competition_id: 47
-        label: "CarRacing-v3 — vision with no label to predict: a convolutional encoder reading raw frames inside a control loop"
+      - competition_id: 195
+        label: "Aquarium Detection — seven marine species, boxes and classes: fine-tune a pretrained YOLO, scored with mAP50-95"
     lessons:
       - title: "Object Detection"
         slug: object-detection

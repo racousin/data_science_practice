@@ -45,6 +45,10 @@ def load_config(pkg_dir):
     return ns["CONFIG"]
 
 
+class ParticipantSubmissionError(Exception):
+    """file_v1's `self.ParticipantSubmissionError`: the submission is at fault."""
+
+
 class LocalProxy:
     """AgentProxy + AgentChannel, with the real latch semantics."""
 
@@ -128,8 +132,15 @@ def main():
     print(f"   env staged in: {stage}")
 
     sys.path.insert(0, str(pkg_dir))
+    # The staged dir first, as the executor puts the env dir first on sys.path
+    # (workers/shared/executor/env_loader.py): a sibling module env.py imports
+    # resolves to the uploaded copy, and fails here if it was never uploaded.
+    sys.path.insert(0, str(stage))
     env_module = load_module("env", stage / "env.py")
     env = env_module.Env(is_evaluation=True)
+    # Injected by file_v1 (workers/file_v1/executor/env_api.py) onto the
+    # instance; raising it blames the submission file.
+    env.ParticipantSubmissionError = ParticipantSubmissionError
 
     if kind == "file_v1":
         submission = Path(args.submission) if args.submission \
@@ -139,7 +150,12 @@ def main():
         if not submission.exists():
             sys.exit(f"Missing submission file: {submission}")
         print(f"   submission: {submission}")
-        outcome = env.evaluate(str(submission))
+        try:
+            outcome = env.evaluate(str(submission))
+        except ParticipantSubmissionError as exc:
+            # The platform records this as the submission's code error.
+            print(f"   rejected (ParticipantSubmissionError): {exc}")
+            sys.exit(3)
     else:
         agent_module = load_module("agent", pkg_dir / args.agent)
         proxies = [LocalProxy(agent_module.Agent(), i) for i in range(args.agents)]
