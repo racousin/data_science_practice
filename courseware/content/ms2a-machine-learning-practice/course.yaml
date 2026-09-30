@@ -470,6 +470,8 @@ modules:
     competitions:
       - competition_id: 165
         label: "GSM8k — grade-school math word problems on a private test set: prompting, decoding, and evaluating generation"
+      - competition_id: 196
+        label: "Arithmetic GPT — teach a fixed tiny GPT to multiply 4-digit numbers: design the chain of thought it trains on"
     lessons:
       - title: "Training and Scaling LLMs"
         slug: training-and-scaling-llms

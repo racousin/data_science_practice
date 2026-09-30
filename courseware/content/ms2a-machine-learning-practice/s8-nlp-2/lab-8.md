@@ -13,6 +13,20 @@ The judge prompt as a versioned file is the habit worth the whole lab. -->
 
 ---
 
+## Starter notebook — Arithmetic GPT
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/data_science_practice/blob/main/website/public/modules/ms2a-machine-learning-practice/challenges/mlp-s8-arith-gpt.ipynb)
+
+[Challenge 196](https://ml-arena.com/viewchallenge/196), *Arithmetic GPT*: a
+fixed 2-layer GPT has to multiply two 4-digit numbers, and you submit only its
+weights. Trained to write the answer directly, it gets 0% right; the notebook
+shows that, then leaves you the one function that matters — the text the model
+is trained to write before its answer. It is chain of thought as extra
+computation per token (*Post-Training*), measured on a model you train yourself
+in ten minutes on a T4.
+
+---
+
 ## Setup
 
 Work on a branch in your project repository.
@@ -174,6 +188,13 @@ client = mlarena.connect(api_key="mlk_user_...")   # from your Profile page
 client.submit(competition_id=165, files=["agent.py"])
 print(client.leaderboard(165).head())
 ```
+
+---
+
+The session's second competition is **Arithmetic GPT**, `challenge_id=196`
+(starter notebook above). Score is the exact-match accuracy on 1000 private
+products; the module counts it validated at **50%**, which answer-only training
+does not reach.
 
 ---
 

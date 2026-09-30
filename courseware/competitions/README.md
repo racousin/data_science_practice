@@ -238,6 +238,41 @@ reproducible and a student's rerun lands around it, not on it.
 uv run --with numpy --with pytest pytest mlp-s6-aquarium-detection/test_aquarium_detection.py -q
 ```
 
+## `mlp-s8-arith-gpt` — MS2A - Machine Learning Practice, Session 8
+
+Challenge **196**, attached to `s8-nlp-2` beside GSM8k (165). A fixed 2-layer
+GPT (0.42 M parameters, `arith_gpt.py`) multiplies two 4-digit numbers; the
+participant trains it from scratch and uploads only `weights.safetensors`, which
+env.py loads as data (file_v1: nothing the participant wrote runs). The lesson
+is chain of thought as extra computation per token: what the model writes
+before the `#` of its answer is the participant's design.
+
+Measured on the M4 GPU, one seed each, 1000 test products:
+
+| training format, 10 min from scratch | exact |
+|---|---|
+| answer only, `#7006652` (the notebook, the benchmark) | 0% (45% per digit) |
+| the scratchpad overview hints 1–3 describe | 94.1% |
+| the best format found (hint 4, taken further) | 99% at 2.3 min |
+
+The 4-layer, width-256 model was tried first and dropped: about 6x fewer steps
+per minute, and one reversed-format run stalled at 10%. The notebook trains the
+answer-only format and its hints lead to the second row; the third is the top
+of the board. Both formats live in `teacher_reference_solution.py`, local only
+(`*/teacher_*`): the repository is public and they are the answer.
+
+**The test set is salted.** `prepare_data.py` derives the test seed from
+`MLARENA_ID_SALT` (`source .id-salt`), because a public seed would hand out the
+1000 private prompts, and memorising them is easier than learning to multiply.
+The dev set's seed is public.
+
+The pass bar is 50% exact, which answer-only training does not reach; the
+reference reaches 94.1% (`expert_expected_score`).
+
+```bash
+uv run --with torch --with safetensors --with pytest pytest mlp-s8-arith-gpt/test_arith_gpt.py -q
+```
+
 ## Why the ids are salted
 
 Every dataset here is a split of a **public** source, and every `prepare_data.py`

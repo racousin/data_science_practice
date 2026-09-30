@@ -142,7 +142,8 @@ PACKAGES_BY_COURSE = {
     "ms2a-machine-learning-practice": ["mlp-s1-store-sales",
                                        "s2-dpe-energy-label",
                                        "s2-icu-survival",
-                                       "mlp-s6-aquarium-detection"],
+                                       "mlp-s6-aquarium-detection",
+                                       "mlp-s8-arith-gpt"],
 }
 PACKAGES = [p for pkgs in PACKAGES_BY_COURSE.values() for p in pkgs]
 
@@ -644,14 +645,14 @@ def refresh_one(client, user_client, cfg: dict, base_url: str,
     me = client.profile().get("username")
     board = client.leaderboard(cid)
     rows = board.to_dict("records") if hasattr(board, "to_dict") else list(board)
-    others = sorted({r["Username"] for r in rows if r.get("Username") != me})
+    others = sorted({r["username"] for r in rows if r.get("username") != me})
     if others and not keep_agents:
         raise SystemExit(
             f"{name}: {len(others)} other competitor(s) on the board ({others}). "
             f"Refreshing invalidates their scores — stop the competition and "
             f"decide deliberately rather than through this script."
         )
-    stale = [] if keep_agents else [r for r in rows if r.get("AgentName") != "__benchmark__"]
+    stale = [] if keep_agents else [r for r in rows if r.get("submission_name") != "__benchmark__"]
 
     # Idempotent: a refresh interrupted after its stop leaves the challenge
     # stopped, and the platform refuses to stop it twice.
@@ -661,14 +662,14 @@ def refresh_one(client, user_client, cfg: dict, base_url: str,
     else:
         print(f"    id={cid} is already stopped (an earlier refresh was interrupted?)")
     if keep_agents:
-        kept = [r for r in rows if r.get("AgentName") != "__benchmark__"]
+        kept = [r for r in rows if r.get("submission_name") != "__benchmark__"]
         print(f"    keeping {len(kept)} agent(s) on the board "
-              f"({sorted({r.get('Username') for r in kept})})")
+              f"({sorted({r.get('username') for r in kept})})")
 
     for r in stale:
-        user_client.delete_agent(cid, r["agentAttachId"])
-        print(f"    deleted stale agent {r['agentAttachId']} "
-              f"({r.get('AgentName')}, {cfg['metric']}={r.get('MeanReward')})")
+        user_client.delete_submission(cid, r["submission_id"])
+        print(f"    deleted stale submission {r['submission_id']} "
+              f"({r.get('submission_name')}, {cfg['metric']}={r.get('mean_reward')})")
 
     pin_engine(client, cid, cfg)
 

@@ -13,6 +13,12 @@
         "module_slug": "s6-computer-vision-2",
         "name": "MLP S6 \u2014 Aquarium Detection"
       },
+      "mlp-s8-arith-gpt": {
+        "id": 196,
+        "label": "Arithmetic GPT \u2014 teach a fixed tiny GPT to multiply 4-digit numbers: design the chain of thought it trains on",
+        "module_slug": "s8-nlp-2",
+        "name": "MLP S8 \u2014 Arithmetic GPT"
+      },
       "s2-bank-marketing": {
         "id": 184,
         "label": "Bank Term Deposit",
