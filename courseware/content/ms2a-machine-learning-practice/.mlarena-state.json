@@ -3,8 +3,8 @@
     "course_id": 15,
     "lessons": {
       "mlp-project/project-brief": 122,
+      "mlp-project/project-getting-started": 225,
       "mlp-project/project-grading": 124,
-      "mlp-project/project-tracks": 123,
       "mlp-reference/automl-and-custom-objectives": 129,
       "mlp-reference/cnn-backpropagation": 126,
       "mlp-reference/image-enhancement": 128,
@@ -125,25 +125,25 @@
       },
       "lessons": {
         "mlp-project/project-brief": {
-          "body": "a6f5d283f92133dec3ab8d4ffdf369269ee68622b37a28a156ed809260be57db",
+          "body": "28cd0613d298f79ec82188e574b740f1b452db4e30c90e1dc60591a51e58396b",
           "estimated_minutes": 20,
           "gated": false,
           "is_published": true,
           "title": "The Brief"
         },
+        "mlp-project/project-getting-started": {
+          "body": "453c25d9ab1abdece94a20a74b2d2b6a6877e347c855355fb57e3534355e1d2f",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Getting Started"
+        },
         "mlp-project/project-grading": {
-          "body": "d08e484bd16e668840b8464a43ebf4c9f247bba6bc6877ae65e6266b07af9b5f",
+          "body": "a7b90f10a7ec3f1c59d22e9d106af79814bf5a978ba5cbd1aeb75ebf9080a5f8",
           "estimated_minutes": 20,
           "gated": false,
           "is_published": true,
           "title": "Deliverables and Grading"
-        },
-        "mlp-project/project-tracks": {
-          "body": "49a8b6f375e113921d68eccc5919b2c9a7054d0a897d6bb8b19c49ff7164cc83",
-          "estimated_minutes": 25,
-          "gated": false,
-          "is_published": true,
-          "title": "Tracks"
         },
         "mlp-reference/automl-and-custom-objectives": {
           "body": "06f5d06b5d7d5e5b7283b08915325d5a4da83656c2c8fa4274544677cfa9d01c",
@@ -808,10 +808,10 @@
           "icon": "trophy",
           "lessons": [
             "project-brief",
-            "project-tracks",
+            "project-getting-started",
             "project-grading"
           ],
-          "summary": "Half the grade. One ML-Arena competition track of your choosing, plus the repository that produced the submission.",
+          "summary": "Half the grade. One project, DS-Harness: build the program around a small language model so that it solves data-science tasks, then defend it at an oral.",
           "title": "Project"
         },
         "mlp-reference": {
