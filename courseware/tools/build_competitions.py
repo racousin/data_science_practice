@@ -79,8 +79,6 @@ Optional config.py keys, applied before the benchmark (settings lock at start):
                              flex_v1: the default per-call deadline; Agent()
                              gets min(60, max(5, 10 x it)) s to load. An admin
                              setting, like engine_id.
-    benchmark_extra_files    flex_v1: files uploaded next to the benchmark
-                             agent.py (e.g. a module it imports).
 Optional config.py keys read by `attach` only:
     pass_threshold           the score a student must reach for the module to
                              count the challenge validated, for a course that
@@ -143,7 +141,8 @@ PACKAGES_BY_COURSE = {
                                        "s2-dpe-energy-label",
                                        "s2-icu-survival",
                                        "mlp-s6-aquarium-detection",
-                                       "mlp-s8-arith-gpt"],
+                                       "mlp-s8-arith-gpt",
+                                       "mlp-project-ds-harness"],
 }
 PACKAGES = [p for pkgs in PACKAGES_BY_COURSE.values() for p in pkgs]
 
@@ -210,10 +209,9 @@ def validate_config(cfg: dict) -> None:
     if engine_id is not None and (not _is_int(engine_id) or engine_id < 1):
         raise SystemExit(f"{pkg}: engine_id must be a positive int or None, "
                          f"got {engine_id!r}")
-    for key in ("agent_max_time_per_step_second", "benchmark_extra_files"):
-        if key in cfg and cfg["kernel_version"] != "flex_v1":
-            raise SystemExit(f"{pkg}: {key} is a flex_v1 setting, "
-                             f"not {cfg['kernel_version']}")
+    if "agent_max_time_per_step_second" in cfg and cfg["kernel_version"] != "flex_v1":
+        raise SystemExit(f"{pkg}: agent_max_time_per_step_second is a flex_v1 "
+                         f"setting, not {cfg['kernel_version']}")
     if "agent_max_time_per_step_second" in cfg:
         step = cfg["agent_max_time_per_step_second"]
         if not _is_number(step) or step <= 0:
@@ -319,9 +317,6 @@ def preflight(cfg: dict) -> None:
     if not bench.is_file():
         raise SystemExit(f"missing benchmark file {cfg['benchmark_file']} — "
                          f"run {cfg['_pkg']}/prepare_data.py")
-    for rel in cfg.get("benchmark_extra_files", []):
-        if not (pkg_dir / rel).is_file():
-            raise SystemExit(f"{cfg['_pkg']}: missing benchmark file {rel}")
     name = submission_filename(cfg) if cfg["kernel_version"] == "file_v1" else None
     if name and name.lower().endswith(".gz"):
         with bench.open("rb") as fh:
@@ -492,10 +487,6 @@ def upload_benchmark(client, cid: int, cfg: dict) -> None:
     if cfg["kernel_version"] != "file_v1":
         client.update_benchmark_file_content(cid, "agent.py", bench.read_text())
         print(f"    benchmark file: {cfg['benchmark_file']} -> agent.py")
-        for rel in cfg.get("benchmark_extra_files", []):
-            client.update_benchmark_file_content(cid, Path(rel).name,
-                                                 (cfg["_dir"] / rel).read_text())
-            print(f"    benchmark file: {rel}")
         return
 
     name = submission_filename(cfg)
@@ -644,7 +635,8 @@ def refresh_one(client, user_client, cfg: dict, base_url: str,
 
     me = client.profile().get("username")
     board = client.leaderboard(cid)
-    rows = board.to_dict("records") if hasattr(board, "to_dict") else list(board)
+    # SDK >= 3.0: a DataFrame of the leaders with pandas, the envelope dict without.
+    rows = board.to_dict("records") if hasattr(board, "to_dict") else board["leaders"]
     others = sorted({r["username"] for r in rows if r.get("username") != me})
     if others and not keep_agents:
         raise SystemExit(
@@ -676,6 +668,11 @@ def refresh_one(client, user_client, cfg: dict, base_url: str,
     client.set_competition_markdown(cid, (pkg_dir / "overview.md").read_text())
     client.update_env_file_content(cid, "env.py", (pkg_dir / "env.py").read_text())
     print("    overview.md + env.py re-uploaded")
+
+    # Locked while started too, and uploads are validated against it.
+    if cfg.get("agent_template_file"):
+        client.update_agent_template(cid, (pkg_dir / cfg["agent_template_file"]).read_text())
+        print(f"    agent template: {cfg['agent_template_file']}")
 
     # Settings are locked while started, so they can only be re-applied here.
     # A refresh that changes the metric and not the schema would fail the

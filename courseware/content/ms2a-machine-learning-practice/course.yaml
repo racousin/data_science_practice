@@ -689,25 +689,21 @@ modules:
     icon: trophy
     visibility: unlisted
     summary: >
-      Half the grade. One ML-Arena competition track of your choosing, plus the
-      repository that produced the submission.
+      Half the grade. One project, DS-Harness: build the program around a small
+      language model so that it solves data-science tasks, then defend it at an oral.
     competitions:
-      - competition_id: 172
-        label: "Prediction track — 2-Month Survival Prediction: a predictions file scored on labels you never see"
-      - competition_id: 169
-        label: "Agent track — SuperTuxKart Grand Prix: four agents per race, code that acts, ranked by ELO"
-      - competition_id: 171
-        label: "Generative track — The Round: a pitch read by 16 AI VCs, scored by the money they commit"
+      - competition_id: 194
+        label: "DS-Harness — build a harness around a small LLM that solves data-science tasks"
     lessons:
       - title: "The Brief"
         slug: project-brief
         file: project/project-brief.md
         estimated_minutes: 20
         is_published: true
-      - title: "Tracks"
-        slug: project-tracks
-        file: project/project-tracks.md
-        estimated_minutes: 25
+      - title: "Getting Started"
+        slug: project-getting-started
+        file: project/project-getting-started.md
+        estimated_minutes: 30
         is_published: true
       - title: "Deliverables and Grading"
         slug: project-grading

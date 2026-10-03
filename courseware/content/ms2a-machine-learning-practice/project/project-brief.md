@@ -1,256 +1,157 @@
 # The Brief
 
-The project is half the grade of this course. It is one ML-Arena competition
-track of your choosing, plus the repository that produced the submission. Both
-are graded, and neither one rescues the other.
+The project is half the grade of this course and it is one challenge:
+**DS-Harness**. You build the program around a small language model so that it
+solves data-science tasks it could never solve alone.
 
-<!-- notes: 20 minutes, run it in Session 3, once they have seen a leaderboard.
-Put the real dates on the board — every date in this file is a placeholder. Save five minutes for the reproducibility rule; it is the one they
-skim past and the one that costs them. -->
-
----
-
-## What is being asked for
-
-Two artefacts, one term:
-
-- an **ML-Arena submission** on one of three tracks, scored on a public
-  leaderboard against your cohort and against a published baseline — the three
-  baselines are numbers, and they are in the next lesson
-- the **repository** that produced it — installable, tested, and reproducible
-  by someone who has never seen it
-
-The competition makes the work measurable. The repository makes it defensible.
-A number nobody can reproduce is not a result, it is a claim.
+<!-- notes: 20 minutes. Open the challenge page (https://ml-arena.com/viewchallenge/194)
+on the projector and show the leaderboard while you talk. The ladder slide is the
+one to dwell on: a model under 2B parameters goes from 0.6 to about 61, mostly
+through the code around it. Teams of two are declared by 2026-10-15. -->
 
 ---
 
-## Where the grade comes from
+## Why a harness
 
-| Component | Share |
+A model of 1 to 3 billion parameters reads a question about a spreadsheet well.
+It cannot compute a standard deviation over 600 rows in its head, fit a model or
+forecast a series, and its arithmetic slips.
+
+A **harness** is the program around the model:
+
+- it routes each task to the right approach
+- it gives the model tools: code execution, a calculator, your own helpers
+- it captures the result, checks it, retries when it fails
+
+Small model, big toolbox. This is how most production LLM systems are built.
+
+---
+
+## The challenge
+
+Each task is a question in English, sometimes with CSV files, and one answer.
+
+| Level | Example | Scored |
+|---|---|---|
+| L1 | a unit conversion, a percentage, a column statistic | exact, tolerance |
+| L2 | a word problem, a probability, filter → group → rank | exact, tolerance |
+| L3 | forecast a series, predict a target for test rows | 0 baseline → 1 ref |
+
+**Score = 100 × (0.3·L1 + 0.4·L2 + 0.3·L3)**, each level a mean over its tasks.
+
+Public: `dev.json`, 178 tasks with answers. Private: 119 tasks, with other
+wordings, other data domains, and families you have never seen.
+
+---
+
+## What you build
+
+One file, `agent.py`, plus the modules it imports:
+
+```python
+class Agent:
+    def __init__(self):          # load the model: 60 s at most
+        ...
+    def solve(self, tasks):      # a batch of tasks
+        return [{"id": t["id"], "answer": ..., "trace": "..."}
+                for t in tasks]
+```
+
+It runs offline on one 24 GB GPU, with only the models of the platform's
+cache, and about **330 s** to answer all 119 tasks. A call that raises or runs
+out of time ends the run: **no score**.
+
+---
+
+## The ladder, measured on the private set
+
+| Agent | Score |
 |---|---|
-| Continuous assessment — the eleven labs | 50% of the course |
-| Project | 50% of the course |
-| — leaderboard performance | half the project |
-| — repository quality | half the project |
+| A0: the model answers directly (Qwen2.5-1.5B) | 0.6 |
+| A1: the kit, the model writes Python, one repair | 13.9 |
+| an earlier kit with Qwen3-1.7B instead (one line) | ≈ 31 |
+| A2: instructor harness: routing, numpy tools, checks | ≈ 61 |
 
-The second axis is the 12-hour *Python AI Engineering* module coming back to
-collect: git history, a package that installs, tests that can fail, pinned
-dependencies. You were taught all of it; this is where it is examined.
+Same size of model, a hundred times the score. The ceiling is 100.
+
+On the *Unseen families* column every agent measured stays between 8 and 21.
+That is where the top of the board is decided.
 
 ---
 
-## Teams of one or two
+## What you are given
 
-Two is the default. One is allowed and is not marked more gently.
+- **The repository** [github.com/racousin/ds-harness](https://github.com/racousin/ds-harness):
+  the scorer the leaderboard runs, local test tools, `schema.md`, the kit
+- **The kit** `dsh.py`: model loading, code sandbox, calculator, answer
+  parsing, a stopwatch. A0 and A1 are built on it
+- **The starter notebook** on Colab: from the first evaluation to a
+  first submission
+- **The challenge page**: rules, models, and the live leaderboard
 
-A team is a **first-class object on the platform**, not a line in an email. You
-create it on the competition page and invite your partner; from then on
-submissions attribute to the team rather than to whoever happened to click.
+Everything above the kit is yours.
 
-One team per competition per person, and it is set at the declaration deadline.
-Changing partners later means abandoning your submission history, which is part
-of what you are graded on.
+---
+
+## How you are graded, in one slide
+
+| Part | Share of the project |
+|---|---|
+| Leaderboard, against fixed anchors (A0, A1, A2) | 25 % |
+| Oral, both members, 10 min + 10 min questions | 75 % |
+
+The project is **50 %** of the course grade.
+
+The leaderboard mark uses a final private set, regenerated after the freeze.
+The oral weighs your evaluation method most. Details in *Deliverables and
+Grading*.
+
+---
+
+## Pairs, and the rules that matter
+
+- Teams of **two**, created on the challenge page, declared by **2026-10-15**
+- **2 deployments per person per rolling 24 h**, across every ML-Arena
+  challenge, failed ones included: test locally first
+- Choose the **PyTorch** runtime when you submit
+- No scikit-learn, scipy or statsmodels on the platform
+- Do not log or store task content from platform runs
 
 ---
 
 ## Timeline
 
-Every date below is a **placeholder** until the term calendar is fixed. The
-anchors — which session each milestone follows — are not.
+| Date | Milestone |
+|---|---|
+| now | leaderboard open |
+| 2026-10-15 | teams declared |
+| 2026-11-16 | checkpoint: 1-page design + ablation draft (feedback) |
+| **2026-11-20 23:59** | **freeze**: last deployment, slides, repo tag |
+| 2026-11-21 → 11-23 | final runs on the regenerated private set |
+| 2026-11-24 → 11-27 | orals |
 
-| # | Milestone | Anchor | Date |
-|---|---|---|---|
-| 1 | Team and track declared | after Session 3 | `TBD` |
-| 2 | Repository skeleton pushed | after Session 4 | `TBD` |
-| 3 | First scored submission on the board | after Session 5 | `TBD` |
-| 4 | Mid-point check | after Session 7 | `TBD` |
-| 5 | Freeze — the leaderboard closes | after Session 10 | `TBD` |
-| 6 | Defense | exam week | `TBD` |
-
-Milestone 4 is a fifteen-minute conversation, not a deliverable: you show the
-board, the repository, and the experiment table as it stands.
-
----
-
-## Milestone 1 — declare
-
-Three facts: team members, chosen track, repository URL.
-
-The repository is **private**, with the instructor added as a collaborator on
-the day it is created — not on the day of the freeze. A grader who cannot clone
-it cannot grade it.
-
----
-
-## Milestone 2 — the skeleton
-
-Not a placeholder commit:
-
-```text
-pyproject.toml        # installable, pinned
-src/<yourpkg>/        # the package, importable
-tests/                # at least one test that can fail
-README.md             # install, and how to run
-.gitignore            # data/, weights, .env
-```
-
-A repository whose first real commit lands in the last week is visible in the
-history and is marked as such.
-
----
-
-## Milestone 3 — get on the board early
-
-The first submission exists to prove the pipeline, not to score. Submit a
-baseline — a constant predictor, a random agent, a one-sentence prompt — and
-confirm it is scored.
-
-```bash
-uv pip install mlarena-sdk        # imports as `mlarena`; `mlarena` on PyPI is a different project
-```
-
-```python
-import mlarena, os
-
-client = mlarena.connect(api_key=os.environ["MLARENA_API_KEY"])
-client.submit(competition_id=COMP_ID, files=[...])
-print(client.status())
-```
-
-**`files=` is track-specific and the platform validates the filename, not the
-contents.** A wrong name is rejected at upload and never reaches the scorer:
-
-| Track | `competition_id` | `files=` |
-|---|---|---|
-| Prediction | 172 | `["submission.csv"]` |
-| Agent | 169 | `["agent.py"]`, plus your weights file if you have one |
-| Generative | 171 | `["pitch.txt"]` — exactly one file, the name is fixed |
-
-`os.environ[...]`, not `os.getenv(..., "")`. A missing key should crash here,
-loudly, rather than send an unauthenticated request you spend an hour
-debugging.
-
----
-
-## Milestone 5 — the freeze is the leaderboard
-
-At the freeze timestamp, the board is read and that is your performance grade.
-There is no email extension, no "it was training", no submission accepted
-afterwards.
-
-```python
-client.leaderboard(COMP_ID, top=20)
-```
-
-Consequence: your best submission must be on the board *before* the deadline,
-not merely producible before it. Teams lose marks every year to a run that
-started at 22:00 and finished at 01:00.
-
----
-
-## The reproducibility rule
-
-> A submission you cannot reproduce from your repository scores **zero** on
-> both axes.
-
-Not "loses points". Zero. If the grader clones your repository, follows your
-README, and cannot regenerate the artefact you submitted, there is nothing left
-to grade — the leaderboard row is unattributable and the repository is a
-different piece of work.
-
-Reproducible means: same seed, same pinned versions, same data snapshot, same
-command, and a result within the noise you documented.
-
----
-
-## A good project versus a leaderboard-chasing one
-
-| | Leaderboard-chasing | Good |
-|---|---|---|
-| Submissions | many, undocumented | few, each traceable to a commit |
-| Choices | tried until something scored | motivated, then measured |
-| Validation | the public leaderboard | a local split you trust |
-| Failures | deleted | written down in the report |
-| Repository | a notebook and a CSV | a package, tests, a README |
-| Final number | best of 60 tries | the one you can defend |
-
-Both can top the board. Only one of them passes.
-
----
-
-## What "motivated" means in practice
-
-You will make perhaps six decisions that matter: the validation protocol, the
-model family, the features or the representation, the regularisation, the
-compute budget, and what to do about the errors you looked at.
-
-For each of them the report should be able to say what you tried, what it
-scored on **your** validation, and why you kept what you kept. That is the
-difference between an engineer and a random search with a human in the loop.
-
----
-
-## The engineering stance carries over
-
-The labs' rules are the project's rules, and they are checked the same way:
-
-- crash at the boundary — no silent defaults for required configuration
-- no bare `except`
-- data and weights stay out of git
-- credentials come from the environment
-- every result comes from a command, not from a cell you ran once
-
-None of this is style. Every item on that list is a way a result stops being
-trustworthy.
-
----
-
-## Start with the track
-
-The next lesson describes the three tracks and what each one asks of you. Read
-it, pick one within a week, and start submitting.
-
-The most common failure of this project is not a bad model. It is a team that
-spent five weeks deciding.
+Next lesson: *Getting Started*, your first hour, step by step.
 
 ---
 
 ## Check yourself
 
-1. The grader clones your repository, follows your `README.md`, and gets 0.78
-   where you submitted 0.81. What does the reproducibility rule cost you, and
-   what would have prevented it?
+1. A0 and A2 both run a model under 2B parameters. Where does the difference
+   of about 60 points come from?
 
-   **Answer.** Zero on both axes — not a deduction, zero. It is prevented by
-   stating the seed, the pinned versions, the data snapshot, the command, and
-   **the noise band you documented**, so that a result inside that band still
-   counts as the same result.
+   **Answer.** Mostly from the program around the model: routing, tools the
+   model calls instead of computing in its head, checks, and the use of the
+   time budget. A better model alone took an earlier kit to about 31, not 61.
 
-2. Run this. You should get exactly the output shown.
+2. Your agent answers 110 tasks well, then one `solve` call raises. What is your
+   score?
 
-   ```python
-   import os
-   os.environ.pop("MLARENA_API_KEY", None)          # simulate the missing key
+   **Answer.** None. A call that raises or misses its timeout ends the run and
+   the deployment fails. Catch errors per task and return a placeholder.
 
-   try:
-       key = os.environ["MLARENA_API_KEY"]
-   except KeyError as exc:
-       print("crashed:", exc)                        # -> crashed: 'MLARENA_API_KEY'
+3. Why does the *Unseen families* column matter more than the public tasks?
 
-   print(repr(os.getenv("MLARENA_API_KEY", "")))     # -> ''
-   ```
-
-   **Answer.** The first form crashes at the boundary, where the cause is
-   obvious. The second hands an empty string downstream and you debug an
-   unauthenticated request for an hour. It is the first line of the lesson's
-   engineering stance: crash at the boundary, no silent defaults for required
-   configuration.
-
-3. You picked the Generative track. What exactly do you pass to `files=`, and
-   what happens if you pass `["submission.csv"]` instead?
-
-   **Answer.** `files=["pitch.txt"]` — exactly one file, and #171 fixes the
-   name. The platform validates the filename, not the contents, so a wrong name
-   is rejected at upload and never reaches the scorer. You do not get a bad
-   score; you get no score.
+   **Answer.** The private set has families absent from `dev.json`. A harness
+   keyed on the public wordings fails there; one that reads the prompt and the
+   files carries over. The final set is regenerated, so only general harnesses
+   keep their score.

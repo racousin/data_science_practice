@@ -1,6 +1,12 @@
 {
   "https://ml-arena.com": {
     "competitions": {
+      "mlp-project-ds-harness": {
+        "id": 194,
+        "label": "DS-Harness \u2014 build a harness around a small LLM to solve data-science tasks",
+        "module_slug": null,
+        "name": "MLP Project \u2014 DS-Harness"
+      },
       "mlp-s1-store-sales": {
         "id": 190,
         "label": "Multi-Source Store Sales",
