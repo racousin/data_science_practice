@@ -76,6 +76,7 @@
       "s6-computer-vision-2/lab-6": 96,
       "s6-computer-vision-2/object-detection": 91,
       "s6-computer-vision-2/segmentation": 92,
+      "s6-computer-vision-2/vision-transformer": 226,
       "s7-nlp-1/attention": 100,
       "s7-nlp-1/embeddings": 98,
       "s7-nlp-1/lab-7": 102,
@@ -640,6 +641,13 @@
           "is_published": true,
           "title": "Segmentation"
         },
+        "s6-computer-vision-2/vision-transformer": {
+          "body": "4244d12af2db5b04afc61d32ad87dd1ecbb1de346705d698db4a20a4e90e9e83",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Vision Transformer"
+        },
         "s7-nlp-1/attention": {
           "body": "8474b327e735834cec8c36d88efd364b61a18fbac427975228ce783c06aea017",
           "estimated_minutes": 40,
@@ -938,6 +946,7 @@
         "s6-computer-vision-2": {
           "icon": "scan",
           "lessons": [
+            "vision-transformer",
             "object-detection",
             "segmentation",
             "autoencoders-and-vaes",
@@ -946,7 +955,7 @@
             "lab-6"
           ],
           "summary": "Beyond one label per image: detection, segmentation, and the generative family \u2014 autoencoders, VAEs, GANs and diffusion.",
-          "title": "Session 6 \u2014 Computer Vision 2"
+          "title": "Session 7 \u2014 Computer Vision 2"
         },
         "s7-nlp-1": {
           "icon": "text",
@@ -959,7 +968,7 @@
             "lab-7"
           ],
           "summary": "Text into vectors and vectors into meaning: tokenization, embeddings, recurrent models, attention, and the transformer block that replaced them.",
-          "title": "Session 7 \u2014 NLP 1"
+          "title": "Session 6 \u2014 NLP 1"
         },
         "s8-nlp-2": {
           "icon": "message-square",

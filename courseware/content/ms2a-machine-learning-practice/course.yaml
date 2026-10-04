@@ -368,8 +368,8 @@ modules:
         estimated_minutes: 45
         is_published: true
 
-  # ---------------------------------------------------------------- session 7
-  - title: "Session 7 — NLP 1"
+  # ---------------------------------------------------------------- session 6
+  - title: "Session 6 — NLP 1"
     slug: s7-nlp-1
     icon: text
     visibility: unlisted
@@ -411,8 +411,8 @@ modules:
         file: s7-nlp-1/lab-7.md
         estimated_minutes: 120
         is_published: true
-  # ---------------------------------------------------------------- session 6
-  - title: "Session 6 — Computer Vision 2"
+  # ---------------------------------------------------------------- session 7
+  - title: "Session 7 — Computer Vision 2"
     slug: s6-computer-vision-2
     icon: scan
     visibility: unlisted
@@ -423,6 +423,11 @@ modules:
       - competition_id: 195
         label: "Aquarium Detection — seven marine species, boxes and classes: fine-tune a pretrained YOLO, scored with mAP50-95"
     lessons:
+      - title: "Vision Transformer"
+        slug: vision-transformer
+        file: s6-computer-vision-2/vision-transformer.md
+        estimated_minutes: 35
+        is_published: true
       - title: "Object Detection"
         slug: object-detection
         file: s6-computer-vision-2/object-detection.md
