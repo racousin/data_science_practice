@@ -125,21 +125,21 @@
       },
       "lessons": {
         "mlp-project/project-brief": {
-          "body": "94d982b7f1b6a3d1f1ea5cc2e803452d390efdeff32e6650130fa8ba63b6bcf9",
+          "body": "468f99f067e9e6def63d334b267c591621022e15fec808a590a69af331394d22",
           "estimated_minutes": 20,
           "gated": false,
           "is_published": true,
           "title": "The Brief"
         },
         "mlp-project/project-getting-started": {
-          "body": "47047eeb41169e6a21f701820d78a740b75798a7dc3f119ee70e4f45650f422e",
+          "body": "827db8bc5a5c5afce004b89ff0a33a836384744803d3c34764f3f46bf81aecbf",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
           "title": "Getting Started"
         },
         "mlp-project/project-grading": {
-          "body": "7821a63d318433c012e850dfe498a62afcd3e1b0313fd34d84012ee9f0408741",
+          "body": "b8b8d5ed353c862487dabb650cffb227e27375b0b34e6924c3486237d43a3ee6",
           "estimated_minutes": 20,
           "gated": false,
           "is_published": true,

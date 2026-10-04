@@ -40,17 +40,12 @@ Example: a score halfway between A1 and A2 earns 15 / 20.
 
 ---
 
-## Leaderboard: the final set
+## Leaderboard: the score that counts
 
-The live leaderboard is **indicative**. The mark uses a final run:
-
-- after the freeze, the private set is **regenerated**: a new draw from the
-  same generators
-- your team's chosen submission runs once on it, before the orals
-- the anchors are measured on the same set
-
-A system tuned to the live private set loses points here. A system that reads
-the objective and the files does not.
+The live leaderboard **is** the mark: your team's chosen submission, scored
+on the private set, at the freeze. The logs and the task display of a
+deployment come from its test run only (dev tasks); the private set is never
+shown. Your best local score on `dev.json` is not the mark.
 
 ---
 
@@ -100,8 +95,8 @@ Expect several of these:
 
 ## Deliverables at the freeze
 
-1. **The submission** on the leaderboard that your team chooses for the
-   final run
+1. **The submission** on the leaderboard that your team chooses: its score
+   at the freeze is the leaderboard mark
 2. **The repository**, at a tagged commit that reproduces the submitted
    `agent.py` and your local dev score: a README, pinned dependencies, one
    evaluation command
@@ -120,18 +115,18 @@ long near the freeze: queue your final submission a day early.
 | now | leaderboard open |
 | 2026-10-15 | teams declared |
 | **2026-11-03 23:59** | **freeze**: last deployment queued, slides (PDF), repository tag |
-| 2026-11-04 | final runs on the regenerated private set, then orals |
+| 2026-11-04 | orals |
 
 ---
 
 ## Check yourself
 
-1. Your team's live score is between A1 and A2. After the freeze it drops by
-   6 points. What most likely happened?
+1. Your team scores 8 points more on `dev.json` than on the leaderboard.
+   Which number is your mark?
 
-   **Answer.** The final set is a new draw. A system keyed on the live tasks,
-   or that ran close to the 40 s, loses points there. A general one keeps its
-   score.
+   **Answer.** The leaderboard: it is the private set, which has other draws
+   and table types `dev.json` does not have. The gap measures how much your
+   system is keyed on the dev tasks.
 
 2. Your ablation table shows a change that gained 3 points locally and lost 2
    on the board. Keep the row or drop it?

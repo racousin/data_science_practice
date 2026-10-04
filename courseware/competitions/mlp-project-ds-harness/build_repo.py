@@ -30,7 +30,7 @@ FILES = [  # (source, name in the repository)
     ("hf_models.json", "hf_models.json"),
 ]
 # the platform's agent packages, plus pytest
-REQUIREMENTS = "torch\ntransformers\naccelerate\npandas\nnumpy\nsympy\npytest\n"
+REQUIREMENTS = "torch\ntransformers\naccelerate\npandas\nnumpy\nscipy\nscikit-learn\nsympy\npytest\n"
 GITIGNORE = "# the tasks come from the challenge's dataset; runs are local\ndev.json\nrun*.json\n__pycache__/\n.pytest_cache/\n"
 
 

@@ -115,9 +115,9 @@ Everything above the kit is yours.
 | Leaderboard, against fixed reference systems | 25 % |
 | Oral, both members | 75 % |
 
-The project is **50 %** of the course grade. The leaderboard mark uses a final
-private set, regenerated after the freeze. Details in *Deliverables and
-Grading*.
+The project is **50 %** of the course grade. The leaderboard mark is your
+chosen submission's score on the private set at the freeze. Details in
+*Deliverables and Grading*.
 
 ---
 
@@ -138,7 +138,7 @@ Grading*.
 | now | leaderboard open |
 | 2026-10-15 | teams declared |
 | **2026-11-03 23:59** | **freeze**: last deployment queued, slides (PDF), repository tag |
-| 2026-11-04 | final runs on the regenerated private set, then orals |
+| 2026-11-04 | orals |
 
 Next lesson: *Getting Started*, your first hour, step by step.
 

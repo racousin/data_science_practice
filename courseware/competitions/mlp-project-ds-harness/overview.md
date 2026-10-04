@@ -48,7 +48,7 @@ private tasks.** The board also shows the mean without files, on tables and on f
   run and the deployment fails, with no score.** Catch errors per task, keep a margin, answer a
   number anyway.
 - **Runtime: choose PyTorch** when you submit. torch, transformers, accelerate, numpy, pandas,
-  sympy. One RTX 4090, 3 CPUs, **3 GiB of RAM** (over it, the agent is killed: a failure), 128 MB
+  scipy, scikit-learn, sympy. One RTX 4090, 3 CPUs, **3 GiB of RAM** (over it, the agent is killed: a failure), 128 MB
   of `/tmp`, no network.
 - **Models.** Only these five are mounted: `Qwen/Qwen2.5-0.5B-Instruct`,
   `Qwen/Qwen2.5-1.5B-Instruct`, `Qwen/Qwen2.5-Coder-1.5B-Instruct`,
@@ -83,6 +83,7 @@ client.submit(challenge_id=194, files=["agent.py", "dsh.py"],
 
 ## How it is graded
 
-The project is half of the course grade: the leaderboard (on a private set regenerated after the
-freeze, marked against fixed reference systems) and an oral. Details and calendar: the course's
+The project is half of the course grade: this leaderboard (the score of your team's chosen
+submission at the freeze, marked against fixed reference systems) and an oral. A deployment's
+logs come from its test run on dev tasks only; the private set is never shown. Details and calendar: the course's
 [Project module](https://ml-arena.com/courses/ms2a-machine-learning-practice/mlp-project).

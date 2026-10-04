@@ -55,7 +55,7 @@ The platform refuses env edits on a started challenge: stop, upload `env.py`, `s
 dataset, re-run the benchmark (expected 0.0), start. Old submissions are deleted when the data
 change. `deploy.py` does all of it (`--dry-run` first; creator key from `courseware/.env`).
 
-## The final split
+## The leaderboard is final
 
-After the freeze (2026-11-03 23:59): delete `data/private_seed.txt`, `gen.build`, `gen.check`,
-upload `private.json` the same way, run each team's chosen submission once, and the anchors.
+A deployment's logs and display come from its test run (16 dev tasks); the private set is never
+shown, so the live score at the freeze (2026-11-03 23:59) is the mark. No regenerated split.

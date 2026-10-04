@@ -122,7 +122,7 @@ A run with no score costs a deployment and teaches you nothing.
 | Routing | recognise the kind of task from the objective, send it to the right prompt and tools |
 | Reading | parse each file yourself with the stated rules; give the model a clean view linked to the dictionary |
 | Tools | data tools with arguments, or code the model writes and you run: measure both |
-| Fits | a fitting tool (least squares, a few Newton steps for the logistic) beats code written from scratch |
+| Fits | a fitting tool beats code written from scratch; scikit-learn is there, but its `LogisticRegression` is regularised by default (`C=np.inf` turns it off) |
 | Checks | range, rounding, integer when asked; failed code sent back once with its error |
 | Time | two batched model rounds fit in 40 s, a third may not |
 

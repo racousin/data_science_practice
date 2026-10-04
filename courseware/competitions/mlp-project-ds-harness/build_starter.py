@@ -320,9 +320,10 @@ No solution here: these are the design decisions your project is about.
 - **Data tools or code execution.** Either a few tools with arguments (`stat(column, filter, ...)`),
   easy to call and to check, or the model writes pandas code that `dsh.run_python` runs
   (general, but a 1.5B model's code fails often). Measure both.
-- **A fitting tool for `fit.*`.** Least squares is `numpy.linalg.lstsq` on `[1, X]`; an
-  unregularised logistic regression is a few Newton steps. A tool the model calls with the target,
-  the features and the rows beats code it writes from scratch.
+- **A fitting tool for `fit.*`.** scikit-learn is on the platform: `LinearRegression()`, and
+  `LogisticRegression(C=np.inf)` for an unregularised fit (its default is regularised, and the
+  tasks are not). A tool the model calls with the target, the features and the rows beats code it
+  writes from scratch.
 - **Checks, repair, pacing.** Is the number in a plausible range, rounded as asked, an integer when
   one is asked? Send failed code back once with its error. Two batched model rounds fit in 40 s;
   a third may not.
