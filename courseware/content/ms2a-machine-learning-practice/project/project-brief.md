@@ -69,7 +69,7 @@ out of time ends the run: **no score**.
 |---|---|
 | A0: the model answers directly (Qwen2.5-1.5B) | 0.6 |
 | A1: the kit, the model writes Python, one repair | 13.9 |
-| an earlier kit with Qwen3-1.7B instead (one line) | ≈ 31 |
+| the kit with Qwen3-1.7B instead (one line) | 27.6 |
 | A2: instructor harness: routing, numpy tools, checks | ≈ 61 |
 
 Same size of model, a hundred times the score. The ceiling is 100.
@@ -111,7 +111,7 @@ Grading*.
 ## Pairs, and the rules that matter
 
 - Teams of **two**, created on the challenge page, declared by **2026-10-15**
-- **2 deployments per person per rolling 24 h**, across every ML-Arena
+- **5 deployments per person per rolling 24 h**, across every ML-Arena
   challenge, failed ones included: test locally first
 - Choose the **PyTorch** runtime when you submit
 - No scikit-learn, scipy or statsmodels on the platform
@@ -141,7 +141,7 @@ Next lesson: *Getting Started*, your first hour, step by step.
 
    **Answer.** Mostly from the program around the model: routing, tools the
    model calls instead of computing in its head, checks, and the use of the
-   time budget. A better model alone took an earlier kit to about 31, not 61.
+   time budget. A better model alone takes the kit to 27.6, not 61.
 
 2. Your agent answers 110 tasks well, then one `solve` call raises. What is your
    score?

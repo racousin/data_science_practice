@@ -120,7 +120,7 @@ A run with no score costs a deployment and teaches you nothing.
 
 | Lever | What it is | Measured |
 |---|---|---|
-| Model | change one line in the kit | 19.5 → ≈ 31 on an earlier kit |
+| Model | change one line in the kit | 13.9 → 27.6 with Qwen3-1.7B |
 | Level 3 | a numpy fit / forecast tool, ~40 lines | kit: 0 at L3 |
 | Format | answer exactly as `schema.md` says | exact match |
 | Time | the kit answers 103 / 119 in time: make it faster | +16 tasks |
@@ -161,7 +161,7 @@ table: the oral asks about them.
 
 ## Measure locally, not on the board
 
-Two deployments a day is too few to learn from. The board confirms; your own
+Five deployments a day is too few to learn from. The board confirms; your own
 set decides.
 
 - `local_eval.py ... --out run.json` keeps per-task scores, timings, traces
@@ -174,7 +174,7 @@ set decides.
 
 ## Rules to keep in mind
 
-- **2 deployments per person per rolling 24 h**, every ML-Arena challenge,
+- **5 deployments per person per rolling 24 h**, every ML-Arena challenge,
   failed ones included
 - Do not log or store prompts or files from platform runs
 - Do not edit `scoring.py` or `env.py`: the leaderboard runs its own copies

@@ -50,7 +50,7 @@ answer formats and tolerances. At level 3 the prompt states the method and the f
   `internlm/internlm2_5-1_8b-chat`, `openbmb/MiniCPM-2B-sft-bf16`.
 - **Uploads.** `agent.py` plus the modules it imports (e.g. `dsh.py`): up to 10 files, 100 MB,
   scanned by bandit.
-- **Quota.** **2 deployments per person per rolling 24 h, across every ML-Arena challenge,
+- **Quota.** **5 deployments per person per rolling 24 h, across every ML-Arena challenge,
   failed ones included.** A deployment is a short test run, then the scored run: about 7–9 min
   plus the queue (one GPU, one job at a time). Test locally first. The queue is long in
   the evenings and near the freeze: a deployment **queued** before 2026-11-20 23:59 counts, but
@@ -80,8 +80,8 @@ client.submit(challenge_id=194, files=["agent.py", "dsh.py"],
 
 - **Time first.** The kit answers 103 of 119 tasks before time runs out: make it faster
   (shorter generations, fewer retries) and it answers them all.
-- **The model.** Swapping the kit's model is one line; `Qwen/Qwen3-1.7B` raised an earlier
-  version of the kit from 19.5 to about 31.
+- **The model.** Swapping the kit's model is one line: with `Qwen/Qwen3-1.7B` the kit
+  scores 27.6 and answers all 119 tasks in time.
 - **Level 3.** The kit scores 0 there. A numpy fit/forecast tool (~40 lines) is worth a lot.
 - **Answer format.** A right value in the wrong format scores 0: read `schema.md`.
 - **Measure before adding work.** Adding a repair round *lowered* an earlier kit's score

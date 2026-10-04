@@ -377,7 +377,7 @@ here `dsh.py`: up to 10 files, 100 MB. The runtime is **PyTorch**: the cell belo
 in the console choose it yourself (the default is not torch, and a wrong pick costs a
 deployment).
 
-**Quota: 2 deployments per person per rolling 24 h, counted across every ML-Arena challenge,
+**Quota: 5 deployments per person per rolling 24 h, counted across every ML-Arena challenge,
 failed ones included.** Rehearse locally first (section 5). You work in pairs: create your team
 on the challenge page before your first submission.
 
@@ -417,7 +417,7 @@ Measured on the private set:
 |---|---|---|---|
 | `agent_naive.py` (Qwen2.5-1.5B, answers directly) | 0.6 | 0 / 1.5 / 0 | — |
 | `agent_kit_baseline.py` (writes Python, one repair) | 13.9 | 32.4 / 10.4 / 0 | the kit as shipped: 103 of 119 answered in time |
-| an earlier kit with `Qwen/Qwen3-1.7B` | ≈ 31 | 57 / 34 / 0 | one line |
+| the kit with `Qwen/Qwen3-1.7B` | 27.6 | 54.1 / 26.9 / 2.1 | one line; 119 of 119 answered in time |
 | the instructor's harness (not published) | ≈ 61 | 65 / 40 / 85 | routing, numpy fit / forecast tools, checks |
 
 The ceiling is 100. The *Unseen families* column stays at 8–21 for every agent measured: that
