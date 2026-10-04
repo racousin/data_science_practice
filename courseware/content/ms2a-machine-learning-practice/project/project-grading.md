@@ -27,14 +27,14 @@ reference agents, so every team can reach 20/20.
 
 ## Leaderboard: the anchors
 
-| Anchor | Agent | Score | Mark |
+| Anchor | System | Score | Mark |
 |---|---|---|---|
-| A0 | the model answers directly | 0.6 | 6 / 20 |
-| A1 | the kit as shipped | 13.9 | 12 / 20 |
-| A2 | the instructor harness | ≈ 61 | 18 / 20 |
-| | A2 + 5 points or more | ≥ ≈ 66 | 20 / 20 |
+| A0 | stage 1: the model, a structured answer, a parser | 15.8 | 6 / 20 |
+| A1 | stage 2 with routing: the calculator loop without files, stage 1 with files | 16.7 | 12 / 20 |
+| A2 | the reference system: reading, data view, code, repair | 40.8 | 18 / 20 |
+| | A2 + 5 points or more | ≥ 45.8 | 20 / 20 |
 
-Linear between two anchors; proportional below A0.
+Scores on the private set. Linear between two anchors; proportional below A0.
 
 Example: a score halfway between A1 and A2 earns 15 / 20.
 
@@ -44,13 +44,13 @@ Example: a score halfway between A1 and A2 earns 15 / 20.
 
 The live leaderboard is **indicative**. The mark uses a final run:
 
-- after the freeze, the private set is **regenerated**: a new draw, the same
-  families, paraphrased prompts
-- your team's chosen submission runs **twice** on it
-- your score is the mean of the two runs
+- after the freeze, the private set is **regenerated**: a new draw from the
+  same generators
+- your team's chosen submission runs once on it, before the orals
+- the anchors are measured on the same set
 
-A harness tuned to the wording of the live private set loses points here. A
-harness that reads the prompt and the files does not.
+A system tuned to the live private set loses points here. A system that reads
+the objective and the files does not.
 
 ---
 
@@ -61,7 +61,7 @@ harness that reads the prompt and the files does not.
 | | Criterion | Weight |
 |---|---|---|
 | O1 | Problem understanding | 15 % |
-| O2 | Harness design | 20 % |
+| O2 | System design | 20 % |
 | O3 | Evaluation methodology | 30 % |
 | O4 | Resource engineering | 10 % |
 | O5 | Individual mastery (Q&A on any component) | 25 % |
@@ -72,12 +72,12 @@ O3 and O5 are more than half the oral.
 
 ## What each criterion looks for
 
-- **O1**: the levels, the score, the constraints, where the points are
-- **O2**: why each component of your harness exists, with the measurement
+- **O1**: the families, the score, the constraints, where the points are
+- **O2**: why each component of your system exists, with the measurement
   that justified it
 - **O3**: your own validation set, an ablation table, an error analysis by
   family, the gap between local and leaderboard scores explained
-- **O4**: model choice, seconds per task, memory, the time budget: measured,
+- **O4**: model choice, seconds per call, memory, the 40 s: measured,
   not assumed
 - **O5**: each member explains any component, including the one the
   partner wrote
@@ -90,11 +90,11 @@ Expect several of these:
 
 - Which change gave the most points, and how do you know?
 - Show a change you removed. Why did it not pay?
-- Where does your harness lose the most points today?
+- Where does your system lose the most points today?
 - Why does your local score differ from the leaderboard?
-- How long does a level-3 task take, and where does the time go?
-- Why this model and not a larger one?
-- Walk us through what happens to one task, from prompt to answer.
+- How long does a call of 8 tasks take, and where does the time go?
+- Why this model and not another of the five?
+- Walk us through what happens to one task, from objective to answer.
 
 ---
 
@@ -107,10 +107,9 @@ Expect several of these:
    evaluation command
 3. **Slides**, PDF, 12 at most, for the oral
 
-All three by **2026-11-20 23:59**. A deployment counts if it is **queued**
-by then. The GPU runs one job at a time (about 9 min each), so the queue
-is long near the freeze: aim to queue your final submission by
-**2026-11-19**.
+All three by **2026-11-03 23:59**. A deployment counts if it is **queued**
+by then. The GPU runs one job at a time (about 10 min each), so the queue is
+long near the freeze: queue your final submission a day early.
 
 ---
 
@@ -120,11 +119,8 @@ is long near the freeze: aim to queue your final submission by
 |---|---|
 | now | leaderboard open |
 | 2026-10-15 | teams declared |
-| 2026-11-16 | checkpoint: 1-page design + ablation draft (feedback only) |
-| 2026-11-19 | aim to queue your final deployment |
-| **2026-11-20 23:59** | **freeze**: last deployment queued, slides, repository tag |
-| 2026-11-21 → 11-23 | final runs on the regenerated private set |
-| 2026-11-24 → 11-27 | orals |
+| **2026-11-03 23:59** | **freeze**: last deployment queued, slides (PDF), repository tag |
+| 2026-11-04 | final runs on the regenerated private set, then orals |
 
 ---
 
@@ -133,9 +129,9 @@ is long near the freeze: aim to queue your final submission by
 1. Your team's live score is between A1 and A2. After the freeze it drops by
    6 points. What most likely happened?
 
-   **Answer.** The final set is regenerated with paraphrased prompts and a new
-   draw. A harness that keyed on the live wordings, or that ran close to the
-   time limit, loses points there. A general one keeps its score.
+   **Answer.** The final set is a new draw. A system keyed on the live tasks,
+   or that ran close to the 40 s, loses points there. A general one keeps its
+   score.
 
 2. Your ablation table shows a change that gained 3 points locally and lost 2
    on the board. Keep the row or drop it?
@@ -143,8 +139,8 @@ is long near the freeze: aim to queue your final submission by
    **Answer.** Keep it, and explain the gap: it is exactly what O3 asks for.
    A table with only gains does not show a method.
 
-3. Your partner wrote the level-3 tool. The jury asks you what it does when
-   the fit takes longer than the task's time budget. What should you be able to do?
+3. Your partner wrote the fitting tool. The jury asks you what it does when
+   the training rows have missing values. What should you be able to do?
 
    **Answer.** Answer it. O5 (25 %) is individual mastery of every component,
    whoever wrote it.

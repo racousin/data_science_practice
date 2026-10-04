@@ -1,15 +1,10 @@
-# The repository is public. Whatever lets a team rebuild the private split, or
-# copy the grading anchor, stays on this machine (thinking/06_synthesis.md,
-# decision 2: the generators stay private).
-draft/tasks/
-draft/build_dataset.py
-draft/reference_agent.py
-draft/tools/
-draft/tests/
-draft/_sim/
-anchors/
-experiments/
-# Design notes: they name the task families absent from dev.json.
-thinking/
-# data/ (the private split and its seed) is ignored by ../.gitignore.
+# The repository is public. Whatever lets a team rebuild the private split, or copy
+# the reference systems, stays on this machine.
+gen/
+anchors2/
+_v1/
+# data/ (the splits, their specs and the private seed) is ignored by ../.gitignore.
 dist/
+__pycache__/
+# Design notes of v1 (they name the task families absent from dev.json).
+thinking/

@@ -7,9 +7,10 @@ Output: website/public/modules/ms2a-machine-learning-practice/challenges/
 mlp-project-ds-harness.ipynb (opened from GitHub in Colab, like the other
 challenge notebooks). Never edit the .ipynb by hand: change this file and run it.
 
-The notebook is guided, not a solution: setup, load dev.json, run the two kit
-agents on a few tasks, see where the time goes, analyse the errors, build a
-validation set, submit the kit baseline, then how to progress.
+Sections (plan §6): setup; the data; stage 1 in detail (model + structured answer
++ parser); stage 2 as a skeleton (a tool and a loop); directions; measure; submit.
+The measured numbers quoted come from M below (GPU VM runs on dev.json, the
+platform's agent image and GPU).
 """
 import json
 from pathlib import Path
@@ -18,455 +19,395 @@ HERE = Path(__file__).resolve().parent
 OUT = (HERE.parents[2] / "website" / "public" / "modules" / "ms2a-machine-learning-practice"
        / "challenges" / "mlp-project-ds-harness.ipynb")
 
+# Measured on dev.json (180 tasks), RTX 4090, the platform's torch agent image (anchors2/README.md).
+M = json.loads((HERE / "anchors2" / "measured.json").read_text())
+
 CELLS = [
 ("md", r"""# DS-Harness starter
 
-**A small language model, inside a harness, solving data-science tasks under a time budget.**
+**Build an AI system around a small language model.**
 
-Each task is a question in English, sometimes with CSV files: a unit conversion, a word problem,
-a chain of filters and aggregations over messy tables, a forecast or a prediction for a test
-file. A 1.5B model asked directly scores 0.6 / 100. Your project is the program around the
-model, the **harness**: it routes each task, prompts the model, runs the code the model writes,
-checks the result and recovers from errors, all **within a few seconds per task**.
+Each task is an objective in English, sometimes with CSV files, and its answer is **one number**:
+a computation stated in the text, a statistic over messy tables, or a regression fitted on a
+training file. A model of 1.5 billion parameters asked directly gets the files wrong, the
+arithmetic wrong and the format wrong. Your project is the system around it:
 
-This notebook runs end to end on a free Colab T4: get the code and the data, look at the tasks,
-run the two kit agents, see where the time goes, analyse the errors, build a validation set and
-submit the kit baseline. The last section says how to go further. Challenge page:
+- how the objective and its files are read;
+- how the system decides what kind of task it faces;
+- what reaches the model;
+- which tools exist and how the model calls them;
+- how the answer is parsed and checked;
+- how the 40 seconds of each call are spent.
+
+**An efficient system matters more than the model.** On `dev.json`, the same 1.5B model goes from
+%(s1_q15)s / 100 (asked directly, answer well parsed) to %(a2)s with a system that reads the files
+itself, shows the model a clean view of them and runs the code it writes.
+
+This notebook runs on a free Colab **T4 GPU**: the data, the first solution in detail, a tool and
+a loop as a skeleton, the directions, how to measure, how to submit. Challenge page:
 [ml-arena.com/viewchallenge/194](https://ml-arena.com/viewchallenge/194)."""),
 
 ("md", r"""---
 
 ## 0. Setup
 
-**Use a GPU runtime:** Runtime → Change runtime type → **T4 GPU**. On a CPU a 1.5B model takes
-tens of seconds per task.
-
-The ML-Arena client is published as **`mlarena-sdk`** and imports as `mlarena` (do not
-`pip install mlarena`, an unrelated package). Colab already has torch, transformers, pandas and
-numpy."""),
-
-("code", r"""!pip install -q mlarena-sdk accelerate"""),
-
-("md", r"""---
-
-## 1. Get the code and the data
+**Runtime → Change runtime type → T4 GPU.** The ML-Arena client is the package **`mlarena-sdk`**
+(imported as `mlarena`; `pip install mlarena` is an unrelated package). Colab already has torch,
+transformers, pandas and numpy.
 
 The code is the public repository [racousin/ds-harness](https://github.com/racousin/ds-harness):
-the scorer the leaderboard runs, two local runners and the starter kit.
 
 | file | what it is |
 |---|---|
 | `scoring.py` | the scorer and the delivery loop (`run_agent`) the leaderboard runs |
-| `schema.md` | the task and answer formats, the scoring, the delivery |
-| `localtest.py` | runs an agent file on a task file as the platform does |
-| `local_eval.py` | the same, plus timings, full traces (`--out`) and `--slowdown` |
-| `dsh.py` | the starter kit: model loading, code sandbox, calculator, parsing, stopwatch |
-| `agent_naive.py` | the model answers directly |
-| `agent_kit_baseline.py` | the model writes Python, the kit runs it, one repair round |
-| `kit_README.md` | the kit's documentation: read it |"""),
+| `schema.md` | formats, score, timing, the machine: read it once |
+| `localtest.py` | runs an agent file on `dev.json` the way the leaderboard does |
+| `dsh.py` | the kit: model loading, answer parsers, calculator, tool-call parser, code runner |
+| `stage1_direct.py` | the first solution (section 2) |
+| `stage2_tool_loop.py` | a tool and a loop, with the loop body to write (section 3) |"""),
 
-("code", r"""!git clone -q https://github.com/racousin/ds-harness"""),
-
-("code", r"""import os
+("code", r"""!pip install -q mlarena-sdk accelerate
+!git clone -q https://github.com/racousin/ds-harness
+import os
 os.chdir("ds-harness")
 print(sorted(os.listdir(".")))"""),
 
-("md", r"""Your personal API key is on your ML-Arena **Profile** page (it starts with `mlk_user_`). The
-cell asks for it, so it is not saved in the notebook. `download_dataset` writes `dev.json`: the
-178 public tasks, with their answers."""),
+("md", r"""Your API key is on your ML-Arena **Profile** page (`mlk_user_...`). `download_dataset` writes
+`dev.json`: 180 public tasks with their files, answers and types."""),
 
 ("code", r"""from getpass import getpass
-
 import mlarena
 
-CHALLENGE_ID = 194   # https://ml-arena.com/viewchallenge/194
+CHALLENGE_ID = 194
 client = mlarena.connect(api_key=getpass("ML-Arena API key (mlk_user_...): "))
 print(client.download_dataset(CHALLENGE_ID, "."))"""),
 
-("md", r"""Do not edit `scoring.py`: the leaderboard runs its own copy, so a change here only makes your
-local numbers wrong. `dsh.py` is yours to copy and change: you upload the version your agent
-imports."""),
-
-("code", r"""import json
-import random
-import time
-
+("code", r"""import collections, json, re, tempfile, time
 import pandas as pd
-
-import dsh
-import scoring
+import dsh, scoring
 
 dev = json.load(open("dev.json"))
 print(len(dev), "tasks")"""),
 
 ("md", r"""---
 
-## 2. The tasks
+## 1. The data
 
-Each task has the keys your agent receives (`id`, `prompt`, `files`, `answer_type`) and keys only
-you see in `dev.json` (`family`, `level`, `answer`, `scoring`, `heldout_family`)."""),
+### What your agent receives
 
-("code", r"""tasks = pd.DataFrame([{"id": t["id"], "level": t["level"], "family": t["family"],
-                       "answer_type": t["answer_type"], "n_files": len(t["files"])} for t in dev])
-tasks.groupby(["level", "family", "answer_type"]).size().rename("tasks").reset_index()"""),
+Your `Agent.solve(tasks)` is called with 8 tasks at a time. A task is **only** its `id`, its
+`objective` and the **paths** of its files. The platform writes the files of a call to disk just
+before the call and deletes them after. `scoring.write_files` does exactly that here:"""),
 
-("code", r"""def show(task, n_chars=400):
-    print(f"{task['id']}  level {task['level']}  {task['family']}  -> {task['answer_type']}")
-    print(task["prompt"], "\n")
-    for name, text in task["files"].items():
-        print(f"--- {name} ({text.count(chr(10))} lines)")
-        print(text[:n_chars])
-    answer = task["answer"]
-    print("\nanswer:", answer if not isinstance(answer, list) else f"{answer[:5]} ... ({len(answer)} values)")
-    print("scoring:", task["scoring"])
+("code", r"""no_file = next(t for t in dev if not t["files"])
+with_files = next(t for t in dev if t["type"] == "table.filter")
+root = tempfile.mkdtemp()
+payload = scoring.write_files([no_file, with_files], root)
+for p in payload:
+    print(json.dumps(p, indent=1), "\n")"""),
 
-for level in (1, 2, 3):
-    show(next(t for t in dev if t["level"] == level))
-    print("\n" + "=" * 100 + "\n")"""),
+("code", r"""for path in payload[1]["files"]:
+    print(f"--- {os.path.basename(path)}")
+    print("".join(open(path).readlines()[:8]))"""),
 
-("md", r"""**Score = 100 × (0.3·L1 + 0.4·L2 + 0.3·L3)**, each level being the mean over its tasks. Level 1
-and 2 are exact answers with a tolerance. A level-3 task scores between 0 (a trivial baseline)
-and 1 (a reference model): the prompt states the method and the format, so reading it carefully
-pays more than heavy modelling. `schema.md` gives every format and tolerance.
+("md", r"""Read the objective of the second task again, then the files. The headers are short codes that
+change from task to task; the objective names a column by its **description** in
+`data_dictionary.csv`. The objective also states how to read the file: the separator, the decimal
+mark, how missing values are written, values that carry their unit, duplicated rows, a value
+that means *not recorded*. Getting all of this right is the system's job, not the model's.
 
-**Questions.** Which columns does the level-2 task need, and how are its missing values written?
-In the level-3 task, which column must not be used? What must a model get right, in order, to
-answer each of the three?"""),
+### What only you see
 
-("md", r"""---
+`dev.json` also carries, for each task, its `answer`, its tolerance `tol` and its `type`. The
+agent never gets them: your system must recognise the kind of task from the objective."""),
 
-## 3. The time budget
+("code", r"""df = pd.DataFrame([{"type": t["type"], "family": t["type"].split(".")[0], "files": len(t["files"])}
+                   for t in dev])
+df.groupby(["family", "type"]).size().rename("tasks").reset_index()"""),
 
-The private set has **119 tasks: 37 at level 1, 67 at level 2, 15 at level 3**. They arrive in
-**21 `solve` calls**: 8 level-1/2 tasks or 2 level-3 tasks per call.
+("code", r"""for ty in ("calc.dates", "table.join", "fit.logistic"):
+    t = next(t for t in dev if t["type"] == ty)
+    print(f"[{ty}]  answer {t['answer']}  tol {t['tol']:g}  files {list(t['files'])}")
+    print(t["objective"], "\n")"""),
 
-- **Each call** has a timeout of 2.5 × (2 s per level-1/2 task + 8 s per level-3 task): 40 s for
-  a full batch.
-- **The job** ends 399 s after it starts, model loading included: about 380 s of answering after
-  a ~17 s load. **Plan for 330 s of answering**, about 2 s per level-1/2 task and 8 s per level-3
-  task.
-- Every call gets its full timeout. When the full timeout of the next batch no longer fits
-  before the deadline, that batch is not sent and its tasks score 0.
-- **A `solve` call that raises an exception or misses its timeout ends the run, and the
-  deployment fails: no score at all.** Catch errors per task, answer a placeholder rather than
-  raise, and stop at the task's `time_budget_s`.
+("md", r"""### Score and timing
 
-The per-call timeouts add up to far more than the job has: the binding limit is the total. The
-cell below recomputes these numbers with the scorer's own functions, on 119 dev tasks drawn with
-the private set's level mix (`private_like`)."""),
+- **One number per task.** The objective states the rounding: *n decimals* → tolerance
+  `1.5 × 10⁻ⁿ`; *an integer* → `1e-6`. Inside it the task scores 1, otherwise 0. An exact,
+  unrounded value is always inside.
+- **Score = 100 × the mean over all tasks.** The private set has 120 tasks: 45 without files,
+  50 tables, 25 fits, with other draws and a few table types that `dev.json` does not have.
+- **Time.** `Agent()` has 60 s to load its model, then 15 calls of 8 tasks, **40 s per call**.
+  A call that raises or takes longer ends the run and the deployment fails."""),
 
-("code", r"""PRIVATE_MIX = {1: 37, 2: 67, 3: 15}
-TOTAL_S = 330   # seconds of answering to plan for
-
-def sample_like_private(tasks, n_total, seed=0):
-    # n_total tasks of `tasks` with the private set's level proportions
-    rng = random.Random(seed)
-    out = []
-    for level, n in PRIVATE_MIX.items():
-        pool = [t for t in tasks if t["level"] == level]
-        out += rng.sample(pool, round(n * n_total / sum(PRIVATE_MIX.values())))
-    return out
-
-def planned_seconds(tasks):
-    # the scorer's planning pace: 2 s per level-1/2 task, 8 s per level-3 task
-    return sum(scoring.EST_TASK_S[t["level"]] for t in tasks)
-
-private_like = sample_like_private(dev, 119)
-batches = scoring.make_batches(private_like)
-timeouts = [scoring.batch_budget(b) for b in batches]
-print(f"{len(private_like)} tasks in {len(batches)} calls")
-print(f"sum of the per-call timeouts: {sum(timeouts):.0f} s; plan for {TOTAL_S} s of answering")
-print(f"at 2 s / 8 s per task: {planned_seconds(private_like):.0f} s")
-for b, t in list(zip(batches, timeouts))[:4]:
-    print(f"  call of {len(b)} level-{b[0]['level']} tasks: timeout {t:.0f} s")"""),
-
-("md", r"""Each task also carries `time_budget_s`, its share of **its call's** timeout: 5 s for a
-level-1/2 task, 20 s for a level-3 task. That is the limit that keeps a call alive, not the pace
-to plan for: a harness that spends 5 s on every level-1/2 task answers well under half of the
-private set. `dsh.Budget.for_tasks(tasks)` turns `time_budget_s` into a stopwatch.
-
-What costs time on a GPU: loading the model (once, 60 s at most); **generating tokens**, by far
-the most (one batched `generate` for a whole call is much cheaper than one per task); running
-code (`dsh.run_python` starts a fresh Python process, about 0.5–1.5 s); any second attempt."""),
+("code", r"""for answer in (41.07, "41.07", 41.069, 41.08, "41,07", None):
+    print(repr(answer), "->", scoring.score_answer({"answer": 41.07, "tol": 0.015}, answer))"""),
 
 ("md", r"""---
 
-## 4. Run the two kit agents
+## 2. Stage 1: the model, a structured answer, a parser
 
-`local_eval.py` runs an agent file through `scoring.run_agent`, the platform's own delivery and
-scoring, and records each call's duration. The model is set by `DSH_MODEL` (default
-`Qwen/Qwen2.5-1.5B-Instruct`); the challenge page lists the models the platform has.
+### One call
 
-40 tasks with the private level mix are enough to compare agents in a few minutes (the first run
-also downloads the model). A T4 is slower than the platform's RTX 4090, so `--slowdown 3`
-multiplies every timeout by 3: this run measures what the agent **can** do. Section 5 checks
-whether it is fast enough."""),
+`dsh.load_llm` loads a model of the platform's list; `chat` takes a list of conversations and
+generates all the replies in one batch (much cheaper than one call per task)."""),
 
-("code", r"""os.environ["DSH_MODEL"] = "Qwen/Qwen2.5-1.5B-Instruct"
+("code", r"""llm = dsh.load_llm("Qwen/Qwen2.5-1.5B-Instruct")
+reply = llm.chat([[{"role": "user", "content": no_file["objective"]}]], max_new_tokens=300)[0]
+print(no_file["objective"], "\n\n---\n", reply, "\n\ngold:", no_file["answer"])"""),
 
-sample = sample_like_private(dev, 40)
-json.dump(sample, open("sample40.json", "w"))
-json.dump(private_like, open("private_like.json", "w"))
-print({lv: sum(t["level"] == lv for t in sample) for lv in (1, 2, 3)})"""),
+("md", r"""The reply is prose. The scorer wants one number. Stage 1 is three decisions: **what the
+prompt asks for**, **how the answer is marked**, and **how your code reads it back**. We measure
+them on 24 tasks without files (the cell takes a few minutes on a T4)."""),
 
-("code", r"""!python local_eval.py agent_naive.py --dev sample40.json --slowdown 3 --out run_naive.json | tail -20"""),
+("code", r"""calc = [t for t in dev if not t["files"]]
+sample = calc[:24]
 
-("code", r"""!python local_eval.py agent_kit_baseline.py --dev sample40.json --slowdown 3 --out run_kit.json | tail -20"""),
+def measure(name, system, parse, max_new_tokens=512):
+    convs = [[{"role": "system", "content": system}, {"role": "user", "content": t["objective"]}]
+             for t in sample]
+    t0 = time.time()
+    replies = llm.chat(convs, max_new_tokens=max_new_tokens)
+    secs = time.time() - t0
+    answers = [parse(r) for r in replies]
+    score = sum(scoring.score_answer(t, a if a is not None else 0)[0] for t, a in zip(sample, answers))
+    print(f"{name:34s} {100 * score / len(sample):5.1f} / 100   {secs / len(sample):.2f} s per task")
+    return replies"""),
 
-("code", r"""def load_run(path):
-    run = json.load(open(path))
-    df = pd.DataFrame(run["details"])
-    df["level"] = df["id"].map({t["id"]: t["level"] for t in dev})
-    return run, df
+("md", r"""**An example last line.** Show the expected last line with an example value and read
+the number after `####`."""),
 
-runs = {name: load_run(f"run_{name}.json") for name in ("naive", "kit")}
-pd.DataFrame({name: {"score": run["score"], **{f"L{k}": round(v, 1) for k, v in run["level_scores"].items()},
-                     "format errors": run["metrics_detail"]["format_errors"],
-                     "model load (s)": round(run["init_s"], 1)}
-              for name, (run, _) in runs.items()})"""),
+("code", r"""copy = measure("example last line '#### 42.5'",
+               "Answer the question. End with a line like: #### 42.5",
+               lambda r: dsh.last_number(r.split("####")[-1]))
+print(copy[0][:300])"""),
 
-("md", r"""---
+("md", r"""**Three designs.** Reason first, then mark the answer:
 
-## 5. Where the time goes
+1. a last line `ANSWER: <number>`, read by a strict parser — or with a **fallback** to the last
+   number written;
+2. a JSON object `{"reasoning": ..., "answer": ...}`;
+3. two calls: reason freely, then ask for the number only."""),
 
-`call_seconds` is the duration of the call a task was in, so a task costs its call's duration
-divided by the tasks in that call. Projected onto the 119 private tasks, it says whether the
-harness answers everything in 330 s."""),
+("code", r"""TAG = ("Solve the problem. Reason step by step, writing each calculation. "
+       "Then write a last line of the form ANSWER: <number>, with the number only.")
+tag = measure("ANSWER line, strict", TAG, dsh.tagged_number)
+_ = measure("ANSWER line, else last number", TAG, lambda r: dsh.tagged_number(r) or dsh.last_number(r))"""),
 
-("code", r"""def timing(df):
-    per_call = df.groupby("call_index")["id"].transform("count")   # tasks in the same call
-    df = df.assign(task_s=df["call_seconds"] / per_call)
-    by_level = df.groupby("level")["task_s"].mean()
-    projected = sum(PRIVATE_MIX[lv] * by_level.get(lv, 0.0) for lv in PRIVATE_MIX)
-    return by_level.round(2), projected
+("code", r"""def from_json(r):
+    try:
+        return dsh.to_number(json.loads(re.sub(r"^```(json)?|```$", "", r.strip()).strip())["answer"])
+    except Exception:
+        return dsh.last_number(r)
 
-for name, (run, df) in runs.items():
-    by_level, projected = timing(df)
-    verdict = "fits" if projected <= TOTAL_S else "DOES NOT FIT"
-    print(f"{name:6s} s per task by level {by_level.to_dict()} -> 119 tasks in {projected:.0f} s: "
-          f"{verdict} in {TOTAL_S} s (model load {run['init_s']:.0f} s, limit 60 s)")"""),
+_ = measure("JSON {reasoning, answer}",
+            'Reply with JSON only: {"reasoning": "<short working>", "answer": <number>}', from_json)"""),
 
-("md", r"""**The rehearsal.** Run the agent at the platform's own timeouts (no `--slowdown`) with the
-330 s total (`--budget-s 330`), on `private_like.json`: the 119 tasks with the private mix, so
-the run looks like the platform's. `--budget-s` is the budget of the private mix: on another
-task file the runner scales it to the tasks you run (about 575 s for the full `dev.json`).
+("code", r"""convs = [[{"role": "system", "content": "Solve the problem. Reason step by step."},
+          {"role": "user", "content": t["objective"]}] for t in sample]
+first = llm.chat(convs, max_new_tokens=512)
+second = llm.chat([c + [{"role": "assistant", "content": r},
+                        {"role": "user", "content": "Write only the final answer as a number, rounded as asked."}]
+                   for c, r in zip(convs, first)], max_new_tokens=16)
+score = sum(scoring.score_answer(t, dsh.last_number(r) or 0)[0] for t, r in zip(sample, second))
+print(f"two calls: {100 * score / len(sample):.1f} / 100")"""),
 
-The last line of the output says how many tasks were sent and answered. "RUN ENDED EARLY" means a
-call raised or missed its timeout: on the platform, that deployment fails with no score. The T4
-is usually slower than the platform's GPU, so a rehearsal that fits here has a margin there."""),
+("md", r"""Measured on the 65 dev tasks without files on the platform's GPU (Qwen2.5-1.5B):
+%(s1_table)s
+- **the parser is a design decision**: the same replies score %(strict)s with a strict `ANSWER:`
+  parser and %(fallback)s with a fallback to the last number;
+- **the best-obeyed format is not the most accurate**: JSON is followed most often and scores
+  least — writing JSON takes the place of the reasoning;
+- **separating the reasoning from the answer pays**: two calls score best, for one more short
+  generation.
 
-("code", r"""!python local_eval.py agent_kit_baseline.py --dev private_like.json --budget-s 330 --out run_kit_rehearsal.json | tail -3"""),
+`stage1_direct.py` uses the `ANSWER:` line with the fallback: simple, one call. Two calls is
+your first measured improvement.
 
-("md", r"""**Questions.** How much of a call is generation, how much code execution (time
-`dsh.run_python` alone)? How does the time per task change with `max_new_tokens`, with the batch
-size, with a repair round? Which tasks could skip the model, or the sandbox?"""),
+### Where it fails, by type"""),
 
-("md", r"""---
+("code", r"""answers = [dsh.tagged_number(r) or dsh.last_number(r) for r in tag]
+by_type = collections.defaultdict(list)
+for t, a in zip(sample, answers):
+    by_type[t["type"]].append(scoring.score_answer(t, a or 0)[0])
+for ty, v in sorted(by_type.items()):
+    print(f"{ty:20s} {100 * sum(v) / len(v):5.1f}  ({len(v)} tasks)")"""),
 
-## 6. Error analysis
+("md", r"""Products of large numbers, standard deviations, compound interest, logarithms, days of the
+week: the model reasons correctly and computes wrongly. That is what a tool fixes (section 3).
 
-Per-family scores say where to work; traces say why a task failed: the reading of the prompt (a
-wrong column, a missed cleaning rule), the reasoning, the code, the answer format, or time."""),
+### Never let a task end the run
 
-("code", r"""run, df = runs["kit"]
-fam = df.groupby(["level", "family"]).agg(tasks=("id", "count"), score=("score", "mean"),
-                                         format_errors=("error", lambda e: e.notna().sum()))
-fam.round(2)"""),
+One exception inside `solve` ends the run and fails the deployment. `stage1_direct.py` wraps the
+generation in `try/except` and answers `0` for a task it cannot read: a wrong answer costs one
+task, an exception costs all of them.
 
-("code", r"""failed = df[df["score"] < 1].sort_values(["level", "family"])
-print(len(failed), "tasks below full score")
-failed[["id", "level", "family", "score", "error"]].head(20)"""),
+### With files: the wall
 
-("code", r"""def trace(task_id, run_df=df):
-    row = run_df.set_index("id").loc[task_id]
-    task = next(t for t in dev if t["id"] == task_id)
-    print(task["prompt"], "\n")
-    print("gold:", task["answer"] if not isinstance(task["answer"], list) else task["answer"][:8])
-    print("got: ", row["answer"] if not isinstance(row["answer"], list) else row["answer"][:8])
-    print("score", row["score"], "|", row["error"], "\n")
-    print(row["trace"])
+`stage1_direct.py` pastes the first lines of each file into the prompt. Run it on the platform's
+test run (16 dev tasks, 2 calls) and on the table types. A T4 is about three times slower than the
+platform's RTX 4090, so give each call 120 s here instead of 40."""),
 
-trace(failed["id"].iloc[0])"""),
+("code", r"""!python localtest.py stage1_direct.py --test-run --timeout 120"""),
 
-("md", r"""Keep a table of failures by cause (reading, reasoning, code, format, time). The oral asks for a
-per-family error analysis and a few traced failures with what fixed them."""),
+("code", r"""!python localtest.py stage1_direct.py --type table.stat --type table.filter --limit 16 --timeout 120"""),
 
-("md", r"""---
+("md", r"""The model never sees the data: a statistic over 300 rows cannot come from 6 lines. Measured on the
+full `dev.json` on the platform's GPU, stage 1 scores **%(s1_q15)s** (no files %(s1_q15_calc)s,
+tables %(s1_q15_table)s, fits %(s1_q15_fit)s). `stage1_direct.py` is your first submission
+(section 6).
 
-## 7. Build a validation set
+---
 
-`dev.json` is what you tune on, so it overestimates your private score: the private set uses
-other wordings, other data domains and task families that are not in `dev.json`. A validation set
-you never tune on is the honest estimate, and the oral asks how you built it.
+## 3. Stage 2: a tool and a loop (a skeleton)
 
-One way is a generator: a function that draws random data, writes the prompt and computes the
-answer with code. The example makes level-2 tasks: a share over the rows whose value is known."""),
+A tool is a function your code runs on the model's behalf. The model asks for it in a fixed
+format, your code runs it and sends the result back, and the model continues. Six parts:
 
-("code", r"""import numpy as np
+| part | in `stage2_tool_loop.py` |
+|---|---|
+| tool spec | the system prompt says what the calculator accepts and how to call it |
+| call format | `<call tool="calculator">EXPRESSION</call>`, shown once in a worked exchange (`DEMO`); generation stops at `</call>` |
+| call parser | `dsh.parse_tool_call(reply)` → `("calculator", "15.18 - 15.9")` or `None` |
+| execution | `observe(call)`: `dsh.calculator`, an error returned as text, never raised |
+| observation | a user message `Result: -0.72` (or `Error: ...`) appended to the conversation |
+| stop rule | a reply without a call, `MAX_ROUNDS` rounds, or the clock |
 
-def make_share_task(rng, task_id):
-    n = int(rng.integers(40, 120))
-    missing = rng.choice(["n/a", "-", "unknown"])
-    city = rng.choice(["Lyon", "Lille", "Nantes", "Rennes"], size=n)
-    price = np.round(rng.lognormal(3.0, 0.5, size=n), 2).astype(object)
-    price[rng.random(n) < 0.1] = missing
-    df = pd.DataFrame({"shop": [f"S{i:03d}" for i in range(n)], "city": city, "price_eur": price})
-    threshold = int(rng.integers(15, 30))
-    target = str(rng.choice(sorted(set(city))))
+The worked exchange matters: with the format only described in the system prompt, the 1.5B model
+writes its own (`CALL: ...`) and guesses the result; shown once, it calls the tool (measured on the
+65 tasks without files: %(loop_nodemo)s without the exchange, %(loop_demo)s with it).
 
-    known = df[df["price_eur"] != missing]
-    rows = known[known["city"] == target]
-    answer = round(100 * (rows["price_eur"].astype(float) > threshold).mean(), 1)
-    prompt = (f"shops.csv lists one product price per shop, in euros; a missing price is written "
-              f"'{missing}'. Among the shops of {target} whose price is known, what percentage "
-              f"charge more than {threshold} euros? Round to 1 decimal place.")
-    return {"id": task_id, "prompt": prompt, "files": {"shops.csv": df.to_csv(index=False)},
-            "answer_type": "number", "family": "mine.share", "level": 2,
-            "answer": float(answer), "scoring": {"kind": "numeric", "abs_tol": 0.051, "rel_tol": 1e-6},
-            "heldout_family": False}
+One round, by hand:"""),
 
-rng = np.random.default_rng(0)
-mine = [make_share_task(rng, f"m_{k:03d}") for k in range(16)]
-for t in mine:
-    scoring.validate_task(t)   # the scorer's own format check
-json.dump(mine, open("mine.json", "w"))
-show(mine[0], n_chars=200)"""),
+("code", r"""import importlib, stage2_tool_loop as s2
+importlib.reload(s2)
+t = next(t for t in dev if t["type"] == "calc.functions")
+conv = [{"role": "system", "content": s2.SYSTEM}] + s2.DEMO + [{"role": "user", "content": t["objective"]}]
+r = llm.chat([conv], max_new_tokens=256, stop=["</call>"])[0]
+print(r)
+call = dsh.parse_tool_call(r)
+print("\ncall:", call, "\nobservation:", s2.observe(call) if call else None)"""),
 
-("md", r"""`local_eval.py` needs all three levels in a task file, so a one-family set is scored task by
-task: call the agent's `solve` directly, then the scorer's own `score_answer`. This loads the
-model in the notebook itself."""),
+("code", r"""if call:
+    conv += [{"role": "assistant", "content": r}, {"role": "user", "content": s2.observe(call)}]
+    print(llm.chat([conv], max_new_tokens=256, stop=["</call>"])[0])
+print("\ngold:", t["answer"])"""),
 
-("code", r"""import importlib
+("md", r"""**Your turn.** Write the loop body marked `TODO` in `stage2_tool_loop.py` (about ten lines:
+keep the reply, parse a call, append the reply and the observation, keep the conversation
+active). Then compare it with stage 1 on the computation types:"""),
 
-agent = importlib.import_module("agent_kit_baseline").Agent()
-payload = [dict({k: t[k] for k in scoring.AGENT_KEYS}, time_budget_s=15.0) for t in mine]
-t0 = time.monotonic()
-replies = {r["id"]: r for r in agent.solve(payload)}
-seconds = time.monotonic() - t0
-scores = [scoring.score_answer(t, replies[t["id"]]["answer"])[0] for t in mine]
-print(f"{sum(scores)}/{len(mine)} correct, {seconds / len(mine):.1f} s per task")"""),
+("code", r"""CALC = " ".join(f"--type {ty}" for ty in sorted({t["type"] for t in dev if not t["files"]}))
+!python localtest.py stage1_direct.py {CALC} --timeout 120 | tail -14
+!python localtest.py stage2_tool_loop.py {CALC} --timeout 120 | tail -14"""),
 
-("md", r"""**Questions.** Do your generated tasks score like the `dev.json` family they resemble? How
-many wordings, column names and domains does a generator need before the score stops moving?
-Which other questions is a data scientist asked every day? Write generators for them, keep one
-set aside, never tune on it, and report it at the oral."""),
+("md", r"""On the platform's GPU, the solved loop takes the tasks without files from %(s1_q15_calc)s to
+%(s2_q15_calc)s with the same model. It does nothing for the tables and the fits: the model still
+never reads the data.
 
-("md", r"""---
+---
 
-## 8. Submit
+## 4. Directions
 
-**Match the platform first.** Its Python has torch, transformers, accelerate, pandas, numpy,
-sympy and matplotlib, and **no scikit-learn, scipy or statsmodels**. Colab has them, so code
-that imports them runs here and fails there. Put this guard in front of the code your harness
-runs locally (`dsh.run_python`) to make Colab behave like the platform:"""),
+No solution here: these are the design decisions your project is about.
 
-("code", r"""PLATFORM_GUARD = '''
-import sys
-class _Blocked:
-    def find_spec(self, name, path=None, target=None):
-        if name.split(".")[0] in ("sklearn", "scipy", "statsmodels"):
-            raise ImportError(f"{name} is not installed on the platform")
-sys.meta_path.insert(0, _Blocked())
-'''
+- **Routing.** Recognise the kind of task from the objective (files or not, `train.csv`, words like
+  *percentile*, *join*, *probability*) and send it to the right prompt and tools. The private set
+  has table types `dev.json` does not: a router keyed on dev wordings fails there.
+- **Read the files once, yourself.** Parse each CSV with the rules the objective states, link each
+  column to its dictionary description, and give the model a compact, clean view: names,
+  descriptions, units, types, a few values. The model then reasons about meaning, not about bytes.
+- **Data tools or code execution.** Either a few tools with arguments (`stat(column, filter, ...)`),
+  easy to call and to check, or the model writes pandas code that `dsh.run_python` runs
+  (general, but a 1.5B model's code fails often). Measure both.
+- **A fitting tool for `fit.*`.** Least squares is `numpy.linalg.lstsq` on `[1, X]`; an
+  unregularised logistic regression is a few Newton steps. A tool the model calls with the target,
+  the features and the rows beats code it writes from scratch.
+- **Checks, repair, pacing.** Is the number in a plausible range, rounded as asked, an integer when
+  one is asked? Send failed code back once with its error. Two batched model rounds fit in 40 s;
+  a third may not.
+- **The model.** Five are mounted: `Qwen2.5-0.5B/1.5B-Instruct`, `Qwen2.5-Coder-1.5B-Instruct`,
+  `DeepSeek-R1-Distill-Qwen-1.5B`, `Qwen3-1.7B`. Change it last, and measure.
 
-res = dsh.run_python(PLATFORM_GUARD + "import sklearn\nRESULT = 1", {})
-print(res.ok, res.error.strip().splitlines()[-1])"""),
+Measured on `dev.json` (platform GPU), the ladder these directions lead to:
 
-("md", r"""**What a submission is.** `agent.py` (it defines `class Agent`) plus the modules it imports,
-here `dsh.py`: up to 10 files, 100 MB. The runtime is **PyTorch**: the cell below picks it, and
-in the console choose it yourself (the default is not torch, and a wrong pick costs a
-deployment).
+%(ladder)s
 
-**Quota: 5 deployments per person per rolling 24 h, counted across every ML-Arena challenge,
-failed ones included.** Rehearse locally first (section 5). You work in pairs: create your team
-on the challenge page before your first submission.
+---
 
-Each deployment is a short test run on a few dev tasks, then a scored run on the private set.
-One job takes about 7–9 minutes, plus the queue (jobs run one at a time). The cell prints the
-progress and ends when the deployment has settled."""),
+## 5. Measure
+
+`localtest.py --out run.json` writes every task's answer, gold, score and error. Group the
+failures before you change anything."""),
+
+("code", r"""!python localtest.py stage1_direct.py --test-run --timeout 120 --out run.json > /dev/null
+run = json.load(open("run.json"))
+d = pd.DataFrame(run["details"])
+print(d.groupby("type")["score"].mean().mul(100).round(1))
+d[d.score == 0][["id", "type", "answer", "gold", "error"]].head(10)"""),
+
+("md", r"""- **A ladder.** Keep one table: system version, score by family, seconds per call. One change
+  per line.
+- **By type.** `dev.json` has 7 to 18 tasks per type: a difference of one task is 6–14 points on a
+  type. Look at families and at the whole score.
+- **Error causes.** Wrong reading of a file? Wrong column? Right code, wrong rounding? A format
+  error? Each cause has its own fix.
+- **Your own validation set.** `dev.json` is small, and the private set has other draws: write a
+  generator for the types you work on (a few lines of Python with its own gold) and measure on
+  hundreds of tasks.
+- **Time.** Measure seconds per call on the platform (the run's log) and keep a margin: the T4 is
+  slower, the RTX 4090 faster, a long objective slower.
+
+---
+
+## 6. Submit
+
+Upload your agent file **as `agent.py`**, with `dsh.py`, and choose the **PyTorch** runtime. A
+deployment runs the test run (16 dev tasks), then the scored run (120 private tasks)."""),
 
 ("code", r"""import shutil
-
-shutil.copy("agent_kit_baseline.py", "agent.py")   # replace with your own agent
+shutil.copy("stage1_direct.py", "agent.py")
 result = client.submit(challenge_id=CHALLENGE_ID, files=["agent.py", "dsh.py"],
+                       submission_name="stage 1",
                        runtime={"language": "python", "framework": "torch"},
-                       submission_name="kit baseline")
-submission_id = result["submission_id"]
-for line in client.tail_logs(CHALLENGE_ID, submission_id, timeout_sec=3600):
-    print(line)"""),
+                       wait=True, timeout_sec=1800)
+print(result["status"]["status"], result["status"]["last_status_message"])"""),
 
-("code", r"""final = client.status()
-print("status:", final["status"], "|", final["last_status_message"])
-if final["status"] == "deploy_failed":
-    print("no score:", final["latest_deploy"]["failure_message"])
-for run in final["run_info"]["results"]:
-    mine_row = next(r for r in run["submission_results"] if r["submission_id"] == submission_id)
-    kind = "test run  " if run["is_test"] else "scored run"
-    print(kind, run["job_status"], "| score", mine_row["score"], "|", mine_row["info_message"])"""),
-
-("md", r"""If the wait times out, the deployment goes on: run the last cell again later, or look at the
-challenge page. The scored run's message says how many tasks were sent and answered."""),
-
-("md", r"""---
-
-## 9. How to progress
-
-Measured on the private set:
-
-| Agent | Score | L1 / L2 / L3 | What changed |
-|---|---|---|---|
-| `agent_naive.py` (Qwen2.5-1.5B, answers directly) | 0.6 | 0 / 1.5 / 0 | — |
-| `agent_kit_baseline.py` (writes Python, one repair) | 13.9 | 32.4 / 10.4 / 0 | the kit as shipped: 103 of 119 answered in time |
-| the kit with `Qwen/Qwen3-1.7B` | 27.6 | 54.1 / 26.9 / 2.1 | one line; 119 of 119 answered in time |
-| the instructor's harness (not published) | ≈ 61 | 65 / 40 / 85 | routing, numpy fit / forecast tools, checks |
-
-The ceiling is 100. The *Unseen families* column stays at 8–21 for every agent measured: that
-is where the top of the board is decided.
-
-The first levers that pay:
-- **The model.** Try the platform's models (`DSH_MODEL`); measure accuracy against seconds per
-  task.
-- **Level 3.** The kit scores 0 there. A small numpy fit / forecast tool that the model calls
-  with the arguments the prompt states is about 40 lines.
-- **Answer format.** Check the type, the length, the rounding before you reply.
-- **Time.** The kit already uses most of the budget: adding a repair round to an earlier
-  version of the kit lowered its score from 19.5 to 14.7, because tasks went unanswered.
-
-Measure every change on your own validation set (section 7), with its time cost (section 5), and
-keep the table: it is the ablation study of your oral.
-
-**Questions.** Which tasks need the model at all, which need code, which a calculator? What does
-the model see of each file? Which checks catch a wrong answer before it is sent? When is a
-second attempt worth its time? What in your harness is specific to the public families?"""),
+("md", r"""The leaderboard shows the score and its three family means. Deployments are limited per day:
+test locally first, submit when a change is measured."""),
 ]
 
 
-def to_source(text: str) -> list[str]:
-    lines = text.split("\n")
-    return [line + "\n" for line in lines[:-1]] + [lines[-1]]
+def fmt_table(rows, header):
+    out = ["| " + " | ".join(header) + " |", "|" + "---|" * len(header)]
+    out += ["| " + " | ".join(map(str, r)) + " |" for r in rows]
+    return "\n".join(out)
 
 
-def build() -> dict:
+def main():
+    subs = dict(M["scalars"])
+    subs["s1_table"] = "\n\n" + fmt_table(M["stage1_designs"], ["design", "score (/100)", "format obeyed"]) + "\n"
+    subs["loop_nodemo"], subs["loop_demo"] = M["loop"]["no demo"], M["loop"]["one demo"]
+    d = {row[0]: row[1] for row in M["stage1_designs"]}
+    subs["strict"], subs["fallback"] = d["ANSWER line, strict parser"], d["ANSWER line, else the last number"]
+    subs["ladder"] = fmt_table(M["ladder"], ["system", "model", "score", "no files", "tables", "fits"])
     cells = []
-    for kind, text in CELLS:
-        cell = {"cell_type": "markdown" if kind == "md" else "code",
-                "metadata": {}, "source": to_source(text)}
-        if kind == "code":
-            cell.update(execution_count=None, outputs=[])
-        cells.append(cell)
-    return {
-        "cells": cells,
-        "metadata": {
-            "accelerator": "GPU",
-            "colab": {"gpuType": "T4", "provenance": []},
-            "kernelspec": {"display_name": "Python 3", "language": "python", "name": "python3"},
-            "language_info": {"name": "python"},
-        },
-        "nbformat": 4,
-        "nbformat_minor": 0,
-    }
+    for kind, src in CELLS:
+        src = src % subs if "%(" in src else src
+        lines = src.split("\n")
+        body = [ln + "\n" for ln in lines[:-1]] + [lines[-1]]
+        if kind == "md":
+            cells.append({"cell_type": "markdown", "metadata": {}, "source": body})
+        else:
+            cells.append({"cell_type": "code", "execution_count": None, "metadata": {}, "outputs": [],
+                          "source": body})
+    nb = {"cells": cells, "metadata": {"accelerator": "GPU", "colab": {"gpuType": "T4", "provenance": []},
+                                       "kernelspec": {"display_name": "Python 3", "name": "python3"},
+                                       "language_info": {"name": "python"}},
+          "nbformat": 4, "nbformat_minor": 0}
+    OUT.write_text(json.dumps(nb, indent=1, ensure_ascii=False) + "\n")
+    print(f"wrote {OUT} ({len(cells)} cells)")
 
 
 if __name__ == "__main__":
-    OUT.write_text(json.dumps(build(), indent=1, ensure_ascii=False) + "\n")
-    print(f"wrote {OUT} ({len(CELLS)} cells)")
+    main()

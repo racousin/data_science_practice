@@ -1,17 +1,14 @@
-"""Start-gate benchmark: a well-typed placeholder for every task, no model.
+"""The start-gate benchmark: answers 0 to every task, no model.
 
-The platform runs a flex_v1 benchmark on the first agent runtime of the kernel
-(backend run_benchmark), which has no torch, so the kit baseline cannot be the
-benchmark. This agent checks the env, the delivery, the scoring and the metrics
-on the platform; the kit baseline is measured as an ordinary submission on the
-torch runtime.
-"""
-PLACEHOLDER = {"number": 0.0, "category": "", "list": [], "vector": [], "predictions": []}
+The platform runs a flex_v1 benchmark on the kernel's first agent runtime, which has no
+torch, so it cannot load a model. It checks the env, the file delivery, the scoring and
+the metrics. It also reads every file it is given, so a delivery fault shows up here."""
 
 
 class Agent:
-    def __init__(self):
-        pass
-
     def solve(self, tasks):
-        return [{"id": t["id"], "answer": PLACEHOLDER[t["answer_type"]], "trace": ""} for t in tasks]
+        for t in tasks:
+            for p in t["files"]:
+                with open(p) as f:
+                    f.read()
+        return [{"id": t["id"], "answer": 0} for t in tasks]

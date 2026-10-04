@@ -1,57 +1,53 @@
 #!/usr/bin/env python3
 """Assemble the public GitHub repository of the challenge (racousin/ds-harness).
 
-    python build_repo.py            # -> dist/ds-harness/
+    python build_repo.py            # -> dist/ds-harness/ (its own git, pushed by hand)
 
-The evaluation code the leaderboard runs (env.py, scoring.py), the local
-runners, the starter kit and the format docs. Sources stay where they are
-(kit/, draft/public/, env.py, repo_README.md); this only copies them. No data:
-dev.json comes from the challenge page, and the private split, its seed and
-the generators never leave this folder.
+The code the leaderboard runs (env.py, scoring.py), the local runner, the kit and
+the format doc. Sources stay where they are (public/, kit/, env.py);
+this only copies them. No data: dev.json comes from the
+challenge's dataset, and the private split, its seed, the generators and the
+anchors never leave this folder.
 """
 import shutil
+import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 OUT = HERE / "dist" / "ds-harness"
+sys.path.insert(0, str(HERE))
 
 FILES = [  # (source, name in the repository)
-    ("repo_README.md", "README.md"),
+    ("public/README.md", "README.md"),
     ("env.py", "env.py"),
-    ("draft/public/scoring.py", "scoring.py"),
-    ("draft/public/schema.md", "schema.md"),
-    ("draft/public/localtest.py", "localtest.py"),
-    ("kit/local_eval.py", "local_eval.py"),
+    ("public/scoring.py", "scoring.py"),
+    ("public/schema.md", "schema.md"),
+    ("public/localtest.py", "localtest.py"),
     ("kit/dsh.py", "dsh.py"),
-    ("kit/agent_naive.py", "agent_naive.py"),
-    ("kit/agent_kit_baseline.py", "agent_kit_baseline.py"),
-    ("kit/README.md", "kit_README.md"),
+    ("kit/stage1_direct.py", "stage1_direct.py"),
+    ("kit/stage2_tool_loop.py", "stage2_tool_loop.py"),
     ("kit/test_dsh.py", "test_dsh.py"),
+    ("hf_models.json", "hf_models.json"),
 ]
-# the platform's packages (no scikit-learn, scipy or statsmodels there), plus pytest
-REQUIREMENTS = "torch\ntransformers\naccelerate\npandas\nnumpy\nsympy\nmatplotlib\npytest\n"
-GITIGNORE = ("# the public tasks come from the challenge page, runs are local\n"
-             "dev.json\n*.json\n__pycache__/\n")
-PRIVATE_MARKERS = ("private_seed", "build_dataset", "tasks.common", "HELDOUT_FAMILIES")
+# the platform's agent packages, plus pytest
+REQUIREMENTS = "torch\ntransformers\naccelerate\npandas\nnumpy\nsympy\npytest\n"
+GITIGNORE = "# the tasks come from the challenge's dataset; runs are local\ndev.json\nrun*.json\n__pycache__/\n"
 
 
-def heldout_markers():
-    """The private set's unseen family ids, and their multi-word names, read from
-    data/private.json so that this file never spells them out."""
-    import json
-    with open(HERE / "data" / "private.json") as f:
-        fams = {t["family"] for t in json.load(f) if t["heldout_family"]}
-    return tuple(sorted(fams | {f.split(".")[-1] for f in fams if "_" in f}))
+def private_markers():
+    """Names that would give away private material: the private-only task types and
+    the paths of the generators, seed and anchors."""
+    from gen.tables import PRIVATE_TYPES
+    return tuple(PRIVATE_TYPES) + ("private_seed", "private_specs", "from gen", "gen/", "anchors2", "stage2_solved")
 
 
 def main():
     if OUT.exists():
-        # keep an existing git history; replace every tracked file
-        for p in OUT.iterdir():
+        for p in OUT.iterdir():  # keep the git history, replace every file
             if p.name != ".git":
                 shutil.rmtree(p) if p.is_dir() else p.unlink()
     OUT.mkdir(parents=True, exist_ok=True)
-    markers = PRIVATE_MARKERS + heldout_markers()
+    markers = private_markers()
     for src, dst in FILES:
         text = (HERE / src).read_text()
         leaked = [m for m in markers if m in text]

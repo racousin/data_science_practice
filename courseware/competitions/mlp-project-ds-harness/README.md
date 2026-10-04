@@ -1,67 +1,61 @@
 # mlp-project-ds-harness — the MS2A-MLP project challenge
 
-The project of MS2A — Machine Learning Practice: teams build a **harness** around a small LLM
-(the models of the GPU VM's offline cache) that solves data-science tasks written in prose.
-Live as ML-Arena challenge **194** ("MLP Project — DS-Harness"), the only challenge of the
-course module `mlp-project`. Students get the public repository
-[racousin/ds-harness](https://github.com/racousin/ds-harness), built from this folder.
+The project of MS2A — Machine Learning Practice: teams build an AI system around a small language
+model that answers data-science objectives with one number each. Live as ML-Arena challenge
+**194** ("MLP Project — DS-Harness"), the only challenge of the course module `mlp-project`.
+Students get the public repository [racousin/ds-harness](https://github.com/racousin/ds-harness),
+built from this folder. Spec: platform repo `docs/plan_challenge_194_ds_harness.md`.
 
 ```text
-overview.md          the challenge page (ML-Arena "overview")
-config.py            the package for tools/build_competitions.py
-env.py               the platform env: loads private.json / dev.json, calls scoring.run_agent
-benchmark_agent.py   the start-gate benchmark: a well-typed placeholder, no model
-agent_template.py    the template uploads are validated against (class Agent, solve)
-prepare_data.py      builds data/ (gitignored): private.json from the secret seed, dev.json, scoring.py
-build_repo.py        assembles dist/ds-harness/, the public repository
-build_starter.py     generates the starter notebook (website/.../challenges/mlp-project-ds-harness.ipynb)
-kit/                 the starter kit: dsh.py, agent_naive.py (A0), agent_kit_baseline.py (A1), local_eval.py
-draft/               the dataset: scoring.py (the source of truth), public/ (dev.json, schema.md,
-                     localtest.py), and the PRIVATE generators, reference agent and tests (gitignored)
-anchors/             PRIVATE: A2, the instructor harness (gitignored)
-experiments/         PRIVATE: measured evidence, red team, fairness audit (gitignored)
-thinking/            PRIVATE: design notes (keep out of git: they name task families)
+overview.md         the challenge page
+config.py           settings, metrics, files (the platform side)
+env.py              the platform env: private.json (scored run) / 16 dev tasks (test run) -> scoring.run_agent
+hf_models.json      the five models mounted in the agent container
+agent_template.py   the template uploads are validated against (class Agent, solve)
+benchmark_agent.py  the start-gate benchmark: answers 0, reads every file, no model
+public/             scoring.py (the source of truth), localtest.py, schema.md, the repository README
+kit/                dsh.py, stage1_direct.py, stage2_tool_loop.py (loop body TODO), test_dsh.py
+build_repo.py       assembles dist/ds-harness/, the public repository (refuses private markers)
+build_starter.py    generates the Colab notebook (website/.../challenges/mlp-project-ds-harness.ipynb)
+gen/                PRIVATE: the generators, the split builder, the independent checker
+anchors2/           PRIVATE: stage2_solved.py (A1), agent_a2.py (A2), s1_designs.py, the measurements
+data/               PRIVATE (gitignored): dev.json, private.json, *_specs.json, private_seed.txt, scoring.py
 ```
 
-The repository is public: nothing that rebuilds the private split or names the families
-absent from dev.json may be committed. `build_repo.py` refuses files that mention private
-material.
+The repository is public: nothing that rebuilds the private split, names its private-only table
+types or copies the anchors may be committed. `.gitignore` keeps `gen/`, `anchors2/`, `data/`.
 
-## One scorer, three copies
+## The data
 
-`draft/scoring.py` is the source. `draft/build_dataset.py dev` copies it to `draft/public/`,
-`prepare_data.py` to `data/`, and `build_repo.py` to the repository. The platform runs the
-copy uploaded as an env file. All of them must be byte-identical; check with
-`shasum draft/scoring.py data/scoring.py dist/ds-harness/scoring.py` and the creator view.
+`python3 -m gen.build` draws both splits: dev 180 (65 without files, 80 tables, 35 fits; gold
+keys `answer`, `tol`, `type` shipped) and private 120 (45 / 50 with 20 of private-only table
+types / 25), from `DEV_SEED` and `data/private_seed.txt`. Golds within tolerance of 0 are redrawn
+(answering 0 scores nothing). `python3 -m gen.check data/dev.json data/dev_specs.json` (and the
+private pair) re-solves every gold independently: the files are parsed back under the reading
+rules the objective states, fits are refitted with scikit-learn. Both must report 0 mismatches.
 
 ## Commands
 
 ```bash
-uv run --with pandas --with numpy python prepare_data.py         # data/ (private split, dev, scorer)
-python3 build_repo.py                                            # dist/ds-harness/
-python3 build_starter.py                                         # the starter notebook
-cd draft && uv run --no-project --with pandas --with numpy --with pytest python -m pytest -q tests
-cd kit && uv run --no-project --with numpy --with pandas --with pytest python -m pytest -q test_dsh.py
+python3 -m gen.build && python3 -m gen.check data/dev.json data/dev_specs.json \
+                     && python3 -m gen.check data/private.json data/private_specs.json
+cp public/scoring.py data/scoring.py                 # the env's copy: byte-identical
+python3 build_repo.py                                # dist/ds-harness/ (its own git)
+python3 build_starter.py                             # the notebook
+cd kit && cp ../public/scoring.py ../data/dev.json . && python3 -m pytest -q test_dsh.py
 ```
 
-## Changing the live env files
+Measurements run on the GPU VM (GPU 0, the platform's torch agent image, a `--rm` container):
+`anchors2/README.md`.
 
-The platform refuses env edits on a started challenge. With the creator key: `stop_challenge(194)`,
-`upload_env_file` for `scoring.py` / `env.py` (each save syncs the folder to the GPU VM), then
-`start_challenge(194)` (the start gate needs the benchmark submission active with a score; an
-env edit does not reset it). Check the VM copy at
-`/data/competitions/194/environment/187/` and redeploy one submission.
+## Changing the live challenge
 
-## Grading anchors (private set, platform rules)
-
-| Anchor | Agent | Score |
-|---|---|---|
-| A0 | `kit/agent_naive.py`, Qwen2.5-1.5B | 0.6 |
-| A1 | `kit/agent_kit_baseline.py`, Qwen2.5-1.5B | 13.9 (platform, the leaderboard row "A1 — kit baseline") |
-| A2 | `anchors/agent_strong.py`, Qwen3-1.7B, numpy tools | 61.0 (platform, the leaderboard row "A2 — instructor harness", 2026-10-04) |
+The platform refuses env edits on a started challenge: stop, upload `env.py`, `scoring.py`,
+`dev.json`, `private.json`, `hf_models.json`, update the settings, the agent template and the
+dataset, re-run the benchmark (expected 0.0), start. Old submissions are deleted when the data
+change. `deploy.py` does all of it (`--dry-run` first; creator key from `courseware/.env`).
 
 ## The final split
 
-After the freeze (2026-11-20), draw a new private split: delete `data/private_seed.txt`, run
-`prepare_data.py`, re-run the red-team and leak checks (`draft/tools/`), upload `private.json`
-the same way as the env files, and run each team's chosen submission twice.
+After the freeze (2026-11-03 23:59): delete `data/private_seed.txt`, `gen.build`, `gen.check`,
+upload `private.json` the same way, run each team's chosen submission once, and the anchors.

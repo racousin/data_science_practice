@@ -1,72 +1,77 @@
-# DS-Harness: a small model, a big toolbox
+# DS-Harness: build an AI system around a small model
 
-A language model of 1 to 3 billion parameters can read a question about a spreadsheet, but it
-cannot compute a statistic over 600 rows in its head, fit a model or forecast a series. A
-**harness** is the program around the model: it routes each task, gives the model tools, runs
-the code the model writes, checks the result and recovers from errors. You build the harness.
-Measured on the private set: the model answering directly scores **0.6 / 100**; the starter kit
-(the model writes Python, one repair) scores **13.9**; an instructor harness with routing,
-numpy fit/forecast tools and checks about **61**.
+Each task is an **objective** in English, sometimes with CSV files, and its answer is **one
+number**: a computation stated in the text, a statistic over messy tables, or a regression
+fitted on a training file. A language model of 1.5 billion parameters, asked directly, gets the
+arithmetic wrong, never sees the data and drifts from the format. You build the **system** around
+it:
 
-## The tasks and the score
+- how the objective and its files are read;
+- how the system decides what kind of task it faces;
+- what reaches the model;
+- which tools exist and how the model calls them;
+- how the answer is parsed and checked;
+- how the 40 seconds of each call are spent.
 
-Each task is a question in English, sometimes with CSV files, and one expected answer.
+**An efficient system matters more than the model.** Measured on `dev.json` with the same 1.5B
+model: asked directly with a well-parsed answer, **10.6**; with a calculator in a loop, **13.3**;
+with a system that reads the files itself, shows the model a clean view of them and runs the code
+it writes, **46.1**.
 
-| Level | What it looks like | Scored |
+## The tasks
+
+| Family | What | Share of the private set |
 |---|---|---|
-| 1 | a unit conversion, a percentage, one statistic of a column | exact, with a tolerance |
-| 2 | a word problem with distractors, a probability, filter → group → aggregate → rank over messy files | exact, with a tolerance |
-| 3 | forecast a series; predict a target for the rows of a test file | 0 (trivial baseline) to 1 (reference model) |
+| No files | arithmetic, statistics of numbers given in the text, percentages, growth, logarithms and roots, dates, integers, word problems, probability | 45 tasks |
+| Tables | a statistic, a filter, a group ranking, a join, a derived column — over one or two CSV files with a `data_dictionary.csv` | 50 tasks |
+| Fits | a linear or logistic regression on `train.csv`: a prediction for a row of `test.csv`, a coefficient, R², a count | 25 tasks |
 
-**Score = 100 × (0.3·L1 + 0.4·L2 + 0.3·L3)**, each level being the mean over its tasks.
-The private set has 119 tasks (37 / 67 / 15), with other wordings, other data domains, and
-24 tasks from families that are not in `dev.json`: their mean is the *Unseen families* column.
-A harness that reads the prompt and the files carries over to them. `schema.md` gives the
-answer formats and tolerances. At level 3 the prompt states the method and the format: read it.
+The files are messy, and the objective says how: separators and decimal commas, missing-value
+tokens, a `-1` that means *not recorded*, units glued to values, duplicated rows, day-first dates,
+a column to leave out. Headers are short codes that change from task to task; the objective names
+columns by their dictionary **description**. The agent receives only the objective and the file
+paths: no type, no format. The private set (120 tasks) has other draws, and table types that
+`dev.json` does not have.
+
+## The score
+
+The objective states the rounding (*n decimals* → tolerance `1.5 × 10⁻ⁿ`, *an integer* →
+`1e-6`). A task scores 1 inside the tolerance, else 0. **Score = 100 × the mean over the 120
+private tasks.** The board also shows the mean without files, on tables and on fits.
 
 ## The rules
 
-- **Contract.** `agent.py` defines `class Agent`: `__init__` loads the model (**60 s at most**),
-  `solve(tasks)` returns one `{"id", "answer", "trace"}` per task.
-- **Time.** 21 `solve` calls (8 level-1/2 tasks or 2 level-3 tasks each), 40 s per full call.
-  The job ends **399 s after it starts, model loading included**. A batch that no longer fits
-  is not sent and scores 0. Plan for **330 s**: about 2 s per level-1/2 task, 8 s per level-3.
-- **Failure = no score.** A `solve` call that raises or misses its timeout ends the run and the
-  deployment fails. Wrap each task in `try/except`, return a placeholder, respect
-  `time_budget_s`. Going over **3 GiB of RAM** kills the agent: plan for it as a failure too
-  (catch `torch.cuda.OutOfMemoryError` per task; GPU memory is not the limit, RAM is).
-- **Runtime: choose PyTorch** when you submit (it is not the default). It has torch,
-  transformers, accelerate, pandas, numpy, sympy, matplotlib. **No scikit-learn, scipy or
-  statsmodels**: Colab has them, the platform does not.
-- **Hardware.** One 24 GB GPU (RTX 4090), 3 CPUs, 3 GiB RAM, 128 MB writable `/tmp`, no network.
-- **Models.** Only the platform's offline cache, with a pinned `revision=` (`dsh.load_llm` does
-  it). As-is: `Qwen/Qwen2.5-0.5B-Instruct`, `Qwen/Qwen2.5-1.5B-Instruct`,
-  `Qwen/Qwen2.5-Coder-1.5B-Instruct`, `Qwen/Qwen2-1.5B-Instruct`, `Qwen/Qwen3-1.7B`,
-  `HuggingFaceTB/SmolLM2-1.7B-Instruct`, `HuggingFaceTB/SmolLM3-3B`,
-  `deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B`, `allenai/OLMo-2-0425-1B-Instruct`,
-  `stabilityai/stablelm-2-1_6b-chat`, `tiiuae/Falcon3-1B-Instruct`,
-  `TinyLlama/TinyLlama-1.1B-Chat-v1.0`. With `trust_remote_code=True`:
-  `IndexTeam/Index-1.9B-Chat`, `LGAI-EXAONE/EXAONE-3.5-2.4B-Instruct`,
-  `internlm/internlm2_5-1_8b-chat`, `openbmb/MiniCPM-2B-sft-bf16`.
-- **Uploads.** `agent.py` plus the modules it imports (e.g. `dsh.py`): up to 10 files, 100 MB,
-  scanned by bandit.
-- **Quota.** **5 deployments per person per rolling 24 h, across every ML-Arena challenge,
-  failed ones included.** A deployment is a short test run, then the scored run: about 7–9 min
-  plus the queue (one GPU, one job at a time). Test locally first. The queue is long in
-  the evenings and near the freeze: a deployment **queued** before 2026-11-20 23:59 counts, but
-  aim to have your final one in by **2026-11-19**.
-- **Pairs.** Work in teams of two; create the team on this page before your first submission.
-- **Privacy.** Do not log or store task prompts or files from platform runs.
+- **Contract.** `agent.py` defines `class Agent`: `__init__` loads the model (**60 s at most**);
+  `solve(tasks)` gets 8 tasks `{"id", "objective", "files": [paths]}` and returns
+  `[{"id", "answer": <a number>}]`. Formats: `schema.md` in the repository.
+- **Time.** 15 calls of 8 tasks, **40 s per call**. **A call that raises or takes longer ends the
+  run and the deployment fails, with no score.** Catch errors per task, keep a margin, answer a
+  number anyway.
+- **Runtime: choose PyTorch** when you submit. torch, transformers, accelerate, numpy, pandas,
+  sympy. One RTX 4090, 3 CPUs, **3 GiB of RAM** (over it, the agent is killed: a failure), 128 MB
+  of `/tmp`, no network.
+- **Models.** Only these five are mounted: `Qwen/Qwen2.5-0.5B-Instruct`,
+  `Qwen/Qwen2.5-1.5B-Instruct`, `Qwen/Qwen2.5-Coder-1.5B-Instruct`,
+  `deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B`, `Qwen/Qwen3-1.7B`. Load them with a pinned
+  `revision=` (`dsh.load_llm` does it).
+- **Uploads.** `agent.py` and the modules it imports (e.g. `dsh.py`): up to 10 files, scanned.
+- **Quota.** 5 deployments per person per rolling 24 h, across ML-Arena, failed ones included. A
+  deployment is a test run (16 dev tasks), then the scored run: about 10 min plus the queue.
+  Test locally first.
+- **Teams of two.** Create the team on this page before your first submission.
+- **Freeze: 2026-11-03 23:59** (a deployment queued before it counts). Orals on 2026-11-04.
+- **Privacy.** Do not log or store the objectives or files of platform runs.
 
 ## Start here
 
-1. **Dataset.** Download `dev.json` from this challenge's dataset: 178 public tasks with answers.
-2. **Repository.** [github.com/racousin/ds-harness](https://github.com/racousin/ds-harness):
-   the scorer the leaderboard runs, `localtest.py` / `local_eval.py`, `schema.md`, and the kit
-   (`dsh.py`, `agent_naive.py`, `agent_kit_baseline.py`).
+1. **Dataset.** Download `dev.json` from this challenge: 180 tasks with their files, answers and
+   types.
+2. **Repository.** [github.com/racousin/ds-harness](https://github.com/racousin/ds-harness): the
+   scorer the leaderboard runs, `localtest.py`, `schema.md`, and the kit (`dsh.py`,
+   `stage1_direct.py`, `stage2_tool_loop.py`).
 3. **Notebook.** [Open the starter notebook in Colab](https://colab.research.google.com/github/racousin/data_science_practice/blob/main/website/public/modules/ms2a-machine-learning-practice/challenges/mlp-project-ds-harness.ipynb)
-   on a T4 GPU, paste your `mlk_user_` key (Profile page), run it top to bottom.
-4. **First submission.** Submit `agent_kit_baseline.py` as `agent.py`, with `dsh.py`:
+   on a T4 GPU: the data, the first solution in detail, a tool and a loop, the directions.
+4. **First submission.** `stage1_direct.py` as `agent.py`, with `dsh.py`:
 
 ```python
 import mlarena
@@ -76,19 +81,8 @@ client.submit(challenge_id=194, files=["agent.py", "dsh.py"],
               wait=True, timeout_sec=1800)
 ```
 
-## First levers that pay
-
-- **Time first.** The kit answers 103 of 119 tasks before time runs out: make it faster
-  (shorter generations, fewer retries) and it answers them all.
-- **The model.** Swapping the kit's model is one line: with `Qwen/Qwen3-1.7B` the kit
-  scores 27.6 and answers all 119 tasks in time.
-- **Level 3.** The kit scores 0 there. A numpy fit/forecast tool (~40 lines) is worth a lot.
-- **Answer format.** A right value in the wrong format scores 0: read `schema.md`.
-- **Measure before adding work.** Adding a repair round *lowered* an earlier kit's score
-  (19.5 → 14.7): tasks went unanswered. Measure seconds per task first.
-
 ## How it is graded
 
-The project is **50 % of the course grade**. Within it: 25 % leaderboard, marked against fixed anchors on a
-final private set regenerated after the freeze (**2026-11-20 23:59**), and 75 % oral. Details,
-deliverables and calendar: the [course's Project module](https://ml-arena.com/courses/ms2a-machine-learning-practice/mlp-project).
+The project is half of the course grade: the leaderboard (on a private set regenerated after the
+freeze, marked against fixed reference systems) and an oral. Details and calendar: the course's
+[Project module](https://ml-arena.com/courses/ms2a-machine-learning-practice/mlp-project).
