@@ -283,7 +283,8 @@ entries, about 8.6 times more.
 - **DINOv2** (self-supervised on images) and **CLIP** (trained on image–text
   pairs) are ViTs pre-trained without class labels. Used frozen, their [CLS]
   or pooled features with a linear head are among the strongest starting
-  points for classification, and both are available in timm.
+  points for classification, and both are available in timm. The next
+  lesson, *Self-Supervised Learning and DINOv2*, shows how they are trained.
 
 The block is unchanged in all of them. They differ in the patch arrangement and
 in the pre-training data and objective.

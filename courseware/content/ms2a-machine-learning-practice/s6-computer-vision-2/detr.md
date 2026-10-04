@@ -5,8 +5,8 @@ set directly: a fixed number of slots, each a class and a box, trained with a
 loss that first matches slots to ground-truth objects one-to-one. Anchors and
 NMS disappear, and the model is the encoder–decoder transformer of Session 6.
 
-<!-- notes: 35 minutes. Students know the grid, anchors, IoU, NMS and mAP from
-the previous lesson, and ViT from the one before. The whole lesson is "the
+<!-- notes: 35 minutes. Students know IoU, NMS and mAP from Object Detection,
+the grid and anchors from YOLO, and ViT from earlier in the session. The whole lesson is "the
 Session 6 encoder-decoder, with three changes" plus the Hungarian matching.
 Spend the time on the matching slide and the exercise: the matching is the
 single idea that makes everything else possible. Do the dimensional-flow table
@@ -340,7 +340,7 @@ det = proc.post_process_object_detection(
 ```
 
 `det` holds `scores`, `labels` and `boxes` in pixels — the three arrays of the
-previous lesson.
+YOLO lesson.
 
 ---
 

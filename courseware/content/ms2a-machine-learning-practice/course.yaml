@@ -417,8 +417,9 @@ modules:
     icon: scan
     visibility: unlisted
     summary: >
-      The transformer applied to images, then beyond one label per image:
-      detection (YOLO, DETR), segmentation, and the generative family —
+      The transformer applied to images and pre-trained without labels
+      (contrastive learning, DINO, MAE, DINOv2), then beyond one label per
+      image: detection (YOLO, DETR), segmentation, and the generative family —
       autoencoders, VAEs, GANs and diffusion.
     competitions:
       - competition_id: 195
@@ -429,10 +430,20 @@ modules:
         file: s6-computer-vision-2/vision-transformer.md
         estimated_minutes: 35
         is_published: true
+      - title: "Self-Supervised Learning and DINOv2"
+        slug: self-supervised-learning
+        file: s6-computer-vision-2/self-supervised-learning.md
+        estimated_minutes: 45
+        is_published: true
       - title: "Object Detection"
         slug: object-detection
         file: s6-computer-vision-2/object-detection.md
-        estimated_minutes: 50
+        estimated_minutes: 40
+        is_published: true
+      - title: "YOLO — One-Stage Detection End to End"
+        slug: yolo
+        file: s6-computer-vision-2/yolo.md
+        estimated_minutes: 45
         is_published: true
       - title: "DETR — Detection as Set Prediction"
         slug: detr
@@ -458,6 +469,12 @@ modules:
         slug: diffusion-models
         file: s6-computer-vision-2/diffusion-models.md
         estimated_minutes: 30
+        is_published: true
+      - title: "Generation Lab — GAN and Diffusion"
+        slug: lab-generation
+        kind: exercise
+        file: s6-computer-vision-2/lab-generation.md
+        estimated_minutes: 60
         is_published: true
       - title: "Lab 7 — Detect or Generate"
         slug: lab-6
