@@ -75,9 +75,12 @@
       "s6-computer-vision-2/diffusion-models": 95,
       "s6-computer-vision-2/gans": 94,
       "s6-computer-vision-2/lab-6": 96,
+      "s6-computer-vision-2/lab-generation": 230,
       "s6-computer-vision-2/object-detection": 91,
       "s6-computer-vision-2/segmentation": 92,
+      "s6-computer-vision-2/self-supervised-learning": 228,
       "s6-computer-vision-2/vision-transformer": 226,
+      "s6-computer-vision-2/yolo": 229,
       "s7-nlp-1/attention": 100,
       "s7-nlp-1/embeddings": 98,
       "s7-nlp-1/lab-7": 102,
@@ -608,7 +611,7 @@
           "title": "Autoencoders and VAEs"
         },
         "s6-computer-vision-2/detr": {
-          "body": "1d7c1da624e3493e7f538189f88edd87309a437ee0b0b9cfa1ee8967b7e765c3",
+          "body": "3ee865d63c9d1c2c2215c3428024cd9fcdc6230d0d651e91cbb4a084bec1ab2d",
           "estimated_minutes": 40,
           "gated": false,
           "is_published": true,
@@ -635,9 +638,16 @@
           "is_published": true,
           "title": "Lab 7 \u2014 Detect or Generate"
         },
+        "s6-computer-vision-2/lab-generation": {
+          "body": "3c0cdb319be89ebad0d8617429c85729117085d43b3d458077de5b284a03c9a2",
+          "estimated_minutes": 60,
+          "gated": false,
+          "is_published": true,
+          "title": "Generation Lab \u2014 GAN and Diffusion"
+        },
         "s6-computer-vision-2/object-detection": {
-          "body": "3644ad92fb28de8eb172df46e893816c59f55e3a59a06cf0e080f7f1af1cc461",
-          "estimated_minutes": 50,
+          "body": "10f8fa88c4b5ef7d4c754bcc74f76010981de168ad74afab11d6e097594407a0",
+          "estimated_minutes": 40,
           "gated": false,
           "is_published": true,
           "title": "Object Detection"
@@ -649,12 +659,26 @@
           "is_published": true,
           "title": "Segmentation"
         },
+        "s6-computer-vision-2/self-supervised-learning": {
+          "body": "3a4717ff1b44048570dd0b80ea8c17c853d76841ab86a46b60c46be52d462cb8",
+          "estimated_minutes": 45,
+          "gated": false,
+          "is_published": true,
+          "title": "Self-Supervised Learning and DINOv2"
+        },
         "s6-computer-vision-2/vision-transformer": {
-          "body": "4244d12af2db5b04afc61d32ad87dd1ecbb1de346705d698db4a20a4e90e9e83",
+          "body": "349ba822fea751a76e3984ccbb273c35b3e999b09235e7d7a9be9ec2c6c19418",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
           "title": "Vision Transformer"
+        },
+        "s6-computer-vision-2/yolo": {
+          "body": "94750ccdd6eb8f2f0f249bcd7ec169e56e545a70193d804d8e1669b29bf9c79a",
+          "estimated_minutes": 45,
+          "gated": false,
+          "is_published": true,
+          "title": "YOLO \u2014 One-Stage Detection End to End"
         },
         "s7-nlp-1/attention": {
           "body": "ef86d0834f7ade9e7eba6e76548e5476986bab872f7a517dab82c8c75ffb028f",
@@ -955,15 +979,18 @@
           "icon": "scan",
           "lessons": [
             "vision-transformer",
+            "self-supervised-learning",
             "object-detection",
+            "yolo",
             "detr",
             "segmentation",
             "autoencoders-and-vaes",
             "gans",
             "diffusion-models",
+            "lab-generation",
             "lab-6"
           ],
-          "summary": "The transformer applied to images, then beyond one label per image: detection (YOLO, DETR), segmentation, and the generative family \u2014 autoencoders, VAEs, GANs and diffusion.",
+          "summary": "The transformer applied to images and pre-trained without labels (contrastive learning, DINO, MAE, DINOv2), then beyond one label per image: detection (YOLO, DETR), segmentation, and the generative family \u2014 autoencoders, VAEs, GANs and diffusion.",
           "title": "Session 7 \u2014 Computer Vision 2"
         },
         "s7-nlp-1": {
