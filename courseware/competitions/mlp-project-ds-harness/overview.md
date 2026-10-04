@@ -33,7 +33,8 @@ answer formats and tolerances. At level 3 the prompt states the method and the f
   is not sent and scores 0. Plan for **330 s**: about 2 s per level-1/2 task, 8 s per level-3.
 - **Failure = no score.** A `solve` call that raises or misses its timeout ends the run and the
   deployment fails. Wrap each task in `try/except`, return a placeholder, respect
-  `time_budget_s`.
+  `time_budget_s`. Going over **3 GiB of RAM** kills the agent: plan for it as a failure too
+  (catch `torch.cuda.OutOfMemoryError` per task; GPU memory is not the limit, RAM is).
 - **Runtime: choose PyTorch** when you submit (it is not the default). It has torch,
   transformers, accelerate, pandas, numpy, sympy, matplotlib. **No scikit-learn, scipy or
   statsmodels**: Colab has them, the platform does not.
@@ -51,7 +52,9 @@ answer formats and tolerances. At level 3 the prompt states the method and the f
   scanned by bandit.
 - **Quota.** **2 deployments per person per rolling 24 h, across every ML-Arena challenge,
   failed ones included.** A deployment is a short test run, then the scored run: about 7–9 min
-  plus the queue (one GPU, one job at a time). Test locally first.
+  plus the queue (one GPU, one job at a time). Test locally first. The queue is long in
+  the evenings and near the freeze: a deployment **queued** before 2026-11-20 23:59 counts, but
+  aim to have your final one in by **2026-11-19**.
 - **Pairs.** Work in teams of two; create the team on this page before your first submission.
 - **Privacy.** Do not log or store task prompts or files from platform runs.
 

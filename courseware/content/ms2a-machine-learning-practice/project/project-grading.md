@@ -107,7 +107,10 @@ Expect several of these:
    evaluation command
 3. **Slides**, PDF, 12 at most, for the oral
 
-All three by **2026-11-20 23:59**.
+All three by **2026-11-20 23:59**. A deployment counts if it is **queued**
+by then. The GPU runs one job at a time (about 9 min each), so the queue
+is long near the freeze: aim to queue your final submission by
+**2026-11-19**.
 
 ---
 
@@ -118,7 +121,8 @@ All three by **2026-11-20 23:59**.
 | now | leaderboard open |
 | 2026-10-15 | teams declared |
 | 2026-11-16 | checkpoint: 1-page design + ablation draft (feedback only) |
-| **2026-11-20 23:59** | **freeze**: last deployment, slides, repository tag |
+| 2026-11-19 | aim to queue your final deployment |
+| **2026-11-20 23:59** | **freeze**: last deployment queued, slides, repository tag |
 | 2026-11-21 → 11-23 | final runs on the regenerated private set |
 | 2026-11-24 → 11-27 | orals |
 

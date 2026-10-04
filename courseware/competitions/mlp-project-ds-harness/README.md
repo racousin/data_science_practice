@@ -57,8 +57,8 @@ env edit does not reset it). Check the VM copy at
 | Anchor | Agent | Score |
 |---|---|---|
 | A0 | `kit/agent_naive.py`, Qwen2.5-1.5B | 0.6 |
-| A1 | `kit/agent_kit_baseline.py`, Qwen2.5-1.5B | measured on the platform, see the leaderboard row "A1 — kit baseline" |
-| A2 | `anchors/agent_strong.py`, Qwen3-1.7B, numpy tools | 61.0 (GPU VM, 2026-10-04) |
+| A1 | `kit/agent_kit_baseline.py`, Qwen2.5-1.5B | 13.9 (platform, the leaderboard row "A1 — kit baseline") |
+| A2 | `anchors/agent_strong.py`, Qwen3-1.7B, numpy tools | 61.0 (platform, the leaderboard row "A2 — instructor harness", 2026-10-04) |
 
 ## The final split
 
