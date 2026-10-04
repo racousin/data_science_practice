@@ -9,5 +9,7 @@ draft/tests/
 draft/_sim/
 anchors/
 experiments/
+# Design notes: they name the task families absent from dev.json.
+thinking/
 # data/ (the private split and its seed) is ignored by ../.gitignore.
 dist/
