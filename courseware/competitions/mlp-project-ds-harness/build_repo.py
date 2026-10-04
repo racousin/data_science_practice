@@ -31,7 +31,7 @@ FILES = [  # (source, name in the repository)
 ]
 # the platform's agent packages, plus pytest
 REQUIREMENTS = "torch\ntransformers\naccelerate\npandas\nnumpy\nsympy\npytest\n"
-GITIGNORE = "# the tasks come from the challenge's dataset; runs are local\ndev.json\nrun*.json\n__pycache__/\n"
+GITIGNORE = "# the tasks come from the challenge's dataset; runs are local\ndev.json\nrun*.json\n__pycache__/\n.pytest_cache/\n"
 
 
 def private_markers():

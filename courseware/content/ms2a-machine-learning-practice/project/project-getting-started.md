@@ -110,6 +110,8 @@ A run with no score costs a deployment and teaches you nothing.
 - a model outside the five, or `from_pretrained` without `revision=`: use
   `dsh.load_llm`
 - `__init__` longer than 60 s
+- the upload scan: `class Agent` anywhere but `agent.py`, or an `exec(...)` (run generated
+  code with `dsh.run_python`)
 
 ---
 
