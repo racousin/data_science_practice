@@ -92,11 +92,16 @@ step("run benchmark", lambda: c.run_benchmark(CID))
 t0 = time.time()
 last = None
 while True:
-    st = c.benchmark_status(CID)
+    try:
+        st = c.benchmark_status(CID)["run"]
+    except Exception as e:  # a network blip while the job runs: poll again
+        print("   poll failed:", e, flush=True)
+        time.sleep(10)
+        continue
     state = st.get("job_status")
     if state != last:
         res = st.get("submission_results") or [{}]
-        print(f"   benchmark: {state} score={res[0].get('submission_reward')} "
+        print(f"   benchmark: {state} score={res[0].get('score')} "
               f"agent_err={res[0].get('agent_error_type')} env_err={st.get('env_error_type')} "
               f"{(st.get('env_error_message') or '')[:300]}", flush=True)
         last = state
@@ -106,7 +111,7 @@ while True:
         sys.exit("benchmark timeout")
     time.sleep(10)
 res = (st.get("submission_results") or [{}])[0]
-if state != "completed" or st.get("env_error_type") or res.get("submission_reward") != 0.0:
+if state != "completed" or st.get("env_error_type") or res.get("score") != 0.0:
     sys.exit("benchmark did not pass: not starting")
 step("start", lambda: c.start_challenge(CID))
 step("overview", lambda: bool(c.set_challenge_markdown(CID, open(f"{PKG}/overview.md").read())))
