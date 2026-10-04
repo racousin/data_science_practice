@@ -15,7 +15,7 @@ multiplies.
 at 2.303 on screen and nobody forgets it) and deleting one block from each
 trained network. The depth sweep is the ResNet paper in one figure — say so. The
 scale and pre/post-norm slides are for the students who will build transformers
-in Session 7; keep them brisk. -->
+in Session 6; keep them brisk. -->
 
 ---
 

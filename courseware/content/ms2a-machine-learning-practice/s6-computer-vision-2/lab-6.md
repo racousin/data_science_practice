@@ -1,4 +1,4 @@
-# Lab 6 — Detect or Generate
+# Lab 7 — Detect or Generate
 
 Two branches, one grading table. Either localise objects and measure it
 honestly, or generate images and measure that honestly. The measurement is the
@@ -233,7 +233,7 @@ The description states:
 
 Both branches produce the same transferable thing: a metric you implemented,
 tested, and can defend under questioning. That is what the project asks for.
-Session 7 changes the modality to text; the discipline is identical.
+Session 8 returns to text, at the scale of large language models; the discipline is identical.
 
 ---
 

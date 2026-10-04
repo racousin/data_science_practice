@@ -219,7 +219,7 @@ quote it in the terminal, `unzip "task_1_annotations_...coco 1.0.zip"`.
 ```
 
 `class centre_x centre_y width height`, divided by the image size:
-(91.52 + 306.16 / 2) / 512 = 0.4777. The format Session 6's detectors train on.
+(91.52 + 306.16 / 2) / 512 = 0.4777. The format Session 7's detectors train on.
 
 ---
 

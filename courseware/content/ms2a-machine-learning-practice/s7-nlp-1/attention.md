@@ -180,7 +180,7 @@ $d_2$, only $W_K, W_V$ change to $d_2 \times d_k$ and $d_2 \times d_v$.
 
 Cross-attention is exactly the seq2seq fix: the decoder queries the encoder's
 states at every step. It is also how a vision-language model lets text query
-image patches — Session 6's features on one side, tokens on the other.
+image patches — Session 7's vision features on one side, tokens on the other.
 
 ---
 

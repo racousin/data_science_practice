@@ -1,4 +1,4 @@
-# Lab 7 — Fine-Tune a Text Classifier
+# Lab 6 — Fine-Tune a Text Classifier
 
 Use a small pretrained encoder on a text classification task, against a
 TF-IDF baseline that you build first and must beat.

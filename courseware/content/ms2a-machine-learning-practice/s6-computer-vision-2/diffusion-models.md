@@ -43,7 +43,7 @@ with $\bar{\alpha}_t$ the running product of $(1 - \beta_s)$.
 
 ```python
 noise = torch.randn_like(x0)
-ab = alpha_bar[t].view(-1, 1, 1, 1)      # (B,) -> (B,1,1,1), broadcasts over (B,C,H,W)
+ab = alpha_bar[t].view(-1, 1, 1, 1)  # (B,) -> (B,1,1,1): broadcasts
 xt = ab.sqrt() * x0 + (1 - ab).sqrt() * noise
 ```
 
@@ -66,9 +66,9 @@ and learn $\mu_\theta$ with a network. The algebra of DDPM shows that
 predicting the mean is equivalent to predicting the **noise that was added**,
 which is a much better-conditioned regression target.
 
-The network is a U-Net — encoder, decoder, skip connections, exactly Session 6's
-segmentation architecture — taking the noisy image and the timestep, and
-returning a noise-shaped tensor.
+The network is a U-Net — encoder, decoder, skip connections, exactly the
+segmentation architecture of this session — taking the noisy image and the
+timestep, and returning a noise-shaped tensor.
 
 ---
 
@@ -169,7 +169,7 @@ Three components, and none of them is the diffusion model itself:
 
 The text never becomes a single vector concatenated once. Cross-attention lets
 different spatial regions attend to different words, which is what places the
-colours correctly in "a red cube on a blue table". Session 7 covers attention.
+colours correctly in "a red cube on a blue table". Session 6 covered attention.
 
 ---
 

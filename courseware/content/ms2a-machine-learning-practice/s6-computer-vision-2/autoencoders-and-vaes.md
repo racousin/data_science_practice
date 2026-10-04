@@ -122,7 +122,7 @@ work. Sampling is not differentiable, so no gradient reaches `mu` or `logvar`.
 ```python
 def reparameterize(mu, logvar):
     std = torch.exp(0.5 * logvar)
-    eps = torch.randn_like(std)          # the randomness, detached from theta
+    eps = torch.randn_like(std)  # the randomness, detached from theta
     return mu + eps * std                # differentiable in mu and std
 ```
 

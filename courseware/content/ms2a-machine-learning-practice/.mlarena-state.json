@@ -71,6 +71,7 @@
       "s5-computer-vision-1/pooling-and-architectures": 87,
       "s5-computer-vision-1/transfer-learning": 89,
       "s6-computer-vision-2/autoencoders-and-vaes": 93,
+      "s6-computer-vision-2/detr": 227,
       "s6-computer-vision-2/diffusion-models": 95,
       "s6-computer-vision-2/gans": 94,
       "s6-computer-vision-2/lab-6": 96,
@@ -301,7 +302,7 @@
           "title": "APIs and HTTP"
         },
         "s11-docker-and-deployment/docker-compose-cvat": {
-          "body": "8c9b0c936a2f1b29d46cbd54c490ca49e60cba28e4e2495d833e36ba5195fc4f",
+          "body": "e92685e9e2f43fd1e86ca7cad73b957d54497aefdf8a8a32da267956b2281f0e",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
@@ -551,7 +552,7 @@
           "title": "Optimization and Schedules"
         },
         "s4-advanced-neural-networks/skip-connections": {
-          "body": "76e76fe8c935ca66b819255a45ccda35ce5eb5b500a1f203086b4464937cecc4",
+          "body": "394f0124aabd1c15baf5f1086cd1ea0940e932c2de4a42a14f1a59b75349257b",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
@@ -600,14 +601,21 @@
           "title": "Transfer Learning"
         },
         "s6-computer-vision-2/autoencoders-and-vaes": {
-          "body": "bc2fdcd809d0ff93a0c77e1436e0824f1021400e8bafb864cc8fca82fe458018",
+          "body": "6c4e2d2457b4f60877fb8bb9eff4cacef265965c4b99d635ffd3248296e13450",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
           "title": "Autoencoders and VAEs"
         },
+        "s6-computer-vision-2/detr": {
+          "body": "1d7c1da624e3493e7f538189f88edd87309a437ee0b0b9cfa1ee8967b7e765c3",
+          "estimated_minutes": 40,
+          "gated": false,
+          "is_published": true,
+          "title": "DETR \u2014 Detection as Set Prediction"
+        },
         "s6-computer-vision-2/diffusion-models": {
-          "body": "241c75dd5cbd4edb88b7db7c956afbee3607456df8c5282660255736545553c9",
+          "body": "ce62fc13a5e4f8c098b71a71138b25ff58c8461ad7d715ead19881df985caf6a",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
@@ -621,21 +629,21 @@
           "title": "GANs"
         },
         "s6-computer-vision-2/lab-6": {
-          "body": "2e9c255de4e6e91ebc73dbb1a8d84fbdc239c516d7f2f8b01c4c48935205e18d",
+          "body": "35a09b6cc42905a4a49642e015ef02ab40a7ef76acaf14c64ca526452bb5b71e",
           "estimated_minutes": 45,
           "gated": false,
           "is_published": true,
-          "title": "Lab 6 \u2014 Detect or Generate"
+          "title": "Lab 7 \u2014 Detect or Generate"
         },
         "s6-computer-vision-2/object-detection": {
-          "body": "8bdf6c0d576d5af712dded6712e72f64656f7a244a3fc064a71129cbff4f00ef",
-          "estimated_minutes": 40,
+          "body": "3644ad92fb28de8eb172df46e893816c59f55e3a59a06cf0e080f7f1af1cc461",
+          "estimated_minutes": 50,
           "gated": false,
           "is_published": true,
           "title": "Object Detection"
         },
         "s6-computer-vision-2/segmentation": {
-          "body": "fdf954919849835a01e67536b29d842e7750b58b79bb579ab6c92abedef8ea41",
+          "body": "3a325dbca34ebfd608d01b94040d43385203c18db23a934cdede64e313f9d0ec",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
@@ -649,7 +657,7 @@
           "title": "Vision Transformer"
         },
         "s7-nlp-1/attention": {
-          "body": "8474b327e735834cec8c36d88efd364b61a18fbac427975228ce783c06aea017",
+          "body": "ef86d0834f7ade9e7eba6e76548e5476986bab872f7a517dab82c8c75ffb028f",
           "estimated_minutes": 40,
           "gated": false,
           "is_published": true,
@@ -663,11 +671,11 @@
           "title": "Embeddings and MLP objectives"
         },
         "s7-nlp-1/lab-7": {
-          "body": "b23935ed87db052d278d1551df35a81b0b11d804ee276211572b6bdda0a1f93f",
+          "body": "fac224ee0e851519b7ac7596024f8ac3bfe5a4bbb11a2b2e44199168c6eb3de3",
           "estimated_minutes": 120,
           "gated": false,
           "is_published": true,
-          "title": "Lab 7 \u2014 Transfer Learning a Text Classifier"
+          "title": "Lab 6 \u2014 Transfer Learning a Text Classifier"
         },
         "s7-nlp-1/recurrent-models": {
           "body": "292e063c532b4cc502e041ea319a863babfd95400f8bba4adfec5942e6b3766f",
@@ -747,7 +755,7 @@
           "title": "RAG"
         },
         "s8-nlp-2/training-and-scaling-llms": {
-          "body": "4b196f3026544ac041b9c76aa4bccc1b521d081c9d39f553670d6915fe95f227",
+          "body": "970c0b53114847997c3d230820ae405d8020f954cef72d43702b8a382d6411aa",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
@@ -948,13 +956,14 @@
           "lessons": [
             "vision-transformer",
             "object-detection",
+            "detr",
             "segmentation",
             "autoencoders-and-vaes",
             "gans",
             "diffusion-models",
             "lab-6"
           ],
-          "summary": "Beyond one label per image: detection, segmentation, and the generative family \u2014 autoencoders, VAEs, GANs and diffusion.",
+          "summary": "The transformer applied to images, then beyond one label per image: detection (YOLO, DETR), segmentation, and the generative family \u2014 autoencoders, VAEs, GANs and diffusion.",
           "title": "Session 7 \u2014 Computer Vision 2"
         },
         "s7-nlp-1": {

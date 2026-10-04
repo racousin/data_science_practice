@@ -13,7 +13,7 @@ number. -->
 
 ## The objective
 
-Session 7 built the transformer block. Stack it, add a causal mask, and train
+Session 6 built the transformer block. Stack it, add a causal mask, and train
 it to minimise the negative log-likelihood of the next token:
 
 $$
