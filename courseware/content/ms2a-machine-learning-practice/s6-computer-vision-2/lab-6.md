@@ -22,6 +22,14 @@ model from scratch will have nothing to show. -->
 The notebook fine-tunes YOLOv8n and submits; start it on a T4 at the
 beginning of the lab so it trains while you work (Part F).
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/data_science_practice/blob/main/website/public/modules/ms2a-machine-learning-practice/challenges/mlp-s7-pet-segmentation.ipynb)
+
+[Challenge 197](https://ml-arena.com/viewchallenge/197), *Pet Segmentation*:
+a cat-or-dog mask for 1,500 Oxford-IIIT Pet photos at 128×128, scored by mean
+IoU. The notebook trains a small U-Net from scratch, then fine-tunes an
+ImageNet ResNet-18 U-Net, and submits both: about 10 minutes on a T4. It is
+branch A's segmentation path, on the dataset Part A names.
+
 ---
 
 ## Setup

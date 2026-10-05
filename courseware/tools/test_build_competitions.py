@@ -41,8 +41,9 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import build_competitions as bc  # noqa: E402
 
-SCHEMA = [{"key": "auc", "label": "AUC", "source": "env", "agg": "mean",
-           "format": "number", "precision": 4, "higher_is_better": True}]
+METRICS = [{"key": "auc", "label": "AUC", "source": "env", "agg": "mean", "order": "desc",
+            "format": "number", "unit": None, "precision": 4, "is_ranking": True,
+            "visible": True}]
 
 
 class FakeClient:
@@ -126,9 +127,9 @@ class FakeClient:
         self._log("run_benchmark", cid)
 
     def benchmark_status(self, cid):
-        return {"job_status": "completed", "env_error_type": None,
-                "submission_results": [{"submission_reward": 0.75,
-                                         "agent_error_type": None}]}
+        return {"run": {"job_status": "completed", "env_error_type": None,
+                        "submission_results": [{"score": 0.75,
+                                                "agent_error_type": None}]}}
 
     def start_competition(self, cid):
         self._log("start_competition", cid)
@@ -160,11 +161,11 @@ def write_package(root, pkg, config: dict, data: dict, top: dict | None = None):
 def base_config(**overrides):
     cfg = {
         "name": "Test challenge", "kernel_version": "file_v1",
-        "module_slug": "s2-x", "label": "Test", "metric": "auc",
+        "module_slug": "s2-x", "label": "Test",
         "benchmark_expected_score": 0.75, "benchmark_score_tol": 1e-6,
         "dataset_label": "Test data", "dataset_description": "d",
         "deployment_nb_constraint_run": 1, "deployment_nb_initial_score_run": 1,
-        "metrics_schema": SCHEMA, "is_public_initial": False,
+        "metrics": METRICS, "is_public_initial": False,
     }
     cfg.update(overrides)
     return cfg
@@ -497,7 +498,7 @@ def test_fake_client_matches_the_sdk():
         return inspect.signature(getattr(MLArenaClient, method)).parameters
 
     assert {"submission_filename", "max_upload_size_bytes", "simulation_timeout_sec",
-            "metric", "metric2", "metrics_schema", "deployment_nb_constraint_run",
+            "metrics", "deployment_nb_constraint_run",
             "deployment_nb_initial_score_run"} <= set(params("update_settings"))
     assert "filename" in params("upload_benchmark_file")
     assert any(p.kind is inspect.Parameter.VAR_KEYWORD

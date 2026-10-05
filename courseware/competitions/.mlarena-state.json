@@ -19,6 +19,12 @@
         "module_slug": "s6-computer-vision-2",
         "name": "MLP S6 \u2014 Aquarium Detection"
       },
+      "mlp-s7-pet-segmentation": {
+        "id": 197,
+        "label": "Pet Segmentation \u2014 a cat-or-dog mask for every photo: a U-Net from scratch, then a fine-tuned one, scored with mean IoU",
+        "module_slug": "s6-computer-vision-2",
+        "name": "MLP S7 \u2014 Pet Segmentation"
+      },
       "mlp-s8-arith-gpt": {
         "id": 196,
         "label": "Arithmetic GPT \u2014 teach a fixed tiny GPT to multiply 4-digit numbers: design the chain of thought it trains on",

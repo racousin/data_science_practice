@@ -424,6 +424,8 @@ modules:
     competitions:
       - competition_id: 195
         label: "Aquarium Detection — seven marine species, boxes and classes: fine-tune a pretrained YOLO, scored with mAP50-95"
+      - competition_id: 197
+        label: "Pet Segmentation — a cat-or-dog mask for every photo: a U-Net from scratch, then a fine-tuned one, scored with mean IoU"
     lessons:
       - title: "Vision Transformer"
         slug: vision-transformer

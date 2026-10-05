@@ -141,6 +141,7 @@ PACKAGES_BY_COURSE = {
                                        "s2-dpe-energy-label",
                                        "s2-icu-survival",
                                        "mlp-s6-aquarium-detection",
+                                       "mlp-s7-pet-segmentation",
                                        "mlp-s8-arith-gpt",
                                        "mlp-project-ds-harness"],
 }
@@ -352,18 +353,19 @@ def connect(scope_env: str, base_url: str):
 # benchmark = the end-to-end test
 # --------------------------------------------------------------------------- #
 # The server's benchmark_status reply: `job_status` and one
-# `submission_results` row per seat, which carries `submission_reward` and the
+# `submission_results` row per seat, which carries `score` and the
 # run-failure cause `agent_error_type` / `agent_error_message`.
-def _benchmark_score(status: dict):
-    results = status.get("submission_results") or []
-    return results[0].get("submission_reward") if results else None
+def _benchmark_score(run: dict):
+    results = run.get("submission_results") or []
+    return results[0].get("score") if results else None
 
 
 def wait_for_benchmark(client, cid: int, timeout_s: int = 1800) -> dict:
     deadline = time.monotonic() + timeout_s
     last = None
     while time.monotonic() < deadline:
-        st = client.benchmark_status(cid)
+        # SDK 4: the latest benchmark run is under "run" (None before the first).
+        st = client.benchmark_status(cid)["run"] or {}
         state = st.get("job_status")
         if state != last:
             print(f"      benchmark: {state} score={_benchmark_score(st)}")
@@ -421,15 +423,15 @@ def pin_engine(client, cid: int, cfg: dict) -> None:
 
 
 def apply_settings(client, cid: int, cfg: dict) -> None:
-    # SDK 3.0 keywords are the columns' own names (no `evaluation_` prefix).
+    # SDK 4.0: the leaderboard is one `metrics` list ({key, label, source,
+    # order, precision, is_ranking, ...}); `metric` / `metric2` /
+    # `metrics_schema` were removed. A package still declaring them is
+    # refused by the SDK and must be migrated to `metrics`.
     settings = {
-        "metric": cfg["metric"],
         "deployment_nb_constraint_run": cfg["deployment_nb_constraint_run"],
         "deployment_nb_initial_score_run": cfg["deployment_nb_initial_score_run"],
-        "metrics_schema": cfg["metrics_schema"],
+        "metrics": cfg["metrics"],
     }
-    if cfg.get("metric2"):
-        settings["metric2"] = cfg["metric2"]
     # Sent only when declared, so a package without them changes nothing.
     for key in ("submission_filename", "max_upload_size_bytes", "simulation_timeout_sec",
                 "agent_max_time_per_step_second"):
@@ -469,10 +471,11 @@ def apply_settings(client, cid: int, cfg: dict) -> None:
         extra += f" timeout={cfg['simulation_timeout_sec']}s"
     if step is not None:
         extra += f" agent_step={step}s"
-    print(f"    settings: metric={cfg['metric']} "
+    ranking = next(d["key"] for d in cfg["metrics"] if d.get("is_ranking"))
+    print(f"    settings: ranking={ranking} "
           f"runs={cfg['deployment_nb_constraint_run']}+"
           f"{cfg['deployment_nb_initial_score_run']} "
-          f"metrics_schema={[d['key'] for d in cfg['metrics_schema']]}{extra}")
+          f"metrics={[d['key'] for d in cfg['metrics']]}{extra}")
 
 
 def upload_benchmark(client, cid: int, cfg: dict) -> None:
