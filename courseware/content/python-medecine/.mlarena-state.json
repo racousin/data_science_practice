@@ -329,7 +329,16 @@
           "title": "Le projet Puissance 4"
         }
       },
-      "module_order": [],
+      "module_order": [
+        "pym-s1-premiers-pas",
+        "pym-s2-controle-et-fonctions",
+        "pym-s3-structures-de-donnees",
+        "pym-s4-objets-et-modules",
+        "pym-s5-numpy-pandas",
+        "pym-s6-visualisation-analyse",
+        "pym-s7-code-de-qualite",
+        "pym-s8-projet-puissance-4"
+      ],
       "modules": {
         "pym-s1-premiers-pas": {
           "icon": "rocket",

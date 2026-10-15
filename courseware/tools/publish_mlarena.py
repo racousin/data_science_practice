@@ -575,7 +575,9 @@ def main() -> int:
         # which would also swallow genuine link failures.
         already_linked: set[int] = set()
         if not args.dry_run:
-            already_linked = {m["id"]
+            # Each row is a course-module link: `id` is the link's id,
+            # `module_id` the module's.
+            already_linked = {m["module_id"]
                               for m in client.list_course_modules(course_id)}
 
         ordered_modules: list[int] = []
