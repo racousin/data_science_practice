@@ -1,0 +1,378 @@
+{
+  "https://ml-arena.com": {
+    "course_id": 18,
+    "lessons": {
+      "pym-s1-premiers-pas/chaines-de-caracteres": 234,
+      "pym-s1-premiers-pas/colab-jupyter-scripts": 232,
+      "pym-s1-premiers-pas/exercices-s1": 235,
+      "pym-s1-premiers-pas/pourquoi-python": 231,
+      "pym-s1-premiers-pas/variables-et-types": 233,
+      "pym-s2-controle-et-fonctions/boucles": 237,
+      "pym-s2-controle-et-fonctions/conditions": 236,
+      "pym-s2-controle-et-fonctions/exercices-s2": 240,
+      "pym-s2-controle-et-fonctions/fonctions": 238,
+      "pym-s2-controle-et-fonctions/lire-et-deboguer": 239,
+      "pym-s3-structures-de-donnees/dictionnaires-et-ensembles": 242,
+      "pym-s3-structures-de-donnees/exercices-s3": 245,
+      "pym-s3-structures-de-donnees/lire-des-fichiers": 244,
+      "pym-s3-structures-de-donnees/listes-et-tuples": 241,
+      "pym-s3-structures-de-donnees/mutabilite": 243,
+      "pym-s4-objets-et-modules/classes-et-objets": 246,
+      "pym-s4-objets-et-modules/encapsulation-et-methodes-speciales": 247,
+      "pym-s4-objets-et-modules/exercices-s4": 250,
+      "pym-s4-objets-et-modules/heritage": 248,
+      "pym-s4-objets-et-modules/modules-et-imports": 249,
+      "pym-s5-numpy-pandas/agreger-et-joindre": 254,
+      "pym-s5-numpy-pandas/exercices-s5": 255,
+      "pym-s5-numpy-pandas/nettoyer-des-donnees": 253,
+      "pym-s5-numpy-pandas/numpy": 251,
+      "pym-s5-numpy-pandas/pandas-lire-et-explorer": 252,
+      "pym-s6-visualisation-analyse/analyse-exploratoire": 258,
+      "pym-s6-visualisation-analyse/exercices-s6": 259,
+      "pym-s6-visualisation-analyse/matplotlib": 256,
+      "pym-s6-visualisation-analyse/seaborn": 257,
+      "pym-s7-code-de-qualite/exercices-s7": 263,
+      "pym-s7-code-de-qualite/packages": 260,
+      "pym-s7-code-de-qualite/pep8-et-pylint": 262,
+      "pym-s7-code-de-qualite/tests-unitaires": 261
+    },
+    "modules": {
+      "pym-s1-premiers-pas": 38,
+      "pym-s2-controle-et-fonctions": 39,
+      "pym-s3-structures-de-donnees": 40,
+      "pym-s4-objets-et-modules": 41,
+      "pym-s5-numpy-pandas": 42,
+      "pym-s6-visualisation-analyse": 43,
+      "pym-s7-code-de-qualite": 44
+    },
+    "published": {
+      "course": {
+        "code": "PYMED-2026",
+        "description": "Un cours d'initiation \u00e0 Python pour les \u00e9tudiants et professionnels de\nsant\u00e9, en huit s\u00e9ances de trois heures. Aucun pr\u00e9requis en programmation.\n\nOn apprend le langage (types, structures de contr\u00f4le, fonctions,\nstructures de donn\u00e9es, objets, modules), puis les outils de l'analyse de\ndonn\u00e9es : NumPy, pandas, Matplotlib et seaborn, sur des donn\u00e9es m\u00e9dicales\nr\u00e9elles (insuffisance cardiaque, hospitalisations COVID-19) et sur des\nexports hospitaliers \u00e0 nettoyer. La derni\u00e8re s\u00e9ance apprend \u00e0 \u00e9crire du\ncode de qualit\u00e9 : packages, tests unitaires, conventions.\n\nChaque s\u00e9ance alterne cours et exercices dans Google Colab, avec une\ncorrection. Le projet final, en bin\u00f4me, consiste \u00e0 programmer un joueur de\nPuissance 4 et \u00e0 le confronter \u00e0 ceux des autres groupes sur ML-Arena.",
+        "end_date": "2027-07-31",
+        "instructor_name": "Raphael Cousin",
+        "name": "Python pour la m\u00e9decine",
+        "start_date": "2026-10-19",
+        "visibility": "public"
+      },
+      "lessons": {
+        "pym-s1-premiers-pas/chaines-de-caracteres": {
+          "body": "5a9eef951a03c7123130512cd3fc709fc1684f34d9f37c0f0b73af868e376436",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Cha\u00eenes de caract\u00e8res"
+        },
+        "pym-s1-premiers-pas/colab-jupyter-scripts": {
+          "body": "af3b2efb4becd1f68cc6a27b93f9a11b5d21868ab19f0296d6a50f56a25c8ed9",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Colab, Jupyter et scripts"
+        },
+        "pym-s1-premiers-pas/exercices-s1": {
+          "body": "15098aef5f3f91ebb3034b240c232df2ea99c488a591db1ab59911a371e100e4",
+          "estimated_minutes": 75,
+          "gated": false,
+          "is_published": true,
+          "title": "Exercices \u2014 Calculs cliniques"
+        },
+        "pym-s1-premiers-pas/pourquoi-python": {
+          "body": "842932bfd5e69fff97c226cf2ab44fcf4ab476bc3905a16d28fdc37ef04bbb6d",
+          "estimated_minutes": 20,
+          "gated": false,
+          "is_published": true,
+          "title": "Pourquoi Python en sant\u00e9"
+        },
+        "pym-s1-premiers-pas/variables-et-types": {
+          "body": "98f1f0e6c3da0dd6a542063e3657cc2c4f0119438aba9bbe8863400c2d09484f",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Variables, nombres et bool\u00e9ens"
+        },
+        "pym-s2-controle-et-fonctions/boucles": {
+          "body": "3fe86c87db262204df5c48d95f674defa34ee5dd1d3bdba04a94fa4bb2134b07",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Boucles"
+        },
+        "pym-s2-controle-et-fonctions/conditions": {
+          "body": "718cd70e04d65fe503ebf93ea426fc45f7aa8b60415b88895d7c8f58e4925b44",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Conditions"
+        },
+        "pym-s2-controle-et-fonctions/exercices-s2": {
+          "body": "6acf56e0f254b9df042c054cae148d515f08e0a3ef975febf5a9ab8999778ed8",
+          "estimated_minutes": 75,
+          "gated": false,
+          "is_published": true,
+          "title": "Exercices \u2014 Scores cliniques"
+        },
+        "pym-s2-controle-et-fonctions/fonctions": {
+          "body": "5ff6b240302edbdd7a3a2b8ff0512be1cf3f82ef7918d572835ec3020143d482",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Fonctions"
+        },
+        "pym-s2-controle-et-fonctions/lire-et-deboguer": {
+          "body": "aef94c519301ca6287c0f5695b06dafa13631e95303266a4bde223e48b57070c",
+          "estimated_minutes": 20,
+          "gated": false,
+          "is_published": true,
+          "title": "Lire et d\u00e9boguer du code"
+        },
+        "pym-s3-structures-de-donnees/dictionnaires-et-ensembles": {
+          "body": "c9e2f058848debd3a8c5cab262ea9ab273353257c2866113ec7e9e657eede655",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Dictionnaires et ensembles"
+        },
+        "pym-s3-structures-de-donnees/exercices-s3": {
+          "body": "af69c597d741924b6cf6a61c3847f3c08196a51bbf59654d772475fa7f0bee6b",
+          "estimated_minutes": 75,
+          "gated": false,
+          "is_published": true,
+          "title": "Exercices \u2014 Dossiers patients"
+        },
+        "pym-s3-structures-de-donnees/lire-des-fichiers": {
+          "body": "b4a107c58e847aa2a728721718f712952cd0108a20dee356474a7bc91441c8cc",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Lire et \u00e9crire des fichiers"
+        },
+        "pym-s3-structures-de-donnees/listes-et-tuples": {
+          "body": "0e208f451965d4247a6e2a30af6f6e45322085f4976186d0162a024b5d8172f8",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Listes et tuples"
+        },
+        "pym-s3-structures-de-donnees/mutabilite": {
+          "body": "71715ad8ed62a848fc1ef256962314a53f1a41dfce919c249c62d1d3a1141bb7",
+          "estimated_minutes": 20,
+          "gated": false,
+          "is_published": true,
+          "title": "Mutabilit\u00e9 et r\u00e9f\u00e9rences"
+        },
+        "pym-s4-objets-et-modules/classes-et-objets": {
+          "body": "7cbaadf8b7aeb539481903659e591728fd283ac728ef69fd9ba635b127f48f35",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Classes et objets"
+        },
+        "pym-s4-objets-et-modules/encapsulation-et-methodes-speciales": {
+          "body": "5a13daaff0ea48bac640d0f0d254de15acdaa6cd5eabb08df3b127365ff15289",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Encapsulation et m\u00e9thodes sp\u00e9ciales"
+        },
+        "pym-s4-objets-et-modules/exercices-s4": {
+          "body": "7bfa171fbc57624feb334624292db4cd018666c5fa51c2aa87ea1e8c4c6311d9",
+          "estimated_minutes": 75,
+          "gated": false,
+          "is_published": true,
+          "title": "Exercices \u2014 Mod\u00e9liser un patient"
+        },
+        "pym-s4-objets-et-modules/heritage": {
+          "body": "3510ffd0b57c069deef2f4ee70c152fdb6653ce34813b5f4421a4e1bd9293c0f",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "H\u00e9ritage"
+        },
+        "pym-s4-objets-et-modules/modules-et-imports": {
+          "body": "73b60284ea52787fcf2735fb9fe5d19bb5a9ff3132601ac100bbf12d119384d6",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Modules et imports"
+        },
+        "pym-s5-numpy-pandas/agreger-et-joindre": {
+          "body": "a987e8f1e9b0fb5a1e82b199543c8394f08fcf9e557adc16aa8da5385bfea89d",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Agr\u00e9ger et joindre"
+        },
+        "pym-s5-numpy-pandas/exercices-s5": {
+          "body": "82be8869d81e24f3215b53bd1759b1d69642736626f9efdfdb33017052aaff41",
+          "estimated_minutes": 75,
+          "gated": false,
+          "is_published": true,
+          "title": "Exercices \u2014 Un export hospitalier"
+        },
+        "pym-s5-numpy-pandas/nettoyer-des-donnees": {
+          "body": "2afe588aaad2d9ff6fd48768c67f2c827cd962950d6f14c53184fb566aa288c4",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Nettoyer des donn\u00e9es"
+        },
+        "pym-s5-numpy-pandas/numpy": {
+          "body": "663ca501ca29c50ebe0972782d379f6c058ac90e6dcd23bdc01ec772939c3816",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "NumPy : calculer sur des tableaux"
+        },
+        "pym-s5-numpy-pandas/pandas-lire-et-explorer": {
+          "body": "0c0dccbbd15ae5dc438ec81b779f103ea4354e0daba27f328f68536bbc5bbd00",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "pandas : lire et explorer un tableau"
+        },
+        "pym-s6-visualisation-analyse/analyse-exploratoire": {
+          "body": "824312bb02f7c894c88f14a02d84ce051e0aa6a974573e8f6809d5a949fa643b",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Analyse exploratoire"
+        },
+        "pym-s6-visualisation-analyse/exercices-s6": {
+          "body": "7a2e2852d13688233b8c6aa9f2733cc3f12de66a4f77ceb1a01cc2679c2d84d6",
+          "estimated_minutes": 90,
+          "gated": false,
+          "is_published": true,
+          "title": "Exercices \u2014 Insuffisance cardiaque et COVID-19"
+        },
+        "pym-s6-visualisation-analyse/matplotlib": {
+          "body": "ecfee86a1bd66d34294901eef44bc77da55eb9fafdf5ae4974b24aa7f52efd64",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Matplotlib : figure et axes"
+        },
+        "pym-s6-visualisation-analyse/seaborn": {
+          "body": "9dcadf1a8f202539915a7a54e85ecd96273307294542ced6cedee55f24ef14cf",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "seaborn : graphiques statistiques"
+        },
+        "pym-s7-code-de-qualite/exercices-s7": {
+          "body": "1416b56c6aa74398987a023d8214fb23895acb37e51f413508baef14e840b676",
+          "estimated_minutes": 90,
+          "gated": false,
+          "is_published": true,
+          "title": "Exercices \u2014 Le package medcalc"
+        },
+        "pym-s7-code-de-qualite/packages": {
+          "body": "03bfce5dc348459415cf0d25b6b6479526e45458ca53d73376041c60327cb165",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Structurer un projet en package"
+        },
+        "pym-s7-code-de-qualite/pep8-et-pylint": {
+          "body": "f94194936c145af4350872142b43b6ebf375f145175c613b788bd82a787e711e",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "PEP 8 et pylint"
+        },
+        "pym-s7-code-de-qualite/tests-unitaires": {
+          "body": "5dce958a52fda94e04ead10e5c5ed05a9f0423a736c4c4bc7c08821f5fc85079",
+          "estimated_minutes": 35,
+          "gated": false,
+          "is_published": true,
+          "title": "Tests unitaires avec pytest"
+        }
+      },
+      "module_order": [],
+      "modules": {
+        "pym-s1-premiers-pas": {
+          "icon": "rocket",
+          "lessons": [
+            "pourquoi-python",
+            "colab-jupyter-scripts",
+            "variables-et-types",
+            "chaines-de-caracteres",
+            "exercices-s1"
+          ],
+          "summary": "Pourquoi Python en sant\u00e9, Google Colab et Jupyter, ex\u00e9cuter un programme ; variables, types num\u00e9riques, bool\u00e9ens, cha\u00eenes de caract\u00e8res et f-strings.",
+          "title": "S\u00e9ance 1 \u2014 Premiers pas avec Python"
+        },
+        "pym-s2-controle-et-fonctions": {
+          "icon": "git-branch",
+          "lessons": [
+            "conditions",
+            "boucles",
+            "fonctions",
+            "lire-et-deboguer",
+            "exercices-s2"
+          ],
+          "summary": "D\u00e9cider (if/elif/else), r\u00e9p\u00e9ter (for, while, range), et ranger son code dans des fonctions : param\u00e8tres, valeurs de retour, docstrings, port\u00e9e.",
+          "title": "S\u00e9ance 2 \u2014 Conditions, boucles et fonctions"
+        },
+        "pym-s3-structures-de-donnees": {
+          "icon": "list",
+          "lessons": [
+            "listes-et-tuples",
+            "dictionnaires-et-ensembles",
+            "mutabilite",
+            "lire-des-fichiers",
+            "exercices-s3"
+          ],
+          "summary": "Listes et compr\u00e9hensions, tuples, dictionnaires, ensembles, mutabilit\u00e9 ; lire et \u00e9crire un fichier texte ou CSV sans biblioth\u00e8que.",
+          "title": "S\u00e9ance 3 \u2014 Structures de donn\u00e9es"
+        },
+        "pym-s4-objets-et-modules": {
+          "icon": "box",
+          "lessons": [
+            "classes-et-objets",
+            "encapsulation-et-methodes-speciales",
+            "heritage",
+            "modules-et-imports",
+            "exercices-s4"
+          ],
+          "summary": "Classes et objets, encapsulation et propri\u00e9t\u00e9s, m\u00e9thodes sp\u00e9ciales, h\u00e9ritage ; modules, imports, installer une biblioth\u00e8que et structurer un programme.",
+          "title": "S\u00e9ance 4 \u2014 Objets et modules"
+        },
+        "pym-s5-numpy-pandas": {
+          "icon": "table",
+          "lessons": [
+            "numpy",
+            "pandas-lire-et-explorer",
+            "nettoyer-des-donnees",
+            "agreger-et-joindre",
+            "exercices-s5"
+          ],
+          "summary": "Tableaux NumPy et calcul vectoris\u00e9 ; le DataFrame pandas : lire un CSV, inspecter, s\u00e9lectionner, filtrer, nettoyer, agr\u00e9ger et joindre.",
+          "title": "S\u00e9ance 5 \u2014 NumPy et pandas : lire et pr\u00e9parer des donn\u00e9es"
+        },
+        "pym-s6-visualisation-analyse": {
+          "icon": "chart",
+          "lessons": [
+            "matplotlib",
+            "seaborn",
+            "analyse-exploratoire",
+            "exercices-s6"
+          ],
+          "summary": "Matplotlib (figure, axes, courbes, histogrammes, nuages de points), seaborn (distributions, relations, comparaisons de groupes) et la d\u00e9marche d'une analyse exploratoire de donn\u00e9es cliniques.",
+          "title": "S\u00e9ance 6 \u2014 Visualiser et analyser"
+        },
+        "pym-s7-code-de-qualite": {
+          "icon": "check",
+          "lessons": [
+            "packages",
+            "tests-unitaires",
+            "pep8-et-pylint",
+            "exercices-s7"
+          ],
+          "summary": "Organiser un programme en package, le tester avec pytest, le relire avec les conventions PEP 8 et pylint.",
+          "title": "S\u00e9ance 7 \u2014 \u00c9crire du code de qualit\u00e9"
+        }
+      }
+    }
+  }
+}
