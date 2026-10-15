@@ -34,7 +34,12 @@
       "pym-s7-code-de-qualite/exercices-s7": 263,
       "pym-s7-code-de-qualite/packages": 260,
       "pym-s7-code-de-qualite/pep8-et-pylint": 262,
-      "pym-s7-code-de-qualite/tests-unitaires": 261
+      "pym-s7-code-de-qualite/tests-unitaires": 261,
+      "pym-s8-projet-puissance-4/lab-1-comprendre-le-jeu": 265,
+      "pym-s8-projet-puissance-4/lab-2-agent-a-regles": 266,
+      "pym-s8-projet-puissance-4/lab-3-tests-et-tournoi": 267,
+      "pym-s8-projet-puissance-4/lab-4-minimax-et-soumission": 268,
+      "pym-s8-projet-puissance-4/projet-puissance-4": 264
     },
     "modules": {
       "pym-s1-premiers-pas": 38,
@@ -43,7 +48,8 @@
       "pym-s4-objets-et-modules": 41,
       "pym-s5-numpy-pandas": 42,
       "pym-s6-visualisation-analyse": 43,
-      "pym-s7-code-de-qualite": 44
+      "pym-s7-code-de-qualite": 44,
+      "pym-s8-projet-puissance-4": 45
     },
     "published": {
       "course": {
@@ -286,6 +292,41 @@
           "gated": false,
           "is_published": true,
           "title": "Tests unitaires avec pytest"
+        },
+        "pym-s8-projet-puissance-4/lab-1-comprendre-le-jeu": {
+          "body": "fbe7439af61d9430af8c1c60fabc97b10394e9a4cde40a08b87520c4623a405d",
+          "estimated_minutes": 60,
+          "gated": false,
+          "is_published": true,
+          "title": "Lab 1 \u2014 Comprendre le jeu et jouer au hasard"
+        },
+        "pym-s8-projet-puissance-4/lab-2-agent-a-regles": {
+          "body": "de7fb927e996d7e944d380b0e7f2cca87326451c1d9951896c3d921011dcbdb6",
+          "estimated_minutes": 60,
+          "gated": false,
+          "is_published": true,
+          "title": "Lab 2 \u2014 Un agent \u00e0 r\u00e8gles"
+        },
+        "pym-s8-projet-puissance-4/lab-3-tests-et-tournoi": {
+          "body": "6adf8e6455132199a11cd8afe7252f66cb5ea62d731f4ef1e41976728020cb71",
+          "estimated_minutes": 60,
+          "gated": false,
+          "is_published": true,
+          "title": "Lab 3 \u2014 Tester et organiser un tournoi"
+        },
+        "pym-s8-projet-puissance-4/lab-4-minimax-et-soumission": {
+          "body": "60af66019943cb4abf91e0facd777dbf12d67bf41eb97560b52adf68a00e34e1",
+          "estimated_minutes": 90,
+          "gated": false,
+          "is_published": true,
+          "title": "Lab 4 \u2014 Minimax et soumission sur ML-Arena"
+        },
+        "pym-s8-projet-puissance-4/projet-puissance-4": {
+          "body": "ed6c622cb504d85ef82a8f07025f79322c7b6925c78bcf9bf03630a3aabfffb2",
+          "estimated_minutes": 20,
+          "gated": false,
+          "is_published": true,
+          "title": "Le projet Puissance 4"
         }
       },
       "module_order": [],
@@ -371,6 +412,18 @@
           ],
           "summary": "Organiser un programme en package, le tester avec pytest, le relire avec les conventions PEP 8 et pylint.",
           "title": "S\u00e9ance 7 \u2014 \u00c9crire du code de qualit\u00e9"
+        },
+        "pym-s8-projet-puissance-4": {
+          "icon": "trophy",
+          "lessons": [
+            "projet-puissance-4",
+            "lab-1-comprendre-le-jeu",
+            "lab-2-agent-a-regles",
+            "lab-3-tests-et-tournoi",
+            "lab-4-minimax-et-soumission"
+          ],
+          "summary": "Projet en bin\u00f4me : programmer un joueur de Puissance 4 \u2014 al\u00e9atoire, \u00e0 r\u00e8gles, puis minimax \u2014, le tester, et le soumettre sur ML-Arena o\u00f9 il affronte ceux des autres groupes.",
+          "title": "S\u00e9ance 8 \u2014 Projet Puissance 4"
         }
       }
     }
