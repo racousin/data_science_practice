@@ -1,0 +1,224 @@
+{
+  "https://ml-arena.com": {
+    "course_id": 19,
+    "lessons": {
+      "iam-projet/projet-survie": 286,
+      "iam-s1-classification/apprendre-a-partir-de-donnees": 269,
+      "iam-s1-classification/defi-1-survie": 274,
+      "iam-s1-classification/evaluer-un-classifieur": 272,
+      "iam-s1-classification/modele-perte-gradient": 270,
+      "iam-s1-classification/regression-logistique": 271,
+      "iam-s1-classification/tp1-cancer-du-sein": 273,
+      "iam-s2-preparation-forets/arbres-et-forets": 276,
+      "iam-s2-preparation-forets/defi-2-survie": 279,
+      "iam-s2-preparation-forets/hyperparametres-validation": 277,
+      "iam-s2-preparation-forets/preparer-les-donnees": 275,
+      "iam-s2-preparation-forets/tp2-donnees-bruitees": 278,
+      "iam-s3-reseaux-de-neurones/comparer-des-modeles": 282,
+      "iam-s3-reseaux-de-neurones/defi-3-survie": 285,
+      "iam-s3-reseaux-de-neurones/entrainer-un-reseau": 281,
+      "iam-s3-reseaux-de-neurones/reseaux-de-neurones": 280,
+      "iam-s3-reseaux-de-neurones/tp-bonus-descente-de-gradient": 284,
+      "iam-s3-reseaux-de-neurones/tp3-maladie-cardiaque": 283
+    },
+    "modules": {
+      "iam-projet": 49,
+      "iam-s1-classification": 46,
+      "iam-s2-preparation-forets": 47,
+      "iam-s3-reseaux-de-neurones": 48
+    },
+    "published": {
+      "course": {
+        "code": "IAMED-2026",
+        "description": "Une introduction \u00e0 l'apprentissage automatique pour les \u00e9tudiants en\ndeuxi\u00e8me ann\u00e9e de m\u00e9decine (DFGSM2), en trois s\u00e9ances de travaux pratiques\net un projet.\n\nChaque s\u00e9ance suit la m\u00eame m\u00e9thode : explorer, visualiser, pr\u00e9parer,\nentra\u00eener, \u00e9valuer. On y voit la r\u00e9gression logistique, la pr\u00e9paration de\ndonn\u00e9es imparfaites et les for\u00eats al\u00e9atoires, puis les r\u00e9seaux de neurones,\nsur des donn\u00e9es m\u00e9dicales (cancer du sein, maladie cardiaque, patients de\nr\u00e9animation de l'\u00e9tude SUPPORT2).\n\nChaque s\u00e9ance se termine par un d\u00e9fi sur ML-Arena : pr\u00e9dire la survie \u00e0\n2 mois de patients de r\u00e9animation avec le mod\u00e8le du jour, et comparer son\nscore \u00e0 ceux de la promotion.",
+        "end_date": "2027-07-31",
+        "instructor_name": "Raphael Cousin",
+        "name": "IA pour la m\u00e9decine",
+        "start_date": "2026-10-19",
+        "visibility": "public"
+      },
+      "lessons": {
+        "iam-projet/projet-survie": {
+          "body": "1b6c3c2f01f8a490a9048228ea00e74c733467eeb2f1ffbd682c01a54eacd2da",
+          "estimated_minutes": 60,
+          "gated": false,
+          "is_published": true,
+          "title": "Le projet : aller plus loin sur la survie \u00e0 2 mois"
+        },
+        "iam-s1-classification/apprendre-a-partir-de-donnees": {
+          "body": "66cbf67bdbdd229b6f71541edf620180b36fad4219fca2f7de8bd0065c1bd23c",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Apprendre \u00e0 partir de donn\u00e9es"
+        },
+        "iam-s1-classification/defi-1-survie": {
+          "body": "353d3d895ebd8d5b05c9d223f95bb15debc151878c4d37fb03df5d7b7f8d8e10",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "D\u00e9fi 1 \u2014 Survie \u00e0 2 mois avec une r\u00e9gression logistique"
+        },
+        "iam-s1-classification/evaluer-un-classifieur": {
+          "body": "4aea7c930f7c314d6d8a9a59854edbfada15081c499e0c88845d072be2348e74",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "\u00c9valuer un classifieur"
+        },
+        "iam-s1-classification/modele-perte-gradient": {
+          "body": "6d798375e3e54057b2f3ae36e7750f67ff759f13b0ef86019d16bca6a0810b62",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Mod\u00e8le, fonction de perte et descente de gradient"
+        },
+        "iam-s1-classification/regression-logistique": {
+          "body": "c7a64d2f78d2fa63c4815fe25fc1a434e4e959d7570e8c1c90d9ab60ab8a6d6e",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "La r\u00e9gression logistique"
+        },
+        "iam-s1-classification/tp1-cancer-du-sein": {
+          "body": "465d523484d333769cb213d7d821659690d016b116f7d27b1831ad71d36b44a9",
+          "estimated_minutes": 90,
+          "gated": false,
+          "is_published": true,
+          "title": "TP 1 \u2014 Cancer du sein et r\u00e9gression logistique"
+        },
+        "iam-s2-preparation-forets/arbres-et-forets": {
+          "body": "299a5cb709bffa7e485af7369d040d7e0e798aba05a0754dd268505263e26b46",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Arbres de d\u00e9cision et for\u00eats al\u00e9atoires"
+        },
+        "iam-s2-preparation-forets/defi-2-survie": {
+          "body": "b9ff4a564d50b1d9de4b85d1b3472ceb8f9a5da544414988f4b76edb3a156ff2",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "D\u00e9fi 2 \u2014 Survie \u00e0 2 mois avec une for\u00eat al\u00e9atoire"
+        },
+        "iam-s2-preparation-forets/hyperparametres-validation": {
+          "body": "8c95409304d8c9d4c85afd394c9fcf3df8a98b003298edc1eb368af6d12000db",
+          "estimated_minutes": 20,
+          "gated": false,
+          "is_published": true,
+          "title": "Hyperparam\u00e8tres et validation crois\u00e9e"
+        },
+        "iam-s2-preparation-forets/preparer-les-donnees": {
+          "body": "aea7491f85140e05cb11aa545ffa1dd0615f85ff64e43b576b294272db1e6f76",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Pr\u00e9parer des donn\u00e9es imparfaites"
+        },
+        "iam-s2-preparation-forets/tp2-donnees-bruitees": {
+          "body": "777cc9bf62d59865946169cc0d0132be6c26ae36cd4e0f4f76ba5d77ba76a32b",
+          "estimated_minutes": 90,
+          "gated": false,
+          "is_published": true,
+          "title": "TP 2 \u2014 Donn\u00e9es bruit\u00e9es et for\u00eat al\u00e9atoire"
+        },
+        "iam-s3-reseaux-de-neurones/comparer-des-modeles": {
+          "body": "c51324af80a06494d62496b2cad94d77b99bba20ec8dc03dc46bdbe1ee147f09",
+          "estimated_minutes": 20,
+          "gated": false,
+          "is_published": true,
+          "title": "Comparer des mod\u00e8les"
+        },
+        "iam-s3-reseaux-de-neurones/defi-3-survie": {
+          "body": "5fe7063e3d0bf7d5abeebd8fcb87266873ade9172c7d49d8718910bcdabe7b98",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "D\u00e9fi 3 \u2014 Survie \u00e0 2 mois avec un r\u00e9seau de neurones"
+        },
+        "iam-s3-reseaux-de-neurones/entrainer-un-reseau": {
+          "body": "ad96430f053357fd503e50640547876fdf0dbec86b9d789b2b32240c22a23827",
+          "estimated_minutes": 25,
+          "gated": false,
+          "is_published": true,
+          "title": "Entra\u00eener un r\u00e9seau : courbe de perte et arr\u00eat pr\u00e9coce"
+        },
+        "iam-s3-reseaux-de-neurones/reseaux-de-neurones": {
+          "body": "297f7f22bcb35529313ff77ce98141d2c336361dbe3010b8be36828af73af9f8",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Les r\u00e9seaux de neurones"
+        },
+        "iam-s3-reseaux-de-neurones/tp-bonus-descente-de-gradient": {
+          "body": "ee1f9dc1c2a7ae3d8ccd947ba3339c7ec2695b82b4b82d1a4b0761be126073f1",
+          "estimated_minutes": 45,
+          "gated": false,
+          "is_published": true,
+          "title": "TP bonus \u2014 La descente de gradient pas \u00e0 pas"
+        },
+        "iam-s3-reseaux-de-neurones/tp3-maladie-cardiaque": {
+          "body": "4f4b5f03a97248b85f600229c3e74fb02bfb338808c5d86689726d73bdce7310",
+          "estimated_minutes": 90,
+          "gated": false,
+          "is_published": true,
+          "title": "TP 3 \u2014 Maladie cardiaque et r\u00e9seaux de neurones"
+        }
+      },
+      "module_order": [
+        "iam-s1-classification",
+        "iam-s2-preparation-forets",
+        "iam-s3-reseaux-de-neurones",
+        "iam-projet"
+      ],
+      "modules": {
+        "iam-projet": {
+          "icon": "trophy",
+          "lessons": [
+            "projet-survie"
+          ],
+          "summary": "Projet en bin\u00f4me (un \u00e9tudiant en m\u00e9decine, un en apprentissage automatique) : d\u00e9passer les mod\u00e8les des s\u00e9ances pour pr\u00e9dire la survie \u00e0 2 mois de patients de r\u00e9animation, puis pr\u00e9senter le probl\u00e8me, la m\u00e9thode et les r\u00e9sultats.",
+          "title": "Projet \u2014 Survie \u00e0 2 mois : aller plus loin"
+        },
+        "iam-s1-classification": {
+          "icon": "rocket",
+          "lessons": [
+            "apprendre-a-partir-de-donnees",
+            "modele-perte-gradient",
+            "regression-logistique",
+            "evaluer-un-classifieur",
+            "tp1-cancer-du-sein",
+            "defi-1-survie"
+          ],
+          "summary": "Ce qu'est l'apprentissage automatique : donn\u00e9es, mod\u00e8le, fonction de perte, descente de gradient ; la r\u00e9gression logistique et l'\u00e9valuation d'un classifieur (matrice de confusion, pr\u00e9cision, rappel, F1).",
+          "title": "S\u00e9ance 1 \u2014 Apprentissage automatique et classification"
+        },
+        "iam-s2-preparation-forets": {
+          "icon": "database",
+          "lessons": [
+            "preparer-les-donnees",
+            "arbres-et-forets",
+            "hyperparametres-validation",
+            "tp2-donnees-bruitees",
+            "defi-2-survie"
+          ],
+          "summary": "Des donn\u00e9es r\u00e9elles sont imparfaites : valeurs manquantes, valeurs aberrantes, variables cat\u00e9gorielles, \u00e9chelles diff\u00e9rentes. On les pr\u00e9pare sans fuite d'information, puis on entra\u00eene une for\u00eat al\u00e9atoire et on r\u00e8gle ses hyperparam\u00e8tres.",
+          "title": "S\u00e9ance 2 \u2014 Pr\u00e9parer les donn\u00e9es, for\u00eats al\u00e9atoires"
+        },
+        "iam-s3-reseaux-de-neurones": {
+          "icon": "layers",
+          "lessons": [
+            "reseaux-de-neurones",
+            "entrainer-un-reseau",
+            "comparer-des-modeles",
+            "tp3-maladie-cardiaque",
+            "tp-bonus-descente-de-gradient",
+            "defi-3-survie"
+          ],
+          "summary": "Le perceptron multicouche : neurones, couches, fonctions d'activation, courbe d'apprentissage et arr\u00eat pr\u00e9coce ; puis la comparaison honn\u00eate de trois mod\u00e8les sur un nouveau jeu de donn\u00e9es (maladie cardiaque).",
+          "title": "S\u00e9ance 3 \u2014 R\u00e9seaux de neurones et comparaison de mod\u00e8les"
+        }
+      }
+    }
+  }
+}
