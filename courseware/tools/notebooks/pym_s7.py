@@ -32,7 +32,7 @@ import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 import build_notebooks as nb  # noqa: E402  (helpers only; never call its main)
-import aim_repo  # noqa: E402  (where the notebooks live: racousin/ai_for_modecine)
+import aim_repo  # noqa: E402  (where the notebooks live: racousin/ai_for_medicine)
 
 REPO = pathlib.Path(__file__).resolve().parents[3]
 COURSE = "python-medecine"

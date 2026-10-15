@@ -7,10 +7,10 @@ héritage, puis un module de calculs cliniques que vous importez. Comptez 75 min
 le livrable est le notebook complété, dont toutes les cellules de vérification
 affichent ✅.
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/ai_for_modecine/blob/main/python-medecine/notebooks/pym-s4-exercices.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/ai_for_medicine/blob/main/python-medecine/notebooks/pym-s4-exercices.ipynb)
 
 Correction (à ouvrir après avoir cherché) :
-[pym-s4-exercices-correction.ipynb](https://colab.research.google.com/github/racousin/ai_for_modecine/blob/main/python-medecine/notebooks/pym-s4-exercices-correction.ipynb)
+[pym-s4-exercices-correction.ipynb](https://colab.research.google.com/github/racousin/ai_for_medicine/blob/main/python-medecine/notebooks/pym-s4-exercices-correction.ipynb)
 
 Au programme :
 

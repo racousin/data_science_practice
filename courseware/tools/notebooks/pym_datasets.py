@@ -1,8 +1,8 @@
 """Datasets of the course *Python pour la médecine* (`content/python-medecine`).
 
 Writes every file the notebooks read into
-`ai_for_modecine/python-medecine/donnees/` (`aim_repo.out_dir`), which Colab
-fetches from GitHub (`aim_repo.raw`: racousin/ai_for_modecine, branch main).
+`ai_for_medicine/python-medecine/donnees/` (`aim_repo.out_dir`), which Colab
+fetches from GitHub (`aim_repo.raw`: racousin/ai_for_medicine, branch main).
 
 Two real sources, downloaded and trimmed:
 

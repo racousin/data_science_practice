@@ -43,7 +43,7 @@ En pratique, on ne tape pas les données : on les lit. `pd.read_csv` accepte
 un chemin local ou une URL.
 
 ```python
-URL = ("https://raw.githubusercontent.com/racousin/ai_for_modecine/"
+URL = ("https://raw.githubusercontent.com/racousin/ai_for_medicine/"
        "main/python-medecine/donnees/")
 ic = pd.read_csv(URL + "insuffisance_cardiaque.csv")
 ```

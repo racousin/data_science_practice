@@ -1,7 +1,7 @@
 """Figures of *Python pour la médecine*, séance 6, lesson `analyse-exploratoire`.
 
 Reads the course's own copy of the UCI heart failure records
-(`ai_for_modecine/python-medecine/donnees/insuffisance_cardiaque.csv`, `aim_repo`),
+(`ai_for_medicine/python-medecine/donnees/insuffisance_cardiaque.csv`, `aim_repo`),
 Chicco & Jurman 2020, CC BY 4.0) and writes into
 `courseware/content/python-medecine/assets/pym-s6-visualisation-analyse/`:
 

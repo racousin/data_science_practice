@@ -7,9 +7,9 @@ réanimation que vous lirez et résumerez sans pandas. Comptez environ 75 minute
 Livrable : le notebook complété, toutes les cellules de vérification affichant ✅
 (l'exercice 10 est facultatif).
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/ai_for_modecine/blob/main/python-medecine/notebooks/pym-s3-exercices.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/ai_for_medicine/blob/main/python-medecine/notebooks/pym-s3-exercices.ipynb)
 
-Correction : [pym-s3-exercices-correction.ipynb](https://colab.research.google.com/github/racousin/ai_for_modecine/blob/main/python-medecine/notebooks/pym-s3-exercices-correction.ipynb) — à ouvrir après avoir cherché.
+Correction : [pym-s3-exercices-correction.ipynb](https://colab.research.google.com/github/racousin/ai_for_medicine/blob/main/python-medecine/notebooks/pym-s3-exercices-correction.ipynb) — à ouvrir après avoir cherché.
 
 1. Moyenne, minimum et maximum d'une série de glycémies, sans bibliothèque.
 2. Compréhensions de liste et slicing : filtrer les hyperglycémies, convertir en mmol/L.
@@ -37,4 +37,4 @@ dossier["traitements"]["ramipril"]), exercice 7 (faire expliquer le décalage
 d'indice au tableau avec la liste dessinée), exercice 8 (oubli de float(),
 la comparaison de chaînes "38.8" > "100" donne un résultat faux sans erreur).
 Si la cellule de téléchargement échoue (pare-feu), le fichier est aussi dans
-python-medecine/donnees/ du dépôt racousin/ai_for_modecine. -->
+python-medecine/donnees/ du dépôt racousin/ai_for_medicine. -->

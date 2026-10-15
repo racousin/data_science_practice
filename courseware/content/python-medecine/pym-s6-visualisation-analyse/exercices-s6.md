@@ -7,10 +7,10 @@ insuffisance cardiaque avec seaborn, jusqu'à deux tests statistiques que vous
 interprétez par écrit. Comptez environ 1 h 30. Livrable : le notebook complété,
 avec toutes les cellules de vérification au vert (✅) et vos réponses rédigées.
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/ai_for_modecine/blob/main/python-medecine/notebooks/pym-s6-exercices.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/ai_for_medicine/blob/main/python-medecine/notebooks/pym-s6-exercices.ipynb)
 
 La correction, à ouvrir après avoir cherché :
-[pym-s6-exercices-correction.ipynb](https://colab.research.google.com/github/racousin/ai_for_modecine/blob/main/python-medecine/notebooks/pym-s6-exercices-correction.ipynb).
+[pym-s6-exercices-correction.ipynb](https://colab.research.google.com/github/racousin/ai_for_medicine/blob/main/python-medecine/notebooks/pym-s6-exercices-correction.ipynb).
 
 **Partie A — Constantes vitales (Matplotlib)**
 

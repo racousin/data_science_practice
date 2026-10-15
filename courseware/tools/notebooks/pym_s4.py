@@ -12,11 +12,11 @@ script is safe:
     uv run python courseware/tools/notebooks/pym_s4.py
 
 Verify the correction runs top to bottom (it reads two CSVs from GitHub,
-`racousin/ai_for_modecine`, and
+`racousin/ai_for_medicine`, and
 writes `calculs_medicaux.py` in the working directory):
 
     uv run --with nbclient --with ipykernel python -c "import nbformat,nbclient; \
-nb=nbformat.read('ai_for_modecine/python-medecine/notebooks/pym-s4-exercices-correction.ipynb',4); \
+nb=nbformat.read('ai_for_medicine/python-medecine/notebooks/pym-s4-exercices-correction.ipynb',4); \
 nbclient.NotebookClient(nb, timeout=300, kernel_name='python3').execute(); print('OK')"
 """
 from __future__ import annotations
@@ -29,7 +29,7 @@ import textwrap
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 import build_notebooks as nb  # noqa: E402  (helpers only; never call its main)
-import aim_repo  # noqa: E402  (where the notebooks live: racousin/ai_for_modecine)
+import aim_repo  # noqa: E402  (where the notebooks live: racousin/ai_for_medicine)
 
 REPO = pathlib.Path(__file__).resolve().parents[3]
 COURSE = "python-medecine"

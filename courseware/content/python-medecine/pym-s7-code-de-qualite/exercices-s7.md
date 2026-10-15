@@ -6,10 +6,10 @@ score qSOFA), vous le testez avec pytest, vous trouvez un bug grâce aux tests, 
 améliorez la qualité du code avec pylint. Comptez environ 1 h 30. Le livrable est le
 notebook complété, toutes les cellules de vérification affichant ✅.
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/ai_for_modecine/blob/main/python-medecine/notebooks/pym-s7-exercices.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/ai_for_medicine/blob/main/python-medecine/notebooks/pym-s7-exercices.ipynb)
 
 Correction, à ouvrir après avoir cherché :
-[pym-s7-exercices-correction.ipynb](https://colab.research.google.com/github/racousin/ai_for_modecine/blob/main/python-medecine/notebooks/pym-s7-exercices-correction.ipynb)
+[pym-s7-exercices-correction.ipynb](https://colab.research.google.com/github/racousin/ai_for_medicine/blob/main/python-medecine/notebooks/pym-s7-exercices-correction.ipynb)
 
 Au programme :
 

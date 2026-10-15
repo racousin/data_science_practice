@@ -1,10 +1,10 @@
 """Where the medical courses' Colab notebooks and datasets live.
 
 Both French medical courses (`python-medecine`, `ia-medecine`) publish their
-notebooks and data to the public repository github.com/racousin/ai_for_modecine,
-checked out (gitignored) at the root of this repo as `ai_for_modecine/`:
+notebooks and data to the public repository github.com/racousin/ai_for_medicine,
+checked out (gitignored) at the root of this repo as `ai_for_medicine/`:
 
-    ai_for_modecine/
+    ai_for_medicine/
     ├── python-medecine/{notebooks,donnees,images}/
     └── ia-medecine/{notebooks,donnees}/
 
@@ -15,9 +15,9 @@ from __future__ import annotations
 
 import pathlib
 
-GITHUB = "racousin/ai_for_modecine"
+GITHUB = "racousin/ai_for_medicine"
 BRANCH = "main"
-ROOT = pathlib.Path(__file__).resolve().parents[3] / "ai_for_modecine"
+ROOT = pathlib.Path(__file__).resolve().parents[3] / "ai_for_medicine"
 
 
 def out_dir(course: str, kind: str) -> pathlib.Path:

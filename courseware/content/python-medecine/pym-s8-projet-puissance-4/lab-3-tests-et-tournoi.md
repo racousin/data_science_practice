@@ -8,9 +8,9 @@ dans un tournoi. Comptez environ 60 minutes ; le livrable est le notebook au
 vert, et les fichiers `puissance4.py` et `test_puissance4.py` à reprendre
 dans votre dépôt GitHub.
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/ai_for_modecine/blob/main/python-medecine/notebooks/pym-s8-lab-3.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/ai_for_medicine/blob/main/python-medecine/notebooks/pym-s8-lab-3.ipynb)
 
-La [correction](https://colab.research.google.com/github/racousin/ai_for_modecine/blob/main/python-medecine/notebooks/pym-s8-lab-3-correction.ipynb)
+La [correction](https://colab.research.google.com/github/racousin/ai_for_medicine/blob/main/python-medecine/notebooks/pym-s8-lab-3-correction.ipynb)
 est à ouvrir après avoir cherché.
 
 **Les exercices**
