@@ -7,9 +7,9 @@ et un court compte rendu mis en forme. Comptez environ 1 h 15. Le livrable est
 le notebook complété, dont toutes les cellules de vérification affichent
 « ✅ ».
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/data_science_practice/blob/main/website/public/modules/python-medecine/notebooks/pym-s1-exercices.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/ai_for_modecine/blob/main/python-medecine/notebooks/pym-s1-exercices.ipynb)
 
-La [correction](https://colab.research.google.com/github/racousin/data_science_practice/blob/main/website/public/modules/python-medecine/notebooks/pym-s1-exercices-correction.ipynb)
+La [correction](https://colab.research.google.com/github/racousin/ai_for_modecine/blob/main/python-medecine/notebooks/pym-s1-exercices-correction.ipynb)
 est à ouvrir après avoir cherché.
 
 1. Indice de masse corporelle, arrondi à une décimale.

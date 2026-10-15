@@ -31,13 +31,12 @@ import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 import build_notebooks as nb  # noqa: E402  (helpers only; never call its main)
+import aim_repo  # noqa: E402  (where the notebooks live: racousin/ai_for_modecine)
 
-REPO = pathlib.Path(__file__).resolve().parents[3]
-OUT = REPO / "website" / "public" / "modules" / "python-medecine" / "notebooks"
+COURSE = "python-medecine"
+OUT = aim_repo.out_dir(COURSE, "notebooks")
 NAME = "pym-s1-exercices.ipynb"
 CORRECTION = "pym-s1-exercices-correction.ipynb"
-BASE = (f"https://colab.research.google.com/github/{nb.GITHUB}/blob/"
-        f"{nb.BRANCH}/website/public/modules/python-medecine/notebooks/")
 
 md, code = nb.md, nb.code
 
@@ -56,7 +55,7 @@ def build(solution: bool) -> dict:
         md(
             title,
             "",
-            f"[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)]({BASE}{name})",
+            f"[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)]({aim_repo.colab(COURSE, name)})",
             "",
             "**Objectifs** : calculer avec des nombres (`int`, `float`), écrire des",
             "conditions avec des booléens, convertir entre types, découper et",

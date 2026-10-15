@@ -11,11 +11,12 @@ script is safe:
 
     uv run python courseware/tools/notebooks/pym_s4.py
 
-Verify the correction runs top to bottom (it reads two CSVs from GitHub and
+Verify the correction runs top to bottom (it reads two CSVs from GitHub,
+`racousin/ai_for_modecine`, and
 writes `calculs_medicaux.py` in the working directory):
 
     uv run --with nbclient --with ipykernel python -c "import nbformat,nbclient; \
-nb=nbformat.read('website/public/modules/python-medecine/notebooks/pym-s4-exercices-correction.ipynb',4); \
+nb=nbformat.read('ai_for_modecine/python-medecine/notebooks/pym-s4-exercices-correction.ipynb',4); \
 nbclient.NotebookClient(nb, timeout=300, kernel_name='python3').execute(); print('OK')"
 """
 from __future__ import annotations
@@ -28,15 +29,14 @@ import textwrap
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 import build_notebooks as nb  # noqa: E402  (helpers only; never call its main)
+import aim_repo  # noqa: E402  (where the notebooks live: racousin/ai_for_modecine)
 
 REPO = pathlib.Path(__file__).resolve().parents[3]
-OUT = REPO / "website" / "public" / "modules" / "python-medecine" / "notebooks"
+COURSE = "python-medecine"
+OUT = aim_repo.out_dir(COURSE, "notebooks")
 NAME = "pym-s4-exercices.ipynb"
 NAME_CORR = "pym-s4-exercices-correction.ipynb"
-BASE = (f"https://colab.research.google.com/github/{nb.GITHUB}/blob/"
-        f"{nb.BRANCH}/website/public/modules/python-medecine/notebooks/")
-DONNEES = (f"https://raw.githubusercontent.com/{nb.GITHUB}/{nb.BRANCH}/"
-           "website/public/modules/python-medecine/donnees/")
+DONNEES = aim_repo.raw(COURSE, "donnees/")
 BADGE = "[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)]"
 
 
@@ -90,7 +90,7 @@ def lire(correction: bool, titre: str, intro: str, snippet: str,
 
 # --------------------------------------------------------------------------- #
 def build(correction: bool) -> dict:
-    url = BASE + (NAME_CORR if correction else NAME)
+    url = aim_repo.colab(COURSE, NAME_CORR if correction else NAME)
     titre = "Séance 4 — Exercices : modéliser un patient"
     if correction:
         titre += " (correction)"
@@ -946,7 +946,7 @@ def main() -> None:
         path = OUT / name
         path.write_text(json.dumps(build(correction), indent=1,
                                    ensure_ascii=False) + "\n")
-        print(f"wrote {path.relative_to(REPO)}\n      {BASE + name}")
+        print(f"wrote {path.relative_to(REPO)}\n      {aim_repo.colab(COURSE, name)}")
 
 
 if __name__ == "__main__":

@@ -25,15 +25,14 @@ import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 import build_notebooks as nb  # noqa: E402  (helpers only; never call its main)
+import aim_repo  # noqa: E402  (where the notebooks live: racousin/ai_for_modecine)
 
 REPO = pathlib.Path(__file__).resolve().parents[3]
-OUT = REPO / "website" / "public" / "modules" / "python-medecine" / "notebooks"
+COURSE = "python-medecine"
+OUT = aim_repo.out_dir(COURSE, "notebooks")
 NAME = "pym-s3-exercices.ipynb"
 CORRECTION = "pym-s3-exercices-correction.ipynb"
-BASE = (f"https://colab.research.google.com/github/{nb.GITHUB}/blob/"
-        f"{nb.BRANCH}/website/public/modules/python-medecine/notebooks/")
-DATA = (f"https://raw.githubusercontent.com/{nb.GITHUB}/{nb.BRANCH}/"
-        "website/public/modules/python-medecine/donnees/")
+DATA = aim_repo.raw(COURSE, "donnees/")
 
 md, code = nb.md, nb.code
 
@@ -55,7 +54,7 @@ def build(corr: bool) -> dict:
         md(
             title,
             "",
-            f"[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)]({BASE}{name})",
+            f"[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)]({aim_repo.colab(COURSE, name)})",
             "",
             "**Objectifs.** Ranger des données cliniques dans des listes, des tuples,",
             "des dictionnaires et des ensembles ; comprendre quand deux noms désignent",

@@ -101,8 +101,7 @@ Dans Colab, le fichier n'est pas sur la machine : on le télécharge d'abord ave
 from urllib.request import urlretrieve
 
 BASE = ("https://raw.githubusercontent.com/racousin/"
-        "data_science_practice/main/website/public/"
-        "modules/python-medecine/donnees/")
+        "ai_for_modecine/main/python-medecine/donnees/")
 urlretrieve(BASE + "constantes_vitales.csv", "constantes_vitales.csv")
 ```
 

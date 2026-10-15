@@ -1,7 +1,7 @@
 """Figures of *Python pour la médecine*, séance 6, lesson `analyse-exploratoire`.
 
 Reads the course's own copy of the UCI heart failure records
-(`website/public/modules/python-medecine/donnees/insuffisance_cardiaque.csv`,
+(`ai_for_modecine/python-medecine/donnees/insuffisance_cardiaque.csv`, `aim_repo`),
 Chicco & Jurman 2020, CC BY 4.0) and writes into
 `courseware/content/python-medecine/assets/pym-s6-visualisation-analyse/`:
 
@@ -14,6 +14,7 @@ Chicco & Jurman 2020, CC BY 4.0) and writes into
 from __future__ import annotations
 
 import pathlib
+import sys
 
 import matplotlib
 
@@ -22,9 +23,11 @@ import matplotlib.pyplot as plt  # noqa: E402
 import pandas as pd  # noqa: E402
 import seaborn as sns  # noqa: E402
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "notebooks"))
+import aim_repo  # noqa: E402
+
 REPO = pathlib.Path(__file__).resolve().parents[3]
-DATA = (REPO / "website" / "public" / "modules" / "python-medecine" / "donnees"
-        / "insuffisance_cardiaque.csv")
+DATA = aim_repo.out_dir("python-medecine", "donnees") / "insuffisance_cardiaque.csv"
 OUT = (REPO / "courseware" / "content" / "python-medecine" / "assets"
        / "pym-s6-visualisation-analyse")
 

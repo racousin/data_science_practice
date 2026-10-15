@@ -7,9 +7,9 @@ chacune vérifiée sur des positions dessinées en texte. Comptez environ 60
 minutes ; le livrable est le notebook au vert et un `AgentRegles` qui bat
 l'agent aléatoire au moins 90 fois sur 100.
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/data_science_practice/blob/main/website/public/modules/python-medecine/notebooks/pym-s8-lab-2.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/ai_for_modecine/blob/main/python-medecine/notebooks/pym-s8-lab-2.ipynb)
 
-La [correction](https://colab.research.google.com/github/racousin/data_science_practice/blob/main/website/public/modules/python-medecine/notebooks/pym-s8-lab-2-correction.ipynb)
+La [correction](https://colab.research.google.com/github/racousin/ai_for_modecine/blob/main/python-medecine/notebooks/pym-s8-lab-2-correction.ipynb)
 est à ouvrir après avoir cherché.
 
 **Les exercices**

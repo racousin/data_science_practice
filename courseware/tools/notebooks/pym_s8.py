@@ -28,8 +28,8 @@ loop alternates them, which is the same in expectation and fairer over few
 games. The challenge (copy of challenge 65) allows 0.25 s per call, 360 s per
 match of 10 games: the final agent searches for `TEMPS_RECHERCHE` = 0.08 s.
 
-Writes eight notebooks and nothing else — unlike `build_notebooks.py`, running
-this script is safe:
+Writes eight notebooks and copies their three images, nothing else — unlike
+`build_notebooks.py`, running this script is safe:
 
     uv run python courseware/tools/notebooks/pym_s8.py
 """
@@ -38,18 +38,22 @@ from __future__ import annotations
 import itertools
 import json
 import pathlib
+import shutil
 import sys
 import textwrap
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 import build_notebooks as nb  # noqa: E402  (helpers only; never call its main)
+import aim_repo  # noqa: E402  (where the notebooks live: racousin/ai_for_modecine)
 
 REPO = pathlib.Path(__file__).resolve().parents[3]
-OUT = REPO / "website" / "public" / "modules" / "python-medecine" / "notebooks"
-COLAB = (f"https://colab.research.google.com/github/{nb.GITHUB}/blob/"
-         f"{nb.BRANCH}/website/public/modules/python-medecine/notebooks/")
-ASSETS = (f"https://raw.githubusercontent.com/{nb.GITHUB}/{nb.BRANCH}/"
-          "courseware/content/python-medecine/assets/pym-s8-projet-puissance-4/")
+COURSE = "python-medecine"
+OUT = aim_repo.out_dir(COURSE, "notebooks")
+# The figures the labs show: main() copies them from the lesson assets into
+# ai_for_modecine/python-medecine/images/, so the notebooks repo is self-contained.
+ASSETS = aim_repo.raw(COURSE, "images/")
+ASSETS_SRC = REPO / "courseware" / "content" / COURSE / "assets" / "pym-s8-projet-puissance-4"
+IMAGES = ("observation-canaux.png", "directions-victoire.png", "arbre-minimax.png")
 CHALLENGE_ID = 198  # ML-Arena challenge "Puissance 4" (copy of challenge 65)
 CHALLENGE_URL = f"https://ml-arena.com/viewchallenge/{CHALLENGE_ID}"
 TEMPS_MAX = 0.25    # s per choose_action call on the platform
@@ -87,7 +91,7 @@ def header(n: int, title: str, objectifs: str) -> list[dict]:
         m(f"""
         # Lab {n} — {title}{suffix}
 
-        [![Open In Colab]({BADGE})]({COLAB}{name}.ipynb)
+        [![Open In Colab]({BADGE})]({aim_repo.colab(COURSE, name + '.ipynb')})
 
         *Python pour la médecine — Séance 8, projet Puissance 4.*
 
@@ -3150,6 +3154,11 @@ def main() -> None:
             path.write_text(json.dumps(build(n, correction), indent=1,
                                        ensure_ascii=False) + "\n")
             print(f"wrote {path.relative_to(REPO)}")
+    images = aim_repo.out_dir(COURSE, "images")
+    images.mkdir(parents=True, exist_ok=True)
+    for image in IMAGES:
+        shutil.copyfile(ASSETS_SRC / image, images / image)
+        print(f"copied {(images / image).relative_to(REPO)}")
 
 
 if __name__ == "__main__":

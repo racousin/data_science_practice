@@ -1,8 +1,8 @@
 """Datasets of the course *Python pour la médecine* (`content/python-medecine`).
 
 Writes every file the notebooks read into
-`website/public/modules/python-medecine/donnees/`, which Colab fetches from
-GitHub (`raw.githubusercontent.com/racousin/data_science_practice/main/...`).
+`ai_for_modecine/python-medecine/donnees/` (`aim_repo.out_dir`), which Colab
+fetches from GitHub (`aim_repo.raw`: racousin/ai_for_modecine, branch main).
 
 Two real sources, downloaded and trimmed:
 
@@ -26,15 +26,15 @@ Three synthetic files, seeded, so every run writes the same bytes:
 from __future__ import annotations
 
 import io
-import pathlib
 import zipfile
 
 import numpy as np
 import pandas as pd
 import requests
 
-REPO = pathlib.Path(__file__).resolve().parents[3]
-OUT = REPO / "website" / "public" / "modules" / "python-medecine" / "donnees"
+import aim_repo
+
+OUT = aim_repo.out_dir("python-medecine", "donnees")
 
 HF_URL = "https://archive.ics.uci.edu/static/public/519/heart+failure+clinical+records.zip"
 COVID_URL = "https://www.data.gouv.fr/fr/datasets/r/63352e38-d353-4b54-bfd1-f1b3ee1cabd7"

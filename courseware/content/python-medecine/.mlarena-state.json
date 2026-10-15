@@ -77,7 +77,7 @@
           "title": "Colab, Jupyter et scripts"
         },
         "pym-s1-premiers-pas/exercices-s1": {
-          "body": "15098aef5f3f91ebb3034b240c232df2ea99c488a591db1ab59911a371e100e4",
+          "body": "1e862a3484f33b8039757afb75382244d836ef2502354a86678fea0aceac15bf",
           "estimated_minutes": 75,
           "gated": false,
           "is_published": true,
@@ -112,7 +112,7 @@
           "title": "Conditions"
         },
         "pym-s2-controle-et-fonctions/exercices-s2": {
-          "body": "6acf56e0f254b9df042c054cae148d515f08e0a3ef975febf5a9ab8999778ed8",
+          "body": "c4f8fe2b6f414763b11f4546618deb4cef96b81df6bd6554d15cb0ea3faca02c",
           "estimated_minutes": 75,
           "gated": false,
           "is_published": true,
@@ -140,14 +140,14 @@
           "title": "Dictionnaires et ensembles"
         },
         "pym-s3-structures-de-donnees/exercices-s3": {
-          "body": "af69c597d741924b6cf6a61c3847f3c08196a51bbf59654d772475fa7f0bee6b",
+          "body": "2dbffd49e26a7bc49ce203599bad59e082a4b253c577160a286b901e404a7e02",
           "estimated_minutes": 75,
           "gated": false,
           "is_published": true,
           "title": "Exercices \u2014 Dossiers patients"
         },
         "pym-s3-structures-de-donnees/lire-des-fichiers": {
-          "body": "b4a107c58e847aa2a728721718f712952cd0108a20dee356474a7bc91441c8cc",
+          "body": "a641a068ae2eadd2a6e3d767ad949963241c54da5266d28e61affd63689b7efa",
           "estimated_minutes": 25,
           "gated": false,
           "is_published": true,
@@ -182,7 +182,7 @@
           "title": "Encapsulation et m\u00e9thodes sp\u00e9ciales"
         },
         "pym-s4-objets-et-modules/exercices-s4": {
-          "body": "7bfa171fbc57624feb334624292db4cd018666c5fa51c2aa87ea1e8c4c6311d9",
+          "body": "115fe723a765927fad60c1cbc6518ef78d82114aa15977c60873619b641a498f",
           "estimated_minutes": 75,
           "gated": false,
           "is_published": true,
@@ -210,7 +210,7 @@
           "title": "Agr\u00e9ger et joindre"
         },
         "pym-s5-numpy-pandas/exercices-s5": {
-          "body": "82be8869d81e24f3215b53bd1759b1d69642736626f9efdfdb33017052aaff41",
+          "body": "59ca96680b572d4baba885e955733cf7ae7a43342b702cd83c5d54d3432a8118",
           "estimated_minutes": 75,
           "gated": false,
           "is_published": true,
@@ -231,7 +231,7 @@
           "title": "NumPy : calculer sur des tableaux"
         },
         "pym-s5-numpy-pandas/pandas-lire-et-explorer": {
-          "body": "0c0dccbbd15ae5dc438ec81b779f103ea4354e0daba27f328f68536bbc5bbd00",
+          "body": "a12cefe16500176847ede7bde798f313b2e189dd9313fc2c4caa44b95abbffef",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
@@ -245,7 +245,7 @@
           "title": "Analyse exploratoire"
         },
         "pym-s6-visualisation-analyse/exercices-s6": {
-          "body": "7a2e2852d13688233b8c6aa9f2733cc3f12de66a4f77ceb1a01cc2679c2d84d6",
+          "body": "43536a963491d295aa7128315553c7b0d1a7b3bc955b88354383ac8230100010",
           "estimated_minutes": 90,
           "gated": false,
           "is_published": true,
@@ -266,7 +266,7 @@
           "title": "seaborn : graphiques statistiques"
         },
         "pym-s7-code-de-qualite/exercices-s7": {
-          "body": "1416b56c6aa74398987a023d8214fb23895acb37e51f413508baef14e840b676",
+          "body": "8badb154cae72b66586d1a3501eaf27e4f023361a2ca1ed655ca66294f5a731b",
           "estimated_minutes": 90,
           "gated": false,
           "is_published": true,
@@ -294,28 +294,28 @@
           "title": "Tests unitaires avec pytest"
         },
         "pym-s8-projet-puissance-4/lab-1-comprendre-le-jeu": {
-          "body": "fbe7439af61d9430af8c1c60fabc97b10394e9a4cde40a08b87520c4623a405d",
+          "body": "b4352a4d9deeeb28d38c56b2af25935186595178def2f6b75281404bfbfb0aa7",
           "estimated_minutes": 60,
           "gated": false,
           "is_published": true,
           "title": "Lab 1 \u2014 Comprendre le jeu et jouer au hasard"
         },
         "pym-s8-projet-puissance-4/lab-2-agent-a-regles": {
-          "body": "de7fb927e996d7e944d380b0e7f2cca87326451c1d9951896c3d921011dcbdb6",
+          "body": "5587e168c086a590a2fd88f786b86654317cbb50d006f98c2f4fe335be2591c6",
           "estimated_minutes": 60,
           "gated": false,
           "is_published": true,
           "title": "Lab 2 \u2014 Un agent \u00e0 r\u00e8gles"
         },
         "pym-s8-projet-puissance-4/lab-3-tests-et-tournoi": {
-          "body": "6adf8e6455132199a11cd8afe7252f66cb5ea62d731f4ef1e41976728020cb71",
+          "body": "36f09a12517c184aaf9ae33c98e46e6def2028e81c0ee94055929e191622c966",
           "estimated_minutes": 60,
           "gated": false,
           "is_published": true,
           "title": "Lab 3 \u2014 Tester et organiser un tournoi"
         },
         "pym-s8-projet-puissance-4/lab-4-minimax-et-soumission": {
-          "body": "60af66019943cb4abf91e0facd777dbf12d67bf41eb97560b52adf68a00e34e1",
+          "body": "4ef364bd7d6f76fd2451350c6fe45f049f729e353c7b60623f57dce267fe7e0d",
           "estimated_minutes": 90,
           "gated": false,
           "is_published": true,

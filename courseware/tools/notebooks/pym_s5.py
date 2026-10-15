@@ -11,7 +11,8 @@ Part A works on small NumPy arrays typed in the notebook; part B reads
 `insuffisance_cardiaque.csv` and `covid_hospitalisations.csv.gz`; part C
 cleans `sejours_hopital_brut.csv` step by step; part D pivots
 `examens_biologiques.csv` and joins it to the cleaned stays. The datasets are
-written by `pym_datasets.py` and read from GitHub (`URL` below).
+written by `pym_datasets.py` and read from GitHub,
+`racousin/ai_for_modecine` (`URL` below).
 
 Every number an `assert` checks was read off an executed run of the
 correction on those files. A change to `pym_datasets.py` changes them:
@@ -31,14 +32,12 @@ import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 import build_notebooks as nb  # noqa: E402  (helpers only; never call its main)
+import aim_repo  # noqa: E402  (where the notebooks live: racousin/ai_for_modecine)
 
-REPO = pathlib.Path(__file__).resolve().parents[3]
-REL = "website/public/modules/python-medecine/notebooks"
-OUT = REPO / REL
+COURSE = "python-medecine"
+OUT = aim_repo.out_dir(COURSE, "notebooks")
 NAME = "pym-s5-exercices"
-COLAB = f"https://colab.research.google.com/github/{nb.GITHUB}/blob/{nb.BRANCH}/{REL}/"
-DATA = (f"https://raw.githubusercontent.com/{nb.GITHUB}/{nb.BRANCH}/"
-        "website/public/modules/python-medecine/donnees/")
+DATA = aim_repo.raw(COURSE, "donnees/")
 BADGE = "https://colab.research.google.com/assets/colab-badge.svg"
 
 md, code = nb.md, nb.code
@@ -61,7 +60,7 @@ def build(correction: bool) -> list[dict]:
         "# Séance 5 — NumPy et pandas : un export hospitalier"
         + (" (correction)" if correction else ""),
         "",
-        f"[![Open In Colab]({BADGE})]({COLAB}{name}.ipynb)",
+        f"[![Open In Colab]({BADGE})]({aim_repo.colab(COURSE, name + '.ipynb')})",
         "",
         "**Objectifs**",
         "",

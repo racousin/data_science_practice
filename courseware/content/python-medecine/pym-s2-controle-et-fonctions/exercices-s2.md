@@ -4,9 +4,9 @@ Vous programmez des règles cliniques réelles avec des conditions, des boucles
 et des fonctions. Comptez environ 75 minutes. Le livrable est le notebook avec
 toutes les cellules de vérification au vert (« ✅ Exercice N réussi »).
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/data_science_practice/blob/main/website/public/modules/python-medecine/notebooks/pym-s2-exercices.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/ai_for_modecine/blob/main/python-medecine/notebooks/pym-s2-exercices.ipynb)
 
-La [correction](https://colab.research.google.com/github/racousin/data_science_practice/blob/main/website/public/modules/python-medecine/notebooks/pym-s2-exercices-correction.ipynb)
+La [correction](https://colab.research.google.com/github/racousin/ai_for_modecine/blob/main/python-medecine/notebooks/pym-s2-exercices-correction.ipynb)
 est à ouvrir après avoir cherché.
 
 **Les exercices**

@@ -29,13 +29,13 @@ import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 import build_notebooks as nb  # noqa: E402  (helpers only; never call its main)
+import aim_repo  # noqa: E402  (where the notebooks live: racousin/ai_for_modecine)
 
 REPO = pathlib.Path(__file__).resolve().parents[3]
-OUT = REPO / "website" / "public" / "modules" / "python-medecine" / "notebooks"
+COURSE = "python-medecine"
+OUT = aim_repo.out_dir(COURSE, "notebooks")
 NAME = "pym-s2-exercices.ipynb"
 CORRECTION_NAME = "pym-s2-exercices-correction.ipynb"
-BASE = (f"https://colab.research.google.com/github/{nb.GITHUB}/blob/"
-        f"{nb.BRANCH}/website/public/modules/python-medecine/notebooks/")
 BADGE = "https://colab.research.google.com/assets/colab-badge.svg"
 
 md, code = nb.md, nb.code
@@ -80,7 +80,7 @@ def header(correction: bool) -> list[dict]:
     return [md(
         title,
         "",
-        f"[![Open In Colab]({BADGE})]({BASE}{name})",
+        f"[![Open In Colab]({BADGE})]({aim_repo.colab(COURSE, name)})",
         "",
         *intro,
         "",
@@ -774,7 +774,7 @@ def main() -> None:
         path = OUT / name
         path.write_text(json.dumps(notebook, indent=1, ensure_ascii=False) + "\n")
         print(f"  wrote {path.relative_to(REPO)}  ({len(notebook['cells'])} cells)")
-        print(f"        {BASE}{name}")
+        print(f"        {aim_repo.colab(COURSE, name)}")
 
 
 if __name__ == "__main__":

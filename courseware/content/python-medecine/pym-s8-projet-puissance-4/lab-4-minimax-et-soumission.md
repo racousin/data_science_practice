@@ -9,9 +9,9 @@ votre agent sur le classement du challenge.
 
 **Challenge :** <https://ml-arena.com/viewchallenge/198>
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/data_science_practice/blob/main/website/public/modules/python-medecine/notebooks/pym-s8-lab-4.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/racousin/ai_for_modecine/blob/main/python-medecine/notebooks/pym-s8-lab-4.ipynb)
 
-La [correction](https://colab.research.google.com/github/racousin/data_science_practice/blob/main/website/public/modules/python-medecine/notebooks/pym-s8-lab-4-correction.ipynb)
+La [correction](https://colab.research.google.com/github/racousin/ai_for_modecine/blob/main/python-medecine/notebooks/pym-s8-lab-4-correction.ipynb)
 est à ouvrir après avoir cherché.
 
 **Les exercices** (après un *Lire du code 1* : minimax sur un petit arbre en listes imbriquées)

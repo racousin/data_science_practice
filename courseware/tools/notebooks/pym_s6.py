@@ -29,15 +29,14 @@ import textwrap
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 import build_notebooks as nb  # noqa: E402  (helpers only; never call its main)
+import aim_repo  # noqa: E402  (where the notebooks live: racousin/ai_for_modecine)
 
 REPO = pathlib.Path(__file__).resolve().parents[3]
-OUT = REPO / "website" / "public" / "modules" / "python-medecine" / "notebooks"
+COURSE = "python-medecine"
+OUT = aim_repo.out_dir(COURSE, "notebooks")
 NAME = "pym-s6-exercices.ipynb"
 NAME_CORR = "pym-s6-exercices-correction.ipynb"
-BASE = (f"https://colab.research.google.com/github/{nb.GITHUB}/blob/"
-        f"{nb.BRANCH}/website/public/modules/python-medecine/notebooks/")
-DATA = (f"https://raw.githubusercontent.com/{nb.GITHUB}/{nb.BRANCH}/"
-        "website/public/modules/python-medecine/donnees/")
+DATA = aim_repo.raw(COURSE, "donnees/")
 BADGE = "https://colab.research.google.com/assets/colab-badge.svg"
 
 
@@ -85,14 +84,14 @@ def build(correction: bool) -> dict:
     this = NAME_CORR if correction else NAME
     other = NAME if correction else NAME_CORR
     if correction:
-        lien = (f"Ceci est la correction. L'énoncé seul : [`{other}`]({BASE}{other}).")
+        lien = (f"Ceci est la correction. L'énoncé seul : [`{other}`]({aim_repo.colab(COURSE, other)}).")
     else:
-        lien = (f"La correction est dans [`{other}`]({BASE}{other}) — "
+        lien = (f"La correction est dans [`{other}`]({aim_repo.colab(COURSE, other)}) — "
                 "à ouvrir après avoir cherché.")
     b.md(f"""
         # Séance 6 — Visualiser et analyser{" (correction)" if correction else ""}
 
-        [![Open In Colab]({BADGE})]({BASE}{this})
+        [![Open In Colab]({BADGE})]({aim_repo.colab(COURSE, this)})
 
         **Objectifs.** Construire des figures Matplotlib (figure, axes, subplots,
         légende, seuil), tracer des séries temporelles avec un vrai axe de dates,
@@ -820,7 +819,7 @@ def main() -> None:
         nb._COUNTER = itertools.count()     # byte-identical on every regeneration
         path = OUT / name
         path.write_text(json.dumps(build(correction), indent=1, ensure_ascii=False) + "\n")
-        print(f"wrote {path.relative_to(REPO)}\n      {BASE}{name}")
+        print(f"wrote {path.relative_to(REPO)}\n      {aim_repo.colab(COURSE, name)}")
 
 
 if __name__ == "__main__":
