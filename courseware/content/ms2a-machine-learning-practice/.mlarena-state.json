@@ -3,8 +3,6 @@
     "course_id": 15,
     "lessons": {
       "mlp-project/project-brief": 122,
-      "mlp-project/project-getting-started": 225,
-      "mlp-project/project-grading": 124,
       "mlp-reference/automl-and-custom-objectives": 129,
       "mlp-reference/cnn-backpropagation": 126,
       "mlp-reference/image-enhancement": 128,
@@ -71,16 +69,12 @@
       "s5-computer-vision-1/pooling-and-architectures": 87,
       "s5-computer-vision-1/transfer-learning": 89,
       "s6-computer-vision-2/autoencoders-and-vaes": 93,
-      "s6-computer-vision-2/detr": 227,
-      "s6-computer-vision-2/diffusion-models": 95,
-      "s6-computer-vision-2/gans": 94,
       "s6-computer-vision-2/lab-6": 96,
       "s6-computer-vision-2/lab-generation": 230,
       "s6-computer-vision-2/object-detection": 91,
       "s6-computer-vision-2/segmentation": 92,
       "s6-computer-vision-2/self-supervised-learning": 228,
       "s6-computer-vision-2/vision-transformer": 226,
-      "s6-computer-vision-2/yolo": 229,
       "s7-nlp-1/attention": 100,
       "s7-nlp-1/embeddings": 98,
       "s7-nlp-1/lab-7": 102,
@@ -89,10 +83,8 @@
       "s7-nlp-1/the-transformer": 101,
       "s8-nlp-2/agent-tooling-and-mcp": 224,
       "s8-nlp-2/agents": 108,
-      "s8-nlp-2/evaluating-generation": 106,
       "s8-nlp-2/generation-and-decoding": 104,
       "s8-nlp-2/instruction-tuning-and-peft": 105,
-      "s8-nlp-2/lab-8": 109,
       "s8-nlp-2/post-training": 223,
       "s8-nlp-2/rag": 107,
       "s8-nlp-2/training-and-scaling-llms": 103,
@@ -130,25 +122,11 @@
       },
       "lessons": {
         "mlp-project/project-brief": {
-          "body": "468f99f067e9e6def63d334b267c591621022e15fec808a590a69af331394d22",
+          "body": "1671caebc8c345a61486cc51afe6fb78a8d2658a00ac0090f8ed48d66f2d94fd",
           "estimated_minutes": 20,
           "gated": false,
           "is_published": true,
           "title": "The Brief"
-        },
-        "mlp-project/project-getting-started": {
-          "body": "827db8bc5a5c5afce004b89ff0a33a836384744803d3c34764f3f46bf81aecbf",
-          "estimated_minutes": 30,
-          "gated": false,
-          "is_published": true,
-          "title": "Getting Started"
-        },
-        "mlp-project/project-grading": {
-          "body": "b8b8d5ed353c862487dabb650cffb227e27375b0b34e6924c3486237d43a3ee6",
-          "estimated_minutes": 20,
-          "gated": false,
-          "is_published": true,
-          "title": "Deliverables and Grading"
         },
         "mlp-reference/automl-and-custom-objectives": {
           "body": "06f5d06b5d7d5e5b7283b08915325d5a4da83656c2c8fa4274544677cfa9d01c",
@@ -604,81 +582,53 @@
           "title": "Transfer Learning"
         },
         "s6-computer-vision-2/autoencoders-and-vaes": {
-          "body": "6c4e2d2457b4f60877fb8bb9eff4cacef265965c4b99d635ffd3248296e13450",
+          "body": "b1e698dbacedf5c77f162961fc36aa7252e4381adedbd8bdc5380d2bdce02bc5",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
-          "title": "Autoencoders and VAEs"
-        },
-        "s6-computer-vision-2/detr": {
-          "body": "3ee865d63c9d1c2c2215c3428024cd9fcdc6230d0d651e91cbb4a084bec1ab2d",
-          "estimated_minutes": 40,
-          "gated": false,
-          "is_published": true,
-          "title": "DETR \u2014 Detection as Set Prediction"
-        },
-        "s6-computer-vision-2/diffusion-models": {
-          "body": "ce62fc13a5e4f8c098b71a71138b25ff58c8461ad7d715ead19881df985caf6a",
-          "estimated_minutes": 30,
-          "gated": false,
-          "is_published": true,
-          "title": "Diffusion Models"
-        },
-        "s6-computer-vision-2/gans": {
-          "body": "017911b363bea9304e55b64c52f0e0ec4b8c09036d5fc8da694f0adbb3c12f3c",
-          "estimated_minutes": 25,
-          "gated": false,
-          "is_published": true,
-          "title": "GANs"
+          "title": "Generation models"
         },
         "s6-computer-vision-2/lab-6": {
-          "body": "35a09b6cc42905a4a49642e015ef02ab40a7ef76acaf14c64ca526452bb5b71e",
+          "body": "fb42dd40640001524c53a4cfece25b34c921447f218f763164ee4a18f998eed9",
           "estimated_minutes": 45,
           "gated": false,
           "is_published": true,
-          "title": "Lab 7 \u2014 Detect or Generate"
+          "title": "Lab 7 \u2014 Object Detection"
         },
         "s6-computer-vision-2/lab-generation": {
-          "body": "3c0cdb319be89ebad0d8617429c85729117085d43b3d458077de5b284a03c9a2",
+          "body": "ffe2f735a054b24937a2874be900871397205c4d5c94704c406993680f697e89",
           "estimated_minutes": 60,
           "gated": false,
           "is_published": true,
           "title": "Generation Lab \u2014 GAN and Diffusion"
         },
         "s6-computer-vision-2/object-detection": {
-          "body": "10f8fa88c4b5ef7d4c754bcc74f76010981de168ad74afab11d6e097594407a0",
+          "body": "f266009b6985c91fc8d881d3ad1986a8f48d27c3598fc18073224ab7aee13499",
           "estimated_minutes": 40,
           "gated": false,
           "is_published": true,
           "title": "Object Detection"
         },
         "s6-computer-vision-2/segmentation": {
-          "body": "3a325dbca34ebfd608d01b94040d43385203c18db23a934cdede64e313f9d0ec",
+          "body": "193ca9e5142d9ca288288487dc622371955c2f66897e4480f38bacab64069f8c",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
           "title": "Segmentation"
         },
         "s6-computer-vision-2/self-supervised-learning": {
-          "body": "3a4717ff1b44048570dd0b80ea8c17c853d76841ab86a46b60c46be52d462cb8",
+          "body": "b3a526e9d817d1b924a22829f9cc93100de34355d62764f3fc2ceff915918f64",
           "estimated_minutes": 45,
           "gated": false,
           "is_published": true,
           "title": "Self-Supervised Learning and DINOv2"
         },
         "s6-computer-vision-2/vision-transformer": {
-          "body": "349ba822fea751a76e3984ccbb273c35b3e999b09235e7d7a9be9ec2c6c19418",
+          "body": "a19f274f185b5f33353d7229acf24c037e46697ff0895c1809d5e1cbbd848713",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
           "title": "Vision Transformer"
-        },
-        "s6-computer-vision-2/yolo": {
-          "body": "94750ccdd6eb8f2f0f249bcd7ec169e56e545a70193d804d8e1669b29bf9c79a",
-          "estimated_minutes": 45,
-          "gated": false,
-          "is_published": true,
-          "title": "YOLO \u2014 One-Stage Detection End to End"
         },
         "s7-nlp-1/attention": {
           "body": "ef86d0834f7ade9e7eba6e76548e5476986bab872f7a517dab82c8c75ffb028f",
@@ -723,63 +673,49 @@
           "title": "The Transformer"
         },
         "s8-nlp-2/agent-tooling-and-mcp": {
-          "body": "164d934b1ecd07f809d01049958110476502140818e195386c70a7f90f2eca01",
+          "body": "fa79b0ed8f4d5ffe33440d96cc950cee240262cd075e8a8faef437588dc61b23",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
           "title": "Agent Tooling and MCP"
         },
         "s8-nlp-2/agents": {
-          "body": "0404e7b046348e55ca759b6f83df58cf469c2e35dcb627e053985b1d9afc593b",
+          "body": "455a63726e111debbde2a32839a5ec61c5dee267fc0f55f2caec3a2383b73eec",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
           "title": "Agents"
         },
-        "s8-nlp-2/evaluating-generation": {
-          "body": "ec5e25b63582e7e29b8a2c1fafa773cf7f667032de35b6ea08b13e1e0d9e82fb",
-          "estimated_minutes": 25,
-          "gated": false,
-          "is_published": true,
-          "title": "Evaluating Generation"
-        },
         "s8-nlp-2/generation-and-decoding": {
-          "body": "376e26967a687b05d4ff9a550fd9db6e2ac13a68d33290f27b772f764d60b1e2",
+          "body": "4fbfe11319220ba8451db8ebfd08024b7cd92faf8c2c11381999e3dee5631e7f",
           "estimated_minutes": 25,
           "gated": false,
           "is_published": true,
           "title": "Generation and Decoding"
         },
         "s8-nlp-2/instruction-tuning-and-peft": {
-          "body": "199cc13645e2886ed28b97cb442654b9845b36c26fed72cbc05a5fa3e1d15249",
+          "body": "69ef49aff1972d17e712852d92440b09b1a259eb4071a913bb2c579bf941799d",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
           "title": "Instruction Tuning and PEFT"
         },
-        "s8-nlp-2/lab-8": {
-          "body": "f425865641bafc0288fe85f32d6cf9f0ce4571f187682e5381c53a23e18634e6",
-          "estimated_minutes": 45,
-          "gated": false,
-          "is_published": true,
-          "title": "Lab 8 \u2014 Build and Judge a RAG Pipeline"
-        },
         "s8-nlp-2/post-training": {
-          "body": "7fbff6d10c63a0a9dbfee4a931f349074229363cbded94742156d9a1b944c67b",
+          "body": "deeb43227450dab01a9842b63514e3f0db1a41dae5941e9bfdab38041c023a46",
           "estimated_minutes": 40,
           "gated": false,
           "is_published": true,
           "title": "Post-Training: From Next Token to Reasoning"
         },
         "s8-nlp-2/rag": {
-          "body": "7a3368456df81a92f698d3d63cc39d11b0501824e2d5766b952c9cb3d7a7c9c3",
+          "body": "2c86992d7aa9fcd3da421feb5a515ddf528e627481020c36a443e579f8e45659",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
           "title": "RAG"
         },
         "s8-nlp-2/training-and-scaling-llms": {
-          "body": "970c0b53114847997c3d230820ae405d8020f954cef72d43702b8a382d6411aa",
+          "body": "77c8843aa261260cb157e54b868d2dee63424489ee1eb631954ce2ff39ad5f41",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
@@ -847,9 +783,7 @@
         "mlp-project": {
           "icon": "trophy",
           "lessons": [
-            "project-brief",
-            "project-getting-started",
-            "project-grading"
+            "project-brief"
           ],
           "summary": "Half the grade. One project, DS-Harness: build the program around a small language model so that it solves data-science tasks, then defend it at an oral.",
           "title": "Project"
@@ -979,18 +913,14 @@
           "icon": "scan",
           "lessons": [
             "vision-transformer",
-            "self-supervised-learning",
             "object-detection",
-            "yolo",
-            "detr",
             "segmentation",
             "autoencoders-and-vaes",
-            "gans",
-            "diffusion-models",
             "lab-generation",
+            "self-supervised-learning",
             "lab-6"
           ],
-          "summary": "The transformer applied to images and pre-trained without labels (contrastive learning, DINO, MAE, DINOv2), then beyond one label per image: detection (YOLO, DETR), segmentation, and the generative family \u2014 autoencoders, VAEs, GANs and diffusion.",
+          "summary": "The transformer applied to images, then beyond one label per image: detection (YOLO, DETR), segmentation, and the generative family.",
           "title": "Session 7 \u2014 Computer Vision 2"
         },
         "s7-nlp-1": {
@@ -1013,11 +943,9 @@
             "generation-and-decoding",
             "post-training",
             "instruction-tuning-and-peft",
-            "evaluating-generation",
             "rag",
             "agents",
-            "agent-tooling-and-mcp",
-            "lab-8"
+            "agent-tooling-and-mcp"
           ],
           "summary": "Large language models as engineering objects: how they are pretrained, how they generate, how post-training turns them into assistants and reasoners (SFT, RLHF, DPO, GRPO, distillation), how you adapt them cheaply, ground them in your own data, give them tools over MCP, and evaluate any of it.",
           "title": "Session 8 \u2014 NLP 2"

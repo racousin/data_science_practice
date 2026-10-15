@@ -68,7 +68,7 @@ L(\phi) = -\,\mathbb{E}_{(x, y_w, y_l)} \left[ \log \sigma\big(r_\phi(x, y_w) - 
 $$
 
 **Step 2, the policy.** Sample answers, score them, and update the model with
-PPO (Session 10) to maximise
+PPO (Session 10) to maximise (see next session on RL)
 
 $$
 \mathbb{E}_{y \sim \pi_\theta(\cdot \mid x)} \big[ r_\phi(x, y) \big] - \beta \, \mathrm{KL}\big(\pi_\theta(\cdot \mid x) \,\|\, \pi_{ref}(\cdot \mid x)\big)
@@ -182,47 +182,3 @@ cheaper and better than discovering it again.
 
 > Distillation is the reason small open models improve so quickly, and the
 > reason many licences forbid training on the model's outputs.
-
----
-
-## Check yourself
-
-1. Run this. You should get exactly the output shown.
-
-   ```python
-   import numpy as np
-   r = np.array([1, 0, 0, 1, 0, 0, 0, 1.])
-   print(np.round((r - r.mean()) / r.std(), 2))
-   # -> [ 1.29 -0.77 -0.77  1.29 -0.77 -0.77 -0.77  1.29]
-   ```
-
-   **Answer.** These are the GRPO advantages for eight samples with three
-   correct. The correct answers are pushed up and the wrong ones down, and the
-   mean is zero. With `r = np.ones(8)` the standard deviation is zero: in
-   practice a small epsilon is added and every advantage is 0, so the prompt
-   gives no gradient.
-
-2. Your RLHF-trained model gives longer answers every epoch, and its reward
-   keeps rising. What is happening, and which term of the objective should you
-   look at?
-
-   **Answer.** Reward hacking: the reward model prefers longer answers, and the
-   policy exploits that preference. Look at the KL coefficient $\beta$. A
-   larger value keeps the policy closer to the reference. Also look at the
-   reward model's data: its length bias comes from the annotations.
-
-3. Why can DPO be trained with SFT tooling while RLHF cannot?
-
-   **Answer.** DPO's loss uses only log-probabilities of fixed answers from the
-   dataset, under the model and under a frozen reference. RLHF has to sample new
-   answers from the policy during training, score them with a separate reward
-   model, and run PPO with a value network.
-
-4. You have a 1B model and an API to a strong reasoning model. Which is the
-   cheaper way to make the 1B model better at GSM8k: GRPO on the 1B model, or
-   sequence-level distillation?
-
-   **Answer.** Distillation. Generate worked solutions with the strong model,
-   keep the ones whose final answer is correct, and run SFT on them. GRPO
-   needs the 1B model to already solve some problems, and many samples per
-   prompt. Check the API's terms before you train on its outputs.

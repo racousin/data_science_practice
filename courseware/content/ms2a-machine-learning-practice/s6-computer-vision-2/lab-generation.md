@@ -27,10 +27,3 @@ The same faces at $32 \times 32$:
 - interpolate between two noises.
 
 About 25 minutes.
-
----
-
-## What to bring back
-
-One table, filled from your own two runs: training time, sampling time per
-image, and which samples you prefer — with one sentence on why.

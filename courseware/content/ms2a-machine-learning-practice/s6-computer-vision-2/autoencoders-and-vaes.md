@@ -1,4 +1,4 @@
-# Autoencoders and VAEs
+# Generation models
 
 Every model so far learned $p(y|x)$ — a label given an image. A generative
 model learns $p(x)$ itself, and can therefore draw new samples from it.
@@ -23,20 +23,6 @@ from**. Two requirements, and they pull in different directions:
 A model that memorises one training image scores perfectly on the first and
 zero on the second. Every failure mode in this session is a collapse of one
 into the other.
-
----
-
-## Four families
-
-| Family | Learns | Sampling | Weakness |
-|---|---|---|---|
-| Autoencoder / VAE | a latent code + decoder | one forward pass | blurry |
-| GAN | a generator, adversarially | one forward pass | unstable, mode collapse |
-| Normalizing flow | an invertible map, exact $p(x)$ | one forward pass | architecturally constrained |
-| Diffusion | a denoiser | many passes | slow |
-
-All four are still in use. Diffusion dominates image synthesis; VAEs survive as
-components *inside* diffusion systems; GANs survive where latency matters.
 
 ---
 
@@ -154,102 +140,180 @@ $$
 
 ---
 
-## The loss in code
+
+## GANs
+
+A VAE learns a distribution by writing down a likelihood. A GAN never writes
+one down: it trains a generator against a critic that is itself learning, and
+takes sharp samples as the prize for a much harder optimisation.
+
+<!-- notes: 25 minutes. Do not derive the theory — spend the time on the
+failure modes, because that is what students hit within ten minutes of running
+one. If there is a GPU in the room, start a DCGAN on MNIST at the beginning of
+the lesson and look at the samples at the end. -->
+
+---
+
+## Two networks, opposed
+
+
+![gan-architecture.webp](assets/cv/gan-architecture.webp)
+
+
+- The **generator** $G$ maps noise $z$ to an image. It never sees real data.
+- The **discriminator** $D$ takes an image and outputs the probability it is
+  real. It sees both.
+
+$D$ is trained to be right, $G$ to make $D$ wrong. The only learning signal
+reaching the generator is the discriminator's gradient, which is why everything
+about GAN training is a question of keeping that signal alive.
+
+---
+
+## The objective
+
+$$
+\min_G \max_D \mathbb{E}_{x \sim p_{data}} [\log D(x)] + \mathbb{E}_{z \sim p_z} [\log (1 - D(G(z)))]
+$$
+
+$D$ maximises: push $D(x)$ toward 1 on real data and $D(G(z))$ toward 0 on
+fakes. $G$ minimises the second term: make $D(G(z))$ large.
+
+At the theoretical optimum $G$ reproduces the data distribution and
+$D(x) = 0.5$ everywhere — the discriminator can do no better than a coin flip.
+You will never observe this, but it is the target the dynamics move toward.
+
+---
+
+## The training loop
 
 ```python
-recon = F.mse_loss(x_hat, x, reduction="sum") / x.size(0)
-kl = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp()) / x.size(0)
-loss = recon + beta * kl
+d_loss = bce(D(real), ones) + bce(D(G(z).detach()), zeros)
+opt_D.zero_grad(); d_loss.backward(); opt_D.step()
+
+g_loss = bce(D(G(z)), ones)          # non-saturating form
+opt_G.zero_grad(); g_loss.backward(); opt_G.step()
 ```
 
-`reduction="sum"` then divide by the batch, not `reduction="mean"` — otherwise
-the reconstruction term is scaled by `1/(C·H·W)` relative to the KL and the
-balance is silently wrong by four orders of magnitude. This is the most common
-VAE bug.
+---
 
-`beta` sets the trade-off. Too low and the KL is ignored: you have an
-autoencoder again, sharp reconstructions and unusable samples. Too high and the
-posterior collapses to the prior: the decoder ignores `z` and emits the dataset
-mean. Anneal `beta` from 0 over the first few epochs.
+## Diffusion Models
+
+Destroying an image is easy: add noise until nothing is left. Diffusion models
+learn to run that process backwards, one small step at a time, and generating
+becomes a sequence of easy problems instead of one impossible one.
+
+<!-- notes: 30 minutes. The whole lesson is one idea — a hard sampling problem
+decomposed into T easy denoising problems. Get that across and the equations
+follow. Run the diffusers snippet live; it is three lines and it lands better
+than any diagram. -->
 
 ---
 
-## Blurriness
+## The forward process
 
-VAE samples are recognisable and soft. Two reasons compound:
 
-- The Gaussian likelihood makes the reconstruction term an L2 loss, and L2 is
-  minimised by the *average* of the plausible outputs. Averaging sharp edges
-  produces a blurred one.
-- The KL term deliberately smooths the latent space, so nearby codes decode to
-  similar images.
+![imagesss.jpeg](assets/cv/imagesss.jpeg)
 
-This is a property of the objective, not a training failure — you do not tune
-it away. If sharpness is the requirement the answer is a GAN or diffusion, or a
-VQ-VAE, which replaces the Gaussian latent with a discrete codebook.
+
+
+Take a training image and add a little Gaussian noise, $T$ times:
+
+$$
+q(x_t | x_{t-1}) = \mathcal{N}(x_t ; \sqrt{1 - \beta_t} x_{t-1}, \beta_t I)
+$$
+
+The variance schedule $\beta_t$ is fixed, not learned, and small — around
+$10^{-4}$ rising to $0.02$ over 1000 steps. After $T$ steps the image is
+indistinguishable from pure noise.
+
+Nothing is trained here. It is a data-corruption procedure, and the source of
+the model's training pairs.
 
 ---
 
-## Latent interpolation
+## Jumping to any step
 
-The test that tells you whether the latent space is actually structured:
+Composing $t$ Gaussians gives a Gaussian, so there is a closed form and no loop
+is needed at training time:
+
+$$
+q(x_t | x_0) = \mathcal{N}(x_t ; \sqrt{\bar{\alpha}_t} x_0, (1 - \bar{\alpha}_t) I)
+$$
+
+with $\bar{\alpha}_t$ the running product of $(1 - \beta_s)$.
 
 ```python
-z1, z2 = encode(x1), encode(x2)
-frames = [decode(z1 + t * (z2 - z1)) for t in torch.linspace(0, 1, 10)]
+noise = torch.randn_like(x0)
+ab = alpha_bar[t].view(-1, 1, 1, 1)  # (B,) -> (B,1,1,1): broadcasts
+xt = ab.sqrt() * x0 + (1 - ab).sqrt() * noise
 ```
 
-A good latent space gives a smooth semantic morph — the digit 3 bending into an
-8, a face slowly turning. A bad one gives a crossfade: two ghosts, one fading
-out and one fading in.
-
-Interpolate in a VAE and it morphs; in a plain autoencoder it crossfades. That
-figure is worth more than a page of loss curves.
+Sample a random `t` per image in the batch, corrupt in one operation, done.
+This is why diffusion training is cheap and stable: every step is an
+independent supervised regression, no opponent and no sampling loop.
 
 ---
 
-## Where VAEs actually live now
+## The reverse process is what you learn
 
-Nobody ships a VAE as an image generator. They ship as **compressors inside
-other systems**:
+Reversing one noising step is intractable in general, but for small $\beta_t$
+the reverse transition is *also* approximately Gaussian. So parameterise it:
 
-- Stable Diffusion runs its diffusion process in a VAE latent space at 1/8
-  resolution — the next lesson.
-- VQ-VAE tokenises images into discrete codes so a transformer can model them.
-- Anomaly detection and representation learning, where the latent *is* the
-  deliverable.
+$$
+p_\theta(x_{t-1} | x_t) = \mathcal{N}(x_{t-1} ; \mu_\theta(x_t, t), \Sigma_t)
+$$
 
-Learn the VAE for the encoder–latent–decoder pattern and the
-reparameterization trick. Both reappear immediately.
+and learn $\mu_\theta$ with a network. The algebra of DDPM shows that
+predicting the mean is equivalent to predicting the **noise that was added**,
+which is a much better-conditioned regression target.
+
+The network is a U-Net — encoder, decoder, skip connections, exactly the
+segmentation architecture of this session — taking the noisy image and the
+timestep, and returning a noise-shaped tensor.
 
 ---
 
-## Check yourself
+## The training objective
 
-1. You change the reconstruction term from `reduction="sum"` divided by the
-   batch to `reduction="mean"`, and your samples turn into the dataset mean. On
-   3×64×64 inputs, by what factor did the KL term's weight change relative to
-   reconstruction?
+$$
+L = \mathbb{E}_{t, x_0, \epsilon} \left[ | \epsilon - \epsilon_\theta(x_t, t) |^2 \right]
+$$
 
-   **Answer.** 12,288 — that is C·H·W. `reduction="mean"` divides by the number
-   of elements as well as by the batch, so the KL now outweighs reconstruction
-   by four orders of magnitude and the posterior collapses to the prior.
+Mean squared error between the noise that was added and the noise the model
+predicts. That is the entire loss.
 
-2. Run this. You should get exactly the output shown.
+```python
+t = torch.randint(0, T, (x0.size(0),), device=x0.device)
+noise = torch.randn_like(x0)
+ab = alpha_bar[t].view(-1, 1, 1, 1)
+xt = ab.sqrt() * x0 + (1 - ab).sqrt() * noise
+loss = F.mse_loss(model(xt, t), noise)
+```
 
-   ```python
-   import torch, torch.nn.functional as F
-   x = torch.rand(16, 3, 64, 64)
-   x_hat = torch.rand_like(x)
-   per_batch = F.mse_loss(x_hat, x, reduction="sum") / x.size(0)
-   per_element = F.mse_loss(x_hat, x, reduction="mean")
-   print(round((per_batch / per_element).item()))   # -> 12288
-   ```
+The `.view(-1, 1, 1, 1)` is not cosmetic. Without it a per-image `t` gives a
+`(B,)` tensor that broadcasts against the *width* axis: it raises on most
+shapes, and silently applies the wrong noise level to every image on the shapes
+where `B` happens to equal `W`.
 
-3. Why does sampling `z` straight from `N(mu, sigma)` leave `mu` and `logvar`
-   with no gradient, and what exactly does reparameterization change?
+Compare with the previous lesson: one network, one loss, a curve that goes down
+and means something. The stability is not a detail — it is the reason diffusion
+displaced GANs.
 
-   **Answer.** Drawing a sample is not a differentiable function of the
-   parameters, so backpropagation stops at the draw. The trick moves the
-   randomness into `eps`, drawn outside the graph, which makes
-   `z = mu + eps * std` an ordinary differentiable expression in `mu` and `std`.
+---
+
+## Sampling
+
+```python
+x = torch.randn(shape)
+for t in reversed(range(T)):
+    eps = model(x, t)
+    x = scheduler.step(eps, t, x).prev_sample
+```
+
+Start from pure noise, predict the noise, remove a fraction of it, add a little
+fresh noise back, repeat. The added noise is not an accident: without it the
+process is deterministic and collapses toward the dataset mean.
+
+The cost is now visible: a GAN generates in **one** forward pass, DDPM in
+**1000**. That is the trade you accepted for stability.
