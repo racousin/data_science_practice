@@ -726,6 +726,7 @@
         },
         "s9-reinforcement-learning-1/actor-critic-and-ppo": {
           "body": "2a3fdca0ed0a874466339b6eedbe2294dde9895ab9c53074aaaf2390e036f125",
+          "estimated_minutes": null,
           "gated": false,
           "is_published": false,
           "title": "Actor-Critic and PPO"
@@ -739,6 +740,7 @@
         },
         "s9-reinforcement-learning-1/from-tables-to-networks": {
           "body": "3787430f9d56fbd671a2d9396af9202df05e3e84c2dc062843f78afc733eb8a9",
+          "estimated_minutes": null,
           "gated": false,
           "is_published": true,
           "title": "From Tables to Networks"
@@ -751,7 +753,7 @@
           "title": "Gymnasium"
         },
         "s9-reinforcement-learning-1/lab-9": {
-          "body": "0e367a62b71de52a9a7b211f1600a9024842d11c09abb73aeccd5a80973ed5ef",
+          "body": "62de35d69f174b661cc7af6662582498436c430b5488f020436a10db379d0135",
           "estimated_minutes": 45,
           "gated": false,
           "is_published": true,
@@ -780,6 +782,7 @@
         },
         "s9-reinforcement-learning-1/policy-gradients": {
           "body": "7fa885617ba7f743d18e5a7aa6dd98713e65e4fa84f58b3a3c4d34cbf72a3425",
+          "estimated_minutes": null,
           "gated": false,
           "is_published": true,
           "title": "Policy Gradients"

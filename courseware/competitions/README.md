@@ -20,6 +20,7 @@ competitions/
 ├── s3-credit-risk/      file_v1   Session 3 classification — the same, guided
 ├── s4-taxi-eta/         file_v1   Session 4's Lab 1 — an MLP on the pinball loss
 ├── mlp-s1-store-sales/  file_v1   MS2A-MLP Session 1 — sales from four sources
+├── mlp-s9-frozenlake-8x8/ flex_v1 MS2A-MLP Session 9 — tabular Q-learning (challenge 202)
 ├── _dataset_ids.py      salted row ids — see "Why the ids are salted"
 ├── localtest.py         run an env.py locally, the way the worker would
 ├── test_challenges.py   pytest — scorers, splits, and the notebooks

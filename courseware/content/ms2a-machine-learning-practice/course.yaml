@@ -530,6 +530,10 @@ modules:
         label: "CartPole-v1 — discrete actions over a state you can discretize: where Lab 9's tabular agent lands"
       - competition_id: 49
         label: "MountainCar-v0 — sparse reward, discrete actions: exploration is the whole problem"
+      - competition_id: 202
+        label: "FrozenLake-v1 8x8 — slippery grid, 64 states: Lab 9's tabular Q-learning agent, scored by its success rate"
+      - competition_id: 43
+        label: "LunarLander-v3 — continuous state: Lab 9's first trained policy, then DQN / PPO"
     lessons:
       - title: "Learning from Interaction"
         slug: learning-from-interaction
