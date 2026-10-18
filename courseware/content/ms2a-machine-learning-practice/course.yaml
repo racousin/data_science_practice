@@ -516,14 +516,15 @@ modules:
         is_published: true
 
   # ---------------------------------------------------------------- session 9
-  - title: "Session 9 — Reinforcement Learning 1"
+  - title: "Session 9 — Reinforcement Learning"
     slug: s9-reinforcement-learning-1
     icon: target
     visibility: unlisted
     summary: >
       Learning from interaction: the MDP, value functions and the Bellman
-      equations, dynamic programming when you have the model, and Monte-Carlo /
-      temporal-difference control when you do not.
+      equations, dynamic programming when you have the model, Monte-Carlo /
+      temporal-difference control when you do not. Function approximation and
+      DQN, policy gradients, actor-critic and PPO
     competitions:
       - competition_id: 48
         label: "CartPole-v1 — discrete actions over a state you can discretize: where Lab 9's tabular agent lands"
@@ -550,12 +551,24 @@ modules:
         file: s9-reinforcement-learning-1/model-free-prediction-and-control.md
         estimated_minutes: 45
         is_published: true
+      - title: "From Tables to Networks"
+        slug: from-tables-to-networks
+        file: s9-reinforcement-learning-1/from-tables-to-networks.md
+        is_published: true
+      - title: "Policy Gradients"
+        slug: policy-gradients
+        file: s9-reinforcement-learning-1/policy-gradients.md
+        is_published: true
+      - title: "Actor-Critic and PPO"
+        slug: actor-critic-and-ppo
+        file: s9-reinforcement-learning-1/actor-critic-and-ppo.md
+        is_published: false
       - title: "Gymnasium"
         slug: gymnasium
         file: s9-reinforcement-learning-1/gymnasium.md
         estimated_minutes: 25
         is_published: true
-      - title: "Lab 9 — Tabular Agent on Frozen Lake"
+      - title: "Lab"
         slug: lab-9
         kind: exercise
         file: s9-reinforcement-learning-1/lab-9.md

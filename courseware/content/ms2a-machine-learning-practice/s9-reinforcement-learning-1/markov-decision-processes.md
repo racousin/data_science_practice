@@ -1,8 +1,6 @@
 # Markov Decision Processes
 
-The MDP is the formal object every RL algorithm assumes. Writing your problem
-down as one takes ten minutes and tells you immediately whether the tools in
-this session apply.
+The MDP is the formal object every RL algorithm assumes.
 
 <!-- notes: 40 minutes, the densest lesson of the session. Work the gridworld on
 the board in parallel with the slides — every symbol should land on a picture
@@ -23,8 +21,6 @@ An MDP is $(S, A, P, R, \gamma)$:
 - $R$ — the reward function, $R(s, a)$
 - $\gamma$ — the discount factor, in $[0, 1]$
 
-If you cannot name all five for your problem, you do not yet have an RL problem.
-
 ---
 
 ## The Markov property
@@ -42,62 +38,67 @@ world, and you control it.
 
 ---
 
-## What breaks it
-
-Partial observability. The agent sees an observation $o_t$ that is a lossy
-function of the true state, and the process over observations is not Markov.
-
-| Symptom | Fix |
-|---|---|
-| Velocity not in the observation | stack the last $k$ frames |
-| Opponent's hidden cards | carry a belief state |
-| Sensor noise | filter, then feed the estimate |
-| Reward depends on an unseen phase | add the phase to the observation |
-
-Frame stacking is the cheap fix and it covers most of what you will meet.
-Anything richer is a POMDP, and a recurrent policy — Session 10 territory.
-
----
-
 ## A gridworld
 
 ![A 4x4 gridworld with an agent and a goal](assets/rl/tikz_picture_1.png)
 
 Sixteen cells, one agent (A), one goal (G). $S$ has 16 elements; $A$ has four —
-up, down, left, right — so $Q$ is a 16-by-4 array of numbers.
-
-Small enough to fit in a table, which is exactly why every RL course starts
-here. Everything in Session 10 is what you do when the table no longer fits.
+up, down, left, right.
 
 ---
 
-## Transitions
 
+
+## State/Observation Space $$S$$
+
+
+16 discrete states.
+
+
+![tikz_picture_2.png](assets/rl/tikz_picture_2.png)
+
+
+---
+
+## Action Space $$A$$
+
+4 discrete actions (Up, Down, Left, Right).
+
+
+![tikz_picture_3.png](assets/rl/tikz_picture_3.png)
+
+
+
+---
+
+## Transitions Model $$P$$ - Deterministic
+
+$$\mathcal{P}_{ss'}^{a} = \mathbb{P}\left[ S_{t+1} = s' \mid S_t = s,\, A_t = a \right]$$
+![tikz_picture_4.png](assets/rl/tikz_picture_4.png)
+
+
+---
+
+## Transitions Model $$P$$ - Stochastic
+
+$$\mathcal{P}_{ss'}^{a} = \mathbb{P}\left[ S_{t+1} = s' \mid S_t = s,\, A_t = a \right]$$
 ![A stochastic transition spreads probability over several successors](assets/rl/tikz_picture_5.png)
 
-Deterministic: `RIGHT` moves you right with probability 1, and $P$ is a lookup
-table. Stochastic: on slippery Frozen Lake `RIGHT` moves you right with
-probability 1/3 and slides you onto each perpendicular square with probability
-1/3 — the intended direction is only as likely as each accident — and $P$ is a
-distribution.
 
-Frozen Lake is the second kind. That single fact is why a policy which looks
-obviously optimal scores 0.7 rather than 1.0 — and why you must never conclude
-anything from one episode.
+
+
+
+
 
 ---
 
 ## Rewards
 
+$$r=R(s,a)=r(s')$$
+
 ![A sparse goal reward](assets/rl/tikz_picture_6.png)
 
-The sparse version: $+1$ on reaching the goal, 0 everywhere else. Honest, and
-brutally hard to learn from — the agent must stumble into the goal by accident
-before it has any signal at all.
-
-The shaped alternative: a small penalty per step, a penalty for holes, a bonus
-at the goal. Easier to learn, and now you are optimising something that is not
-quite the task. Both choices cost you something; pick deliberately.
+The sparse version: $+1$ on reaching the goal, 0 everywhere else.
 
 ---
 
@@ -108,10 +109,6 @@ quite the task. Both choices cost you something; pick deliberately.
 A **deterministic** policy is a map $\pi: S \rightarrow A$. A **stochastic**
 policy is a distribution $\pi(a|s)$ over actions in each state.
 
-Every MDP with a finite state space admits an optimal *deterministic* policy —
-so stochasticity is never required for optimality here. It is required for
-exploration during learning, and for partially observable or adversarial
-settings where being predictable is exploitable.
 
 ---
 
@@ -126,9 +123,6 @@ $$
 G_t = \sum_{k=0}^{\infty} \gamma^k R_{t+k+1}
 $$
 
-The agent maximises $G_t$ in expectation, not $R_{t+1}$ — the whole difference
-between reinforcement learning and greedy control.
-
 ---
 
 ## Why gamma exists
@@ -141,9 +135,49 @@ between reinforcement learning and greedy control.
    — 100 at $\gamma = 0.99$.
 3. **Uncertainty.** A distant reward is predicted by a model you trust less.
 
-Set $\gamma$ from the horizon your task has. A $\gamma$ of 0.9 on a task needing
-200-step lookahead will not learn, and the symptom looks like a bug in the
-update rule.
+
+
+
+---
+
+## The objective
+
+An episode produces a trajectory $\tau$ and a return $G(\tau)$. The agent looks
+for the policy that maximises the expected return.
+
+$$
+\pi^* = \arg\max_{\pi} \; \mathbb{E}_{\tau \sim \pi}\left[ G(\tau) \right]
+$$
+
+
+![tikz_picture_12.png](assets/rl/tikz_picture_12.png)
+
+
+
+---
+
+
+
+## Epsilon-greedy
+
+
+![explore_vs_exploit.jpeg](assets/rl/explore_vs_exploit.jpeg)
+
+
+```python
+def choose_action(self, state):
+    if random.random() < self.epsilon:
+        return random.randrange(self.n_actions)
+    return int(np.argmax(self.Q[state]))
+```
+
+With probability $\epsilon$ act at random; otherwise act greedily. Three lines,
+no tuning theory, and it is still the default for tabular control.
+
+Fix $\epsilon$ and the agent never stops exploring, so it never converges to a
+greedy policy. Decay it and it does. The schedule is a hyperparameter, not a
+detail.
+
 
 ---
 
@@ -169,10 +203,7 @@ Q_{\pi}(s, a) = \mathbb{E}_{\pi} \left[ G_t | S_t = s, A_t = a \right]
 $$
 
 Take $a$ now, follow $\pi$ afterwards. $Q$ is the more useful of the two: given
-$Q$ you can act without a model, by taking $\arg\max_a Q(s,a)$. Given only $V$
-you need $P$ to look one step ahead.
-
-That is why the algorithms you will ship learn $Q$.
+$Q$ you can act without a model, by taking $\arg\max_a Q(s,a)$.
 
 ---
 
@@ -212,12 +243,6 @@ $$
 The sum over actions became a max. That is the only change, and it is what makes
 these equations non-linear — no closed form, hence iteration.
 
----
-
-## Reading the answer
-
-![The optimal policy in the gridworld](assets/rl/tikz_picture_12.png)
-
 Once you have $Q_*$, the optimal policy falls out with no further work:
 
 $$
@@ -226,51 +251,3 @@ $$
 
 Solving for $Q_*$ *is* solving the MDP. Everything that follows approximates
 that one quantity.
-
----
-
-## The same picture, a different problem
-
-![State, action and reward in a video game](assets/rl/game.png)
-
-State: the screen. Actions: the buttons. Reward: the score delta. The MDP does
-not care that one problem is a 4x4 grid and the other is 60 frames per second of
-RGB — only that you can name the five components.
-
-> Write the tuple down before you write any code. If $S$ is not Markov, or $R$
-> does not encode what you actually want, no algorithm will save you.
-
----
-
-## Check yourself
-
-1. The Markov property is a property of what, exactly — the world or your code?
-
-   **Answer.** Of your *encoding* of the world. The state is Markov when it is a
-   sufficient statistic for the future; if velocity is missing from the
-   observation you can restore the property by stacking frames, and the world
-   did not change.
-
-2. Run this. You should get exactly the output shown.
-
-   ```python
-   import gymnasium as gym
-   env = gym.make("FrozenLake-v1", is_slippery=True)
-   print([round(p, 3) for p, *_ in env.unwrapped.P[0][2]])   # -> [0.333, 0.333, 0.333]
-   ```
-
-   **Answer.** Three equally likely successors. `RIGHT` is no more likely than
-   either slip, which is the slide above in code.
-
-3. Why does the optimality equation for $V_*$ have no closed-form solution when
-   the Bellman *expectation* equation does?
-
-   **Answer.** The sum over actions became a $\max$. That makes the system
-   non-linear, so it is solved by iteration rather than by linear algebra.
-
-4. You set $\gamma = 0.9$ on a task where the reward arrives 200 steps away and
-   the agent does not learn. What does the lesson say to check first?
-
-   **Answer.** $\gamma$, not the update rule. $\gamma$ sets an effective horizon
-   of about $1/(1-\gamma)$ steps — 10 steps at 0.9 — so the reward is outside the
-   horizon the agent is optimising over.

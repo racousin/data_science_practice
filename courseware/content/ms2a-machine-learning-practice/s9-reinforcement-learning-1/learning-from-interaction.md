@@ -10,20 +10,23 @@ score" shift before any formalism. Keep the AlphaGo slide short; it is a hook,
 not a case study. -->
 
 ---
+In 2017, AlphaGo defeated Ke Jie, the world's top-ranked Go player.
+![AlphaGo against Ke Jie, 2017](assets/rl/alphago.jpg)
 
-## Three paradigms
 
-| | Supervised | Unsupervised | Reinforcement |
-|---|---|---|---|
-| Data | pairs $(x, y)$ | inputs $x$ | trajectories |
-| Signal | the correct answer | none | a scalar reward |
-| Feedback | instructive | — | evaluative |
-| Timing | immediate | — | delayed |
-| Who generates the data | someone else | someone else | the agent |
+---
 
-The last row is the one that matters. In supervised learning the training
-distribution is fixed before you start. In RL it moves every time the policy
-changes.
+
+
+## The loop
+
+![Agent-environment interaction loop](assets/rl/rl.png)
+
+At each step $t$ the agent observes a state $s_t$, chooses an action $a_t$, and
+the environment returns a reward $r_t$ and a next state $s_{t+1}$.
+
+That is the entire interface. Everything else in this session is a way of
+turning that stream into a decision rule.
 
 ---
 
@@ -43,15 +46,24 @@ i.i.d. assumption from Sessions 2 and 3 is gone.
 
 ---
 
-## The loop
+## Applications of RL
 
-![Agent-environment interaction loop](assets/rl/rl.png)
 
-At each step $t$ the agent observes a state $s_t$, chooses an action $a_t$, and
-the environment returns a reward $r_t$ and a next state $s_{t+1}$.
+![game.png](assets/rl/game.png)
 
-That is the entire interface. Everything else in this session is a way of
-turning that stream into a decision rule.
+
+- Autonomous Systems : 
+Robotics, self-driving vehicles, drone navigation
+
+- Industrial Control : 
+Process optimization, energy management
+
+- Natural Language : 
+Dialogue systems, chatbot policies
+
+- Financial Markets : 
+Trading strategies, risk management
+
 
 ---
 
@@ -73,30 +85,7 @@ seriously (see the Gymnasium lesson).
 
 ---
 
-## The objective
 
-An episode produces a trajectory $\tau$ and a return $G(\tau)$. The agent looks
-for the policy that maximises the expected return.
-
-$$
-\pi^* = \arg\max_{\pi} \; \mathbb{E}_{\tau \sim \pi}\left[ G(\tau) \right]
-$$
-
-Note where the policy appears: not only inside the expression being maximised,
-but in the *distribution* the expectation is taken over. That coupling is what
-makes the problem interesting and what makes gradients awkward — Session 10.
-
----
-
-## What it costs
-
-![AlphaGo against Ke Jie, 2017](assets/rl/alphago.jpg)
-
-AlphaGo beat Ke Jie in 2017 on the back of millions of self-play games, TPU
-clusters, and months of training. The result is real; the price tag is the point.
-
-RL is the most sample-hungry family in this course by two or three orders of
-magnitude. Budget for a simulator, not for a dataset.
 
 ---
 
@@ -111,55 +100,6 @@ credit assignment, and no transition model.
 What survives is the one dilemma RL never escapes: pull the arm that looks best,
 or pull another one to find out whether it is.
 
----
-
-## Three problems, increasing difficulty
-
-![Bandit, contextual bandit and full RL](assets/rl/rl-bandit-diff.png)
-
-| Setting | State | Action affects next state |
-|---|---|---|
-| Multi-armed bandit | none | no |
-| Contextual bandit | sampled i.i.d. | no |
-| Full RL | sampled i.i.d. | **yes** |
-
-A/B testing and ad ranking are contextual bandits, and treating them as full RL
-buys you nothing but variance. Check the last column before reaching for
-Q-learning.
-
----
-
-## Epsilon-greedy
-
-```python
-def choose_action(self, state):
-    if random.random() < self.epsilon:
-        return random.randrange(self.n_actions)
-    return int(np.argmax(self.Q[state]))
-```
-
-With probability $\epsilon$ act at random; otherwise act greedily. Three lines,
-no tuning theory, and it is still the default for tabular control.
-
-Fix $\epsilon$ and the agent never stops exploring, so it never converges to a
-greedy policy. Decay it and it does. The schedule is a hyperparameter, not a
-detail.
-
----
-
-## UCB
-
-$$
-a_t = \arg\max_{a} \left( \hat{\mu}_a + c \sqrt{\frac{\ln t}{N_a}} \right)
-$$
-
-Upper Confidence Bound adds an optimism term that shrinks as an arm is pulled
-more often. Untried arms look attractive because they are uncertain, not because
-they are good.
-
-UCB explores in a directed way and beats $\epsilon$-greedy on bandits with a
-provable regret bound. On full RL problems with large state spaces its
-advantage largely evaporates, which is why $\epsilon$-greedy survives.
 
 ---
 
@@ -175,63 +115,3 @@ Reach for RL only when all four hold:
 
 > If you can label the correct action, label it and train a classifier. It will
 > be faster, cheaper, and easier to debug.
-
-Failure mode: a team writes a reward function as a proxy for the real objective,
-and the agent maximises the proxy. Reward specification is where most applied RL
-projects die, not algorithm choice.
-
----
-
-## A map of the field
-
-![Model-based and model-free reinforcement learning](assets/rl/model-based-free.jpg)
-
-| Axis | Left | Right |
-|---|---|---|
-| Model | model-based: plan with $P$, $R$ | model-free: learn from samples |
-| Learns | value-based: $Q$, act greedily | policy-based: $\pi_\theta$ directly |
-| Data | on-policy: your own behaviour | off-policy: anyone's |
-
-This session walks left to right and ends at Q-learning: model-free,
-value-based, off-policy.
-
----
-
-## Check yourself
-
-1. Which row of the three-paradigms table is the one that actually changes the
-   problem, and why?
-
-   **Answer.** "Who generates the data". In supervised learning the training
-   distribution is fixed before you start; in RL the agent generates it, so it
-   moves every time the policy changes and every i.i.d. assumption is gone.
-
-2. Run this. You should get exactly the output shown. Two arms: the first has
-   paid 0.9 over 100 pulls, the second 0.5 over 2.
-
-   ```python
-   import math
-   mu, N, t, c = [0.9, 0.5], [100, 2], 102, 2.0
-   print([round(m + c * math.sqrt(math.log(t) / n), 2) for m, n in zip(mu, N)])
-   # -> [1.33, 3.54]
-   ```
-
-   **Answer.** UCB picks the *worse-looking* arm, 3.54 against 1.33. The bonus
-   $c\sqrt{\ln t / N_a}$ is large exactly where the estimate is built on two
-   samples: an untried arm is attractive because it is uncertain, not because it
-   is good. $\epsilon$-greedy would keep pulling the first arm and only stumble
-   onto the second at rate $\epsilon / k$ — undirected exploration, which is the
-   difference the slide is making.
-
-3. Your team wants RL for ad ranking: a user arrives, you pick an ad, you see
-   the click. Is that full RL?
-
-   **Answer.** No — it is a contextual bandit. The state is sampled i.i.d. and
-   your action does not affect the next state, so the last column of the
-   difficulty table is "no". Treating it as full RL buys nothing but variance.
-
-4. All four conditions for reaching for RL hold except that you can label the
-   correct action for every situation. What should you do?
-
-   **Answer.** Label it and train a classifier. The lesson's rule is explicit:
-   it will be faster, cheaper and easier to debug.

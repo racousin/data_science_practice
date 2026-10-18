@@ -88,12 +88,15 @@
       "s8-nlp-2/post-training": 223,
       "s8-nlp-2/rag": 107,
       "s8-nlp-2/training-and-scaling-llms": 103,
+      "s9-reinforcement-learning-1/actor-critic-and-ppo": 290,
       "s9-reinforcement-learning-1/dynamic-programming": 112,
+      "s9-reinforcement-learning-1/from-tables-to-networks": 288,
       "s9-reinforcement-learning-1/gymnasium": 114,
       "s9-reinforcement-learning-1/lab-9": 115,
       "s9-reinforcement-learning-1/learning-from-interaction": 110,
       "s9-reinforcement-learning-1/markov-decision-processes": 111,
-      "s9-reinforcement-learning-1/model-free-prediction-and-control": 113
+      "s9-reinforcement-learning-1/model-free-prediction-and-control": 113,
+      "s9-reinforcement-learning-1/policy-gradients": 289
     },
     "modules": {
       "mlp-project": 29,
@@ -721,36 +724,48 @@
           "is_published": true,
           "title": "Training and Scaling LLMs"
         },
+        "s9-reinforcement-learning-1/actor-critic-and-ppo": {
+          "body": "2a3fdca0ed0a874466339b6eedbe2294dde9895ab9c53074aaaf2390e036f125",
+          "gated": false,
+          "is_published": false,
+          "title": "Actor-Critic and PPO"
+        },
         "s9-reinforcement-learning-1/dynamic-programming": {
-          "body": "2f7e336de179af4bf2474d94b3984615a0b3a2d6f2191f13ae6cf85dc243b8a9",
+          "body": "94da32e921dab1c447e2721b812f7f9462a38c5b9ffa5732d6c8d35bd7651a5b",
           "estimated_minutes": 35,
           "gated": false,
           "is_published": true,
           "title": "Dynamic Programming"
         },
+        "s9-reinforcement-learning-1/from-tables-to-networks": {
+          "body": "3787430f9d56fbd671a2d9396af9202df05e3e84c2dc062843f78afc733eb8a9",
+          "gated": false,
+          "is_published": true,
+          "title": "From Tables to Networks"
+        },
         "s9-reinforcement-learning-1/gymnasium": {
-          "body": "a64aa152ec929b29c1e0851c1d2f32c0030bca2de81868c8ae4a4013ee69461f",
+          "body": "3a531f47f4ec208977968b5ff26d4f2b4af332923caa8594afdfa5c462854cf0",
           "estimated_minutes": 25,
           "gated": false,
           "is_published": true,
           "title": "Gymnasium"
         },
         "s9-reinforcement-learning-1/lab-9": {
-          "body": "804ebbb0ccf67783962f11f49d463989318f95ea6447bf32994455a0118a436b",
+          "body": "0e367a62b71de52a9a7b211f1600a9024842d11c09abb73aeccd5a80973ed5ef",
           "estimated_minutes": 45,
           "gated": false,
           "is_published": true,
-          "title": "Lab 9 \u2014 Tabular Agent on Frozen Lake"
+          "title": "Lab"
         },
         "s9-reinforcement-learning-1/learning-from-interaction": {
-          "body": "a7995ab120c45ac46b78d39c0e0d421db8b580f69b7257f884c068bb09153d95",
+          "body": "2c82af0fa2a568d4846100436339260fd23c5775c1f13a356b7e965ab2821441",
           "estimated_minutes": 30,
           "gated": false,
           "is_published": true,
           "title": "Learning from Interaction"
         },
         "s9-reinforcement-learning-1/markov-decision-processes": {
-          "body": "c3f5ddd7a682b4a12c846e3f23e351837554f75b796a35ec6c8e779fac3ff14b",
+          "body": "1a829c77d54cf5ab611cce33d7a97d68f115eb6b31e0cb4d0f2179420970dd3c",
           "estimated_minutes": 40,
           "gated": false,
           "is_published": true,
@@ -762,6 +777,12 @@
           "gated": false,
           "is_published": true,
           "title": "Model-Free Prediction and Control"
+        },
+        "s9-reinforcement-learning-1/policy-gradients": {
+          "body": "7fa885617ba7f743d18e5a7aa6dd98713e65e4fa84f58b3a3c4d34cbf72a3425",
+          "gated": false,
+          "is_published": true,
+          "title": "Policy Gradients"
         }
       },
       "module_order": [
@@ -957,11 +978,14 @@
             "markov-decision-processes",
             "dynamic-programming",
             "model-free-prediction-and-control",
+            "from-tables-to-networks",
+            "policy-gradients",
+            "actor-critic-and-ppo",
             "gymnasium",
             "lab-9"
           ],
-          "summary": "Learning from interaction: the MDP, value functions and the Bellman equations, dynamic programming when you have the model, and Monte-Carlo / temporal-difference control when you do not.",
-          "title": "Session 9 \u2014 Reinforcement Learning 1"
+          "summary": "Learning from interaction: the MDP, value functions and the Bellman equations, dynamic programming when you have the model, Monte-Carlo / temporal-difference control when you do not. Function approximation and DQN, policy gradients, actor-critic and PPO",
+          "title": "Session 9 \u2014 Reinforcement Learning"
         }
       }
     }
