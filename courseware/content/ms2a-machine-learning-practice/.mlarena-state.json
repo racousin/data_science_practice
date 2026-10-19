@@ -867,7 +867,7 @@
             "lab-11"
           ],
           "summary": "Take a trained model out of the notebook: save it, serve it behind an HTTP API with FastAPI, and pack the API into a Docker image that runs the same on any machine. Includes a Docker Compose workshop that starts CVAT, a complete image-annotation platform, with one command. Before the session: install Docker Desktop and check that `docker run hello-world` works.",
-          "title": "Session 11 \u2014 Docker and Model Deployment"
+          "title": "Session 10 \u2014 Docker and Model Deployment"
         },
         "s2-data-preprocessing": {
           "icon": "filter",

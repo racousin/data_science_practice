@@ -526,14 +526,10 @@ modules:
       temporal-difference control when you do not. Function approximation and
       DQN, policy gradients, actor-critic and PPO
     competitions:
-      - competition_id: 48
-        label: "CartPole-v1 — discrete actions over a state you can discretize: where Lab 9's tabular agent lands"
-      - competition_id: 49
-        label: "MountainCar-v0 — sparse reward, discrete actions: exploration is the whole problem"
       - competition_id: 202
-        label: "FrozenLake-v1 8x8 — slippery grid, 64 states: Lab 9's tabular Q-learning agent, scored by its success rate"
+        label: "FrozenLake-v1 8x8"
       - competition_id: 43
-        label: "LunarLander-v3 — continuous state: Lab 9's first trained policy, then DQN / PPO"
+        label: "LunarLander-v3"
     lessons:
       - title: "Learning from Interaction"
         slug: learning-from-interaction
@@ -641,7 +637,7 @@ modules:
   # Lab 11 Part E states the contract that submission is to be built against
   # (linux/amd64, 0.0.0.0:8000, GET /health, POST /predict -> {"species": ...}).
   # Attach the penguins challenge here once it exists, and update Part E.
-  - title: "Session 11 — Docker and Model Deployment"
+  - title: "Session 10 — Docker and Model Deployment"
     slug: s11-docker-and-deployment
     icon: container
     visibility: unlisted
