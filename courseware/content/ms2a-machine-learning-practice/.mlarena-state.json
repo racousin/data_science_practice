@@ -18,13 +18,15 @@
       "s1-data-collection/files-and-formats": 58,
       "s1-data-collection/lab-1": 63,
       "s1-data-collection/web-scraping": 61,
-      "s11-docker-and-deployment/apis-and-http": 196,
-      "s11-docker-and-deployment/deploy-on-hugging-face": 291,
-      "s11-docker-and-deployment/docker-compose-cvat": 195,
+      "s11-docker-and-deployment/deploy-on-render": 294,
+      "s11-docker-and-deployment/docker-compose": 296,
       "s11-docker-and-deployment/docker-concepts": 193,
       "s11-docker-and-deployment/docker-install-and-run": 194,
+      "s11-docker-and-deployment/html-frontend": 295,
       "s11-docker-and-deployment/lab-11": 199,
       "s11-docker-and-deployment/serving-a-model-with-fastapi": 197,
+      "s11-docker-and-deployment/train-and-save-a-model": 293,
+      "s11-docker-and-deployment/where-models-run": 292,
       "s11-docker-and-deployment/why-deploy": 192,
       "s11-docker-and-deployment/writing-a-dockerfile": 198,
       "s2-data-preprocessing/categorical-encoding": 67,
@@ -230,68 +232,82 @@
           "is_published": true,
           "title": "Web Scraping"
         },
-        "s11-docker-and-deployment/apis-and-http": {
-          "body": "f83b410b02ba98251d30550c1dcbf2d64412ee1a7b4b4f3345a7dbd5cb558fcb",
-          "estimated_minutes": 12,
+        "s11-docker-and-deployment/deploy-on-render": {
+          "body": "947ba235202084e12f6df762aff1e71f00d3dce9315bf665da3c17f8662739ea",
+          "estimated_minutes": 20,
           "gated": false,
           "is_published": true,
-          "title": "APIs and HTTP"
+          "title": "Step 4 \u2014 Serving the Image on Render"
         },
-        "s11-docker-and-deployment/deploy-on-hugging-face": {
-          "body": "a320525b3c4ace5d68e73bf9c435b8887564e8306ed97e6cb41146c01dbafdee",
-          "estimated_minutes": 15,
+        "s11-docker-and-deployment/docker-compose": {
+          "body": "666d4b8f1f1e3e9df074c311f7b548d40d5dd506d14534886252908afe5f036d",
+          "estimated_minutes": 20,
           "gated": false,
           "is_published": true,
-          "title": "Deploying the Image on Hugging Face Spaces"
-        },
-        "s11-docker-and-deployment/docker-compose-cvat": {
-          "body": "e92685e9e2f43fd1e86ca7cad73b957d54497aefdf8a8a32da267956b2281f0e",
-          "estimated_minutes": 30,
-          "gated": false,
-          "is_published": true,
-          "title": "Workshop \u2014 Label Images with CVAT and Docker Compose"
+          "title": "Docker Compose: Several Containers, One File"
         },
         "s11-docker-and-deployment/docker-concepts": {
-          "body": "2ea600eb99c583675a099c3fdd3eeadd61a75af39bff2a813d16808af74cf87b",
-          "estimated_minutes": 12,
+          "body": "bc0af5c20b17c993a7f142f5962a531f502dbe8dd2387fbb10f4f5008b7af553",
+          "estimated_minutes": 15,
           "gated": false,
           "is_published": true,
           "title": "Docker: Images, Containers, Registries"
         },
         "s11-docker-and-deployment/docker-install-and-run": {
-          "body": "287ba32caf32b36aa974376857ced0567518bde3df2804b3a003627aebb6f2e1",
-          "estimated_minutes": 14,
+          "body": "4ada8c919ae42c29b2e155d040fd528363cbcc0e2b22e7d1de2cbaa3624e5595",
+          "estimated_minutes": 10,
           "gated": false,
           "is_published": true,
-          "title": "Installing and Running Docker"
+          "title": "Installing Docker and Running a Container"
         },
-        "s11-docker-and-deployment/lab-11": {
-          "body": "4b1e0e997f77c40be169079a8df987de2b906f7d5e02dfb5b522e8ae039c87dc",
-          "estimated_minutes": 65,
-          "gated": false,
-          "is_published": true,
-          "title": "Lab 11 \u2014 Ship a Penguin Classifier"
-        },
-        "s11-docker-and-deployment/serving-a-model-with-fastapi": {
-          "body": "188f657aad3cf509e0d38c8d0e8169b3cacfa0293d5cfb2276525e1448dd967d",
+        "s11-docker-and-deployment/html-frontend": {
+          "body": "6368d5318a4d9b42011cf508e68cf1edd8ef6d60692d78477c22b5e5d6873166",
           "estimated_minutes": 20,
           "gated": false,
           "is_published": true,
-          "title": "Serving a Model with FastAPI"
+          "title": "Step 5 \u2014 An HTML Page for the Model"
         },
-        "s11-docker-and-deployment/why-deploy": {
-          "body": "46802144aeed014b65b39f028d580ed240df6b02d4274325210bd0c0464e4c28",
-          "estimated_minutes": 12,
+        "s11-docker-and-deployment/lab-11": {
+          "body": "eecca626f142b6037c4f310c56e77ed24bf61a167c3b649452069a5ff0663012",
+          "estimated_minutes": 10,
           "gated": false,
           "is_published": true,
-          "title": "From a Notebook to a Service"
+          "title": "Workshop Deliverable \u2014 Your Model Online"
         },
-        "s11-docker-and-deployment/writing-a-dockerfile": {
-          "body": "044ab14e41a232ed5de99ef4bb76f8453e25eb47e24779e79d670721a64fab36",
+        "s11-docker-and-deployment/serving-a-model-with-fastapi": {
+          "body": "1b827a2d53b8553d2305cec423588e8adc7e551d8df6d6d8c969cab91ed9992e",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Step 2 \u2014 A Model API with uv and FastAPI"
+        },
+        "s11-docker-and-deployment/train-and-save-a-model": {
+          "body": "ca5759aca00bab9720041558c4abb9ca89a395159d72560f0c93f5fb38d6fd45",
           "estimated_minutes": 15,
           "gated": false,
           "is_published": true,
-          "title": "Writing a Dockerfile"
+          "title": "Step 1 \u2014 Train and Save a Model in Colab"
+        },
+        "s11-docker-and-deployment/where-models-run": {
+          "body": "8b5c4067ffbfef1f8ca7ebd555012b288b9aaa1d25dcc50e850d8caa994ce813",
+          "estimated_minutes": 10,
+          "gated": false,
+          "is_published": true,
+          "title": "Where Models Run: On-Premise, Cloud, Managed"
+        },
+        "s11-docker-and-deployment/why-deploy": {
+          "body": "8f07ce9c72d2e63fc23fda5528df9f8ef09cfd80625392d1decc98f0df4bc595",
+          "estimated_minutes": 20,
+          "gated": false,
+          "is_published": true,
+          "title": "Serving a Model: The Concepts"
+        },
+        "s11-docker-and-deployment/writing-a-dockerfile": {
+          "body": "ace4b8cb2a050a672441686588fee8fdd15ca296e353853cea08bd163fd9436d",
+          "estimated_minutes": 30,
+          "gated": false,
+          "is_published": true,
+          "title": "Step 3 \u2014 The API in an Image, on Docker Hub"
         },
         "s2-data-preprocessing/categorical-encoding": {
           "body": "41c76b5fba81509a9abb5246273c017b2fb88bb08952a2431af43b2b4dbb27f3",
@@ -803,17 +819,19 @@
           "icon": "container",
           "lessons": [
             "why-deploy",
+            "where-models-run",
+            "train-and-save-a-model",
+            "serving-a-model-with-fastapi",
             "docker-concepts",
             "docker-install-and-run",
-            "docker-compose-cvat",
-            "apis-and-http",
-            "serving-a-model-with-fastapi",
             "writing-a-dockerfile",
-            "deploy-on-hugging-face",
+            "deploy-on-render",
+            "html-frontend",
+            "docker-compose",
             "lab-11"
           ],
-          "summary": "Take a trained model out of the notebook: save it, serve it behind an HTTP API with FastAPI, and pack the API into a Docker image that runs the same on any machine. Includes a Docker Compose workshop that starts CVAT, a complete image-annotation platform, with one command. Before the session: install Docker Desktop and check that `docker run hello-world` works.",
-          "title": "Session 10 \u2014 Docker and Model Deployment"
+          "summary": "Serve a trained model: train it in Colab, put it behind an HTTP API with uv and FastAPI, pack the API in a Docker image, push it to Docker Hub, run it on Render's free tier, add an HTML page, then scale it with Docker Compose. Before the session: install uv and Docker (OrbStack on macOS, Docker Desktop on Windows, Docker Engine on Linux), and create a Docker Hub account and a Render account.",
+          "title": "Session 10 \u2014 Model Deployment Workshop"
         },
         "s2-data-preprocessing": {
           "icon": "filter",
