@@ -1,8 +1,7 @@
 # From a Notebook to a Service
 
 For ten sessions your models have lived in a notebook, and you have shipped
-their predictions as a CSV file. Today the model itself leaves your laptop: it
-becomes a small program that anyone can ask for a prediction, packaged so that
+their predictions as files. Today the model becomes a small program that anyone can ask for a prediction, packaged so that
 it runs the same on any machine.
 
 <!-- notes: 12 minutes. The argument, not the tools. Most of the room has never
@@ -42,7 +41,7 @@ this session.
 
 ---
 
-## Three things must leave the notebook
+## Three things must leave the notebook/local
 
 ![From a notebook to a container any client can call](assets/deploy/deploy-path.png)
 

@@ -18,13 +18,8 @@
       "s1-data-collection/files-and-formats": 58,
       "s1-data-collection/lab-1": 63,
       "s1-data-collection/web-scraping": 61,
-      "s10-reinforcement-learning-2/actor-critic-and-ppo": 118,
-      "s10-reinforcement-learning-2/from-tables-to-networks": 116,
-      "s10-reinforcement-learning-2/lab-10": 121,
-      "s10-reinforcement-learning-2/making-deep-rl-work": 119,
-      "s10-reinforcement-learning-2/multi-agent-rl": 120,
-      "s10-reinforcement-learning-2/policy-gradients": 117,
       "s11-docker-and-deployment/apis-and-http": 196,
+      "s11-docker-and-deployment/deploy-on-hugging-face": 291,
       "s11-docker-and-deployment/docker-compose-cvat": 195,
       "s11-docker-and-deployment/docker-concepts": 193,
       "s11-docker-and-deployment/docker-install-and-run": 194,
@@ -102,7 +97,6 @@
       "mlp-project": 29,
       "mlp-reference": 30,
       "s1-data-collection": 19,
-      "s10-reinforcement-learning-2": 28,
       "s11-docker-and-deployment": 35,
       "s2-data-preprocessing": 20,
       "s3-tabular-models": 21,
@@ -236,54 +230,19 @@
           "is_published": true,
           "title": "Web Scraping"
         },
-        "s10-reinforcement-learning-2/actor-critic-and-ppo": {
-          "body": "2a3fdca0ed0a874466339b6eedbe2294dde9895ab9c53074aaaf2390e036f125",
-          "estimated_minutes": 35,
-          "gated": false,
-          "is_published": true,
-          "title": "Actor-Critic and PPO"
-        },
-        "s10-reinforcement-learning-2/from-tables-to-networks": {
-          "body": "7c3e76c1defe2b9e2f725d643b89da9007820463477e57a7567a433df2862b6d",
-          "estimated_minutes": 40,
-          "gated": false,
-          "is_published": true,
-          "title": "From Tables to Networks"
-        },
-        "s10-reinforcement-learning-2/lab-10": {
-          "body": "020e441e904e4739e9c9c57760c07353b11cf777133857c861f161c81c3354bd",
-          "estimated_minutes": 45,
-          "gated": false,
-          "is_published": true,
-          "title": "Lab 10 \u2014 Ship an Agent to ML-Arena"
-        },
-        "s10-reinforcement-learning-2/making-deep-rl-work": {
-          "body": "6672bc2842059befd62044b565278a2f484ca387fcf17fe25707ca9ff48c06c7",
-          "estimated_minutes": 30,
-          "gated": false,
-          "is_published": true,
-          "title": "Making Deep RL Work"
-        },
-        "s10-reinforcement-learning-2/multi-agent-rl": {
-          "body": "04417b9ee62fa6746a2a97e645229b50d9d60b31c9a24805080cc25ceee850fc",
-          "estimated_minutes": 35,
-          "gated": false,
-          "is_published": true,
-          "title": "Multi-Agent RL"
-        },
-        "s10-reinforcement-learning-2/policy-gradients": {
-          "body": "1b907e7c41b50cf34d443c37a2546df21283b0deee17a89cbadd21dda329b74b",
-          "estimated_minutes": 30,
-          "gated": false,
-          "is_published": true,
-          "title": "Policy Gradients"
-        },
         "s11-docker-and-deployment/apis-and-http": {
           "body": "f83b410b02ba98251d30550c1dcbf2d64412ee1a7b4b4f3345a7dbd5cb558fcb",
           "estimated_minutes": 12,
           "gated": false,
           "is_published": true,
           "title": "APIs and HTTP"
+        },
+        "s11-docker-and-deployment/deploy-on-hugging-face": {
+          "body": "a320525b3c4ace5d68e73bf9c435b8887564e8306ed97e6cb41146c01dbafdee",
+          "estimated_minutes": 15,
+          "gated": false,
+          "is_published": true,
+          "title": "Deploying the Image on Hugging Face Spaces"
         },
         "s11-docker-and-deployment/docker-compose-cvat": {
           "body": "e92685e9e2f43fd1e86ca7cad73b957d54497aefdf8a8a32da267956b2281f0e",
@@ -307,7 +266,7 @@
           "title": "Installing and Running Docker"
         },
         "s11-docker-and-deployment/lab-11": {
-          "body": "6b61f92842a4261675bffcf8f6c80e626f1b35b66d321b2c91aecee1f427910d",
+          "body": "4b1e0e997f77c40be169079a8df987de2b906f7d5e02dfb5b522e8ae039c87dc",
           "estimated_minutes": 65,
           "gated": false,
           "is_published": true,
@@ -321,7 +280,7 @@
           "title": "Serving a Model with FastAPI"
         },
         "s11-docker-and-deployment/why-deploy": {
-          "body": "3a48e9f53566a27b51c76e966c7958cf5ce0c8f75b4c48753645e1c3f1e69f70",
+          "body": "46802144aeed014b65b39f028d580ed240df6b02d4274325210bd0c0464e4c28",
           "estimated_minutes": 12,
           "gated": false,
           "is_published": true,
@@ -841,19 +800,6 @@
           "summary": "Where data comes from and what it costs to get it: files, databases, APIs, scraping \u2014 and the quality checks that belong at the point of collection rather than three weeks later.",
           "title": "Session 1 \u2014 Data Collection"
         },
-        "s10-reinforcement-learning-2": {
-          "icon": "cpu",
-          "lessons": [
-            "from-tables-to-networks",
-            "policy-gradients",
-            "actor-critic-and-ppo",
-            "making-deep-rl-work",
-            "multi-agent-rl",
-            "lab-10"
-          ],
-          "summary": "Deep RL: function approximation and DQN, policy gradients, actor-critic and PPO, the practical machinery that makes runs reproducible, and multi-agent environments on ML-Arena.",
-          "title": "Session 10 \u2014 Reinforcement Learning 2"
-        },
         "s11-docker-and-deployment": {
           "icon": "container",
           "lessons": [
@@ -864,6 +810,7 @@
             "apis-and-http",
             "serving-a-model-with-fastapi",
             "writing-a-dockerfile",
+            "deploy-on-hugging-face",
             "lab-11"
           ],
           "summary": "Take a trained model out of the notebook: save it, serve it behind an HTTP API with FastAPI, and pack the API into a Docker image that runs the same on any machine. Includes a Docker Compose workshop that starts CVAT, a complete image-annotation platform, with one command. Before the session: install Docker Desktop and check that `docker run hello-world` works.",

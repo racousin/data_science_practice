@@ -575,53 +575,6 @@ modules:
         estimated_minutes: 45
         is_published: true
 
-  # --------------------------------------------------------------- session 10
-  - title: "Session 10 — Reinforcement Learning 2"
-    slug: s10-reinforcement-learning-2
-    icon: cpu
-    visibility: unlisted
-    summary: >
-      Deep RL: function approximation and DQN, policy gradients, actor-critic
-      and PPO, the practical machinery that makes runs reproducible, and
-      multi-agent environments on ML-Arena.
-    competitions:
-      - competition_id: 43
-        label: "LunarLander-v3 — the standard DQN / PPO target: function approximation over a continuous state"
-      - competition_id: 65
-        label: "PettingZoo · Connect-Four — two players ranked by ELO against the live population"
-    lessons:
-      - title: "From Tables to Networks"
-        slug: from-tables-to-networks
-        file: s10-reinforcement-learning-2/from-tables-to-networks.md
-        estimated_minutes: 40
-        is_published: true
-      - title: "Policy Gradients"
-        slug: policy-gradients
-        file: s10-reinforcement-learning-2/policy-gradients.md
-        estimated_minutes: 30
-        is_published: true
-      - title: "Actor-Critic and PPO"
-        slug: actor-critic-and-ppo
-        file: s10-reinforcement-learning-2/actor-critic-and-ppo.md
-        estimated_minutes: 35
-        is_published: true
-      - title: "Making Deep RL Work"
-        slug: making-deep-rl-work
-        file: s10-reinforcement-learning-2/making-deep-rl-work.md
-        estimated_minutes: 30
-        is_published: true
-      - title: "Multi-Agent RL"
-        slug: multi-agent-rl
-        file: s10-reinforcement-learning-2/multi-agent-rl.md
-        estimated_minutes: 35
-        is_published: true
-      - title: "Lab 10 — Ship an Agent to ML-Arena"
-        slug: lab-10
-        kind: exercise
-        file: s10-reinforcement-learning-2/lab-10.md
-        estimated_minutes: 45
-        is_published: true
-
   # --------------------------------------------------------------- session 11
   #
   # Added 2026-09-14. Taught to a room that has never used an API or Docker:
@@ -682,6 +635,11 @@ modules:
       - title: "Writing a Dockerfile"
         slug: writing-a-dockerfile
         file: s11-docker-and-deployment/writing-a-dockerfile.md
+        estimated_minutes: 15
+        is_published: true
+      - title: "Deploying the Image on Hugging Face Spaces"
+        slug: deploy-on-hugging-face
+        file: s11-docker-and-deployment/deploy-on-hugging-face.md
         estimated_minutes: 15
         is_published: true
       - title: "Lab 11 — Ship a Penguin Classifier"

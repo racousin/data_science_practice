@@ -254,9 +254,9 @@ notebook. What you packed today is the smallest honest version of it: a
 pinned environment, a contract for the questions and the answers, and an
 artefact any machine can run.
 
-The next step, which this course stops short of, is to run that image
-somewhere public: a cloud service that takes an image and gives it a URL.
-The image does not change; only where `docker run` happens does.
+The next step is to run that image somewhere public: a service that takes an
+image and gives it a URL, as in the lesson *Deploying the Image on Hugging
+Face Spaces*. The image does not change; only where `docker run` happens does.
 
 ---
 
