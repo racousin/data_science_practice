@@ -48,12 +48,6 @@ an image containing them is a guarantee.
 - A **container** is a running instance of an image, with a thin writable layer
   on top. Stop it, delete it, start ten more from the same image.
 
-| Python | Docker |
-|---|---|
-| a class | an image |
-| an object, `Model()` | a container |
-| `class Model: ...` in a `.py` file | a **Dockerfile** |
-
 ---
 
 ## Where images come from
