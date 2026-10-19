@@ -1,200 +1,160 @@
-# Serving a Model with FastAPI
+# Step 2 — A Model API with uv and FastAPI
 
-Train a model, save it to a file, and put it behind two endpoints. FastAPI
-turns a Python function into an HTTP endpoint and, for free, gives you a web
-page to try it from the browser.
+`model.joblib` becomes a service: a program on the laptop that loads it once
+and answers prediction requests over HTTP.
 
-<!-- notes: 20 minutes, live-coded, students typing along. Iris on purpose: the
-model is not the point, and the lab uses a different dataset with the same
-steps. Every output shown was produced on 2026-09-14 with fastapi 0.141.1,
-uvicorn 0.52.4, scikit-learn 1.9.1, Python 3.13. The moment that sells it is
-/docs: let them press Execute themselves before moving on. Leave the server
-running; the next lesson packs this exact folder. -->
+<!-- notes: 30 minutes, live-coded, students typing along. Tested on
+2026-10-19 with uv, fastapi 0.149.0, scikit-learn 1.6.1, Python 3.13. Where
+students get stuck: (1) `uv init` run inside another project folder (a course
+repo with a uv workspace): uv adds penguin-api as a member of the parent
+workspace and the commands then behave oddly; create the folder outside every
+other project. (2) model.joblib still in Downloads: `FileNotFoundError` at
+start-up. (3) Windows PowerShell: `curl` is an alias of Invoke-WebRequest, and
+even `curl.exe` mangles the JSON quotes of the POST; send them to Git Bash or
+to /docs. (4) port 8000 taken by an old server: `--port 8001`. Let them press
+Execute in /docs themselves. Keep the server running for the three birds. -->
 
 ---
 
-## The project
+## HTTP in one slide
+
+![A client sends a request, the server runs the model and sends a response](assets/deploy/client-server.png)
+
+- **Request**: a method, a URL, an optional JSON body. `GET` reads, `POST`
+  sends data to process.
+- **Response**: a status code and a JSON body. `200` OK, `404` no such path,
+  `422` the body does not match the contract, `500` the server's code crashed.
+- In `http://localhost:8000/predict`, `localhost` is the machine, `8000` the
+  program (the port), `/predict` the endpoint (the path).
+
+---
+
+## The project, managed by uv
+
+uv installs Python, creates the virtual environment and pins every package
+([install](https://docs.astral.sh/uv/getting-started/installation/)):
+`curl -LsSf https://astral.sh/uv/install.sh | sh` on macOS / Linux,
+`powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`
+on Windows. Then, **outside every other project folder**:
 
 ```bash
-uv init --python 3.13 iris-api
-cd iris-api
-uv add fastapi uvicorn scikit-learn joblib
+uv init --python 3.13 penguin-api && cd penguin-api
+uv add "fastapi[standard]" pandas joblib "scikit-learn==1.6.1"
+mv ~/Downloads/model.joblib .
 ```
 
-| Package | Job |
-|---|---|
-| `fastapi` | turns Python functions into HTTP endpoints |
-| `uvicorn` | the server: listens on a port, hands requests to FastAPI |
-| `scikit-learn` | the model |
-| `joblib` | saves the trained model to a file and loads it back |
+`scikit-learn==1.6.1` is the version printed in Colab. `uv init` inside a
+folder that holds a uv workspace adds the new project to that workspace.
 
-`uv init` also wrote a hello-world `main.py`: you replace it in a minute.
+**Checkpoint:** `uv run python -c "import sklearn; print(sklearn.__version__)"`
+→ `1.6.1`
 
 ---
 
-## Step 1: train and save (`train.py`)
+## The smallest API
+
+`uv init` wrote a hello-world `main.py`. Replace it with:
 
 ```python
-import joblib
-from sklearn.datasets import load_iris
-from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
-
-X, y = load_iris(return_X_y=True)
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=0)
-
-model = LogisticRegression(max_iter=1000).fit(X_train, y_train)
-print("test accuracy:", model.score(X_test, y_test))
-
-joblib.dump(model, "model.joblib")
-```
-
-`uv run python train.py` prints `test accuracy: 1.0` and writes
-`model.joblib`, 991 bytes.
-
----
-
-## What `model.joblib` is
-
-- The fitted Python object, serialised: coefficients, classes, settings. Load
-  it and it predicts, without the training data and without retraining.
-- If you preprocess (Session 2), save the **whole pipeline**
-  (`make_pipeline(StandardScaler(), model)`): the API must apply the
-  transformation fitted on train, and a pipeline carries it with the model.
-- It is a pickle. Loading a pickle runs code, so **never load a model file you
-  did not produce or do not trust**.
-
----
-
-## Step 2: the API (`main.py`)
-
-```python
-import joblib
 from fastapi import FastAPI
-from pydantic import BaseModel
-
-SPECIES = ["setosa", "versicolor", "virginica"]
-
-model = joblib.load("model.joblib")     # once, when the server starts
-app = FastAPI(title="Iris classifier")
-
-
-class Flower(BaseModel):
-    sepal_length: float
-    sepal_width: float
-    petal_length: float
-    petal_width: float
+app = FastAPI()
+@app.get("/health")
+def health(): return {"status": "ok"}
 ```
+
+`uv run fastapi dev main.py` starts the server and prints
+`Server started at http://127.0.0.1:8000`. `dev` restarts it on every saved
+file. The terminal is now busy serving: a second terminal sends the requests
+([first steps](https://fastapi.tiangolo.com/tutorial/first-steps/)).
+
+**Checkpoint:** `curl localhost:8000/health` → `{"status":"ok"}`
 
 ---
 
-## Step 2, continued: the endpoints
+## `main.py`: the model and the contract
 
 ```python
-@app.get("/health")
-def health():
-    return {"status": "ok"}
-
-
-@app.post("/predict")
-def predict(flower: Flower):
-    x = [[flower.sepal_length, flower.sepal_width,
-          flower.petal_length, flower.petal_width]]
-    label = int(model.predict(x)[0])
-    return {"species": SPECIES[label]}
+model = joblib.load("model.joblib")   # once, at start-up
+app = FastAPI(title="Penguin species")
 ```
 
-- `@app.get("/health")` makes the function below answer `GET /health`.
-- `flower: Flower` tells FastAPI to read the JSON body into a `Flower`, and to
-  check it first.
-- The returned dict becomes the JSON response.
+```python
+class Penguin(BaseModel):
+    bill_length_mm: float
+    bill_depth_mm: float
+    flipper_length_mm: float
+    body_mass_g: float
+```
+
+- The imports: `joblib`, `pandas as pd`, `FastAPI`, `pydantic.BaseModel`
+  (complete file: [`penguin-api/main.py`](https://github.com/racousin/data_science_practice/tree/main/website/public/modules/ms2a-machine-learning-practice/deploy/penguin-api/main.py)).
+- `joblib.load` runs once when the server starts, not on every request.
+- `Penguin` is the contract: four named numbers. Any other body is refused
+  with `422` before `predict` runs.
 
 ---
 
-## Three lines that matter
+## `main.py`: the endpoint
 
-**`model = joblib.load(...)` at the top, not inside `predict`.** Loading runs
-once when the server starts. Inside `predict` it would run on every request:
-a 500-tree random forest takes 30 ms to load and 9 ms to predict, so every
-answer would be four times slower. A deep network takes seconds.
+```python
+@app.post("/predict")
+def predict(penguin: Penguin):
+    X = pd.DataFrame([penguin.model_dump()])
+    return {"species": model.predict(X)[0]}
+```
 
-**`class Flower(BaseModel)`** is the contract: four named floats. Anything
-else is refused with `422` before your code runs.
-
-**`int(...)`** turns numpy's `int64` into a Python `int`. Return the numpy
-value in the dict instead and FastAPI cannot convert it to JSON: the client
-gets `500 Internal Server Error`.
+- `@app.post("/predict")` binds the function to `POST /predict`.
+- FastAPI reads the JSON body into a `Penguin`; the returned dict becomes the
+  JSON response.
+- The pipeline was fitted on a DataFrame with these four column names: it is
+  called with the same.
 
 ---
 
-## Step 3: run it
+## Testing it
 
 ```bash
-uv run uvicorn main:app --reload
+curl -X POST localhost:8000/predict -H "Content-Type: application/json" \
+  -d '{"bill_length_mm": 39.1, "bill_depth_mm": 18.7,
+       "flipper_length_mm": 181, "body_mass_g": 3750}'
 ```
 
-```text
-INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [68493] using StatReload
-INFO:     Application startup complete.
-```
+→ `{"species":"Adelie"}`. In the browser, `http://localhost:8000/docs` →
+**POST /predict** → **Try it out** → **Execute**:
 
-- `main:app` means: in the file `main.py`, the object called `app`.
-- `--reload` restarts the server whenever you save a file: for development
-  only.
-- The terminal is now busy serving. Open a second one for anything else;
-  `Ctrl+C` stops the server.
+![The /docs page: a request body and the server's answer](assets/deploy/docs-penguin.png)
+
+A body `{"bill_length_mm": "long"}` returns `422`, with `Field required` for
+the three missing fields. Windows: PowerShell's `curl` is another command; use
+Git Bash, or `/docs`.
 
 ---
 
-## Step 4: use it from the browser
+## Three birds to check
 
-Open **http://localhost:8000/health**:
+The first penguin of each species in the file:
 
-![GET /health in the browser](assets/deploy/browser-health.png)
+| `bill_length_mm` | `bill_depth_mm` | `flipper_length_mm` | `body_mass_g` | Expected |
+|---|---|---|---|---|
+| 39.1 | 18.7 | 181 | 3750 | `Adelie` |
+| 46.5 | 17.9 | 192 | 3500 | `Chinstrap` |
+| 46.1 | 13.2 | 211 | 4500 | `Gentoo` |
 
-The address bar sent `GET /health`; the page is the JSON your function
-returned. That is the whole API seen from a browser.
+The same three answers as in the Colab notebook: the laptop loads the pickle
+with the version that wrote it.
 
----
-
-## The documentation page
-
-Open **http://localhost:8000/docs**: FastAPI generates this page from your
-code, one row per endpoint.
-
-![The interactive documentation page FastAPI generates](assets/deploy/docs-overview.png)
-
----
-
-## Try it out
-
-Click **POST /predict**, then **Try it out**, type a flower, press **Execute**:
-
-![A request body typed into /docs](assets/deploy/docs-try-it.png)
-
----
-
-## The answer
-
-![The server's answer: 200 and the predicted species](assets/deploy/docs-response.png)
-
-The page also shows the equivalent `curl` command. Change `6.7` to `"long"`
-and execute again: `422`, with the field and the reason, `Input should be a
-valid number`. You wrote no validation code.
+**Checkpoint:** the three `curl` (or `/docs`) requests return `Adelie`,
+`Chinstrap`, `Gentoo`.
 
 ---
 
 ## Check yourself
 
-1. Why is the model loaded at the top of `main.py` rather than inside
-   `predict`? **So it is read once at start-up, not on every request.**
-2. You scaled the features during training. What do you save so the API
-   scales them identically? **The whole pipeline, scaler and model together.**
-3. `uv run uvicorn main:app` fails with `Error loading ASGI app. Could not
-   import module "main"`. What is wrong? **You are not in the folder that
-   contains `main.py`, or the file has another name.**
-4. What does http://localhost:8000/docs give you that curl does not?
-   **A form per endpoint, built from your code, with the expected JSON
-   schema, to call the API from the browser.**
+1. Why is `joblib.load` at the top of `main.py` and not inside `predict`?
+   **It runs once at start-up instead of on every request.**
+2. `http://localhost:8000/predict` typed in the address bar answers
+   `405 Method Not Allowed`. Why? **The address bar sends `GET`; the endpoint
+   accepts only `POST`.**
+3. A request body has `"body_mass_g": "heavy"`. Which status, and which code
+   produces it? **`422`, produced by FastAPI from the `Penguin` contract, before
+   `predict` runs.**

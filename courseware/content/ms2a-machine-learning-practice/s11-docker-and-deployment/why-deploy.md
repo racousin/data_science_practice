@@ -1,29 +1,69 @@
-# From a Notebook to a Service
+# Serving a Model: The Concepts
 
-For ten sessions your models have lived in a notebook, and you have shipped
-their predictions as files. Today the model becomes a small program that anyone can ask for a prediction, packaged so that
-it runs the same on any machine.
+A trained model is a file. **Serving** a model means that a program loads this
+file once and answers prediction requests from other programs, at any time.
 
-<!-- notes: 12 minutes. The argument, not the tools. Most of the room has never
-seen an API or Docker, so every word here should be one they already own:
-notebook, file, function, "it works on my machine". Ask who has already had a
-project fail on a teammate's laptop; there is always one. Check at the start
-that Docker Desktop is installed and `docker run hello-world` works; anyone for
-whom it does not starts the install now (next-but-one lesson), in the
-background. -->
+<!-- notes: 20 minutes, no commands. One definition and one example per slide.
+The six properties are the vocabulary of the whole workshop: each later step
+points back to one of them (Step 1 pins the version = reproducibility, the
+/health route = robustness, Render's cold start = latency, /docs = contract).
+Concrete opening: a hospital form calls a model every time it is saved; a
+notebook cell run by hand cannot do that. -->
 
 ---
 
-## A model nobody can use
+## Reproducibility
 
-You trained a classifier. It scores 0.98 on the test set. Now:
+The same input gives the same output on the laptop, the server and a
+colleague's machine. This requires the same code, the same model file, the same
+Python and package versions, and the same operating-system libraries.
 
-- a colleague wants a prediction for **one new flower**, from their app;
-- the hospital's software wants a prediction **every time a form is saved**;
-- your model has to keep answering **after you close your laptop**.
+Example: a `model.joblib` written by scikit-learn 1.6.1 in Colab, loaded with
+scikit-learn 1.9.1 on a laptop:
 
-A notebook answers none of these. It runs on one machine, inside one Python
-environment, when one person presses Shift+Enter.
+```text
+InconsistentVersionWarning: Trying to unpickle estimator
+LogisticRegression from version 1.6.1 when using version 1.9.1.
+This might lead to breaking code or invalid results.
+Use at your own risk.
+```
+
+Steps 1 and 2 of this workshop pin `scikit-learn==1.6.1` on both sides.
+
+---
+
+## Robustness
+
+A process crashes, a machine reboots. A **supervisor** restarts the process.
+
+- [Docker](https://docs.docker.com/engine/containers/start-containers-automatically/):
+  `--restart` takes `no` (default), `on-failure` (non-zero exit code),
+  `always`, or `unless-stopped`.
+- [Kubernetes](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy):
+  `restartPolicy` takes `Always`, `OnFailure` or `Never`.
+
+A **health check** is an endpoint the supervisor calls at regular intervals,
+here `GET /health`. On [Render](https://render.com/docs/health-checks), a check
+succeeds on a 2xx or 3xx answer within 5 s; after 15 s of failed checks the
+instance stops receiving traffic, after 60 s it is restarted.
+
+---
+
+## Scalability
+
+![Clients reach several servers through one load balancer](assets/deploy/load-balancer.png)
+
+*Figure: HFWMan, [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Load_Balancing_Cluster_(NAT).svg), [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).*
+
+- **Vertical** scaling: a bigger machine (more CPU, more memory).
+- **Horizontal** scaling: more copies of the same service behind a **load
+  balancer**, which spreads the requests across them
+  ([Azure guide](https://learn.microsoft.com/en-us/azure/architecture/guide/design-principles/scale-out)).
+
+Horizontal copies require a **stateless** API: no answer depends on a previous
+request, and the model is loaded read-only. Order of magnitude: Cloudflare
+handled 81 million HTTP requests per second on average in 2025
+([Cloudflare Radar](https://blog.cloudflare.com/radar-2025-year-in-review/)).
 
 ---
 
@@ -31,87 +71,60 @@ environment, when one person presses Shift+Enter.
 
 | | Batch | Online |
 |---|---|---|
-| What you send | a file of 10,000 rows | one row per request |
-| When | once a day, once a week | the moment someone asks |
-| Result | a predictions file | an answer in milliseconds |
-| In this course | every ML-Arena CSV submission | today |
+| Input | a file or table of many rows | one row per request |
+| Trigger | a schedule or a job | a request, at any time |
+| Output | a predictions file | one answer in the HTTP response |
+| Latency | minutes to hours | milliseconds to seconds |
+| Example | an ML-Arena CSV submission, a nightly scoring job | this workshop's `/predict` |
 
-Both are "deployment". Online serving is the one that needs the two tools of
-this session.
-
----
-
-## Three things must leave the notebook/local
-
-![From a notebook to a container any client can call](assets/deploy/deploy-path.png)
-
-1. **The model**: the trained object, saved to a file (`model.joblib`).
-2. **The API**: a small program that loads that file once and answers
-   requests ("here are four measurements, which species?").
-3. **The environment**: Python 3.13, scikit-learn 1.9.1, FastAPI, the
-   operating system under them, all packed into a Docker **image**.
+Azure ML names them [online and batch endpoints](https://learn.microsoft.com/en-us/azure/machine-learning/concept-endpoints);
+SageMaker offers [real-time, serverless, asynchronous and batch](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html)
+inference.
 
 ---
 
-## Why an API
+## Latency
 
-An API (Application Programming Interface) is **a function you call over the
-network**.
+**Latency** is the time between a request and its answer. It is a
+distribution, described by **percentiles**: p50 (median), p95, p99, the value
+below which 50 %, 95 %, 99 % of requests fall
+([Google SRE book](https://sre.google/sre-book/service-level-objectives/)).
 
-- The caller does not need Python, scikit-learn, or your model file: it sends
-  a few numbers and receives an answer.
-- Anything can call it: a browser, a phone app, a spreadsheet macro, another
-  model.
-- You can retrain and replace the model behind it without the callers noticing,
-  as long as the questions and the answers keep the same shape.
+![Latency of the workshop API, local container and Render](assets/deploy/latency-local-vs-render.png)
 
----
-
-## Why Docker
-
-Your API runs on your laptop. To run on a server, the server needs **exactly**
-what your laptop has:
-
-- the same Python version,
-- the same 20 packages at the same versions (a model saved with one
-  scikit-learn version and loaded with another prints a warning, or worse),
-- the model file, and the command that starts the server.
-
-Docker packs all of it into one **image**. Any machine with Docker runs that
-image identically: no install instructions, no "it works on my machine".
+A **cold start** is the first request after an idle period: the platform
+starts the service before it answers. A Render free instance spins down after
+15 minutes without traffic and takes about one minute to wake
+([Render](https://render.com/docs/free)).
 
 ---
 
-## You have already used both
+## Contract
 
-- Every agent you submitted to ML-Arena ran **inside a container**, on
-  machines you never saw, with the packages the platform put in its image.
-- Every call to `client.submit(...)` in the labs was **an API request** to
-  ml-arena.com, and every leaderboard you looked at came back as the answer to
-  one.
+The **contract** (interface) of an API is the set of field names, types,
+units, answers and error codes it promises. The model behind it can be
+retrained or replaced; the contract stays the same.
 
-Today you build the other side of both.
+```text
+POST /predict  {"bill_length_mm": 39.1, "bill_depth_mm": 18.7,
+                "flipper_length_mm": 181, "body_mass_g": 3750}
+200            {"species": "Adelie"}
+422            when a field is missing or "bill_length_mm": "long"
+```
 
----
-
-## Where this session goes
-
-1. Docker concepts: images, containers, registries.
-2. Install Docker and run your first containers.
-3. Workshop: an image-labelling platform, CVAT, started with one command.
-4. APIs and HTTP, then a model served with FastAPI.
-5. A Dockerfile that packs the model API into an image.
-6. **Lab**: train a model, serve it, containerise it, use it from your browser,
-   then ship the image.
+FastAPI writes the contract as an [OpenAPI](https://spec.openapis.org/oas/latest.html)
+document, served at `/openapi.json` and rendered at `/docs`.
 
 ---
 
 ## Check yourself
 
-1. You submit a CSV of 5,000 predictions once. Batch or online?
-   **Batch.** Online means one request, one answer, at the moment it is asked.
-2. Name the three things that must leave the notebook for a model to be
-   served. **The model file, the API that loads it, the environment it runs in.**
-3. A teammate's laptop has scikit-learn 1.7, yours has 1.9.1. Which of the
-   three is the problem, and which tool fixes it?
-   **The environment; a Docker image that pins the version you trained with.**
+1. A model saved with scikit-learn 1.6.1 is loaded with 1.9.1. Which property
+   is at stake? **Reproducibility: the package version is part of the
+   environment the model depends on.**
+2. Why must an API be stateless to scale horizontally? **The load balancer may
+   send two requests of the same client to two different copies; each copy has
+   to answer from the request alone.**
+3. A service answers in 40 ms at p50 and in 60 s for the first request of the
+   day. What explains the second figure? **A cold start: the instance was
+   spun down and is started by that request.**

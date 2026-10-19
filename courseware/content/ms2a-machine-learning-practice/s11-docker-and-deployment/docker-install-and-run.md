@@ -1,16 +1,14 @@
-# Installing and Running Docker
+# Installing Docker and Running a Container
 
-Install Docker, check it works, then learn the dozen commands that cover
-almost everything you will do with it: run, ports, logs, stop, remove, and
-volumes.
+Install Docker, connect it to a Docker Hub account, then run two containers: one
+that prints a message and exits, one web server that keeps running.
 
-<!-- notes: 15 minutes, everyone typing. Install should have been done before
-the session; whoever arrives without it installs now and pairs with a
-neighbour for the commands. Windows students without WSL 2 are the slowest
-case (a reboot); send them to the WSL step first. All outputs on these slides
-were produced on 2026-09-14 (docker 29.4.0). End with `docker rm -f web`: the
-workshop that follows needs port 8080, and a forgotten nginx on it is the most
-common failure there. -->
+<!-- notes: 10 minutes, everyone typing. Install and the Docker Hub account
+were asked for before the session; whoever arrives without them installs now
+and pairs with a neighbour. Windows students without WSL 2 are the slowest case
+(a reboot). Outputs on these slides were produced on 2026-10-19 on an Apple M4
+laptop, OrbStack, docker 29.8.2. If port 8080 is taken on a laptop, any other
+host port works: -p 8081:80. -->
 
 ---
 
@@ -18,170 +16,120 @@ common failure there. -->
 
 | System | What to install |
 |---|---|
-| macOS | **Docker Desktop** (pick Apple silicon or Intel), from docs.docker.com/desktop |
-| Windows 10/11 | **WSL 2** first (`wsl --install` in an admin PowerShell, reboot), then **Docker Desktop** |
-| Linux | **Docker Engine** for your distribution, from docs.docker.com/engine/install |
+| macOS | [OrbStack](https://orbstack.dev/download): free for personal use, education licences on request ([FAQ](https://docs.orbstack.dev/faq)) |
+| Windows 10/11 | [Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install/) with the WSL 2 backend |
+| Linux | [Docker Engine](https://docs.docker.com/engine/install/) for your distribution |
 
-- Docker Desktop is free for students and personal use.
-- On macOS and Windows, Docker Desktop runs a small Linux virtual machine
-  in the background: containers are Linux processes, so they need a Linux
-  kernel.
-- On Windows, type every command of this session in the **Ubuntu (WSL)**
-  terminal that `wsl --install` created: they then work exactly as written.
-- On Linux, add yourself to the `docker` group, then log out and back in:
-  `sudo usermod -aG docker $USER`.
+- Containers are Linux processes. On macOS and Windows, OrbStack and Docker
+  Desktop run a small Linux virtual machine in the background to host them.
+- On Windows, the commands of this session are typed in the **Ubuntu (WSL)**
+  terminal.
+- On Linux, `sudo usermod -aG docker $USER`, then log out and back in, lets
+  you run `docker` without `sudo`.
 
 ---
 
-## Check it works
+## A Docker Hub account
+
+![The Repositories page of a Docker Hub account, with one public repository](assets/deploy/dockerhub-repositories.png)
+
+Create an account at **hub.docker.com**. Your username is the namespace of
+your images: `USER/penguin-api:v1`. Then connect the client to it:
 
 ```bash
-docker version
-docker run hello-world
+docker login
+```
+
+Free accounts: unlimited public repositories, 1 private repository, 200 pulls
+per 6 hours when logged in, 100 anonymously
+([usage limits](https://docs.docker.com/docker-hub/usage/)).
+
+---
+
+## First container
+
+```bash
+docker run --rm hello-world
 ```
 
 ```text
 Unable to find image 'hello-world:latest' locally
 latest: Pulling from library/hello-world
-...
+Status: Downloaded newer image for hello-world:latest
+
 Hello from Docker!
 This message shows that your installation appears to be working correctly.
 ```
 
-It did four things: looked for the image locally, pulled it from Docker Hub,
-created a container, and ran it until it exited.
-
-`Cannot connect to the Docker daemon`: Docker Desktop is not running. Start
-it, wait for it to say *running*, and retry.
-
----
-
-## A Python you did not install
-
-```bash
-docker run --rm python:3.13-slim python -c "import sys; print(sys.version)"
-```
-
-```text
-3.13.14 (main, Jun 11 2026, 01:12:13) [GCC 14.2.0]
-```
-
-- `python:3.13-slim` is the image; everything after it is the command to run
-  inside the container.
-- `--rm` deletes the container when it exits.
-- Your laptop's own Python, whatever version it is, played no part.
+1. **Pull**: the image was not on disk; the daemon downloaded it from Docker Hub.
+2. **Create**: a container was made from the image.
+3. **Run**: its program printed the message.
+4. **Exit**: the program ended, so the container stopped; `--rm` deleted it.
 
 ---
 
-## A server in a container
+## A web server in a container
 
 ```bash
 docker run -d -p 8080:80 --name web nginx
 ```
 
-Open **http://localhost:8080**: *Welcome to nginx!*
+Open **http://localhost:8080**: the page *Welcome to nginx!*
 
 | Flag | Meaning |
 |---|---|
-| `-d` | detached: run in the background, give the terminal back |
-| `-p 8080:80` | publish a port, `HOST:CONTAINER` |
-| `--name web` | a name to use instead of the random id |
+| `-d` | detached: runs in the background, the terminal is free |
+| `-p 8080:80` | host port 8080 → container port 80 |
+| `--name web` | a name instead of a random one |
 
 ---
 
-## Publishing a port
-
-![-p connects a port on your laptop to a port inside the container](assets/deploy/port-mapping.png)
-
-A container has its own network. nginx listens on port 80 **inside** it, and
-nothing outside can reach that until `-p` connects a port of your laptop to it.
-
-- No `-p`: the browser says *This site can't be reached*.
-- Host port already taken: `Bind for :::8080 failed: port is already
-  allocated`. Pick another host port, `-p 8081:80`, or stop what holds it.
-
----
-
-## Look, stop, remove
+## Look, read, stop
 
 ```bash
-docker ps              # running containers
-docker logs web        # what the container printed
-docker stop web        # stop it (it still exists)
-docker ps -a           # all containers, stopped ones too
-docker rm web          # delete it
+docker ps
+docker logs web
+docker stop web
 ```
 
 ```text
-CONTAINER ID   IMAGE   STATUS         PORTS                   NAMES
-b14952609bfe   nginx   Up 2 seconds   0.0.0.0:8080->80/tcp    web
+CONTAINER ID   IMAGE   STATUS         PORTS                  NAMES
+f73d63c11c66   nginx   Up 2 seconds   0.0.0.0:8080->80/tcp   web
 ```
 
-`docker rm -f web` stops and deletes in one step.
+`docker logs web` ends with one line per request, here the page load:
+
+```text
+192.168.215.1 - - [19/Oct/2026:19:55:06 +0000] "GET / HTTP/1.1" 200 896
+```
 
 ---
 
-## Inside a running container
+## Stopped is not deleted
 
 ```bash
-docker exec web ls /usr/share/nginx/html
-docker exec -it web bash
+docker ps -a
 ```
 
-- `docker exec` runs a command in a container that is already running.
-- `-it` gives you an interactive terminal: you get a shell inside it. `exit`
-  leaves the shell; the container keeps running.
-
-Useful for looking around. Anything you change in there is lost when the
-container is removed.
-
----
-
-## Containers are disposable, volumes are not
-
-A container's files disappear with it. Data that must outlive the container
-lives in a **volume**: a folder on the host mounted inside the container.
-
-```bash
-docker rm -f web
-mkdir site && echo '<h1>Served from my laptop</h1>' > site/index.html
-docker run -d -p 8080:80 --name web \
-  -v "$PWD/site":/usr/share/nginx/html:ro nginx
+```text
+CONTAINER ID   IMAGE   STATUS                              NAMES
+f73d63c11c66   nginx   Exited (0) Less than a second ago   web
 ```
 
-Refresh the page: nginx serves your folder. Edit `index.html` and refresh
-again: the container sees the change at once. `:ro` makes it read-only inside.
+A stopped container still exists, with its logs, until `docker rm web`
+deletes it. The image stays on disk too: `nginx` is 261 MB, listed by
+`docker images`.
 
-A host folder mounted this way is a *bind mount*. Docker can also keep a
-**named volume** for you, a folder it manages and that survives the
-container: that is where the database of the next workshop keeps its data.
-
----
-
-## Housekeeping
-
-```bash
-docker images           # images on disk, with their size
-docker rmi nginx        # delete an image (no container may use it)
-docker system df        # disk used by images, containers, volumes
-docker system prune     # delete stopped containers and unused data
-```
-
-Images add up: `nginx` is 270 MB, a Python image with scikit-learn about
-600 MB. Check `docker system df` when your disk fills up.
-
-Before the workshop, free port 8080: `docker rm -f web`.
+**Checkpoint**: `docker ps -a` shows the `web` container as *Exited*. Then
+`docker rm web` frees the name for later.
 
 ---
 
 ## Check yourself
 
-1. You run `docker run -p 9000:80 nginx`. Which address do you open in the
-   browser? **http://localhost:9000**, the host side of the mapping.
+1. `docker run --rm hello-world` a second time prints no *Pulling* line. Why?
+   **The image is already on disk; only the first run downloads it.**
 2. `docker ps` shows nothing, but `docker ps -a` shows `web` as *Exited*. Can
-   you see its logs? **Yes: `docker logs web` works on a stopped container.**
-3. You wrote a file inside a container with `docker exec`, then ran
-   `docker rm -f` on it. Where is the file? **Gone. Use a volume for anything
-   you want to keep.**
-4. What does `--rm` save you from? **A stopped container left behind after
-   every run, to clean up by hand.**
+   you read its logs? **Yes: `docker logs web` works on a stopped container.**
+3. What happens to `localhost:8080` after `docker stop web`? **Nothing answers
+   any more: the browser reports that the site cannot be reached.**

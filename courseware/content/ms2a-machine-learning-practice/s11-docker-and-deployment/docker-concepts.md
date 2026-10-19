@@ -4,28 +4,30 @@ Docker runs a program together with everything it needs, isolated from the rest
 of the machine. Four words carry the whole idea: **Dockerfile**, **image**,
 **container**, **registry**.
 
-<!-- notes: 12 minutes, no commands yet. The one thing that must land is image
+<!-- notes: 15 minutes, no commands yet. The one thing that must land is image
 versus container; everything later is a verb applied to one of them. The
 class/object analogy works for this room, who all write Python. Keep the VM
 comparison to one slide: they need to know why a container is light, not how a
-hypervisor works. -->
+hypervisor works. The versions in the first table are those of the workshop's
+penguin API image, read inside it on 2026-10-19. -->
 
 ---
 
 ## "It works on my machine"
 
-What your model API needs, besides your code:
+What the penguin API needs, besides its code:
 
-| Layer | On your laptop |
+| Layer | In the workshop image |
 |---|---|
-| Operating system | macOS 15, Windows 11, Ubuntu 24.04... |
-| Python | 3.13.14 |
-| Packages | fastapi 0.141.1, scikit-learn 1.9.1, numpy 2.5.3, and 17 more |
-| Files | `main.py`, `model.joblib` |
-| Start command | `uvicorn main:app --host 0.0.0.0 --port 8000` |
+| Operating system | Debian 13 (your laptop: macOS, Windows, Ubuntu...) |
+| Python | 3.13.16 |
+| Packages | fastapi 0.149.0, scikit-learn 1.6.1, pandas 3.0.6, numpy 2.5.4, and 64 more |
+| Files | `main.py`, `model.joblib`, `index.html` |
+| Start command | `uv run fastapi run main.py --port 8000` |
 
-Every line can differ on the next machine. A README listing them is a hope;
-an image containing them is a guarantee.
+Every line can differ on the next machine. A model saved with scikit-learn
+1.6.1 is not guaranteed to load in another version. A README listing these
+lines is a description; an image containing them is the environment itself.
 
 ---
 
@@ -41,52 +43,67 @@ an image containing them is a guarantee.
 
 ---
 
-## Image and container
+## Client, daemon, registry
 
-- An **image** is a read-only package: a filesystem (Debian, Python, your
-  packages, your files) plus the command to run. It never changes.
-- A **container** is a running instance of an image, with a thin writable layer
-  on top. Stop it, delete it, start ten more from the same image.
+![The docker client sends commands to the daemon, which builds, stores and runs images and pulls them from a registry](assets/deploy/docker-architecture.png)
+
+*Diagram: Docker Docs, Apache-2.0.*
+
+- The **client** is the `docker` command you type.
+- The **daemon** (Docker Engine) does the work: builds images, keeps them on
+  disk, starts containers.
+- A **registry** stores images by name, the way PyPI stores packages. The
+  public one is **Docker Hub**: `python`, `nginx`, `postgres` all live there.
 
 ---
 
-## Where images come from
+## The five words
+
+- **Dockerfile**: the recipe. Start from this base image, copy these files,
+  install these packages, run this command.
+- **Image**: the read-only result of the recipe, a filesystem plus a start
+  command. The penguin API image is 687 MB on disk.
+- **Container**: a running instance of an image, with a thin writable layer on
+  top. An image is to a container what a class is to an object.
+- **Registry**: where images are pushed and pulled.
+- **Tag**: the version part of an image name.
+
+```text
+python:3.13-slim          official image, tag 3.13-slim
+nginx                     no tag: means nginx:latest
+USER/penguin-api:v1       account USER on Docker Hub, image penguin-api, tag v1
+```
+
+---
+
+## Six commands
 
 ![Build an image, push it to a registry, pull and run it anywhere](assets/deploy/build-push-pull-run.png)
 
-- A **Dockerfile** is the recipe: start from this base image, copy these
-  files, install these packages, run this command.
-- `docker build` turns it into an **image**.
-- A **registry** stores images by name, the way PyPI stores packages. The
-  public one is **Docker Hub**: `python`, `nginx`, `postgres` all live there.
-- `docker pull` downloads an image; `docker run` starts a container from it.
+| Command | Effect |
+|---|---|
+| `docker build -t USER/penguin-api:v1 .` | Dockerfile → image |
+| `docker run USER/penguin-api:v1` | image → running container |
+| `docker ps` | list the running containers |
+| `docker logs <container>` | what the container printed |
+| `docker stop <container>` | stop it |
+| `docker push` / `docker pull` | image → registry / registry → image |
 
 ---
 
-## Image names
+## Ports
 
-```text
-python:3.13-slim            official image, tag 3.13-slim
-nginx                       no tag: means nginx:latest
-cvat/server:v2.75.0         account cvat, image server, tag v2.75.0
-racousin90/iris-api:1.0     an account on Docker Hub, your image
+![-p connects a port on your laptop to a port inside the container](assets/deploy/port-mapping.png)
+
+A container has its own network. The API listens on port 8000 **inside** it;
+nothing outside reaches it until `-p HOST:CONTAINER` connects a port of the
+host to it.
+
+```bash
+docker run -p 8000:8000 USER/penguin-api:v1
 ```
 
-`name:tag`. The **tag** is a version label. `latest` is only a default name,
-not a promise of anything: pin a real tag whenever the result matters.
-
----
-
-## Where you meet containers
-
-- **ML-Arena**: every submitted agent runs in a container built from a runtime
-  image, with its code mounted in.
-- **Cloud platforms**: Google Cloud Run, AWS ECS, Azure Container Apps run an
-  image you give them; Kubernetes runs thousands.
-- **Tools you install**: databases, annotation platforms, notebooks, MLflow;
-  most ship as an image first, and some only as an image.
-- **Reproducible research**: an image next to a paper is the environment,
-  frozen.
+`http://localhost:8000` on the laptop then reaches the API in the container.
 
 ---
 
@@ -96,8 +113,5 @@ not a promise of anything: pin a real tag whenever the result matters.
    containers? **One image, three containers.**
 2. Which of Dockerfile, image, container is the running thing?
    **The container.** The Dockerfile is a recipe, the image a frozen package.
-3. Why does a container start in about a second when a virtual machine takes
-   minutes? **It does not boot an operating system: it is a process sharing the
-   host's kernel.**
-4. What does `nginx` with no tag pull? **`nginx:latest`, whatever that tag
-   points at today.**
+3. `docker run -p 9000:8000 USER/penguin-api:v1`: which URL reaches the API?
+   **http://localhost:9000**, the host side of the mapping.

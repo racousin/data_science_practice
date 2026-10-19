@@ -577,76 +577,83 @@ modules:
 
   # --------------------------------------------------------------- session 11
   #
-  # Added 2026-09-14. Taught to a room that has never used an API or Docker:
-  # why a model leaves the notebook (model file, API, environment), Docker's
-  # four nouns, install and the everyday commands, a Docker Compose workshop on
-  # CVAT (the annotation platform, 18 containers from one command), HTTP, a
-  # FastAPI model server, and the Dockerfile that packs it. The lab ships a
-  # penguin classifier as an image. Every command and output was run on
-  # 2026-09-14 (docker 29.4.0, fastapi 0.141.1, scikit-learn 1.9.1, CVAT
-  # v2.75.0); figures come from tools/figures/s11_docker_and_deployment.py.
-  #
-  # No competition is attached: ML-Arena does not accept image submissions yet.
-  # Lab 11 Part E states the contract that submission is to be built against
-  # (linux/amd64, 0.0.0.0:8000, GET /health, POST /predict -> {"species": ...}).
-  # Attach the penguins challenge here once it exists, and update Part E.
-  - title: "Session 10 — Docker and Model Deployment"
+  # Rebuilt 2026-10-19 as a model deployment workshop (plan:
+  # PLAN_S10_MODEL_DEPLOYMENT.md). One project end to end: penguins trained in
+  # Colab (tools/notebooks/mlp_s10_penguins_train.py), served with uv +
+  # FastAPI, packed in a Docker image, pushed to Docker Hub, run on a Render
+  # Free web service, with an HTML page; Docker Compose as the last lesson.
+  # Every command was run on 2026-10-19 (Colab: Python 3.13.16, scikit-learn
+  # 1.6.1; laptop: OrbStack, docker 29.8.2, fastapi 0.149.0); the reference
+  # project is website/public/modules/ms2a-machine-learning-practice/deploy/
+  # penguin-api/, the figures come from tools/figures/s11_docker_and_deployment.py,
+  # ms2a_s10_workshop.py and ms2a_s10_web.py. No competition is attached.
+  - title: "Session 10 — Model Deployment Workshop"
     slug: s11-docker-and-deployment
     icon: container
     visibility: unlisted
     summary: >
-      Take a trained model out of the notebook: save it, serve it behind an
-      HTTP API with FastAPI, and pack the API into a Docker image that runs
-      the same on any machine. Includes a Docker Compose workshop that starts
-      CVAT, a complete image-annotation platform, with one command. Before the
-      session: install Docker Desktop and check that `docker run hello-world`
-      works.
+      Serve a trained model: train it in Colab, put it behind an HTTP API with
+      uv and FastAPI, pack the API in a Docker image, push it to Docker Hub,
+      run it on Render's free tier, add an HTML page, then scale it with
+      Docker Compose. Before the session: install uv and Docker (OrbStack on
+      macOS, Docker Desktop on Windows, Docker Engine on Linux), and create a
+      Docker Hub account and a Render account.
     lessons:
-      - title: "From a Notebook to a Service"
+      - title: "Serving a Model: The Concepts"
         slug: why-deploy
         file: s11-docker-and-deployment/why-deploy.md
-        estimated_minutes: 12
+        estimated_minutes: 20
+        is_published: true
+      - title: "Where Models Run: On-Premise, Cloud, Managed"
+        slug: where-models-run
+        file: s11-docker-and-deployment/where-models-run.md
+        estimated_minutes: 10
+        is_published: true
+      - title: "Step 1 — Train and Save a Model in Colab"
+        slug: train-and-save-a-model
+        file: s11-docker-and-deployment/train-and-save-a-model.md
+        estimated_minutes: 15
+        is_published: true
+      - title: "Step 2 — A Model API with uv and FastAPI"
+        slug: serving-a-model-with-fastapi
+        file: s11-docker-and-deployment/serving-a-model-with-fastapi.md
+        estimated_minutes: 30
         is_published: true
       - title: "Docker: Images, Containers, Registries"
         slug: docker-concepts
         file: s11-docker-and-deployment/docker-concepts.md
-        estimated_minutes: 12
+        estimated_minutes: 15
         is_published: true
-      - title: "Installing and Running Docker"
+      - title: "Installing Docker and Running a Container"
         slug: docker-install-and-run
         file: s11-docker-and-deployment/docker-install-and-run.md
-        estimated_minutes: 14
+        estimated_minutes: 10
         is_published: true
-      - title: "Workshop — Label Images with CVAT and Docker Compose"
-        slug: docker-compose-cvat
-        file: s11-docker-and-deployment/docker-compose-cvat.md
-        estimated_minutes: 30
-        is_published: true
-      - title: "APIs and HTTP"
-        slug: apis-and-http
-        file: s11-docker-and-deployment/apis-and-http.md
-        estimated_minutes: 12
-        is_published: true
-      - title: "Serving a Model with FastAPI"
-        slug: serving-a-model-with-fastapi
-        file: s11-docker-and-deployment/serving-a-model-with-fastapi.md
-        estimated_minutes: 20
-        is_published: true
-      - title: "Writing a Dockerfile"
+      - title: "Step 3 — The API in an Image, on Docker Hub"
         slug: writing-a-dockerfile
         file: s11-docker-and-deployment/writing-a-dockerfile.md
-        estimated_minutes: 15
+        estimated_minutes: 30
         is_published: true
-      - title: "Deploying the Image on Hugging Face Spaces"
-        slug: deploy-on-hugging-face
-        file: s11-docker-and-deployment/deploy-on-hugging-face.md
-        estimated_minutes: 15
+      - title: "Step 4 — Serving the Image on Render"
+        slug: deploy-on-render
+        file: s11-docker-and-deployment/deploy-on-render.md
+        estimated_minutes: 20
         is_published: true
-      - title: "Lab 11 — Ship a Penguin Classifier"
+      - title: "Step 5 — An HTML Page for the Model"
+        slug: html-frontend
+        file: s11-docker-and-deployment/html-frontend.md
+        estimated_minutes: 20
+        is_published: true
+      - title: "Docker Compose: Several Containers, One File"
+        slug: docker-compose
+        file: s11-docker-and-deployment/docker-compose.md
+        estimated_minutes: 20
+        is_published: true
+      - title: "Workshop Deliverable — Your Model Online"
         slug: lab-11
         kind: exercise
         file: s11-docker-and-deployment/lab-11.md
-        estimated_minutes: 65
+        estimated_minutes: 10
         is_published: true
 
   # ----------------------------------------------------------------- project
