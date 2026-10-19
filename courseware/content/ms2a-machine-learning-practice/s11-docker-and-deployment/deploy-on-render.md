@@ -101,9 +101,9 @@ curl -X POST https://penguin-api-<suffix>.onrender.com/predict \
   -H "Content-Type: application/json" -d '{"bill_length_mm": 39.1, ...}'
 ```
 
-`/docs` works in the browser too. Measured: **~100 ms** per warm request
-(laptop container: 1.5 ms) and **COLD s** for the first request after 17
-idle minutes.
+`/docs` works in the browser too. Measured over 200 requests: **66 ms** at
+p50 once warm (laptop container: 1.5 ms), and **73 s** for the first request
+after 17 idle minutes.
 
 **Checkpoint:** `/health` answers `{"status":"ok"}` on the public URL, from a
 phone.
@@ -117,17 +117,19 @@ docker build --platform linux/amd64 -t USER/penguin-api:v2 .
 docker push USER/penguin-api:v2
 ```
 
-On Render: **Settings → Image URL** → `docker.io/USER/penguin-api:v2` →
-**Save**, then **Manual Deploy → Deploy latest reference**. Render does not
-watch Docker Hub; a [deploy hook](https://render.com/docs/deploy-hooks) is
-the scripted equivalent.
+On Render: **Settings → Image → Source → Edit** → Image URL
+`docker.io/USER/penguin-api:v2` → **Connect**. The deploy starts at once
+(trigger *Image updated*). Render does not watch Docker Hub: a re-push of
+the same tag needs **Manual Deploy**, and a
+[deploy hook](https://render.com/docs/deploy-hooks) is the scripted
+equivalent.
 
 ---
 
 ## Check yourself
 
-1. The first request of the morning takes about a minute, the next ones
-   ~100 ms. Why? **The Free instance spun down after 15 idle minutes; the
+1. The first request of the morning takes 73 s, the next ones about
+   70 ms. Why? **The Free instance spun down after 15 idle minutes; the
    first request waits for the container to start (cold start).**
 2. The deploy fails with `exec format error`. What happened? **The image was
    built for arm64 (a Mac with an M chip, no `--platform linux/amd64`); Render

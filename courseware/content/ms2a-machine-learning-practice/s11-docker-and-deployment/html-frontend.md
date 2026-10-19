@@ -114,7 +114,7 @@ docker push USER/penguin-api:v2
 ```
 
 Then, on Render, the steps of Step 4's "New version" section: **Settings →
-Image URL** → `docker.io/USER/penguin-api:v2` → **Manual Deploy**. A new tag
+Image → Source → Edit** → `docker.io/USER/penguin-api:v2` → **Connect**. A new tag
 guarantees that Render pulls the new image.
 
 **Checkpoint:** on `https://<name>.onrender.com/`, the three birds typed in the

@@ -1,5 +1,7 @@
 # Plan — Session 10 rebuilt as a Model Deployment Workshop
 
+**Status:** applied on 2026-10-19. Deviations found in the dry run (exec-form `CMD` on port 8000 with Render's port detection, Python 3.13 / scikit-learn 1.6.1 from Colab, Compose lesson added) are recorded in the lessons and in `course.yaml`.
+
 Course 15 `ms2a-machine-learning-practice`, module **#35** `s11-docker-and-deployment`
 (https://ml-arena.com/module-editor/35?course=15). Written 2026-10-19. Every
 external fact below was checked on that date; the ones that could not be

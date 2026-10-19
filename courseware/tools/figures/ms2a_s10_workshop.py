@@ -66,11 +66,11 @@ def latency_local_vs_render() -> None:
     rows = [("laptop container", local, f.ACCENT), ("Render, warm", render, f.GREEN)]
     for i, (name, v, color) in enumerate(rows):
         ax.scatter(v, [i] * len(v), s=12, alpha=0.35, color=color, zorder=2)
-        for p, mk in [(0.5, "p50"), (0.95, "p95"), (0.99, "p99")]:
+        for p in (0.5, 0.95, 0.99):
             ax.plot([q(v, p)] * 2, [i - 0.22, i + 0.22], color=f.INK, lw=1.8, zorder=3)
-            ax.text(q(v, p), i + 0.32 + (0.16 if mk == "p95" else 0), f"{mk} {q(v, p):.0f} ms"
-                    if q(v, p) >= 10 else f"{mk} {q(v, p):.1f} ms",
-                    ha="center", fontsize=11, color=f.INK)
+        fmt = (lambda x: f"{x:.1f}") if q(v, 0.99) < 10 else (lambda x: f"{x:.0f}")
+        ax.text(q(v, 0.5), i + 0.33, f"p50 {fmt(q(v, 0.5))} · p95 {fmt(q(v, 0.95))} · "
+                f"p99 {fmt(q(v, 0.99))} ms", ha="left", fontsize=12, color=f.INK)
     ax.scatter([cold], [2], s=60, color=f.WARM, zorder=3)
     ax.text(cold, 2.3, f"cold start {cold / 1000:.0f} s", ha="center", fontsize=12,
             color=f.WARM, weight="bold")
