@@ -28,8 +28,11 @@ NAME = "paris-temperature-forecast.ipynb"
 GITHUB = "racousin/data_science_practice"
 COLAB = (f"https://colab.research.google.com/github/{GITHUB}/blob/main/"
          f"{OUT.relative_to(REPO)}/{NAME}")
-DATA_URL = (f"https://raw.githubusercontent.com/{GITHUB}/main/"
-            f"{OUT.relative_to(REPO)}/weather_europe_2020_2026.csv.gz")
+DATA_BASE = f"https://raw.githubusercontent.com/{GITHUB}/main/{OUT.relative_to(REPO)}/"
+ARCHIVE = "weather_europe_2020_2026.csv.gz"
+# The live feed since the archive ends (built by build_live_snapshot.py in the
+# platform repo, tests-dummy/catalog/paris_temperature/).
+LIVE = "weather_europe_live_2026-03-04_2026-11-04.csv.gz"
 CHALLENGE_ID = 203
 
 md, code = nb.md, nb.code
@@ -61,8 +64,11 @@ def build() -> dict:
             "import numpy as np",
             "import pandas as pd",
             "",
-            f'DATA_URL = "{DATA_URL}"',
-            "df = pd.read_csv(DATA_URL)",
+            f'BASE = "{DATA_BASE}"',
+            "# Open-Meteo archive 2020-01 → 2026-03, then the live feed (OpenWeatherMap) since:",
+            "# same columns, contiguous hours, so the two simply stack.",
+            f'df = pd.concat([pd.read_csv(BASE + "{ARCHIVE}"), pd.read_csv(BASE + "{LIVE}")],',
+            "               ignore_index=True)",
             "df.tail()",
         ),
         md(
@@ -163,7 +169,8 @@ def build() -> dict:
         md(
             "## 4. Score it like the challenge",
             "",
-            "One forecast every 6 hours over 2025–2026, scored with the CRPS:",
+            "One forecast every 6 hours from 2025-01 to the end of the data (the last",
+            "months are the live feed, the provider the challenge scores on), with the CRPS:",
             "`mean|x - y| - ½ mean|x_i - x_j|`, in °C, lower is better. The",
             "persistence line (the last value, one member) is the bar to clear.",
         ),
